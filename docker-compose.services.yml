@@ -1,0 +1,54 @@
+version: '3.8'
+services: 
+    rabbitmq:
+        image: rabbitmq:3.8.19-management
+        container_name: rabbitmq
+        restart: on-failure
+        ports:
+            - 5672:5672
+            - 15672:15672
+        networks:
+            - back
+        environment:
+            - "RABBITMQ_DEFAULT_USER=guest"
+            - "RABBITMQ_DEFAULT_PASS=guest"
+
+    elasticsearch:
+        image: elasticsearch:7.13.4
+        container_name: elasticsearch
+        ports:
+            - 9200:9200
+        networks:
+            - back
+        environment:
+            - xpack.monitoring.enabled=true
+            - xpack.watcher.enabled=false
+            - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+            - discovery.type=single-node
+
+    kibana:
+        depends_on:
+            - elasticsearch
+        image: kibana:7.13.4
+        container_name: kibana
+        ports:
+            - 5601:5601
+        networks:
+            - back
+        environment:
+            - ELASTICSEARCH_URL=http://elasticsearch:9200
+
+    sql_server:
+        image: mcr.microsoft.com/mssql/server:2017-latest
+        container_name: sql_server
+        ports:
+            - 1433:1433
+        networks:
+            - back
+        environment:
+            SA_PASSWORD: MySecretPassword!
+            ACCEPT_EULA: "Y"
+
+networks:
+    back:
+        driver: bridge

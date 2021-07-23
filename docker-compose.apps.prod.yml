@@ -1,0 +1,72 @@
+version: '3.8'
+services:
+
+    watchdog_core:
+        image: bsa2021watchdog/watchdog_core:latest
+        container_name: 'watchdog_core'
+        restart: on-failure
+        networks:
+            - back
+        ports:
+            - "5050:5050"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Production
+        env_file:
+            - /etc/environment
+        volumes:
+           - ./resources:/app/Resources
+
+    watchdog_collector:
+        image: bsa2021watchdog/watchdog_collector:latest
+        container_name: 'watchdog_collector'
+        restart: on-failure
+        networks:
+            - back
+        ports:
+            - "5060:5060"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Production
+        env_file:
+            - /etc/environment
+
+            notifier:
+        image: bsa2021watchdog/watchdog_notifier:latest
+        container_name: 'watchdog_notifier'
+        restart: on-failure
+        networks:
+            - back
+        ports:
+            - "5070:5070"
+        environment:
+            ASPNETCORE_ENVIRONMENT: 'Production'
+        env_file:
+            - /etc/environment
+
+    watchdog_frontend:
+        depends_on:
+            - watchdog_core
+            - watchdog_collector
+            - watchdog_notifier
+        image: bsa2021watchdog/watchdog_frontend:latest
+        container_name: 'watchdog_frontend'
+        restart: on-failure
+        networks:
+            - back
+            - front
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+           - /etc/nginx/nginx.conf:/etc/nginx/nginx.conf
+           - /etc/nginx/dhparam.pem:/etc/nginx/dhparam.pem
+           - /etc/letsencrypt/live/bsa-watchdog.xyz/cert.pem:/etc/letsencrypt/live/bsa-watchdog.xyz/cert.pem
+           - /etc/letsencrypt/live/bsa-watchdog.xyz/chain.pem:/etc/letsencrypt/live/bsa-watchdog.xyz/chain.pem
+           - /etc/letsencrypt/live/bsa-watchdog.xyz/fullchain.pem:/etc/letsencrypt/live/bsa-watchdog.xyz/fullchain.pem
+           - /etc/letsencrypt/live/bsa-watchdog.xyz/privkey.pem:/etc/letsencrypt/live/bsa-watchdog.xyz/privkey.pem
+           - /var/log/nginx:/var/log/nginx
+
+networks:
+    back:
+        driver: bridge
+    front:
+        driver: bridge

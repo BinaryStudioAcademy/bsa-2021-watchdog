@@ -1,0 +1,82 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.Core.API", "Watchdog.Core\Watchdog.Core.API\Watchdog.Core.API.csproj", "{AF6C5377-BC0D-4CC8-8C2E-D9E26756627D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.Core.Common", "Watchdog.Core\Watchdog.Core.Common\Watchdog.Core.Common.csproj", "{D050B938-5C44-4A1F-A4C6-E70E3FBD8A02}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.Core.BLL", "Watchdog.Core\Watchdog.Core.BLL\Watchdog.Core.BLL.csproj", "{FC688BB9-6949-4C2D-9A31-FCE87F0F0494}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.Core.DAL", "Watchdog.Core\Watchdog.Core.DAL\Watchdog.Core.DAL.csproj", "{E00E8C42-8448-4128-B015-54C27BD7DD29}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Watchdog.Core", "Watchdog.Core", "{9F257BC7-8C6F-4CBD-924B-35AFF80583E8}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile = Dockerfile
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Watchdog.Collector", "Watchdog.Collector", "{F8C29B95-9387-484E-965A-451A173F69D1}"
+	ProjectSection(SolutionItems) = preProject
+		Watchdog.Collector\Dockerfile = Watchdog.Collector\Dockerfile
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Watchdog.Notifier", "Watchdog.Notifier", "{923A91AB-09F7-4C6B-B85B-9BF9F37CCB27}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.Collector.API", "Watchdog.Collector\Watchdog.Collector.API\Watchdog.Collector.API.csproj", "{1C23243B-5028-4CB2-BC17-09BFD4AA1FE9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.Collector.BLL", "Watchdog.Collector\Watchdog.Collector.BLL\Watchdog.Collector.BLL.csproj", "{615C5D66-3901-49FB-853D-9E8AEA08CEC5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.Notifier", "Watchdog.Notifier\Watchdog.Notifier\Watchdog.Notifier.csproj", "{86EAA354-F751-4B0F-89D5-56A8BF0FD283}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF6C5377-BC0D-4CC8-8C2E-D9E26756627D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF6C5377-BC0D-4CC8-8C2E-D9E26756627D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF6C5377-BC0D-4CC8-8C2E-D9E26756627D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF6C5377-BC0D-4CC8-8C2E-D9E26756627D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D050B938-5C44-4A1F-A4C6-E70E3FBD8A02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D050B938-5C44-4A1F-A4C6-E70E3FBD8A02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D050B938-5C44-4A1F-A4C6-E70E3FBD8A02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D050B938-5C44-4A1F-A4C6-E70E3FBD8A02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC688BB9-6949-4C2D-9A31-FCE87F0F0494}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC688BB9-6949-4C2D-9A31-FCE87F0F0494}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC688BB9-6949-4C2D-9A31-FCE87F0F0494}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC688BB9-6949-4C2D-9A31-FCE87F0F0494}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E00E8C42-8448-4128-B015-54C27BD7DD29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E00E8C42-8448-4128-B015-54C27BD7DD29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E00E8C42-8448-4128-B015-54C27BD7DD29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E00E8C42-8448-4128-B015-54C27BD7DD29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C23243B-5028-4CB2-BC17-09BFD4AA1FE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C23243B-5028-4CB2-BC17-09BFD4AA1FE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C23243B-5028-4CB2-BC17-09BFD4AA1FE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C23243B-5028-4CB2-BC17-09BFD4AA1FE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{615C5D66-3901-49FB-853D-9E8AEA08CEC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{615C5D66-3901-49FB-853D-9E8AEA08CEC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{615C5D66-3901-49FB-853D-9E8AEA08CEC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{615C5D66-3901-49FB-853D-9E8AEA08CEC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86EAA354-F751-4B0F-89D5-56A8BF0FD283}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86EAA354-F751-4B0F-89D5-56A8BF0FD283}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86EAA354-F751-4B0F-89D5-56A8BF0FD283}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86EAA354-F751-4B0F-89D5-56A8BF0FD283}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AF6C5377-BC0D-4CC8-8C2E-D9E26756627D} = {9F257BC7-8C6F-4CBD-924B-35AFF80583E8}
+		{D050B938-5C44-4A1F-A4C6-E70E3FBD8A02} = {9F257BC7-8C6F-4CBD-924B-35AFF80583E8}
+		{FC688BB9-6949-4C2D-9A31-FCE87F0F0494} = {9F257BC7-8C6F-4CBD-924B-35AFF80583E8}
+		{E00E8C42-8448-4128-B015-54C27BD7DD29} = {9F257BC7-8C6F-4CBD-924B-35AFF80583E8}
+		{1C23243B-5028-4CB2-BC17-09BFD4AA1FE9} = {F8C29B95-9387-484E-965A-451A173F69D1}
+		{615C5D66-3901-49FB-853D-9E8AEA08CEC5} = {F8C29B95-9387-484E-965A-451A173F69D1}
+		{86EAA354-F751-4B0F-89D5-56A8BF0FD283} = {923A91AB-09F7-4C6B-B85B-9BF9F37CCB27}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {53583653-F77E-4F5C-A5E3-97634ABB27C5}
+	EndGlobalSection
+EndGlobal

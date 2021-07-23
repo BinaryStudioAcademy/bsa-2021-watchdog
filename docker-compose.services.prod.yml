@@ -1,0 +1,62 @@
+version: '3.8'
+services:
+
+    sql_server:
+        image: mcr.microsoft.com/mssql/server:2017-latest
+        container_name: sql_server
+        ports:
+            - 1433:1433
+        networks:
+            - back
+        environment:
+            SA_PASSWORD: ${SA_PASSWORD}
+            ACCEPT_EULA: "Y"
+        volumes:
+            - ./mssql:/var/opt/mssql
+
+    rabbitmq:
+        image: rabbitmq:3.8.6-alpine
+        container_name: rabbitmq
+        restart: on-failure
+        ports:
+            - 5672:5672
+        networks:
+            - back
+        environment:
+            - RABBITMQ_DEFAULT_USER=${RABBIT_MQ_USERNAME}
+            - RABBITMQ_DEFAULT_PASS=${RABBIT_MQ_PASSWORD}
+
+    elasticsearch:
+        image: elasticsearch:7.8.1
+        container_name: elasticsearch
+        ports:
+            - 9200:9200
+        volumes:
+            - elasticsearch-data:/usr/share/elasticsearch/data
+        environment:
+            - xpack.monitoring.enabled=true
+            - xpack.watcher.enabled=false
+            - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+            - discovery.type=single-node
+        networks:
+            - back
+
+    kibana:
+        depends_on:
+            - elasticsearch
+        image: kibana:7.8.1
+        container_name: kibana
+        ports:
+            - 5601:5601
+        environment:
+            - ELASTICSEARCH_URL=http://elasticsearch:9200
+            - SERVER_BASEPATH=/kibana
+        networks:
+            - back
+
+networks:
+    back:
+        driver: bridge
+
+volumes:
+    elasticsearch-data:

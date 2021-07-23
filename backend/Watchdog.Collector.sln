@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.Collector.API", "Watchdog.Collector\Watchdog.Collector.API\Watchdog.Collector.API.csproj", "{814F7F69-49DD-4591-A704-D9715DEBCD84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watchdog.Collector.BLL", "Watchdog.Collector\Watchdog.Collector.BLL\Watchdog.Collector.BLL.csproj", "{EEB83E7E-852C-4BDB-BB95-0902996B8069}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{814F7F69-49DD-4591-A704-D9715DEBCD84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{814F7F69-49DD-4591-A704-D9715DEBCD84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{814F7F69-49DD-4591-A704-D9715DEBCD84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{814F7F69-49DD-4591-A704-D9715DEBCD84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEB83E7E-852C-4BDB-BB95-0902996B8069}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEB83E7E-852C-4BDB-BB95-0902996B8069}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEB83E7E-852C-4BDB-BB95-0902996B8069}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEB83E7E-852C-4BDB-BB95-0902996B8069}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8077A446-ECF2-4A98-9290-5C0587F6FF21}
+	EndGlobalSection
+EndGlobal
