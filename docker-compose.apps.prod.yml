@@ -59,10 +59,10 @@ services:
         volumes:
            - /etc/nginx/nginx.conf:/etc/nginx/nginx.conf
            - /etc/nginx/dhparam.pem:/etc/nginx/dhparam.pem
-           - /etc/letsencrypt/live/bsa-watchdog.xyz/cert.pem:/etc/letsencrypt/live/bsa-watchdog.xyz/cert.pem
-           - /etc/letsencrypt/live/bsa-watchdog.xyz/chain.pem:/etc/letsencrypt/live/bsa-watchdog.xyz/chain.pem
-           - /etc/letsencrypt/live/bsa-watchdog.xyz/fullchain.pem:/etc/letsencrypt/live/bsa-watchdog.xyz/fullchain.pem
-           - /etc/letsencrypt/live/bsa-watchdog.xyz/privkey.pem:/etc/letsencrypt/live/bsa-watchdog.xyz/privkey.pem
+           - /etc/letsencrypt/live/bsa-watchdog.westeurope.cloudapp.azure.com/cert.pem:/etc/letsencrypt/live/bsa-watchdog.westeurope.cloudapp.azure.com/cert.pem
+           - /etc/letsencrypt/live/bsa-watchdog.westeurope.cloudapp.azure.com/chain.pem:/etc/letsencrypt/live/bsa-watchdog.westeurope.cloudapp.azure.com/chain.pem
+           - /etc/letsencrypt/live/bsa-watchdog.westeurope.cloudapp.azure.com/fullchain.pem:/etc/letsencrypt/live/bsa-watchdog.westeurope.cloudapp.azure.com/fullchain.pem
+           - /etc/letsencrypt/live/bsa-watchdog.westeurope.cloudapp.azure.com/privkey.pem:/etc/letsencrypt/live/bsa-watchdog.westeurope.cloudapp.azure.com/privkey.pem
            - /var/log/nginx:/var/log/nginx
 
 networks:

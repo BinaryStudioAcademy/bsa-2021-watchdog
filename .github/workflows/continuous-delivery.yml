@@ -1,0 +1,115 @@
+name: Continuous Delivery
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build_core_service:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push Core Service
+        uses: docker/build-push-action@v2
+        with:
+          tags: vobilyk/watchdog-core:latest
+          context: ./backend/Watchdog.Core
+          build-args: PROJECT_PORT=5050
+          push: true
+          
+  build_notifier_service:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push Notifier Service
+        uses: docker/build-push-action@v2
+        with:
+          tags: vobilyk/watchdog-notifier:latest
+          context: ./backend/Watchdog.Notifier
+          build-args: PROJECT_PORT=5070
+          push: true
+          
+  build_collector_service:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push Collector Service
+        uses: docker/build-push-action@v2
+        with:
+          tags: vobilyk/watchdog-collector:latest
+          context: ./backend/Watchdog.Collector
+          build-args: PROJECT_PORT=5090
+          push: true
+          
+  build_frontend:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build Frontend
+        uses: docker/build-push-action@v2
+        with: 
+          tags: vobilyk/watchdog_frontend:latest
+          context: ./frontend
+          push: true
+          
+  deploy_images:
+    runs-on: ubuntu-latest
+    needs: [ build_core_service, build_notifier_service, build_collector_service, build_frontend ]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Update PROD images
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.HOST_USERNAME }}
+        key: ${{ secrets.HOST_KEY }}
+        script: docker-compose -f docker-compose.apps.prod.yml stop && docker-compose -f docker-compose.apps.prod.yml pull && docker system prune -f && docker-compose -f docker-compose.apps.prod.yml up -d
+
