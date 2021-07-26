@@ -24,7 +24,7 @@ By default, apps run on the following ports:
 
 ## Code quality
 Make sure you read and follow (.NET Quality Criteria)[https://github.com/BinaryStudioAcademy/quality-criteria/blob/production/source/dotnet.md].
-Also there are some best practices for frontend development: (Angular)[https://angular.io/guide/styleguide] and (Typescript)[https://google.github.io/styleguide/tsguide.html]
+Also, there are some best practices for frontend development: (Angular)[https://angular.io/guide/styleguide] and (Typescript)[https://google.github.io/styleguide/tsguide.html]
 
 #### Docker:
 1. Make sure you have [Docker](https://www.docker.com) and [Docker Compose](https://docs.docker.com/compose/install).
@@ -33,7 +33,7 @@ Also there are some best practices for frontend development: (Angular)[https://a
 4. You can pull and run all 3rd-party services (MSSQL Server, ELK, RabbitMQ) via `docker-compose -f docker-compose.services.yml up -d` command.
 6. Happy coding! :sunglasses:
 
-#### Sutup environment for local development:
+#### Setup environment for local development:
 1. Download and install [.NET 5 SDK](https://dotnet.microsoft.com/download).
 2. It might be usefull to have EF CLI. Install via command: *dotnet tool install --global dotnet-ef*
 3. Download and install LTS version of [Node.js](https://nodejs.org/en/)
