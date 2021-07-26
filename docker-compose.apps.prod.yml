@@ -2,7 +2,7 @@ version: '3.8'
 services:
 
     watchdog_core:
-        image: bsa2021watchdog/watchdog_core:latest
+        image: vobilyk/watchdog_core:latest
         container_name: 'watchdog_core'
         restart: on-failure
         networks:
@@ -17,20 +17,20 @@ services:
            - ./resources:/app/Resources
 
     watchdog_collector:
-        image: bsa2021watchdog/watchdog_collector:latest
+        image: vobilyk/watchdog_collector:latest
         container_name: 'watchdog_collector'
         restart: on-failure
         networks:
             - back
         ports:
-            - "5060:5060"
+            - "5090:5090"
         environment:
             - ASPNETCORE_ENVIRONMENT=Production
         env_file:
             - /etc/environment
 
-            notifier:
-        image: bsa2021watchdog/watchdog_notifier:latest
+    watchdog_notifier:
+        image: vobilyk/watchdog_notifier:latest
         container_name: 'watchdog_notifier'
         restart: on-failure
         networks:
@@ -47,7 +47,7 @@ services:
             - watchdog_core
             - watchdog_collector
             - watchdog_notifier
-        image: bsa2021watchdog/watchdog_frontend:latest
+        image: vobilyk/watchdog_frontend:latest
         container_name: 'watchdog_frontend'
         restart: on-failure
         networks:
@@ -57,13 +57,10 @@ services:
             - "80:80"
             - "443:443"
         volumes:
-           - /etc/nginx/nginx.conf:/etc/nginx/nginx.conf
-           - /etc/nginx/dhparam.pem:/etc/nginx/dhparam.pem
            - /etc/letsencrypt/live/bsa-watchdog.westeurope.cloudapp.azure.com/cert.pem:/etc/letsencrypt/live/bsa-watchdog.westeurope.cloudapp.azure.com/cert.pem
            - /etc/letsencrypt/live/bsa-watchdog.westeurope.cloudapp.azure.com/chain.pem:/etc/letsencrypt/live/bsa-watchdog.westeurope.cloudapp.azure.com/chain.pem
            - /etc/letsencrypt/live/bsa-watchdog.westeurope.cloudapp.azure.com/fullchain.pem:/etc/letsencrypt/live/bsa-watchdog.westeurope.cloudapp.azure.com/fullchain.pem
            - /etc/letsencrypt/live/bsa-watchdog.westeurope.cloudapp.azure.com/privkey.pem:/etc/letsencrypt/live/bsa-watchdog.westeurope.cloudapp.azure.com/privkey.pem
-           - /var/log/nginx:/var/log/nginx
 
 networks:
     back:
