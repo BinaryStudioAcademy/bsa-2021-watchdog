@@ -1,4 +1,5 @@
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -47,9 +48,35 @@ namespace Watchdog.Core.API
                     .AllowAnyHeader());
             });
 
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(o =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Watchdog.Core", Version = "v1" });
+                o.SwaggerDoc("v1", new OpenApiInfo { Title = "Watchdog.Core", Version = "v1" });
+                o.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = JwtBearerDefaults.AuthenticationScheme,
+                    Name = "Authorization",
+                    BearerFormat = "JWT",
+                    Description = "JWT Authorization header using the Bearer scheme.",
+                    In = ParameterLocation.Header
+                });
+                o.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Scheme = "oauth2",
+                            Name = JwtBearerDefaults.AuthenticationScheme,
+                            In = ParameterLocation.Header,
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = JwtBearerDefaults.AuthenticationScheme,
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
             });
 
             services.AddFluentValidationRulesToSwagger();
