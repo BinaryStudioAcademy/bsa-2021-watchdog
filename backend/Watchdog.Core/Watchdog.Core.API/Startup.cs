@@ -2,6 +2,7 @@ using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -85,6 +86,8 @@ namespace Watchdog.Core.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var apiPrefix = env.IsProduction() ? "/api" : string.Empty;
+
             app.UseDeveloperExceptionPage();
 
             app.UseSerilogRequestLogging();
@@ -93,23 +96,9 @@ namespace Watchdog.Core.API
 
             app.UseMiddleware<GenericExceptionHandlerMiddleware>();
 
-            app.UseSwagger(o =>
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
-                if (env.IsProduction())
-                {
-                    o.PreSerializeFilters.Add((swaggerDoc, httpReq) => swaggerDoc.Servers = new List<OpenApiServer>
-                    {
-                        new OpenApiServer { Url = $"https://{httpReq.Host.Value}/api" }
-                    });
-                }
-            });
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Watchdog.Core v1");
-                if (env.IsProduction())
-                {
-                    c.RoutePrefix = "api";
-                }
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
             app.UseHttpsRedirection();
@@ -117,6 +106,23 @@ namespace Watchdog.Core.API
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseStaticFiles();
+
+            app.UseSwagger(o =>
+            {
+                if (env.IsProduction())
+                {
+                    o.PreSerializeFilters.Add((swaggerDoc, httpReq) => swaggerDoc.Servers = new List<OpenApiServer>
+                    {
+                        new OpenApiServer { Url = $"https://{httpReq.Host.Value}{apiPrefix}" }
+                    });
+                }
+            });
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint($"{apiPrefix}/swagger/v1/swagger.json", "Watchdog.Core v1");
+            });
 
             app.UseEndpoints(endpoints =>
             {

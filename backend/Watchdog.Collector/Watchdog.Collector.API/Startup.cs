@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,6 +29,14 @@ namespace Watchdog.Collector.API
         {
             services.AddControllers();
             services.AddHealthChecks();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AnyOrigin", x => x
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            });
 
             services.AddSwaggerGen(o =>
             {
@@ -63,7 +72,24 @@ namespace Watchdog.Collector.API
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var apiPrefix = env.IsProduction() ? "/collector" : string.Empty;
+
             app.UseDeveloperExceptionPage();
+
+            app.UseSerilogRequestLogging();
+
+            app.UseCors("AnyOrigin");
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
 
             app.UseSwagger(o =>
             {
@@ -71,27 +97,12 @@ namespace Watchdog.Collector.API
                 {
                     o.PreSerializeFilters.Add((swaggerDoc, httpReq) => swaggerDoc.Servers = new List<OpenApiServer>
                     {
-                        new OpenApiServer { Url = $"https://{httpReq.Host.Value}/collector" }
+                        new OpenApiServer { Url = $"https://{httpReq.Host.Value}{apiPrefix}" }
                     });
                 }
             });
 
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Watchdog.Collector v1");
-                if (env.IsProduction())
-                {
-                    c.RoutePrefix = "collector";
-                }
-            });
-
-            app.UseSerilogRequestLogging();
-
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint($"{apiPrefix}/swagger/v1/swagger.json", "Watchdog.Collector v1"));
 
             app.UseEndpoints(endpoints =>
             {
