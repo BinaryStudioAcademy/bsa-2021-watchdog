@@ -75,7 +75,15 @@ namespace Watchdog.Collector.API
                     });
                 }
             });
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Watchdog.Collector v1"));
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Watchdog.Collector v1");
+                if (env.IsProduction())
+                {
+                    c.RoutePrefix = "collector";
+                }
+            });
 
             app.UseSerilogRequestLogging();
 

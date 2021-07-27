@@ -103,7 +103,14 @@ namespace Watchdog.Core.API
                     });
                 }
             });
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Watchdog.Core v1"));
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Watchdog.Core v1");
+                if (env.IsProduction())
+                {
+                    c.RoutePrefix = "api";
+                }
+            });
 
             app.UseHttpsRedirection();
 
