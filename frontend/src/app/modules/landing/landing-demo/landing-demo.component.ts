@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LandingDemoComponent implements OnInit {
 
+  videoId:string = 'roHLJEoC2H8';
+
   constructor() { }
 
   ngOnInit(): void {
