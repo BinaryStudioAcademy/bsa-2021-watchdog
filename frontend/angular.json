@@ -50,6 +50,7 @@
               "src/assets"
             ],
             "styles": [
+              "src/styles/reset.css",
               "src/styles/index.sass"
             ],
             "scripts": []
@@ -118,7 +119,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.sass"
+              "src/styles/reset.css",
+              "src/styles/index.sass"
             ],
             "scripts": []
           }
