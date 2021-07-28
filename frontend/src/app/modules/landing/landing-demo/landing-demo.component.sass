@@ -1,7 +1,5 @@
 .demo-continer
-    padding-top: 200px
-    display: grid
-    grid-template-columns: 1fr auto
+    padding: 150px 0
 
 .info
     color: white
@@ -29,3 +27,17 @@
 
     &:hover
         background-color: white !important
+
+
+@media screen and ( min-width: 1150px )
+    .demo-continer
+        display: grid
+        grid-template-columns: 1fr auto
+
+@media screen and ( max-width: 1150px )
+    .demo-continer
+        display: grid
+        grid-template-rows: 1fr auto
+
+
+    
