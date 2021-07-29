@@ -1,5 +1,6 @@
 @import src/styles/mixins
 @import ../../common-styles/variables
+@import ../../common-styles/mixins
     
 .content-container
     padding-top: $half-indent
@@ -12,8 +13,7 @@
     grid-gap: $indent
     display: grid
     grid-template-columns: 1fr 1fr
-    font-size: 2rem
-    font-weight: bold
+    @include title
     
     
 

@@ -1,14 +1,15 @@
 @import src/styles/mixins
 @import ../../common-styles/variables
+@import ../../common-styles/mixins
 
 .platforms-container
     display: grid
     grid-auto-flow: row
+    padding-bottom: $indent
 
 .title
     padding: $indent
-    font-size: 2rem
-    font-weight: bold
+    @include title
     text-align: center
 
 .platforms-icons
