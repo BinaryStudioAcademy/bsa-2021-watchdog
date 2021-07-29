@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MessageService, PrimeNGConfig } from 'primeng/api';
+import { ConfirmationService, MessageService, PrimeNGConfig } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
@@ -11,17 +12,20 @@ import { ToastModule } from 'primeng/toast';
         CommonModule,
         ButtonModule,
         InputTextModule,
-        ToastModule
+        ToastModule,
+        ConfirmDialogModule,
     ],
     exports: [
         ButtonModule,
         InputTextModule,
-        ToastModule
+        ToastModule,
+        ConfirmDialogModule,
     ],
     declarations: [],
     providers: [
         MessageService,
-        PrimeNGConfig
+        ConfirmationService,
+        PrimeNGConfig,
     ]
 })
 export class PrimeComponentsModule {
