@@ -39,6 +39,7 @@ namespace Watchdog.RabbitMQ.Shared.Services
             _channel.BasicConsume(settings.QueueName, settings.AutoAcknowledge, consumer);
         }
 
+ 
 
         public void SetAcknowledge(ulong deliveryTag, bool processed)
         {
@@ -53,11 +54,24 @@ namespace Watchdog.RabbitMQ.Shared.Services
         }
 
 
-        public void Dispose()
+ 
+
+        private void Dispose(bool disposing)
         {
+            if (!disposing) return;
             _channel.Dispose();
             _connection.Dispose();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        ~Consumer()
+        {
+            Dispose(false);
         }
     }
 }
