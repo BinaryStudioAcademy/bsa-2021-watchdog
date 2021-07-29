@@ -1,7 +1,6 @@
 import { Injectable, Inject, LOCALE_ID, ComponentFactoryResolver, ApplicationRef, Injector, Type, ComponentRef } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
-
 @Injectable({ providedIn: 'root' })
 export class HelperService {
     constructor(

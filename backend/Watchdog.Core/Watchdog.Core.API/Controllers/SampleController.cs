@@ -72,6 +72,9 @@ namespace Watchdog.Core.API.Controllers
         public async Task<ActionResult> DeleteAsync(int sampleId)
         {
             await _sampleService.DeleteSampleAsync(sampleId);
+            
+            _logger.LogInformation($"Sample: ID = {sampleId} has been removed.");
+
             return NoContent();
         }
     }
