@@ -5,7 +5,7 @@ import { CoreModule } from '@core/core.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpErrorInterceptor } from './core/helpers/error.interceptor';
+import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 
 @NgModule({
     declarations: [
@@ -18,7 +18,7 @@ import { HttpErrorInterceptor } from './core/helpers/error.interceptor';
         CoreModule
     ],
     providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true }
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
     ],
     bootstrap: [AppComponent]
 })
