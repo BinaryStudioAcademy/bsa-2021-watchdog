@@ -7,39 +7,38 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AuthService {
-  private currentUserSubject: BehaviorSubject<AuthUser>;
-  public currentUser: Observable<AuthUser>;
+    private currentUserSubject: BehaviorSubject<AuthUser>;
+    public currentUser: Observable<AuthUser>;
 
-  constructor(private http: HttpClient) {
-    this.clearUser();
-    this.currentUserSubject = new BehaviorSubject<AuthUser>(JSON.parse(localStorage.getItem('currentUser')));
-    this.currentUser = this.currentUserSubject.asObservable();
-  }
+    constructor(private http: HttpClient) {
+        this.currentUserSubject = new BehaviorSubject<AuthUser>(JSON.parse(localStorage.getItem('currentUser')));
+        this.currentUser = this.currentUserSubject.asObservable();
+    }
 
-  login(userLogin: UserLoginDto): Observable<AuthUser> {
-    return this.http.post<AuthUser>(`${environment.coreUrl}/user/login`, userLogin)
-      .pipe(map(user => {
-        if (user.token) {
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          this.currentUserSubject.next(user);
-        }
-        return user;
-      }));
-  }
+    login(userLogin: UserLoginDto): Observable<AuthUser> {
+        return this.http.post<AuthUser>(`${environment.coreUrl}/user/login`, userLogin)
+            .pipe(map(user => {
+                if (user.token) {
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    this.currentUserSubject.next(user);
+                }
+                return user;
+            }));
+    }
 
-  logout() {
-    this.clearUser();
-    this.currentUserSubject?.next(null);
-  }
+    logout() {
+        this.clearUser();
+        this.currentUserSubject?.next(null);
+    }
 
-  isAuthorized(): boolean {
-    return this.currentUserSubject.value ? true : false;
-  }
+    isAuthorized(): boolean {
+        return !!this.currentUserSubject.value;
+    }
 
-  private clearUser() {
-    localStorage.removeItem('currentUser');
-  }
+    private clearUser() {
+        localStorage.removeItem('currentUser');
+    }
 }
