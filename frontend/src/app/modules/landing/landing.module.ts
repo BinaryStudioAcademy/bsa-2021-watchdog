@@ -9,6 +9,7 @@ import { LandingContentComponent } from './components/landing-content/landing-co
 import { LandingContentItemComponent } from './components/landing-content-item/landing-content-item.component';
 import { LandingPlatformsComponent } from './components/landing-platforms/landing-platforms.component';
 import { LandingFooterComponent } from './components/landing-footer/landing-footer.component';
+import { LandingHeaderComponent } from './components/landing-header/landing-header.component';
 
 @NgModule({
     declarations: [
@@ -17,7 +18,8 @@ import { LandingFooterComponent } from './components/landing-footer/landing-foot
         LandingContentComponent,
         LandingContentItemComponent,
         LandingPlatformsComponent,
-        LandingFooterComponent
+        LandingFooterComponent,
+        LandingHeaderComponent
     ],
     imports: [
         SharedModule, LandingRoutingModule, YouTubePlayerModule
