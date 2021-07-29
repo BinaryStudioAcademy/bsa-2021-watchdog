@@ -1,3 +1,32 @@
 @import src/styles/mixins
+@import ../common-styles/variables
     
+.content-container
+    padding-top: $half-indent
+    display: grid
+    grid-auto-flow: row
+    
+
+.title-block
+    padding: $indent
+    grid-gap: $indent
+    display: grid
+    grid-template-columns: 1fr 1fr
+    font-size: 2rem
+    font-weight: bold
+    
+    
+
+    img
+        position: absolute
+        left: 50%
+        
+
+.content-block
+    display: grid
+    padding: $indent
+    grid-gap: $indent
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr))
+
+
 @include media-padding(".content-container")

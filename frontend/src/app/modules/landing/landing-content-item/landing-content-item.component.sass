@@ -1,0 +1,27 @@
+@import ../common-styles/variables
+.item-block
+    display: grid
+    grid-auto-flow: row
+    background-color: $light-gray
+    box-shadow: 0px 0px 10px 2px rgba(34, 60, 80, 0.2)
+    padding: $half-indent
+
+.title
+    font-size: 1.3rem
+    font-weight: bold
+    padding-bottom: $half-indent
+
+.link
+    margin-top: $half-indent
+    text-decoration: none
+    display: flex
+    align-items: center
+    
+
+    i
+        margin-left: 5px
+        transition: margin-left .4s ease
+
+    &:hover
+        i
+            margin-left: 10px
