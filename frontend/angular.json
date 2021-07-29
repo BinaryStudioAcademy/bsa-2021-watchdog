@@ -50,6 +50,7 @@
               "src/assets"
             ],
             "styles": [
+                "src/styles/reset.css",
                 "src/styles/index.sass",
                 "node_modules/primeng/resources/primeng.min.css",
                 "node_modules/primeicons/primeicons.css",
