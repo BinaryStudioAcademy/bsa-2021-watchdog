@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using System;
 using System.Collections.Generic;
 using Watchdog.Core.API.Extensions;
 using Watchdog.Core.API.Middlewares;
@@ -75,7 +76,7 @@ namespace Watchdog.Core.API
                                 Id = JwtBearerDefaults.AuthenticationScheme,
                             }
                         },
-                        new string[] {}
+                        Array.Empty<string>()
                     }
                 });
             });

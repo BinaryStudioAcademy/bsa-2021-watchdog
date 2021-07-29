@@ -6,9 +6,9 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
 {
     public class SampleConfig : IEntityTypeConfiguration<Sample>
     {
-        public void Configure(EntityTypeBuilder<Sample> entity)
+        public void Configure(EntityTypeBuilder<Sample> builder)
         {
-            entity.Property(e => e.Title)
+            builder.Property(e => e.Title)
                 .IsRequired()
                 .HasMaxLength(30);
         }

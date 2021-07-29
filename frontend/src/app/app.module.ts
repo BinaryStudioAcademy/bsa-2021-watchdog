@@ -1,9 +1,11 @@
-import { HttpClientModule} from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { fakeBackendProvider } from '@core/helpers/fake-backend';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CoreModule } from '@core/core.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HttpErrorInterceptor } from './core/helpers/error.interceptor';
 
 @NgModule({
     declarations: [
@@ -12,10 +14,11 @@ import { AppComponent } from './app.component';
     imports: [
         BrowserModule,
         AppRoutingModule,
-        HttpClientModule,
+        BrowserAnimationsModule,
+        CoreModule
     ],
     providers: [
-        fakeBackendProvider
+        { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true }
     ],
     bootstrap: [AppComponent]
 })
