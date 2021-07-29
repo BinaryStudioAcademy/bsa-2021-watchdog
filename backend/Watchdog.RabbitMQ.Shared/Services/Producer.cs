@@ -15,15 +15,15 @@ namespace Watchdog.RabbitMQ.Shared.Services
             _connection = connection;
         }
 
-        public void Send(string value, ProducerSettings settings, string? modelType)
+        public void Send(string message, ProducerSettings settings, string? type)
         {
             using var channel = _connection.CreateModel();
             var properties = channel.CreateBasicProperties();
             properties.Persistent = true;
 
-            if (!string.IsNullOrEmpty(modelType))
+            if (!string.IsNullOrEmpty(type))
             {
-                properties.Type = modelType;
+                properties.Type = type;
             }
 
             channel.ExchangeDeclare(settings.ExchangeName, settings.ExchangeType);
@@ -41,7 +41,7 @@ namespace Watchdog.RabbitMQ.Shared.Services
                     settings.RoutingKey);
             }
 
-            var body = Encoding.UTF8.GetBytes(value);
+            var body = Encoding.UTF8.GetBytes(message);
 
             channel.BasicPublish(
                 new PublicationAddress(
