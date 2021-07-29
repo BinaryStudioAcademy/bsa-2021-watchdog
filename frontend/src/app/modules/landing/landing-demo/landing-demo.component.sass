@@ -1,4 +1,5 @@
 @import src/styles/mixins
+@import ../common-styles/variables
 
 .demo-continer
     background: url(https://kartinkin.com/uploads/posts/2021-04/1617607358_37-p-fon-tekhnicheskii-41.png) no-repeat
@@ -7,11 +8,12 @@
 .info
     color: white
     font-weight: bolder
-    padding: 30px
+    padding: $indent
 
 .video
     display: flex
     justify-content: center
+    padding: $indent 0
 
 .title
     display: block
@@ -20,12 +22,12 @@
 
 .sub-title  
     display: block
-    margin-top: 15px
+    margin-top: $half-indent
     line-height: 1.3rem
 
 .start-button
     font-weight: bold
-    margin-top: 15px
+    margin-top: $half-indent
     background-color: white !important
 
     &:hover
