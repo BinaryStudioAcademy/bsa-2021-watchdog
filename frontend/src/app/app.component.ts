@@ -4,7 +4,7 @@ import { SpinnerService } from '@core/services/spinner.service';
 
 @Component({
     selector: 'app-root',
-    template: '<router-outlet></router-outlet>'
+    template: '<app-toast-notification></app-toast-notification><router-outlet></router-outlet>'
 })
 export class AppComponent {
     constructor(
