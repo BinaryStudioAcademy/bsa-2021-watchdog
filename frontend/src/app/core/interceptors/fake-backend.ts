@@ -5,7 +5,7 @@ import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 import { User } from '@core/models/user';
 import { AuthUser } from '@core/models/auth/auth-user';
 
-const users: User[] = [{ id: 1, email: 'test@test', password: 'test', firstName: 'firstNameUser', lastName: 'lastNameUser' }];
+const users: User[] = [{ id: 1, email: 'test@test', password: 'test', firstName: 'first', lastName: 'last' }];
 
 @Injectable({
     providedIn: 'root'
@@ -39,9 +39,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function checkRegister(): Observable<HttpResponse<AuthUser>> | Observable<HttpResponse<string>> {
-            const { email, password, lastName, firstName } = body;
+            const { email } = body;
             const user = users.find(x => x.email === email);
-            if(!user) {
+            if (!user) {
                 return of(new HttpResponse({
                     status: 404, body: 'This email is already assigned to the user'
                 }));

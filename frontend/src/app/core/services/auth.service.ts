@@ -32,13 +32,13 @@ export class AuthService {
 
     register(userRegister: UserRegisterDto): Observable<AuthUser> {
         return this.http.post<AuthUser>(`${environment.coreUrl}/user/register`, userRegister)
-        .pipe(map(user => {
-            if (user.token) {
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                this.currentUserSubject.next(user);
-            }
-            return user;
-        }));
+            .pipe(map(user => {
+                if (user.token) {
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    this.currentUserSubject.next(user);
+                }
+                return user;
+            }));
     }
 
     logout() {
