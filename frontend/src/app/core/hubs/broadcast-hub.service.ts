@@ -23,7 +23,7 @@ export class BroadcastHubService {
     }
 
     listenMessages(action: (msg: string) => void) {
-        this.subscriptions.push(this.messages.subscribe({ next: action }))
+        this.subscriptions.push(this.messages.subscribe({ next: action }));
     }
 
     async stop() {
@@ -34,7 +34,7 @@ export class BroadcastHubService {
     private async init() {
         await this.hubConnection.start()
             .then(() => console.info(`"${this.hubFactory}" successfully started.`))
-            .catch(() => console.info(`"${this.hubFactory}" failed.`))
+            .catch(() => console.info(`"${this.hubFactory}" failed.`));
 
         this.hubConnection.on('BroadcastMessage', (msg: string) => {
             this.messages.next(msg);

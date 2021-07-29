@@ -21,5 +21,5 @@ export class AppComponent {
         if (event instanceof NavigationEnd || event instanceof NavigationCancel || event instanceof NavigationError) {
             this.spinner.hide();
         }
-    }
+    };
 }
