@@ -1,0 +1,20 @@
+@import src/styles/mixins
+@import ../../common-styles/variables
+
+.platforms-container
+    display: grid
+    grid-auto-flow: row
+
+.title
+    padding: $indent
+    font-size: 2rem
+    font-weight: bold
+    text-align: center
+
+.platforms-icons
+    display: flex
+    grid-gap: $half-indent
+    flex-wrap: wrap
+    justify-content: center
+
+@include media-padding(".platforms-container")
