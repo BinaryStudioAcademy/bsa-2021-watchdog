@@ -1,5 +1,6 @@
+@import src/styles/mixins
+
 .demo-continer
-    padding: 0 200px
     background: url(https://kartinkin.com/uploads/posts/2021-04/1617607358_37-p-fon-tekhnicheskii-41.png) no-repeat
     background-size: cover
 
@@ -43,15 +44,6 @@
         display: grid
         grid-template-rows: 1fr auto
 
-@media screen and ( max-width: 1400px )
-    .demo-continer
-        padding-left: 100px
-        padding-right: 100px
-
-
-@media screen and ( max-width: 900px )
-    .demo-continer
-        padding-left: 0
-        padding-right: 0
+@include media-padding(".demo-continer")
 
     
