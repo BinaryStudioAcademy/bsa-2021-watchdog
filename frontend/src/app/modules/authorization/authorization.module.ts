@@ -1,17 +1,19 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { AuthorizationPageComponent } from './authorization-page/authorization-page.component';
 import { AuthorizationRoutingModule } from './authorization-routing.module';
-
+import { SharedModule } from '@shared/shared.module';
+import { LoginFormComponent } from './login-form/login-form.component';
+import { SocialsLoginComponent } from './socials-login/socials-login.component';
 
 
 @NgModule({
   declarations: [
-    AuthorizationPageComponent
+    AuthorizationPageComponent,
+    LoginFormComponent,
+    SocialsLoginComponent,
   ],
   imports: [
-    CommonModule,
-    AuthorizationRoutingModule
+    SharedModule, AuthorizationRoutingModule
   ]
 })
 export class AuthorizationModule { }
