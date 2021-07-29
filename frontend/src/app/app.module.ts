@@ -18,10 +18,7 @@ import { FakeBackendInterceptor } from '@core/interceptors/fake-backend';
         BrowserAnimationsModule,
         CoreModule
     ],
-    providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true }
-    ],
+    providers: [],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
