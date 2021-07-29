@@ -6,6 +6,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
+import { FakeBackendInterceptor } from '@core/interceptors/fake-backend';
 
 @NgModule({
     declarations: [
@@ -18,7 +19,8 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
         CoreModule
     ],
     providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true }
     ],
     bootstrap: [AppComponent]
 })
