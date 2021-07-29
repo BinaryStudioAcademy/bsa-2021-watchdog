@@ -1,0 +1,6 @@
+<div class="content-container">
+    <div class="title-block"><span>{{data.title}}</span></div>
+    <div class="content-block">
+        <app-landing-content-item *ngFor="let textBox of data.content" [textBox]="textBox"></app-landing-content-item>
+    </div>
+</div>
