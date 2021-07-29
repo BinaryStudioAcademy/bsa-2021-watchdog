@@ -6,7 +6,7 @@ using Watchdog.RabbitMQ.Shared.Models;
 
 namespace Watchdog.RabbitMQ.Shared.Services
 {
-    public class Consumer : IConsumer
+    public sealed class Consumer : IConsumer
     {
         private readonly IConnection _connection;
         private readonly IModel _channel;
@@ -39,7 +39,6 @@ namespace Watchdog.RabbitMQ.Shared.Services
             _channel.BasicConsume(settings.QueueName, settings.AutoAcknowledge, consumer);
         }
 
- 
 
         public void SetAcknowledge(ulong deliveryTag, bool processed)
         {
@@ -53,25 +52,10 @@ namespace Watchdog.RabbitMQ.Shared.Services
             }
         }
 
-
- 
-
-        private void Dispose(bool disposing)
-        {
-            if (!disposing) return;
-            _channel.Dispose();
-            _connection.Dispose();
-        }
-
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        ~Consumer()
-        {
-            Dispose(false);
+            _channel.Dispose();
+            _connection.Dispose();
         }
     }
 }
