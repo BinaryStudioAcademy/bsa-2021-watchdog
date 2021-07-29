@@ -1,65 +1,38 @@
-import {Injectable} from '@angular/core';
-import {Observable, Subject} from "rxjs";
-import {Message} from "primeng/api";
+import { Injectable } from '@angular/core';
+import { MessageService } from 'primeng/api';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ToastNotificationService {
-    private subject = new Subject<Message>();
+    constructor(private messageService: MessageService) { }
 
-    constructor() {
-    }
-
-    onNotification(): Observable<Message> {
-        return this.subject.asObservable();
-    }
-
-    showSpecificNotification(messageConfig: Message) {
-        this.subject.next(messageConfig);
-    }
-
-    showSuccess(message: string, title?: string, durationMs?: number) {
-        this.subject.next({
-            severity: 'success',
-            summary: title ?? 'Success',
-            detail: message,
+    private message(severity: string, summary: string, detail: string) {
+        this.messageService.add({
             closable: true,
-            life: durationMs
+            severity,
+            summary,
+            detail,
         });
     }
 
-    showInfo(message: string, title?: string, durationMs?: number) {
-        this.subject.next({
-            severity: 'info',
-            summary: title ?? 'Info',
-            detail: message,
-            closable: true,
-            life: durationMs
-        });
+    success(message: string) {
+        this.message('success', 'Success', message);
     }
 
-    showWarning(message: string, title?: string, durationMs?: number) {
-        this.subject.next({
-            severity: 'warn',
-            summary: title ?? 'Warning',
-            detail: message,
-            closable: true,
-            life: durationMs
-        });
+    info(message: string) {
+        this.message('info', 'Info', message);
     }
 
-    showError(message: string, title?: string, durationMs?: number) {
-        this.subject.next({
-            severity: 'error',
-            summary: title ?? 'Error',
-            detail: message,
-            closable: true,
-            life: durationMs
-        });
+    warning(message: string) {
+        this.message('warn', 'Warn', message);
     }
 
-    clearNotifications() {
-        this.subject.next();
+    error(message: string): void {
+        this.message('error', 'Error', message);
+    }
+
+    clear() {
+        this.messageService.clear();
     }
 }

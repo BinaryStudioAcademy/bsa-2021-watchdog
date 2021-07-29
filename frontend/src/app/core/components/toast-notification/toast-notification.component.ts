@@ -1,43 +1,26 @@
-import {Component, OnInit} from '@angular/core';
-import {MessageService, PrimeNGConfig} from "primeng/api";
-import {NavigationStart, Router} from "@angular/router";
-import {ToastNotificationService} from "@core/services/toast-notification.service";
-import {Subscription} from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { NavigationStart, Router } from "@angular/router";
+import { ToastNotificationService } from "@core/services/toast-notification.service";
+import { BaseComponent } from '../base/base.component';
 
 @Component({
     selector: 'toast-notification',
     templateUrl: './toast-notification.component.html',
     styleUrls: ['./toast-notification.component.sass']
 })
-export class ToastNotificationComponent implements OnInit {
-    notificationSubscription: Subscription;
-    routeSubscription: Subscription;
-
-    constructor(private messageService: MessageService,
-                private primeNGConfig: PrimeNGConfig,
-                private router: Router,
-                private toastService: ToastNotificationService) {
+export class ToastNotificationComponent extends BaseComponent implements OnInit {
+    constructor(
+        private router: Router,
+        private toastService: ToastNotificationService
+    ) {
+        super();
     }
 
-    ngOnInit(): void {
-        this.primeNGConfig.ripple = true;
-        this.notificationSubscription = this.toastService.onNotification()
-            .subscribe(msg => {
-                if (msg) {
-                    this.messageService.add(msg);
-                } else {
-                    this.messageService.clear();
-                }
-            });
-        this.routeSubscription = this.router.events.subscribe(event => {
+    ngOnInit() {
+        this.router.events.pipe(this.untilThis).subscribe(event => {
             if (event instanceof NavigationStart) {
-                this.messageService.clear();
+                this.toastService.clear();
             }
         });
-    }
-
-    ngOnDestroy() {
-        this.notificationSubscription.unsubscribe();
-        this.routeSubscription.unsubscribe();
     }
 }

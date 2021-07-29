@@ -4,7 +4,7 @@ import {CommonModule} from '@angular/common';
 import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
 import {ToastModule} from 'primeng/toast';
-import {MessageService, PrimeNGConfig} from "primeng/api";
+import {MessageService, PrimeNGConfig} from 'primeng/api';
 
 
 // import and export here all required modules from primeng
@@ -27,4 +27,7 @@ import {MessageService, PrimeNGConfig} from "primeng/api";
     ]
 })
 export class PrimeComponentsModule {
+    constructor(primengConfig: PrimeNGConfig) {
+        primengConfig.ripple = true;
+    }
 }
