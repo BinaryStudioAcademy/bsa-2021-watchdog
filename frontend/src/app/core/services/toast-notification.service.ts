@@ -1,38 +1,62 @@
-import { Injectable } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import {Injectable} from '@angular/core';
+import {Message, MessageService} from 'primeng/api';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ToastNotificationService {
-    constructor(private messageService: MessageService) { }
+    constructor(private messageService: MessageService) {
+    }
 
-    private message(severity: string, summary: string, detail: string) {
-        this.messageService.add({
+    info(message: string, title?: string, durationMs?: number): void {
+        this.message({
+            severity: 'info',
+            summary: title ?? 'Info',
+            detail: message,
             closable: true,
-            severity,
-            summary,
-            detail,
+            life: durationMs
         });
     }
 
-    success(message: string) {
-        this.message('success', 'Success', message);
+    success(message: string, title?: string, durationMs?: number): void {
+        this.message({
+            severity: 'success',
+            summary: title ?? 'Success',
+            detail: message,
+            closable: true,
+            life: durationMs
+        });
     }
 
-    info(message: string) {
-        this.message('info', 'Info', message);
+    warning(message: string, title?: string, durationMs?: number): void {
+        this.message({
+            severity: 'warn',
+            summary: title ?? 'Warn',
+            detail: message,
+            closable: true,
+            life: durationMs
+        });
     }
 
-    warning(message: string) {
-        this.message('warn', 'Warn', message);
+    error(message: string, title?: string, durationMs?: number): void {
+        this.message({
+            severity: 'error',
+            summary: title ?? 'Error',
+            detail: message,
+            closable: true,
+            life: durationMs
+        });
     }
 
-    error(message: string): void {
-        this.message('error', 'Error', message);
+    specificNotification(messageConfig: Message): void {
+        this.messageService.add(messageConfig);
     }
 
     clear() {
         this.messageService.clear();
+    }
+
+    private message(message: Message) {
+        this.messageService.add(message);
     }
 }
