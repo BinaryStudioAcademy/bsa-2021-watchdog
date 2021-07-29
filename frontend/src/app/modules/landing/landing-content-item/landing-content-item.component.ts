@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class LandingContentItemComponent implements OnInit {
 
-  @Input() public textBox: {title: string, text: string}
+  @Input() public item: {title: string, text: string}
   constructor() { }
 
   ngOnInit(): void {
