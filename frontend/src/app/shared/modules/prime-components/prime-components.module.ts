@@ -4,6 +4,8 @@ import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
+import { ScrollTopModule } from 'primeng/scrolltop';
+import { ChipModule } from 'primeng/chip';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -11,12 +13,16 @@ import { ToastModule } from 'primeng/toast';
         CommonModule,
         ButtonModule,
         InputTextModule,
-        ToastModule
+        ToastModule,
+        ScrollTopModule,
+        ChipModule
     ],
     exports: [
         ButtonModule,
         InputTextModule,
-        ToastModule
+        ToastModule,
+        ScrollTopModule,
+        ChipModule
     ],
     declarations: [],
     providers: [

@@ -1,0 +1,38 @@
+@import src/styles/mixins
+@import ../../common-styles/variables
+@import ../../common-styles/mixins
+
+.footer-container
+    @include backgroung-gray
+    padding: $half-indent
+
+.logo
+    display: flex
+    justify-content: center
+
+    img
+        display: block
+        width: 70%
+
+
+.title
+    display: block
+    @include title
+    text-align: center
+    margin: $half-indent
+
+.links
+    display: flex
+    justify-content: center
+    grid-gap: $half-indent
+    flex-wrap: wrap
+
+    a
+        text-decoration: none
+
+.copyright
+    color: gray
+    text-align: center   
+    margin: $indent
+
+@include media-padding(".footer-container")

@@ -5,7 +5,7 @@ import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 import { User } from '@core/models/user';
 import { AuthUser } from '@core/models/auth/auth-user';
 
-const users: User[] = [{ id: 1, email: 'test@test', password: 'test', userName: 'User' }];
+const users: User[] = [{ id: 1, email: 'test@test', password: 'test', firstName: 'first', lastName: 'last' }];
 
 @Injectable({
     providedIn: 'root'
@@ -30,7 +30,32 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                         id: user.id,
                         password: user.password,
                         email: user.email,
-                        userName: user.userName
+                        firstName: user.firstName,
+                        lastName: user.lastName
+                    },
+                    token: 'fake-token'
+                }
+            }));
+        }
+
+        function checkRegister(): Observable<HttpResponse<AuthUser>> | Observable<HttpResponse<string>> {
+            const { email } = body;
+            const user = users.find(x => x.email === email);
+            if (!user) {
+                return of(new HttpResponse({
+                    status: 404, body: 'This email is already assigned to the user'
+                }));
+            }
+
+            return of(new HttpResponse({
+                status: 200,
+                body: {
+                    user: {
+                        id: user.id,
+                        password: user.password,
+                        email: user.email,
+                        firstName: user.firstName,
+                        lastName: user.lastName
                     },
                     token: 'fake-token'
                 }
@@ -41,6 +66,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             switch (true) {
                 case url.endsWith('/user/login') && method === 'POST':
                     return authenticate();
+                case url.endsWith('user/register') && method === 'POST':
+                    return checkRegister();
                 default:
                     return next.handle(request);
             }
