@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BroadcastHubService } from '@core/hubs/broadcast-hub.service';
-import {Dashboard} from "@shared/models/Dashboard"
-import {DashboardService} from "@core/services/dashboard.service";
+import { Dashboard } from '@shared/models/Dashboard';
+import { DashboardService } from '@core/services/dashboard.service';
 
 @Component({
     selector: 'app-home',
@@ -14,14 +14,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     displayModal: boolean = false;
 
     constructor(private broadcastHub: BroadcastHubService,
-                public dashboardService: DashboardService) { }
+        public dashboardService: DashboardService) { }
 
     async ngOnInit() {
         this.dashboards = this.dashboardService.getAll();
 
         await this.broadcastHub.start();
         this.broadcastHub.listenMessages((msg) => {
-            console.log(`The next broadcast message was received: ${msg}`)
+            console.log(`The next broadcast message was received: ${msg}`);
         });
     }
 
@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.broadcastHub.stop();
     }
 
-    addDashboard(dashboard: Dashboard){
+    addDashboard(dashboard: Dashboard) {
         this.displayModal = false;
         this.dashboardService.addDashboard(dashboard);
     }

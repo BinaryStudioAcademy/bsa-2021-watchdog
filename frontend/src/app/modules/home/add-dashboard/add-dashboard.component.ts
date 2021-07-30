@@ -1,20 +1,18 @@
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
-import {Dashboard} from "@shared/models/Dashboard"
+import { Component, Output, EventEmitter } from '@angular/core';
+import { Dashboard } from '@shared/models/Dashboard';
 
 @Component({
-  selector: 'app-add-dashboard',
-  templateUrl: './add-dashboard.component.html',
-  styleUrls: ['./add-dashboard.component.sass']
+    selector: 'app-add-dashboard',
+    templateUrl: './add-dashboard.component.html',
+    styleUrls: ['./add-dashboard.component.sass']
 })
-export class AddDashboardComponent implements OnInit {
+export class AddDashboardComponent {
     newDashboard: Dashboard = {} as Dashboard;
     icons: string[];
-    @Output() onCloseModal = new EventEmitter<void>();
-    @Output() onDashboardCreated = new EventEmitter<Dashboard>();
+    @Output() closeModal = new EventEmitter<void>();
+    @Output() dashboardCreated = new EventEmitter<Dashboard>();
 
-    constructor() { }
-
-    ngOnInit(): void {
+    constructor() {
         this.icons = ['pi-chart-bar', 'pi-chart-line'];
     }
 }

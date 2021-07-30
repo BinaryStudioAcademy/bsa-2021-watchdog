@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {Dashboard} from "@shared/models/Dashboard";
-import {ActivatedRoute} from "@angular/router";
-import {DashboardService} from "@core/services/dashboard.service";
+import { Component, OnInit } from '@angular/core';
+import { Dashboard } from '@shared/models/Dashboard';
+import { ActivatedRoute } from '@angular/router';
+import { DashboardService } from '@core/services/dashboard.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -9,15 +9,15 @@ import {DashboardService} from "@core/services/dashboard.service";
     styleUrls: ['./dashboard.component.sass']
 })
 export class DashboardComponent implements OnInit {
-  dashboard: Dashboard;
+    dashboard: Dashboard;
 
-  constructor(private route: ActivatedRoute,
-              private dashboardService: DashboardService) { }
+    constructor(private route: ActivatedRoute,
+        private dashboardService: DashboardService) { }
 
-  ngOnInit(): void {
-      this.route.params.subscribe(params => {
-          const name: string = params.name;
-          this.dashboard = this.dashboardService.get(name);
-      });
-  }
+    ngOnInit(): void {
+        this.route.params.subscribe(params => {
+            const { name } = params;
+            this.dashboard = this.dashboardService.get(name);
+        });
+    }
 }
