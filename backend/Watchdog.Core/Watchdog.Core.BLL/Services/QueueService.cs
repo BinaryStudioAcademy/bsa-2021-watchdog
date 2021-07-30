@@ -1,6 +1,4 @@
-﻿using RabbitMQ.Client;
-using Watchdog.RabbitMQ.Shared.Interfaces;
-using Watchdog.RabbitMQ.Shared.Models;
+﻿using Watchdog.RabbitMQ.Shared.Interfaces;
 
 namespace Watchdog.Core.BLL.Services
 {
@@ -17,13 +15,6 @@ namespace Watchdog.Core.BLL.Services
         {
             _messageProducer.Send(
                 message,
-                new ProducerSettings
-                {
-                    ExchangeName = "test_exchange",
-                    ExchangeType = ExchangeType.Direct,
-                    RoutingKey = "watchdog",
-                    QueueName = "test_queue"
-                },
                 null
             );
         }

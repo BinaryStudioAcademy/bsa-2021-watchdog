@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using RabbitMQ.Client;
 using Watchdog.RabbitMQ.Shared.Interfaces;
 using Watchdog.RabbitMQ.Shared.Models;
@@ -9,45 +8,44 @@ namespace Watchdog.RabbitMQ.Shared.Services
     public class Producer : IProducer
     {
         private readonly IConnection _connection;
+        private readonly ProducerSettings _producerSettings;
 
-        public Producer(IConnection connection)
+        public Producer(IConnection connection, ProducerSettings producerSettings)
         {
             _connection = connection;
+            _producerSettings = producerSettings;
         }
 
-        public void Send(string message, ProducerSettings settings, string? type)
+        public void Send(string message, string? type)
         {
             using var channel = _connection.CreateModel();
             var properties = channel.CreateBasicProperties();
             properties.Persistent = true;
 
-            if (!string.IsNullOrEmpty(type))
-            {
-                properties.Type = type;
-            }
+            if (!string.IsNullOrEmpty(type)) properties.Type = type;
 
-            channel.ExchangeDeclare(settings.ExchangeName, settings.ExchangeType);
+            channel.ExchangeDeclare(_producerSettings.ExchangeName, _producerSettings.ExchangeType);
 
-            if (!string.IsNullOrEmpty(settings.QueueName))
+            if (!string.IsNullOrEmpty(_producerSettings.QueueName))
             {
                 channel.QueueDeclare(
-                    settings.QueueName,
+                    _producerSettings.QueueName,
                     true,
                     false,
                     false);
                 channel.QueueBind(
-                    settings.QueueName,
-                    settings.ExchangeName,
-                    settings.RoutingKey);
+                    _producerSettings.QueueName,
+                    _producerSettings.ExchangeName,
+                    _producerSettings.RoutingKey);
             }
 
             var body = Encoding.UTF8.GetBytes(message);
 
             channel.BasicPublish(
                 new PublicationAddress(
-                    settings.ExchangeType,
-                    settings.ExchangeName,
-                    settings.RoutingKey),
+                    _producerSettings.ExchangeType,
+                    _producerSettings.ExchangeName,
+                    _producerSettings.RoutingKey),
                 properties,
                 body);
         }
