@@ -1,20 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-login-form',
-  templateUrl: './login-form.component.html',
-  styleUrls: ['./login-form.component.sass']
+    selector: 'app-login-form',
+    templateUrl: './login-form.component.html',
+    styleUrls: ['./login-form.component.sass']
 })
-export class LoginFormComponent implements OnInit {
+export class LoginFormComponent {
+    public isChecked : boolean;
+    public email : String;
 
-  public isChecked : boolean;
-  public email : String;
-
-  constructor() { 
-    this.isChecked = false;
-  }
-
-  ngOnInit(): void {
-  }
-
+    constructor() {
+        this.isChecked = false;
+    }
 }

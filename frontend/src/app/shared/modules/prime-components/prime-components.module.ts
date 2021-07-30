@@ -1,6 +1,6 @@
-import {TabViewModule} from 'primeng/tabview';
-import {PasswordModule} from 'primeng/password';
-import {CheckboxModule} from 'primeng/checkbox';
+import { TabViewModule } from 'primeng/tabview';
+import { PasswordModule } from 'primeng/password';
+import { CheckboxModule } from 'primeng/checkbox';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MessageService, PrimeNGConfig } from 'primeng/api';
