@@ -7,8 +7,10 @@ using System;
 
 namespace Watchdog.Core.API
 {
-    public class Program
+    public static class Program
     {
+        public static IConfigurationRoot Configuration { get; } = GetConfigurationRoot();
+
         public static void Main(string[] args)
         {
             ConfigureLogging();
@@ -26,21 +28,14 @@ namespace Watchdog.Core.API
 
         private static void ConfigureLogging()
         {
-            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{environment}.json", optional: true)
-                .AddEnvironmentVariables()
-                .Build();
-
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .Enrich.WithMachineName()
                 .WriteTo.Debug()
                 .WriteTo.Console()
-                .WriteTo.Elasticsearch(ConfigureElasticSink(configuration))
-                .Enrich.WithProperty("Environment", environment)
-                .ReadFrom.Configuration(configuration)
+                .WriteTo.Elasticsearch(ConfigureElasticSink(Configuration))
+                .Enrich.WithProperty("Environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
+                .ReadFrom.Configuration(Configuration)
                 .CreateLogger();
 
             Log.Logger.Information("Serilog configuration for Watchdog.Core is finished.");
@@ -53,6 +48,22 @@ namespace Watchdog.Core.API
                 AutoRegisterTemplate = true,
                 IndexFormat = $"core.logs"
             };
+        }
+
+        private static IConfigurationRoot GetConfigurationRoot()
+        {
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var configurationBuilder = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{environment}.json", optional: true)
+                .AddEnvironmentVariables();
+
+            if (environment == Environments.Development)
+            {
+                configurationBuilder.AddUserSecrets(typeof(Program).Assembly);
+            }
+
+            return configurationBuilder.Build();
         }
     }
 }

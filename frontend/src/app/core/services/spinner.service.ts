@@ -1,6 +1,6 @@
 import { Injectable, ComponentRef, ComponentFactoryResolver } from '@angular/core';
-import { HelperService } from './helper.service';
 import { LoadingSpinnerComponent } from '@shared/components/loading-spinner/loading-spinner.component';
+import { HelperService } from './helper.service';
 
 @Injectable({ providedIn: 'root' })
 export class SpinnerService {
