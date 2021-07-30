@@ -10,8 +10,8 @@ using Watchdog.Core.DAL.Context;
 namespace Watchdog.Core.DAL.Migrations
 {
     [DbContext(typeof(WatchdogCoreContext))]
-    [Migration("20210730122803_SeedEntities")]
-    partial class SeedEntities
+    [Migration("20210730221311_AddBasicEntities")]
+    partial class AddBasicEntities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -793,7 +793,6 @@ namespace Watchdog.Core.DAL.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AvatarUrl")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -865,7 +864,6 @@ namespace Watchdog.Core.DAL.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AvatarUrl")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -1589,7 +1587,6 @@ namespace Watchdog.Core.DAL.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AvatarUrl")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -1828,12 +1825,14 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Applications")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Organization", "Organization")
                         .WithMany("Applications")
-                        .HasForeignKey("OrganizationId");
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Platform", "Platform")
                         .WithMany("Applications")
@@ -1871,6 +1870,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Dashboards")
                         .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Organization", "Organization")
@@ -1888,7 +1888,9 @@ namespace Watchdog.Core.DAL.Migrations
                 {
                     b.HasOne("Watchdog.Core.DAL.Entities.Application", "Application")
                         .WithMany("Environments")
-                        .HasForeignKey("ApplicationId");
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Application");
                 });
@@ -1897,7 +1899,9 @@ namespace Watchdog.Core.DAL.Migrations
                 {
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Members")
-                        .HasForeignKey("CreatedBy");
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Organization", "Organization")
                         .WithMany("Members")
@@ -1934,12 +1938,14 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Teams")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Organization", "Organization")
                         .WithMany("Teams")
-                        .HasForeignKey("OrganizationId");
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Organization");
 
@@ -1969,12 +1975,14 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Tiles")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Dashboard", "Dashboard")
                         .WithMany("Tiles")
-                        .HasForeignKey("DashboardId");
+                        .HasForeignKey("DashboardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Dashboard");
 
