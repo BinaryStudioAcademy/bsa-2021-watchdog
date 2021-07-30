@@ -1,0 +1,17 @@
+<form action="/login" method="POST" class="login-inp">
+    <span class="p-float-label">
+        <input id="float-input-email" type="text" pInputText [(ngModel)]= "email">
+        <label for="float-input-email">Email</label>
+    </span>
+    <span class="p-float-label">
+        <p-password id="float-input-pass" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"  [toggleMask]="true"></p-password>
+        <label for="float-input-pass">Password</label>
+    </span>
+    <span class="p-field-checkbox">
+        <p-checkbox class="remember-check" [(ngModel)]="isChecked" [binary]="true" inputId="binary"></p-checkbox>
+        <label for="binary">Remember me</label>
+    </span>
+    <span class="submit-button">
+        <p-button label="Submit" [style]="{'width':'100%'}"></p-button>
+    </span>
+</form>
