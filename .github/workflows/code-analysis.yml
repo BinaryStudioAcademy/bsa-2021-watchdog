@@ -6,7 +6,7 @@ on:
     # The branches below must be a subset of the branches above
     branches: [ master, dev ]
 jobs:
-  analyze_angular:
+  analyze_frontend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -20,7 +20,7 @@ jobs:
           npm ci
           npm run lint
 
-  analyze_dotnet:
+  analyze_backend:
     runs-on: windows-latest
     steps:
       - name: Set up JDK 11
