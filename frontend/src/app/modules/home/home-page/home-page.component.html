@@ -52,7 +52,7 @@
 
 <app-add-dashboard
     *ngIf="displayModal"
-    (onDashboardCreated)="addDashboard($event)"
+    (dashboardCreated)="addDashboard($event)"
     (closeModal)="displayModal = !displayModal">
 </app-add-dashboard>
 
