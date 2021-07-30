@@ -8,7 +8,7 @@ namespace Watchdog.Core.BLL.Services.Abstract
         private protected readonly WatchdogCoreContext _context;
         private protected readonly IMapper _mapper;
 
-        public BaseService(WatchdogCoreContext context, IMapper mapper)
+        protected BaseService(WatchdogCoreContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

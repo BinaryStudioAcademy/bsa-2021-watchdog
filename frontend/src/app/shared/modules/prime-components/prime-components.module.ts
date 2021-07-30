@@ -1,12 +1,12 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-
-import {ButtonModule} from 'primeng/button';
-import {InputTextModule} from 'primeng/inputtext';
 import {TabViewModule} from 'primeng/tabview';
 import {PasswordModule} from 'primeng/password';
 import {CheckboxModule} from 'primeng/checkbox';
-
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MessageService, PrimeNGConfig } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { ToastModule } from 'primeng/toast';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -16,7 +16,8 @@ import {CheckboxModule} from 'primeng/checkbox';
         TabViewModule,
         InputTextModule,
         PasswordModule,
-        CheckboxModule
+        CheckboxModule,
+        ToastModule
     ],
     exports: [
         ButtonModule,
@@ -24,8 +25,16 @@ import {CheckboxModule} from 'primeng/checkbox';
         TabViewModule,
         PasswordModule,
         CheckboxModule,
+        ToastModule
     ],
-    declarations: []
+    declarations: [],
+    providers: [
+        MessageService,
+        PrimeNGConfig
+    ]
 })
 export class PrimeComponentsModule {
+    constructor(private primengConfig: PrimeNGConfig) {
+        this.primengConfig.ripple = true;
+    }
 }
