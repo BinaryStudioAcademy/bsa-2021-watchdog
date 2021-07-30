@@ -29,7 +29,7 @@ namespace Watchdog.Core.API.Middlewares
             }
         }
 
-        private Task HandleException(HttpContext context, Exception exception)
+        private static Task HandleException(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
 

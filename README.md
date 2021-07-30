@@ -23,8 +23,8 @@ By default, apps run on the following ports:
 *Tip: If you want to connect to the specific service outside of docker, then use "localhost" as a service name, but if both services are inside docker, use service_name from a "docker-compose" file instead.*
 
 ## Code quality
-Make sure you read and follow (.NET Quality Criteria)[https://github.com/BinaryStudioAcademy/quality-criteria/blob/production/source/dotnet.md].
-Also, there are some best practices for frontend development: (Angular)[https://angular.io/guide/styleguide] and (Typescript)[https://google.github.io/styleguide/tsguide.html]
+Make sure you read and follow [.NET Quality Criteria](https://github.com/BinaryStudioAcademy/quality-criteria/blob/production/source/dotnet.md).
+Also, there are some best practices for frontend development: [Angular](https://angular.io/guide/styleguide) and [Typescript](https://google.github.io/styleguide/tsguide.html)
 
 #### Docker:
 1. Make sure you have [Docker](https://www.docker.com) and [Docker Compose](https://docs.docker.com/compose/install).
@@ -37,7 +37,7 @@ Also, there are some best practices for frontend development: (Angular)[https://
 1. Download and install [.NET 5 SDK](https://dotnet.microsoft.com/download).
 2. It might be usefull to have EF CLI. Install via command: *dotnet tool install --global dotnet-ef*
 3. Download and install LTS version of [Node.js](https://nodejs.org/en/)
-4. Install Angular-CLI via: *npm install -g @angular/cli*. *(What is Angular-CLI?)[https://angular.io/cli]*
+4. Install Angular-CLI via: *npm install -g @angular/cli*. *[What is Angular-CLI?](https://angular.io/cli)*
 
 ## Extensions for frontend development (required):
  - TSLint  (analysis tool that checks TypeScript code for readability, maintainability, and functionality errors)
