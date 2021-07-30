@@ -5,6 +5,7 @@ import { SharedModule } from '@shared/shared.module';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { BaseComponent } from './components/base/base.component';
 import { ToastNotificationComponent } from './components/toast-notification/toast-notification.component';
+import { ConfirmWindowComponent } from './components/confirm-window/confirm-window.component';
 
 @NgModule({
     imports: [
@@ -16,10 +17,12 @@ import { ToastNotificationComponent } from './components/toast-notification/toas
     ],
     declarations: [
         BaseComponent,
-        ToastNotificationComponent
+        ToastNotificationComponent,
+        ConfirmWindowComponent,
     ],
     exports: [
-        ToastNotificationComponent
+        ToastNotificationComponent,
+        ConfirmWindowComponent,
     ]
 })
 export class CoreModule { }
