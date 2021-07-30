@@ -6,14 +6,14 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
 {
     public class ApplicationTeamConfig : IEntityTypeConfiguration<ApplicationTeam>
     {
-        public void Configure(EntityTypeBuilder<ApplicationTeam> entity)
+        public void Configure(EntityTypeBuilder<ApplicationTeam> builder)
         {
-            entity.HasOne(at => at.Application)
+            builder.HasOne(at => at.Application)
                   .WithMany(a => a.ApplicationTeams)
                   .HasForeignKey(at => at.ApplicationId)
                   .OnDelete(DeleteBehavior.ClientSetNull);
 
-            entity.HasOne(at => at.Team)
+            builder.HasOne(at => at.Team)
                   .WithMany(t => t.ApplicationTeams)
                   .HasForeignKey(at => at.TeamId);
         }

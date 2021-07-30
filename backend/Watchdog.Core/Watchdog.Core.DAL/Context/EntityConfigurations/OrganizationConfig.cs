@@ -6,34 +6,34 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
 {
     public class OrganizationConfig : IEntityTypeConfiguration<Organization>
     {
-        public void Configure(EntityTypeBuilder<Organization> entity)
+        public void Configure(EntityTypeBuilder<Organization> builder)
         {
-            entity.Property(e => e.CreatedBy)
+            builder.Property(e => e.CreatedBy)
                   .IsRequired();
 
-            entity.Property(e => e.CreatedAt)
+            builder.Property(e => e.CreatedAt)
                   .IsRequired();
 
-            entity.Property(e => e.Name)
+            builder.Property(e => e.Name)
                   .HasMaxLength(128)
                   .IsRequired();
 
-            entity.Property(e => e.AvatarUrl)
+            builder.Property(e => e.AvatarUrl)
                   .HasMaxLength(256)
                   .IsRequired();
 
-            entity.HasMany(o => o.Members)
+            builder.HasMany(o => o.Members)
                   .WithOne(m => m.Organization);
 
-            entity.HasMany(e => e.Teams)
+            builder.HasMany(e => e.Teams)
                   .WithOne(e => e.Organization)
                   .IsRequired(false);
 
-            entity.HasMany(e => e.Applications)
+            builder.HasMany(e => e.Applications)
                   .WithOne(e => e.Organization)
                   .IsRequired(false);
 
-            entity.HasMany(e => e.Dashboards)
+            builder.HasMany(e => e.Dashboards)
                   .WithOne(e => e.Organization);
         }
     }

@@ -6,23 +6,23 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
 {
     public class ApplicationConfig : IEntityTypeConfiguration<Application>
     {
-        public void Configure(EntityTypeBuilder<Application> entity)
+        public void Configure(EntityTypeBuilder<Application> builder)
         {
-            entity.Property(e => e.CreatedBy)
+            builder.Property(e => e.CreatedBy)
                   .IsRequired();
 
-            entity.Property(e => e.CreatedAt)
+            builder.Property(e => e.CreatedAt)
                   .IsRequired();
 
-            entity.Property(e => e.Name)
+            builder.Property(e => e.Name)
                   .HasMaxLength(128)
                   .IsRequired();
 
-            entity.Property(e => e.SecurityToken)
+            builder.Property(e => e.SecurityToken)
                   .HasMaxLength(256)
                   .IsRequired();
 
-            entity.HasMany(e => e.Environments)
+            builder.HasMany(e => e.Environments)
                   .WithOne(e => e.Application)
                   .IsRequired(false);
         }

@@ -6,15 +6,15 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
 {
     public class TileConfig : IEntityTypeConfiguration<Tile>
     {
-        public void Configure(EntityTypeBuilder<Tile> entity)
+        public void Configure(EntityTypeBuilder<Tile> builder)
         {
-            entity.Property(e => e.CreatedBy)
+            builder.Property(e => e.CreatedBy)
                   .IsRequired();
 
-            entity.Property(e => e.CreatedAt)
+            builder.Property(e => e.CreatedAt)
                   .IsRequired();
 
-            entity.Property(e => e.Name)
+            builder.Property(e => e.Name)
                   .HasMaxLength(128)
                   .IsRequired();
         }

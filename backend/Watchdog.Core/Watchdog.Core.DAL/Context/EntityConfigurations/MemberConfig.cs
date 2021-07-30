@@ -6,12 +6,12 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
 {
     public class MemberConfig : IEntityTypeConfiguration<Member>
     {
-        public void Configure(EntityTypeBuilder<Member> entity)
+        public void Configure(EntityTypeBuilder<Member> builder)
         {
-            entity.Property(e => e.CreatedBy)
+            builder.Property(e => e.CreatedBy)
                   .IsRequired();
 
-            entity.Property(e => e.CreatedAt)
+            builder.Property(e => e.CreatedAt)
                   .IsRequired();
         }
     }
