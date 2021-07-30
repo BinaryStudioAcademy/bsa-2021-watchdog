@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Watchdog.Core.BLL.Services;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Sample;
 
@@ -16,11 +17,13 @@ namespace Watchdog.Core.API.Controllers
 
         private readonly ILogger<SampleController> _logger;
         private readonly ISampleService _sampleService;
+        private readonly QueueService _queueService;
 
-        public SampleController(ILogger<SampleController> logger, ISampleService sampleService)
+        public SampleController(ILogger<SampleController> logger, ISampleService sampleService, QueueService queueService)
         {
             _logger = logger;
             _sampleService = sampleService;
+            _queueService = queueService;
         }
 
         [HttpGet]
@@ -72,7 +75,17 @@ namespace Watchdog.Core.API.Controllers
         public async Task<ActionResult> DeleteAsync(int sampleId)
         {
             await _sampleService.DeleteSampleAsync(sampleId);
+            
+            _logger.LogInformation($"Sample: ID = {sampleId} has been removed.");
+
             return NoContent();
+        }
+        
+        [HttpPost("rabbitmq_test")]
+        public  ActionResult RabbitmqQueueSendTest()
+        {
+            _queueService.Send("test message");
+            return Ok();
         }
     }
 }

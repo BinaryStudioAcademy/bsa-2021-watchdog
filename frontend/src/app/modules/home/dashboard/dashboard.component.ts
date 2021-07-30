@@ -4,9 +4,9 @@ import {ActivatedRoute} from "@angular/router";
 import {DashboardService} from "@core/services/dashboard.service";
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.sass']
+    selector: 'app-dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.sass']
 })
 export class DashboardComponent implements OnInit {
   dashboard: Dashboard;

@@ -1,0 +1,27 @@
+@import ../../common-styles/variables
+@import ../../common-styles/mixins
+.item-block
+    display: grid
+    grid-auto-flow: row
+    padding: $half-indent
+    @include backgroung-gray
+
+.title
+    font-size: 1.3rem
+    font-weight: bold
+    padding-bottom: $half-indent
+
+.link
+    margin-top: $half-indent
+    text-decoration: none
+    display: flex
+    align-items: center
+    
+
+    i
+        margin-left: 5px
+        transition: margin-left .4s ease
+
+    &:hover
+        i
+            margin-left: 10px
