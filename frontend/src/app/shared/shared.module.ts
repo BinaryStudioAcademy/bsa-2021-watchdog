@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
-import { ConfirmWindowComponent } from './components/confirm-window/confirm-window.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { PrimeComponentsModule } from './modules/prime-components/prime-components.module';
 
@@ -18,7 +17,6 @@ import { PrimeComponentsModule } from './modules/prime-components/prime-componen
     ],
     declarations: [
         LoadingSpinnerComponent,
-        ConfirmWindowComponent,
         NotFoundComponent
     ],
     exports: [
@@ -27,7 +25,6 @@ import { PrimeComponentsModule } from './modules/prime-components/prime-componen
         FormsModule,
         ReactiveFormsModule,
         LoadingSpinnerComponent,
-        ConfirmWindowComponent,
         NotFoundComponent,
         PrimeComponentsModule
     ]
