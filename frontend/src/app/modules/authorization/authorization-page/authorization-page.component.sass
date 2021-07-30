@@ -1,0 +1,70 @@
+.auth-wrapper
+        display: grid
+        grid-gap: 50px
+        width: 100vw
+        height: 100vh
+        overflow: hidden
+        background: url(https://kartinkin.com/uploads/posts/2021-04/1617607358_37-p-fon-tekhnicheskii-41.png) 
+        background-repeat: no-repeat
+        background-size: cover
+.info-block img
+    display: block
+    max-width: 100%
+.login-header
+    display: grid
+    grid-template-columns: 1fr auto
+    grid-gap: 10px
+    align-items: center
+.logo
+    display: block
+    width: 70%
+.start-trial
+    display: flex
+    flex-direction: row
+    justify-content: center
+    grid-gap:10px
+
+.form-wrapper
+    display: grid
+    margin: 100px 0 20px 0
+
+.login-item
+    width: 100%    
+
+.singin
+    width: 600px
+    background-color: white
+    padding: 30px 40px 0 40px
+
+.singin-title
+    font-size: 2rem
+
+.card
+    margin: 30px 0 0 0
+    width: 100%
+
+
+
+@media screen and ( min-width:1024px)
+    .auth-wrapper
+        grid-template-columns: 1fr 2fr
+       
+    .info-block
+        display: flex
+        flex-direction: column
+        justify-content: center
+        align-items: center
+        width:100%
+
+@media screen and ( max-width:1024px)
+    .auth-wrapper
+        display: grid
+        grid-template-columns: auto
+        overflow: hidden
+        padding: 50px 0 0 0
+        overflow-y: auto
+
+    .singin
+        margin: 0 auto 50px auto
+    .info-block
+        display: none

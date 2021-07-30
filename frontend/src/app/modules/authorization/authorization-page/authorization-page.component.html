@@ -1,1 +1,30 @@
-<p>authorization-page works!</p>
+<div class="auth-wrapper">
+    <div class="singin">
+        <div class="login-header">
+            <div class="logo">
+                <img src="assets/logo.svg" alt="logo">
+            </div>
+            <div class="start-trial">
+                <span>Don`t have an account?</span>
+                <span><a href="#"> Register</a></span>
+             </div>
+        </div>
+        <div class="form-wrapper">
+            <span class="singin-title">Sing in</span>
+        </div>
+        <div class="card">
+            <p-tabView class="login-item">
+                <p-tabPanel header="Sign In">
+                <app-login-form></app-login-form>
+                </p-tabPanel>
+                <p-tabPanel header="GitHub/social">
+                   <app-socials-login></app-socials-login>
+                </p-tabPanel>
+            </p-tabView>
+        </div>
+    </div>
+    <div class="info-block">
+        <img src="https://raygun.com/blog/images/banners/cwv-sign-in-banner.png" alt="info">
+
+    </div>
+</div>
