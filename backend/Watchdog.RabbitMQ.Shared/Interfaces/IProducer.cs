@@ -1,9 +1,7 @@
-﻿using Watchdog.RabbitMQ.Shared.Models;
-
-namespace Watchdog.RabbitMQ.Shared.Interfaces
+﻿namespace Watchdog.RabbitMQ.Shared.Interfaces
 {
     public interface IProducer
     {
-        void Send(string message, ProducerSettings settings, string? type);
+        void Send(string message, string? type);
     }
 }

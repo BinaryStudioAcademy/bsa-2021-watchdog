@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -7,14 +9,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Serilog;
-using System;
-using System.Collections.Generic;
 using RabbitMQ.Client;
+using Serilog;
 using Watchdog.Core.API.Extensions;
 using Watchdog.Core.API.Middlewares;
 using Watchdog.Core.BLL.Services;
-using Watchdog.RabbitMQ.Shared.Interfaces;
+using Watchdog.RabbitMQ.Shared.Models;
 using Watchdog.RabbitMQ.Shared.Services;
 
 namespace Watchdog.Core.API
@@ -25,8 +25,9 @@ namespace Watchdog.Core.API
         {
             Configuration = new ConfigurationBuilder()
                 .SetBasePath(hostingEnvironment.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", reloadOnChange: true, optional: true)
+                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", reloadOnChange: true,
+                    optional: true)
                 .AddEnvironmentVariables()
                 .Build();
         }
@@ -56,7 +57,7 @@ namespace Watchdog.Core.API
 
             services.AddSwaggerGen(o =>
             {
-                o.SwaggerDoc("v1", new OpenApiInfo { Title = "Watchdog.Core", Version = "v1" });
+                o.SwaggerDoc("v1", new OpenApiInfo {Title = "Watchdog.Core", Version = "v1"});
                 o.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.ApiKey,
@@ -77,7 +78,7 @@ namespace Watchdog.Core.API
                             Reference = new OpenApiReference
                             {
                                 Type = ReferenceType.SecurityScheme,
-                                Id = JwtBearerDefaults.AuthenticationScheme,
+                                Id = JwtBearerDefaults.AuthenticationScheme
                             }
                         },
                         Array.Empty<string>()
@@ -90,12 +91,13 @@ namespace Watchdog.Core.API
             services.AddSingleton(x =>
             {
                 var amqpConnection = new Uri(Configuration.GetSection("RabbitMQConfiguration").GetSection("Uri").Value);
-                var connectionFactory = new ConnectionFactory
-                    {Uri = amqpConnection};
+                var connectionFactory = new ConnectionFactory {Uri = amqpConnection};
                 return connectionFactory.CreateConnection();
             });
-            services.AddSingleton<IProducer, Producer>();
-            services.AddScoped<QueueService>();
+            var producerSettings = new ProducerSettings();
+            Configuration.GetSection("RabbitMQConfiguration:Queues:Test").Bind(producerSettings);
+            services.AddScoped(provider =>
+                new QueueService(new Producer(provider.GetRequiredService<IConnection>(), producerSettings)));
             // test rabbitmq
         }
 
@@ -128,17 +130,12 @@ namespace Watchdog.Core.API
             app.UseSwagger(o =>
             {
                 if (env.IsProduction())
-                {
                     o.PreSerializeFilters.Add((swaggerDoc, httpReq) => swaggerDoc.Servers = new List<OpenApiServer>
                     {
-                        new OpenApiServer { Url = $"https://{httpReq.Host.Value}{apiPrefix}" }
+                        new() {Url = $"https://{httpReq.Host.Value}{apiPrefix}"}
                     });
-                }
             });
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint($"{apiPrefix}/swagger/v1/swagger.json", "Watchdog.Core v1");
-            });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint($"{apiPrefix}/swagger/v1/swagger.json", "Watchdog.Core v1"); });
 
             app.UseEndpoints(endpoints =>
             {
