@@ -6,6 +6,16 @@ namespace Watchdog.Core.DAL.Entities
 {
     public class User : Entity<int>
     {
+        public User()
+        {
+            Members = new List<Member>();
+            Organizations = new List<Organization>();
+            Teams = new List<Team>();
+            Applications = new List<Application>();
+            Dashboards = new List<Dashboard>();
+            Tiles = new List<Tile>();
+        }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }

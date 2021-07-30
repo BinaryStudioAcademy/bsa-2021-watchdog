@@ -5,6 +5,11 @@ namespace Watchdog.Core.DAL.Entities
 {
     public class Dashboard : AuditEntity<int>
     {
+        public Dashboard()
+        {
+            Tiles = new List<Tile>();
+        }
+
         public string Name { get; set; }
 
         public User User { get; set; }

@@ -25,12 +25,12 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
                    .IsRequired();
 
             builder.Property(u => u.AvatarUrl)
-                   .HasMaxLength(256)
-                   .IsRequired();
+                   .HasMaxLength(256);
 
             builder.HasMany(u => u.Members)
                    .WithOne(m => m.User)
-                   .HasForeignKey(m => m.CreatedBy);
+                   .HasForeignKey(m => m.CreatedBy)
+                   .OnDelete(DeleteBehavior.ClientCascade);
 
             builder.HasMany(u => u.Organizations)
                    .WithOne(o => o.User)
@@ -38,20 +38,23 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
 
             builder.HasMany(u => u.Teams)
                    .WithOne(t => t.User)
-                   .HasForeignKey(t => t.CreatedBy);
+                   .HasForeignKey(t => t.CreatedBy)
+                   .OnDelete(DeleteBehavior.ClientCascade);
 
             builder.HasMany(u => u.Applications)
                    .WithOne(a => a.User)
-                   .HasForeignKey(a => a.CreatedBy);
+                   .HasForeignKey(a => a.CreatedBy)
+                   .OnDelete(DeleteBehavior.ClientCascade);
 
             builder.HasMany(u => u.Dashboards)
                    .WithOne(d => d.User)
                    .HasForeignKey(d => d.CreatedBy)
-                   .OnDelete(DeleteBehavior.ClientSetNull);
+                   .OnDelete(DeleteBehavior.ClientCascade);
 
             builder.HasMany(u => u.Tiles)
                    .WithOne(t => t.User)
-                   .HasForeignKey(d => d.CreatedBy);
+                   .HasForeignKey(d => d.CreatedBy)
+                   .OnDelete(DeleteBehavior.ClientCascade);
         }
     }
 }

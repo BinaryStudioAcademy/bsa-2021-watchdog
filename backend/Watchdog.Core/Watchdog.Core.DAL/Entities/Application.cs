@@ -5,13 +5,19 @@ namespace Watchdog.Core.DAL.Entities
 {
     public class Application : AuditEntity<int>
     {
+        public Application()
+        {
+            Environments = new List<Environment>();
+            ApplicationTeams = new List<ApplicationTeam>();
+        }
+
         public string Name { get; set; }
 
         public string SecurityToken { get; set; }
 
         public User User { get; set; }
 
-        public int? OrganizationId { get; set; }
+        public int OrganizationId { get; set; }
 
         public Organization Organization { get; set; }
 

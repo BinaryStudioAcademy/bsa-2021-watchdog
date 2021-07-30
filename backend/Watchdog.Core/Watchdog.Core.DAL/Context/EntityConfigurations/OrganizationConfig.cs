@@ -13,8 +13,7 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
                    .IsRequired();
 
             builder.Property(o => o.AvatarUrl)
-                   .HasMaxLength(256)
-                   .IsRequired();
+                   .HasMaxLength(256);
 
             builder.HasMany(o => o.Members)
                    .WithOne(m => m.Organization)

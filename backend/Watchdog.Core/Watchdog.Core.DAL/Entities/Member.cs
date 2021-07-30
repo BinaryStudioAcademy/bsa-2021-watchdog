@@ -5,7 +5,10 @@ namespace Watchdog.Core.DAL.Entities
 {
     public class Member : AuditEntity<int>
     {
-        public new int? CreatedBy { get; set; }
+        public Member()
+        {
+            TeamMembers = new List<TeamMember>();
+        }
 
         public User User { get; set; }
 

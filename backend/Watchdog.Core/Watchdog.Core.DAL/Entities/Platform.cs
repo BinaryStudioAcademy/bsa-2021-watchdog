@@ -5,6 +5,11 @@ namespace Watchdog.Core.DAL.Entities
 {
     public class Platform : Entity<int>
     {
+        public Platform()
+        {
+            Applications = new List<Application>();
+        }
+
         public string Name { get; set; }
 
         public string AvatarUrl { get; set; }
