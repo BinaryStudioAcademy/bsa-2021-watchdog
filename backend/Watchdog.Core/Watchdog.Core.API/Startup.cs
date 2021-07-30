@@ -10,8 +10,12 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using RabbitMQ.Client;
 using Watchdog.Core.API.Extensions;
 using Watchdog.Core.API.Middlewares;
+using Watchdog.Core.BLL.Services;
+using Watchdog.RabbitMQ.Shared.Interfaces;
+using Watchdog.RabbitMQ.Shared.Services;
 
 namespace Watchdog.Core.API
 {
@@ -82,6 +86,17 @@ namespace Watchdog.Core.API
             });
 
             services.AddFluentValidationRulesToSwagger();
+            // test rabbitmq
+            services.AddSingleton(x =>
+            {
+                var amqpConnection = new Uri(Configuration.GetSection("RabbitMQConfiguration").GetSection("Uri").Value);
+                var connectionFactory = new ConnectionFactory
+                    {Uri = amqpConnection};
+                return connectionFactory.CreateConnection();
+            });
+            services.AddSingleton<IProducer, Producer>();
+            services.AddScoped<QueueService>();
+            // test rabbitmq
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
