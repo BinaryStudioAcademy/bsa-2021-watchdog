@@ -11,7 +11,7 @@ namespace Watchdog.Core.DAL.Entities
 
         public User User { get; set; }
 
-        public int OrganizationId { get; set; }
+        public int? OrganizationId { get; set; }
 
         public Organization Organization { get; set; }
 

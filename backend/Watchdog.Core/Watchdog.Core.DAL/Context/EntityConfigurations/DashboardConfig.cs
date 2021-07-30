@@ -8,13 +8,13 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Dashboard> builder)
         {
-            builder.Property(e => e.Name)
+            builder.Property(d => d.Name)
                    .HasMaxLength(128)
                    .IsRequired();
 
-            builder.HasMany(e => e.Tiles)
-                   .WithOne(e => e.Dashboard)
-                   .IsRequired(false);
+            builder.HasMany(d => d.Tiles)
+                   .WithOne(t => t.Dashboard)
+                   .HasForeignKey(t => t.DashboardId);
         }
     }
 }

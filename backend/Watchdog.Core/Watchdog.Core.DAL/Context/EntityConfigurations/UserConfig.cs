@@ -8,30 +8,29 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.Property(e => e.FirstName)
+            builder.Property(u => u.FirstName)
                    .HasMaxLength(128)
                    .IsRequired();
 
-            builder.Property(e => e.LastName)
+            builder.Property(u => u.LastName)
                    .HasMaxLength(128)
                    .IsRequired();
 
-            builder.Property(e => e.Email)
+            builder.Property(u => u.Email)
                    .HasMaxLength(128)
                    .IsRequired();
 
-            builder.Property(e => e.PasswordHash)
+            builder.Property(u => u.PasswordHash)
                    .HasMaxLength(512)
                    .IsRequired();
 
-            builder.Property(e => e.AvatarUrl)
+            builder.Property(u => u.AvatarUrl)
                    .HasMaxLength(256)
                    .IsRequired();
 
             builder.HasMany(u => u.Members)
                    .WithOne(m => m.User)
-                   .HasForeignKey(m => m.CreatedBy)
-                   .IsRequired(false);
+                   .HasForeignKey(m => m.CreatedBy);
 
             builder.HasMany(u => u.Organizations)
                    .WithOne(o => o.User)

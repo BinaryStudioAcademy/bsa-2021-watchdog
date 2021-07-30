@@ -8,7 +8,7 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Team> builder)
         {
-            builder.Property(e => e.Name)
+            builder.Property(t => t.Name)
                    .HasMaxLength(128)
                    .IsRequired();
         }

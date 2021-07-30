@@ -5,6 +5,8 @@ namespace Watchdog.Core.DAL.Entities
 {
     public class Member : AuditEntity<int>
     {
+        public new int? CreatedBy { get; set; }
+
         public User User { get; set; }
 
         public int RoleId { get; set; }

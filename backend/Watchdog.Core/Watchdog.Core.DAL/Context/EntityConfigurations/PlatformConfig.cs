@@ -8,16 +8,17 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Platform> builder)
         {
-            builder.Property(e => e.Name)
+            builder.Property(p => p.Name)
                    .HasMaxLength(128)
                    .IsRequired();
 
-            builder.Property(e => e.AvatarUrl)
+            builder.Property(p => p.AvatarUrl)
                    .HasMaxLength(256)
                    .IsRequired();
 
-            builder.HasMany(e => e.Applications)
-                   .WithOne(e => e.Platform);
+            builder.HasMany(p => p.Applications)
+                   .WithOne(a => a.Platform)
+                   .HasForeignKey(a => a.PlatformId);
         }
     }
 }
