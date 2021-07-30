@@ -17,14 +17,20 @@ namespace Watchdog.Core.API
 {
     public class Startup
     {
-        public Startup(IConfiguration _, IHostEnvironment hostingEnvironment)
+        public Startup(IConfiguration _, IHostEnvironment env)
         {
-            Configuration = new ConfigurationBuilder()
-                .SetBasePath(hostingEnvironment.ContentRootPath)
+            var configurationBuilder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", reloadOnChange: true, optional: true)
-                .AddEnvironmentVariables()
-                .Build();
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", reloadOnChange: true, optional: true)
+                .AddEnvironmentVariables();
+
+            if (env.IsDevelopment())
+            {
+                configurationBuilder.AddUserSecrets<Startup>();
+            }
+
+            Configuration = configurationBuilder.Build();
         }
 
         public IConfiguration Configuration { get; }
