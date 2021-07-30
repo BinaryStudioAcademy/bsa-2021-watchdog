@@ -9,15 +9,15 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
         public void Configure(EntityTypeBuilder<Role> builder)
         {
             builder.Property(e => e.Name)
-                  .HasMaxLength(128)
-                  .IsRequired();
+                   .HasMaxLength(128)
+                   .IsRequired();
 
             builder.Property(e => e.Description)
-                  .HasMaxLength(512)
-                  .IsRequired();
+                   .HasMaxLength(512)
+                   .IsRequired();
 
             builder.HasMany(r => r.Members)
-                  .WithOne(m => m.Role);
+                   .WithOne(m => m.Role);
         }
     }
 }

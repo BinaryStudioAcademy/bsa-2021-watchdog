@@ -8,19 +8,13 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Dashboard> builder)
         {
-            builder.Property(e => e.CreatedBy)
-                  .IsRequired();
-
-            builder.Property(e => e.CreatedAt)
-                  .IsRequired();
-
             builder.Property(e => e.Name)
-                  .HasMaxLength(128)
-                  .IsRequired();
+                   .HasMaxLength(128)
+                   .IsRequired();
 
             builder.HasMany(e => e.Tiles)
-                  .WithOne(e => e.Dashboard)
-                  .IsRequired(false);
+                   .WithOne(e => e.Dashboard)
+                   .IsRequired(false);
         }
     }
 }
