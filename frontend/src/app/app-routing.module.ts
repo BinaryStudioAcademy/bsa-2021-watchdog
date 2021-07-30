@@ -13,9 +13,14 @@ const routes: Routes = [
             .then(m => m.HomeModule),
     },
     {
-        path:'auth',
-        loadChildren:()=> import('./modules/authorization/authorization.module')
-            .then(m=>m.AuthorizationModule)
+        path: 'signin',
+        loadChildren: () => import('./modules/authorization/authorization.module')
+            .then(m => m.AuthorizationModule)
+    },
+    {
+        path: 'signon',
+        loadChildren:()=> import('./modules/registration/registration.module')
+            .then(m=> m.RegistrationModule)
     },
     { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
