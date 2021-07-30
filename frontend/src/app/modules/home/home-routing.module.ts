@@ -4,6 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home-page/home-page.component';
+import {ProjectsComponent} from "@modules/home/projects/projects.component";
+import {IssuesComponent} from "@modules/home/issues/issues.component";
 
 const routes: Routes = [{
     path: '',
@@ -13,7 +15,13 @@ const routes: Routes = [{
         redirectTo: 'dashboard',
         pathMatch: 'full',
     }, {
-        path: 'dashboard',
+        path: 'projects',
+        component: ProjectsComponent,
+    }, {
+        path: 'issues',
+        component: IssuesComponent,
+    },{
+        path: 'dashboard/:name',
         component: DashboardComponent,
     }, {
         path: '**',

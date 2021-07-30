@@ -1,0 +1,34 @@
+<p-dialog
+    [visible]="true"
+    [style]="{width: '35vw'}"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [closable]="false">
+
+    <h2>Creating new dashboard</h2>
+
+    <div class="modal-content">
+        <label for="dashboard_name">Dashboard Name</label>
+        <input id="dashboard_name" type="text" [(ngModel)]="newDashboard.name" placeholder="Name">
+
+        <label for="icon">Icon</label>
+        <select id="icon" name="icon" [(ngModel)]="newDashboard.icon">
+            <option *ngFor="let icon of icons">{{icon}}</option>
+        </select>
+    </div>
+
+    <p-footer>
+        <button
+            class="button modal-button"
+            (click)="onDashboardCreated.emit(this.newDashboard)">
+            Create
+        </button>
+
+        <button
+            class="button modal-button"
+            (click)="onCloseModal.emit()">
+            Cancel
+        </button>
+    </p-footer>
+</p-dialog>
