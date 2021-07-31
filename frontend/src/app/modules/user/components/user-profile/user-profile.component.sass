@@ -1,13 +1,23 @@
+@import ../../styles/user.styles
+    
+html
+    scroll-behavior: smooth
+
 .profile-header
     box-sizing: border-box
     position: relative
     padding: 8px 24px
-    background-color: #ffffff
-    border-bottom: 1px solid #d3d3d3
+    background-color: $white
+    @include border-gray
     padding-bottom: 0
 
+.center
+    margin-left: auto
+    margin-right: auto
+    max-width: $max-width
+
 .profile-header-title
-    margin: 4px    
+    margin: 4px
 
 .profile-header-container, .profile-header-title, .profile-header-navigation-container
     padding: 5px
@@ -25,37 +35,40 @@ h1, .navigation-item-link
     display: block
     margin: 4px
     text-decoration: none
-    color: #000000
+    color: $black
     margin-bottom: 0
 
 .navigation-item-link:hover
-    border-bottom: 3px solid #c7c7c7
+    border-bottom: 3px solid $light-gray
 
 #profile-settings
-    background: #ffffff
-    color: #000000 
-    border-bottom: 3px solid  #158FEF 
+    background: $white
+    color: $black
+    border-bottom: 3px solid  $blue
 
 .pi
     display: inline-block
     margin-right: 5px 
 
+.content-container
+    padding: 24px
+
 @media screen and (max-width: 1050px)
     .navigation-item-link
         padding: 10px 16px
-        background-color: #dcdcdc
+        background-color: $dark-gray
         display: block
         border-radius: 24px
         margin: 4px
         border-bottom: none
 
     #profile-settings
-        background-color: #158FEF
-        color: #ffffff
+        background-color: $blue
+        color: $white
         border-bottom: none
     
     .navigation-item-link:hover
-        background-color: #c7c7c7
+        background-color: $light-gray
         border-bottom: none
 
     

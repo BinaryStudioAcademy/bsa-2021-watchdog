@@ -1,0 +1,26 @@
+@import ./variables
+@import ./mixins
+@import ./form
+
+.user-container
+    min-width: 350px
+
+.section-header
+    padding: $padding
+    @include bold-font
+    
+.border-on-sides
+    @include border-gray-on-sides
+
+.border
+    @include border-gray
+
+.user-settings
+    padding: $padding
+    @include border-gray-on-sides
+
+.user-settings h3
+    margin-bottom: 10px
+
+#user-name, h3, h4
+    @include bold-font

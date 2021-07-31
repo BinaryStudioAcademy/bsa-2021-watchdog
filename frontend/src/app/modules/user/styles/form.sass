@@ -1,0 +1,55 @@
+@import ./variables
+@import ./mixins
+
+form
+    padding-top: $padding
+
+.input-container
+    display: flex
+    flex-wrap: wrap
+
+.input-section
+    min-width: 50%
+    float: left
+    padding: 10px
+
+.form-label
+    padding: 5px 0 10px
+
+input
+    width: 100%
+    min-width: 230px
+    height: 40px
+    border-radius: 4px
+    border: 1px solid $dark-gray    
+    z-index: 1
+    outline: 0
+
+input:focus
+    border: 1px solid $black
+
+input, label
+    display: block
+
+.form-footer
+    width: 100%
+    height: 36px
+    padding-right: 10px
+
+.save-changes
+    float: right
+    height: 36px
+    min-width: 36px
+    padding: 5px
+    font-size: 1.2rem
+    border: 1px solid $dark-blue
+    border-radius: 4px
+    color: $white
+    background-color: $blue
+
+.save-changes:hover
+    background-color: $light-blue
+
+@media screen and ( max-width:  630px)
+    .input-section
+        width: 100%

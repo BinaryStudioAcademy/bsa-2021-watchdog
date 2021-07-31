@@ -4,7 +4,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 const routes: Routes = [{
     path: '',
     component: UserProfileComponent,
-    pathMatch: 'full'   
+    pathMatch: 'full'
 }];
 
 @NgModule({

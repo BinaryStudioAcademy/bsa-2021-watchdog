@@ -1,23 +1,31 @@
 <header class="profile-header">
-    <div class="profile-header-container">
-        <div class="profile-header-title">
-            <h1>My Settings</h1>
-        </div>
-        <div class="profile-header-navigation-container">
-            <ul class="navigation-list">
-                <li class="navigation-item">
-                    <a id="profile-settings" class="navigation-item-link" href="/user">
-                        <i class="pi pi-cog"></i>
-                        <span class="header-navigation-text">Profile Settings</span>
-                    </a>
-                </li>
-                <li class="navigation-item">
-                    <a class="navigation-item-link" href="#update-password-form">
-                        <i class="pi pi-key"></i>
-                        <span class="header-navigation-text">Change Password</span>
-                    </a>
-                </li>
-            </ul>
+    <div class="center">
+        <div class="profile-header-container">
+            <div class="profile-header-title">
+                <h1>My Settings</h1>
+            </div>
+            <div class="profile-header-navigation-container">
+                <ul class="navigation-list">
+                    <li class="navigation-item">
+                        <a id="profile-settings" class="navigation-item-link" href="/user">
+                            <i class="pi pi-cog"></i>
+                            <span class="header-navigation-text">Profile Settings</span>
+                        </a>
+                    </li>
+                    <li class="navigation-item">
+                        <a class="navigation-item-link" href="/user#user-password-settings">
+                            <i class="pi pi-key"></i>
+                            <span class="header-navigation-text">Change Password</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </header>
+<div class="content-container">
+    <div class="center">
+        <app-user-profile-settings></app-user-profile-settings>
+        <app-user-password-settings id="user-password-settings"></app-user-password-settings>
+    </div>
+</div>
