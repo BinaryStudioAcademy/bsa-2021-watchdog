@@ -5,30 +5,27 @@
     [draggable]="false"
     [resizable]="false"
     [closable]="false">
-
-    <h2>Creating new dashboard</h2>
-
-    <div class="modal-content">
-        <label for="dashboard_name">Dashboard Name</label>
-        <input id="dashboard_name" type="text" [(ngModel)]="newDashboard.name" placeholder="Name">
-
-        <label for="icon">Icon</label>
-        <select id="icon" name="icon" [(ngModel)]="newDashboard.icon">
-            <option *ngFor="let icon of icons">{{icon}}</option>
-        </select>
-    </div>
-
-    <p-footer>
-        <button
-            class="button modal-button"
-            (click)="dashboardCreated.emit(this.newDashboard)">
-            Create
-        </button>
-
-        <button
-            class="button modal-button"
-            (click)="closeModal.emit()">
-            Cancel
-        </button>
-    </p-footer>
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+        <p-panel header="Creating new dashboard">
+            <div class="ui-fluid forms-grid" style="margin: 1em 0">
+                <div>
+                    <div>Dashboard name</div>
+                    <input type="text" formControlName="name" placeholder="Name"/>
+                    <p-message
+                        severity="error"
+                        text="Dashboard name invalid"
+                        *ngIf="!formGroup.controls['name'].valid && formGroup.controls['name'].dirty">
+                    </p-message>
+                </div>
+                <div>
+                    <div>Icon</div>
+                    <select formControlName="icon">
+                        <option *ngFor="let icon of icons" value="{{icon}}">{{icon}}</option>
+                    </select>
+                </div>
+                <button class="button create-button" type="submit" [disabled]="!formGroup.valid">Create</button>
+                <button class="button cancel-button" (click)="closeModal.emit()">Cancel</button>
+            </div>
+        </p-panel>
+    </form>
 </p-dialog>

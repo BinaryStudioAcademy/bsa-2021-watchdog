@@ -10,6 +10,9 @@ import { PanelMenuModule } from 'primeng/panelmenu';
 import { SidebarModule } from 'primeng/sidebar';
 import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
+import { PanelModule } from 'primeng/panel';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -20,10 +23,13 @@ import { DialogModule } from 'primeng/dialog';
         PanelMenuModule,
         SidebarModule,
         DropdownModule,
-        DialogModule,
         ToastModule,
         ScrollTopModule,
-        ChipModule
+        ChipModule,
+        DialogModule,
+        MessagesModule,
+        MessageModule,
+        PanelModule,
     ],
     exports: [
         ButtonModule,
@@ -34,7 +40,10 @@ import { DialogModule } from 'primeng/dialog';
         DialogModule,
         ToastModule,
         ScrollTopModule,
-        ChipModule
+        ChipModule,
+        MessagesModule,
+        MessageModule,
+        PanelModule,
     ],
     declarations: [],
     providers: [
