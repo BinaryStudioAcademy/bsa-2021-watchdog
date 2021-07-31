@@ -11,7 +11,7 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
             builder.HasOne(at => at.Application)
                    .WithMany(a => a.ApplicationTeams)
                    .HasForeignKey(at => at.ApplicationId)
-                   .OnDelete(DeleteBehavior.ClientSetNull);
+                   .OnDelete(DeleteBehavior.ClientCascade);
 
             builder.HasOne(at => at.Team)
                    .WithMany(t => t.ApplicationTeams)

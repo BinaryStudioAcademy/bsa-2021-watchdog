@@ -10,7 +10,7 @@ using Watchdog.Core.DAL.Context;
 namespace Watchdog.Core.DAL.Migrations
 {
     [DbContext(typeof(WatchdogCoreContext))]
-    [Migration("20210730221311_AddBasicEntities")]
+    [Migration("20210731081912_AddBasicEntities")]
     partial class AddBasicEntities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1852,6 +1852,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.Application", "Application")
                         .WithMany("ApplicationTeams")
                         .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Team", "Team")
@@ -1963,6 +1964,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.Team", "Team")
                         .WithMany("TeamMembers")
                         .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Member");

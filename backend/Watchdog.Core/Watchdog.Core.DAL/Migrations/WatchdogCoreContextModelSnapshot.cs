@@ -1850,6 +1850,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.Application", "Application")
                         .WithMany("ApplicationTeams")
                         .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Team", "Team")
@@ -1961,6 +1962,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.Team", "Team")
                         .WithMany("TeamMembers")
                         .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Member");
