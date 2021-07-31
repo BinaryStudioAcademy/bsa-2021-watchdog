@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { BroadcastHubService } from '@core/hubs/broadcast-hub.service';
-import { Dashboard } from '@shared/models/Dashboard';
+import { Dashboard } from '@shared/models/dashboard/Dashboard';
 import { DashboardService } from '@core/services/dashboard.service';
 
 @Component({
@@ -8,13 +8,12 @@ import { DashboardService } from '@core/services/dashboard.service';
     templateUrl: './home-page.component.html',
     styleUrls: ['./home-page.component.sass']
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy, OnChanges {
     dashboards: Dashboard[];
     dashboardsShown: boolean = false;
     displayModal: boolean = false;
 
-    constructor(private broadcastHub: BroadcastHubService,
-        public dashboardService: DashboardService) { }
+    constructor(private broadcastHub: BroadcastHubService, public dashboardService: DashboardService) { }
 
     async ngOnInit() {
         this.dashboards = this.dashboardService.getAll();
@@ -32,5 +31,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     addDashboard(dashboard: Dashboard) {
         this.displayModal = false;
         this.dashboardService.addDashboard(dashboard);
+    }
+
+    ngOnChanges(): void {
+        this.dashboards = this.dashboardService.getAll();
     }
 }

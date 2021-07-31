@@ -1,5 +1,5 @@
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
-import { Dashboard } from '@shared/models/Dashboard';
+import { Component, Output, EventEmitter, OnInit, Input } from '@angular/core';
+import { Dashboard } from '@shared/models/dashboard/Dashboard';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -10,8 +10,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class AddDashboardComponent implements OnInit {
     public formGroup: FormGroup = {} as FormGroup;
     icons: string[];
+    @Input() dashboard: Dashboard = {} as Dashboard;
+    @Input() modalName: string;
     @Output() closeModal = new EventEmitter<void>();
-    @Output() dashboardCreated = new EventEmitter<Dashboard>();
+    @Output() save = new EventEmitter<Dashboard>();
 
     constructor() {
         this.icons = ['pi-chart-bar', 'pi-chart-line'];
@@ -20,7 +22,7 @@ export class AddDashboardComponent implements OnInit {
     ngOnInit() {
         this.formGroup = new FormGroup({
             name: new FormControl(
-                '',
+                this.dashboard.name,
                 [
                     Validators.required,
                     Validators.minLength(5),
@@ -28,7 +30,7 @@ export class AddDashboardComponent implements OnInit {
                 ]
             ),
             icon: new FormControl(
-                '',
+                this.dashboard.icon,
                 [
                     Validators.required
                 ]
@@ -36,8 +38,9 @@ export class AddDashboardComponent implements OnInit {
         });
     }
 
-    onSubmit(): void {
-        const newDashboard: Dashboard = <Dashboard> this.formGroup.value;
-        this.dashboardCreated.emit(newDashboard);
+    saveHandle(): void {
+        const dashboard: Dashboard = <Dashboard> this.formGroup.value;
+        console.log(dashboard);
+        this.save.emit(dashboard);
     }
 }

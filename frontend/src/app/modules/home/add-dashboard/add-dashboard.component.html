@@ -5,9 +5,9 @@
     [draggable]="false"
     [resizable]="false"
     [closable]="false">
-    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-        <p-panel header="Creating new dashboard">
-            <div class="ui-fluid forms-grid" style="margin: 1em 0">
+    <form [formGroup]="formGroup" (ngSubmit)="saveHandle()">
+        <p-panel header="{{modalName}}">
+            <div class="ui-fluid forms-grid">
                 <div>
                     <div>Dashboard name</div>
                     <input type="text" formControlName="name" placeholder="Name"/>
@@ -23,7 +23,7 @@
                         <option *ngFor="let icon of icons" value="{{icon}}">{{icon}}</option>
                     </select>
                 </div>
-                <button class="button create-button" type="submit" [disabled]="!formGroup.valid">Create</button>
+                <button class="button create-button" type="submit" [disabled]="!formGroup.valid">Save</button>
                 <button class="button cancel-button" (click)="closeModal.emit()">Cancel</button>
             </div>
         </p-panel>

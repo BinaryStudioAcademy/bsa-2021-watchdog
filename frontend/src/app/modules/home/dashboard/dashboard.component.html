@@ -1,3 +1,22 @@
-<p>dashboard works!</p>
-<p>{{dashboard.name}}</p>
+<div class="dashboard-header">
+    <div class="dashboard-name">
+        <h2>{{dashboard.name}}</h2>
+    </div>
+    <div class="action-buttons">
+        <button class="button delete-button">
+            Delete
+        </button>
 
+        <button class="button edit-button" (click)="isEditing = true">
+            Edit
+        </button>
+    </div>
+</div>
+
+<app-add-dashboard
+    *ngIf="isEditing"
+    [dashboard]="dashboard"
+    [modalName]="'Editing dashboard'"
+    (save)="updateDashboard($event)"
+    (closeModal)="isEditing = !isEditing">
+</app-add-dashboard>

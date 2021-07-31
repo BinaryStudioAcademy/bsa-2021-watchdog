@@ -52,7 +52,8 @@
 
 <app-add-dashboard
     *ngIf="displayModal"
-    (dashboardCreated)="addDashboard($event)"
+    [modalName]="'Creating new dashboard'"
+    (save)="addDashboard($event)"
     (closeModal)="displayModal = !displayModal">
 </app-add-dashboard>
 

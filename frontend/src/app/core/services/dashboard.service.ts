@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Dashboard } from '@shared/models/Dashboard';
+import { Dashboard } from '@shared/models/dashboard/Dashboard';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
@@ -73,5 +73,13 @@ export class DashboardService {
 
     public addDashboard(dashboard: Dashboard): void {
         this.dashboards.push(dashboard);
+    }
+
+    public updateDashboard(dashboard: Dashboard): Dashboard {
+        console.log('-------');
+        console.log(dashboard);
+        const key = this.dashboards.findIndex(el => el.name === dashboard.name);
+        this.dashboards[key] = dashboard;
+        return this.dashboards[key];
     }
 }
