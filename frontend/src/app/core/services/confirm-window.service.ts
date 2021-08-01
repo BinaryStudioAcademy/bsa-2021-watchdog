@@ -1,15 +1,10 @@
 import { ComponentFactoryResolver, ComponentRef, Injectable } from '@angular/core';
-import { ButtonOptions } from '@shared/models/button-options';
-import { ConfirmationService, PrimeIcons } from 'primeng/api';
-
+import { ButtonOptions } from '@shared/models/confirm-window/button-options';
+import { ClickFunction, ConfirmOptions } from '@shared/models/confirm-window/confirm-options';
+import { DefaultConfirmOptions } from '@shared/models/confirm-window/default-button-options.const';
+import { ConfirmationService } from 'primeng/api';
 import { ConfirmWindowComponent } from '../components/confirm-window/confirm-window.component';
 import { HelperService } from './helper.service';
-
-const DEFAULT_VISIBLE = true;
-const DEFAULT_ACCEPT = 'Accept';
-const DEFAULT_CANCEL = 'Cancel';
-const DEFAULT_CLASS = 'p-button-primary';
-const DEFAULT_ICON = PrimeIcons.INFO_CIRCLE;
 
 @Injectable({
     providedIn: 'root',
@@ -23,52 +18,38 @@ export class ConfirmWindowService {
         private componentFactoryResolver: ComponentFactoryResolver
     ) { }
 
-    /**Creates confirmation window
-     * @param title title of the window
-     * @param message message of window
-     * @param icon default: INFO_CIRCLE, icon before message text
-     * @param isClosable default: false, can be closed by esc or close mark
-     * @param acceptButton default: visible, accept button options
-     * @param cancelButton default: visible, cancel button options
-     * @param accept function, that invokes after accept button click
-     * @param cancel function, that invokes after cancel button click
-     */
-    confirm(options: {
-        title: string,
-        message: string,
-        icon?: string,
-        isClosable?: boolean,
-        accept?: Function,
-        cancel?: Function,
-        acceptButton?: ButtonOptions,
-        cancelButton?: ButtonOptions,
-    }): void {
+    confirm(options: ConfirmOptions): void {
         this.createConfirmWindow();
 
-        const confirmButton = options.acceptButton ?? {};
-        const decelineButton = options.cancelButton ?? {};
+        const confirmButton = this.createButtonOptionsUsingExists(
+            DefaultConfirmOptions.DEFAULT_ACCEPT,
+            options.acceptButton ?? {}
+        );
+        const decelineButton = this.createButtonOptionsUsingExists(
+            DefaultConfirmOptions.DEFAULT_CANCEL,
+            options.acceptButton ?? {}
+        );
+
         this.confirmWindowRef.instance.isClosable = options.isClosable;
 
         this.confirmationService.confirm({
             header: options.title,
             message: options.message,
-            icon: options.icon ?? DEFAULT_ICON,
+            icon: options.icon ?? DefaultConfirmOptions.DEFAULT_ICON,
             closeOnEscape: options.isClosable,
-            acceptVisible: confirmButton.isVisible ?? DEFAULT_VISIBLE,
-            rejectVisible: decelineButton.isVisible ?? DEFAULT_VISIBLE,
-            acceptLabel: confirmButton.label ?? DEFAULT_ACCEPT,
-            rejectLabel: decelineButton.label ?? DEFAULT_CANCEL,
-            acceptButtonStyleClass: confirmButton.class ?? DEFAULT_CLASS,
-            rejectButtonStyleClass: decelineButton.class ?? DEFAULT_CLASS,
-            acceptIcon: confirmButton.icon ?? '',
-            rejectIcon: decelineButton.icon ?? '',
+            acceptVisible: confirmButton.isVisible,
+            rejectVisible: decelineButton.isVisible,
+            acceptLabel: confirmButton.label,
+            rejectLabel: decelineButton.label,
+            acceptButtonStyleClass: confirmButton.class,
+            rejectButtonStyleClass: decelineButton.class,
+            acceptIcon: confirmButton.icon,
+            rejectIcon: decelineButton.icon,
             accept: () => {
-                options.accept?.call(this);
-                this.destroyConfirmWindow();
+                this.invokeAction(options.accept);
             },
             reject: () => {
-                options.cancel?.call(this);
-                this.destroyConfirmWindow();
+                this.invokeAction(options.cancel);
             }
         });
     }
@@ -76,6 +57,20 @@ export class ConfirmWindowService {
     /**Closes current dialog window without running cancel event*/
     closeCurrent(): void {
         this.confirmationService.close();
+        this.destroyConfirmWindow();
+    }
+
+    private createButtonOptionsUsingExists(label: string, options: ButtonOptions): ButtonOptions {
+        return {
+            isVisible: options.isVisible ?? DefaultConfirmOptions.DEFAULT_VISIBLE,
+            class: options.class ?? DefaultConfirmOptions.DEFAULT_CLASS,
+            icon: options.class ?? '',
+            label: options.label ?? label,
+        };
+    }
+
+    private invokeAction(func: ClickFunction): void {
+        if (func) func();
         this.destroyConfirmWindow();
     }
 
