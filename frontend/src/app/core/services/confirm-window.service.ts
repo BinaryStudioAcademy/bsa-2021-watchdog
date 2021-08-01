@@ -27,7 +27,7 @@ export class ConfirmWindowService {
         );
         const decelineButton = this.createButtonOptionsUsingExists(
             DefaultConfirmOptions.DEFAULT_CANCEL,
-            options.acceptButton ?? {}
+            options.cancelButton ?? {}
         );
 
         this.confirmWindowRef.instance.isClosable = options.isClosable;
