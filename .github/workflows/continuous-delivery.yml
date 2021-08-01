@@ -25,7 +25,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           tags: vobilyk/watchdog_core:latest
-          context: ./backend/Watchdog.Core
+          context: ./backend
+          file: ./backend/Watchdog.Core/Dockerfile
           build-args: PROJECT_PORT=5050
           push: true
           
