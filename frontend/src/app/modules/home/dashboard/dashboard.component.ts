@@ -23,7 +23,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.subscription = this.dataService.currentMessage
-            .subscribe((dashboard) => { this.dashboard = dashboard });
+            .subscribe((dashboard) => { this.dashboard = dashboard; });
 
         this.route.params.subscribe(params => {
             const { id } = params;
