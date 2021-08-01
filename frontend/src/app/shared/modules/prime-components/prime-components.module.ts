@@ -6,6 +6,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { ScrollTopModule } from 'primeng/scrolltop';
 import { ChipModule } from 'primeng/chip';
+import { MenuModule } from 'primeng/menu';
+import { AvatarModule } from 'primeng/avatar';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -15,19 +19,27 @@ import { ChipModule } from 'primeng/chip';
         InputTextModule,
         ToastModule,
         ScrollTopModule,
-        ChipModule
+        ChipModule,
+        MenuModule,
+        AvatarModule,
+        DropdownModule,
+        InputSwitchModule,
     ],
     exports: [
         ButtonModule,
         InputTextModule,
         ToastModule,
         ScrollTopModule,
-        ChipModule
+        ChipModule,
+        MenuModule,
+        AvatarModule,
+        DropdownModule,
+        InputSwitchModule,
     ],
     declarations: [],
     providers: [
         MessageService,
-        PrimeNGConfig
+        PrimeNGConfig,
     ]
 })
 export class PrimeComponentsModule {
