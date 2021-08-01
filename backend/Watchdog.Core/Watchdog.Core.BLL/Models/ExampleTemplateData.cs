@@ -2,30 +2,8 @@
 
 namespace Watchdog.Core.BLL.Models
 {
-
-    /* Current template
-        
-        Subject: {{subject}}
-
-        <html>
-        <head>
-            <title></title>
-        </head>
-        <body>
-        <style>
-            body {
-                background: yellow;
-            }
-        </style>
-        Hello {{name}},
-        <br /><br/>
-        I'm glad you are trying out the dynamic template feature!
-        <br /><br/>
-        I hope you are having a great day in {{city}} :)
-        <br /><br/>
-        </body>
-        </html>
-     */
+    // I used the basic sendgrid template, so the email is automatically sended in the promotions.
+    // To change template change it template id
     public class ExampleTemplateData
     {
         [JsonProperty("subject")]
