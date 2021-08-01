@@ -1,0 +1,13 @@
+<button class="collapse" (click)="menu.toggle($event)">
+    <div class="org-info">
+        <p-avatar label="BS"></p-avatar>
+        <div class="org-title ellipsis-text">
+            BINARY STUDIO ACADEMY
+        </div>
+        <span class="org-user ellipsis-text">
+            egor@gmail.com
+        </span>
+    </div>
+</button>
+<p-menu #menu [popup]="true" [model]="menuItems">
+</p-menu>
