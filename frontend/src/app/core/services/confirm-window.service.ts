@@ -64,7 +64,7 @@ export class ConfirmWindowService {
         return {
             isVisible: options.isVisible ?? DefaultConfirmOptions.DEFAULT_VISIBLE,
             class: options.class ?? DefaultConfirmOptions.DEFAULT_CLASS,
-            icon: options.class ?? '',
+            icon: options.icon ?? '',
             label: options.label ?? label,
         };
     }
