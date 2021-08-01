@@ -12,4 +12,19 @@ export class UserPasswordSettingsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  changePasswordVisibility(button: HTMLElement) {
+
+    let input: Element = button.previousElementSibling;
+    let icon: Element = button.firstElementChild;
+    let iconClass: string = 'pi pi pi-eye';
+    let inputType: string = 'password';
+
+    if (input.getAttribute('type') === "password") {
+      iconClass = 'pi pi-eye-slash';
+      inputType = 'text';
+    }
+      icon.setAttribute('class', iconClass)
+      input.setAttribute('type', inputType)
+  }
+
 }
