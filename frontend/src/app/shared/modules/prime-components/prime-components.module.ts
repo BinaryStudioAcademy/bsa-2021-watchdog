@@ -12,8 +12,8 @@ import { DialogModule } from 'primeng/dialog';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { PanelModule } from 'primeng/panel';
-import { RippleModule } from 'primeng/ripple'
-import {DropdownModule} from 'primeng/dropdown';
+import { RippleModule } from 'primeng/ripple';
+import { DropdownModule } from 'primeng/dropdown';
 
 // import and export here all required modules from primeng
 @NgModule({

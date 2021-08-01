@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DashboardService } from '@core/services/dashboard.service';
 import { NewDashboard } from '@shared/models/dashboard/NewDashboard';
