@@ -18,6 +18,13 @@
         </div>
 
         <div>
+            <button class="button" routerLink="teams" [routerLinkActive]="['active']">
+                <i class="pi pi-users"></i>
+                <span>Teams</span>
+            </button>
+        </div>
+
+        <div>
             <button class="button" (click)="dashboardsShown = !dashboardsShown">
                 <i class="pi pi-chart-line"></i>
                 <span>Dashboards</span>

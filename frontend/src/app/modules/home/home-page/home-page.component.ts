@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BroadcastHubService } from '@core/hubs/broadcast-hub.service';
-import { Dashboard } from '@shared/models/dashboard/Dashboard';
+import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { DashboardService } from '@core/services/dashboard.service';
 import { DataService } from '@core/services/share-data.service';
 import { Subscription } from 'rxjs';
-import { NewDashboard } from '@shared/models/dashboard/NewDashboard';
+import { NewDashboard } from '@shared/models/dashboard/new-dashboard';
 
 @Component({
     selector: 'app-home',

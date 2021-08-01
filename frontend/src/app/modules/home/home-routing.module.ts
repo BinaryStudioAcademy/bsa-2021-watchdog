@@ -6,6 +6,7 @@ import { ProjectsComponent } from '@modules/home/projects/projects.component';
 import { IssuesComponent } from '@modules/home/issues/issues.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home-page/home-page.component';
+import {TeamsComponent} from "@modules/home/teams/teams.component";
 
 const routes: Routes = [{
     path: '',
@@ -21,6 +22,9 @@ const routes: Routes = [{
         path: 'issues',
         component: IssuesComponent,
     }, {
+        path: 'teams',
+        component: TeamsComponent,
+    },{
         path: 'dashboard/:id',
         component: DashboardComponent,
     }, {

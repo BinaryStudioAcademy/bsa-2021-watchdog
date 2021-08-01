@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DashboardService } from '@core/services/dashboard.service';
-import { NewDashboard } from '@shared/models/dashboard/NewDashboard';
+import { NewDashboard } from '@shared/models/dashboard/new-dashboard';
 
 @Component({
     selector: 'app-add-dashboard',

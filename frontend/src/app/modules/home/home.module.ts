@@ -8,6 +8,7 @@ import { ProjectsComponent } from './projects/projects.component';
 import { IssuesComponent } from './issues/issues.component';
 import { AddDashboardComponent } from './modals/add-dashboard/add-dashboard.component';
 import { UpdateDashboardComponent } from './modals/update-dashboard/update-dashboard.component';
+import { TeamsComponent } from './teams/teams.component';
 
 @NgModule({
     declarations: [
@@ -17,6 +18,7 @@ import { UpdateDashboardComponent } from './modals/update-dashboard/update-dashb
         IssuesComponent,
         AddDashboardComponent,
         UpdateDashboardComponent,
+        TeamsComponent,
     ],
     imports: [
         SharedModule,
