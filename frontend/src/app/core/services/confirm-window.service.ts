@@ -45,12 +45,8 @@ export class ConfirmWindowService {
             rejectButtonStyleClass: decelineButton.class,
             acceptIcon: confirmButton.icon,
             rejectIcon: decelineButton.icon,
-            accept: () => {
-                this.invokeAction(options.accept);
-            },
-            reject: () => {
-                this.invokeAction(options.cancel);
-            }
+            accept: () => { this.invokeAction(options.accept); },
+            reject: () => { this.invokeAction(options.cancel); }
         });
     }
 
