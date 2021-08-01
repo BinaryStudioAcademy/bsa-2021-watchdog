@@ -98,7 +98,7 @@ namespace Watchdog.Core.API.Controllers
         public async Task<ActionResult<string>> EmailServiceTast([FromRoute] string email, [FromBody] ExampleTemplateData data)
         {
 
-            return Ok(await _emailSendService.Send(email, data));
+            return Ok(await _emailSendService.SendAsync(email, data));
         }
     }
 }
