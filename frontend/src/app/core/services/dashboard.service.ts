@@ -6,7 +6,7 @@ import { UpdateDashboard } from '@shared/models/dashboard/UpdateDashboard';
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
     //mock data
-    private readonly dashboards: Dashboard[];
+    private dashboards: Dashboard[];
 
     constructor() {
         //mock data
@@ -51,6 +51,11 @@ export class DashboardService {
     public addDashboard(newDashboard: NewDashboard): Dashboard {
         this.dashboards.push({ id: this.dashboards.length + 1, name: newDashboard.name, icon: newDashboard.icon });
         return this.dashboards[this.dashboards.length + 1];
+    }
+
+    public deleteDashboard(id: number): boolean {
+        this.dashboards = this.dashboards.filter(d => d.id !== id);
+        return true;
     }
 
     public updateDashboard(updateDashboard: UpdateDashboard): Dashboard {

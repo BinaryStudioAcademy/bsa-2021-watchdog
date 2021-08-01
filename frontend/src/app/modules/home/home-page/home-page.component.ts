@@ -13,36 +13,36 @@ import { NewDashboard } from '@shared/models/dashboard/NewDashboard';
 })
 export class HomeComponent implements OnInit, OnDestroy, OnChanges {
     dashboards: Dashboard[];
-    subscription: Subscription;
+    updateSubscription$: Subscription;
+    deleteSubscription$: Subscription;
     dashboardsShown: boolean = false;
     displayModal: boolean = false;
 
     constructor(
         private broadcastHub: BroadcastHubService,
         public dashboardService: DashboardService,
-        private dataService: DataService
+        private updateDataService: DataService<Dashboard>,
+        private deleteDataService: DataService<number>
     ) { }
 
     async ngOnInit() {
         this.dashboards = this.dashboardService.getAll();
 
-        this.subscription = this.dataService.currentMessage
+        this.updateSubscription$ = this.updateDataService.currentMessage
             .subscribe(dashboard => {
-                if (dashboard.id !== undefined) {
-                    const key = this.dashboards.findIndex(el => el.id === dashboard.id);
-                    this.dashboards[key] = dashboard;
-                }
+                const key = this.dashboards.findIndex(el => el.id === dashboard.id);
+                this.dashboards[key] = dashboard;
+            });
+
+        this.deleteSubscription$ = this.deleteDataService.currentMessage
+            .subscribe(id => {
+                this.dashboards = this.dashboards.filter(d => d.id !== id);
             });
 
         await this.broadcastHub.start();
         this.broadcastHub.listenMessages((msg) => {
             console.log(`The next broadcast message was received: ${msg}`);
         });
-    }
-
-    ngOnDestroy() {
-        this.broadcastHub.stop();
-        this.subscription.unsubscribe();
     }
 
     addDashboard(newDashboard: NewDashboard) {
@@ -52,5 +52,10 @@ export class HomeComponent implements OnInit, OnDestroy, OnChanges {
 
     ngOnChanges(): void {
         this.dashboards = this.dashboardService.getAll();
+    }
+
+    ngOnDestroy() {
+        this.broadcastHub.stop();
+        this.updateSubscription$.unsubscribe();
     }
 }

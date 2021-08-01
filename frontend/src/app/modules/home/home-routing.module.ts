@@ -12,7 +12,7 @@ const routes: Routes = [{
     component: HomeComponent,
     children: [{
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: 'projects',
         pathMatch: 'full',
     }, {
         path: 'projects',

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Dashboard } from '@shared/models/dashboard/Dashboard';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardService } from '@core/services/dashboard.service';
 import { DataService } from '@core/services/share-data.service';
 import { Subscription } from 'rxjs';
@@ -13,16 +13,18 @@ import { Subscription } from 'rxjs';
 export class DashboardComponent implements OnInit, OnDestroy {
     isEditing: boolean;
     dashboard: Dashboard;
-    subscription: Subscription;
+    updateSubscription$: Subscription;
 
     constructor(
         private route: ActivatedRoute,
+        private router: Router,
         private dashboardService: DashboardService,
-        private dataService: DataService
+        private updateDataService: DataService<Dashboard>,
+        private deleteDataService: DataService<number>
     ) { }
 
     ngOnInit(): void {
-        this.subscription = this.dataService.currentMessage
+        this.updateSubscription$ = this.updateDataService.currentMessage
             .subscribe((dashboard) => { this.dashboard = dashboard; });
 
         this.route.params.subscribe(params => {
@@ -34,10 +36,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
     updateDashboard(dashboard: Dashboard) {
         this.isEditing = false;
         this.dashboard = this.dashboardService.updateDashboard(dashboard);
-        this.dataService.changeMessage(this.dashboard);
+        this.updateDataService.changeMessage(this.dashboard);
+    }
+
+    deleteDashboard() {
+        if (this.dashboardService.deleteDashboard(this.dashboard.id)) {
+            this.router.navigate(['/home/projects']);
+        }
+        this.deleteDataService.changeMessage(this.dashboard.id);
     }
 
     ngOnDestroy(): void {
-        this.subscription.unsubscribe();
+        this.updateSubscription$.unsubscribe();
     }
 }
