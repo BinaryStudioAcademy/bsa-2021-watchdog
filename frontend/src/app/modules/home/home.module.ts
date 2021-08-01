@@ -1,14 +1,13 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
-import { ReactiveFormsModule } from '@angular/forms';
 
-import { PrimeComponentsModule } from '@shared/modules/prime-components/prime-components.module';
 import { HomeComponent } from './home-page/home-page.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeRoutingModule } from './home-routing.module';
 import { ProjectsComponent } from './projects/projects.component';
 import { IssuesComponent } from './issues/issues.component';
-import { AddDashboardComponent } from './add-dashboard/add-dashboard.component';
+import { AddDashboardComponent } from './modals/add-dashboard/add-dashboard.component';
+import { UpdateDashboardComponent } from './modals/update-dashboard/update-dashboard.component';
 
 @NgModule({
     declarations: [
@@ -17,12 +16,11 @@ import { AddDashboardComponent } from './add-dashboard/add-dashboard.component';
         ProjectsComponent,
         IssuesComponent,
         AddDashboardComponent,
+        UpdateDashboardComponent,
     ],
     imports: [
         SharedModule,
         HomeRoutingModule,
-        PrimeComponentsModule,
-        ReactiveFormsModule,
     ],
 })
 export class HomeModule { }

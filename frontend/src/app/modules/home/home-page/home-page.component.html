@@ -31,7 +31,7 @@
              *ngFor="let dashboard of dashboards">
             <button
                 class="button"
-                [routerLink]="['dashboard', dashboard.name]"
+                [routerLink]="['dashboard', dashboard.id]"
                 [routerLinkActive]="['active']">
                 <i class="pi {{dashboard.icon}}"></i>
                 <span>{{dashboard.name}}</span>
@@ -52,7 +52,6 @@
 
 <app-add-dashboard
     *ngIf="displayModal"
-    [modalName]="'Creating new dashboard'"
     (save)="addDashboard($event)"
     (closeModal)="displayModal = !displayModal">
 </app-add-dashboard>

@@ -21,7 +21,7 @@ const routes: Routes = [{
         path: 'issues',
         component: IssuesComponent,
     }, {
-        path: 'dashboard/:name',
+        path: 'dashboard/:id',
         component: DashboardComponent,
     }, {
         path: '**',

@@ -1,6 +1,7 @@
-import { Component, Output, EventEmitter, OnInit, Input } from '@angular/core';
-import { Dashboard } from '@shared/models/dashboard/Dashboard';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DashboardService } from '@core/services/dashboard.service';
+import { NewDashboard } from '@shared/models/dashboard/NewDashboard';
 
 @Component({
     selector: 'app-add-dashboard',
@@ -10,19 +11,17 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class AddDashboardComponent implements OnInit {
     public formGroup: FormGroup = {} as FormGroup;
     icons: string[];
-    @Input() dashboard: Dashboard = {} as Dashboard;
-    @Input() modalName: string;
     @Output() closeModal = new EventEmitter<void>();
-    @Output() save = new EventEmitter<Dashboard>();
+    @Output() save = new EventEmitter<NewDashboard>();
 
-    constructor() {
-        this.icons = ['pi-chart-bar', 'pi-chart-line'];
+    constructor(private dashboardService: DashboardService) {
+        this.icons = dashboardService.getIcons();
     }
 
     ngOnInit() {
         this.formGroup = new FormGroup({
             name: new FormControl(
-                this.dashboard.name,
+                '',
                 [
                     Validators.required,
                     Validators.minLength(5),
@@ -30,7 +29,7 @@ export class AddDashboardComponent implements OnInit {
                 ]
             ),
             icon: new FormControl(
-                this.dashboard.icon,
+                '',
                 [
                     Validators.required
                 ]
@@ -39,8 +38,7 @@ export class AddDashboardComponent implements OnInit {
     }
 
     saveHandle(): void {
-        const dashboard: Dashboard = <Dashboard> this.formGroup.value;
-        console.log(dashboard);
+        const dashboard: NewDashboard = <NewDashboard> this.formGroup.value;
         this.save.emit(dashboard);
     }
 }

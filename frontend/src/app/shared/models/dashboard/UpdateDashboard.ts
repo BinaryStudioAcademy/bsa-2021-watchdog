@@ -1,4 +1,4 @@
-export interface Dashboard {
+export interface UpdateDashboard {
     id: number,
     name: string,
     icon: string,

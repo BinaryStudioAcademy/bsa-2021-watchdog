@@ -13,10 +13,9 @@
     </div>
 </div>
 
-<app-add-dashboard
+<app-update-dashboard
     *ngIf="isEditing"
-    [dashboard]="dashboard"
-    [modalName]="'Editing dashboard'"
     (save)="updateDashboard($event)"
-    (closeModal)="isEditing = !isEditing">
-</app-add-dashboard>
+    (closeModal)="isEditing = !isEditing"
+    [dashboard]="dashboard">
+</app-update-dashboard>
