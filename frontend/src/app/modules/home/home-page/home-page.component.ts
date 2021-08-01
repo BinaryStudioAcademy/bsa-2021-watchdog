@@ -11,7 +11,7 @@ import { NewDashboard } from '@shared/models/dashboard/NewDashboard';
     templateUrl: './home-page.component.html',
     styleUrls: ['./home-page.component.sass']
 })
-export class HomeComponent implements OnInit, OnDestroy, OnChanges {
+export class HomeComponent implements OnInit, OnDestroy {
     dashboards: Dashboard[];
     updateSubscription$: Subscription;
     deleteSubscription$: Subscription;
@@ -48,10 +48,6 @@ export class HomeComponent implements OnInit, OnDestroy, OnChanges {
     addDashboard(newDashboard: NewDashboard) {
         this.displayModal = false;
         this.dashboardService.addDashboard(newDashboard);
-    }
-
-    ngOnChanges(): void {
-        this.dashboards = this.dashboardService.getAll();
     }
 
     ngOnDestroy() {
