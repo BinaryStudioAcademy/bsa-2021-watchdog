@@ -12,7 +12,8 @@ import { SocialsLoginComponent } from './socials-login/socials-login.component';
         SocialsLoginComponent,
     ],
     imports: [
-        SharedModule, AuthorizationRoutingModule
+        SharedModule,
+        AuthorizationRoutingModule
     ]
 })
 export class AuthorizationModule { }
