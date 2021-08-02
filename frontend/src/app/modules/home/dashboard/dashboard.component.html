@@ -1,1 +1,21 @@
-<p>dashboard works!</p>
+<div class="dashboard-header">
+    <div class="dashboard-name">
+        <h2>{{dashboard.name}}</h2>
+    </div>
+    <div class="action-buttons">
+        <button class="button delete-button" (click)="deleteDashboard()">
+            Delete
+        </button>
+
+        <button class="button edit-button" (click)="isEditing = true">
+            Edit
+        </button>
+    </div>
+</div>
+
+<app-update-dashboard
+    *ngIf="isEditing"
+    (save)="updateDashboard($event)"
+    (closeModal)="isEditing = !isEditing"
+    [dashboard]="dashboard">
+</app-update-dashboard>

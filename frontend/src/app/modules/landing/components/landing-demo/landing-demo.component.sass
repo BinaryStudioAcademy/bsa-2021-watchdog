@@ -1,0 +1,52 @@
+@import src/styles/mixins
+@import ../../common-styles/variables
+
+.demo-continer
+    background: url(https://kartinkin.com/uploads/posts/2021-04/1617607358_37-p-fon-tekhnicheskii-41.png) no-repeat
+    background-size: cover
+    padding: 70px
+
+.info
+    color: white
+    font-weight: bolder
+    padding: $indent
+
+.video
+    display: flex
+    justify-content: center
+    padding: $indent 0
+
+.title
+    display: block
+    font-size: 4rem
+
+
+.sub-title  
+    display: block
+    margin-top: $half-indent
+    line-height: 1.3rem
+
+.start-button
+    font-weight: bold
+    margin-top: $half-indent
+    background-color: white !important
+
+    &:hover
+        background-color: white !important
+
+
+@media screen and ( min-width: 1150px )
+    .demo-continer
+        display: grid
+        grid-template-columns: 1fr auto
+        height: 100vh
+        align-items: center
+
+@media screen and ( max-width: 1150px )
+    .demo-continer
+        display: grid
+        grid-template-rows: 1fr auto
+
+@include media-padding(".demo-continer")
+
+    

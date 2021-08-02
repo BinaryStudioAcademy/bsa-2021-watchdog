@@ -19,8 +19,8 @@ const routes: Routes = [
     },
     {
         path: 'signon',
-        loadChildren:()=> import('./modules/registration/registration.module')
-            .then(m=> m.RegistrationModule)
+        loadChildren: () => import('./modules/registration/registration.module')
+            .then(m => m.RegistrationModule)
     },
     { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

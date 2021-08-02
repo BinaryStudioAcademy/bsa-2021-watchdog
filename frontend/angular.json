@@ -122,7 +122,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.sass"
+              "src/styles/reset.css",
+              "src/styles/index.sass"
             ],
             "scripts": []
           }

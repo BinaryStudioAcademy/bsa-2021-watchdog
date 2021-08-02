@@ -1,0 +1,52 @@
+@import src/styles/mixins
+@import ../../common-styles/variables
+@import ../../common-styles/mixins
+    
+.header
+    display: grid
+    grid-template-columns: 3fr 7fr 3fr
+    align-items: center
+    grid-gap: $half-indent
+    background-color: rgba(255,255,255,0.8)
+
+.logo
+    display: flex
+    justify-content: center
+    img
+        display: block
+        width: 70%
+
+.links
+    display: flex
+    justify-content: center
+    grid-gap: $indent
+
+    a
+        text-decoration: none
+        color: #06769A
+        font-weight: bold
+        font-size: 1.3rem
+
+.buttons
+    display: flex
+    margin-right: $indent
+    grid-gap: $half-indent
+    justify-content: flex-end
+    white-space: nowrap
+
+    button
+        margin: 10px 0
+
+.sign-in-button
+    background-color: white !important
+
+    &:hover
+        background-color: white !important    
+
+@media screen and ( max-width: 1150px )
+    .header
+        display: grid
+        grid-template-columns: 7fr 3fr
+
+    .logo
+        display: none
