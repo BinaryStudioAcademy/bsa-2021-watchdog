@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Team} from "@shared/models/team/team";
+import {TeamService} from "@core/services/team.service";
 
 @Component({
   selector: 'app-user-teams',
@@ -9,7 +10,7 @@ import {Team} from "@shared/models/team/team";
 export class UserTeamsComponent implements OnInit {
     @Input() teams: Team[];
 
-    constructor() { }
+    constructor(public teamService: TeamService) { }
 
     ngOnInit(): void {
 

@@ -1,7 +1,22 @@
-<p-panel header="Your teams">
+<p-panel header="Other teams">
     <div class="teams">
         <div class="team" *ngFor="let team of teams">
-            <p>{{team.name}}</p>
+            <div class="team-info">
+                <div class="team-avatar">
+                    <p-avatar label="{{teamService.getLabel(team.name)}}"></p-avatar>
+                </div>
+                <div class="team-title">
+                    <div class="team-name">
+                        #{{team.name}}
+                    </div>
+                    <div class="team-members">
+                        {{team.members.length}} members
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button pButton pRipple type="button" label="Leave team" class="p-button-raised team-button" icon="pi pi-minus-circle"></button>
+            </div>
         </div>
     </div>
 </p-panel>

@@ -14,7 +14,11 @@
 
 ::ng-deep
     .p-panel
-        margin: 20px auto
+        font-family: "DM Sans", serif
+        font-size: 18px
+        margin: 20px 2rem
+        .p-panel-content
+            padding: 1rem 0
 
 .p-button-raised
     background-color: rgba(111, 26, 166, 1)
@@ -26,7 +30,6 @@
         background-color: rgba(111, 26, 166, 0.8)
 
 .teams
-    padding: 10px
     width: 100%
 
 .team
@@ -34,8 +37,10 @@
     flex-direction: row
     align-items: center
     justify-content: space-between
-    padding: 8px
+    padding: 15px
     margin: 4px 0
+    border-width: thin
+    border-top: 1px solid rgb(231, 225, 236)
 
 .team-info
     display: flex
@@ -47,9 +52,17 @@
     margin-left: 8px
     font-family: "DM Sans", serif
 
+.team-button
+    background-color: var(--green-300)
+    color: black
+    transition: 250ms
+    &:hover
+        background-color: var(--green-400)
+        color: black
+
 .team-name
     color: var(--indigo-500)
-    font-size: 1.3rem
+    font-size: 1.2rem
     margin-bottom: 6px
 
 .team-members
@@ -60,8 +73,8 @@
 
 .team-avatar
     display: flex
-    height: 3.2rem
-    width: 3.2rem
+    height: 3.1rem
+    width: 3.1rem
     justify-content: center
     align-items: center
     background-color: var(--pink-300)
