@@ -6,13 +6,8 @@ namespace Watchdog.Core.BLL.Models
     // To change template change it template id
     public class ExampleTemplateData
     {
-        [JsonProperty("subject")]
         public string Subject { get; set; }
-
-        [JsonProperty("name")]
         public string Name { get; set; }
-
-        [JsonProperty("city")]
         public string City { get; set; }
     }
 }
