@@ -18,7 +18,6 @@ import { MessageModule } from 'primeng/message';
 import { PanelModule } from 'primeng/panel';
 import { RippleModule } from 'primeng/ripple';
 import { DropdownModule } from 'primeng/dropdown';
-import { TabViewModule } from 'primeng/tabview';
 import { BadgeModule } from 'primeng/badge';
 
 // import and export here all required modules from primeng
@@ -42,7 +41,6 @@ import { BadgeModule } from 'primeng/badge';
         PanelModule,
         RippleModule,
         DropdownModule,
-        TabViewModule,
         BadgeModule
     ],
     exports: [
@@ -63,7 +61,6 @@ import { BadgeModule } from 'primeng/badge';
         PanelModule,
         RippleModule,
         DropdownModule,
-        TabViewModule,
         BadgeModule
     ],
     declarations: [],
