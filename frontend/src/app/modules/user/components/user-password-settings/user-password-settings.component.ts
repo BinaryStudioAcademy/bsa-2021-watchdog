@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { User } from '@core/models/user';
 import { AuthService } from '@core/services/auth.service';
 import { UserService } from '@core/services/user.service';
-import { Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -11,8 +10,8 @@ import { take } from 'rxjs/operators';
     templateUrl: './user-password-settings.component.html',
     styleUrls: ['./user-password-settings.component.sass']
 })
-export class UserPasswordSettingsComponent implements OnInit {
 
+export class UserPasswordSettingsComponent implements OnInit {
     public user = {} as User;
 
     changePasswordForm: FormGroup;
@@ -32,27 +31,24 @@ export class UserPasswordSettingsComponent implements OnInit {
     }
 
     submit(editForm) {
-        this.user.password = editForm.value.newPassword
+        this.user.password = editForm.value.newPassword;
         this.userService.updateUser(this.user)
             .pipe(take(1))
             .subscribe(updatedUser =>
-                this.authService.setUser(updatedUser)
-            );
+                this.authService.setUser(updatedUser));
     }
 
     changePasswordVisibility(button: HTMLElement) {
-
-        let input: Element = button.previousElementSibling;
-        let icon: Element = button.firstElementChild;
+        const input: Element = button.previousElementSibling;
+        const icon: Element = button.firstElementChild;
         let iconClass: string = 'pi pi pi-eye';
         let inputType: string = 'password';
 
-        if (input.getAttribute('type') === "password") {
+        if (input.getAttribute('type') === 'password') {
             iconClass = 'pi pi-eye-slash';
             inputType = 'text';
         }
-        icon.setAttribute('class', iconClass)
-        input.setAttribute('type', inputType)
+        icon.setAttribute('class', iconClass);
+        input.setAttribute('type', inputType);
     }
-
 }
