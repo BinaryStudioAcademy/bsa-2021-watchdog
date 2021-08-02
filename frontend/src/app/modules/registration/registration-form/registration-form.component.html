@@ -21,21 +21,21 @@
     </div>
     <div class="reg-block">
         <span class="p-float-label">
-            <p-dropdown [options]="roles" name="roles" id="float-input-role" [(ngModel)]="user.role" [style]="inputStyle" placeholder=" " [showClear]="true" optionValue="code" optionLabel="name"></p-dropdown>
+            <p-dropdown [options]="roles" name="roles" id="float-input-role" [(ngModel)]="user.role" placeholder=" " [showClear]="true" optionValue="code" optionLabel="name"></p-dropdown>
             <label for="float-input-role">Role</label>
         </span>
         <span class="p-float-label">
-            <p-dropdown [options]="companySize" name="companySize" id="float-input-comp-size" [(ngModel)]="user.companySize" [style]="inputStyle" placeholder=" " [showClear]="true" optionValue="code" optionLabel="name"></p-dropdown>
+            <p-dropdown [options]="companySize" name="companySize" id="float-input-comp-size" [(ngModel)]="user.companySize"  placeholder=" " [showClear]="true" optionValue="code" optionLabel="name"></p-dropdown>
             <label for="float-input-comp-size">Company size</label>
         </span>
     </div>
     <div class="reg-block">
         <span class="p-float-label">
-            <p-password id="float-input-pass" name="password" [style]="inputStyle" [(ngModel)]="user.password" [inputStyle]="inputStyle" [feedback]="false" [toggleMask]="true"></p-password>
+            <p-password id="float-input-pass" name="password" [(ngModel)]="user.password" [feedback]="false" [toggleMask]="true"></p-password>
             <label for="float-input-role">Password</label>
         </span>
         <span class="p-float-label">
-            <p-password id="float-input-pass" name="confirm-password" [style]="inputStyle" [(ngModel)]="confirmPassword" [inputStyle]="inputStyle" [feedback]="false" [toggleMask]="true"></p-password>
+            <p-password id="float-input-pass" name="confirm-password" [(ngModel)]="confirmPassword"  [feedback]="false" [toggleMask]="true"></p-password>
             <label for="float-input-role">Confirm password</label>
         </span>
     </div>
@@ -46,8 +46,8 @@
         </span>
     </div>
     <div class="reg-block">
-        <span class="submit-button">
-            <p-button label="Submit" [style]="{'width':'100%'}"></p-button>
+        <span>
+            <button pButton class="submit-button" label="Submit"></button>
         </span>
     </div>
 </form>

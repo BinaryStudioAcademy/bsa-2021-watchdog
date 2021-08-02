@@ -8,11 +8,6 @@ import { UserSignOnDto } from '@core/models/registration/UserSignOnDto';
     styleUrls: ['./registration-form.component.sass']
 })
 export class RegistrationFormComponent implements OnInit {
-    public inputStyle = {
-        width: '300px',
-        height: '40px'
-    };
-
     public roles : Option[];
     public companySize : Option[];
     public user = {} as UserSignOnDto;
