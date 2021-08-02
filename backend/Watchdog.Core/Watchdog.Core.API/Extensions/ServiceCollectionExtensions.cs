@@ -46,5 +46,18 @@ namespace Watchdog.Core.API.Extensions
                     connectionsString,
                     opt => opt.MigrationsAssembly(typeof(WatchdogCoreContext).Assembly.GetName().Name)));
         }
+
+
+        public static void AddEmailSendService(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddScoped<IEmailSendService, EmailSendService>(provider => new EmailSendService(new BLL.Services.Options.EmailSendOptions
+            {
+                ApiKey = configuration["SENDGRID_API_KEY"], // you need to add SENDGRID_API_KEY to yours environment variables
+                SenderEmail = configuration["SendGridConfiguration:SenderEmail"],
+                SenderName = configuration["SendGridConfiguration:SenderName"],
+                TemplateId = configuration["SendGridConfiguration:TemplateId"],  // templates you can create on sendgrid site
+                                                                                  // for this template automatically sended in the promotions.
+            }));
+        }
     }
 }
