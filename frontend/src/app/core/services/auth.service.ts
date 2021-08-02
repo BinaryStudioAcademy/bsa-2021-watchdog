@@ -16,6 +16,7 @@ export class AuthService {
     public currentUser: Observable<AuthUser>;
 
     constructor(private http: HttpClient) {
+        this.clearUser();
         this.currentUserSubject = new BehaviorSubject<AuthUser>(JSON.parse(localStorage.getItem('currentUser')));
         this.currentUser = this.currentUserSubject.asObservable();
     }
@@ -51,11 +52,11 @@ export class AuthService {
         return !!this.currentUserSubject.value;
     }
 
-    public getUser(): User{
-        return this.currentUserSubject.value.user;
+    public getUser(): User {
+        return this.currentUserSubject.value?.user;
     }
 
-    public setUser(user: User){
+    public setUser(user: User) {
         this.currentUserSubject.value.user = user;
         localStorage.setItem('currentUser', JSON.stringify(user));
     }

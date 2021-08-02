@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { User } from '@core/models/user';
 import { AuthService } from '@core/services/auth.service';
+import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { UserService } from '@core/services/user.service';
-import { Subject } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -13,41 +13,41 @@ import { take } from 'rxjs/operators';
 })
 export class UserProfileSettingsComponent implements OnInit {
 
-    public user = {
-        id: 0,
-        email: 'test@test',
-        password: 'das',
-        firstName: 'test',
-        lastName: 'test'
-    } as User;
-    private unsubscribe$ = new Subject<void>();
+    public user = {} as User;
+    userName: string;
+    userEmail: string;
 
-    editProfileForm = new FormGroup(
-        {
-            firstName: new FormControl(this.user?.firstName),
-            lastName: new FormControl(this.user?.lastName),
-            email: new FormControl(this.user?.email)
-        }
-    );
+    editProfileForm: FormGroup;
 
-    constructor(private authService: AuthService, private userService: UserService) {
-        this.authService.login({ email: 'test@test', password: 'test' }).subscribe();
+    constructor(private authService: AuthService, private userService: UserService, private toastNotificationService: ToastNotificationService) {
+        this.authService.login({email:'test@test', password:'test'}).subscribe(()=> this.user = this.authService.getUser())
+        this.editProfileForm = new FormGroup(
+            {
+                firstName: new FormControl(this.user?.firstName),
+                lastName: new FormControl(this.user?.lastName),
+                email: new FormControl(this.user?.email)
+            }
+        );
     }
 
     ngOnInit(): void {
-        this.user = this.authService.getUser();
     }
 
     submit(editForm) {
-        console.log(this.editProfileForm.controls['firstName'].valid)
-        // this.user.email = editForm.value.email
-        // this.user.firstName = editForm.value.firstName
-        // this.user.lastName = editForm.value.lastName
-        // this.userService.updateUser(this.user)
-        //     .pipe(take(1))
-        //     .subscribe(updatedUser =>
-        //         this.authService.setUser(updatedUser)
-        //     );
+        this.user.password = editForm.value.password
+        this.userService.updateUser(this.user)
+            .pipe(take(1))
+            .subscribe(updatedUser => {
+                this.authService.setUser(updatedUser);
+                this.updateInfo();
+                this.toastNotificationService.success('Information has been updated');
+            });
+        ;
     }
 
+    updateInfo() {
+        this.user = this.authService.getUser();
+        this.userName = this.user.firstName + ' ' + this.user.lastName;
+        this.userEmail = this.user.email;
+    }
 }
