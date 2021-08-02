@@ -1,13 +1,14 @@
 <div class="org-label" (click)="menu.toggle($event)">
-    <div class="org-info">
-        <p-avatar label="BS"></p-avatar>
-        <div class="org-title">
-            <div>
-                <span class="ellipsis-text">BINARY STUDIO ACADEMY</span>
-            </div>
-            <div class="org-user">
-                <span class="ellipsis-text">egor@gmail.com</span>
-            </div>
+    <div class="org-avatar">
+        <p-avatar size="large" *ngIf="organization?.avatarUrl" [image]="organization.avatarUrl"></p-avatar>
+        <p-avatar size="large" *ngIf="!organization?.avatarUrl" [label]="organization?.name"></p-avatar>
+    </div>
+    <div class="org-title">
+        <div class="org-name text-ellipsis">
+            {{organization?.name}}
+        </div>
+        <div class="org-user text-ellipsis">
+            egor@gmail.com
         </div>
     </div>
 </div>

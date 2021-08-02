@@ -1,19 +1,23 @@
 .settings-container
     width: 100%
     margin-left: auto
+    color: var(--text-color)
+    font-family: var(--font-family)
 
 .settings-title
     font-size: 2em
 
 .container
-    box-shadow: 0 0px 1px black
+    box-shadow: 0 0 3px var(--primary-color)
     margin: 1em 0
 
 .header
     font-size: 1.5em
+    font-weight: 500
     padding: 10px
-    border-bottom: 1px solid grey
-    background-color: #faf9fb
+    box-shadow: 0 0 2px var(--primary-color)
+    color: var(--primary-color-text)
+    background-color: var(--primary-color)
 
 .content
     padding: 10px
@@ -24,7 +28,7 @@
 
 .definition
     width:50%
-    font-size: 1.1em
+    font-size: 1.2em
     margin-right: .5em
 
 .field
@@ -32,9 +36,10 @@
     margin-left: .5em
 
 .sub-text
-    font-size: .8em
+    font-size: .7em
     margin-top: .2em
-    color: grey
+    color: var(--text-secondary-color)
+    opacity: 70%
 
 :host
     ::ng-deep .field.p-dropdown
