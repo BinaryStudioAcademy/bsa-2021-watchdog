@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UserLoginDto } from '@core/models/auth/user-login';
 
 @Component({
     selector: 'app-login-form',
@@ -6,10 +7,6 @@ import { Component } from '@angular/core';
     styleUrls: ['./login-form.component.sass']
 })
 export class LoginFormComponent {
-    public isChecked : boolean;
-    public email : String;
-
-    constructor() {
-        this.isChecked = false;
-    }
+    public rememberMe : boolean;
+    public user = {} as UserLoginDto;
 }
