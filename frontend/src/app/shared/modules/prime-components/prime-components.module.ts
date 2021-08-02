@@ -14,6 +14,8 @@ import { MessageModule } from 'primeng/message';
 import { PanelModule } from 'primeng/panel';
 import { RippleModule } from 'primeng/ripple';
 import { DropdownModule } from 'primeng/dropdown';
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -31,7 +33,9 @@ import { DropdownModule } from 'primeng/dropdown';
         MessageModule,
         PanelModule,
         RippleModule,
-        DropdownModule
+        DropdownModule,
+        AvatarModule,
+        AvatarGroupModule
     ],
     exports: [
         ButtonModule,
@@ -46,7 +50,9 @@ import { DropdownModule } from 'primeng/dropdown';
         MessageModule,
         PanelModule,
         RippleModule,
-        DropdownModule
+        DropdownModule,
+        AvatarModule,
+        AvatarGroupModule
     ],
     declarations: [],
     providers: [
