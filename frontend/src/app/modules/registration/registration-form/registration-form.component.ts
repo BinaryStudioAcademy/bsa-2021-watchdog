@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Option } from '@core/models/Option';
-import { UserSignOnDto } from '@core/models/registration/userSignOnDto';
+import { UserSignOnDto } from '@core/models/registration/UserSignOnDto';
 
 @Component({
     selector: 'app-registration-form',
