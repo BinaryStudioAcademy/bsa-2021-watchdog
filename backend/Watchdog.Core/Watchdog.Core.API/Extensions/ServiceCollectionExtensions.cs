@@ -49,10 +49,10 @@ namespace Watchdog.Core.API.Extensions
             services.AddScoped<IEmailSendService, EmailSendService>(provider => new EmailSendService(new BLL.Services.Options.EmailSendOptions
             {
                 ApiKey = configuration["SENDGRID_API_KEY"], // you need to add SENDGRID_API_KEY to yours environment variables
-                SenderEmail = "bsa2021watchdog@gmail.com",
-                SenderName = "BSA Watchdog",
-                TemplateId = "d-b91491f5b66b47a48fd38f8365e4e075"  // templates you can create on sendgrid site
-                                                                   // for this template automatically sended in the promotions.
+                SenderEmail = configuration["SendGridConfiguration:SenderEmail"],
+                SenderName = configuration["SendGridConfiguration:SenderName"],
+                TemplateId = configuration["SendGridConfiguration:TemplateId"],  // templates you can create on sendgrid site
+                                                                                  // for this template automatically sended in the promotions.
             }));
         }
     }
