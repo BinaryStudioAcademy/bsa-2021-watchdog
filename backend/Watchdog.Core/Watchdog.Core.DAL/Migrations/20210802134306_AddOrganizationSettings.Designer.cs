@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Watchdog.Core.DAL.Context;
 
 namespace Watchdog.Core.DAL.Migrations
 {
     [DbContext(typeof(WatchdogCoreContext))]
-    partial class WatchdogCoreContextModelSnapshot : ModelSnapshot
+    [Migration("20210802134306_AddOrganizationSettings")]
+    partial class AddOrganizationSettings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -800,9 +802,6 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<int>("DefaultRoleId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -826,10 +825,9 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            AvatarUrl = "https://picsum.photos/250/250/?image=319",
-                            CreatedAt = new DateTime(2020, 10, 27, 4, 1, 42, 509, DateTimeKind.Unspecified).AddTicks(6365),
-                            CreatedBy = 14,
-                            DefaultRoleId = 4,
+                            AvatarUrl = "https://picsum.photos/250/250/?image=706",
+                            CreatedAt = new DateTime(2020, 3, 10, 0, 59, 36, 372, DateTimeKind.Unspecified).AddTicks(8784),
+                            CreatedBy = 6,
                             Name = "Oberbrunner, Lebsack and Collier",
                             OpenMembership = false,
                             OrganizationSlug = "doloribus"
@@ -837,46 +835,42 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 2,
-                            AvatarUrl = "https://picsum.photos/250/250/?image=52",
-                            CreatedAt = new DateTime(2021, 1, 7, 22, 2, 16, 309, DateTimeKind.Unspecified).AddTicks(4029),
-                            CreatedBy = 15,
-                            DefaultRoleId = 4,
-                            Name = "Beer LLC",
+                            AvatarUrl = "https://picsum.photos/250/250/?image=715",
+                            CreatedAt = new DateTime(2021, 6, 14, 9, 16, 14, 757, DateTimeKind.Unspecified).AddTicks(9149),
+                            CreatedBy = 13,
+                            Name = "Dicki - Beer",
                             OpenMembership = false,
-                            OrganizationSlug = "ex"
+                            OrganizationSlug = "commodi"
                         },
                         new
                         {
                             Id = 3,
-                            AvatarUrl = "https://picsum.photos/250/250/?image=41",
-                            CreatedAt = new DateTime(2020, 11, 28, 3, 22, 46, 820, DateTimeKind.Unspecified).AddTicks(713),
+                            AvatarUrl = "https://picsum.photos/250/250/?image=753",
+                            CreatedAt = new DateTime(2020, 5, 13, 19, 24, 48, 664, DateTimeKind.Unspecified).AddTicks(4853),
                             CreatedBy = 6,
-                            DefaultRoleId = 3,
-                            Name = "Murray LLC",
-                            OpenMembership = true,
-                            OrganizationSlug = "est"
+                            Name = "Pfeffer Inc",
+                            OpenMembership = false,
+                            OrganizationSlug = "qui"
                         },
                         new
                         {
                             Id = 4,
-                            AvatarUrl = "https://picsum.photos/250/250/?image=631",
-                            CreatedAt = new DateTime(2020, 11, 2, 5, 50, 23, 307, DateTimeKind.Unspecified).AddTicks(1008),
-                            CreatedBy = 7,
-                            DefaultRoleId = 4,
-                            Name = "Okuneva and Sons",
-                            OpenMembership = false,
-                            OrganizationSlug = "dicta"
+                            AvatarUrl = "https://picsum.photos/250/250/?image=715",
+                            CreatedAt = new DateTime(2019, 9, 6, 8, 28, 5, 134, DateTimeKind.Unspecified).AddTicks(3595),
+                            CreatedBy = 10,
+                            Name = "Hammes Inc",
+                            OpenMembership = true,
+                            OrganizationSlug = "eaque"
                         },
                         new
                         {
                             Id = 5,
-                            AvatarUrl = "https://picsum.photos/250/250/?image=332",
-                            CreatedAt = new DateTime(2021, 1, 2, 9, 40, 40, 506, DateTimeKind.Unspecified).AddTicks(7949),
-                            CreatedBy = 13,
-                            DefaultRoleId = 2,
-                            Name = "Watsica, Bartell and Balistreri",
+                            AvatarUrl = "https://picsum.photos/250/250/?image=929",
+                            CreatedAt = new DateTime(2021, 6, 27, 10, 4, 8, 342, DateTimeKind.Unspecified).AddTicks(7723),
+                            CreatedBy = 19,
+                            Name = "Gutmann - Hermiston",
                             OpenMembership = false,
-                            OrganizationSlug = "dolorum"
+                            OrganizationSlug = "est"
                         });
                 });
 
