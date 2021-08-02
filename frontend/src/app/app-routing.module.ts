@@ -14,6 +14,16 @@ const routes: Routes = [
             .then(m => m.HomeModule),
     },
     {
+        path: 'signin',
+        loadChildren: () => import('./modules/authorization/authorization.module')
+            .then(m => m.AuthorizationModule)
+    },
+    {
+        path: 'signon',
+        loadChildren: () => import('./modules/registration/registration.module')
+            .then(m => m.RegistrationModule)
+    },
+    {
         path: 'user',
         canActivate: [AuthGuard],
         loadChildren: () => import('./modules/user/user.module')

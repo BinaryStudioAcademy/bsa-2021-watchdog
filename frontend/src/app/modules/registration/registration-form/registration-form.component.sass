@@ -1,0 +1,42 @@
+.reg-form
+    display: flex
+    flex-direction: column
+    grid-gap: 30px
+
+.reg-block
+    display: flex
+    flex-direction: row
+    justify-content: center
+    align-items: center
+    flex-wrap: wrap
+    grid-gap: 30px
+    
+.reg-block input
+    width: 300px
+
+.remember-check
+    margin: 5px
+
+.p-field-checkbox
+    display: flex
+    align-items: center
+    grid-gap: 10px
+
+.password-inp
+    width: 300px
+    height: 40px
+
+:host ::ng-deep 
+    .p-password input,
+    .p-dropdown
+        width: 300px
+        height: 40px
+
+.p-field-checkbox,    
+.submit-button
+    width: 630px
+
+@media screen and ( max-width: 900px)
+    .p-field-checkbox,
+    .submit-button
+        width: 300px

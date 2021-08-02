@@ -1,0 +1,17 @@
+<div class="reg-wrapper">
+    <div class="reg-header">
+        <div class="reg-logo">
+            <div class="logo">
+                <img src="assets/logo.svg" alt="logo"  [routerLink]="['/']">
+            </div>
+        </div>
+        <div class="signin-wrapper">
+            <span>Already have an account?</span>
+            <button pButton pRipple type="button" [routerLink]="['/signin']" label="Sign In" class="signin p-button-raised"></button>
+        </div>
+    </div>
+    <div class="content-wrapper">
+        <div class="free-start">Get started</div>
+        <app-registration-form></app-registration-form>
+    </div>
+</div>
