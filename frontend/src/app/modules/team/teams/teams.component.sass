@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap')
+
+.teams-header
+    width: 100%
+    min-height: 60px
+    padding: 5px
+    display: flex
+    flex-direction: row
+    align-items: center
+    justify-content: space-between
+    .header-name
+        font-size: 20px
+        font-weight: 480
+
+::ng-deep
+    .p-panel
+        margin: 20px auto
+
+.p-button-raised
+    background-color: rgba(111, 26, 166, 1)
+    border: none
+    box-shadow: none
+    font-family: "DM Sans", serif
+    font-weight: 520
+    &:hover
+        background-color: rgba(111, 26, 166, 0.8)
+
+.teams
+    padding: 10px
+    width: 100%
+
+.team
+    display: flex
+    flex-direction: row
+    align-items: center
+    justify-content: space-between
+    padding: 8px
+    margin: 4px 0
+
+.team-info
+    display: flex
+    flex-direction: row
+    align-items: center
+    cursor: pointer
+
+.team-title
+    margin-left: 8px
+    font-family: "DM Sans", serif
+
+.team-name
+    color: var(--indigo-500)
+    font-size: 1.3rem
+    margin-bottom: 6px
+
+.team-members
+    color: var(--bluegray-600)
+
+.team-members
+    font-size: 1rem
+
+.team-avatar
+    display: flex
+    height: 3.2rem
+    width: 3.2rem
+    justify-content: center
+    align-items: center
+    background-color: var(--pink-300)
+    border-radius: 3px
+
+::ng-deep
+    .p-avatar
+        background-color: var(--pink-300)
+    .p-avatar-text
+        font-family: "DM Sans", serif
+        font-size: 2em
+        font-weight: 340
+        color: #FFFFFF
+
+
+

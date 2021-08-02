@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { ProjectsComponent } from '@modules/home/projects/projects.component';
-import { TeamsComponent } from '@modules/home/teams/teams.component';
 import { IssuesComponent } from '@modules/home/issues/issues.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home-page/home-page.component';
@@ -23,7 +22,8 @@ const routes: Routes = [{
         component: IssuesComponent,
     }, {
         path: 'teams',
-        component: TeamsComponent,
+        loadChildren: () => import('../team/team.module')
+            .then(m => m.TeamModule),
     }, {
         path: 'dashboard/:id',
         component: DashboardComponent,
