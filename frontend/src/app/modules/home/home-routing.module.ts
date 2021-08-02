@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { OrganizationSettingsComponent } from './organization/organization-settings/organization-settings.component';
+import { ProjectsComponent } from '@modules/home/projects/projects.component';
+import { IssuesComponent } from '@modules/home/issues/issues.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home-page/home-page.component';
 
@@ -11,10 +13,16 @@ const routes: Routes = [{
     component: HomeComponent,
     children: [{
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: 'projects',
         pathMatch: 'full',
     }, {
-        path: 'dashboard',
+        path: 'projects',
+        component: ProjectsComponent,
+    }, {
+        path: 'issues',
+        component: IssuesComponent,
+    }, {
+        path: 'dashboard/:id',
         component: DashboardComponent,
     }, {
         path: 'settings',

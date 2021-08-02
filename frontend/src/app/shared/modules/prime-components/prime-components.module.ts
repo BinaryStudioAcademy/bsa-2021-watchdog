@@ -10,6 +10,13 @@ import { MenuModule } from 'primeng/menu';
 import { AvatarModule } from 'primeng/avatar';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { SidebarModule } from 'primeng/sidebar';
+import { DialogModule } from 'primeng/dialog';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
+import { PanelModule } from 'primeng/panel';
+import { RippleModule } from 'primeng/ripple';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -17,6 +24,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
         CommonModule,
         ButtonModule,
         InputTextModule,
+        PanelMenuModule,
+        SidebarModule,
         ToastModule,
         ScrollTopModule,
         ChipModule,
@@ -24,10 +33,18 @@ import { InputSwitchModule } from 'primeng/inputswitch';
         AvatarModule,
         DropdownModule,
         InputSwitchModule,
+        DialogModule,
+        MessagesModule,
+        MessageModule,
+        PanelModule,
+        RippleModule,
     ],
     exports: [
         ButtonModule,
         InputTextModule,
+        PanelMenuModule,
+        SidebarModule,
+        DialogModule,
         ToastModule,
         ScrollTopModule,
         ChipModule,
@@ -35,6 +52,10 @@ import { InputSwitchModule } from 'primeng/inputswitch';
         AvatarModule,
         DropdownModule,
         InputSwitchModule,
+        MessagesModule,
+        MessageModule,
+        PanelModule,
+        RippleModule,
     ],
     declarations: [],
     providers: [

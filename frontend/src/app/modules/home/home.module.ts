@@ -8,6 +8,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeRoutingModule } from './home-routing.module';
 import { MembershipSettingsComponent } from './organization/organization-settings/membership-settings/membership-settings.component';
 import { OrganizationMenuComponent } from './organization/organization-menu/organization-menu.component';
+import { ProjectsComponent } from './projects/projects.component';
+import { IssuesComponent } from './issues/issues.component';
+import { AddDashboardComponent } from './modals/add-dashboard/add-dashboard.component';
+import { UpdateDashboardComponent } from './modals/update-dashboard/update-dashboard.component';
 
 @NgModule({
     declarations: [
@@ -16,11 +20,15 @@ import { OrganizationMenuComponent } from './organization/organization-menu/orga
         OrganizationMenuComponent,
         OrganizationSettingsComponent,
         MembershipSettingsComponent,
-        GeneralSettingsComponent
+        GeneralSettingsComponent,
+        ProjectsComponent,
+        IssuesComponent,
+        AddDashboardComponent,
+        UpdateDashboardComponent,
     ],
     imports: [
         SharedModule,
-        HomeRoutingModule
+        HomeRoutingModule,
     ],
 })
 export class HomeModule { }

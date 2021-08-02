@@ -2,8 +2,8 @@ version: '3.8'
 services:
   watchdog_core:
     build:
-      context: ./backend/Watchdog.Core
-      dockerfile: Dockerfile
+      context: ./backend
+      dockerfile: ./Watchdog.Core/Dockerfile
       args:
         - PROJECT_PORT=5050
     container_name: 'watchdog_core'
