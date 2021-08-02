@@ -4,6 +4,6 @@ export interface UserSignOnDto {
     email: string;
     companyName: string;
     companySize: string;
-    role : string;
+    role: string;
     password: string;
 }
