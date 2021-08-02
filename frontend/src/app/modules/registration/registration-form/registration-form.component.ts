@@ -8,11 +8,11 @@ import { UserSignOnDto } from '@core/models/registration/UserSignOnDto';
     styleUrls: ['./registration-form.component.sass']
 })
 export class RegistrationFormComponent implements OnInit {
-    public roles : Option[];
-    public companySize : Option[];
+    public roles: Option[];
+    public companySize: Option[];
     public user = {} as UserSignOnDto;
     public rememberMe: boolean;
-    public confirmPassword : string;
+    public confirmPassword: string;
 
     ngOnInit(): void {
         this.roles = [

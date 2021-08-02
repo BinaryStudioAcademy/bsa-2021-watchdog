@@ -7,6 +7,6 @@ import { UserLoginDto } from '@core/models/auth/user-login';
     styleUrls: ['./login-form.component.sass']
 })
 export class LoginFormComponent {
-    public rememberMe : boolean;
+    public rememberMe: boolean;
     public user = {} as UserLoginDto;
 }
