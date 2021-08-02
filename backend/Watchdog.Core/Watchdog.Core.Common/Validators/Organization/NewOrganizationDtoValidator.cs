@@ -1,8 +1,7 @@
 ﻿using FluentValidation;
 using Watchdog.Core.Common.DTO.Organization;
-using Watchdog.Core.Common.DTO.Sample;
 
-namespace Watchdog.Core.Common.Validators.Sample
+namespace Watchdog.Core.Common.Validators.Organization
 {
     public class NewOrganizationDtoValidator : AbstractValidator<NewOrganizationDto>
     {

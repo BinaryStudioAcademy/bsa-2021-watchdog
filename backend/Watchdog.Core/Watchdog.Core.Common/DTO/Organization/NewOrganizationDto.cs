@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Watchdog.Core.Common.DTO.Organization
+﻿namespace Watchdog.Core.Common.DTO.Organization
 {
     public class NewOrganizationDto
     {

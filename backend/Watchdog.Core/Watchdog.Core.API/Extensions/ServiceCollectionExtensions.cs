@@ -6,6 +6,7 @@ using System.Reflection;
 using Watchdog.Core.BLL.MappingProfiles;
 using Watchdog.Core.BLL.Services;
 using Watchdog.Core.BLL.Services.Abstract;
+using Watchdog.Core.Common.Validators.Organization;
 using Watchdog.Core.Common.Validators.Sample;
 using Watchdog.Core.DAL.Context;
 
@@ -32,7 +33,7 @@ namespace Watchdog.Core.API.Extensions
         {
             services
                 .AddControllers()
-                .AddFluentValidation(fv => 
+                .AddFluentValidation(fv =>
                     fv.RegisterValidatorsFromAssemblyContaining<NewSampleDtoValidator>()
                     .RegisterValidatorsFromAssemblyContaining<NewOrganizationDtoValidator>());
         }
