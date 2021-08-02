@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { BaseComponent } from '@core/components/base/base.component';
 import { User } from '@core/models/user';
 import { AuthService } from '@core/services/auth.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
@@ -11,7 +12,7 @@ import { take } from 'rxjs/operators';
     templateUrl: './user-profile-settings.component.html',
     styleUrls: ['./user-profile-settings.component.sass']
 })
-export class UserProfileSettingsComponent implements OnInit {
+export class UserProfileSettingsComponent extends BaseComponent implements OnInit {
     public user = {} as User;
     userName: string;
     userEmail: string;
@@ -19,10 +20,11 @@ export class UserProfileSettingsComponent implements OnInit {
     editProfileForm: FormGroup;
 
     constructor(private authService: AuthService, private userService: UserService,
-        private toastNotificationService: ToastNotificationService) { }
+        private toastNotificationService: ToastNotificationService) {
+        super();
+    }
 
     ngOnInit(): void {
-        this.updateInfo();
         this.editProfileForm = new FormGroup(
             {
                 firstName: new FormControl(this.user?.firstName),
@@ -35,9 +37,9 @@ export class UserProfileSettingsComponent implements OnInit {
     submit(editForm) {
         this.user.password = editForm.value.password;
         this.userService.updateUser(this.user)
-            .pipe(take(1))
-            .subscribe(updatedUser => {
-                this.authService.setUser(updatedUser);
+            .pipe(this.untilThis)
+            .subscribe(resp => {
+                this.authService.setUser(resp.body);
                 this.updateInfo();
                 this.toastNotificationService.success('Information has been updated');
             });
@@ -47,5 +49,9 @@ export class UserProfileSettingsComponent implements OnInit {
         this.user = this.authService.getUser();
         this.userName = `${this.user.firstName} ${this.user.lastName}`;
         this.userEmail = this.user.email;
+    }
+
+    ngOnDestroy() {
+        super.ngOnDestroy();
     }
 }
