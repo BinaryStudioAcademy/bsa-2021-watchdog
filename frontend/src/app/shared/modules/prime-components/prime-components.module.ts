@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MessageService, PrimeNGConfig } from 'primeng/api';
+import { ConfirmationService, MessageService, PrimeNGConfig } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
@@ -24,6 +25,7 @@ import { DropdownModule } from 'primeng/dropdown';
         PanelMenuModule,
         SidebarModule,
         ToastModule,
+        ConfirmDialogModule,
         ScrollTopModule,
         ChipModule,
         DialogModule,
@@ -40,6 +42,7 @@ import { DropdownModule } from 'primeng/dropdown';
         SidebarModule,
         DialogModule,
         ToastModule,
+        ConfirmDialogModule,
         ScrollTopModule,
         ChipModule,
         MessagesModule,
@@ -51,7 +54,8 @@ import { DropdownModule } from 'primeng/dropdown';
     declarations: [],
     providers: [
         MessageService,
-        PrimeNGConfig
+        ConfirmationService,
+        PrimeNGConfig,
     ]
 })
 export class PrimeComponentsModule {
