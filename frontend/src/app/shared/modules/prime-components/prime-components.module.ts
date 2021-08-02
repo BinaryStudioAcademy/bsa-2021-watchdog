@@ -8,6 +8,8 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 
+import { DropdownModule } from 'primeng/dropdown';
+
 // import and export here all required modules from primeng
 @NgModule({
     imports: [
@@ -17,7 +19,8 @@ import { ToastModule } from 'primeng/toast';
         InputTextModule,
         PasswordModule,
         CheckboxModule,
-        ToastModule
+        ToastModule,
+        DropdownModule
     ],
     exports: [
         ButtonModule,
@@ -25,7 +28,8 @@ import { ToastModule } from 'primeng/toast';
         TabViewModule,
         PasswordModule,
         CheckboxModule,
-        ToastModule
+        ToastModule,
+        DropdownModule
     ],
     declarations: [],
     providers: [
