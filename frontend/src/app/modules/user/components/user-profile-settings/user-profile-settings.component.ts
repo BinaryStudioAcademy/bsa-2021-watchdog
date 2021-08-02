@@ -1,18 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { BaseComponent } from '@core/components/base/base.component';
 import { User } from '@core/models/user';
 import { AuthService } from '@core/services/auth.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { UserService } from '@core/services/user.service';
-import { take } from 'rxjs/operators';
 
 @Component({
     selector: 'app-user-profile-settings',
     templateUrl: './user-profile-settings.component.html',
     styleUrls: ['./user-profile-settings.component.sass']
 })
-export class UserProfileSettingsComponent extends BaseComponent implements OnInit {
+export class UserProfileSettingsComponent extends BaseComponent implements OnInit, OnDestroy {
     public user = {} as User;
     userName: string;
     userEmail: string;

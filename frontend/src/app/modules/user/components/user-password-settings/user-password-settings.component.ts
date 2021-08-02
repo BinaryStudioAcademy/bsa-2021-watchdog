@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { BaseComponent } from '@core/components/base/base.component';
 import { User } from '@core/models/user';
 import { AuthService } from '@core/services/auth.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { UserService } from '@core/services/user.service';
-import { take } from 'rxjs/operators';
 
 @Component({
     selector: 'app-user-password-settings',
@@ -13,12 +12,15 @@ import { take } from 'rxjs/operators';
     styleUrls: ['./user-password-settings.component.sass']
 })
 
-export class UserPasswordSettingsComponent extends BaseComponent implements OnInit {
+export class UserPasswordSettingsComponent extends BaseComponent implements OnInit, OnDestroy {
     public user = {} as User;
 
     changePasswordForm: FormGroup;
+    newPwdInputType: string;
+    currentPwdInputType: string;
 
-    constructor(private authService: AuthService, private userService: UserService, private toastNotificationService: ToastNotificationService) {
+    constructor(private authService: AuthService, private userService: UserService,
+        private toastNotificationService: ToastNotificationService) {
         super();
         this.changePasswordForm = new FormGroup(
             {
@@ -26,6 +28,8 @@ export class UserPasswordSettingsComponent extends BaseComponent implements OnIn
                 newPassword: new FormControl()
             }
         );
+        this.newPwdInputType = 'password';
+        this.currentPwdInputType = 'password';
     }
 
     ngOnInit(): void {
@@ -41,26 +45,21 @@ export class UserPasswordSettingsComponent extends BaseComponent implements OnIn
                     this.authService.setUser(resp.body);
                     this.toastNotificationService.success('Password has been updated');
                 });
-        } else
+        } else {
             this.toastNotificationService.error('Current password is incorrect');
+        }
     }
 
     checkPassword(password: string): boolean {
-        return password === this.user.password
+        return password === this.user.password;
     }
 
-    changePasswordVisibility(button: HTMLElement) {
-        const input: Element = button.previousElementSibling;
-        const icon: Element = button.firstElementChild;
-        let iconClass: string = 'pi pi pi-eye';
-        let inputType: string = 'password';
+    changeCurrentPasswordVisibility() {
+        this.currentPwdInputType = this.currentPwdInputType === 'text' ? 'password' : 'text';
+    }
 
-        if (input.getAttribute('type') === 'password') {
-            iconClass = 'pi pi-eye-slash';
-            inputType = 'text';
-        }
-        icon.setAttribute('class', iconClass);
-        input.setAttribute('type', inputType);
+    changeNewPasswordVisibility() {
+        this.newPwdInputType = this.newPwdInputType === 'text' ? 'password' : 'text';
     }
 
     ngOnDestroy() {
