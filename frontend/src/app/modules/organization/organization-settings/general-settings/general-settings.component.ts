@@ -1,3 +1,4 @@
+import { Organization } from "@core/models/organization";
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,8 +7,13 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['../organization-settings.style.sass']
 })
 export class GeneralSettingsComponent implements OnInit {
+    organization: Organization;
     constructor() { }
 
     ngOnInit() {
+    }
+
+    save() {
+
     }
 }
