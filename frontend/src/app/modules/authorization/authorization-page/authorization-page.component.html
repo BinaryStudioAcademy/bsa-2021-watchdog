@@ -1,12 +1,10 @@
 <div class="auth-wrapper">
     <div class="singin">
         <div class="login-header">
-            <div class="logo">
-                <img src="assets/logo.svg" alt="logo">
-            </div>
+            <app-logo></app-logo>
             <div class="start-trial">
                 <span>Don`t have an account?</span>
-                <span><a href="#">Sing up</a></span>
+                <button pButton pRipple type="button" [routerLink]="['/signon']" label="Sign On" class="signon p-button-raised"></button>
              </div>
         </div>
         <div class="form-wrapper">
