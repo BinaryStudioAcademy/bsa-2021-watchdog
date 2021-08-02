@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MessageService, PrimeNGConfig } from 'primeng/api';
+import { ConfirmationService, MessageService, PrimeNGConfig } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
@@ -27,6 +28,7 @@ import { RippleModule } from 'primeng/ripple';
         PanelMenuModule,
         SidebarModule,
         ToastModule,
+        ConfirmDialogModule,
         ScrollTopModule,
         ChipModule,
         MenuModule,
@@ -46,6 +48,7 @@ import { RippleModule } from 'primeng/ripple';
         SidebarModule,
         DialogModule,
         ToastModule,
+        ConfirmDialogModule,
         ScrollTopModule,
         ChipModule,
         MenuModule,
@@ -60,6 +63,7 @@ import { RippleModule } from 'primeng/ripple';
     declarations: [],
     providers: [
         MessageService,
+        ConfirmationService,
         PrimeNGConfig,
     ]
 })
