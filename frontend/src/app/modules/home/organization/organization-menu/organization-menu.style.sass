@@ -4,41 +4,21 @@ p-avatar
 
 .org-info
     display: grid
-    grid-column-gap:.2em
-    grid-template-columns: auto 1fr
-    grid-template-rows: 1fr 1fr
-    width: 230px
-    justify-content: stretch
-    justify-items: start
+    grid-column-gap: .2em
+    grid-template-columns: repeat(2,auto)
+    width:230px
     &:hover .org-user
         color: grey
 
-.org-title
-    width:100%
-
 .org-user
-    font-size: .9em
+    font-size: .8em
     transition: color .2s ease-in-out
 
-.ellipsis-text
-    overflow: hidden
-    text-overflow: ellipsis
-    white-space: nowrap
-
-.collapse
-    position: relative
-    border: none
-    background: none
+.org-label
     cursor: pointer
-    margin: 0
-    padding: 0
 
-.collapse-content
-    box-shadow: 0 0 2px grey
-    display: flex
-    border-radius: 2%
-    flex-direction: column
-    background-color: white
-    position: absolute
-
-
+.ellipsis-text
+    width: 100%
+    overflow: hidden
+    white-space: nowrap
+    text-overflow: ellipsis

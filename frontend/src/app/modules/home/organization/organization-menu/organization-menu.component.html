@@ -1,13 +1,15 @@
-<button class="collapse" (click)="menu.toggle($event)">
+<div class="org-label" (click)="menu.toggle($event)">
     <div class="org-info">
         <p-avatar label="BS"></p-avatar>
-        <div class="org-title ellipsis-text">
-            BINARY STUDIO ACADEMY
+        <div class="org-title">
+            <div>
+                <span class="ellipsis-text">BINARY STUDIO ACADEMY</span>
+            </div>
+            <div class="org-user">
+                <span class="ellipsis-text">egor@gmail.com</span>
+            </div>
         </div>
-        <span class="org-user ellipsis-text">
-            egor@gmail.com
-        </span>
     </div>
-</button>
+</div>
 <p-menu #menu [popup]="true" [model]="menuItems">
 </p-menu>
