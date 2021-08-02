@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     deleteSubscription$: Subscription;
     dashboardsShown: boolean = false;
     displayModal: boolean = false;
-    public authorizedUser: User;
+    public authorizedUser: User = {} as User;
 
     constructor(
         private broadcastHub: BroadcastHubService,
