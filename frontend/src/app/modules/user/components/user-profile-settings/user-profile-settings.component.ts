@@ -22,6 +22,7 @@ export class UserProfileSettingsComponent implements OnInit {
         private toastNotificationService: ToastNotificationService) { }
 
     ngOnInit(): void {
+        this.updateInfo();
         this.editProfileForm = new FormGroup(
             {
                 firstName: new FormControl(this.user?.firstName),
