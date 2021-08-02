@@ -1,3 +1,6 @@
+import { TabViewModule } from 'primeng/tabview';
+import { PasswordModule } from 'primeng/password';
+import { CheckboxModule } from 'primeng/checkbox';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ConfirmationService, MessageService, PrimeNGConfig } from 'primeng/api';
@@ -23,7 +26,10 @@ import { BadgeModule } from 'primeng/badge';
     imports: [
         CommonModule,
         ButtonModule,
+        TabViewModule,
         InputTextModule,
+        PasswordModule,
+        CheckboxModule,
         PanelMenuModule,
         SidebarModule,
         ToastModule,
@@ -42,6 +48,9 @@ import { BadgeModule } from 'primeng/badge';
     exports: [
         ButtonModule,
         InputTextModule,
+        TabViewModule,
+        PasswordModule,
+        CheckboxModule,
         PanelMenuModule,
         SidebarModule,
         DialogModule,

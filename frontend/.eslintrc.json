@@ -43,6 +43,7 @@
         "implicit-arrow-linebreak": "off",
         "class-methods-use-this": "off",
         "arrow-parens": "off",
+        "@typescript-eslint/type-annotation-spacing": "error",
         "@typescript-eslint/lines-between-class-members": "off",
         "@typescript-eslint/indent": ["error", 4],
         "@typescript-eslint/comma-dangle": "off"
