@@ -3,10 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { ProjectsComponent } from '@modules/home/projects/projects.component';
+import { TeamsComponent } from '@modules/home/teams/teams.component';
 import { IssuesComponent } from '@modules/home/issues/issues.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home-page/home-page.component';
-import {TeamsComponent} from "@modules/home/teams/teams.component";
 
 const routes: Routes = [{
     path: '',
@@ -24,7 +24,7 @@ const routes: Routes = [{
     }, {
         path: 'teams',
         component: TeamsComponent,
-    },{
+    }, {
         path: 'dashboard/:id',
         component: DashboardComponent,
     }, {
