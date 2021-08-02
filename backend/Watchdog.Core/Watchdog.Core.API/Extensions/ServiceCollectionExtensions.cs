@@ -20,6 +20,7 @@ namespace Watchdog.Core.API.Extensions
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddTransient<ISampleService, SampleService>();
+            services.AddTransient<IOrganizationService, OrganizationService>();
         }
 
         public static void AddAutoMapper(this IServiceCollection services)
@@ -31,7 +32,9 @@ namespace Watchdog.Core.API.Extensions
         {
             services
                 .AddControllers()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<NewSampleDtoValidator>());
+                .AddFluentValidation(fv => 
+                    fv.RegisterValidatorsFromAssemblyContaining<NewSampleDtoValidator>()
+                    .RegisterValidatorsFromAssemblyContaining<NewOrganizationDtoValidator>());
         }
 
         public static void AddWatchdogCoreContext(this IServiceCollection services, IConfiguration configuration)
