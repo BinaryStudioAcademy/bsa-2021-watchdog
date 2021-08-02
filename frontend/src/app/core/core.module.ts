@@ -4,6 +4,7 @@ import { SharedModule } from '@shared/shared.module';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { BaseComponent } from './components/base/base.component';
 import { ToastNotificationComponent } from './components/toast-notification/toast-notification.component';
+import { ConfirmWindowComponent } from './components/confirm-window/confirm-window.component';
 import { fakeBackendProvider } from './interceptors/fake-backend';
 
 @NgModule({
@@ -17,10 +18,12 @@ import { fakeBackendProvider } from './interceptors/fake-backend';
     ],
     declarations: [
         BaseComponent,
-        ToastNotificationComponent
+        ToastNotificationComponent,
+        ConfirmWindowComponent,
     ],
     exports: [
-        ToastNotificationComponent
+        ToastNotificationComponent,
+        ConfirmWindowComponent,
     ]
 })
 export class CoreModule { }
