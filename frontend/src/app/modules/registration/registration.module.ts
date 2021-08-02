@@ -14,7 +14,6 @@ import { RegistrationFormComponent } from './registration-form/registration-form
     imports: [
         SharedModule,
         RegistrationRoutingModule,
-        DropdownModule,
     ]
 })
 export class RegistrationModule { }

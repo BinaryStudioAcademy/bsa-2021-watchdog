@@ -10,16 +10,22 @@
 .info-block img
     display: block
     max-width: 100%
+
 .login-header
     display: grid
     grid-template-columns: 1fr auto
     grid-gap: 20px
     align-items: center
+
+.logo
+    display: block
+    width: 70%
+
 .start-trial
     display: flex
     flex-direction: row
     justify-content: center
-    grid-gap:10px
+    grid-gap: 10px
     align-items: center
 
 .form-wrapper
@@ -42,7 +48,6 @@
     white-space: nowrap
     min-width: 70px
    
-         
 .singin-title
     font-size: 2rem
 
@@ -50,9 +55,7 @@
     margin: 30px 0 0 0
     width: 100%
 
-
-
-@media screen and ( min-width:1024px)
+@media screen and ( min-width: 1024px)
     .auth-wrapper
         grid-template-columns: 1fr 2fr
        
@@ -61,9 +64,9 @@
         flex-direction: column
         justify-content: center
         align-items: center
-        width:100%
+        width: 100%
 
-@media screen and ( max-width:1024px)
+@media screen and ( max-width: 1024px)
     .auth-wrapper
         display: grid
         grid-template-columns: auto

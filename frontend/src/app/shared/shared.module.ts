@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { PrimeComponentsModule } from './modules/prime-components/prime-components.module';
-import { LogoComponent } from './components/logo/logo.component';
 
 @NgModule({
     imports: [
@@ -19,7 +18,6 @@ import { LogoComponent } from './components/logo/logo.component';
     declarations: [
         LoadingSpinnerComponent,
         NotFoundComponent,
-        LogoComponent,
     ],
     exports: [
         CommonModule,
@@ -29,7 +27,6 @@ import { LogoComponent } from './components/logo/logo.component';
         LoadingSpinnerComponent,
         NotFoundComponent,
         PrimeComponentsModule,
-        LogoComponent
     ]
 })
 export class SharedModule { }
