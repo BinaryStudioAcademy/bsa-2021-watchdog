@@ -45,8 +45,8 @@ export class ConfirmWindowService {
             rejectButtonStyleClass: decelineButton.class,
             acceptIcon: confirmButton.icon,
             rejectIcon: decelineButton.icon,
-            accept: () => { this.invokeAction(options.accept); },
-            reject: () => { this.invokeAction(options.cancel); }
+            accept: () => this.invokeAction(options.accept),
+            reject: () => this.invokeAction(options.cancel)
         });
     }
 
@@ -65,10 +65,10 @@ export class ConfirmWindowService {
         };
     }
 
-    private invokeAction(func: ClickFunction): void {
+    private invokeAction = (func: ClickFunction): void => {
         if (func) func();
         this.destroyConfirmWindow();
-    }
+    };
 
     private createConfirmWindow(): void {
         if (!this.confirmWindowRef || this.confirmWindowRef.hostView.destroyed) {
