@@ -2,14 +2,15 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models/user';
+import { HttpInternalService } from './http-internal.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class UserService {
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpInternalService) { }
 
     public updateUser(user: User) {
-        return this.http.put<User>(`${environment.coreUrl}/user`, user);
+        return this.http.putFullRequest<User>(`${environment.coreUrl}/user`, user);
     }
 }
