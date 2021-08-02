@@ -54,3 +54,6 @@ This is a list of the required environment variables:
 #### RabbitMQ:
 **RABBIT_MQ_USERNAME** - for username,
 **RABBIT_MQ_PASSWORD** - for user password
+
+#### SendGrid:
+**SENDGRID_API_KEY = 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** - api key for sendgrid
