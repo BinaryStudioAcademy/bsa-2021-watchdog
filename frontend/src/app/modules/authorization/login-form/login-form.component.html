@@ -4,14 +4,14 @@
         <label for="float-input-email">Email</label>
     </span>
     <span class="p-float-label">
-        <p-password id="float-input-pass" name="password" [(ngModel)]= "user.password" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" [feedback]="false" [toggleMask]="true"></p-password>
+        <p-password id="float-input-pass" name="password" [(ngModel)]= "user.password"  [feedback]="false" [toggleMask]="true"></p-password>
         <label for="float-input-pass">Password</label>
     </span>
     <span class="p-field-checkbox">
         <p-checkbox class="remember-check" name="rememberMe" [(ngModel)]="rememberMe" [binary]="true" inputId="binary"></p-checkbox>
         <label for="binary">Remember me</label>
     </span>
-    <span class="submit-button">
-        <p-button label="Submit" [style]="{'width':'100%'}"></p-button>
+    <span>
+        <button pButton class="submit-button" label="Submit"></button>
     </span>
 </form>
