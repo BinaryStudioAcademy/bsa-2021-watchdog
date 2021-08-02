@@ -62,12 +62,36 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             }));
         }
 
+        function updateUser(): Observable<HttpResponse<User>> | Observable<HttpResponse<string>> {
+            const user: User = body;
+            const userToUpdate = users.find(x => x.id === user.id);
+            if (!userToUpdate) {
+                return of(new HttpResponse({
+                    status: 404, body: 'This user is not exist'
+                }));
+            }
+
+            return of(new HttpResponse({
+                status: 200,
+                body: {
+                    id: user.id,
+                    password: user.password,
+                    email: user.email,
+                    firstName: user.firstName,
+                    lastName: user.lastName
+
+                }
+            }));
+        }
+
         function handleRoute() {
             switch (true) {
                 case url.endsWith('/user/login') && method === 'POST':
                     return authenticate();
                 case url.endsWith('user/register') && method === 'POST':
                     return checkRegister();
+                case url.endsWith('user') && method === 'PUT':
+                    return updateUser();
                 default:
                     return next.handle(request);
             }
