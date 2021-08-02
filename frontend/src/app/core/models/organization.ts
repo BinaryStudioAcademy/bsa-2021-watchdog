@@ -1,5 +1,10 @@
 export interface Organization {
-    _id: number,
-    userFriendlyName: string,
-    nameTag: string,
+    id: number,
+    name: string,
+    organizationSlug: string,
+    openMembership: boolean,
+    defaultRoleId: number,
+    avatarUrl: string,
+    createdBy: number,
+    createdAt: Date
 }

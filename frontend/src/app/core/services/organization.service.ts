@@ -8,7 +8,7 @@ import { HttpInternalService } from './http-internal.service';
     providedIn: 'root',
 })
 export class OrganizationService {
-    apiPrefix = '/api/organizations';
+    apiPrefix = '/organizations';
 
     constructor(private httpService: HttpInternalService) { }
 
