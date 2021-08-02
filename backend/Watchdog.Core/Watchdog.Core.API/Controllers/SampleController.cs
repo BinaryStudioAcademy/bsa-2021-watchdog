@@ -9,7 +9,6 @@ using Watchdog.Core.Common.DTO.Sample;
 
 namespace Watchdog.Core.API.Controllers
 {
-    [AllowAnonymous]
     [ApiController]
     [Route("[controller]")]
     public class SampleController : ControllerBase
@@ -28,6 +27,14 @@ namespace Watchdog.Core.API.Controllers
 
         [HttpGet]
         public async Task<ActionResult<ICollection<SampleDto>>> GetAllAsync()
+        {
+            var samples = await _sampleService.GetAllSamplesAsync();
+            return Ok(samples);
+        }
+
+        [HttpGet("authn")]
+        [Authorize]
+        public async Task<ActionResult<ICollection<SampleDto>>> GetAllWithAuthNAsync()
         {
             var samples = await _sampleService.GetAllSamplesAsync();
             return Ok(samples);
