@@ -22,6 +22,7 @@ const routes: Routes = [
         path: 'signon',
         loadChildren: () => import('./modules/registration/registration.module')
             .then(m => m.RegistrationModule)
+    },
     {
         path: 'user',
         canActivate: [AuthGuard],
