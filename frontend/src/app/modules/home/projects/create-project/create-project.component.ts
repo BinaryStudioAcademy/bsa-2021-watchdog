@@ -2,93 +2,54 @@ import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
+import { Platform } from '@shared/models/projects/platform';
+import { FakeData } from '@modules/home/projects/fake-data';
+import { Team } from '@shared/models/projects/team';
+import { Project } from '@shared/models/projects/project';
 
 @Component({
     selector: 'app-create-project',
     templateUrl: './create-project.component.html',
-    styleUrls: ['./create-project.component.sass']
+    styleUrls: ['./create-project.component.sass'],
+    providers: [FakeData]
 })
 export class CreateProjectComponent implements OnInit {
-    // This class is for the test/example, it's not a final result !!!!
-    public formGroup: FormGroup;
-    public tabItems: MenuItem[];
-    public activeTabItem: MenuItem;
-    public viewPlatformCards: {
-        img: string, name: string, isBrowser?: boolean, isServer?: boolean, isMobile?: boolean, isDesktop?: boolean
-    }[];
-    public selectedAlertCategory: any = null;
-    public alertCategories = [
-        { name: 'I\'ll create my own alerts later' },
-        { name: 'Alert me on every new issue' },
-        { name: 'When there are more than' }];
-    public alertsCount: number = 10;
-    public alertTypes = [
-        { name: 'occurrences of' },
-        { name: 'users affected by' }
-    ];
-    public selectedAlertType: any = null;
-    public alertTimeIntervals = [
-        { name: 'one minute' },
-        { name: '5 minutes' },
-        { name: '15 minutes' },
-        { name: 'one hour' },
-        { name: 'one day' },
-        { name: 'one week' },
-        { name: '30 days' }
-    ];
-    public userTeams = [
-        { name: '#vitaliy-shatskiy' },
-        { name: '#binary-studio' },
-        { name: '#watch-dog' },
-        { name: '#ats' },
-    ];
-    public selectedAlertTimeInterval: any = null;
-    private platformCards: {
-        img: string, name: string, isBrowser?: boolean, isServer?: boolean, isMobile?: boolean, isDesktop?: boolean
-    }[];
-    public selectedPlatformElement?: { element: HTMLElement, platformName: string };
+    public platformTabItems: MenuItem[];
+    public viewPlatformCards: Platform[];
+    public userTeams: Team[];
+    public alertCategories: string[];
+    public alertTypes: string[];
+    public alertTimeIntervals: string[];
 
-    constructor(private toastNotifications: ToastNotificationService) {
+    public alertsCount: number;
+    public selectedAlertCategory?: string;
+    public selectedAlertType?: string;
+    public selectedAlertTimeInterval?: string;
+    public selectedPlatformId?: number;
+    public activePlatformTabItem: MenuItem;
+    public formGroup: FormGroup;
+    public SPECIAL_ALERT_CATEGORY: string = 'When there are more than';
+    private platformCards: Platform[];
+
+    constructor(
+        private toastNotifications: ToastNotificationService,
+        private fakeData: FakeData
+    ) {
     }
 
     ngOnInit() {
-        this.platformCards = [
-            {
-                img: 'https://upload.wikimedia.org/wikipedia/commons/a/a3/.NET_Logo.svg',
-                name: 'dotnet',
-                isServer: true,
-                isDesktop: true
-            },
-            {
-                img: 'https://upload.wikimedia.org/wikipedia/commons/9/99/Unofficial_JavaScript_logo_2.svg',
-                name: 'javascript',
-                isBrowser: true
-            },
-            {
-                img: 'https://image.flaticon.com/icons/png/512/731/731985.png',
-                name: 'ios',
-                isMobile: true,
-                isDesktop: true
-            },
-            {
-                img: 'https://upload.wikimedia.org/wikipedia/uk/2/2e/Java_Logo.svg',
-                name: 'java',
-                isServer: true,
-                isDesktop: true
-            }
-        ];
-        this.tabItems = [
+        this.initFakeData();
+        this.platformTabItems = [
             { label: 'All', command: (event) => this.onTabChange(event) },
             { label: 'Browser', command: (event) => this.onTabChange(event) },
             { label: 'Server', command: (event) => this.onTabChange(event) },
             { label: 'Mobile', command: (event) => this.onTabChange(event) },
             { label: 'Desktop', command: (event) => this.onTabChange(event) }
         ];
-        this.activeTabItem = Object.assign(this.tabItems[0]);
-        this.onTabChange();
-        this.selectedAlertType = Object.assign(this.alertTypes[0]);
-        this.selectedAlertTimeInterval = Object.assign(this.alertTimeIntervals[0]);
-
+        this.activePlatformTabItem = Object.assign(this.platformTabItems[0]);
+        this.selectedAlertType = String(this.alertTypes[0]);
+        this.selectedAlertTimeInterval = String(this.alertTimeIntervals[0]);
+        this.alertsCount = 10;
         this.formGroup = new FormGroup({
             alertCategory: new FormControl(
                 this.alertCategories[0],
@@ -112,13 +73,19 @@ export class CreateProjectComponent implements OnInit {
                 ],
             ),
         });
+        this.onTabChange();
+    }
+
+    initFakeData() {
+        this.platformCards = this.fakeData.fakePlatforms;
+        this.alertTypes = this.fakeData.fakeAlertTypes;
+        this.alertTimeIntervals = this.fakeData.fakeAlertTimeIntervals;
+        this.alertCategories = this.fakeData.fakeAlertCategories;
+        this.userTeams = this.fakeData.fakeTeams;
     }
 
     onTabChange(event?: any): void {
-        if (this.selectedPlatformElement) {
-            this.selectedPlatformElement.element.style.background = 'transparent';
-            this.selectedPlatformElement = undefined;
-        }
+        this.selectedPlatformId = undefined;
         switch (event?.item.label ?? '') {
             case 'Browser': {
                 this.viewPlatformCards = [...this.platformCards.filter(value => value.isBrowser === true)];
@@ -143,38 +110,35 @@ export class CreateProjectComponent implements OnInit {
         }
     }
 
-    onPlatformSelected(event: any, platformName: string) {
-        if (this.selectedPlatformElement) {
-            this.selectedPlatformElement.element.style.background = 'transparent';
-            if (this.selectedPlatformElement.platformName === platformName) {
-                this.selectedPlatformElement = undefined;
-                return;
-            }
-        }
-        const element = event.target.className !== 'card ng-star-inserted' ? event.target.parentElement : event.target;
-        element.style.background = 'lightgray';
-        this.selectedPlatformElement = { element, platformName };
+    onPlatformSelected(platformId: number): void {
+        this.selectedPlatformId = platformId === this.selectedPlatformId ? undefined : platformId;
     }
 
-    createProject() {
-        if (this.formGroup.valid && this.selectedPlatformElement !== undefined) {
-            let alertCategorySettings: any;
-            if (this.formGroup.controls.alertCategory.value.name === 'When there are more than') {
-                alertCategorySettings = {
-                    count: this.alertsCount,
-                    type: this.selectedAlertType,
-                    timeInterval: this.selectedAlertTimeInterval
-                };
-            }
-            const project = {
-                projectName: this.formGroup.controls.projectName.value,
-                alertCategory: this.formGroup.controls.alertCategory.value.name,
+    createProject(): void {
+        if (this.formGroup.valid && this.selectedPlatformId !== undefined) {
+            const project: Project = {
+                id: 5,
+                name: this.formGroup.controls.projectName.value,
                 team: this.formGroup.controls.team.value,
-                platform: this.selectedPlatformElement.platformName,
-                alertCategorySettings
+                platform: this.platformCards.find(value => value.id === this.selectedPlatformId),
+                alertSettings:
+                    {
+                        alertCategory: this.selectedAlertCategory,
+                        alertsCount: this.alertsCount,
+                        alertType: this.selectedAlertType,
+                        alertTimeInterval: this.selectedAlertTimeInterval
+                    }
             };
             console.log(project);
-            this.toastNotifications.success('Created');
+            this.toastNotifications.success(`${project.name} created!`);
         }
+    }
+
+    applySelection(platformId: number) {
+        return platformId === this.selectedPlatformId ? { 'selected-card': true } : { 'selected-card': false };
+    }
+
+    log(data: any) {
+        console.log(data);
     }
 }

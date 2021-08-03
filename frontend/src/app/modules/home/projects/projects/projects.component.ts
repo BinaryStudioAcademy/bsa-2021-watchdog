@@ -1,28 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Project } from '@shared/models/projects/project';
+import { FakeData } from '@modules/home/projects/fake-data';
 
 @Component({
     selector: 'app-projects',
     templateUrl: './projects.component.html',
-    styleUrls: ['./projects.component.sass']
+    styleUrls: ['./projects.component.sass'],
+    providers: [FakeData]
 })
 export class ProjectsComponent implements OnInit {
-    public projects: { name: string }[]; // edit this
+    public projects: Project[];
 
-    constructor(private router: Router) {
+    constructor(private router: Router,
+        private fakeData: FakeData) {
     }
+
     ngOnInit(): void {
-        // delete this
-        this.projects = [{ name: 'FirstProject' }, { name: 'SecondProject' }, { name: 'ThirdProject' },
-            { name: 'FirstProject' }, { name: 'SecondProject' }, { name: 'ThirdProject' },
-            { name: 'FirstProject' }, { name: 'SecondProject' }, { name: 'ThirdProject' },
-            { name: 'FirstProject' }, { name: 'SecondProject' }, { name: 'ThirdProject' },
-            { name: 'FirstProject' }, { name: 'SecondProject' }, { name: 'ThirdProject' },
-            { name: 'FirstProject' }, { name: 'SecondProject' }, { name: 'ThirdProject' }];
+        this.initFakeData();
+    }
+
+    initFakeData() {
+        this.projects = this.fakeData.fakeProjects;
     }
 
     public onClickCreateProject(): void {
-        console.log(this.router.url);
-        this.router.navigateByUrl(`${this.router.url}/create-project`).then(r => r);
+        this.router.navigateByUrl(`${this.router.url}/create`).then(r => r);
     }
 }

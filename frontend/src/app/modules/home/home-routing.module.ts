@@ -19,7 +19,7 @@ const routes: Routes = [{
         path: 'projects',
         component: ProjectsComponent,
     }, {
-        path: 'projects/create-project',
+        path: 'projects/create',
         component: CreateProjectComponent,
     },
     {

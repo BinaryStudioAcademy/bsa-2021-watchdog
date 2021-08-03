@@ -10,18 +10,19 @@
     <!--    Platform Section    -->
     <div class="choose-platform-section">
         <h2 class="title">Choose a platform</h2>
-        <p-tabMenu [activeItem]="tabItems[0]" [model]="tabItems"></p-tabMenu>
+        <p-tabMenu [activeItem]="platformTabItems[0]" [model]="platformTabItems"></p-tabMenu>
         <!--    Platform Cards    -->
         <div class="platform-cards">
-            <div (click)="onPlatformSelected($event, platform.name)" *ngFor="let platform of viewPlatformCards"
-                 class="card">
-                <img alt="{{platform.name}}" src="{{platform.img}}">
+            <div (click)="onPlatformSelected(platform.id)"
+                 *ngFor="let platform of viewPlatformCards"
+                 [ngClass]="applySelection(platform.id)" class="card">
+                <img alt="{{platform.name}}" src="{{platform.avatarUrl}}">
                 <h3>{{platform.name}}</h3>
             </div>
         </div>
     </div>
-    <!--    Platform not selected Warning    -->
-    <small *ngIf="!selectedPlatformElement" class="p-error">
+    <!--    Platform is not selected Warning    -->
+    <small *ngIf="!selectedPlatformId" class="p-error">
         Please choose a platform
     </small>
     <!--    Alert RadioButtons    -->
@@ -31,27 +32,28 @@
 
         <div *ngFor="let category of alertCategories" class="alert-form">
             <form [formGroup]="formGroup">
-                <p-radioButton [inputId]="category.name" [value]="category"
+                <p-radioButton [inputId]="category" [value]="category"
                                formControlName="alertCategory" name="alertCategory">
                 </p-radioButton>
             </form>
-            <label [for]="category.name" class="radiobutton-label">{{category.name}}</label>
-            <!--    Specific Allert Settings    -->
-            <ng-container *ngIf="category.name === 'When there are more than'">
+            <label [for]="category" class="radiobutton-label">{{category}}</label>
+            <!--    Specific Alert Settings    -->
+            <ng-container *ngIf="category === SPECIAL_ALERT_CATEGORY">
                 <p-inputNumber [(ngModel)]="alertsCount"
-                               [disabled]="formGroup.controls.alertCategory.value.name !== 'When there are more than'"
-                               [min]="0" [showButtons]="true" [size]="2" [step]="1" class="radiobutton-settings-alerts-count"
+                               [disabled]="formGroup.controls.alertCategory.value !== SPECIAL_ALERT_CATEGORY"
+                               [min]="0" [showButtons]="true" [size]="2" [step]="1"
+                               class="radiobutton-settings-alerts-count"
                                mode="decimal">
                 </p-inputNumber>
-                <p-dropdown [(ngModel)]="selectedAlertType"
-                            [disabled]="formGroup.controls.alertCategory.value.name !== 'When there are more than'"
-                            [options]="alertTypes" class="radiobutton-settings-alert-type" optionLabel="name">
+                <p-dropdown (onClick)="log(alertTypes)" [(ngModel)]="selectedAlertType"
+                            [disabled]="formGroup.controls.alertCategory.value !== SPECIAL_ALERT_CATEGORY"
+                            [options]="alertTypes" class="radiobutton-settings-alert-type">
                 </p-dropdown>
                 <span>a unique error in</span>
                 <p-dropdown [(ngModel)]="selectedAlertTimeInterval"
-                            [disabled]="formGroup.controls.alertCategory.value.name !== 'When there are more than'"
+                            [disabled]="formGroup.controls.alertCategory.value !== SPECIAL_ALERT_CATEGORY"
                             [options]="alertTimeIntervals" class="radiobutton-settings-alert-type"
-                            optionLabel="name">
+                >
                 </p-dropdown>
             </ng-container>
         </div>
@@ -66,7 +68,8 @@
                 <span class="title">Project name</span>
                 <div class="p-input-icon-left">
                     <i class="pi pi-table"></i>
-                    <input aria-describedby="projectName" formControlName="projectName" pInputText placeholder="Project name"
+                    <input aria-describedby="projectName" formControlName="projectName" pInputText
+                           placeholder="Project name"
                            type="text">
                 </div>
                 <div *ngIf="formGroup.controls.projectName.touched && formGroup.controls.projectName.invalid"
@@ -95,11 +98,13 @@
                                 formControlName="team" optionLabel="name" placeholder="Select team">
                     </p-dropdown>
 
-                    <button class="p-button-text button-add-team" icon="pi pi-plus-circle" pButton pRipple pTooltip="Create a team"
+                    <button class="p-button-text button-add-team" icon="pi pi-plus-circle" pButton pRipple
+                            pTooltip="Create a team"
                             tooltipPosition="top" type="button"></button>
                     <!--    Submit Button   -->
                     <button (click)="createProject()"
-                            [disabled]="!formGroup.valid || !selectedPlatformElement" class="p-button-secondary button-create-project" label="Create Project"
+                            [disabled]="!formGroup.valid || !selectedPlatformId"
+                            class="p-button-secondary button-create-project" label="Create Project"
                             pButton></button>
                 </div>
                 <!--    Team not selected Warning   -->

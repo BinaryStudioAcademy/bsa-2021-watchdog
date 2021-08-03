@@ -10,12 +10,12 @@
         <div *ngFor="let project of projects">
             <div class="card">
                 <div class="card-title">
-                    <i class="pi pi-apple"></i>
-                    <span>ios</span>
+                    <img alt="{{project.platform.name}}" src="{{project.platform.avatarUrl}}">
+                    <span>{{project.platform.name}}</span>
                 </div>
                 <div class="card-body">
                     <div class="card-body-name">{{project.name}}</div>
-                    <div class="card-body-description">{{project.name}}</div>
+                    <div class="card-body-description">{{project.description}}</div>
                 </div>
             </div>
         </div>
