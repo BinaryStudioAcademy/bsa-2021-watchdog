@@ -68,7 +68,7 @@ namespace Watchdog.Core.BLL.Services
             {
                 dst.CreatedAt = DateTime.Now;
             }));
-
+            
             var createdTeam = _context.Teams.Add(team);
             await _context.SaveChangesAsync();
             
@@ -105,7 +105,7 @@ namespace Watchdog.Core.BLL.Services
             _context.Remove(teamMember);
             
             await _context.SaveChangesAsync();
-        
+            
             return await GetTeamAsync(teamMember.TeamId);
         }
         

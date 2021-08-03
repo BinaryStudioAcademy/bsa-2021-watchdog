@@ -1,9 +1,9 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Team} from "@shared/models/team/team";
-import {TeamService} from "@core/services/team.service";
-import {takeUntil} from "rxjs/operators";
-import {Subject, Subscription} from "rxjs";
-import {DataService} from "@core/services/share-data.service";
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Team } from '@shared/models/team/team';
+import { TeamService } from '@core/services/team.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { DataService } from '@core/services/share-data.service';
 
 @Component({
     selector: 'app-other-teams',
@@ -11,8 +11,8 @@ import {DataService} from "@core/services/share-data.service";
     styleUrls: ['../teams.component.sass']
 })
 export class OtherTeamsComponent implements OnInit, OnDestroy {
+    @Input() currentUserId: number;
     private unsubscribe$: Subject<Team> = new Subject<Team>();
-    @Input()currentUserId: number;
     teams: Team[];
     labels: string[];
 
@@ -32,18 +32,18 @@ export class OtherTeamsComponent implements OnInit, OnDestroy {
             .currentMessage
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(team => {
-                console.log(team)
+                console.log(team);
                 this.teams.push(team);
             });
     }
 
     joinTeam(teamId: number) {
         this.teamService
-            .joinTeam({teamId: teamId, memberId: this.currentUserId})
+            .joinTeam({ teamId, memberId: this.currentUserId })
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(response => {
                 this.notifyService.changeMessage(response.body);
-                this.teams = this.teams.filter(t => t.id != teamId);
+                this.teams = this.teams.filter(t => t.id !== teamId);
             }, error => {
                 console.log(error);
             });

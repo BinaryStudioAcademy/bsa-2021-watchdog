@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {Team} from "@shared/models/team/team";
-import {TeamService} from "@core/services/team.service";
-import {Subject} from "rxjs";
-import {takeUntil} from "rxjs/operators";
+import { Component, OnInit } from '@angular/core';
+import { Team } from '@shared/models/team/team';
+import { TeamService } from '@core/services/team.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-teams',
@@ -29,6 +29,4 @@ export class TeamsComponent implements OnInit {
                 console.log(error);
             });
     }
-
-
 }
