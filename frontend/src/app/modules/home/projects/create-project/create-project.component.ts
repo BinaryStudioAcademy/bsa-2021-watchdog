@@ -114,6 +114,10 @@ export class CreateProjectComponent implements OnInit {
         this.selectedPlatformId = platformId === this.selectedPlatformId ? undefined : platformId;
     }
 
+    applySelection(platformId: number) {
+        return platformId === this.selectedPlatformId ? { 'selected-card': true } : { 'selected-card': false };
+    }
+
     createProject(): void {
         if (this.formGroup.valid && this.selectedPlatformId !== undefined) {
             const project: Project = {
@@ -132,13 +136,5 @@ export class CreateProjectComponent implements OnInit {
             console.log(project);
             this.toastNotifications.success(`${project.name} created!`);
         }
-    }
-
-    applySelection(platformId: number) {
-        return platformId === this.selectedPlatformId ? { 'selected-card': true } : { 'selected-card': false };
-    }
-
-    log(data: any) {
-        console.log(data);
     }
 }

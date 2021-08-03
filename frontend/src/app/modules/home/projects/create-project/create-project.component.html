@@ -45,7 +45,7 @@
                                class="radiobutton-settings-alerts-count"
                                mode="decimal">
                 </p-inputNumber>
-                <p-dropdown (onClick)="log(alertTypes)" [(ngModel)]="selectedAlertType"
+                <p-dropdown [(ngModel)]="selectedAlertType"
                             [disabled]="formGroup.controls.alertCategory.value !== SPECIAL_ALERT_CATEGORY"
                             [options]="alertTypes" class="radiobutton-settings-alert-type">
                 </p-dropdown>
