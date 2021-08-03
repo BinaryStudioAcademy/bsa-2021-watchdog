@@ -1,0 +1,63 @@
+<div class="user-container">
+    <header class="section-header border">
+        <h1>Profile settings</h1>
+    </header>
+    <div class="user-settings">
+        <h3>Profile info</h3>
+        <div class="user-info">
+            <div class="avatar">
+                <img src="https://www.gravatar.com/avatar/213dd2d1498b722e98be7fdee00c2769?d=mp&r=pg&s=128"
+                    alt="user-avatar">
+            </div>
+            <div class="user-info-body">
+                <ul>
+                    <li>
+                        <span id="user-name">{{userName}}</span>
+                    </li>
+                    <li>
+                        <span id="user-email">{{userEmail}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="info-settings">
+            <form #editProfileForm="ngForm" (ngSubmit)="submit(editProfileForm.form)">
+                <h4>Edit profile</h4>
+                <div class="input-container">
+                    <div class="input-section">
+                        <div class="items-container">
+                            <label class="form-label" for="email">Email</label>
+                            <input pInputText name="email" type="text" [(ngModel)]="user.email" #email="ngModel" required=""
+                                pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$">
+                            <div class="alert-incorrect" [hidden]="email.valid || email.untouched">
+                                Incorrect email
+                            </div>
+                        </div>
+                        <div class="items-container">
+                            <label class="form-label" for="firstName">First Name</label>
+                            <input pInputText name="firstName" type="text" [(ngModel)]="user.firstName" #firstName="ngModel"
+                                required="">
+                            <div class="alert-incorrect" [hidden]="firstName.valid || firstName.untouched">
+                                First name is needed
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-section">
+                        <div class="items-container">
+                            <label class="form-label" for="lastName">Last Name</label>
+                            <input pInputText name="lastName" type="text" [(ngModel)]="user.lastName" #lastName="ngModel"
+                                required="">
+                            <div class="alert-incorrect" [hidden]="lastName.valid || lastName.untouched">
+                                Last name is needed
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-footer">
+                    <button type="submit" class="save-changes" [disabled]="editProfileForm.invalid">Save
+                        changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
