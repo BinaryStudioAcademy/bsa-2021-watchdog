@@ -14,7 +14,7 @@ export class TeamsComponent implements OnInit {
     userTeams: Team[];
     otherTeams: Team[];
     //fake
-    currentUserId: number = 2;
+    currentUserId: number = 10;
 
     constructor(private teamService: TeamService) { }
 

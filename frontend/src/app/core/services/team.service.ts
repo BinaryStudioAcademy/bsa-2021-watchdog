@@ -3,6 +3,7 @@ import {HttpInternalService} from "@core/services/http-internal.service";
 import {Observable} from "rxjs";
 import { Team} from "@shared/models/team/team";
 import {HttpResponse} from "@angular/common/http";
+import {TeamMember} from "@shared/models/team/team-member";
 
 @Injectable({ providedIn: 'root' })
 export class TeamService {
@@ -16,6 +17,18 @@ export class TeamService {
 
     public getUserTeams(userId: number): Observable<HttpResponse<Team[]>> {
         return this.httpService.getFullRequest(`${this.routePrefix}/user/${userId}`);
+    }
+
+    public getNotUserTeams(userId: number): Observable<HttpResponse<Team[]>> {
+        return this.httpService.getFullRequest(`${this.routePrefix}/not-user/${userId}`);
+    }
+
+    public joinTeam(teamMember: TeamMember): Observable<HttpResponse<Team>> {
+        return this.httpService.postFullRequest(`${this.routePrefix}/joinTeam`, teamMember);
+    }
+
+    public leaveTeam(teamId: number, memberId: number): Observable<HttpResponse<Team>> {
+        return this.httpService.deleteFullRequest(`${this.routePrefix}/leave_team/${teamId}/member/${memberId}`);
     }
 
     public getLabel(teamName: string): string {

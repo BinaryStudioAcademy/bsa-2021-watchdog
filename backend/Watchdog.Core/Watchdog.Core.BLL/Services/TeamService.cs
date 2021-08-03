@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Watchdog.Core.BLL.Services.Abstract;
+using Watchdog.Core.Common.DTO.Member;
 using Watchdog.Core.Common.DTO.Team;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
@@ -18,11 +19,11 @@ namespace Watchdog.Core.BLL.Services
         public async Task<ICollection<TeamDto>> GetAllTeamsAsync()
         {
             var teams = await _context.Teams
-                .Include(t => t.User)
-                .Include(t => t.Organization)
-                .Include(t => t.TeamMembers)
-                    .ThenInclude(tm => tm.Member)
-                    .ThenInclude(m => m.User)
+                .Include(team => team.User)
+                .Include(team => team.Organization)
+                .Include(team => team.TeamMembers)
+                    .ThenInclude(teamMember => teamMember.Member)
+                    .ThenInclude(teamMember => teamMember.User)
                 .ToListAsync();
             
             return _mapper.Map<ICollection<TeamDto>>(teams);
@@ -35,7 +36,7 @@ namespace Watchdog.Core.BLL.Services
                 .Include(team => team.Organization)
                 .Include(team => team.TeamMembers)
                     .ThenInclude(teamMember => teamMember.Member)
-                    .ThenInclude(member => member.User)
+                    .ThenInclude(teamMember => teamMember.User)
                 .FirstOrDefaultAsync(team => team.Id == teamId);
             
             return _mapper.Map<TeamDto>(teamEntity);
@@ -43,18 +44,24 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<ICollection<TeamDto>> GetUserTeamsAsync(int userId)
         {
-            var teams = await _context.Teams
-                .Include(team => team.User)
-                .Include(team => team.Organization)
-                .Include(team => team.TeamMembers)
-                    .ThenInclude(teamMember => teamMember.Member)
-                    .ThenInclude(member => member.User)
-                .Where(team => team.CreatedBy == userId)
-                .ToListAsync();
+            var teams = await GetAllTeamsAsync();
+            var userTeams = teams
+                .Where(t => t.Members.Any(m => m.Id == userId))
+                .ToList();
             
-            return _mapper.Map<ICollection<TeamDto>>(teams);
+            return userTeams;
         }
-
+        
+        public async Task<ICollection<TeamDto>> GetNotUserTeamsAsync(int userId)
+        {
+            var teams = await GetAllTeamsAsync();
+            var notUserTeams = teams
+                .Where(t => t.Members.All(m => m.Id != userId))
+                .ToList();
+            
+            return notUserTeams;
+        }
+        
         public async Task<TeamDto> CreateTeamAsync(NewTeamDto newTeam)
         {
             var team = _mapper.Map<Team>(newTeam, opts => opts.AfterMap((src, dst) =>
@@ -79,7 +86,29 @@ namespace Watchdog.Core.BLL.Services
 
             return _mapper.Map<TeamDto>(await GetTeamAsync(updatedTeam.Entity.Id));
         }
+
+        public async Task<TeamDto> AddMemberToTeamAsync(TeamMemberDto teamMemberDto)
+        {
+            var teamMember = _mapper.Map<TeamMember>(teamMemberDto);
             
+            var created = _context.TeamMembers.Add(teamMember);
+            await _context.SaveChangesAsync();
+            
+            return _mapper.Map<TeamDto>(await GetTeamAsync(created.Entity.TeamId));
+        }
+
+        public async Task<TeamDto> LeaveTeamAsync(int teamId, int memberId)
+        {
+            var teamMember = await _context.TeamMembers
+                .FirstOrDefaultAsync(tm => tm.MemberId == memberId && tm.TeamId == teamId);
+            
+            _context.Remove(teamMember);
+            
+            await _context.SaveChangesAsync();
+        
+            return await GetTeamAsync(teamMember.TeamId);
+        }
+        
         public async Task DeleteTeamAsync(int teamId)
         {
             var team = await _context.Teams.FirstAsync(t => t.Id == teamId);

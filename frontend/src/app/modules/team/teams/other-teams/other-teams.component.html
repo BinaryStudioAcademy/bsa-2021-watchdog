@@ -15,7 +15,14 @@
                 </div>
             </div>
             <div>
-                <button pButton pRipple type="button" label="Join team" class="p-button-raised team-button" icon="pi pi-plus-circle"></button>
+                <button
+                    pButton
+                    pRipple
+                    type="button"
+                    label="Join team"
+                    class="p-button-raised team-button"
+                    icon="pi pi-plus-circle"
+                    (click)="joinTeam(team.id)"></button>
             </div>
         </div>
     </div>

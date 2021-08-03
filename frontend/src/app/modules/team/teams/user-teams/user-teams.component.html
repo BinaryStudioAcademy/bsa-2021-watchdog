@@ -1,4 +1,4 @@
-<p-panel header="Other teams">
+<p-panel header="Your teams">
     <div class="teams">
         <div class="team" *ngFor="let team of teams">
             <div class="team-info">
@@ -15,7 +15,13 @@
                 </div>
             </div>
             <div>
-                <button pButton pRipple type="button" label="Leave team" class="p-button-raised team-button" icon="pi pi-minus-circle"></button>
+                <button
+                    pButton
+                    pRipple
+                    type="button"
+                    label="Leave team"
+                    class="p-button-raised team-button"
+                    icon="pi pi-minus-circle" (click)="leaveTeam(team.id)"></button>
             </div>
         </div>
     </div>

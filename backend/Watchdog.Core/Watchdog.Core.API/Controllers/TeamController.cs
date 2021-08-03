@@ -40,6 +40,13 @@ namespace Watchdog.Core.API.Controllers
             var team = await _teamService.GetUserTeamsAsync(userId);
             return Ok(team);
         }
+        
+        [HttpGet("not-user/{userId:int}")]
+        public async Task<ActionResult<TeamDto>> GetNotUserAsync(int userId)
+        {
+            var team = await _teamService.GetNotUserTeamsAsync(userId);
+            return Ok(team);
+        }
 
         [HttpPost]
         public async Task<ActionResult<TeamDto>> CreateAsync(NewTeamDto newTeam)
@@ -52,6 +59,17 @@ namespace Watchdog.Core.API.Controllers
             return Ok(createdTeam);
         }
         
+        [HttpPost("joinTeam")]
+        public async Task<ActionResult<TeamDto>> AddMemberAsync(TeamMemberDto teamMember)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var updatedTeam = await _teamService.AddMemberToTeamAsync(teamMember);
+            return Ok(updatedTeam);
+        }
+        
         [HttpPut("{teamId:int}")]
         public async Task<ActionResult<TeamDto>> UpdateAsync(int teamId, UpdateTeamDto updateDto)
         {
@@ -62,6 +80,13 @@ namespace Watchdog.Core.API.Controllers
 
             var updateTeam = await _teamService.UpdateTeamAsync(teamId, updateDto);
             return Ok(updateTeam);
+        }
+        
+        [HttpDelete("leave_team/{teamId:int}/member/{memberId:int}")]
+        public async Task<ActionResult> LeaveFromTeamAsync(int teamId, int memberId)
+        {
+            var updatedTeam = await _teamService.LeaveTeamAsync(teamId, memberId);
+            return Ok(updatedTeam);
         }
         
         [HttpDelete("{teamId:int}")]
