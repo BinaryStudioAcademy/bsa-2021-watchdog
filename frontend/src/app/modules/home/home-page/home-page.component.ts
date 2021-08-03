@@ -6,7 +6,6 @@ import { DataService } from '@core/services/share-data.service';
 import { Subscription } from 'rxjs';
 import { NewDashboard } from '@shared/models/dashboard/NewDashboard';
 import { User } from '@core/models/user';
-import { identifierModuleUrl } from '@angular/compiler';
 
 const userTest = { id: 1, email: 'test@test', password: 'test', firstName: 'testName', lastName: 'last', avatar: 'link' };
 
