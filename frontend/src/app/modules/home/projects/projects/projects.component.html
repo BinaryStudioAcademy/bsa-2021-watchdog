@@ -1,0 +1,23 @@
+<div class="projects-container">
+    <!--    Header    -->
+    <div class="header">
+        <h1 class="header-title">Projects</h1>
+        <button (click)="onClickCreateProject()" class="p-button-sm p-button-outlined p-button-raised"
+                icon="pi pi-plus-circle" label="Create Project" pButton type="button"></button>
+    </div>
+    <!--    Projects Grid    -->
+    <div class="grid">
+        <div *ngFor="let project of projects">
+            <div class="card">
+                <div class="card-title">
+                    <i class="pi pi-apple"></i>
+                    <span>ios</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-body-name">{{project.name}}</div>
+                    <div class="card-body-description">{{project.name}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

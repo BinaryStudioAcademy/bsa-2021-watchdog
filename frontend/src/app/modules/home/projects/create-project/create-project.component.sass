@@ -1,0 +1,173 @@
+.create-project-container
+    padding: 20px 20px 0
+    display: flex
+    flex-grow: 1
+    flex-shrink: 1
+    flex-basis: 0
+    flex-direction: column
+
+    .header
+        display: flex
+        flex-direction: column
+        justify-content: space-between
+
+        .header-title
+            font-size: 22px
+            line-height: 22px
+            font-weight: 400
+            margin-bottom: 20px
+            white-space: nowrap
+
+        .header-description
+            color: gray
+            line-height: 22px
+            max-width: 760px
+
+    .choose-platform-section
+        margin-top: 28px
+        margin-bottom: 28px
+
+        .title
+            font-size: 22px
+            line-height: 22px
+            font-weight: 400
+            margin-bottom: 10px
+            white-space: nowrap
+
+        ::ng-deep .p-tabmenu
+            overflow-x: unset !important
+            margin-bottom: 16px
+
+        .platform-cards
+            display: grid
+            gap: 8px
+            grid-template-columns: repeat(auto-fill, 112px)
+            margin-bottom: 16px
+
+            .card
+                position: relative
+                display: flex
+                flex-direction: column
+                align-items: center
+                padding: 0 0 14px
+                border-radius: 4px
+                cursor: pointer
+
+                img
+                    width: 56px
+                    aspect-ratio: auto 56 / 56
+                    height: 56px
+                    border-radius: 5px
+                    margin: 16px
+
+                h3
+                    display: flex
+                    flex-grow: 1
+                    align-items: center
+                    justify-content: center
+                    text-align: center
+                    font-size: 11px
+                    text-transform: uppercase
+                    padding: 0 4px
+                    line-height: 1.2
+                    font-weight: 600
+
+    .alert-settings
+        margin-top: 30px
+        margin-bottom: 10px
+
+        .title
+            font-size: 22px
+            line-height: 22px
+            font-weight: 400
+            margin-bottom: 10px
+            white-space: nowrap
+
+        .alert-form
+            display: flex
+            align-items: center
+            height: 40px
+            margin-top: 10px
+            margin-bottom: 10px
+            white-space: nowrap
+
+            .radiobutton-label
+                margin-left: 10px
+                white-space: nowrap
+
+            .radiobutton-settings-alerts-count
+                margin-left: 10px
+
+            .radiobutton-settings-alert-type
+                margin-left: 10px
+                height: 39px
+
+                ::ng-deep .p-dropdown
+                    height: 100%
+                    width: 180px
+
+            span
+                margin-left: 10px
+
+    .project-name-settings
+        margin-top: 30px
+        margin-bottom: 10px
+
+        .title
+            font-size: 22px
+            line-height: 22px
+            font-weight: 400
+            margin-bottom: 10px
+            white-space: nowrap
+
+        .name-settings
+            padding-top: 10px
+            display: flex
+            flex-direction: row
+
+            .title
+                font-size: 19px
+                line-height: 22px
+                font-weight: 400
+                margin-bottom: 10px
+                white-space: nowrap
+
+            .project-name
+                display: flex
+                flex-direction: column
+
+            .project-team
+                display: flex
+                flex-direction: column
+                padding-left: 20px
+
+                .dropdown-with-button
+                    display: flex
+                    flex-direction: row
+
+                    ::ng-deep .p-dropdown
+                        height: 39px
+                        width: 200px
+                        font-weight: 500
+                        padding-top: 2px
+
+                    .button-add-team
+                        margin-left: 5px
+                        font-weight: 600
+                        color: black
+                        white-space: nowrap
+
+                    .button-create-project
+                        margin-left: 15px
+                        font-weight: 600
+                        white-space: nowrap
+
+.input-validation-error
+    display: flex
+    flex-direction: column
+    flex-wrap: wrap
+    max-width: 216px
+    .p-error
+        margin: 4px
+        font-size: 12px
+

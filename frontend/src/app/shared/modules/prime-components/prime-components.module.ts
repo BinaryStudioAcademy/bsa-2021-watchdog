@@ -18,6 +18,11 @@ import { MessageModule } from 'primeng/message';
 import { PanelModule } from 'primeng/panel';
 import { RippleModule } from 'primeng/ripple';
 import { DropdownModule } from 'primeng/dropdown';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { DividerModule } from 'primeng/divider';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { TooltipModule } from 'primeng/tooltip';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -39,7 +44,12 @@ import { DropdownModule } from 'primeng/dropdown';
         MessageModule,
         PanelModule,
         RippleModule,
-        DropdownModule
+        DropdownModule,
+        TabMenuModule,
+        DividerModule,
+        RadioButtonModule,
+        InputNumberModule,
+        TooltipModule
     ],
     exports: [
         ButtonModule,
@@ -58,7 +68,12 @@ import { DropdownModule } from 'primeng/dropdown';
         MessageModule,
         PanelModule,
         RippleModule,
-        DropdownModule
+        DropdownModule,
+        TabMenuModule,
+        DividerModule,
+        RadioButtonModule,
+        InputNumberModule,
+        TooltipModule
     ],
     declarations: [],
     providers: [
