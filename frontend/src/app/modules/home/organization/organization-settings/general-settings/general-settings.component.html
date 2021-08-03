@@ -7,8 +7,11 @@
             <div>Organization slug</div>
             <div class="item-sub-text">A unique ID used to identify this organization</div>
         </label>
-        <input required [value]="organization?.organizationSlug" class="item-form-field" type="text" pInputText
-            placeholder="Organization slug" (onchange)="save()">
+        <div class="item-form-input">
+            <input required [value]="organization?.organizationSlug" class="item-form-field" type="text" pInputText
+                placeholder="Organization slug" (onchange)="save()">
+            <div class="p-error">Username is not available.</div>
+        </div>
     </div>
     <div class="item-group">
         <label class="item-form-definition">

@@ -9,7 +9,6 @@ import { OrganizationRouitingModule } from './organization-routing.module';
 
 @NgModule({
     imports: [
-        CommonModule,
         SharedModule,
         OrganizationRouitingModule
     ],

@@ -25,7 +25,7 @@ const routes: Routes = [{
         component: DashboardComponent,
     }, {
         path: 'organization',
-        loadChildren: () => import('../organization/organization.module')
+        loadChildren: () => import('./organization/organization.module')
             .then(m => m.OrganizationModule),
     }, {
         path: '**',

@@ -1,6 +1,6 @@
-import { OrganizationModule } from "./../organization/organization.module";
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
+import { OrganizationModule } from "./organization/organization.module";
 
 import { HomeComponent } from './home-page/home-page.component';
 import { DashboardComponent } from './dashboard/dashboard.component';

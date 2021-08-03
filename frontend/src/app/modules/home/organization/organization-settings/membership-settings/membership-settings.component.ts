@@ -14,8 +14,8 @@ export class MembershipSettingsComponent implements OnInit {
 
     ngOnInit() {
         this.formGroup = this.fb.group({
-            id: [this.organization.id],
-
+            openMembership: [this.organization.openMembership, Validators.required],
+            defaultRoleId: [this.organization.defaultRoleId, Validators.required]
         });
     }
 }
