@@ -1,47 +1,38 @@
 .settings-container
     width: 100%
-    margin-left: auto
     color: var(--text-color)
     font-family: var(--font-family)
 
-.settings-title
+:host
+    ::ng-deep .item-form-field.p-dropdown
+        width: 100%
+
+.content-title
     font-size: 2em
 
 .container
-    box-shadow: 0 0 3px var(--primary-color)
-    margin: 1em 0
+    &-group
+        box-shadow: 0 0 2px var(--primary-color)
+        margin: 1em 0
+    &-header
+        font-size: 1.5em
+        font-weight: 500
+        padding: var(--content-padding)
+        color: var(--primary-color-text)
+        background-color: #530c69cc
 
-.header
-    font-size: 1.5em
-    font-weight: 500
-    padding: 10px
-    box-shadow: 0 0 2px var(--primary-color)
-    color: var(--primary-color-text)
-    background-color: var(--primary-color)
+.item
+    &-group
+        padding: calc(var(--content-padding)/1.2) var(--content-padding)
+        display: flex
+    &-form-definition
+        width: 50%
+        font-size: 1.2em
+        margin-right: 1em
+    &-form-field
+        width: 45%
 
-.content
-    padding: 10px
-
-.option-group
-    padding: .5em 0
-    display: flex
-
-.definition
-    width:50%
-    font-size: 1.2em
-    margin-right: .5em
-
-.field
-    width:50%
-    margin-left: .5em
-
-.sub-text
+.item-sub-text
     font-size: .7em
     margin-top: .2em
     color: var(--text-secondary-color)
-    opacity: 70%
-
-:host
-    ::ng-deep .field.p-dropdown
-        width:100%
-

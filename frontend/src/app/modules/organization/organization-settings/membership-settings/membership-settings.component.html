@@ -1,21 +1,20 @@
-<div class="container">
-    <div class="header">
+<div class="container-group">
+    <div class="container-header">
         <h2>Membership</h2>
     </div>
-    <div class="content">
-        <div class="option-group">
-            <label class="definition">
-                <div>Default Role</div>
-                <div class="sub-text">The default role new members will receive</div>
-            </label>
-            <p-dropdown class="field" [styleClass]="'field'" optionLabel="Role" placeholder="Role"></p-dropdown>
-        </div>
-        <div class="option-group">
-            <label class="definition">
-                <div>Open Membership</div>
-                <div class="sub-text">Allow organization members to freely join or leave any team</div>
-            </label>
-            <p-inputSwitch></p-inputSwitch>
-        </div>
+    <div class="item-group">
+        <label class="item-form-definition">
+            <div>Default Role</div>
+            <div class="item-sub-text">The default role new members will receive</div>
+        </label>
+        <p-dropdown class="item-form-field" [styleClass]="'item-form-field'" optionLabel="Role" placeholder="Role">
+        </p-dropdown>
+    </div>
+    <div class="item-group">
+        <label class="item-form-definition">
+            <div>Open Membership</div>
+            <div class="item-sub-text">Allow organization members to freely join or leave any team</div>
+        </label>
+        <p-inputSwitch class="item-form-field"></p-inputSwitch>
     </div>
 </div>

@@ -1,11 +1,10 @@
-p-avatar
-    height: 30px
-
 .org-label
     color: white
     width: 100%
-    display: flex
+    display: grid
+    grid-template-columns: auto 1fr
     cursor: pointer
+    font-family: var(--font-family)
     &:hover .org-user
         color: white
 
@@ -13,18 +12,22 @@ p-avatar
     font-size: 1.4em
     margin-left: .2em
     height: 100%
-    width: 160px
-
-.org-name
-    height: 1.1em
-
-.org-user
-    color: rgb(255,255,255, 0.5)
-    font-size: .7em
-    transition: color .3s ease-in-out
-    height: 1.1em
-
-.text-ellipsis
     overflow: hidden
     white-space: nowrap
     text-overflow: ellipsis
+
+.org-name
+    height: 1.2em
+    overflow: inherit
+    text-overflow: inherit
+
+.org-user
+    color: rgb(255,255,255, 0.5)
+    font-size: .6em
+    transition: color .3s ease-in-out
+    height: 1.2em
+    overflow: inherit
+    white-space: inherit
+    text-overflow: inherit
+
+
