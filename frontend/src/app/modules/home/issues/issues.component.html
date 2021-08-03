@@ -1,6 +1,26 @@
 <div class="title">Issues</div>
 <div class="issues-content">
     <p-tabView styleClass="tabview-custom">
+
+        <div class="search-block">
+            <div class="p-inputgroup">
+                <span class="p-inputgroup-addon search-button"><i class="pi pi-search"></i></span>
+                <input type="text" pInputText placeholder="Search">
+                <span class="p-inputgroup-addon search-button search-additional"><i class="pi pi-paperclip"></i></span>
+                <span class="p-inputgroup-addon search-button search-additional"><i class="pi pi-plus"></i></span>
+                <span class="p-inputgroup-addon search-button search-additional"><i class="pi pi-ellipsis-v"></i></span>
+                <span class="p-inputgroup-addon search-button"><i class="pi pi-times"></i></span>
+            </div>
+
+            <p-dropdown [options]="sortedOptions" [(ngModel)]="sortedBy" optionLabel="name" [autoDisplayFirst]="true"> 
+                <ng-template pTemplate="selectedItem">
+                    <p>Sorted by: <span class="bold">{{sortedBy.name}}</span></p>
+                </ng-template>
+            </p-dropdown>
+        </div>
+
+
+
         <p-tabPanel>
             <ng-template pTemplate = "header">
                 <div class="header">
@@ -8,9 +28,9 @@
                     <p-badge *ngIf="countNew.all > 0" [value]="countNew.all.toString()"></p-badge>
                 </div>
             </ng-template>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>  
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil eaque ipsum, voluptate odit molestias soluta delectus officia voluptas eum explicabo sapiente? Ullam tempore dignissimos sequi! Pariatur eum dicta soluta. Non, recusandae eum totam assumenda laudantium dolorem molestias consequatur nam eveniet consequuntur animi aspernatur deleniti error nulla quae dolorum ipsam ad a atque, amet possimus! Ipsa, porro asperiores provident sed eaque ea, laudantium aut error dolorum fuga maxime sunt alias libero aliquam vel totam. Voluptatum dicta quasi iure sapiente praesentium unde voluptate, modi ad magni voluptatibus nam ducimus distinctio recusandae, aut reprehenderit dolorum esse eius illo temporibus. Enim itaque necessitatibus veritatis.</p>
+
+
         </p-tabPanel>
         <p-tabPanel header="Header II">
             <ng-template pTemplate = "header">

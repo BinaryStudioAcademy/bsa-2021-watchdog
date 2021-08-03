@@ -19,6 +19,7 @@ import { PanelModule } from 'primeng/panel';
 import { RippleModule } from 'primeng/ripple';
 import { DropdownModule } from 'primeng/dropdown';
 import { BadgeModule } from 'primeng/badge';
+import { TableModule } from 'primeng/table';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -41,7 +42,8 @@ import { BadgeModule } from 'primeng/badge';
         PanelModule,
         RippleModule,
         DropdownModule,
-        BadgeModule
+        BadgeModule,
+        TableModule
     ],
     exports: [
         ButtonModule,
@@ -61,7 +63,8 @@ import { BadgeModule } from 'primeng/badge';
         PanelModule,
         RippleModule,
         DropdownModule,
-        BadgeModule
+        BadgeModule,
+        TableModule
     ],
     declarations: [],
     providers: [
