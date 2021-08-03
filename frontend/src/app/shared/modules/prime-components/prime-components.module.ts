@@ -19,6 +19,7 @@ import { PanelModule } from 'primeng/panel';
 import { RippleModule } from 'primeng/ripple';
 import { DropdownModule } from 'primeng/dropdown';
 import { AvatarModule } from 'primeng/avatar';
+import {DynamicDialogModule} from "primeng/dynamicdialog";
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -41,7 +42,8 @@ import { AvatarModule } from 'primeng/avatar';
         PanelModule,
         RippleModule,
         DropdownModule,
-        AvatarModule
+        AvatarModule,
+        DynamicDialogModule,
     ],
     exports: [
         ButtonModule,
@@ -61,7 +63,8 @@ import { AvatarModule } from 'primeng/avatar';
         PanelModule,
         RippleModule,
         DropdownModule,
-        AvatarModule
+        AvatarModule,
+        DynamicDialogModule,
     ],
     declarations: [],
     providers: [

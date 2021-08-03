@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Team } from '@shared/models/team/team';
 import { HttpResponse } from '@angular/common/http';
 import { TeamMember } from '@shared/models/team/team-member';
+import {NewTeam} from "@shared/models/team/new-team";
 
 @Injectable({ providedIn: 'root' })
 export class TeamService {
@@ -21,6 +22,11 @@ export class TeamService {
 
     public getNotUserTeams(userId: number): Observable<HttpResponse<Team[]>> {
         return this.httpService.getFullRequest(`${this.routePrefix}/not-user/${userId}`);
+    }
+
+    public createTeam(newTeam: NewTeam): Observable<HttpResponse<Team>> {
+        console.log(newTeam)
+        return this.httpService.postFullRequest(`${this.routePrefix}`, newTeam);
     }
 
     public joinTeam(teamMember: TeamMember): Observable<HttpResponse<Team>> {

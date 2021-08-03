@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Team } from '@shared/models/team/team';
 import { TeamService } from '@core/services/team.service';
-import { Subject } from 'rxjs';
+import {Observable, Subject, Subscription} from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DataService } from '@core/services/share-data.service';
 
@@ -12,6 +12,9 @@ import { DataService } from '@core/services/share-data.service';
 })
 export class UserTeamsComponent implements OnInit, OnDestroy {
     private unsubscribe$: Subject<Team> = new Subject<Team>();
+    private newTeamSub$: Subscription;
+
+    @Input() newTeam: Observable<Team> = new Observable<Team>();
     @Input() currentUserId: number;
     teams: Team[];
 
@@ -33,6 +36,14 @@ export class UserTeamsComponent implements OnInit, OnDestroy {
             .subscribe(team => {
                 this.teams.push(team);
             });
+
+        this.newTeamSub$ = this.newTeam
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(team => {
+                this.teams.push(team);
+            }, error => {
+                console.log(error);
+            })
     }
 
     public leaveTeam(teamId: number) {
@@ -48,6 +59,7 @@ export class UserTeamsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.newTeamSub$.unsubscribe();
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
     }

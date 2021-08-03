@@ -4,12 +4,16 @@
     </div>
     <div class="header-actions">
         <div>
-            <button pButton pRipple type="button" label="Create team" class="p-button-raised" icon="pi pi-plus-circle"></button>
+            <button
+                pButton
+                pRipple
+                type="button"
+                label="Create team"
+                class="p-button-raised"
+                icon="pi pi-plus-circle" (click)="openDialog()"></button>
         </div>
     </div>
 </div>
 
-<app-user-teams [currentUserId]="currentUserId"></app-user-teams>
+<app-user-teams [currentUserId]="currentUserId" [newTeam]="teamCreated$.asObservable()"></app-user-teams>
 <app-other-teams [currentUserId]="currentUserId"></app-other-teams>
-
-
