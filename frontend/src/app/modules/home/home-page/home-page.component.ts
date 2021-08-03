@@ -6,6 +6,9 @@ import { DataService } from '@core/services/share-data.service';
 import { Subscription } from 'rxjs';
 import { NewDashboard } from '@shared/models/dashboard/NewDashboard';
 import { User } from '@core/models/user';
+import { identifierModuleUrl } from '@angular/compiler';
+
+const userTest = { id: 1, email: 'test@test', password: 'test', firstName: 'testName', lastName: 'last', avatar: 'link' };
 
 @Component({
     selector: 'app-home',
@@ -28,7 +31,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     ) { }
 
     async ngOnInit() {
-        this.authorizedUser.firstName = 'Test';
+        this.authorizedUser.firstName = userTest.firstName;
         this.dashboards = this.dashboardService.getAll();
 
         this.updateSubscription$ = this.updateDataService.currentMessage
