@@ -10,6 +10,7 @@ import { AddDashboardComponent } from './modals/add-dashboard/add-dashboard.comp
 import { UpdateDashboardComponent } from './modals/update-dashboard/update-dashboard.component';
 import { CreateProjectComponent } from './projects/create-project/create-project.component';
 
+
 @NgModule({
     declarations: [
         HomeComponent,
