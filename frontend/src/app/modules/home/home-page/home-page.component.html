@@ -9,8 +9,7 @@
         </div>
         <div *ngIf="authorizedUser" class="user-info">
             <img class="avatar" src="assets\avatar.png" alt="Ava">
-            <div [routerLink]="['/user-profile']">{{authorizedUser.firstName}}</div>
-            <i class="pi pi-caret-down" style="font-size: 1rem"></i>
+            <div routerLink="/user" class="user-name">{{authorizedUser.firstName}}</div>
         </div>
     </div>
 
