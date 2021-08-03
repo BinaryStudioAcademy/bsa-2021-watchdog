@@ -6,8 +6,8 @@ import { UpdateDashboard } from '@shared/models/dashboard/UpdateDashboard';
 
 @Component({
     selector: 'app-update-dashboard',
-    templateUrl: './update-dashboard.component.html',
-    styleUrls: ['./update-dashboard.component.sass']
+    templateUrl: './dashboard-template.html',
+    styleUrls: ['./dashboard-template.sass']
 })
 export class UpdateDashboardComponent implements OnInit {
     public formGroup: FormGroup = {} as FormGroup;

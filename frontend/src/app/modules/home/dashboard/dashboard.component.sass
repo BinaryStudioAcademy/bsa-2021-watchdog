@@ -1,43 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap')
-@import ../common-styles/variables
-@import ../common-styles/mixins
+@import src/styles/variables
+@import src/styles/mixins
 
 .dashboard-header
-    @include title
     @include backgroung-gray
+    @include title
     width: 100%
     min-height: 50px
     display: flex
-    flex-flow: row wrap
     flex-direction: row
     align-items: center
-    .dashboard-name
-        width: 65%
+    justify-content: space-between
+
     .action-buttons
-        width: 35%
         display: flex
-        flex-flow: row wrap
+        grid-gap: 5px
         flex-direction: row-reverse
         align-items: center
 
-.button
-    font-family: "DM Sans", serif
-    font-weight: 520
-    border-radius: 3px
-    color: #FFFFFF
-    border: none
-    margin: 0 0.5em 0.2em
-    padding: 10px
-    height: 40px
-    min-width: 80px
-    cursor: pointer
+        button
+            width: 100px
 
-.edit-button
-    background-color: #9322b8
-    &:hover
-        opacity: 0.9
 
-.delete-button
-    background-color: red
-    &:hover
-        opacity: 0.7
