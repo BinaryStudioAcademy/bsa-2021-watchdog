@@ -3,13 +3,8 @@
         <h2>{{dashboard.name}}</h2>
     </div>
     <div class="action-buttons">
-        <button class="button delete-button" (click)="deleteDashboard()">
-            Delete
-        </button>
-
-        <button class="button edit-button" (click)="isEditing = true">
-            Edit
-        </button>
+        <button pButton pRipple label="Delete" class="p-button-danger" (click)="deleteDashboard()"></button>
+        <button pButton pRipple label="Edit" class="p-button-info" (click)="isEditing = true"></button>
     </div>
 </div>
 

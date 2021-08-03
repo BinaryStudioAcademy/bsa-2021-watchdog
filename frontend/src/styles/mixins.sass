@@ -1,3 +1,20 @@
+@import ./variables
+
+@mixin backgroung-gray
+    background-color: $background-color
+    box-shadow: 0px 0px 10px 2px $shadow-color
+
+@mixin title
+    font-size: 2rem
+    padding: $half-indent $indent
+    height: 75px
+    display: flex
+    align-items: center
+    margin-bottom: 5px 
+   
+
+
+
 @mixin media-padding($selector) // mixin to formating padding depens on screen width
     #{$selector}
         padding-left: 200px
@@ -12,3 +29,4 @@
         #{$selector}
             padding-left: 0
             padding-right: 0
+

@@ -1,26 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap')
+@import src/styles/variables
 
-.p-button-raised
-    font-weight: 520
+button
     width: 100%
-    box-shadow: none
-    margin: 4px auto
-    &:active
-        border: none
+    margin: 4px 0
 
 .p-button-text
-    background-color: #F2F3F4
+    background-color: $background-color
 
 ::ng-deep
     .p-dropdown
-        font-family: "DM Sans", serif
         height: 45px
         width: 100%
         margin: 5px auto
 
 ::ng-deep
     .p-inputtext
-        font-family: "DM Sans", serif
         margin: 5px auto
         width: 100%
         height: 45px
@@ -34,15 +28,14 @@
             padding: 0
 ::ng-deep
     .p-panel
-        .p-panel-header
-            border-radius: 0
+        .p-panel-header,
         .p-panel-content
             border-radius: 0
 
 .validation
     width: 100%
     margin: 4px auto
-    color: red
+    color: $validation-color
     font-size: 12px
     small
         display: block

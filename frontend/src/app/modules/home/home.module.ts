@@ -7,8 +7,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeRoutingModule } from './home-routing.module';
 import { ProjectsComponent } from './projects/projects.component';
 import { IssuesComponent } from './issues/issues.component';
-import { AddDashboardComponent } from './modals/add-dashboard/add-dashboard.component';
-import { UpdateDashboardComponent } from './modals/update-dashboard/update-dashboard.component';
+import { AddDashboardComponent } from './modals/dashboard/add-dashboard.component';
+import { UpdateDashboardComponent } from './modals/dashboard/update-dashboard.component';
 
 @NgModule({
     declarations: [
