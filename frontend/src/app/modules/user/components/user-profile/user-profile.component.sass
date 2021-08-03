@@ -1,0 +1,59 @@
+@import ../../styles/user.styles
+    
+html
+    scroll-behavior: smooth
+    
+.profile-header
+    box-sizing: border-box
+    position: fixed
+    width: 100%
+    padding: 8px 24px
+    background-color: $white
+    @include border-gray
+    padding-bottom: 0
+
+.center
+    margin-left: auto
+    margin-right: auto
+    max-width: $max-width
+
+.profile-header-title
+    margin: 4px
+
+.profile-header-container, .profile-header-title, .profile-header-navigation-container
+    padding: 5px
+    padding-bottom: 0
+
+.profile-header-navigation-container
+    white-space: nowrap
+
+.navigation-item
+    display: inline-block
+    margin-right: 10px
+    
+h1, .navigation-item-link
+    white-space: nowrap
+
+.navigation-item-link
+    padding: 10px 16px
+    display: block
+    margin: 4px
+    text-decoration: none
+    color: $black
+    margin-bottom: 0
+
+.navigation-item-link:hover
+    border-bottom: 3px solid $light-gray
+
+#profile-settings
+    background: $white
+    color: $black
+    border-bottom: 3px solid  $blue
+
+.pi
+    display: inline-block
+    margin-right: 5px 
+
+.content-container
+    padding: 24px
+    padding-top: 130px

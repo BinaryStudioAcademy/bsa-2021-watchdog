@@ -17,7 +17,7 @@ import { PrimeComponentsModule } from './modules/prime-components/prime-componen
     ],
     declarations: [
         LoadingSpinnerComponent,
-        NotFoundComponent
+        NotFoundComponent,
     ],
     exports: [
         CommonModule,
@@ -26,7 +26,7 @@ import { PrimeComponentsModule } from './modules/prime-components/prime-componen
         ReactiveFormsModule,
         LoadingSpinnerComponent,
         NotFoundComponent,
-        PrimeComponentsModule
+        PrimeComponentsModule,
     ]
 })
 export class SharedModule { }

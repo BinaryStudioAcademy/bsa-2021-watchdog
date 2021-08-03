@@ -5,8 +5,8 @@ import { NewDashboard } from '@shared/models/dashboard/new-dashboard';
 
 @Component({
     selector: 'app-add-dashboard',
-    templateUrl: './add-dashboard.component.html',
-    styleUrls: ['./add-dashboard.component.sass']
+    templateUrl: './dashboard-template.html',
+    styleUrls: ['./dashboard-template.sass']
 })
 export class AddDashboardComponent implements OnInit {
     public formGroup: FormGroup = {} as FormGroup;

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Watchdog.Core.BLL.Models;
 using Watchdog.Core.BLL.Services;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Sample;
@@ -18,12 +19,17 @@ namespace Watchdog.Core.API.Controllers
         private readonly ILogger<SampleController> _logger;
         private readonly ISampleService _sampleService;
         private readonly QueueService _queueService;
+        private readonly IEmailSendService _emailSendService;
 
-        public SampleController(ILogger<SampleController> logger, ISampleService sampleService, QueueService queueService)
+        public SampleController(ILogger<SampleController> logger,
+                                ISampleService sampleService,
+                                QueueService queueService,
+                                IEmailSendService emailSendService)
         {
             _logger = logger;
             _sampleService = sampleService;
             _queueService = queueService;
+            _emailSendService = emailSendService;
         }
 
         [HttpGet]
@@ -86,6 +92,13 @@ namespace Watchdog.Core.API.Controllers
         {
             _queueService.Send("test message");
             return Ok();
+        }
+
+        [HttpPost("emailservice_test/{email}")]
+        public async Task<ActionResult<string>> EmailServiceTast([FromRoute] string email, [FromBody] ExampleTemplateData data)
+        {
+
+            return Ok(await _emailSendService.SendAsync(email, data));
         }
     }
 }

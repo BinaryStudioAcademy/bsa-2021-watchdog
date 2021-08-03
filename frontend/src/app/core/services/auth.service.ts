@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { AuthUser } from '@core/models/auth/auth-user';
 import { UserLoginDto } from '@core/models/auth/user-login';
 import { UserRegisterDto } from '@core/models/auth/user-register';
+import { User } from '@core/models/user';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -15,6 +16,7 @@ export class AuthService {
     public currentUser: Observable<AuthUser>;
 
     constructor(private http: HttpClient) {
+        this.clearUser();
         this.currentUserSubject = new BehaviorSubject<AuthUser>(JSON.parse(localStorage.getItem('currentUser')));
         this.currentUser = this.currentUserSubject.asObservable();
     }
@@ -48,6 +50,15 @@ export class AuthService {
 
     isAuthorized(): boolean {
         return !!this.currentUserSubject.value;
+    }
+
+    public getUser(): User {
+        return this.currentUserSubject.value?.user;
+    }
+
+    public setUser(user: User) {
+        this.currentUserSubject.value.user = user;
+        localStorage.setItem('currentUser', JSON.stringify(user));
     }
 
     private clearUser() {
