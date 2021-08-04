@@ -7,8 +7,6 @@ import { Subscription } from 'rxjs';
 import { NewDashboard } from '@shared/models/dashboard/NewDashboard';
 import { User } from '@core/models/user';
 
-const userTest = { id: 1, email: 'test@test', password: 'test', firstName: 'testName', lastName: 'last', avatar: 'link' };
-
 @Component({
     selector: 'app-home',
     templateUrl: './home-page.component.html',
@@ -20,7 +18,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     deleteSubscription$: Subscription;
     dashboardsShown: boolean = false;
     displayModal: boolean = false;
-    public authorizedUser: User = {} as User;
+    authorizedUser: User;
 
     constructor(
         private broadcastHub: BroadcastHubService,
@@ -30,7 +28,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     ) { }
 
     async ngOnInit() {
-        this.authorizedUser = { id: 1, email: 'test@test', password: 'test', firstName: 'testName', lastName: 'last', avatar: 'link' };
+        this.authorizedUser = {
+            id: 1,
+            email: 'andriy@gmail.com',
+            password: '123456',
+            firstName: 'Andriy',
+            lastName: 'Saliy',
+            avatar: 'link'
+        };
+
         this.dashboards = this.dashboardService.getAll();
 
         this.updateSubscription$ = this.updateDataService.currentMessage
