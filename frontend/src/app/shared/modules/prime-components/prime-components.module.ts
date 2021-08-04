@@ -18,8 +18,12 @@ import { MessageModule } from 'primeng/message';
 import { PanelModule } from 'primeng/panel';
 import { RippleModule } from 'primeng/ripple';
 import { DropdownModule } from 'primeng/dropdown';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { DividerModule } from 'primeng/divider';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { TooltipModule } from 'primeng/tooltip';
 import { AvatarModule } from 'primeng/avatar';
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -42,8 +46,12 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
         PanelModule,
         RippleModule,
         DropdownModule,
-        AvatarModule,
-        DynamicDialogModule,
+        TabMenuModule,
+        DividerModule,
+        RadioButtonModule,
+        InputNumberModule,
+        TooltipModule,
+        AvatarModule
     ],
     exports: [
         ButtonModule,
@@ -63,8 +71,12 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
         PanelModule,
         RippleModule,
         DropdownModule,
-        AvatarModule,
-        DynamicDialogModule,
+        TabMenuModule,
+        DividerModule,
+        RadioButtonModule,
+        InputNumberModule,
+        TooltipModule,
+        AvatarModule
     ],
     declarations: [],
     providers: [

@@ -1,0 +1,121 @@
+<div class="create-project-container">
+    <!--    Header    -->
+    <div class="header">
+        <h2 class="header-title">Create New Project</h2>
+        <p class="header-description">Projects allow you to scope error and transaction events to a specific
+            application in your organization.
+            For example, you might have separate projects for your API server and frontend client.
+        </p>
+    </div>
+    <!--    Platform Section    -->
+    <div class="choose-platform-section">
+        <h2 class="title">Choose a platform</h2>
+        <p-tabMenu [activeItem]="platformTabItems[0]" [model]="platformTabItems"></p-tabMenu>
+        <!--    Platform Cards    -->
+        <div class="platform-cards">
+            <div (click)="onPlatformSelected(platform.id)"
+                 *ngFor="let platform of viewPlatformCards"
+                 [ngClass]="{ 'selected-card': platform.id === this.selectedPlatformId}" class="card">
+                <img alt="{{platform.name}}" src="{{platform.avatarUrl}}">
+                <h3>{{platform.name}}</h3>
+            </div>
+        </div>
+    </div>
+    <!--    Platform is not selected Warning    -->
+    <small *ngIf="!selectedPlatformId" class="p-error">
+        Please choose a platform
+    </small>
+    <!--    Alert RadioButtons    -->
+    <div class="alert-settings">
+        <h2 class="title">Set your default alert settings</h2>
+        <p-divider></p-divider>
+
+        <div *ngFor="let category of alertCategories" class="alert-form">
+            <form [formGroup]="formGroup">
+                <p-radioButton [inputId]="category" [value]="category"
+                               formControlName="alertCategory" name="alertCategory">
+                </p-radioButton>
+            </form>
+            <label [for]="category" class="radiobutton-label">{{category}}</label>
+            <!--    Specific Alert Settings    -->
+            <ng-container *ngIf="category === SPECIAL_ALERT_CATEGORY">
+                <p-inputNumber [(ngModel)]="alertsCount"
+                               [disabled]="formGroup.controls.alertCategory.value !== SPECIAL_ALERT_CATEGORY"
+                               [min]="0" [showButtons]="true" [size]="2" [step]="1"
+                               class="radiobutton-settings-alerts-count"
+                               mode="decimal">
+                </p-inputNumber>
+                <p-dropdown [(ngModel)]="selectedAlertType"
+                            [disabled]="formGroup.controls.alertCategory.value !== SPECIAL_ALERT_CATEGORY"
+                            [options]="alertTypes" class="radiobutton-settings-alert-type">
+                </p-dropdown>
+                <span>a unique error in</span>
+                <p-dropdown [(ngModel)]="selectedAlertTimeInterval"
+                            [disabled]="formGroup.controls.alertCategory.value !== SPECIAL_ALERT_CATEGORY"
+                            [options]="alertTimeIntervals" class="radiobutton-settings-alert-type"
+                >
+                </p-dropdown>
+            </ng-container>
+        </div>
+    </div>
+    <!--    Name and Team inputs    -->
+    <div class="project-name-settings">
+        <h2 class="title">Give your project a name</h2>
+        <p-divider></p-divider>
+        <div class="name-settings">
+            <!--    Name input    -->
+            <div [formGroup]="formGroup" class="project-name">
+                <span class="title">Project name</span>
+                <div class="p-input-icon-left">
+                    <i class="pi pi-table"></i>
+                    <input aria-describedby="projectName" formControlName="projectName" pInputText
+                           placeholder="Project name"
+                           type="text">
+                </div>
+                <div *ngIf="formGroup.controls.projectName.touched && formGroup.controls.projectName.invalid"
+                     class="input-validation-error" id="projectName">
+                    <small *ngIf="formGroup.controls.projectName.errors.required" class="p-error">
+                        Required field
+                    </small>
+                    <small *ngIf="formGroup.controls.projectName.errors.minlength" class="p-error">
+                        At least 3 characters
+                    </small>
+                    <small *ngIf="formGroup.controls.projectName.errors.maxlength" class="p-error">
+                        No more than 50 characters
+                    </small>
+                    <small *ngIf="formGroup.controls.projectName.errors.pattern" class="p-error">
+                        May contain lowercase (a-z) and uppercase (A-Z) letters, numbers (0-9), dashes and
+                        underscores
+                    </small>
+                </div>
+
+            </div>
+            <!--    Team DropDown   -->
+            <div [formGroup]="formGroup" class="project-team">
+                <span class="title">Team</span>
+                <div class="dropdown-with-button">
+                    <p-dropdown [options]="userTeams" aria-describedby="team" class="radiobutton-settings-alert-type"
+                                formControlName="team" optionLabel="name" placeholder="Select team">
+                    </p-dropdown>
+
+                    <button class="p-button-text button-add-team" icon="pi pi-plus-circle" pButton pRipple
+                            pTooltip="Create a team"
+                            tooltipPosition="top" type="button"></button>
+                    <!--    Submit Button   -->
+                    <button (click)="createProject()"
+                            [disabled]="!formGroup.valid || !selectedPlatformId"
+                            class="p-button-secondary button-create-project" label="Create Project"
+                            pButton></button>
+                </div>
+                <!--    Team not selected Warning   -->
+                <div *ngIf="formGroup.controls.team.dirty && formGroup.controls.team.invalid"
+                     class="input-validation-error" id="team">
+                    <small *ngIf="formGroup.controls.team.errors.required" class="p-error">
+                        Required field
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
