@@ -16,12 +16,12 @@ export class TeamService {
         return this.httpService.getFullRequest(`${this.routePrefix}`);
     }
 
-    public getUserTeams(userId: number): Observable<HttpResponse<Team[]>> {
-        return this.httpService.getFullRequest(`${this.routePrefix}/user/${userId}`);
+    public getMemberTeams(organizationId: number, memberId: number): Observable<HttpResponse<Team[]>> {
+        return this.httpService.getFullRequest(`${this.routePrefix}/organization/${organizationId}/member/${memberId}`);
     }
 
-    public getNotUserTeams(userId: number): Observable<HttpResponse<Team[]>> {
-        return this.httpService.getFullRequest(`${this.routePrefix}/not-user/${userId}`);
+    public getNotMemberTeams(organizationId: number, memberId: number): Observable<HttpResponse<Team[]>> {
+        return this.httpService.getFullRequest(`${this.routePrefix}/organization/${organizationId}/notMember/${memberId}`);
     }
 
     public createTeam(newTeam: NewTeam): Observable<HttpResponse<Team>> {
@@ -33,7 +33,7 @@ export class TeamService {
     }
 
     public leaveTeam(teamId: number, memberId: number): Observable<HttpResponse<Team>> {
-        return this.httpService.deleteFullRequest(`${this.routePrefix}/leave_team/${teamId}/member/${memberId}`);
+        return this.httpService.deleteFullRequest(`${this.routePrefix}/leaveTeam/${teamId}/member/${memberId}`);
     }
 
     public getLabel(teamName: string): string {

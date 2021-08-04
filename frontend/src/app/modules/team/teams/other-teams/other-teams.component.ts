@@ -14,6 +14,7 @@ export class OtherTeamsComponent extends BaseComponent implements OnInit {
     @Input() newTeam: Observable<Team> = new Observable<Team>();
     @Output() joinTeamEvent: EventEmitter<Team> = new EventEmitter<Team>();
 
+    @Input() currentOrganizationId: number;
     @Input() currentUserId: number;
 
     teams: Team[];
@@ -27,7 +28,7 @@ export class OtherTeamsComponent extends BaseComponent implements OnInit {
         this.isLoading = true;
 
         this.teamService
-            .getNotUserTeams(this.currentUserId)
+            .getNotMemberTeams(this.currentOrganizationId, this.currentUserId)
             .pipe(this.untilThis)
             .subscribe(teams => {
                 this.isLoading = false;

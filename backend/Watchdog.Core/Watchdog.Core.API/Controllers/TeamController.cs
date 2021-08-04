@@ -20,34 +20,27 @@ namespace Watchdog.Core.API.Controllers
             _teamService = teamService;
         }
         
-        [HttpGet]
-        public async Task<ActionResult<ICollection<TeamDto>>> GetAllAsync()
+        [HttpGet("{organizationId:int}")]
+        public async Task<ActionResult<ICollection<TeamDto>>> GetAllAsync(int organizationId)
         {
-            var teams = await _teamService.GetAllTeamsAsync();
+            var teams = await _teamService.GetAllTeamsAsync(organizationId);
             return Ok(teams);
         }
-            
-        [HttpGet("{teamId:int}")]
-        public async Task<ActionResult<TeamDto>> GetByIdAsync(int teamId)
-        {
-            var team = await _teamService.GetTeamAsync(teamId);
-            return Ok(team);
-        }
-        
-        [HttpGet("user/{userId:int}")]
-        public async Task<ActionResult<TeamDto>> GetByUserAsync(int userId)
-        {
-            var team = await _teamService.GetUserTeamsAsync(userId);
-            return Ok(team);
-        }
-        
-        [HttpGet("not-user/{userId:int}")]
-        public async Task<ActionResult<TeamDto>> GetNotUserAsync(int userId)
-        {
-            var team = await _teamService.GetNotUserTeamsAsync(userId);
-            return Ok(team);
-        }
 
+        [HttpGet("organization/{organizationId:int}/member/{memberId:int}")]
+        public async Task<ActionResult<TeamDto>> GetByMemberAsync(int organizationId, int memberId)
+        {
+            var team = await _teamService.GetMemberTeamsAsync(organizationId, memberId, true);
+            return Ok(team);
+        }
+        
+        [HttpGet("organization/{organizationId:int}/notMember/{memberId:int}")]
+        public async Task<ActionResult<TeamDto>> GetNotByMemberAsync(int organizationId, int memberId)
+        {
+            var team = await _teamService.GetMemberTeamsAsync(organizationId, memberId, false);
+            return Ok(team);
+        }
+        
         [HttpPost]
         public async Task<ActionResult<TeamDto>> CreateAsync(NewTeamDto newTeam)
         {
@@ -82,7 +75,7 @@ namespace Watchdog.Core.API.Controllers
             return Ok(updateTeam);
         }
             
-        [HttpDelete("leave_team/{teamId:int}/member/{memberId:int}")]
+        [HttpDelete("leaveTeam/{teamId:int}/member/{memberId:int}")]
         public async Task<ActionResult> LeaveFromTeamAsync(int teamId, int memberId)
         {
             var updatedTeam = await _teamService.LeaveTeamAsync(teamId, memberId);

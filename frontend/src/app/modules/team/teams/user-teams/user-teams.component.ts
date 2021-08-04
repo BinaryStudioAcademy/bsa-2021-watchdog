@@ -16,7 +16,9 @@ export class UserTeamsComponent extends BaseComponent implements OnInit {
 
     @Output() leaveTeamEvent: EventEmitter<Team> = new EventEmitter<Team>();
 
+    @Input() currentOrganizationId: number;
     @Input() currentUserId: number;
+
     teams: Team[];
     isLoading: boolean = false;
 
@@ -28,7 +30,7 @@ export class UserTeamsComponent extends BaseComponent implements OnInit {
         this.isLoading = true;
 
         this.teamService
-            .getUserTeams(this.currentUserId)
+            .getMemberTeams(this.currentOrganizationId, this.currentUserId)
             .pipe(this.untilThis)
             .subscribe(teams => {
                 this.isLoading = false;

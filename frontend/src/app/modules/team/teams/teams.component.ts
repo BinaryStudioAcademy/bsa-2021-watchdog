@@ -22,8 +22,8 @@ export class TeamsComponent extends BaseComponent implements OnDestroy {
     createTeamDialog: DynamicDialogRef;
 
     //fake
-    currentUserId: number = 10;
-    currentOrganizationId: number = 3;
+    currentUserId: number = 9;
+    currentOrganizationId: number = 1;
 
     constructor(private teamService: TeamService, public dialogService: DialogService, private toastService: ToastNotificationService) {
         super();
