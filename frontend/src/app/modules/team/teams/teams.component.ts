@@ -2,10 +2,10 @@ import { Component, OnDestroy } from '@angular/core';
 import { Team } from '@shared/models/team/team';
 import { TeamService } from '@core/services/team.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CreateTeamComponent } from '@modules/team/create-team/create-team.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
+import { BaseComponent } from '@core/components/base/base.component';
 
 @Component({
     selector: 'app-teams',
@@ -13,9 +13,7 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
     styleUrls: ['./teams.component.sass'],
     providers: [DialogService]
 })
-export class TeamsComponent implements OnDestroy {
-    private unsubscribe$: Subject<Team> = new Subject<Team>();
-
+export class TeamsComponent extends BaseComponent implements OnDestroy {
     public teamCreated$: Subject<Team> = new Subject<Team>();
     public pushToOtherTeams$: Subject<Team> = new Subject<Team>();
     public pushToUserTeams$: Subject<Team> = new Subject<Team>();
@@ -27,7 +25,9 @@ export class TeamsComponent implements OnDestroy {
     currentUserId: number = 10;
     currentOrganizationId: number = 3;
 
-    constructor(private teamService: TeamService, public dialogService: DialogService, private toastService: ToastNotificationService) { }
+    constructor(private teamService: TeamService, public dialogService: DialogService, private toastService: ToastNotificationService) {
+        super();
+    }
 
     openDialog() {
         this.createTeamDialog = this.dialogService.open(CreateTeamComponent, {
@@ -38,7 +38,7 @@ export class TeamsComponent implements OnDestroy {
         });
 
         this.createTeamDialog.onClose
-            .pipe(takeUntil(this.unsubscribe$))
+            .pipe(this.untilThis)
             .subscribe((name: string) => {
                 if (name !== undefined) {
                     this.teamService
@@ -47,7 +47,7 @@ export class TeamsComponent implements OnDestroy {
                             organizationId: this.currentOrganizationId,
                             name
                         })
-                        .pipe(takeUntil(this.unsubscribe$))
+                        .pipe(this.untilThis)
                         .subscribe(response => {
                             this.teamCreated$.next(response.body);
                             this.toastService.success('Team successfully created!', '', 2000);
@@ -73,7 +73,5 @@ export class TeamsComponent implements OnDestroy {
         this.pushToOtherTeams$.complete();
         this.pushToUserTeams$.next();
         this.pushToUserTeams$.complete();
-        this.unsubscribe$.next();
-        this.unsubscribe$.complete();
     }
 }

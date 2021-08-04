@@ -1,18 +1,16 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Team } from '@shared/models/team/team';
 import { TeamService } from '@core/services/team.service';
-import { takeUntil } from 'rxjs/operators';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
+import { BaseComponent } from '@core/components/base/base.component';
 
 @Component({
     selector: 'app-other-teams',
     templateUrl: './other-teams.component.html',
     styleUrls: ['../teams.component.sass']
 })
-export class OtherTeamsComponent implements OnInit, OnDestroy {
-    private unsubscribe$: Subject<Team> = new Subject<Team>();
-
+export class OtherTeamsComponent extends BaseComponent implements OnInit {
     @Input() newTeam: Observable<Team> = new Observable<Team>();
     @Output() joinTeamEvent: EventEmitter<Team> = new EventEmitter<Team>();
 
@@ -21,14 +19,16 @@ export class OtherTeamsComponent implements OnInit, OnDestroy {
     teams: Team[];
     isLoading: boolean = false;
 
-    constructor(public teamService: TeamService, private toastService: ToastNotificationService) { }
+    constructor(public teamService: TeamService, private toastService: ToastNotificationService) {
+        super();
+    }
 
     ngOnInit(): void {
         this.isLoading = true;
 
         this.teamService
             .getNotUserTeams(this.currentUserId)
-            .pipe(takeUntil(this.unsubscribe$))
+            .pipe(this.untilThis)
             .subscribe(teams => {
                 this.isLoading = false;
                 this.teams = teams.body;
@@ -37,7 +37,7 @@ export class OtherTeamsComponent implements OnInit, OnDestroy {
             });
 
         this.newTeam
-            .pipe(takeUntil(this.unsubscribe$))
+            .pipe(this.untilThis)
             .subscribe(team => {
                 this.teams.push(team);
                 this.toastService.success(`You have successfully left from #${team.name}.`, '', 1500);
@@ -47,17 +47,12 @@ export class OtherTeamsComponent implements OnInit, OnDestroy {
     joinTeam(teamId: number) {
         this.teamService
             .joinTeam({ teamId, memberId: this.currentUserId })
-            .pipe(takeUntil(this.unsubscribe$))
+            .pipe(this.untilThis)
             .subscribe(response => {
                 this.joinTeamEvent.emit(response.body);
                 this.teams = this.teams.filter(t => t.id !== teamId);
             }, error => {
                 this.toastService.error(`${error}`, 'Error', 2000);
             });
-    }
-
-    ngOnDestroy(): void {
-        this.unsubscribe$.next();
-        this.unsubscribe$.complete();
     }
 }
