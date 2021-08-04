@@ -22,6 +22,11 @@ import { BadgeModule } from 'primeng/badge';
 import { TableModule } from 'primeng/table';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { TagModule } from 'primeng/tag';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { DividerModule } from 'primeng/divider';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { TooltipModule } from 'primeng/tooltip';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -47,7 +52,12 @@ import { TagModule } from 'primeng/tag';
         BadgeModule,
         TableModule,
         SelectButtonModule,
-        TagModule
+        TagModule,
+        TabMenuModule,
+        DividerModule,
+        RadioButtonModule,
+        InputNumberModule,
+        TooltipModule
     ],
     exports: [
         ButtonModule,
@@ -70,7 +80,12 @@ import { TagModule } from 'primeng/tag';
         BadgeModule,
         TableModule,
         SelectButtonModule,
-        TagModule
+        TagModule,
+        TabMenuModule,
+        DividerModule,
+        RadioButtonModule,
+        InputNumberModule,
+        TooltipModule
     ],
     declarations: [],
     providers: [
