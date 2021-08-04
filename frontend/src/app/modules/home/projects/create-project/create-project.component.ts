@@ -114,12 +114,8 @@ export class CreateProjectComponent implements OnInit {
         this.selectedPlatformId = platformId === this.selectedPlatformId ? undefined : platformId;
     }
 
-    applySelection(platformId: number) {
-        return platformId === this.selectedPlatformId ? { 'selected-card': true } : { 'selected-card': false };
-    }
-
     createProject(): void {
-        if (this.formGroup.valid && this.selectedPlatformId !== undefined) {
+        if (this.formGroup.valid && this.selectedPlatformId) {
             const project: Project = {
                 id: 5,
                 name: this.formGroup.controls.projectName.value,

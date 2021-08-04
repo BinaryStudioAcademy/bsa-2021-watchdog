@@ -15,7 +15,7 @@
         <div class="platform-cards">
             <div (click)="onPlatformSelected(platform.id)"
                  *ngFor="let platform of viewPlatformCards"
-                 [ngClass]="applySelection(platform.id)" class="card">
+                 [ngClass]="{ 'selected-card': platform.id === this.selectedPlatformId}" class="card">
                 <img alt="{{platform.name}}" src="{{platform.avatarUrl}}">
                 <h3>{{platform.name}}</h3>
             </div>
