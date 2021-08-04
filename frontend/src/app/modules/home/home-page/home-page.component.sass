@@ -1,4 +1,5 @@
 @import src/styles/variables
+@import src/styles/mixins
 
 @mixin custom-scroll
     &::-webkit-scrollbar-thumb
@@ -27,6 +28,7 @@
         display: inline-block
         margin-left: 1.25em
         img
+            @include disable-select
             display: block
             width: 80%
 
@@ -73,6 +75,7 @@
         flex-direction: row
 
     .avatar
+        @include disable-select
         margin-top: -0.8em
         height: 40px
         margin-right: 1em
