@@ -11,7 +11,7 @@ import { BaseComponent } from '@core/components/base/base.component';
     styleUrls: ['../teams.component.sass']
 })
 export class OtherTeamsComponent extends BaseComponent implements OnInit {
-    @Input() newTeam: Observable<Team> = new Observable<Team>();
+    @Input() leavedTeam: Observable<Team> = new Observable<Team>();
     @Output() joinTeamEvent: EventEmitter<Team> = new EventEmitter<Team>();
 
     @Input() currentOrganizationId: number;
@@ -25,22 +25,12 @@ export class OtherTeamsComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.isLoading = true;
+        this.loadTeams();
 
-        this.teamService
-            .getNotMemberTeams(this.currentOrganizationId, this.currentUserId)
-            .pipe(this.untilThis)
-            .subscribe(teams => {
-                this.isLoading = false;
-                this.teams = teams.body;
-            }, error => {
-                this.toastService.error(`${error}`, 'Error', 2000);
-            });
-
-        this.newTeam
+        this.leavedTeam
             .pipe(this.untilThis)
             .subscribe(team => {
-                this.teams.push(team);
+                this.loadTeams();
                 this.toastService.success(`You have successfully left from #${team.name}.`, '', 1500);
             });
     }
@@ -51,7 +41,21 @@ export class OtherTeamsComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis)
             .subscribe(response => {
                 this.joinTeamEvent.emit(response.body);
-                this.teams = this.teams.filter(t => t.id !== teamId);
+                this.loadTeams();
+            }, error => {
+                this.toastService.error(`${error}`, 'Error', 2000);
+            });
+    }
+
+    private loadTeams() {
+        this.isLoading = true;
+
+        this.teamService
+            .getNotMemberTeams(this.currentOrganizationId, this.currentUserId)
+            .pipe(this.untilThis)
+            .subscribe(teams => {
+                this.isLoading = false;
+                this.teams = teams.body;
             }, error => {
                 this.toastService.error(`${error}`, 'Error', 2000);
             });

@@ -15,10 +15,9 @@ import { BaseComponent } from '@core/components/base/base.component';
 })
 export class TeamsComponent extends BaseComponent implements OnDestroy {
     public teamCreated$: Subject<Team> = new Subject<Team>();
-    public pushToOtherTeams$: Subject<Team> = new Subject<Team>();
-    public pushToUserTeams$: Subject<Team> = new Subject<Team>();
+    public notifyOtherTeams$: Subject<Team> = new Subject<Team>();
+    public notifyMemberTeams$: Subject<Team> = new Subject<Team>();
 
-    teamCreating: boolean = false;
     createTeamDialog: DynamicDialogRef;
 
     //fake
@@ -40,7 +39,7 @@ export class TeamsComponent extends BaseComponent implements OnDestroy {
         this.createTeamDialog.onClose
             .pipe(this.untilThis)
             .subscribe((name: string) => {
-                if (name !== undefined) {
+                if (name) {
                     this.teamService
                         .createTeam({
                             createdBy: this.currentUserId,
@@ -58,20 +57,14 @@ export class TeamsComponent extends BaseComponent implements OnDestroy {
             });
     }
 
-    pushToOtherTeams(team: Team) {
-        this.pushToOtherTeams$.next(team);
-    }
-
-    pushToUserTeams(team: Team) {
-        this.pushToUserTeams$.next(team);
-    }
-
     ngOnDestroy(): void {
         this.teamCreated$.next();
         this.teamCreated$.complete();
-        this.pushToOtherTeams$.next();
-        this.pushToOtherTeams$.complete();
-        this.pushToUserTeams$.next();
-        this.pushToUserTeams$.complete();
+
+        this.notifyOtherTeams$.next();
+        this.notifyOtherTeams$.complete();
+
+        this.notifyMemberTeams$.next();
+        this.notifyMemberTeams$.complete();
     }
 }

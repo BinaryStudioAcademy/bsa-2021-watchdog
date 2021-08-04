@@ -27,29 +27,20 @@ export class UserTeamsComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.isLoading = true;
+        this.loadMemberTeams();
 
-        this.teamService
-            .getMemberTeams(this.currentOrganizationId, this.currentUserId)
+        this.newTeamCreated
             .pipe(this.untilThis)
-            .subscribe(teams => {
-                this.isLoading = false;
-                this.teams = teams.body;
-            }, error => {
-                this.toastService.error(`${error}`, 'Error', 2000);
+            .subscribe(team => {
+                this.loadMemberTeams();
+                this.toastService.success(`Team #${team.name} created!`, '', 1500);
             });
 
         this.joinNewTeam
             .pipe(this.untilThis)
             .subscribe(team => {
-                this.teams.push(team);
+                this.loadMemberTeams();
                 this.toastService.success(`You have successfully joined to #${team.name} team!`, '', 1500);
-            });
-
-        this.newTeamCreated
-            .pipe(this.untilThis)
-            .subscribe(team => {
-                this.teams.push(team);
             });
     }
 
@@ -59,7 +50,21 @@ export class UserTeamsComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis)
             .subscribe(response => {
                 this.leaveTeamEvent.emit(response.body);
-                this.teams = this.teams.filter(t => t.id !== teamId);
+                this.loadMemberTeams();
+            }, error => {
+                this.toastService.error(`${error}`, 'Error', 2000);
+            });
+    }
+
+    private loadMemberTeams() {
+        this.isLoading = true;
+
+        this.teamService
+            .getMemberTeams(this.currentOrganizationId, this.currentUserId)
+            .pipe(this.untilThis)
+            .subscribe(teams => {
+                this.isLoading = false;
+                this.teams = teams.body;
             }, error => {
                 this.toastService.error(`${error}`, 'Error', 2000);
             });

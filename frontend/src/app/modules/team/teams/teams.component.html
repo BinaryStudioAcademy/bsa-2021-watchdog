@@ -20,13 +20,13 @@
     [currentUserId]="currentUserId"
     [currentOrganizationId]="currentOrganizationId"
     [newTeamCreated]="teamCreated$.asObservable()"
-    [joinNewTeam]="pushToUserTeams$.asObservable()"
-    (leaveTeamEvent)="pushToOtherTeams($event)">
+    [joinNewTeam]="notifyMemberTeams$.asObservable()"
+    (leaveTeamEvent)="notifyOtherTeams$.next($event)">
 </app-user-teams>
 
 <app-other-teams
     [currentUserId]="currentUserId"
     [currentOrganizationId]="currentOrganizationId"
-    [newTeam]="pushToOtherTeams$.asObservable()"
-    (joinTeamEvent)="pushToUserTeams($event)">
+    [leavedTeam]="notifyOtherTeams$.asObservable()"
+    (joinTeamEvent)="notifyMemberTeams$.next($event)">
 </app-other-teams>
