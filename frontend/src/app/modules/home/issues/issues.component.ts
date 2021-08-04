@@ -8,12 +8,12 @@ import { Issue } from '@shared/models/issue/issue';
     styleUrls: ['./issues.component.sass']
 })
 export class IssuesComponent implements OnInit {
-    public countNew : {[type:string]: number}
+    public countNew: { [type: string]: number };
 
     public sortedBy: Option;
     public sortedOptions: Option[];
-    
-    public issues : Issue[];
+
+    public issues: Issue[];
 
     public selectedIssues: Issue[] = [];
 
@@ -21,33 +21,29 @@ export class IssuesComponent implements OnInit {
 
     public selectedTime: string;
 
-
     ngOnInit(): void {
         this.setAllFieldsTemp();
     }
 
-    selectAll(event: {checked: boolean, originalEvent: Event})
-    {
+    selectAll(event: { checked: boolean, originalEvent: Event }) {
         this.disableParentEvent(event);
         if (event.checked) {
             this.selectedIssues = Object.assign([], this.issues);
         } else {
             this.selectedIssues = [];
         }
-        
     }
 
-    disableParentEvent(event: { originalEvent: Event}) // to disable sorting
-    {
-        event.originalEvent.stopPropagation(); 
+    disableParentEvent(event: { originalEvent: Event }) { // to disable sorting
+        event.originalEvent.stopPropagation();
     }
 
     private setAllFieldsTemp() {
         this.countNew = {
-            'all': 3,
-            'secondtype': 1,
-            'thirdtype': 0
-        }
+            all: 3,
+            secondtype: 1,
+            thirdtype: 0
+        };
 
         this.sortedOptions = [
             {
@@ -58,28 +54,27 @@ export class IssuesComponent implements OnInit {
                 name: 'Newest',
                 code: 'newest'
             }
-        ]
+        ];
 
-        this.sortedBy = this.sortedOptions[0];
+        [this.sortedBy] = this.sortedOptions;
 
-        this.issues = [ ];
+        this.issues = [];
 
-        for (let i = 1; i <= 25; i++) {
+        for (let i = 1; i <= 25; i += 1) {
             const issue = {
-                name: 'TypeError' + i,
+                name: `TypeError${i}`,
                 description: "Object [object object] has no method 'updateForm'",
                 isNew: i % 3 === 0,
                 projectTag: 'BSA-2021-1',
                 createdAt: new Date(Date.now() - (i <= 14 ? ((i - 1) * 30 * 60 * 1000) : (i * 30 * 60 * 1000 * 10))), //2 min
                 events: i,
                 users: i
-            }
-            this.issues.push(issue);       
+            };
+            this.issues.push(issue);
         }
 
         this.timeOptions = ['24h', '14d'];
 
-        this.selectedTime = this.timeOptions[0];
-
+        [this.selectedTime] = this.timeOptions;
     }
 }

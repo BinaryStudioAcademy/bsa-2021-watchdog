@@ -6,4 +6,4 @@ export interface Issue {
     createdAt: Date,
     events: number,
     users: number
-} 
+}
