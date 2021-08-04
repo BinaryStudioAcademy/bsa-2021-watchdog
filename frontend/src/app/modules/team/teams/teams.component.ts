@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Team } from '@shared/models/team/team';
 import { TeamService } from '@core/services/team.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
-import {CreateTeamComponent} from "@modules/team/create-team/create-team.component";
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { CreateTeamComponent } from '@modules/team/create-team/create-team.component';
+import {ToastNotificationService} from "@core/services/toast-notification.service";
 
 @Component({
     selector: 'app-teams',
@@ -12,12 +13,13 @@ import {CreateTeamComponent} from "@modules/team/create-team/create-team.compone
     styleUrls: ['./teams.component.sass'],
     providers: [DialogService]
 })
-export class TeamsComponent implements OnInit {
+export class TeamsComponent implements OnDestroy {
     private unsubscribe$: Subject<Team> = new Subject<Team>();
-    public teamCreated$: Subject<Team> = new Subject<Team>();
 
-    userTeams: Team[];
-    otherTeams: Team[];
+    public teamCreated$: Subject<Team> = new Subject<Team>();
+    public pushToOtherTeams$: Subject<Team> = new Subject<Team>();
+    public pushToUserTeams$: Subject<Team> = new Subject<Team>();
+
     teamCreating: boolean = false;
     createTeamDialog: DynamicDialogRef;
 
@@ -25,42 +27,53 @@ export class TeamsComponent implements OnInit {
     currentUserId: number = 10;
     currentOrganizationId: number = 3;
 
-    constructor(private teamService: TeamService, public dialogService: DialogService) { }
-
-    ngOnInit(): void {
-        this.teamService
-            .getTeams()
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe(teams => {
-                this.userTeams = teams.body.filter(t => t.createdBy === this.currentUserId);
-                this.otherTeams = teams.body.filter(t => t.createdBy !== this.currentUserId);
-            }, error => {
-                console.log(error);
-            });
-    }
+    constructor(private teamService: TeamService, public dialogService: DialogService, private toastService: ToastNotificationService) { }
 
     openDialog() {
         this.createTeamDialog = this.dialogService.open(CreateTeamComponent, {
             header: 'Creating team',
             width: '35%',
-            styleClass: '.create-team-dialog',
             showHeader: true,
             baseZIndex: 10000
         });
 
         this.createTeamDialog.onClose
+            .pipe(takeUntil(this.unsubscribe$))
             .subscribe((name: string) => {
-                this.teamService
-                    .createTeam({
-                        createdBy: this.currentUserId,
-                        organizationId: this.currentOrganizationId,
-                        name: name
-                    }).pipe(takeUntil(this.unsubscribe$))
-                    .subscribe(team => {
-                        this.teamCreated$.next(team.body);
-                    }, error => {
-                        console.log(error);
-                    })
-            })
+                if (name !== undefined) {
+                    this.teamService
+                        .createTeam({
+                            createdBy: this.currentUserId,
+                            organizationId: this.currentOrganizationId,
+                            name
+                        })
+                        .pipe(takeUntil(this.unsubscribe$))
+                        .subscribe(response => {
+                            this.teamCreated$.next(response.body);
+                            this.toastService.success('Team successfully created!', '', 2000);
+                        }, error => {
+                            this.toastService.error(`${error}`, 'Error', 2000)
+                        });
+                }
+            });
+    }
+
+    pushToOtherTeams(team: Team) {
+        this.pushToOtherTeams$.next(team);
+    }
+
+    pushToUserTeams(team: Team) {
+        this.pushToUserTeams$.next(team);
+    }
+
+    ngOnDestroy(): void {
+        this.teamCreated$.next();
+        this.teamCreated$.complete();
+        this.pushToOtherTeams$.next();
+        this.pushToOtherTeams$.complete();
+        this.pushToUserTeams$.next();
+        this.pushToUserTeams$.complete();
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 }

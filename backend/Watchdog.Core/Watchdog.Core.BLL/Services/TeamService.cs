@@ -5,11 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Watchdog.Core.BLL.Services.Abstract;
-using Watchdog.Core.Common.DTO.Member;
 using Watchdog.Core.Common.DTO.Team;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
-    
+
 namespace Watchdog.Core.BLL.Services
 {
     public class TeamService : BaseService, ITeamService

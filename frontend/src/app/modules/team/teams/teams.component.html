@@ -9,11 +9,22 @@
                 pRipple
                 type="button"
                 label="Create team"
-                class="p-button-raised"
-                icon="pi pi-plus-circle" (click)="openDialog()"></button>
+                class="teams-button"
+                icon="pi pi-plus-circle" (click)="openDialog()">
+            </button>
         </div>
     </div>
 </div>
 
-<app-user-teams [currentUserId]="currentUserId" [newTeam]="teamCreated$.asObservable()"></app-user-teams>
-<app-other-teams [currentUserId]="currentUserId"></app-other-teams>
+<app-user-teams
+    [currentUserId]="currentUserId"
+    [newTeamCreated]="teamCreated$.asObservable()"
+    [joinNewTeam]="pushToUserTeams$.asObservable()"
+    (leaveTeamEvent)="pushToOtherTeams($event)">
+</app-user-teams>
+
+<app-other-teams
+    [currentUserId]="currentUserId"
+    [newTeam]="pushToOtherTeams$.asObservable()"
+    (joinTeamEvent)="pushToUserTeams($event)">
+</app-other-teams>

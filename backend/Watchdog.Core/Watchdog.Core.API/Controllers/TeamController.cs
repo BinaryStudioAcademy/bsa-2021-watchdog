@@ -77,11 +77,11 @@ namespace Watchdog.Core.API.Controllers
             {
                 return BadRequest();
             }
-
+            
             var updateTeam = await _teamService.UpdateTeamAsync(teamId, updateDto);
             return Ok(updateTeam);
         }
-        
+            
         [HttpDelete("leave_team/{teamId:int}/member/{memberId:int}")]
         public async Task<ActionResult> LeaveFromTeamAsync(int teamId, int memberId)
         {

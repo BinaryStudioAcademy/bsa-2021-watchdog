@@ -11,6 +11,11 @@
         </div>
         <form [formGroup]="teamGroup" (ngSubmit)="createTeam()">
             <input type="text" pInputText formControlName="name" class="team-name-input">
+            <div *ngIf="teamGroup.controls.name.touched && teamGroup.controls.name.invalid" class="validation">
+                <small *ngIf="teamGroup.controls.name.errors.required">Field name can't be empty</small>
+                <small *ngIf="teamGroup.controls.name.value.length < 3">Min name length 3</small>
+                <small *ngIf="teamGroup.controls.name.value.length > 50">Max name length 50</small>
+            </div>
         </form>
     </div>
     <div class="team-create-form-footer">
