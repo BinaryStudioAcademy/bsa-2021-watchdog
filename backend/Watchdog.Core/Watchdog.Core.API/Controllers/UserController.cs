@@ -32,5 +32,16 @@ namespace Watchdog.Core.API.Controllers
             var updateUser = await _userService.UpdateUserAsync(userId, updateUserDto);
             return Ok(updateUser);
         }
+
+        [HttpPut("{userId:int}")]
+        public async Task<ActionResult<UserDto>> UpdateUserPasswordAsync(int userId, UpdateUserPasswordDto updateUserPasswordDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var updateUserPassword = await _userService.UpdateUserPasswordAsync(userId, updateUserPasswordDto);
+            return Ok(updateUserPassword);
+        }
     }
 }
