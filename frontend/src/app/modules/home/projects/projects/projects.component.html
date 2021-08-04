@@ -1,10 +1,12 @@
-<div class="projects-container">
-    <!--    Header    -->
-    <div class="header">
-        <h1 class="header-title">Projects</h1>
-        <button (click)="onClickCreateProject()" class="p-button-sm p-button-outlined p-button-raised"
+<!--    Header    -->
+<div class="header">
+    <h1 class="header-title">Projects</h1>
+    <div class="action-buttons">
+        <button (click)="onClickCreateProject()" class="p-button-info"
                 icon="pi pi-plus-circle" label="Create Project" pButton type="button"></button>
     </div>
+</div>
+<div class="projects-container">
     <!--    Projects Grid    -->
     <div class="grid">
         <div *ngFor="let project of projects">
