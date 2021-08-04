@@ -8,7 +8,7 @@ namespace Watchdog.Core.Common.Validators.Dashboard
         public NewDashboardDTOValidator()
         {
             RuleFor(d => d.Name)
-                .NotNull()
+                .NotEmpty()
                 .MinimumLength(3)
                 .MaximumLength(50)
                 .Matches(@"^[a-zA-Z0-9_]*$");

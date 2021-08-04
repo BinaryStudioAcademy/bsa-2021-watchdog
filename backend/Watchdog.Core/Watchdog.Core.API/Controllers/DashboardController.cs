@@ -27,24 +27,28 @@ namespace Watchdog.Core.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<string>> Get(int id)
+        public async Task<ActionResult<string>> Get(int dashboardId)
         {
             return Ok("value");
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult> Post()
         {
+            return Ok();
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult> Put()
         {
+            return Ok();
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult> Delete(int dashboardId)
         {
+            _logger.LogInformation($"Dashboard: ID = {dashboardId} has been removed.");
+            return NoContent();
         }
     }
 }
