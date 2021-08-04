@@ -1,0 +1,31 @@
+<div class="teams-panel">
+    <p-panel header="Other Teams">
+        <app-loading-spinner *ngIf="isLoading" [size]="'10px'"></app-loading-spinner>
+        <div class="team" *ngFor="let team of teams">
+            <div class="team-info">
+                <div class="team-avatar">
+                    <p-avatar label="{{teamService.getLabel(team.name)}}"></p-avatar>
+                </div>
+                <div class="team-title">
+                    <div class="team-name">
+                        #{{team.name}}
+                    </div>
+                    <div class="team-members">
+                        {{team.members.length}} members
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button
+                    pButton
+                    pRipple
+                    type="button"
+                    label="Join Team"
+                    class="teams-button join-leave-button"
+                    icon="pi pi-plus-circle"
+                    (click)="joinTeam(team.id)">
+                </button>
+            </div>
+        </div>
+    </p-panel>
+</div>

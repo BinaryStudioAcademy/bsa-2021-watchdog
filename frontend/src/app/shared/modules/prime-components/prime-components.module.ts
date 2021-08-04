@@ -23,6 +23,7 @@ import { DividerModule } from 'primeng/divider';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { TooltipModule } from 'primeng/tooltip';
+import { AvatarModule } from 'primeng/avatar';
 import { StyleClassModule } from 'primeng/styleclass';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 
@@ -53,7 +54,8 @@ import { TieredMenuModule } from 'primeng/tieredmenu';
         InputNumberModule,
         TooltipModule,
         StyleClassModule,
-        TieredMenuModule
+        TieredMenuModule,
+        AvatarModule
     ],
     exports: [
         ButtonModule,
@@ -79,7 +81,8 @@ import { TieredMenuModule } from 'primeng/tieredmenu';
         InputNumberModule,
         TooltipModule,
         StyleClassModule,
-        TieredMenuModule
+        TieredMenuModule,
+        AvatarModule
     ],
     declarations: [],
     providers: [

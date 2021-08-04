@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap')
 @import src/styles/variables
+
 @mixin custom-scroll
     &::-webkit-scrollbar-thumb
         border-radius: 6px
@@ -10,6 +10,92 @@
 
     &:hover::-webkit-scrollbar
         width: 6px
+
+.layout-wrapper
+
+    .layout-topbar
+        height: 64px
+        background-color: $primary-color-darkest
+        padding: 1em
+        position: fixed
+        width: 100%
+        left: 0
+        top: 0
+        z-index: 999
+
+    .logo
+        display: inline-block
+        margin-left: 1.25em
+        img
+            display: block
+            width: 80%
+
+    .user-info
+        display: flex
+        float: right
+        margin-right: 1.25em
+        margin-top: 0.5em
+        color: white
+
+    .buttons
+        display: flex
+        margin-right: 15px
+        justify-content: flex-end
+        white-space: nowrap
+
+    .sign-in-button
+        background-color: white !important
+
+        &:hover
+            background-color: white !important
+
+    .topbar-button
+        border-radius: 20px
+        border: 2px dotted #888888
+        background: #eaeaea
+        color: #333333
+        height: 2em
+        min-width: 2em
+        float: right
+        display: block
+        font-size: 1em
+
+    .ui-button-icon-right
+        width: 1em
+        height: 1em
+
+    .sign-in-button
+        display: flex
+        vertical-align: middle
+        justify-content: center
+        float: right
+        margin-top: -0.6em
+        flex-direction: row
+
+    .avatar
+        margin-top: -0.8em
+        height: 40px
+        margin-right: 1em
+        border: 2px solid white
+        background-color: white
+        border-radius: 50px
+
+    .home-content-wrp
+        margin-top: 64px
+
+    .user-name
+        cursor: pointer
+
+@media (max-width: 1024px)
+    .layout-wrapper
+        .layout-topbar
+            .topbar-button
+                .ui-button-text
+                    display: none
+
+                .ui-button-icon-right
+                    right: 50%
+                    margin-right: -.6em
 
 .sidebar
     left: 0
@@ -87,3 +173,4 @@
 .home-content-wrp
     padding: 0
     margin-left: 230px
+    margin-top: 64px
