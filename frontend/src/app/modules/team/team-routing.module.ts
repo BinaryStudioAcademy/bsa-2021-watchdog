@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { TeamsComponent } from '@modules/team/teams/teams.component';
 
 const routes: Routes = [{
-    path: 'teams',
+    path: '',
     component: TeamsComponent
 }, {
     path: '',
