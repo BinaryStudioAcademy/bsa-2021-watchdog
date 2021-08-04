@@ -28,9 +28,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     ) { }
 
     async ngOnInit() {
-
-
-        this.authorizedUser = { ...this.authorizedUser, firstName: 'Andriy' }
+        this.authorizedUser = { ...this.authorizedUser, firstName: 'Andriy' };
 
         this.dashboards = this.dashboardService.getAll();
 
