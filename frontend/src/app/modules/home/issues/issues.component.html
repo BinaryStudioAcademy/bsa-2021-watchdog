@@ -5,14 +5,14 @@
         <div class="search-block">
             <div class="p-inputgroup">
                 <span class="p-inputgroup-addon search-button"><i class="pi pi-search"></i></span>
-                <input type="text" pInputText placeholder="Search">
+                <input type="text" pInputText placeholder="Search" name="search">
                 <span class="p-inputgroup-addon search-button search-additional"><i class="pi pi-paperclip"></i></span>
                 <span class="p-inputgroup-addon search-button search-additional"><i class="pi pi-plus"></i></span>
                 <span class="p-inputgroup-addon search-button search-additional"><i class="pi pi-ellipsis-v"></i></span>
                 <span class="p-inputgroup-addon search-button"><i class="pi pi-times"></i></span>
             </div>
 
-            <p-dropdown [options]="sortedOptions" [(ngModel)]="sortedBy" optionLabel="name" [autoDisplayFirst]="true"> 
+            <p-dropdown [options]="sortedOptions" [(ngModel)]="sortedBy" optionLabel="name" inputName="sortedBy" [autoDisplayFirst]="true"> 
                 <ng-template pTemplate="selectedItem">
                     <p>Sorted by: <span class="bold">{{sortedBy.name}}</span></p>
                 </ng-template>
@@ -31,8 +31,8 @@
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil eaque ipsum, voluptate odit molestias soluta delectus officia voluptas eum explicabo sapiente? Ullam tempore dignissimos sequi! Pariatur eum dicta soluta. Non, recusandae eum totam assumenda laudantium dolorem molestias consequatur nam eveniet consequuntur animi aspernatur deleniti error nulla quae dolorum ipsam ad a atque, amet possimus! Ipsa, porro asperiores provident sed eaque ea, laudantium aut error dolorum fuga maxime sunt alias libero aliquam vel totam. Voluptatum dicta quasi iure sapiente praesentium unde voluptate, modi ad magni voluptatibus nam ducimus distinctio recusandae, aut reprehenderit dolorum esse eius illo temporibus. Enim itaque necessitatibus veritatis.</p>
 
 
-        </p-tabPanel>
-        <p-tabPanel header="Header II">
+        </p-tabPanel >
+        <p-tabPanel [disabled]="true">
             <ng-template pTemplate = "header">
                 <div class="header">
                     <span>Second Type</span>
@@ -43,7 +43,7 @@
                 architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
                 voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.</p>
         </p-tabPanel>
-        <p-tabPanel header="Header III">
+        <p-tabPanel [disabled]="true">
             <ng-template pTemplate = "header">
                 <div class="header">
                     <span>Third Type</span>
