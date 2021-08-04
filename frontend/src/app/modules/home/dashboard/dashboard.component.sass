@@ -2,6 +2,11 @@
 @import src/styles/variables
 @import src/styles/mixins
 
+.remove-margin-box-shadow
+    box-shadow: unset !important
+    margin-bottom: 0 !important
+
+
 .dashboard-header
     @include background-gray
     @include title
@@ -20,5 +25,13 @@
 
         button
             width: 100px
+            white-space: nowrap
 
 
+.dashboard-container
+    padding: 20px 20px 0
+    display: flex
+    flex-grow: 1
+    flex-shrink: 1
+    flex-basis: 0
+    flex-direction: column
