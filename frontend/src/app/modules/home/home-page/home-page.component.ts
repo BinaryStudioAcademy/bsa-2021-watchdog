@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     ) { }
 
     async ngOnInit() {
-        this.authorizedUser.firstName = userTest.firstName;
+        this.authorizedUser = { id: 1, email: 'test@test', password: 'test', firstName: 'testName', lastName: 'last', avatar: 'link' };
         this.dashboards = this.dashboardService.getAll();
 
         this.updateSubscription$ = this.updateDataService.currentMessage
