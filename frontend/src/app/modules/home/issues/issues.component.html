@@ -28,8 +28,52 @@
                     <p-badge *ngIf="countNew.all > 0" [value]="countNew.all.toString()"></p-badge>
                 </div>
             </ng-template>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil eaque ipsum, voluptate odit molestias soluta delectus officia voluptas eum explicabo sapiente? Ullam tempore dignissimos sequi! Pariatur eum dicta soluta. Non, recusandae eum totam assumenda laudantium dolorem molestias consequatur nam eveniet consequuntur animi aspernatur deleniti error nulla quae dolorum ipsam ad a atque, amet possimus! Ipsa, porro asperiores provident sed eaque ea, laudantium aut error dolorum fuga maxime sunt alias libero aliquam vel totam. Voluptatum dicta quasi iure sapiente praesentium unde voluptate, modi ad magni voluptatibus nam ducimus distinctio recusandae, aut reprehenderit dolorum esse eius illo temporibus. Enim itaque necessitatibus veritatis.</p>
 
+            <p-table [value]="issues" [paginator]="true" [rows]="10">
+                <ng-template pTemplate="colgroup">
+                    <colgroup>
+                        <col id = "issue-col">
+                        <col id = "events-col">
+                        <col id = "users-col">
+                        <col id = "assignee-col">
+                    </colgroup>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th class="name" pSortableColumn="name"> 
+                            <div class="issue">
+                                <p-checkbox name="allIssues" (onChange) = "selectAll($event)"></p-checkbox>
+                                <span>Issue <p-sortIcon field="name"></p-sortIcon></span>
+                            </div>
+                            <p-selectButton [options]="timeOptions" [(ngModel)]="selectedTime" (onChange) = "disableParentEvent($event)" (onOptionClick) = "disableParentEvent($event)"></p-selectButton>
+                        </th>
+                        <th class="center" pSortableColumn="events"><span>Events <p-sortIcon field="events"></p-sortIcon></span></th>
+                        <th class="center" pSortableColumn="users"><span>Users <p-sortIcon field="users"></p-sortIcon></span></th>
+                        <th class="center"><span>Assignee</span></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-issue>
+                    <tr>
+                        <td>
+                            <div class="issue-block">
+                                <p-checkbox name="selectedIssues" [value]="issue" [(ngModel)]="selectedIssues"></p-checkbox>
+                                <div class="content">
+                                    <span class="name">{{issue.name}}</span> 
+                                    <span class="description">{{issue.description}}</span>
+                                    <div class="additional-info">
+                                        <p-tag class="new-issue" *ngIf="issue.isNew" styleClass="p-mr-2" value="New issue" [rounded]="true"></p-tag>
+                                        <span>{{issue.projectTag}}</span>
+                                        <span><i class="pi pi-clock time-icon"></i>{{issue.createdAt | timeAgo}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{issue.events}}</td>
+                        <td>{{issue.users}}</td>
+                        <td><div class="assignee"><i class="pi pi-user"></i><i class="pi pi-chevron-down"></i></div></td>
+                    </tr>
+                </ng-template>
+            </p-table>
 
         </p-tabPanel >
         <p-tabPanel [disabled]="true">
@@ -39,9 +83,6 @@
                     <p-badge *ngIf="countNew.secondtype > 0" [value]="countNew.secondtype.toString()"></p-badge>
                 </div>
             </ng-template>
-            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
-                architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
-                voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.</p>
         </p-tabPanel>
         <p-tabPanel [disabled]="true">
             <ng-template pTemplate = "header">
@@ -49,10 +90,7 @@
                     <span>Third Type</span>
                     <p-badge *ngIf="countNew.thirdtype > 0" [value]="countNew.thirdtype.toString()"></p-badge>
                 </div>
-            </ng-template>
-            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati
-                cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
-                Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.</p>   
+            </ng-template> 
         </p-tabPanel>
     </p-tabView>
 </div>

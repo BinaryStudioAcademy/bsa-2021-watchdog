@@ -23,6 +23,57 @@
 .search-button
     cursor: pointer
 
+#issue-col
+    width: 70%
+#events-col,
+#users-col,
+#assignee-col
+    width: 10%
+
+.assignee
+    display: flex
+    align-items: center
+    grid-gap: 5px
+
+td,
+.center
+    vertical-align: middle
+
+.name
+    display: flex
+    align-items: center
+    justify-content: space-between
+
+    .issue
+        display: flex
+        align-items: center
+        grid-gap: 10px
+
+.issue-block
+    display: grid
+    grid-template-columns: auto 1fr
+    grid-gap: 10px
+    align-items: flex-start
+
+.content
+    display: grid
+    grid-auto-flow: row
+    grid-gap: 10px
+
+    .name
+        color: $primary-color
+        font-weight: bold
+
+.additional-info
+    font-size: 0.8rem
+    display: flex
+    flex-direction: row
+    align-items: center
+    grid-gap: 4px
+.time-icon
+    font-size: 0.6rem
+    margin-right: 2px
+    
 :host ::ng-deep
     .p-tabview-nav-link
         &:focus
@@ -33,7 +84,7 @@
     
     .p-highlight 
         .p-badge
-            background-color: #2196F3
+            background-color: $primary-color
 
     .p-dropdown
         height: 40px
@@ -42,6 +93,11 @@
     .p-dropdown-label
         display: flex
         align-items: center
+
+    .p-tag
+        height: 1.1rem
+        background-color: $tag-color
+        color: $text-color
 
 @media screen and ( max-width:960px )
     .search-additional
