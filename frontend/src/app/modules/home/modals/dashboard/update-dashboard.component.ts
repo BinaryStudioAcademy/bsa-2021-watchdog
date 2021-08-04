@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Dashboard } from '@shared/models/dashboard/Dashboard';
+import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { DashboardService } from '@core/services/dashboard.service';
-import { UpdateDashboard } from '@shared/models/dashboard/UpdateDashboard';
+import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
 
 @Component({
     selector: 'app-update-dashboard',

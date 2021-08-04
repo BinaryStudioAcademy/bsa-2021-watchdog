@@ -26,6 +26,10 @@ const routes: Routes = [{
         path: 'issues',
         component: IssuesComponent,
     }, {
+        path: 'teams',
+        loadChildren: () => import('../team/team.module')
+            .then(m => m.TeamModule),
+    }, {
         path: 'dashboard/:id',
         component: DashboardComponent,
     }, {
