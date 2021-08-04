@@ -23,6 +23,7 @@ import { DividerModule } from 'primeng/divider';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { TooltipModule } from 'primeng/tooltip';
+import { AvatarModule } from 'primeng/avatar';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -49,7 +50,8 @@ import { TooltipModule } from 'primeng/tooltip';
         DividerModule,
         RadioButtonModule,
         InputNumberModule,
-        TooltipModule
+        TooltipModule,
+        AvatarModule
     ],
     exports: [
         ButtonModule,
@@ -73,7 +75,8 @@ import { TooltipModule } from 'primeng/tooltip';
         DividerModule,
         RadioButtonModule,
         InputNumberModule,
-        TooltipModule
+        TooltipModule,
+        AvatarModule
     ],
     declarations: [],
     providers: [

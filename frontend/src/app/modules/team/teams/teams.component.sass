@@ -1,0 +1,84 @@
+@import src/styles/variables
+@import src/styles/mixins
+
+.teams-header
+    @include background-gray
+    @include title
+    display: flex
+    flex-direction: row
+    align-items: center
+    justify-content: space-between
+    .header-name
+        font-size: 20px
+        font-weight: 480
+
+.teams-panel
+    font-family: "DM Sans", serif
+    font-size: 18px
+    margin: 20px 2rem
+
+.teams-button
+    border: none
+    box-shadow: none
+    font-weight: 500
+
+.join-leave-button
+    border: 1px solid $border-color
+    background-color: #FFFFFF
+    color: black
+    &:hover
+        box-shadow: 0 4px 2px -2px $border-color
+        background-color: #FFFFFF
+        border: 1px solid $border-color
+        color: black
+.teams
+    width: 100%
+
+.team
+    display: flex
+    flex-direction: row
+    align-items: center
+    justify-content: space-between
+    padding: 15px
+    margin: 4px 0
+    border-width: thin
+    border-bottom: 1px solid $border-color
+
+.team-info
+    display: flex
+    flex-direction: row
+    align-items: center
+    cursor: pointer
+
+.team-title
+    margin-left: 8px
+    font-family: "DM Sans", serif
+
+.team-name
+    color: var(--indigo-500)
+    font-size: 1.2rem
+    margin-bottom: 6px
+
+.team-members
+    color: var(--bluegray-600)
+
+.team-members
+    font-size: 1rem
+
+.team-avatar
+    display: flex
+    height: 3.1rem
+    width: 3.1rem
+    justify-content: center
+    align-items: center
+    background-color: var(--pink-300)
+    border-radius: 3px
+
+::ng-deep
+    .p-avatar
+        background-color: var(--pink-300)
+    .p-avatar-text
+        font-family: "DM Sans", serif
+        font-size: 2em
+        font-weight: 340
+        color: #FFFFFF

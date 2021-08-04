@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Dashboard } from '@shared/models/dashboard/Dashboard';
-import { NewDashboard } from '@shared/models/dashboard/NewDashboard';
-import { UpdateDashboard } from '@shared/models/dashboard/UpdateDashboard';
+import { Dashboard } from '@shared/models/dashboard/dashboard';
+import { NewDashboard } from '@shared/models/dashboard/new-dashboard';
+import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
