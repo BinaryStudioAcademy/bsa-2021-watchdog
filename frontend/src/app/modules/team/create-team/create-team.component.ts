@@ -26,7 +26,7 @@ export class CreateTeamComponent implements OnInit {
     }
 
     createTeam() {
-        const name = <string>this.teamGroup.controls.name.value;
+        const name = <string> this.teamGroup.controls.name.value;
         this.dialogRef.close(name.split(' ').join('-').toLocaleLowerCase());
     }
 }

@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CreateTeamComponent } from '@modules/team/create-team/create-team.component';
-import {ToastNotificationService} from "@core/services/toast-notification.service";
+import { ToastNotificationService } from '@core/services/toast-notification.service';
 
 @Component({
     selector: 'app-teams',
@@ -52,7 +52,7 @@ export class TeamsComponent implements OnDestroy {
                             this.teamCreated$.next(response.body);
                             this.toastService.success('Team successfully created!', '', 2000);
                         }, error => {
-                            this.toastService.error(`${error}`, 'Error', 2000)
+                            this.toastService.error(`${error}`, 'Error', 2000);
                         });
                 }
             });

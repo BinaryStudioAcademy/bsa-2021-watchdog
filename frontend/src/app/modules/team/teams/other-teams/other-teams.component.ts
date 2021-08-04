@@ -3,7 +3,7 @@ import { Team } from '@shared/models/team/team';
 import { TeamService } from '@core/services/team.service';
 import { takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
-import {ToastNotificationService} from "@core/services/toast-notification.service";
+import { ToastNotificationService } from '@core/services/toast-notification.service';
 
 @Component({
     selector: 'app-other-teams',
