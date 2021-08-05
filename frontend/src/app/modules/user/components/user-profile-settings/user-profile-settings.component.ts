@@ -17,6 +17,7 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
     public user = {} as User;
     //userName: string;
     //userEmail: string;
+    public imageFile: File;
 
     private unsubscribe$ = new Subject<void>();
 
@@ -64,10 +65,29 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
         this.userEmail = this.user.email;
     }
 
-
-
     ngOnDestroy() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
     }
+
+    public handleFileInput(target: any) {
+        this.imageFile = target.files[0];
+
+        if (!this.imageFile) {
+            target.value = '';
+            return;
+        }
+
+        if (this.imageFile.size / 1000000 > 5) {
+            this.toastNotificationService.error(`Image can't be heavier than ~5MB`);
+            target.value = '';
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.addEventListener('load', () => (this.user.avatar = reader.result as string));
+        reader.readAsDataURL(this.imageFile);
+    }
+
 }
+
