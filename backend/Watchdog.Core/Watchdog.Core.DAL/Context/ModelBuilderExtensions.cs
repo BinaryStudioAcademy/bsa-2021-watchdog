@@ -21,6 +21,7 @@ namespace Watchdog.Core.DAL.Context
         private const int _numberOfTeamMembers = 25;
         private const int _numberOfTiles = 25;
         private const int _numberOfUsers = 20;
+        private static readonly List<string> _icons  = new List<string>() { "pi-chart-line", "pi-chart-bar" };
 
         public static void Configure(this ModelBuilder modelBuilder)
         {
@@ -89,6 +90,7 @@ namespace Watchdog.Core.DAL.Context
                 .UseSeed(5291)
                 .RuleFor(d => d.Id, f => ++f.IndexVariable)
                 .RuleFor(d => d.Name, f => f.Lorem.Word())
+                .RuleFor(d => d.Icon, f => f.PickRandom(_icons))
                 .RuleFor(d => d.OrganizationId, f => f.Random.Number(1, _numberOfOrganizations))
                 .RuleFor(d => d.CreatedBy, f => f.Random.Number(1, _numberOfUsers))
                 .RuleFor(d => d.CreatedAt, f => f.Date.Past(2, new DateTime(2021, 7, 20)))
