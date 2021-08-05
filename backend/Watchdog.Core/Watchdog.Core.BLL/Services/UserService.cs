@@ -38,9 +38,14 @@ namespace Watchdog.Core.BLL.Services
             return await GetUserAsync(updatedUserPassword.Entity.Id);
         }
 
-        public async Task<UserDto> GetByIdAsync(int userId)
+        public async Task<UserDto> GetUserAsync(int userId)
         {
-            var user = await _context.Users.FirstAsync(u => u.Id == userId);
+            var user = await _context.Users
+                .Include(user => user.FirstName)
+                .Include(user => user.LastName)
+                .Include(user => user.Email)
+                .Include(user => user.PasswordHash)
+                    .FirstOrDefaultAsync(user => user.Id == userId);
 
             return _mapper.Map<UserDto>(user);
         }
