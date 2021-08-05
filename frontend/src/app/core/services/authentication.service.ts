@@ -71,7 +71,7 @@ export class AuthenticationService {
     }
 
     signOnWithEmailAndPassword(email: string, password: string, route: string[]) {
-        return firebase.auth()
+        return this.angularFireAuth
             .createUserWithEmailAndPassword(email, password)
             .then(userCredential => {
                 this.login(userCredential.user, route);
@@ -82,7 +82,7 @@ export class AuthenticationService {
     }
 
     signInWithEmailAndPassword(email: string, password: string, route: string[]) {
-        return firebase.auth()
+        return this.angularFireAuth
             .signInWithEmailAndPassword(email, password)
             .then(userCredential => {
                 this.login(userCredential.user, route);
@@ -94,7 +94,7 @@ export class AuthenticationService {
 
     signInWithGitHub(route: string[]) {
         const provider = new firebase.auth.GithubAuthProvider();
-        return firebase.auth()
+        return this.angularFireAuth
             .signInWithPopup(provider)
             .then(userCredential => {
                 this.login(userCredential.user, route);
@@ -107,7 +107,7 @@ export class AuthenticationService {
     signInWithGoogle(route: string[]) {
         const provider = new firebase.auth.GoogleAuthProvider()
             .addScope('https://www.googleapis.com/auth/userinfo.profile');
-        return firebase.auth()
+        return this.angularFireAuth
             .signInWithPopup(provider)
             .then(userCredential => {
                 this.login(userCredential.user, route);
@@ -119,7 +119,7 @@ export class AuthenticationService {
 
     signInWithFacebook(route: string[]) {
         const provider = new firebase.auth.FacebookAuthProvider();
-        return firebase.auth()
+        return this.angularFireAuth
             .signInWithPopup(provider)
             .then(userCredential => {
                 this.login(userCredential.user, route);
@@ -130,12 +130,14 @@ export class AuthenticationService {
     }
 
     updatePassword(newPassword: string) {
-        const user = firebase.auth().currentUser;
-        user.updatePassword(newPassword)
-            .then(() => { })
-            .catch((error) => {
-                console.warn(error);
-            });
+        this.angularFireAuth.currentUser
+            .then(user => {
+                user.updatePassword(newPassword)
+                    .then(() => { })
+                    .catch((error) => {
+                        console.warn(error);
+                    });
+            })
     }
 
     login(firebaseUser: firebase.User, route?: string[]) {
@@ -150,7 +152,7 @@ export class AuthenticationService {
 
     logout() {
         this.removeJwToken();
-        firebase.auth().signOut()
+        this.angularFireAuth.signOut()
             .then(() => { })
             .catch(error => {
                 console.warn(error);
