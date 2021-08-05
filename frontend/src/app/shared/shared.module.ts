@@ -7,6 +7,7 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { PrimeComponentsModule } from './modules/prime-components/prime-components.module';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
+import { SavePipe } from './pipes/save.pipe';
 
 @NgModule({
     imports: [
@@ -20,6 +21,7 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
         LoadingSpinnerComponent,
         NotFoundComponent,
         TimeAgoPipe,
+        SavePipe,
     ],
     exports: [
         CommonModule,
@@ -30,6 +32,7 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
         NotFoundComponent,
         PrimeComponentsModule,
         TimeAgoPipe,
+        SavePipe,
     ]
 })
 export class SharedModule { }
