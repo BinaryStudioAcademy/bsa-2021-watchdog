@@ -4,13 +4,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardService } from '@core/services/dashboard.service';
 import { DataService } from '@core/services/share-data.service';
 import { Subscription } from 'rxjs';
+import { BaseComponent } from '@core/components/base/base.component';
+import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
 
 @Component({
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.sass']
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class DashboardComponent extends BaseComponent implements OnInit, OnDestroy {
     isEditing: boolean;
     showTileMenu: boolean;
     dashboard: Dashboard;
@@ -23,25 +25,33 @@ export class DashboardComponent implements OnInit, OnDestroy {
         private updateDataService: DataService<Dashboard>,
         private deleteDataService: DataService<number>
     ) {
+        super();
     }
 
     ngOnInit(): void {
-        this.updateSubscription$ = this.updateDataService.currentMessage
-            .subscribe((dashboard) => {
-                this.dashboard = dashboard;
-            });
-
         this.route.params.subscribe(params => {
             const { id } = params;
             this.showTileMenu = false;
-            this.dashboard = this.dashboardService.get(id);
+            this.dashboardService.get(id)
+                .pipe(this.untilThis)
+                .subscribe(resp => {
+                    this.dashboard = resp.body;
+                    this.updateSubscription$ = this.updateDataService.currentMessage
+                        .subscribe((dashboard) => {
+                            this.dashboard = dashboard;
+                        });
+                });
         });
     }
 
-    updateDashboard(dashboard: Dashboard) {
+    updateDashboard(dashboard: UpdateDashboard) {
         this.isEditing = false;
-        this.dashboard = this.dashboardService.updateDashboard(dashboard);
-        this.updateDataService.changeMessage(this.dashboard);
+        this.dashboardService.updateDashboard(dashboard)
+            .pipe(this.untilThis)
+            .subscribe(resp => {
+                this.dashboard = resp.body;
+                this.updateDataService.changeMessage(this.dashboard);
+            });
     }
 
     deleteDashboard() {
@@ -57,6 +67,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.updateSubscription$.unsubscribe();
+        super.ngOnDestroy();
     }
 
     tileMenuClosed() {
