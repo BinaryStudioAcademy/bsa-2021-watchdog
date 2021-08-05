@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BroadcastHubService } from '@core/hubs/broadcast-hub.service';
-import { Dashboard } from '@shared/models/dashboard/Dashboard';
+import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { DashboardService } from '@core/services/dashboard.service';
 import { ShareDataService } from '@core/services/share-data.service';
 import { Subscription } from 'rxjs';
-import { NewDashboard } from '@shared/models/dashboard/NewDashboard';
+import { NewDashboard } from '@shared/models/dashboard/new-dashboard';
+import { User } from '@core/models/user';
 
 @Component({
     selector: 'app-home',
@@ -17,6 +18,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     deleteSubscription$: Subscription;
     dashboardsShown: boolean = false;
     displayModal: boolean = false;
+    authorizedUser: User;
 
     constructor(
         private broadcastHub: BroadcastHubService,
@@ -26,6 +28,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     ) { }
 
     async ngOnInit() {
+        this.authorizedUser = { ...this.authorizedUser, firstName: 'Andriy' };
+
         this.dashboards = this.dashboardService.getAll();
 
         this.updateSubscription$ = this.updateDataService.currentMessage

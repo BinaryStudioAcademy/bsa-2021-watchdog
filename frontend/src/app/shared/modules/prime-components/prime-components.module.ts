@@ -21,6 +21,17 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { PanelModule } from 'primeng/panel';
 import { RippleModule } from 'primeng/ripple';
+import { BadgeModule } from 'primeng/badge';
+import { TableModule } from 'primeng/table';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { TagModule } from 'primeng/tag';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { DividerModule } from 'primeng/divider';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { TooltipModule } from 'primeng/tooltip';
+import { StyleClassModule } from 'primeng/styleclass';
+import { TieredMenuModule } from 'primeng/tieredmenu';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -46,6 +57,17 @@ import { RippleModule } from 'primeng/ripple';
         MessageModule,
         PanelModule,
         RippleModule,
+        BadgeModule,
+        TableModule,
+        SelectButtonModule,
+        TagModule,
+        TabMenuModule,
+        DividerModule,
+        RadioButtonModule,
+        InputNumberModule,
+        TooltipModule,
+        StyleClassModule,
+        TieredMenuModule,
     ],
     exports: [
         ButtonModule,
@@ -68,6 +90,17 @@ import { RippleModule } from 'primeng/ripple';
         MessageModule,
         PanelModule,
         RippleModule,
+        BadgeModule,
+        TableModule,
+        SelectButtonModule,
+        TagModule,
+        TabMenuModule,
+        DividerModule,
+        RadioButtonModule,
+        InputNumberModule,
+        TooltipModule,
+        StyleClassModule,
+        TieredMenuModule,
     ],
     declarations: [],
     providers: [

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Dashboard } from '@shared/models/dashboard/Dashboard';
+import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardService } from '@core/services/dashboard.service';
 import { ShareDataService } from '@core/services/share-data.service';
@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
     isEditing: boolean;
+    showTileMenu: boolean;
     dashboard: Dashboard;
     updateSubscription$: Subscription;
 
@@ -25,10 +26,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.updateSubscription$ = this.updateDataService.currentMessage
-            .subscribe((dashboard) => { this.dashboard = dashboard; });
+            .subscribe((dashboard) => {
+                this.dashboard = dashboard;
+            });
 
         this.route.params.subscribe(params => {
             const { id } = params;
+            this.showTileMenu = false;
             this.dashboard = this.dashboardService.get(id);
         });
     }
@@ -41,12 +45,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     deleteDashboard() {
         if (this.dashboardService.deleteDashboard(this.dashboard.id)) {
-            this.router.navigate(['/home/projects']);
+            this.router.navigate(['/home/projects']).then(r => r);
         }
         this.deleteDataService.changeMessage(this.dashboard.id);
     }
 
+    toggleTileMenu(): void {
+        this.showTileMenu = !this.showTileMenu;
+    }
+
     ngOnDestroy(): void {
         this.updateSubscription$.unsubscribe();
+    }
+
+    tileMenuClosed() {
+        this.showTileMenu = false;
     }
 }
