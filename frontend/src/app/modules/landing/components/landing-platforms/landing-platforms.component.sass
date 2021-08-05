@@ -1,5 +1,5 @@
 @import src/styles/mixins
-@import ../../common-styles/variables
+@import src/styles/variables
 @import ../../common-styles/mixins
 
 .platforms-container
@@ -13,6 +13,7 @@
     text-align: center
 
 .platforms-icons
+    @include disable-select
     display: flex
     grid-gap: $half-indent
     flex-wrap: wrap

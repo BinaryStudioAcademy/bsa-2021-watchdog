@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
-import { ProjectsComponent } from '@modules/home/projects/projects.component';
+import { ProjectsComponent } from '@modules/home/projects/projects/projects.component';
 import { IssuesComponent } from '@modules/home/issues/issues.component';
+import { CreateProjectComponent } from '@modules/home/projects/create-project/create-project.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home-page/home-page.component';
 
@@ -18,8 +19,16 @@ const routes: Routes = [{
         path: 'projects',
         component: ProjectsComponent,
     }, {
+        path: 'projects/create',
+        component: CreateProjectComponent,
+    },
+    {
         path: 'issues',
         component: IssuesComponent,
+    }, {
+        path: 'teams',
+        loadChildren: () => import('../team/team.module')
+            .then(m => m.TeamModule),
     }, {
         path: 'dashboard/:id',
         component: DashboardComponent,
@@ -34,4 +43,5 @@ const routes: Routes = [{
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
-export class HomeRoutingModule { }
+export class HomeRoutingModule {
+}

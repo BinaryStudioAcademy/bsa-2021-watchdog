@@ -1,3 +1,5 @@
+@import src/styles/variables
+
 .reg-wrapper
     width: 100vw
     height: 100vh
@@ -15,26 +17,26 @@
     grid-gap: 40px
     padding: 0 20px
     align-items: center
-    height: 50px
-    background-color: white
-
-.reg-logo
-    width: 200px
-    margin: 0
+    height: 60px
+    background-color: rgba(255,255,255,0.8)
 
 .logo
-    display: block
-    width: 100%
+    display: flex
+    justify-content: center
+    cursor: pointer
+    img
+        display: block
+        width: 70%
 
 .signin-wrapper
     display: flex
     align-items: center
     grid-gap: 20px
+    margin-right: $indent
+    button
+        font-weight: bold
+        white-space: nowrap
 
-.signin
-    font-size: .8rem
-    white-space: nowrap
-    min-width: 70px
 
 .content-wrapper
     padding: 30px

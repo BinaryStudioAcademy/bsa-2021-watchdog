@@ -1,18 +1,20 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { DashboardService } from '@core/services/dashboard.service';
-import { NewDashboard } from '@shared/models/dashboard/NewDashboard';
+import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
 
 @Component({
-    selector: 'app-add-dashboard',
-    templateUrl: './add-dashboard.component.html',
-    styleUrls: ['./add-dashboard.component.sass']
+    selector: 'app-update-dashboard',
+    templateUrl: './dashboard-template.html',
+    styleUrls: ['./dashboard-template.sass']
 })
-export class AddDashboardComponent implements OnInit {
+export class UpdateDashboardComponent implements OnInit {
     public formGroup: FormGroup = {} as FormGroup;
     icons: string[];
+    @Input() dashboard: Dashboard;
     @Output() closeModal = new EventEmitter<void>();
-    @Output() save = new EventEmitter<NewDashboard>();
+    @Output() save = new EventEmitter<UpdateDashboard>();
 
     constructor(private dashboardService: DashboardService) {
         this.icons = dashboardService.getIcons();
@@ -20,8 +22,14 @@ export class AddDashboardComponent implements OnInit {
 
     ngOnInit() {
         this.formGroup = new FormGroup({
+            id: new FormControl(
+                this.dashboard.id,
+                [
+                    Validators.required
+                ]
+            ),
             name: new FormControl(
-                '',
+                this.dashboard.name,
                 [
                     Validators.required,
                     Validators.minLength(5),
@@ -29,7 +37,7 @@ export class AddDashboardComponent implements OnInit {
                 ]
             ),
             icon: new FormControl(
-                '',
+                this.dashboard.icon,
                 [
                     Validators.required
                 ]
@@ -38,7 +46,7 @@ export class AddDashboardComponent implements OnInit {
     }
 
     saveHandle(): void {
-        const dashboard: NewDashboard = <NewDashboard> this.formGroup.value;
+        const dashboard: UpdateDashboard = <UpdateDashboard> this.formGroup.value;
         this.save.emit(dashboard);
     }
 }

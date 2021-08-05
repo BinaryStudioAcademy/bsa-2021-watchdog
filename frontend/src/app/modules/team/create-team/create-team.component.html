@@ -1,0 +1,31 @@
+<div class="modal-content">
+    <div class="team-create-form-header">
+        <div class="description">
+            Members of a team have access to specific areas, such as a new release or a new application feature.
+        </div>
+        <div class="input-label">
+            Team Name
+            <div class="input-sub-label">
+                May contain lowercase letters, numbers, dashes and underscores.
+            </div>
+        </div>
+        <form [formGroup]="teamGroup" (ngSubmit)="createTeam()">
+            <input type="text" pInputText formControlName="name" class="team-name-input">
+            <div *ngIf="teamGroup.controls.name.touched && teamGroup.controls.name.invalid" class="validation">
+                <small *ngIf="teamGroup.controls.name.errors.required">Field name can't be empty</small>
+                <small *ngIf="teamGroup.controls.name.value.length < 3">Min name length 3</small>
+                <small *ngIf="teamGroup.controls.name.value.length > 50">Max name length 50</small>
+            </div>
+        </form>
+    </div>
+    <div class="team-create-form-footer">
+        <button
+            pButton
+            pRipple
+            type="button"
+            label="Join team"
+            class="p-button-raised"
+            (click)="createTeam()">
+        </button>
+    </div>
+</div>

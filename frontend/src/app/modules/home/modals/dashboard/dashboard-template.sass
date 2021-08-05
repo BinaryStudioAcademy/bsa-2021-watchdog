@@ -1,0 +1,42 @@
+@import src/styles/variables
+
+button
+    width: 100%
+    margin: 4px 0
+
+.p-button-text
+    background-color: $background-color
+
+:host ::ng-deep
+    .p-dropdown
+        height: 40px
+        width: 100%
+        margin: 5px auto
+
+:host ::ng-deep
+    .p-inputtext
+        margin: 5px auto
+        width: 100%
+        height: 40px
+
+:host ::ng-deep
+    .p-dialog
+        width: 30vw
+        .p-dialog-header
+            display: none
+        .p-dialog-content
+            padding: 0
+:host ::ng-deep
+    .p-panel
+        .p-panel-header,
+        .p-panel-content
+            border-radius: 0
+
+.validation
+    width: 100%
+    margin: 4px auto
+    color: $validation-color
+    font-size: 12px
+    small
+        display: block
+        margin-top: 3px
