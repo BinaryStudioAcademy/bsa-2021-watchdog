@@ -4,9 +4,10 @@ import { AuthUser } from '@core/models/auth/auth-user';
 import { UserLoginDto } from '@core/models/auth/user-login';
 import { UserRegisterDto } from '@core/models/auth/user-register';
 import { User } from '@core/models/user';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { UserService } from './user.service';
 
 @Injectable({
     providedIn: 'root'
@@ -14,8 +15,9 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
     private currentUserSubject: BehaviorSubject<AuthUser>;
     public currentUser: Observable<AuthUser>;
+    private user: User;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private userService: UserService) {
         this.clearUser();
         this.currentUserSubject = new BehaviorSubject<AuthUser>(JSON.parse(localStorage.getItem('currentUser')));
         this.currentUser = this.currentUserSubject.asObservable();
@@ -52,8 +54,19 @@ export class AuthService {
         return !!this.currentUserSubject.value;
     }
 
-    public getUser(): User {
-        return this.currentUserSubject.value?.user;
+    // public getUser(): User {
+    //     return this.currentUserSubject.value?.user;
+    // }
+
+    public getUser() {
+        return this.user
+            ? of(this.user)
+            : this.userService.getUserById(10).pipe(
+                map((resp) => {
+                    this.user = resp.body;
+                    return this.user;
+                })
+            );
     }
 
     public setUser(user: User) {
