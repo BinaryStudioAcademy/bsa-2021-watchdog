@@ -1,3 +1,4 @@
+<app-loading-spinner *ngIf="loadingNumber > 0" [size]="'10px'"></app-loading-spinner>
 <div class="create-project-container">
     <!--    Header    -->
     <div class="header">
@@ -16,7 +17,7 @@
             <div (click)="onPlatformSelected(platform.id)"
                  *ngFor="let platform of viewPlatformCards"
                  [ngClass]="{ 'selected-card': platform.id === this.selectedPlatformId}" class="card">
-                <img alt="{{platform.name}}" src="{{platform.avatarUrl}}">
+                <img alt="{{platform.name}}" [src]="platform.avatarUrl | save">
                 <h3>{{platform.name}}</h3>
             </div>
         </div>

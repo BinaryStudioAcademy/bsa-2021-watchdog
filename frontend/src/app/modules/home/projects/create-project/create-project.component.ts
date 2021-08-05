@@ -2,10 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
-import { Platform } from '@shared/models/projects/platform';
 import { FakeData } from '@modules/home/projects/fake-data';
-import { Team } from '@shared/models/projects/team';
 import { Project } from '@shared/models/projects/project';
+import { PlatformService } from '@core/services/platform.service';
+import { BaseComponent } from '@core/components/base/base.component';
+import { Platform } from '@shared/models/platforms/platform';
+import { Team } from '@shared/models/projects/team';
+import { DomSanitizer } from '@angular/platform-browser';
+import { HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-create-project',
@@ -13,7 +18,9 @@ import { Project } from '@shared/models/projects/project';
     styleUrls: ['./create-project.component.sass'],
     providers: [FakeData]
 })
-export class CreateProjectComponent implements OnInit {
+export class CreateProjectComponent extends BaseComponent implements OnInit {
+    public loadingNumber: number = 0;
+
     public platformTabItems: MenuItem[];
     public viewPlatformCards: Platform[];
     public userTeams: Team[];
@@ -33,11 +40,15 @@ export class CreateProjectComponent implements OnInit {
 
     constructor(
         private toastNotifications: ToastNotificationService,
-        private fakeData: FakeData
+        private platformService: PlatformService,
+        private fakeData: FakeData,
+        private sanitizer: DomSanitizer
     ) {
+        super();
     }
 
     ngOnInit() {
+        this.initData();
         this.initFakeData();
         this.platformTabItems = [
             { label: 'All', command: (event) => this.onTabChange(event) },
@@ -75,9 +86,21 @@ export class CreateProjectComponent implements OnInit {
         });
         this.onTabChange();
     }
+    initData() {
+        this.loadingNumber += 1;
+        this.platformService
+        .getPlatforms()
+        .pipe(this.untilThis)
+        .subscribe(p => {
+            const platforms = p as HttpResponse<Platform[]>;
+            this.platformCards = this.viewPlatformCards = platforms.body;
+        }, error => {
+            this.toastNotifications.error(`${error}`, 'Error', 2000);
+        }, () => this.loadingNumber -= 1);
+    }
 
     initFakeData() {
-        this.platformCards = this.fakeData.fakePlatforms;
+        // this.platformCards = this.fakeData.fakePlatforms;
         this.alertTypes = this.fakeData.fakeAlertTypes;
         this.alertTimeIntervals = this.fakeData.fakeAlertTimeIntervals;
         this.alertCategories = this.fakeData.fakeAlertCategories;
@@ -88,19 +111,19 @@ export class CreateProjectComponent implements OnInit {
         this.selectedPlatformId = undefined;
         switch (event?.item.label ?? '') {
             case 'Browser': {
-                this.viewPlatformCards = [...this.platformCards.filter(value => value.isBrowser === true)];
+                this.viewPlatformCards = [...this.platformCards.filter(value => value.platformTypes.includes('browser'))];
                 break;
             }
             case 'Server': {
-                this.viewPlatformCards = [...this.platformCards.filter(value => value.isServer === true)];
+                this.viewPlatformCards = [...this.platformCards.filter(value => value.platformTypes.includes('server'))];
                 break;
             }
             case 'Mobile': {
-                this.viewPlatformCards = [...this.platformCards.filter(value => value.isMobile === true)];
+                this.viewPlatformCards = [...this.platformCards.filter(value => value.platformTypes.includes('mobile'))];
                 break;
             }
             case 'Desktop': {
-                this.viewPlatformCards = [...this.platformCards.filter(value => value.isDesktop === true)];
+                this.viewPlatformCards = [...this.platformCards.filter(value => value.platformTypes.includes('desktop'))];
                 break;
             }
             default: {
