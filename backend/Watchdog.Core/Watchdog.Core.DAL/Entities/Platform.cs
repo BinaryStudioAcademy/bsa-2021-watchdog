@@ -8,6 +8,7 @@ namespace Watchdog.Core.DAL.Entities
         public Platform()
         {
             Applications = new List<Application>();
+            PlatformTypes = new List<PlatformType>();
         }
 
         public string Name { get; set; }
@@ -15,5 +16,6 @@ namespace Watchdog.Core.DAL.Entities
         public string AvatarUrl { get; set; }
 
         public ICollection<Application> Applications { get; set; }
+        public ICollection<PlatformType> PlatformTypes { get; set; }
     }
 }
