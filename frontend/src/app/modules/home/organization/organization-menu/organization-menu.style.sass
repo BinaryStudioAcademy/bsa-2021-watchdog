@@ -1,3 +1,5 @@
+@import src/styles/variables
+
 .org-label
     color: white
     width: 100%
@@ -25,9 +27,13 @@
     color: rgb(255,255,255, 0.5)
     font-size: .6em
     transition: color .3s ease-in-out
-    height: 1.2em
     overflow: inherit
     white-space: inherit
     text-overflow: inherit
 
-
+::ng-deep
+    .org-avatar-item.p-avatar
+        background-color: $primary-color-darkest
+    .org-avatar-item .p-avatar-text
+        font-family: "DM Sans", serif
+        color: #FFFFFF

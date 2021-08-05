@@ -4,7 +4,7 @@
         <div class="team" *ngFor="let team of teams">
             <div class="team-info">
                 <div class="team-avatar">
-                    <p-avatar label="{{teamService.getLabel(team.name)}}"></p-avatar>
+                    <p-avatar styleClass="team-info-avatar" label="{{teamService.getLabel(team.name)}}"></p-avatar>
                 </div>
                 <div class="team-title">
                     <div class="team-name">
@@ -16,14 +16,8 @@
                 </div>
             </div>
             <div>
-                <button
-                    pButton
-                    pRipple
-                    type="button"
-                    label="Join Team"
-                    class="teams-button join-leave-button"
-                    icon="pi pi-plus-circle"
-                    (click)="joinTeam(team.id)">
+                <button pButton pRipple type="button" label="Join Team" class="teams-button join-leave-button"
+                    icon="pi pi-plus-circle" (click)="joinTeam(team.id)">
                 </button>
             </div>
         </div>
