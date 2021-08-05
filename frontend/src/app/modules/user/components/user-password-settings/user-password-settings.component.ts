@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component } from '@angular/core';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import firebase from 'firebase/app';
@@ -10,48 +9,29 @@ import firebase from 'firebase/app';
     styleUrls: ['./user-password-settings.component.sass']
 })
 
-export class UserPasswordSettingsComponent implements OnInit {
+export class UserPasswordSettingsComponent {
 
-    changePasswordForm: FormGroup;
-    newPwdInputType: string;
-    currentPwdInputType: string;
+    public oldPassword: string;
+    public newPassword: string;
 
     constructor(
         private authService: AuthenticationService,
         private toastNotificationService: ToastNotificationService
-    ) {
-        this.newPwdInputType = "";
-        this.currentPwdInputType = "";
-    }
-
-    ngOnInit() {
-        this.changePasswordForm = new FormGroup({
-            currentPassword: new FormControl(),
-            newPassword: new FormControl()
-        });
-    }
+    ) { }
 
     onSubmit() {
-        const currentUser = this.authService.getFirebaseUser();
+        const currentUser = firebase.auth().currentUser;
         const credentials = firebase.auth.EmailAuthProvider
-            .credential(currentUser.email, this.changePasswordForm.value.currentPassword);
+            .credential(currentUser.email, this.oldPassword);
 
         currentUser.reauthenticateWithCredential(credentials)
             .then(() => {
-                this.authService.updatePassword(this.changePasswordForm.value.newPassword);
+                this.authService.updatePassword(this.newPassword);
                 this.toastNotificationService.success('Password has been updated');
             })
             .catch(error => {
                 console.warn(error);
                 this.toastNotificationService.error('Current password is incorrect');
             });
-    }
-
-    changeCurrentPasswordVisibility() {
-        this.currentPwdInputType = this.currentPwdInputType === 'text' ? 'password' : 'text';
-    }
-
-    changeNewPasswordVisibility() {
-        this.newPwdInputType = this.newPwdInputType === 'text' ? 'password' : 'text';
     }
 }
