@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Watchdog.Core.Common.DTO.Tile;
 
 namespace Watchdog.Core.Common.DTO.Dashboard
 {
@@ -6,11 +8,12 @@ namespace Watchdog.Core.Common.DTO.Dashboard
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int User { get; set; }
+        public string Icon { get; set; }
 
         public int OrganizationId { get; set; }
 
         public int CreatedBy { get; set; }
+        public ICollection<TileDto> Tiles { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }
