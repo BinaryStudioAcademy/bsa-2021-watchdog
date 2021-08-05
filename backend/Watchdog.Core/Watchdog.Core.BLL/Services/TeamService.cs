@@ -18,9 +18,8 @@ namespace Watchdog.Core.BLL.Services
         public async Task<ICollection<TeamDto>> GetAllTeamsAsync(int organizationId)
         {
             var teams = await _context.Teams
-                .Include(team => team.TeamMembers)
-                    .ThenInclude(teamMember => teamMember.Member)
-                    .ThenInclude(teamMember => teamMember.User)
+                .Include(team => team.Members)
+                    .ThenInclude(member => member.User)
                 .Where(t => t.OrganizationId == organizationId)
                 .ToListAsync();
             
@@ -30,13 +29,12 @@ namespace Watchdog.Core.BLL.Services
         public async Task<ICollection<TeamDto>> GetMemberTeamsAsync(int organizationId, int memberId, bool isForMemberInTeam)
         {
             var memberTeams = await _context.Teams
-                .Include(team => team.TeamMembers)
-                    .ThenInclude(teamMember => teamMember.Member)
-                    .ThenInclude(teamMember => teamMember.User)
+                .Include(team => team.Members)
+                    .ThenInclude(member => member.User)
                 .Where(t => t.OrganizationId == organizationId)
                 .Where(t => isForMemberInTeam ? 
-                        t.TeamMembers.Any(tm => tm.MemberId == memberId) : 
-                        t.TeamMembers.All(tm => tm.MemberId != memberId))
+                        t.Members.Any(tm => tm.Id == memberId) : 
+                        t.Members.All(tm => tm.Id != memberId))
                 .ToListAsync();
             
             return _mapper.Map<ICollection<TeamDto>>(memberTeams);
@@ -75,25 +73,21 @@ namespace Watchdog.Core.BLL.Services
         }
         
         public async Task<TeamDto> AddMemberToTeamAsync(TeamMemberDto teamMemberDto)
-        {
-            var teamMember = _mapper.Map<TeamMember>(teamMemberDto);
-            
-            var created = _context.TeamMembers.Add(teamMember).Entity;
+        {  
+            var member = await _context.Members.FindAsync(teamMemberDto.MemberId) ?? throw new KeyNotFoundException("Member was not found");
+            member.TeamId = teamMemberDto.TeamId;
             await _context.SaveChangesAsync();
-            
-            return await GetTeamAsync(created.TeamId);
+            return await GetTeamAsync(member.TeamId);
         }
         
         public async Task<TeamDto> LeaveTeamAsync(int teamId, int memberId)
         {
-            var teamMember = await _context.TeamMembers
-                .FirstOrDefaultAsync(tm => tm.MemberId == memberId && tm.TeamId == teamId);
-            
-            _context.Remove(teamMember);
+            var member = await _context.Members.FirstOrDefaultAsync(m => m.Id == memberId && m.TeamId == teamId);
+            _context.Members.Remove(member);
             
             await _context.SaveChangesAsync();
             
-            return await GetTeamAsync(teamMember.TeamId); 
+            return await GetTeamAsync(teamId);
         }
         
         public async Task DeleteTeamAsync(int teamId)
@@ -107,9 +101,8 @@ namespace Watchdog.Core.BLL.Services
         private async Task<TeamDto> GetTeamAsync(int teamId)
         {
             var teamEntity = await _context.Teams
-                .Include(team => team.TeamMembers)
-                    .ThenInclude(teamMember => teamMember.Member)
-                    .ThenInclude(teamMember => teamMember.User)
+                .Include(teamMember => teamMember.Members)
+                .ThenInclude(teamMember => teamMember.User)
                 .FirstOrDefaultAsync(team => team.Id == teamId);
             
             return _mapper.Map<TeamDto>(teamEntity);

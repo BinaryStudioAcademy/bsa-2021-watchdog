@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Watchdog.Core.Common.DTO.User;
 
 namespace Watchdog.Core.Common.DTO.Members
 {
@@ -15,7 +16,7 @@ namespace Watchdog.Core.Common.DTO.Members
 
         public  int OrganizationId { get; set; }
 
-        public string Email { get; set; }
+        public UserDto User { get; set; }
 
         public int TeamId { get; set; }
      

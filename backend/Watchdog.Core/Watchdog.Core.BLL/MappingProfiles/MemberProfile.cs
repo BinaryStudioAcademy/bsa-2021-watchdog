@@ -1,5 +1,5 @@
 using AutoMapper;
-using Watchdog.Core.Common.DTO.Member;
+using Watchdog.Core.Common.DTO.Members;
 using Watchdog.Core.DAL.Entities;
 
 namespace Watchdog.Core.BLL.MappingProfiles
@@ -9,7 +9,8 @@ namespace Watchdog.Core.BLL.MappingProfiles
         public MemberProfile()
         {
             CreateMap<Member, MemberDto>();
-            CreateMap<MemberDto, Member>();
+            CreateMap<NewMemberDto, Member>();
+            CreateMap<UpdateMemberDto, Member>();
         }
     }
 }

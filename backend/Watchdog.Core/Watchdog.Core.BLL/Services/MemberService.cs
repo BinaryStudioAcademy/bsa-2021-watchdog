@@ -29,7 +29,7 @@ namespace Watchdog.Core.BLL.Services
                 Name = memberDto.FullName,
                 Subject = "Invitation letter"
             };
-            return _emailSendService.SendAsync(memberDto.Email, data);
+            return _emailSendService.SendAsync(memberDto.User.Email, data);
         }
 
         public async Task<MemberDto> AddMemberAsync(NewMemberDto memberDto)

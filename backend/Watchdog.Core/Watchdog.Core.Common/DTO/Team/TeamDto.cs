@@ -1,6 +1,5 @@
-using System;
 using System.Collections.Generic;
-using Watchdog.Core.Common.DTO.Member;
+using Watchdog.Core.DAL.Entities;
 
 namespace Watchdog.Core.Common.DTO.Team
 {
@@ -10,7 +9,6 @@ namespace Watchdog.Core.Common.DTO.Team
         public int CreatedBy { get; set; }
         public string Name { get; set; }
         public int OrganizationId { get; set; }
-        public ICollection<MemberDto> Members { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public ICollection<Member> Members { get; set; }
     }
 }
