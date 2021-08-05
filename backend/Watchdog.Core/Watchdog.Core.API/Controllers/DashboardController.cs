@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
+using Watchdog.Core.BLL.Services.Abstract;
+using Watchdog.Core.Common.DTO.Dashboard;
 
 namespace Watchdog.Core.API.Controllers
 {
@@ -13,40 +15,57 @@ namespace Watchdog.Core.API.Controllers
     [Route("[controller]")]
     public class DashboardController : ControllerBase
     {
-        private readonly ILogger<SampleController> _logger;
+        private readonly ILogger<DashboardController> _logger;
+        private readonly IDashboardService _dashboardService;
 
-        public DashboardController(ILogger<SampleController> logger)
+        public DashboardController(ILogger<DashboardController> logger, IDashboardService dashboardService)
         {
             _logger = logger;
+            _dashboardService = dashboardService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<ICollection<string>>> Get()
+        public async Task<ActionResult<ICollection<DashboardDto>>> Get()
         {
-            return Ok(new string[] { "value1", "value2" }); 
+            var dashboards = await _dashboardService.GetAllDashboardsAsync();
+            return Ok(dashboards); 
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<string>> Get(int dashboardId)
+        [HttpGet("{dashboardId}")]
+        public async Task<ActionResult<DashboardDto>> Get(int dashboardId)
         {
-            return Ok("value");
+            var dashboard = await _dashboardService.GetDashboardAsync(dashboardId);
+            return Ok(dashboard);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post()
+        public async Task<ActionResult<DashboardDto>> Post(NewDashboardDto newDashboard)
         {
-            return Ok();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var createdDashboard = await _dashboardService.CreateDashboardAsync(newDashboard);
+            return Ok(createdDashboard);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Put()
+        [HttpPut("{dashboardId}")]
+        public async Task<ActionResult<DashboardDto>> Put(int dashboardId, NewDashboardDto newDashboard)
         {
-            return Ok();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var updatedDashboard = await _dashboardService.UpdateDashboardAsync(dashboardId, newDashboard);
+            return Ok(updatedDashboard);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{dashboardId}")]
         public async Task<ActionResult> Delete(int dashboardId)
         {
+            await _dashboardService.DeleteDashboardAsync(dashboardId);
             _logger.LogInformation($"Dashboard: ID = {dashboardId} has been removed.");
             return NoContent();
         }
