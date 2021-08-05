@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Watchdog.Core.BLL.Services.Abstract;
@@ -18,6 +17,10 @@ namespace Watchdog.Core.BLL.Services
         public async Task<ICollection<DashboardDto>> GetAllDashboardsAsync()
         {
             var dashboards = await _context.Dashboards
+                .Include(dashboard => dashboard.Tiles)
+                    .ThenInclude(tile => tile.Dashboard)
+                .Include(dashboard => dashboard.Tiles)
+                    .ThenInclude(tile => tile.User)
                 .ToListAsync();
 
             return _mapper.Map<ICollection<DashboardDto>>(dashboards);
@@ -26,6 +29,10 @@ namespace Watchdog.Core.BLL.Services
         public async Task<DashboardDto> GetDashboardAsync(int dashboardId)
         {
             var dashboard = await _context.Dashboards
+                .Include(dashboard => dashboard.Tiles)
+                    .ThenInclude(tile => tile.Dashboard)
+                .Include(dashboard => dashboard.Tiles)
+                    .ThenInclude(tile => tile.User)
                 .FirstOrDefaultAsync(dashboard => dashboard.Id == dashboardId);
 
             return _mapper.Map<DashboardDto>(dashboard);
@@ -38,13 +45,13 @@ namespace Watchdog.Core.BLL.Services
                 dst.CreatedAt = DateTime.Now;
             }));
 
-            var createdDashboard = _context.Add(dashboard);
+            _context.Add(dashboard);
             await _context.SaveChangesAsync();
 
-            return _mapper.Map<DashboardDto>(createdDashboard);
+            return _mapper.Map<DashboardDto>(dashboard);
         }
 
-        public async Task<DashboardDto> UpdateDashboardAsync(int dashboardId, NewDashboardDto updateDashboard)
+        public async Task<DashboardDto> UpdateDashboardAsync(int dashboardId, UpdateDashboardDto updateDashboard)
         {
             var existedDashboard = await _context.Dashboards.FirstAsync(t => t.Id == dashboardId);
 
