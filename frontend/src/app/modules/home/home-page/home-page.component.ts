@@ -6,13 +6,14 @@ import { DataService } from '@core/services/share-data.service';
 import { Subscription } from 'rxjs';
 import { NewDashboard } from '@shared/models/dashboard/new-dashboard';
 import { User } from '@core/models/user';
+import { BaseComponent } from '@core/components/base/base.component';
 
 @Component({
     selector: 'app-home',
     templateUrl: './home-page.component.html',
     styleUrls: ['./home-page.component.sass']
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     dashboards: Dashboard[];
     updateSubscription$: Subscription;
     deleteSubscription$: Subscription;
@@ -25,23 +26,14 @@ export class HomeComponent implements OnInit, OnDestroy {
         public dashboardService: DashboardService,
         private updateDataService: DataService<Dashboard>,
         private deleteDataService: DataService<number>
-    ) { }
+    ) {
+        super();
+     }
 
     async ngOnInit() {
         this.authorizedUser = { ...this.authorizedUser, firstName: 'Andriy' };
 
-        this.dashboards = this.dashboardService.getAll();
-
-        this.updateSubscription$ = this.updateDataService.currentMessage
-            .subscribe(dashboard => {
-                const key = this.dashboards.findIndex(el => el.id === dashboard.id);
-                this.dashboards[key] = dashboard;
-            });
-
-        this.deleteSubscription$ = this.deleteDataService.currentMessage
-            .subscribe(id => {
-                this.dashboards = this.dashboards.filter(d => d.id !== id);
-            });
+        this.getAllDashboards();
 
         await this.broadcastHub.start();
         this.broadcastHub.listenMessages((msg) => {
@@ -51,11 +43,35 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     addDashboard(newDashboard: NewDashboard) {
         this.displayModal = false;
-        this.dashboardService.addDashboard(newDashboard);
+        newDashboard.createdBy = 1;
+        newDashboard.organizationId = 1;
+        console.log(newDashboard);
+        this.dashboardService.addDashboard(newDashboard)
+            .pipe(this.untilThis)
+            .subscribe(() => this.getAllDashboards());
+    }
+
+    getAllDashboards() {
+        this.dashboardService.getAll()
+            .pipe(this.untilThis)
+            .subscribe(resp => {
+                this.dashboards = resp.body;
+                this.updateSubscription$ = this.updateDataService.currentMessage
+                    .subscribe(dashboard => {
+                        const key = this.dashboards.findIndex(el => el.id === dashboard.id);
+                        this.dashboards[key] = dashboard;
+                    });
+
+                this.deleteSubscription$ = this.deleteDataService.currentMessage
+                    .subscribe(id => {
+                        this.dashboards = this.dashboards.filter(d => d.id !== id);
+                    });
+            });
     }
 
     ngOnDestroy() {
         this.broadcastHub.stop();
         this.updateSubscription$.unsubscribe();
+        super.ngOnDestroy();
     }
 }
