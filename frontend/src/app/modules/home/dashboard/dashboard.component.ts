@@ -6,6 +6,7 @@ import { DataService } from '@core/services/share-data.service';
 import { Subscription } from 'rxjs';
 import { BaseComponent } from '@core/components/base/base.component';
 import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
+import { ToastNotificationService } from '@core/services/toast-notification.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -22,6 +23,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         private route: ActivatedRoute,
         private router: Router,
         private dashboardService: DashboardService,
+        private toastNotificationService: ToastNotificationService,
         private updateDataService: DataService<Dashboard>,
         private deleteDataService: DataService<number>
     ) {
@@ -51,13 +53,17 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
             .subscribe(resp => {
                 this.dashboard = resp.body;
                 this.updateDataService.changeMessage(this.dashboard);
+                this.toastNotificationService.success('Dashboard has been updateded');
             });
     }
 
     deleteDashboard() {
-        if (this.dashboardService.deleteDashboard(this.dashboard.id)) {
-            this.router.navigate(['/home/projects']).then(r => r);
-        }
+        this.dashboardService.deleteDashboard(this.dashboard.id)
+            .pipe(this.untilThis)
+            .subscribe(() => {
+                this.router.navigate(['/home/projects']).then(r => r);
+                this.toastNotificationService.success('Dashboard has been deleted');
+            });
         this.deleteDataService.changeMessage(this.dashboard.id);
     }
 
