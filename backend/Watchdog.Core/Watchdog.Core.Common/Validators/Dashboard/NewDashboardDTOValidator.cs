@@ -3,9 +3,9 @@ using Watchdog.Core.Common.DTO.Dashboard;
 
 namespace Watchdog.Core.Common.Validators.Dashboard
 {
-    public class NewDashboardDTOValidator : AbstractValidator<NewDashboardDto>
+    public class NewDashboardDtoValidator : AbstractValidator<NewDashboardDto>
     {
-        public NewDashboardDTOValidator()
+        public NewDashboardDtoValidator()
         {
             RuleFor(d => d.Name)
                 .NotEmpty()
