@@ -42,6 +42,18 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<OrganizationDto>(updatedOrganization.Entity);
         }
 
+        public async Task<OrganizationDto> UpdateSettingsAsync(int organizationId, SettingsOrganizationDto settingsDto)
+        {
+            var existedOrganization = await _context.Organizations.FirstAsync(o => o.Id == organizationId);
+
+            var mergedOrganization = _mapper.Map(settingsDto, existedOrganization);
+
+            var updatedOrganization = _context.Update(mergedOrganization);
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<OrganizationDto>(updatedOrganization.Entity);
+        }
+
         public async Task<ICollection<OrganizationDto>> GetUserOrganizationsAsync(int userId)
         {
             var organizaitons = await _context.Organizations

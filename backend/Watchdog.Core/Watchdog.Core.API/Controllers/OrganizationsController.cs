@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Organization;
@@ -56,6 +57,15 @@ namespace Watchdog.Core.API.Controllers
 
             var organization = await _organizationService.UpdateOrganizationAsync(organizationId, organizationDto);
             return Ok(organization);
+        }
+        [HttpPatch("{organizationId}")]
+        public async Task<ActionResult<OrganizationDto>> Patch(int organizationId,[FromBody] JsonPatchDocument<SettingsOrganizationDto> organizationPatch)
+        {
+            var organization = new SettingsOrganizationDto();
+            organizationPatch.ApplyTo(organization);
+
+            var updatedOrganization = await _organizationService.UpdateSettingsAsync(organizationId, organization);
+            return Ok(updatedOrganization);
         }
     }
 }
