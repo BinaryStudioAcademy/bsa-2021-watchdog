@@ -1,10 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { BaseComponent } from '@core/components/base/base.component';
-import { User } from '@core/models/user';
-import { AuthService } from '@core/services/auth.service';
+import { AuthenticationService } from '@core/services/authentication.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
-import { UserService } from '@core/services/user.service';
+import firebase from 'firebase/app';
 
 @Component({
     selector: 'app-user-password-settings',
@@ -12,46 +10,41 @@ import { UserService } from '@core/services/user.service';
     styleUrls: ['./user-password-settings.component.sass']
 })
 
-export class UserPasswordSettingsComponent extends BaseComponent implements OnInit, OnDestroy {
-    public user = {} as User;
+export class UserPasswordSettingsComponent implements OnInit {
 
     changePasswordForm: FormGroup;
     newPwdInputType: string;
     currentPwdInputType: string;
 
-    constructor(private authService: AuthService, private userService: UserService,
-        private toastNotificationService: ToastNotificationService) {
-        super();
-        this.changePasswordForm = new FormGroup(
-            {
-                currentPassword: new FormControl(),
-                newPassword: new FormControl()
-            }
-        );
-        this.newPwdInputType = 'password';
-        this.currentPwdInputType = 'password';
+    constructor(
+        private authService: AuthenticationService,
+        private toastNotificationService: ToastNotificationService
+    ) {
+        this.newPwdInputType = "";
+        this.currentPwdInputType = "";
     }
 
-    ngOnInit(): void {
-        this.user = this.authService.getUser();
+    ngOnInit() {
+        this.changePasswordForm = new FormGroup({
+            currentPassword: new FormControl(),
+            newPassword: new FormControl()
+        });
     }
 
-    submit(editForm) {
-        if (this.checkPassword(editForm.value.currentPassword)) {
-            this.user.password = editForm.value.newPassword;
-            this.userService.updateUser(this.user)
-                .pipe(this.untilThis)
-                .subscribe(resp => {
-                    this.authService.setUser(resp.body);
-                    this.toastNotificationService.success('Password has been updated');
-                });
-        } else {
-            this.toastNotificationService.error('Current password is incorrect');
-        }
-    }
+    onSubmit() {
+        const currentUser = this.authService.getFirebaseUser();
+        const credentials = firebase.auth.EmailAuthProvider
+            .credential(currentUser.email, this.changePasswordForm.value.currentPassword);
 
-    checkPassword(password: string): boolean {
-        return password === this.user.password;
+        currentUser.reauthenticateWithCredential(credentials)
+            .then(() => {
+                this.authService.updatePassword(this.changePasswordForm.value.newPassword);
+                this.toastNotificationService.success('Password has been updated');
+            })
+            .catch(error => {
+                console.warn(error);
+                this.toastNotificationService.error('Current password is incorrect');
+            });
     }
 
     changeCurrentPasswordVisibility() {
@@ -60,9 +53,5 @@ export class UserPasswordSettingsComponent extends BaseComponent implements OnIn
 
     changeNewPasswordVisibility() {
         this.newPwdInputType = this.newPwdInputType === 'text' ? 'password' : 'text';
-    }
-
-    ngOnDestroy() {
-        super.ngOnDestroy();
     }
 }
