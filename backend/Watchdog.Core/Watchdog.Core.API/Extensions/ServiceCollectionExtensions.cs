@@ -13,13 +13,16 @@ namespace Watchdog.Core.API.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void RegisterCustomServices(this IServiceCollection services, IConfiguration _)
+        public static void RegisterCustomServices(this IServiceCollection services, IConfiguration configuration)
         {
             services
                 .AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddTransient<ISampleService, SampleService>();
+            services.AddTransient<IMemberService, MemberService>();
+
+            services.AddEmailSendService(configuration);
         }
 
         public static void AddAutoMapper(this IServiceCollection services)
