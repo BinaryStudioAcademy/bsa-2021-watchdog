@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { PrimeComponentsModule } from './modules/prime-components/prime-components.module';
+import { TimeAgoPipe } from './pipes/time-ago.pipe';
 
 @NgModule({
     imports: [
@@ -18,6 +19,7 @@ import { PrimeComponentsModule } from './modules/prime-components/prime-componen
     declarations: [
         LoadingSpinnerComponent,
         NotFoundComponent,
+        TimeAgoPipe,
     ],
     exports: [
         CommonModule,
@@ -27,6 +29,7 @@ import { PrimeComponentsModule } from './modules/prime-components/prime-componen
         LoadingSpinnerComponent,
         NotFoundComponent,
         PrimeComponentsModule,
+        TimeAgoPipe,
     ]
 })
 export class SharedModule { }

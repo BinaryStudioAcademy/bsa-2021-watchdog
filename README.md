@@ -15,7 +15,7 @@ By default, apps run on the following ports:
 | Watchdog.**Core** | 5050 |
 | Watchdog.**Notifier** | 5070 |
 | Watchdog.**Collector** | 5090 |
-| Watchdog.**Angular** | 80 or 4200 |
+| Watchdog.**Frontend** | 80 or 4200 |
 | RabbitMQ | 5672 |
 | Elasticsearch | 9200 |
 | Kibana | 5601 |
@@ -40,7 +40,7 @@ Also, there are some best practices for frontend development: [Angular](https://
 4. Install Angular-CLI via: *npm install -g @angular/cli*. *[What is Angular-CLI?](https://angular.io/cli)*
 
 ## Extensions for frontend development (required):
- - TSLint  (analysis tool that checks TypeScript code for readability, maintainability, and functionality errors)
+ - ESLint  (analysis tool that checks TypeScript\JavaScript code for readability, maintainability, and functionality errors)
  - EditorConfig  (helps maintain consistent coding styles for multiple developers working on the same project)
  
 Some extra extensions which can significantly help to work with Angular:

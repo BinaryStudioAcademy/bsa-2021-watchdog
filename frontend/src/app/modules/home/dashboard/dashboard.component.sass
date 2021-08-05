@@ -2,23 +2,32 @@
 @import src/styles/variables
 @import src/styles/mixins
 
+.remove-margin-box-shadow
+    box-shadow: unset !important
+    margin-bottom: 0 !important
+
+
 .dashboard-header
-    @include backgroung-gray
+    @include background-gray
     @include title
-    width: 100%
-    min-height: 50px
     display: flex
     flex-direction: row
     align-items: center
     justify-content: space-between
-
     .action-buttons
         display: flex
         grid-gap: 5px
         flex-direction: row-reverse
         align-items: center
-
         button
             width: 100px
+            white-space: nowrap
 
 
+.dashboard-container
+    padding: 20px 20px 0
+    display: flex
+    flex-grow: 1
+    flex-shrink: 1
+    flex-basis: 0
+    flex-direction: column
