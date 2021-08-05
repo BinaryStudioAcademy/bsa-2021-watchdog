@@ -1,16 +1,24 @@
-<div class="container-group">
+<form [formGroup]="generalForm" class="container-group">
     <div class="container-header">
         <h2>General</h2>
     </div>
     <div class="item-group">
         <label class="item-form-definition">
-            <div>Organization slug</div>
+            <div>Organization Slug</div>
             <div class="item-sub-text">A unique ID used to identify this organization</div>
         </label>
-        <div class="item-form-input">
-            <input required [value]="organization?.organizationSlug" class="item-form-field" type="text" pInputText
-                placeholder="Organization slug" (onchange)="save()">
-            <div class="p-error">Username is not available.</div>
+        <div class="item-form-input p-field">
+            <input (change)="saveSlug()" formControlName="organizationSlug" class="item-form-field" pInputText
+                placeholder="Organization Slug">
+            <div *ngIf="organizationSlug.pending">Loading...</div>
+            <div *ngIf="organizationSlug.invalid && (organizationSlug.dirty || organizationSlug.touched)"
+                class="input-error">
+                <div *ngIf="organizationSlug.errors?.required">This field is required</div>
+                <div *ngIf="organizationSlug.errors?.minlength || organizationSlug.errors?.maxlength">
+                    Length must be between 3 and 50 characters
+                </div>
+                <div *ngIf="organizationSlug.errors?.notUnique">Slug is not unique, try again</div>
+            </div>
         </div>
     </div>
     <div class="item-group">
@@ -18,7 +26,12 @@
             <div>Display Name</div>
             <div class="item-sub-text">A human-friendly name for the organization</div>
         </label>
-        <input required [value]="organization?.name" class="item-form-field" type="text" pInputText
-            placeholder="Display Name" (onchange)="save()">
+        <div class="item-form-input p-field">
+            <input formControlName="name" class="item-form-field" pInputText placeholder="Display Name"
+                (change)="save('name')">
+            <div *ngIf="!generalForm.controls['name'].valid" class="input-error p-error">
+                Display Name is not available. Must be between 3 and 50 length, symbols: A-Z, a-z, '-', '_'
+            </div>
+        </div>
     </div>
-</div>
+</form>

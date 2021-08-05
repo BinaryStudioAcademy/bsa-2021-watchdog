@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { SharedModule } from '@shared/shared.module';
 import { OrganizationMenuComponent } from './organization-menu/organization-menu.component';
 import { GeneralSettingsComponent } from "./organization-settings/general-settings/general-settings.component";

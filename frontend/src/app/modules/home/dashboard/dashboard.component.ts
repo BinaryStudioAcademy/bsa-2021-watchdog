@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Dashboard } from '@shared/models/dashboard/Dashboard';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardService } from '@core/services/dashboard.service';
-import { DataService } from '@core/services/share-data.service';
+import { ShareDataService } from '@core/services/share-data.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -19,8 +19,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private router: Router,
         private dashboardService: DashboardService,
-        private updateDataService: DataService<Dashboard>,
-        private deleteDataService: DataService<number>
+        private updateDataService: ShareDataService<Dashboard>,
+        private deleteDataService: ShareDataService<number>
     ) { }
 
     ngOnInit(): void {

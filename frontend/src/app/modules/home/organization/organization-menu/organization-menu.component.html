@@ -1,7 +1,7 @@
 <div class="org-label" (click)="menu.toggle($event)">
     <div class="org-avatar">
         <p-avatar size="large" *ngIf="organization?.avatarUrl" [image]="organization.avatarUrl"></p-avatar>
-        <p-avatar size="large" *ngIf="!organization?.avatarUrl" [label]="organization?.name"></p-avatar>
+        <p-avatar size="large" *ngIf="!organization?.avatarUrl" [label]="organization?.name.substr(0,2)"></p-avatar>
     </div>
     <div class="org-title">
         <div class="org-name text-ellipsis">

@@ -1,4 +1,4 @@
-<div class="container-group">
+<form [formGroup]="membershipForm" class="container-group">
     <div class="container-header">
         <h2>Membership</h2>
     </div>
@@ -7,15 +7,20 @@
             <div>Default Role</div>
             <div class="item-sub-text">The default role new members will receive</div>
         </label>
-        <p-dropdown class="item-form-field" [styleClass]="'item-form-field'" optionLabel="Role" placeholder="Role">
-        </p-dropdown>
+        <div class="item-form-input p-field">
+            <p-dropdown (onChange)="save('defaultRoleId')" formControlName="defaultRoleId" [options]="roles"
+                optionValue="id" optionLabel="name" [styleClass]="'item-form-field'" placeholder="Role">
+            </p-dropdown>
+        </div>
     </div>
     <div class="item-group">
         <label class="item-form-definition">
             <div>Open Membership</div>
             <div class="item-sub-text">Allow organization members to freely join or leave any team</div>
         </label>
-
-        <p-inputSwitch class="item-form-field"></p-inputSwitch>
+        <div class="item-form-input">
+            <p-inputSwitch (onChange)="save('openMembership')" formControlName="openMembership" class="item-form-field">
+            </p-inputSwitch>
+        </div>
     </div>
-</div>
+</form>
