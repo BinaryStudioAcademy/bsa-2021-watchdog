@@ -1,18 +1,19 @@
-import { SpinnerService } from "@core/services/spinner.service";
-import { ToastNotificationService } from "@core/services/toast-notification.service";
-import { OrganizationService } from "@core/services/organization.service";
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from "@angular/forms";
-import { Organization } from "@core/models/organization";
+import { switchMap, catchError, map } from 'rxjs/operators';
+import { BaseComponent } from '@core/components/base/base.component';
+import { ToastNotificationService } from '@core/services/toast-notification.service';
+import { OrganizationService } from '@core/services/organization.service';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Organization } from '@shared/models/organization/organization';
 import { Component, Input, OnInit } from '@angular/core';
-import { map } from "rxjs/operators";
-import { Observable } from "rxjs";
+
+import { Observable, of } from 'rxjs';
 
 @Component({
     selector: 'app-general-settings',
     templateUrl: './general-settings.component.html',
     styleUrls: ['../organization-settings.style.sass']
 })
-export class GeneralSettingsComponent implements OnInit {
+export class GeneralSettingsComponent extends BaseComponent implements OnInit {
     @Input() organization: Organization;
     loading: boolean = false;
     errorUpdateMessage: string;
@@ -21,9 +22,8 @@ export class GeneralSettingsComponent implements OnInit {
     constructor(
         private organizationService: OrganizationService,
         private fb: FormBuilder,
-        private toastService: ToastNotificationService,
-        private spinnerService: SpinnerService
-    ) { }
+        private toastService: ToastNotificationService
+    ) { super(); }
 
     ngOnInit() {
         this.createForm();
@@ -37,55 +37,61 @@ export class GeneralSettingsComponent implements OnInit {
                 Validators.maxLength(50),
                 Validators.pattern(new RegExp('^[\\w\\s-!#$%&\'*+—/=?^`{|}~]+$')),
             ]),
-            organizationSlug: [this.organization.organizationSlug, [
-                Validators.required,
-                Validators.minLength(3),
-                Validators.maxLength(50),
-                Validators.pattern(new RegExp('^[\\w\\-]+$'))
-            ]]
+            organizationSlug: new FormControl(this.organization.organizationSlug, {
+                validators: [
+                    Validators.required,
+                    Validators.minLength(3),
+                    Validators.maxLength(50),
+                    Validators.pattern(new RegExp('^[\\w\\-]+$')),
+                ]
+            })
         });
     }
 
-    save(propName: string): void {
+    pendingSlug() {
+        const control = this.organizationSlug;
+        const bool: boolean = false;
+        control.setAsyncValidators(this.validateSlug);
+        control.updateValueAndValidity({ onlySelf: true, emitEvent: true });
+        control.setAsyncValidators([]);
+    }
+
+    pending(propName: string) {
         const control = this.generalForm.controls[propName];
-        if (!control || !control.valid || this.organization[propName] === control.value) {
-            return;
-        }
-        this.spinnerService.show(true);
-        const organizationToUpdate = { ...this.organization };
-        organizationToUpdate[propName] = control.value;
-        this.organizationService.updateOrganization(organizationToUpdate)
-            .subscribe(organization => {
-                this.organization = organization;
-                this.createForm();
-                this.toastService.success("Changes were saved!");
-            }, error => {
-                this.toastService.error(error);
-            }, () => {
-                this.spinnerService.hide();
-            });
+        if (control.invalid) return;
+
+        control.setAsyncValidators(this.saveValidator);
+        control.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+        control.setAsyncValidators([]);
     }
 
-    saveSlug() {
-        const result = this.validateSlug(this.organizationSlug);
-        this.spinnerService.show(true);
-        result.subscribe(t => {
-            if (t === null) {
-                this.save('organizationSlug');
-                return;
+    validateSlug = (control: AbstractControl): Observable<ValidationErrors | null> => this.organizationService.isSlugUnique(control.value).pipe(
+        map(isUnique => {
+            if (!isUnique) {
+                return { notUnique: true };
             }
-            this.organizationSlug.setErrors(t);
-            this.spinnerService.hide();
-        });
-    }
+            this.saveValidator(control)
+                .subscribe(v => v);
+        }), catchError(() => of({ serverError: true }))
+    );
 
-    validateSlug = (control: AbstractControl): Observable<ValidationErrors | null> => {
-        return this.organizationService.isSlugUnique(control.value).pipe(
-            map(isUnique => (!isUnique ? { notUnique: true } : null))
-        );
-    }
+    saveValidator = (control: AbstractControl): Observable<ValidationErrors | null> => {
+        const { parent } = control;
+        const propName = Object.keys(parent.controls).find(name => control === parent.controls[name]);
+        console.log('save');
+        if (this.organization[propName] === control.value) {
+            return of(null);
+        }
+        return this.organizationService.updateProperty(this.organization.id, propName, control.value)
+            .pipe(map(organization => {
+                this.organization[propName] = organization[propName];
+                this.toastService.success('Changes were saved!');
+                control.setValue(organization[propName]);
+                return of(null);
+            }), catchError(() => of({ serverError: true })));
+    };
 
-    get name() { return this.generalForm.controls['name']; }
+    get name() { return this.generalForm.controls.name; }
 
-    get organizationSlug() { return this.generalForm.controls['organizationSlug']; }
+    get organizationSlug() { return this.generalForm.controls.organizationSlug; }
 }
