@@ -28,6 +28,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { TooltipModule } from 'primeng/tooltip';
 import { AvatarModule } from 'primeng/avatar';
+import { StyleClassModule } from 'primeng/styleclass';
+import { TieredMenuModule } from 'primeng/tieredmenu';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -59,6 +61,8 @@ import { AvatarModule } from 'primeng/avatar';
         RadioButtonModule,
         InputNumberModule,
         TooltipModule,
+        StyleClassModule,
+        TieredMenuModule,
         AvatarModule
     ],
     exports: [
@@ -88,6 +92,8 @@ import { AvatarModule } from 'primeng/avatar';
         RadioButtonModule,
         InputNumberModule,
         TooltipModule,
+        StyleClassModule,
+        TieredMenuModule,
         AvatarModule
     ],
     declarations: [],

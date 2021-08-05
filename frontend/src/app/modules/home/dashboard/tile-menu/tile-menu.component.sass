@@ -1,0 +1,52 @@
+@import src/styles/variables
+@import src/styles/mixins
+
+.menu
+    display: flex
+    flex-direction: row
+    align-items: center
+    justify-content: space-between
+    background-color: $background-color
+    box-shadow: 0 5px 10px -4px $shadow-color
+    border-top: 1px solid #d3d3d3
+    width: 100%
+    padding: 15px 30px
+
+    .left-buttons
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        flex-wrap: nowrap
+        white-space: nowrap
+
+        button
+            margin: 0 4px
+
+
+    .center-buttons
+        display: flex
+        flex-direction: row
+
+        .dropdown-button, .number-button
+            margin: 0 8px
+
+        .number-button
+            ::ng-deep .p-button
+                padding: 0.5rem 0 !important
+                width: 2.357rem
+
+    .right-buttons
+        display: flex
+        flex-direction: row
+        flex-wrap: nowrap
+        white-space: nowrap
+
+        button
+            margin: 0 4px
+
+
+::ng-deep div.ng-trigger
+    margin-top: 8px
+
+::ng-deep div.p-tooltip-text
+    font-size: 12px

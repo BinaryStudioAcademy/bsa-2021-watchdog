@@ -9,6 +9,7 @@ import { IssuesComponent } from './issues/issues.component';
 import { AddDashboardComponent } from './modals/dashboard/add-dashboard.component';
 import { UpdateDashboardComponent } from './modals/dashboard/update-dashboard.component';
 import { CreateProjectComponent } from './projects/create-project/create-project.component';
+import { TileMenuComponent } from './dashboard/tile-menu/tile-menu.component';
 
 @NgModule({
     declarations: [
@@ -19,10 +20,12 @@ import { CreateProjectComponent } from './projects/create-project/create-project
         AddDashboardComponent,
         UpdateDashboardComponent,
         CreateProjectComponent,
+        TileMenuComponent,
     ],
     imports: [
         SharedModule,
         HomeRoutingModule,
     ],
 })
-export class HomeModule { }
+export class HomeModule {
+}
