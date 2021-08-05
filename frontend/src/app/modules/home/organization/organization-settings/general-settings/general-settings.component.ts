@@ -1,4 +1,4 @@
-import { switchMap, catchError, map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { OrganizationService } from '@core/services/organization.service';
@@ -50,7 +50,6 @@ export class GeneralSettingsComponent extends BaseComponent implements OnInit {
 
     pendingSlug() {
         const control = this.organizationSlug;
-        const bool: boolean = false;
         control.setAsyncValidators(this.validateSlug);
         control.updateValueAndValidity({ onlySelf: true, emitEvent: true });
         control.setAsyncValidators([]);
@@ -65,19 +64,25 @@ export class GeneralSettingsComponent extends BaseComponent implements OnInit {
         control.setAsyncValidators([]);
     }
 
-    validateSlug = (control: AbstractControl): Observable<ValidationErrors | null> => this.organizationService.isSlugUnique(control.value).pipe(
-        map(isUnique => {
-            if (!isUnique) {
-                return { notUnique: true };
-            }
-            this.saveValidator(control)
-                .subscribe(v => v);
-        }), catchError(() => of({ serverError: true }))
-    );
+    validateSlug = (control: AbstractControl): Observable<ValidationErrors | null> => {
+        const propName = this.getPropNameFromControl(control);
+        if (this.organization[propName] === control.value) {
+            return of(null);
+        }
+
+        return this.organizationService.isSlugUnique(control.value).pipe(
+            map(isUnique => {
+                if (!isUnique) {
+                    return { notUnique: true };
+                }
+                this.saveValidator(control).subscribe();
+                return null;
+            }), catchError(() => of({ serverError: true }))
+        );
+    };
 
     saveValidator = (control: AbstractControl): Observable<ValidationErrors | null> => {
-        const { parent } = control;
-        const propName = Object.keys(parent.controls).find(name => control === parent.controls[name]);
+        const propName = this.getPropNameFromControl(control);
         console.log('save');
         if (this.organization[propName] === control.value) {
             return of(null);
@@ -94,4 +99,10 @@ export class GeneralSettingsComponent extends BaseComponent implements OnInit {
     get name() { return this.generalForm.controls.name; }
 
     get organizationSlug() { return this.generalForm.controls.organizationSlug; }
+
+    private getPropNameFromControl(control: AbstractControl) {
+        const { parent } = control;
+        const propName = Object.keys(parent.controls).find(name => control === parent.controls[name]);
+        return propName;
+    }
 }
