@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { NewDashboard } from '@shared/models/dashboard/new-dashboard';
 import { User } from '@core/models/user';
 import { BaseComponent } from '@core/components/base/base.component';
+import { ToastNotificationService } from '@core/services/toast-notification.service';
 
 @Component({
     selector: 'app-home',
@@ -24,6 +25,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     constructor(
         private broadcastHub: BroadcastHubService,
         public dashboardService: DashboardService,
+        private toastNotificationService: ToastNotificationService,
         private updateDataService: DataService<Dashboard>,
         private deleteDataService: DataService<number>
     ) {
@@ -45,10 +47,12 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         this.displayModal = false;
         newDashboard.createdBy = 1;
         newDashboard.organizationId = 1;
-        console.log(newDashboard);
         this.dashboardService.addDashboard(newDashboard)
             .pipe(this.untilThis)
-            .subscribe(() => this.getAllDashboards());
+            .subscribe(() => {
+                this.getAllDashboards();
+                this.toastNotificationService.success('Dashboard has been added');
+            });
     }
 
     getAllDashboards() {
