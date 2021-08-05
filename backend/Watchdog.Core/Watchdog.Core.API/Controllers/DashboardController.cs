@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
-using System.Linq;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Dashboard;
@@ -51,14 +49,14 @@ namespace Watchdog.Core.API.Controllers
         }
 
         [HttpPut("{dashboardId}")]
-        public async Task<ActionResult<DashboardDto>> Put(int dashboardId, NewDashboardDto newDashboard)
+        public async Task<ActionResult<DashboardDto>> Put(int dashboardId, UpdateDashboardDto updateDashboard)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            var updatedDashboard = await _dashboardService.UpdateDashboardAsync(dashboardId, newDashboard);
+            var updatedDashboard = await _dashboardService.UpdateDashboardAsync(dashboardId, updateDashboard);
             return Ok(updatedDashboard);
         }
 
