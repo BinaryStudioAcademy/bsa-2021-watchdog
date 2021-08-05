@@ -14,7 +14,6 @@ using Serilog;
 using Watchdog.Core.API.Extensions;
 using Watchdog.Core.API.Middlewares;
 using Watchdog.Core.BLL.Services;
-using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.RabbitMQ.Shared.Models;
 using Watchdog.RabbitMQ.Shared.Services;
 

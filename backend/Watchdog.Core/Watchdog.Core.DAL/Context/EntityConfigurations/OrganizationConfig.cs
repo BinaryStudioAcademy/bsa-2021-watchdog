@@ -15,6 +15,8 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
             builder.Property(o => o.OrganizationSlug)
                     .HasMaxLength(50)
                     .IsRequired();
+            builder.HasIndex(o => o.OrganizationSlug)
+                    .IsUnique();
 
             builder.Property(o => o.OpenMembership)
                     .IsRequired();

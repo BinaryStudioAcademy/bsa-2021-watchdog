@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Organization;
 using Watchdog.Core.DAL.Context;
+using Watchdog.Core.DAL.Entities;
 
 namespace Watchdog.Core.BLL.Services
 {
@@ -21,10 +24,10 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<OrganizationDto>(organization);
         }
 
-        public async Task<IEnumerable<OrganizationDto>> GetAllOrganizationsAsync()
+        public async Task<ICollection<OrganizationDto>> GetAllOrganizationsAsync()
         {
             var organizations = await _context.Organizations.ToListAsync();
-            return _mapper.Map<IEnumerable<OrganizationDto>>(organizations);
+            return _mapper.Map<ICollection<OrganizationDto>>(organizations);
         }
 
         public async Task<OrganizationDto> UpdateOrganizationAsync(int organizationId, NewOrganizationDto organizationDto)
@@ -39,13 +42,24 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<OrganizationDto>(updatedOrganization.Entity);
         }
 
-        public async Task<IEnumerable<OrganizationDto>> GetUserOrganizationsAsync(int userId)
+        public async Task<ICollection<OrganizationDto>> GetUserOrganizationsAsync(int userId)
         {
             var organizaitons = await _context.Organizations
                 .Where(o => o.Members.Any(m => m.User.Id == userId))
                 .ToListAsync();
 
-            return _mapper.Map<IEnumerable<OrganizationDto>>(organizaitons);
+            return _mapper.Map<ICollection<OrganizationDto>>(organizaitons);
+        }
+
+        public async Task<bool> IsOrganizationSlugValid(string organizationSlug)
+        {
+            var reg = new Regex(@"^[\w\-]+$");
+            if (organizationSlug.Length > 50 || organizationSlug.Length < 3 || !reg.IsMatch(organizationSlug))
+            { 
+                return false; 
+            }
+
+            return !(await _context.Organizations.ToListAsync()).Where(o => o.OrganizationSlug == organizationSlug).Any();
         }
     }
 }

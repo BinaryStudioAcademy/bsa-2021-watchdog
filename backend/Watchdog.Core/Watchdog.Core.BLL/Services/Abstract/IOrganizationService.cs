@@ -7,8 +7,9 @@ namespace Watchdog.Core.BLL.Services.Abstract
     public interface IOrganizationService
     {
         Task<OrganizationDto> GetOrganizationAsync(int organizationId);
-        Task<IEnumerable<OrganizationDto>> GetAllOrganizationsAsync();
+        Task<ICollection<OrganizationDto>> GetAllOrganizationsAsync();
         Task<OrganizationDto> UpdateOrganizationAsync(int organizationId, NewOrganizationDto organizationDto);
-        Task<IEnumerable<OrganizationDto>> GetUserOrganizationsAsync(int userId);
+        Task<ICollection<OrganizationDto>> GetUserOrganizationsAsync(int userId);
+        Task<bool> IsOrganizationSlugValid(string organizationSlug);
     }
 }

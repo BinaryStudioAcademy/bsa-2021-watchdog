@@ -7,10 +7,10 @@ using Watchdog.Core.Common.DTO.Organization;
 
 namespace Watchdog.Core.API.Controllers
 {
-    [AllowAnonymous]//??
+    [AllowAnonymous]
     [ApiController]
     [Route("[controller]")]
-    public class OrganizationsController : Controller
+    public class OrganizationsController : ControllerBase
     {
         private readonly IOrganizationService _organizationService;
 
@@ -24,6 +24,12 @@ namespace Watchdog.Core.API.Controllers
         {
             var organizations = await _organizationService.GetAllOrganizationsAsync();
             return Ok(organizations);
+        }
+
+        [HttpGet("slug/{organizationSlug}")]
+        public async Task<ActionResult<bool>> IsSlugValid(string organizationSlug)
+        {
+            return Ok(await _organizationService.IsOrganizationSlugValid(organizationSlug));
         }
 
         [HttpGet("{organizationId}")]

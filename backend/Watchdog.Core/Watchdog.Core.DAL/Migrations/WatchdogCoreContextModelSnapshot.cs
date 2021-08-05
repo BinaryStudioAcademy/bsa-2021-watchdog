@@ -800,21 +800,10 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<int>("DefaultRoleId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("OpenMembership")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("OrganizationSlug")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("Id");
 
@@ -826,57 +815,42 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            AvatarUrl = "https://picsum.photos/250/250/?image=319",
-                            CreatedAt = new DateTime(2020, 10, 27, 4, 1, 42, 509, DateTimeKind.Unspecified).AddTicks(6365),
-                            CreatedBy = 14,
-                            DefaultRoleId = 4,
-                            Name = "Oberbrunner, Lebsack and Collier",
-                            OpenMembership = false,
-                            OrganizationSlug = "doloribus"
+                            AvatarUrl = "https://picsum.photos/250/250/?image=144",
+                            CreatedAt = new DateTime(2020, 3, 30, 18, 37, 49, 810, DateTimeKind.Unspecified).AddTicks(7734),
+                            CreatedBy = 19,
+                            Name = "Rogahn, Oberbrunner and Lebsack"
                         },
                         new
                         {
                             Id = 2,
-                            AvatarUrl = "https://picsum.photos/250/250/?image=52",
-                            CreatedAt = new DateTime(2021, 1, 7, 22, 2, 16, 309, DateTimeKind.Unspecified).AddTicks(4029),
-                            CreatedBy = 15,
-                            DefaultRoleId = 4,
-                            Name = "Beer LLC",
-                            OpenMembership = false,
-                            OrganizationSlug = "ex"
+                            AvatarUrl = "https://picsum.photos/250/250/?image=384",
+                            CreatedAt = new DateTime(2021, 6, 8, 4, 26, 15, 192, DateTimeKind.Unspecified).AddTicks(4559),
+                            CreatedBy = 4,
+                            Name = "Parisian and Sons"
                         },
                         new
                         {
                             Id = 3,
-                            AvatarUrl = "https://picsum.photos/250/250/?image=41",
-                            CreatedAt = new DateTime(2020, 11, 28, 3, 22, 46, 820, DateTimeKind.Unspecified).AddTicks(713),
-                            CreatedBy = 6,
-                            DefaultRoleId = 3,
-                            Name = "Murray LLC",
-                            OpenMembership = true,
-                            OrganizationSlug = "est"
+                            AvatarUrl = "https://picsum.photos/250/250/?image=52",
+                            CreatedAt = new DateTime(2021, 1, 7, 22, 2, 16, 309, DateTimeKind.Unspecified).AddTicks(4029),
+                            CreatedBy = 15,
+                            Name = "Okuneva - Mohr"
                         },
                         new
                         {
                             Id = 4,
-                            AvatarUrl = "https://picsum.photos/250/250/?image=631",
-                            CreatedAt = new DateTime(2020, 11, 2, 5, 50, 23, 307, DateTimeKind.Unspecified).AddTicks(1008),
-                            CreatedBy = 7,
-                            DefaultRoleId = 4,
-                            Name = "Okuneva and Sons",
-                            OpenMembership = false,
-                            OrganizationSlug = "dicta"
+                            AvatarUrl = "https://picsum.photos/250/250/?image=322",
+                            CreatedAt = new DateTime(2021, 6, 22, 5, 11, 9, 722, DateTimeKind.Unspecified).AddTicks(9234),
+                            CreatedBy = 12,
+                            Name = "Bode, Murray and Powlowski"
                         },
                         new
                         {
                             Id = 5,
-                            AvatarUrl = "https://picsum.photos/250/250/?image=332",
-                            CreatedAt = new DateTime(2021, 1, 2, 9, 40, 40, 506, DateTimeKind.Unspecified).AddTicks(7949),
-                            CreatedBy = 13,
-                            DefaultRoleId = 2,
-                            Name = "Watsica, Bartell and Balistreri",
-                            OpenMembership = false,
-                            OrganizationSlug = "dolorum"
+                            AvatarUrl = "https://picsum.photos/250/250/?image=180",
+                            CreatedAt = new DateTime(2020, 8, 3, 16, 48, 30, 79, DateTimeKind.Unspecified).AddTicks(9857),
+                            CreatedBy = 14,
+                            Name = "Hammes Inc"
                         });
                 });
 

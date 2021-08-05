@@ -22,6 +22,7 @@ namespace Watchdog.Core.API.Extensions
 
             services.AddTransient<ISampleService, SampleService>();
             services.AddTransient<IOrganizationService, OrganizationService>();
+            services.AddTransient<IRoleService, RoleService>();
         }
 
         public static void AddAutoMapper(this IServiceCollection services)
