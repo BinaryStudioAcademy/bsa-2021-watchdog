@@ -11,6 +11,11 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
             builder.Property(t => t.Name)
                    .HasMaxLength(128)
                    .IsRequired();
+
+            builder.HasMany(t => t.Members)
+                   .WithOne(m => m.Team)
+                   .HasForeignKey(m => m.TeamId)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

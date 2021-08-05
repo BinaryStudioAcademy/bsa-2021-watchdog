@@ -25,8 +25,6 @@ namespace Watchdog.Core.DAL.Context
 
         public DbSet<Team> Teams { get; private set; }
 
-        public DbSet<TeamMember> TeamMembers { get; private set; }
-
         public DbSet<Tile> Tiles { get; private set; }
 
         public DbSet<User> Users { get; private set; }

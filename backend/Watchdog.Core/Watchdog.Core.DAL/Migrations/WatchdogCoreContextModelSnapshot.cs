@@ -524,10 +524,19 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsAccepted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("OrganizationId")
                         .HasColumnType("int");
 
                     b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -538,6 +547,10 @@ namespace Watchdog.Core.DAL.Migrations
 
                     b.HasIndex("RoleId");
 
+                    b.HasIndex("TeamId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("Members");
 
                     b.HasData(
@@ -546,240 +559,330 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 1,
                             CreatedAt = new DateTime(2020, 6, 23, 17, 55, 40, 784, DateTimeKind.Unspecified).AddTicks(6587),
                             CreatedBy = 19,
+                            IsAccepted = false,
                             OrganizationId = 1,
-                            RoleId = 3
+                            RoleId = 3,
+                            TeamId = 5,
+                            UserId = 4
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2019, 11, 11, 3, 10, 6, 170, DateTimeKind.Unspecified).AddTicks(2841),
-                            CreatedBy = 16,
-                            OrganizationId = 1,
-                            RoleId = 5
+                            CreatedAt = new DateTime(2021, 6, 5, 15, 33, 52, 668, DateTimeKind.Unspecified).AddTicks(8238),
+                            CreatedBy = 12,
+                            IsAccepted = false,
+                            OrganizationId = 4,
+                            RoleId = 5,
+                            TeamId = 5,
+                            UserId = 16
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2019, 10, 5, 13, 0, 34, 132, DateTimeKind.Unspecified).AddTicks(3117),
-                            CreatedBy = 2,
-                            OrganizationId = 3,
-                            RoleId = 4
+                            CreatedAt = new DateTime(2019, 8, 7, 13, 50, 23, 863, DateTimeKind.Unspecified).AddTicks(6323),
+                            CreatedBy = 9,
+                            IsAccepted = false,
+                            OrganizationId = 1,
+                            RoleId = 2,
+                            TeamId = 2,
+                            UserId = 10
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2021, 4, 27, 7, 55, 58, 628, DateTimeKind.Unspecified).AddTicks(106),
-                            CreatedBy = 6,
-                            OrganizationId = 5,
-                            RoleId = 4
+                            CreatedAt = new DateTime(2020, 11, 7, 7, 48, 7, 318, DateTimeKind.Unspecified).AddTicks(7986),
+                            CreatedBy = 9,
+                            IsAccepted = true,
+                            OrganizationId = 4,
+                            RoleId = 5,
+                            TeamId = 4,
+                            UserId = 13
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2020, 8, 11, 5, 32, 51, 930, DateTimeKind.Unspecified).AddTicks(3850),
-                            CreatedBy = 5,
-                            OrganizationId = 5,
-                            RoleId = 3
+                            CreatedAt = new DateTime(2019, 11, 14, 5, 32, 33, 474, DateTimeKind.Unspecified).AddTicks(6814),
+                            CreatedBy = 20,
+                            IsAccepted = false,
+                            OrganizationId = 2,
+                            RoleId = 2,
+                            TeamId = 2,
+                            UserId = 6
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2020, 8, 29, 8, 18, 24, 585, DateTimeKind.Unspecified).AddTicks(9893),
+                            CreatedAt = new DateTime(2020, 3, 5, 3, 13, 6, 437, DateTimeKind.Unspecified).AddTicks(6226),
                             CreatedBy = 16,
-                            OrganizationId = 5,
-                            RoleId = 5
+                            IsAccepted = true,
+                            OrganizationId = 2,
+                            RoleId = 4,
+                            TeamId = 1,
+                            UserId = 5
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2021, 2, 5, 12, 28, 51, 771, DateTimeKind.Unspecified).AddTicks(7583),
-                            CreatedBy = 13,
-                            OrganizationId = 4,
-                            RoleId = 2
+                            CreatedAt = new DateTime(2021, 6, 22, 18, 25, 20, 694, DateTimeKind.Unspecified).AddTicks(2971),
+                            CreatedBy = 4,
+                            IsAccepted = true,
+                            OrganizationId = 1,
+                            RoleId = 1,
+                            TeamId = 3,
+                            UserId = 3
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2019, 11, 14, 5, 32, 33, 474, DateTimeKind.Unspecified).AddTicks(6814),
-                            CreatedBy = 20,
-                            OrganizationId = 2,
-                            RoleId = 2
+                            CreatedAt = new DateTime(2021, 4, 16, 15, 25, 9, 203, DateTimeKind.Unspecified).AddTicks(3466),
+                            CreatedBy = 12,
+                            IsAccepted = false,
+                            OrganizationId = 3,
+                            RoleId = 3,
+                            TeamId = 3,
+                            UserId = 6
                         },
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2020, 3, 1, 10, 50, 38, 346, DateTimeKind.Unspecified).AddTicks(2283),
-                            CreatedBy = 18,
-                            OrganizationId = 2,
-                            RoleId = 2
+                            CreatedAt = new DateTime(2021, 1, 15, 16, 3, 46, 55, DateTimeKind.Unspecified).AddTicks(7176),
+                            CreatedBy = 4,
+                            IsAccepted = true,
+                            OrganizationId = 3,
+                            RoleId = 2,
+                            TeamId = 3,
+                            UserId = 11
                         },
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(2021, 7, 14, 18, 53, 43, 769, DateTimeKind.Unspecified).AddTicks(5102),
-                            CreatedBy = 14,
+                            CreatedAt = new DateTime(2020, 5, 8, 6, 46, 11, 349, DateTimeKind.Unspecified).AddTicks(6948),
+                            CreatedBy = 5,
+                            IsAccepted = false,
                             OrganizationId = 4,
-                            RoleId = 2
+                            RoleId = 2,
+                            TeamId = 3,
+                            UserId = 20
                         },
                         new
                         {
                             Id = 11,
-                            CreatedAt = new DateTime(2021, 6, 23, 23, 17, 16, 155, DateTimeKind.Unspecified).AddTicks(5266),
-                            CreatedBy = 2,
-                            OrganizationId = 2,
-                            RoleId = 2
+                            CreatedAt = new DateTime(2021, 1, 31, 0, 43, 53, 927, DateTimeKind.Unspecified).AddTicks(6177),
+                            CreatedBy = 6,
+                            IsAccepted = false,
+                            OrganizationId = 4,
+                            RoleId = 5,
+                            TeamId = 2,
+                            UserId = 9
                         },
                         new
                         {
                             Id = 12,
-                            CreatedAt = new DateTime(2021, 4, 5, 17, 35, 33, 328, DateTimeKind.Unspecified).AddTicks(4435),
-                            CreatedBy = 9,
-                            OrganizationId = 1,
-                            RoleId = 1
+                            CreatedAt = new DateTime(2021, 1, 30, 18, 46, 23, 83, DateTimeKind.Unspecified).AddTicks(5076),
+                            CreatedBy = 7,
+                            IsAccepted = false,
+                            OrganizationId = 2,
+                            RoleId = 4,
+                            TeamId = 3,
+                            UserId = 16
                         },
                         new
                         {
                             Id = 13,
-                            CreatedAt = new DateTime(2020, 6, 5, 23, 26, 15, 564, DateTimeKind.Unspecified).AddTicks(274),
-                            CreatedBy = 12,
+                            CreatedAt = new DateTime(2019, 12, 13, 13, 57, 12, 13, DateTimeKind.Unspecified).AddTicks(984),
+                            CreatedBy = 15,
+                            IsAccepted = true,
                             OrganizationId = 3,
-                            RoleId = 3
+                            RoleId = 4,
+                            TeamId = 1,
+                            UserId = 4
                         },
                         new
                         {
                             Id = 14,
-                            CreatedAt = new DateTime(2020, 2, 16, 2, 0, 40, 350, DateTimeKind.Unspecified).AddTicks(4718),
-                            CreatedBy = 6,
-                            OrganizationId = 3,
-                            RoleId = 1
+                            CreatedAt = new DateTime(2020, 9, 11, 9, 15, 12, 793, DateTimeKind.Unspecified).AddTicks(4954),
+                            CreatedBy = 9,
+                            IsAccepted = false,
+                            OrganizationId = 4,
+                            RoleId = 4,
+                            TeamId = 4,
+                            UserId = 19
                         },
                         new
                         {
                             Id = 15,
-                            CreatedAt = new DateTime(2021, 1, 15, 16, 3, 46, 55, DateTimeKind.Unspecified).AddTicks(7176),
-                            CreatedBy = 4,
-                            OrganizationId = 3,
-                            RoleId = 2
+                            CreatedAt = new DateTime(2019, 8, 6, 23, 13, 48, 118, DateTimeKind.Unspecified).AddTicks(309),
+                            CreatedBy = 9,
+                            IsAccepted = false,
+                            OrganizationId = 5,
+                            RoleId = 3,
+                            TeamId = 1,
+                            UserId = 18
                         },
                         new
                         {
                             Id = 16,
-                            CreatedAt = new DateTime(2020, 11, 26, 21, 33, 26, 251, DateTimeKind.Unspecified).AddTicks(4354),
-                            CreatedBy = 10,
-                            OrganizationId = 3,
-                            RoleId = 3
+                            CreatedAt = new DateTime(2021, 1, 10, 12, 2, 35, 88, DateTimeKind.Unspecified).AddTicks(947),
+                            CreatedBy = 18,
+                            IsAccepted = false,
+                            OrganizationId = 2,
+                            RoleId = 5,
+                            TeamId = 5,
+                            UserId = 20
                         },
                         new
                         {
                             Id = 17,
-                            CreatedAt = new DateTime(2020, 8, 9, 5, 46, 45, 899, DateTimeKind.Unspecified).AddTicks(7907),
-                            CreatedBy = 12,
-                            OrganizationId = 2,
-                            RoleId = 4
+                            CreatedAt = new DateTime(2021, 4, 26, 1, 36, 51, 405, DateTimeKind.Unspecified).AddTicks(6570),
+                            CreatedBy = 1,
+                            IsAccepted = false,
+                            OrganizationId = 5,
+                            RoleId = 1,
+                            TeamId = 4,
+                            UserId = 11
                         },
                         new
                         {
                             Id = 18,
-                            CreatedAt = new DateTime(2020, 3, 28, 11, 51, 59, 488, DateTimeKind.Unspecified).AddTicks(8865),
-                            CreatedBy = 18,
+                            CreatedAt = new DateTime(2020, 9, 6, 19, 18, 22, 748, DateTimeKind.Unspecified).AddTicks(509),
+                            CreatedBy = 16,
+                            IsAccepted = true,
                             OrganizationId = 3,
-                            RoleId = 5
+                            RoleId = 1,
+                            TeamId = 5,
+                            UserId = 4
                         },
                         new
                         {
                             Id = 19,
-                            CreatedAt = new DateTime(2020, 8, 26, 0, 42, 7, 317, DateTimeKind.Unspecified).AddTicks(8157),
-                            CreatedBy = 5,
-                            OrganizationId = 2,
-                            RoleId = 2
+                            CreatedAt = new DateTime(2020, 6, 21, 13, 15, 6, 207, DateTimeKind.Unspecified).AddTicks(8475),
+                            CreatedBy = 17,
+                            IsAccepted = true,
+                            OrganizationId = 5,
+                            RoleId = 1,
+                            TeamId = 3,
+                            UserId = 1
                         },
                         new
                         {
                             Id = 20,
-                            CreatedAt = new DateTime(2020, 12, 4, 13, 22, 46, 624, DateTimeKind.Unspecified).AddTicks(5014),
+                            CreatedAt = new DateTime(2020, 12, 17, 19, 34, 20, 969, DateTimeKind.Unspecified).AddTicks(6895),
                             CreatedBy = 6,
-                            OrganizationId = 4,
-                            RoleId = 4
+                            IsAccepted = false,
+                            OrganizationId = 5,
+                            RoleId = 2,
+                            TeamId = 5,
+                            UserId = 8
                         },
                         new
                         {
                             Id = 21,
-                            CreatedAt = new DateTime(2019, 8, 24, 23, 59, 6, 250, DateTimeKind.Unspecified).AddTicks(1004),
-                            CreatedBy = 16,
-                            OrganizationId = 3,
-                            RoleId = 2
+                            CreatedAt = new DateTime(2021, 1, 30, 6, 54, 45, 33, DateTimeKind.Unspecified).AddTicks(484),
+                            CreatedBy = 11,
+                            IsAccepted = false,
+                            OrganizationId = 5,
+                            RoleId = 1,
+                            TeamId = 2,
+                            UserId = 18
                         },
                         new
                         {
                             Id = 22,
-                            CreatedAt = new DateTime(2019, 12, 13, 13, 57, 12, 13, DateTimeKind.Unspecified).AddTicks(984),
-                            CreatedBy = 15,
+                            CreatedAt = new DateTime(2019, 8, 31, 13, 33, 3, 674, DateTimeKind.Unspecified).AddTicks(2628),
+                            CreatedBy = 7,
+                            IsAccepted = true,
                             OrganizationId = 3,
-                            RoleId = 4
+                            RoleId = 4,
+                            TeamId = 3,
+                            UserId = 4
                         },
                         new
                         {
                             Id = 23,
-                            CreatedAt = new DateTime(2020, 1, 14, 18, 54, 42, 990, DateTimeKind.Unspecified).AddTicks(701),
-                            CreatedBy = 9,
-                            OrganizationId = 1,
-                            RoleId = 1
+                            CreatedAt = new DateTime(2020, 11, 3, 15, 22, 10, 442, DateTimeKind.Unspecified).AddTicks(8194),
+                            CreatedBy = 11,
+                            IsAccepted = false,
+                            OrganizationId = 4,
+                            RoleId = 3,
+                            TeamId = 4,
+                            UserId = 9
                         },
                         new
                         {
                             Id = 24,
-                            CreatedAt = new DateTime(2020, 2, 26, 14, 59, 29, 473, DateTimeKind.Unspecified).AddTicks(5763),
-                            CreatedBy = 9,
-                            OrganizationId = 3,
-                            RoleId = 4
+                            CreatedAt = new DateTime(2020, 12, 24, 20, 15, 53, 153, DateTimeKind.Unspecified).AddTicks(2359),
+                            CreatedBy = 15,
+                            IsAccepted = false,
+                            OrganizationId = 1,
+                            RoleId = 3,
+                            TeamId = 5,
+                            UserId = 4
                         },
                         new
                         {
                             Id = 25,
-                            CreatedAt = new DateTime(2019, 9, 5, 4, 2, 59, 158, DateTimeKind.Unspecified).AddTicks(4664),
-                            CreatedBy = 9,
+                            CreatedAt = new DateTime(2019, 11, 1, 7, 49, 17, 589, DateTimeKind.Unspecified).AddTicks(9121),
+                            CreatedBy = 17,
+                            IsAccepted = true,
                             OrganizationId = 4,
-                            RoleId = 5
+                            RoleId = 1,
+                            TeamId = 1,
+                            UserId = 15
                         },
                         new
                         {
                             Id = 26,
-                            CreatedAt = new DateTime(2019, 10, 12, 15, 15, 12, 766, DateTimeKind.Unspecified).AddTicks(6699),
+                            CreatedAt = new DateTime(2020, 4, 26, 15, 3, 39, 855, DateTimeKind.Unspecified).AddTicks(2801),
                             CreatedBy = 4,
-                            OrganizationId = 5,
-                            RoleId = 3
+                            IsAccepted = true,
+                            OrganizationId = 2,
+                            RoleId = 4,
+                            TeamId = 2,
+                            UserId = 12
                         },
                         new
                         {
                             Id = 27,
-                            CreatedAt = new DateTime(2019, 10, 3, 14, 41, 15, 275, DateTimeKind.Unspecified).AddTicks(7289),
-                            CreatedBy = 6,
-                            OrganizationId = 5,
-                            RoleId = 3
+                            CreatedAt = new DateTime(2021, 5, 9, 17, 49, 41, 427, DateTimeKind.Unspecified).AddTicks(2032),
+                            CreatedBy = 12,
+                            IsAccepted = false,
+                            OrganizationId = 3,
+                            RoleId = 3,
+                            TeamId = 5,
+                            UserId = 2
                         },
                         new
                         {
                             Id = 28,
-                            CreatedAt = new DateTime(2020, 6, 30, 21, 45, 53, 833, DateTimeKind.Unspecified).AddTicks(6612),
-                            CreatedBy = 20,
-                            OrganizationId = 5,
-                            RoleId = 2
+                            CreatedAt = new DateTime(2021, 3, 18, 8, 26, 12, 459, DateTimeKind.Unspecified).AddTicks(5733),
+                            CreatedBy = 19,
+                            IsAccepted = false,
+                            OrganizationId = 4,
+                            RoleId = 2,
+                            TeamId = 5,
+                            UserId = 20
                         },
                         new
                         {
                             Id = 29,
-                            CreatedAt = new DateTime(2021, 4, 26, 1, 36, 51, 405, DateTimeKind.Unspecified).AddTicks(6570),
-                            CreatedBy = 1,
+                            CreatedAt = new DateTime(2021, 1, 9, 2, 53, 25, 743, DateTimeKind.Unspecified).AddTicks(3222),
+                            CreatedBy = 20,
+                            IsAccepted = false,
                             OrganizationId = 5,
-                            RoleId = 1
+                            RoleId = 4,
+                            TeamId = 4,
+                            UserId = 15
                         },
                         new
                         {
                             Id = 30,
-                            CreatedAt = new DateTime(2021, 3, 13, 14, 30, 36, 921, DateTimeKind.Unspecified).AddTicks(1544),
-                            CreatedBy = 12,
+                            CreatedAt = new DateTime(2020, 12, 4, 19, 55, 17, 960, DateTimeKind.Unspecified).AddTicks(9409),
+                            CreatedBy = 2,
+                            IsAccepted = false,
                             OrganizationId = 3,
-                            RoleId = 4
+                            RoleId = 4,
+                            TeamId = 3,
+                            UserId = 5
                         });
                 });
 
@@ -1171,180 +1274,6 @@ namespace Watchdog.Core.DAL.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Watchdog.Core.DAL.Entities.TeamMember", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("MemberId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TeamId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MemberId");
-
-                    b.HasIndex("TeamId");
-
-                    b.ToTable("TeamMembers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            MemberId = 9,
-                            TeamId = 2
-                        },
-                        new
-                        {
-                            Id = 2,
-                            MemberId = 12,
-                            TeamId = 3
-                        },
-                        new
-                        {
-                            Id = 3,
-                            MemberId = 10,
-                            TeamId = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            MemberId = 1,
-                            TeamId = 2
-                        },
-                        new
-                        {
-                            Id = 5,
-                            MemberId = 28,
-                            TeamId = 2
-                        },
-                        new
-                        {
-                            Id = 6,
-                            MemberId = 4,
-                            TeamId = 2
-                        },
-                        new
-                        {
-                            Id = 7,
-                            MemberId = 30,
-                            TeamId = 5
-                        },
-                        new
-                        {
-                            Id = 8,
-                            MemberId = 5,
-                            TeamId = 4
-                        },
-                        new
-                        {
-                            Id = 9,
-                            MemberId = 4,
-                            TeamId = 1
-                        },
-                        new
-                        {
-                            Id = 10,
-                            MemberId = 13,
-                            TeamId = 2
-                        },
-                        new
-                        {
-                            Id = 11,
-                            MemberId = 16,
-                            TeamId = 3
-                        },
-                        new
-                        {
-                            Id = 12,
-                            MemberId = 8,
-                            TeamId = 2
-                        },
-                        new
-                        {
-                            Id = 13,
-                            MemberId = 29,
-                            TeamId = 1
-                        },
-                        new
-                        {
-                            Id = 14,
-                            MemberId = 6,
-                            TeamId = 2
-                        },
-                        new
-                        {
-                            Id = 15,
-                            MemberId = 6,
-                            TeamId = 5
-                        },
-                        new
-                        {
-                            Id = 16,
-                            MemberId = 30,
-                            TeamId = 4
-                        },
-                        new
-                        {
-                            Id = 17,
-                            MemberId = 7,
-                            TeamId = 1
-                        },
-                        new
-                        {
-                            Id = 18,
-                            MemberId = 20,
-                            TeamId = 1
-                        },
-                        new
-                        {
-                            Id = 19,
-                            MemberId = 19,
-                            TeamId = 4
-                        },
-                        new
-                        {
-                            Id = 20,
-                            MemberId = 1,
-                            TeamId = 1
-                        },
-                        new
-                        {
-                            Id = 21,
-                            MemberId = 23,
-                            TeamId = 3
-                        },
-                        new
-                        {
-                            Id = 22,
-                            MemberId = 7,
-                            TeamId = 3
-                        },
-                        new
-                        {
-                            Id = 23,
-                            MemberId = 26,
-                            TeamId = 4
-                        },
-                        new
-                        {
-                            Id = 24,
-                            MemberId = 7,
-                            TeamId = 2
-                        },
-                        new
-                        {
-                            Id = 25,
-                            MemberId = 29,
-                            TeamId = 1
-                        });
-                });
-
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Tile", b =>
                 {
                     b.Property<int>("Id")
@@ -1613,6 +1542,8 @@ namespace Watchdog.Core.DAL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasAlternateKey("Email");
+
                     b.ToTable("Users");
 
                     b.HasData(
@@ -1823,7 +1754,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Applications")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Organization", "Organization")
@@ -1869,7 +1800,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Dashboards")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Organization", "Organization")
@@ -1896,16 +1827,16 @@ namespace Watchdog.Core.DAL.Migrations
 
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Member", b =>
                 {
-                    b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
-                        .WithMany("Members")
+                    b.HasOne("Watchdog.Core.DAL.Entities.User", "CreatedByUser")
+                        .WithMany("CreatedMembers")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Organization", "Organization")
                         .WithMany("Members")
                         .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Role", "Role")
@@ -1914,9 +1845,25 @@ namespace Watchdog.Core.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Watchdog.Core.DAL.Entities.Team", "Team")
+                        .WithMany("Members")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
+                        .WithMany("Members")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
+
                     b.Navigation("Organization");
 
                     b.Navigation("Role");
+
+                    b.Navigation("Team");
 
                     b.Navigation("User");
                 });
@@ -1926,7 +1873,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Organizations")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -1937,7 +1884,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Teams")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Organization", "Organization")
@@ -1951,31 +1898,12 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Watchdog.Core.DAL.Entities.TeamMember", b =>
-                {
-                    b.HasOne("Watchdog.Core.DAL.Entities.Member", "Member")
-                        .WithMany("TeamMembers")
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Watchdog.Core.DAL.Entities.Team", "Team")
-                        .WithMany("TeamMembers")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-
-                    b.Navigation("Member");
-
-                    b.Navigation("Team");
-                });
-
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Tile", b =>
                 {
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Tiles")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Dashboard", "Dashboard")
@@ -1999,11 +1927,6 @@ namespace Watchdog.Core.DAL.Migrations
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Dashboard", b =>
                 {
                     b.Navigation("Tiles");
-                });
-
-            modelBuilder.Entity("Watchdog.Core.DAL.Entities.Member", b =>
-                {
-                    b.Navigation("TeamMembers");
                 });
 
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Organization", b =>
@@ -2031,12 +1954,14 @@ namespace Watchdog.Core.DAL.Migrations
                 {
                     b.Navigation("ApplicationTeams");
 
-                    b.Navigation("TeamMembers");
+                    b.Navigation("Members");
                 });
 
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.User", b =>
                 {
                     b.Navigation("Applications");
+
+                    b.Navigation("CreatedMembers");
 
                     b.Navigation("Dashboards");
 

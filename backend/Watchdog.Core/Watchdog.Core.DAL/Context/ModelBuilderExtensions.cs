@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Watchdog.Core.DAL.Context.EntityConfigurations;
 using Watchdog.Core.DAL.Entities;
 
@@ -35,14 +36,15 @@ namespace Watchdog.Core.DAL.Context
             modelBuilder.Entity<ApplicationTeam>().HasData(GenerateApplicationTeams());
             modelBuilder.Entity<Dashboard>().HasData(GenerateDashboards());
             modelBuilder.Entity<Entities.Environment>().HasData(GenerateEnvironments());
-            modelBuilder.Entity<Member>().HasData(GenerateMembers());
+            IList<User> users = GenerateUsers();
+            modelBuilder.Entity<User>().HasData(users);
+            modelBuilder.Entity<Member>().HasData(GenerateMembers(users.Select(u => u.Email).ToArray()));
             modelBuilder.Entity<Organization>().HasData(GenerateOrganizations());
             modelBuilder.Entity<Platform>().HasData(GeneratePlatforms());
             modelBuilder.Entity<Role>().HasData(GenerateRoles());
             modelBuilder.Entity<Team>().HasData(GenerateTeams());
-            modelBuilder.Entity<TeamMember>().HasData(GenerateTeamMembers());
             modelBuilder.Entity<Tile>().HasData(GenerateTiles());
-            modelBuilder.Entity<User>().HasData(GenerateUsers());
+
         }
 
         private static IList<Sample> GenerateSamples(int count = 10)
@@ -105,7 +107,7 @@ namespace Watchdog.Core.DAL.Context
                 .Generate(count);
         }
 
-        private static IList<Member> GenerateMembers(int count = _numberOfMembers)
+        private static IList<Member> GenerateMembers(string[] emails, int count = _numberOfMembers)
         {
             return new Faker<Member>()
                 .UseSeed(1129)
@@ -114,7 +116,11 @@ namespace Watchdog.Core.DAL.Context
                 .RuleFor(m => m.OrganizationId, f => f.Random.Number(1, _numberOfOrganizations))
                 .RuleFor(m => m.CreatedBy, f => f.Random.Number(1, _numberOfUsers))
                 .RuleFor(m => m.CreatedAt, f => f.Date.Past(2, new DateTime(2021, 7, 20)))
+                .RuleFor(m => m.TeamId, f=> f.Random.Number(1, _numberOfTeams))
+                .RuleFor(m => m.UserId, f=> f.Random.Number(1, _numberOfUsers))
+                .RuleFor(m=> m.IsAccepted, f=> f.Random.Bool())
                 .Generate(count);
+                
         }
 
         private static IList<Organization> GenerateOrganizations(int count = _numberOfOrganizations)
@@ -161,16 +167,6 @@ namespace Watchdog.Core.DAL.Context
                 .Generate(count);
         }
 
-        private static IList<TeamMember> GenerateTeamMembers(int count = _numberOfTeamMembers)
-        {
-            return new Faker<TeamMember>()
-                .UseSeed(4197)
-                .RuleFor(tm => tm.Id, f => ++f.IndexVariable)
-                .RuleFor(tm => tm.TeamId, f => f.Random.Number(1, _numberOfTeams))
-                .RuleFor(tm => tm.MemberId, f => f.Random.Number(1, _numberOfMembers))
-                .Generate(count);
-        }
-
         private static IList<Tile> GenerateTiles(int count = _numberOfTiles)
         {
             return new Faker<Tile>()
@@ -196,5 +192,6 @@ namespace Watchdog.Core.DAL.Context
                 .RuleFor(u => u.AvatarUrl, f => f.Internet.Avatar())
                 .Generate(count);
         }
+  
     }
 }
