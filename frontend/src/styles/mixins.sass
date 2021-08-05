@@ -2,7 +2,7 @@
 
 @mixin background-gray
     background-color: $background-color
-    box-shadow: 0px 0px 10px 2px $shadow-color
+    box-shadow: 0 0 10px 2px $shadow-color
 
 @mixin title
     font-size: 2rem
@@ -10,9 +10,13 @@
     height: 75px
     display: flex
     align-items: center
-    margin-bottom: 5px 
-   
+    margin-bottom: 5px
 
+
+@mixin disable-select
+    -webkit-user-select: none
+    -moz-user-select: none
+    user-select: none
 
 
 @mixin media-padding($selector) // mixin to formating padding depens on screen width

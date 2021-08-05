@@ -18,11 +18,18 @@ import { MessageModule } from 'primeng/message';
 import { PanelModule } from 'primeng/panel';
 import { RippleModule } from 'primeng/ripple';
 import { DropdownModule } from 'primeng/dropdown';
+import { BadgeModule } from 'primeng/badge';
+import { TableModule } from 'primeng/table';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { TagModule } from 'primeng/tag';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { DividerModule } from 'primeng/divider';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { TooltipModule } from 'primeng/tooltip';
+import { AvatarModule } from 'primeng/avatar';
+import { StyleClassModule } from 'primeng/styleclass';
+import { TieredMenuModule } from 'primeng/tieredmenu';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -45,11 +52,18 @@ import { TooltipModule } from 'primeng/tooltip';
         PanelModule,
         RippleModule,
         DropdownModule,
+        BadgeModule,
+        TableModule,
+        SelectButtonModule,
+        TagModule,
         TabMenuModule,
         DividerModule,
         RadioButtonModule,
         InputNumberModule,
-        TooltipModule
+        TooltipModule,
+        StyleClassModule,
+        TieredMenuModule,
+        AvatarModule
     ],
     exports: [
         ButtonModule,
@@ -69,11 +83,18 @@ import { TooltipModule } from 'primeng/tooltip';
         PanelModule,
         RippleModule,
         DropdownModule,
+        BadgeModule,
+        TableModule,
+        SelectButtonModule,
+        TagModule,
         TabMenuModule,
         DividerModule,
         RadioButtonModule,
         InputNumberModule,
-        TooltipModule
+        TooltipModule,
+        StyleClassModule,
+        TieredMenuModule,
+        AvatarModule
     ],
     declarations: [],
     providers: [
