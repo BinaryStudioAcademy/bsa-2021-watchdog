@@ -23,13 +23,26 @@ namespace Watchdog.Core.BLL.Services
             var updatedUserInfo = _context.Update(userUpdateInfo);
             await _context.SaveChangesAsync();
 
-            //return await GetUserAsync(updatedUserInfo.Entity.Id);
-            throw new NotImplementedException();
+            return await GetUserAsync(updatedUserInfo.Entity.Id);
         }
 
-        public Task<UserDto> UpdateUserPasswordAsync(int userId, UpdateUserPasswordDto updateUserPassword)
+        public async Task<UserDto> UpdateUserPasswordAsync(int userId, UpdateUserPasswordDto updateUserPassword)
         {
-            throw new NotImplementedException();
+            var user = await _context.Users.FirstAsync(u => u.Id == userId);
+
+            var userUpdatePassword = _mapper.Map(updateUserPassword, user);
+
+            var updatedUserPassword = _context.Update(userUpdatePassword);
+            await _context.SaveChangesAsync();
+
+            return await GetUserAsync(updatedUserPassword.Entity.Id);
+        }
+
+        public async Task<UserDto> GetByIdAsync(int userId)
+        {
+            var user = await _context.Users.FirstAsync(u => u.Id == userId);
+
+            return _mapper.Map<UserDto>(user);
         }
     }
 }
