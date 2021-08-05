@@ -6,6 +6,7 @@ using System.Reflection;
 using Watchdog.Core.BLL.MappingProfiles;
 using Watchdog.Core.BLL.Services;
 using Watchdog.Core.BLL.Services.Abstract;
+using Watchdog.Core.Common.Validators.Dashboard;
 using Watchdog.Core.Common.Validators.Sample;
 using Watchdog.Core.DAL.Context;
 
@@ -20,18 +21,24 @@ namespace Watchdog.Core.API.Extensions
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddTransient<ISampleService, SampleService>();
+            services.AddScoped<IDashboardService, DashboardService>();
         }
 
         public static void AddAutoMapper(this IServiceCollection services)
         {
             services.AddAutoMapper(Assembly.GetAssembly(typeof(SampleProfile)));
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(DashboardProfile)));
         }
 
         public static void AddValidation(this IServiceCollection services)
         {
             services
                 .AddControllers()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<NewSampleDtoValidator>());
+
+                .AddFluentValidation(fv => {
+                    fv.RegisterValidatorsFromAssemblyContaining<NewDashboardDtoValidator>();
+                    fv.RegisterValidatorsFromAssemblyContaining<NewSampleDtoValidator>();
+                });
         }
 
         public static void AddWatchdogCoreContext(this IServiceCollection services, IConfiguration configuration)
