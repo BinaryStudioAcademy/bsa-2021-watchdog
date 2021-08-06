@@ -12,8 +12,8 @@ export class RoleService {
 
     constructor(private httpService: HttpInternalService) { }
 
-    getRoles(): Observable<Role> {
-        return this.httpService.getFullRequest<Role>(`${this.apiPrefix}`)
+    getRoles(): Observable<Role[]> {
+        return this.httpService.getFullRequest<Role[]>(`${this.apiPrefix}`)
             .pipe(map(response => response.body));
     }
 }
