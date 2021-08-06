@@ -1,5 +1,4 @@
 ﻿using Watchdog.Core.Common.DTO.Dashboard;
-using Watchdog.Core.Common.DTO.User;
 
 namespace Watchdog.Core.Common.DTO.Tile
 {
