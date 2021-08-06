@@ -54,7 +54,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     }
 
     async getAllDashboards() {
-        this.dashboardService.getAll()
+        this.dashboardService.getAllByOrganization(1)
             .pipe(this.untilThis)
             .subscribe(dashboard => {
                 this.dashboards = dashboard;

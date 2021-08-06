@@ -16,8 +16,8 @@ export class DashboardService {
         return ['pi-chart-bar', 'pi-chart-line'];
     }
 
-    public getAll(): Observable<Dashboard[]> {
-        return this.httpService.getRequest<Dashboard[]>(`${environment.coreUrl}/dashboard/organization/1`);
+    public getAllByOrganization(id: number): Observable<Dashboard[]> {
+        return this.httpService.getRequest<Dashboard[]>(`${environment.coreUrl}/dashboard/organization/${id}`);
     }
 
     public get(id: string): Observable<Dashboard> {
