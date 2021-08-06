@@ -1,6 +1,8 @@
-import { User } from '../user';
-
 export interface AuthUser {
-    user: User;
-    token: string;
+    uId: string;
+    email: string;
+    username: string;
+    firstName: string;
+    lastName: string;
+    avatarUrl: string;
 }
