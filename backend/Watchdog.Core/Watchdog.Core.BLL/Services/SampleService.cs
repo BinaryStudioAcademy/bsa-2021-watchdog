@@ -45,11 +45,11 @@ namespace Watchdog.Core.BLL.Services
 
             return _mapper.Map<SampleDto>(createdSample);
         }
-        
+
         public async Task<SampleDto> UpdateSampleAsync(int sampleId, NewSampleDto sampleDto)
         {
             var existedSample = await _context.Samples.FirstAsync(s => s.Id == sampleId);
-            
+
             var mergedSample = _mapper.Map(sampleDto, existedSample);
 
             var updatedSample = _context.Update(mergedSample);

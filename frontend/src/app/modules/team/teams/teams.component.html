@@ -4,29 +4,18 @@
     </div>
     <div class="header-actions">
         <div>
-            <button
-                pButton
-                pRipple
-                type="button"
-                label="Create team"
-                class="teams-button"
-                icon="pi pi-plus-circle" (click)="openDialog()">
+            <button pButton pRipple type="button" label="Create team" class="p-button-info" icon="pi pi-plus-circle"
+                (click)="openDialog()">
             </button>
         </div>
     </div>
 </div>
 
-<app-user-teams
-    [currentUserId]="currentUserId"
-    [currentOrganizationId]="currentOrganizationId"
-    [newTeamCreated]="teamCreated$.asObservable()"
-    [joinNewTeam]="notifyMemberTeams$.asObservable()"
+<app-user-teams [currentUserId]="currentUserId" [currentOrganizationId]="currentOrganizationId"
+    [newTeamCreated]="teamCreated$.asObservable()" [joinNewTeam]="notifyMemberTeams$.asObservable()"
     (leaveTeamEvent)="notifyOtherTeams$.next($event)">
 </app-user-teams>
 
-<app-other-teams
-    [currentUserId]="currentUserId"
-    [currentOrganizationId]="currentOrganizationId"
-    [leavedTeam]="notifyOtherTeams$.asObservable()"
-    (joinTeamEvent)="notifyMemberTeams$.next($event)">
+<app-other-teams [currentUserId]="currentUserId" [currentOrganizationId]="currentOrganizationId"
+    [leavedTeam]="notifyOtherTeams$.asObservable()" (joinTeamEvent)="notifyMemberTeams$.next($event)">
 </app-other-teams>

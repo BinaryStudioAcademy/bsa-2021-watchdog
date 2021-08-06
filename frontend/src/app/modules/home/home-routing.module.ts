@@ -33,6 +33,10 @@ const routes: Routes = [{
         path: 'dashboard/:id',
         component: DashboardComponent,
     }, {
+        path: 'organization',
+        loadChildren: () => import('./organization/organization.module')
+            .then(m => m.OrganizationModule),
+    }, {
         path: '**',
         component: NotFoundComponent,
         pathMatch: 'full'

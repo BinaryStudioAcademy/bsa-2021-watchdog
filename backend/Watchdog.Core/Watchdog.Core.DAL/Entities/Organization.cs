@@ -12,12 +12,17 @@ namespace Watchdog.Core.DAL.Entities
             Applications = new List<Application>();
             Dashboards = new List<Dashboard>();
         }
+        public string OrganizationSlug { get; set; }
 
         public string Name { get; set; }
 
         public string AvatarUrl { get; set; }
 
         public User User { get; set; }
+
+        public int DefaultRoleId { get; set; }
+
+        public bool OpenMembership { get; set; }
 
         public ICollection<Member> Members { get; set; }
 

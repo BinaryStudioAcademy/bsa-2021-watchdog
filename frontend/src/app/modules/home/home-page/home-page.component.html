@@ -15,7 +15,7 @@
 
     <div class="sidebar">
         <div class="sidebar-avatar">
-
+            <app-organization-menu></app-organization-menu>
         </div>
         <div class="sidebar-top">
             <div>
@@ -41,13 +41,9 @@
                 </button>
             </div>
 
-            <div [class.dashboards-none]="!dashboardsShown"
-                 [class.dashboards]="dashboardsShown"
-                 *ngFor="let dashboard of dashboards">
-                <button
-                    class="button"
-                    [routerLink]="['dashboard', dashboard.id]"
-                    [routerLinkActive]="['active']">
+            <div [class.dashboards-none]="!dashboardsShown" [class.dashboards]="dashboardsShown"
+                *ngFor="let dashboard of dashboards">
+                <button class="button" [routerLink]="['dashboard', dashboard.id]" [routerLinkActive]="['active']">
                     <i class="pi {{dashboard.icon}}"></i>
                     <span>{{dashboard.name}}</span>
                 </button>
@@ -65,10 +61,7 @@
         </div>
     </div>
 
-    <app-add-dashboard
-        *ngIf="displayModal"
-        (save)="addDashboard($event)"
-        (closeModal)="displayModal = !displayModal">
+    <app-add-dashboard *ngIf="displayModal" (save)="addDashboard($event)" (closeModal)="displayModal = !displayModal">
     </app-add-dashboard>
 
     <div class="home-content-wrp">
