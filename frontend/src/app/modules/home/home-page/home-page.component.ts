@@ -18,6 +18,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     dashboardsShown: boolean = false;
     displayModal: boolean = false;
     authorizedUser: User;
+    fakeOrganizationId = 1;
 
     constructor(
         private broadcastHub: BroadcastHubService,
@@ -53,15 +54,15 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     }
 
     async getAllDashboards() {
-        this.dashboardService.getAllByOrganization(1)
+        this.dashboardService.getAllByOrganization(this.fakeOrganizationId)
             .pipe(this.untilThis)
             .subscribe(dashboard => {
                 this.dashboards = dashboard;
                 this.updateDataService.currentMessage
                     .pipe(this.untilThis)
-                    .subscribe(в => {
+                    .subscribe(d => {
                         const key = this.dashboards.findIndex(el => el.id === dashboard.id);
-                        this.dashboards[key] = в;
+                        this.dashboards[key] = d;
                     });
 
                 this.deleteDataService.currentMessage

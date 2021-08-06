@@ -13,6 +13,9 @@ export class AddDashboardComponent implements OnInit {
     icons: string[];
     @Output() closeModal = new EventEmitter<void>();
     @Output() save = new EventEmitter<NewDashboard>();
+    //fake data
+    fakeOrganizationId = 1;
+    fakeUserId = 1;
 
     constructor(private dashboardService: DashboardService) {
         this.icons = dashboardService.getIcons();
@@ -41,9 +44,8 @@ export class AddDashboardComponent implements OnInit {
 
     saveHandle(): void {
         const dashboard: NewDashboard = <NewDashboard> this.formGroup.value;
-        //fake date
-        dashboard.createdBy = 1;
-        dashboard.organizationId = 1;
+        dashboard.createdBy = this.fakeOrganizationId;
+        dashboard.organizationId = this.fakeUserId;
         this.save.emit(dashboard);
     }
 }
