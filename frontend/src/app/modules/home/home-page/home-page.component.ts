@@ -16,8 +16,6 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
 })
 export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     dashboards: Dashboard[];
-    updateSubscription$: Subscription;
-    deleteSubscription$: Subscription;
     dashboardsShown: boolean = false;
     displayModal: boolean = false;
     authorizedUser: User;
@@ -60,13 +58,15 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
             .pipe(this.untilThis)
             .subscribe(resp => {
                 this.dashboards = resp.body;
-                this.updateSubscription$ = this.updateDataService.currentMessage
+                this.updateDataService.currentMessage
+                    .pipe(this.untilThis)
                     .subscribe(dashboard => {
                         const key = this.dashboards.findIndex(el => el.id === dashboard.id);
                         this.dashboards[key] = dashboard;
                     });
 
-                this.deleteSubscription$ = this.deleteDataService.currentMessage
+                this.deleteDataService.currentMessage
+                    .pipe(this.untilThis)
                     .subscribe(id => {
                         this.dashboards = this.dashboards.filter(d => d.id !== id);
                     }, error => {
@@ -77,7 +77,6 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.broadcastHub.stop();
-        this.updateSubscription$.unsubscribe();
         super.ngOnDestroy();
     }
 }
