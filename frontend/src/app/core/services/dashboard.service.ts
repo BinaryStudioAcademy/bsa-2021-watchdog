@@ -9,29 +9,29 @@ import { HttpInternalService } from './http-internal.service';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
-    constructor(private http: HttpInternalService) { }
+    constructor(private httpService: HttpInternalService) { }
 
     public getIcons(): string[] {
         return ['pi-chart-bar', 'pi-chart-line'];
     }
 
     public getAll(): Observable<HttpResponse<Dashboard[]>> {
-        return this.http.getFullRequest<Dashboard[]>(`${environment.coreUrl}/dashboard`);
+        return this.httpService.getFullRequest<Dashboard[]>(`${environment.coreUrl}/dashboard`);
     }
 
     public get(id: string): Observable<HttpResponse<Dashboard>> {
-        return this.http.getFullRequest<Dashboard>(`${environment.coreUrl}/dashboard/${id}`);
+        return this.httpService.getFullRequest<Dashboard>(`${environment.coreUrl}/dashboard/${id}`);
     }
 
     public addDashboard(newDashboard: NewDashboard): Observable<HttpResponse<Dashboard>> {
-        return this.http.postFullRequest<Dashboard>(`${environment.coreUrl}/dashboard`, newDashboard);
+        return this.httpService.postFullRequest<Dashboard>(`${environment.coreUrl}/dashboard`, newDashboard);
     }
 
     public deleteDashboard(id: number) {
-        return this.http.deleteFullRequest<number>(`${environment.coreUrl}/dashboard/${id}`);
+        return this.httpService.deleteFullRequest<number>(`${environment.coreUrl}/dashboard/${id}`);
     }
 
     public updateDashboard(updateDashboard: UpdateDashboard): Observable<HttpResponse<Dashboard>> {
-        return this.http.putFullRequest<Dashboard>(`${environment.coreUrl}/dashboard/${updateDashboard.id}`, updateDashboard);
+        return this.httpService.putFullRequest<Dashboard>(`${environment.coreUrl}/dashboard/${updateDashboard.id}`, updateDashboard);
     }
 }
