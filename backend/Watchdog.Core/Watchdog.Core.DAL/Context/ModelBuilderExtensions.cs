@@ -151,7 +151,7 @@ namespace Watchdog.Core.DAL.Context
                 .RuleFor(r => r.Id, f => ++f.IndexVariable)
                 .RuleFor(r => r.Name, f => _roles[f.IndexVariable - 1])
                 .RuleFor(r => r.Description, f => f.Lorem.Paragraph())
-                .Generate(_roles.Count());
+                .Generate(_roles.Length);
         }
 
         private static IList<Team> GenerateTeams(int count = _numberOfTeams)
