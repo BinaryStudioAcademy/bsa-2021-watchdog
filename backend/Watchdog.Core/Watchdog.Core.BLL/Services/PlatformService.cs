@@ -17,13 +17,9 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<IEnumerable<PlatformDto>> GetAllPlatformsAsync()
         {
-            var platforms = await _context.Platforms.Include(p => p.PlatformTypes).ToListAsync();
+            var platforms = await _context.Platforms.ToListAsync();
             return _mapper.Map<IEnumerable<PlatformDto>>(platforms);
         }
 
-        public async Task<IEnumerable<string>> GetAllPlatformTypeNames()
-        {
-            return await _context.PlatformTypes.Select(pt => pt.Name).ToListAsync();
-        }
     }
 }

@@ -10,7 +10,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
     public interface IPlatformService
     {
         Task<IEnumerable<PlatformDto>> GetAllPlatformsAsync();
-        Task<IEnumerable<string>> GetAllPlatformTypeNames();
 
     }
 }

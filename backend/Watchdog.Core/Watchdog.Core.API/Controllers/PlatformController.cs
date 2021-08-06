@@ -22,11 +22,5 @@ namespace Watchdog.Core.API.Controllers
         {
             return Ok(await _platformService.GetAllPlatformsAsync());
         }
-
-        [HttpGet("types")]
-        public async Task<ActionResult<IEnumerable<string>>> GetAllPlatformTypes()
-        {
-            return Ok(await _platformService.GetAllPlatformTypeNames());
-        }
     }
 }

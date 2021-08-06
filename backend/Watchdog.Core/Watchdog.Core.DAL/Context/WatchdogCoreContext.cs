@@ -19,10 +19,6 @@ namespace Watchdog.Core.DAL.Context
 
         public DbSet<Platform> Platforms { get; private set; }
 
-        public DbSet<PlatformType> PlatformTypes { get; private set; }
-
-        public DbSet<PlatformsPlatformsType> PlatformsPlatformsType { get; private set; }
-
         public DbSet<Role> Roles { get; private set; }
 
         public DbSet<Sample> Samples { get; private set; }
