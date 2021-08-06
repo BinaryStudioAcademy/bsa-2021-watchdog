@@ -15,9 +15,10 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class UserProfileSettingsComponent extends BaseComponent implements OnInit, OnDestroy {
     public user = {} as User;
-    //userName: string;
-    //userEmail: string;
+    userName: string;
+    userEmail: string;
     public imageFile: File;
+    isEditing: boolean;
 
     private unsubscribe$ = new Subject<void>();
 
@@ -31,22 +32,22 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
         super();
     }
 
-    public ngOnInit() {
-        this.authService
-            .getUser()
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe((user) => (this.user = this.userService.copyUser(user)));
-    }
-
-    // ngOnInit(): void {
-    //     this.editProfileForm = new FormGroup(
-    //         {
-    //             firstName: new FormControl(this.user?.firstName),
-    //             lastName: new FormControl(this.user?.lastName),
-    //             email: new FormControl(this.user?.email)
-    //         }
-    //     );
+    // public ngOnInit() {
+    //     this.authService
+    //         .getUser()
+    //         .pipe(takeUntil(this.unsubscribe$))
+    //         .subscribe((user) => (this.user = this.userService.copyUser(user)));
     // }
+
+    ngOnInit(): void {
+        this.editProfileForm = new FormGroup(
+            {
+                firstName: new FormControl(this.user?.firstName),
+                lastName: new FormControl(this.user?.lastName),
+                email: new FormControl(this.user?.email)
+            }
+        );
+    }
 
     submit(editForm) {
         this.user.password = editForm.value.password;
@@ -66,8 +67,7 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
     }
 
     ngOnDestroy() {
-        this.unsubscribe$.next();
-        this.unsubscribe$.complete();
+        super.ngOnDestroy();
     }
 
     public handleFileInput(target: any) {

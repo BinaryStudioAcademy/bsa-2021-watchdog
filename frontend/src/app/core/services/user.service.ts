@@ -1,4 +1,6 @@
+import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user';
 import { HttpInternalService } from './http-internal.service';
@@ -13,18 +15,8 @@ export class UserService {
         return this.http.getFullRequest<User>(`${environment.coreUrl}/user`, { id });
     }
 
-    public updateUser(user: User) {
+    public updateUser(user: User): Observable<HttpResponse<User>> {
         return this.http.putFullRequest<User>(`${environment.coreUrl}/user`, user);
     }
 
-    public copyUser({ id, firstName, lastName, email, avatar, password }: User) {
-        return {
-            id,
-            firstName,
-            lastName,
-            email,
-            avatar,
-            password
-        };
-    }
 }

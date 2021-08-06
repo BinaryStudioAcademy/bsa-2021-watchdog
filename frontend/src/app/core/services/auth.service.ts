@@ -54,11 +54,11 @@ export class AuthService {
         return !!this.currentUserSubject.value;
     }
 
-    // public getUser(): User {
-    //     return this.currentUserSubject.value?.user;
-    // }
+    public getUser(): User {
+        return this.currentUserSubject.value?.user;
+    }
 
-    public getUser() {
+    public getUsers() {
         return this.user
             ? of(this.user)
             : this.userService.getUserById(10).pipe(
