@@ -6,12 +6,11 @@ import { HttpInternalService } from './http-internal.service';
 
 @Injectable({ providedIn: 'root' })
 export class PlatformService {
-
     public readonly routePrefix = '/platform';
 
     constructor(private httpService: HttpInternalService) { }
 
-    public getPlatforms(): Observable<HttpResponse<Platform[]>> {
-        return this.httpService.getFullRequest(`${this.routePrefix}`);
+    public getPlatforms(): Observable<Platform[]> {
+        return this.httpService.getRequest(`${this.routePrefix}`);
     }
 }

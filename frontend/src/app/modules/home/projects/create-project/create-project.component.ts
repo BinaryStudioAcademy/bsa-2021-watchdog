@@ -89,14 +89,15 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
     initData() {
         this.loadingNumber += 1;
         this.platformService
-        .getPlatforms()
-        .pipe(this.untilThis)
-        .subscribe(p => {
-            const platforms = p as HttpResponse<Platform[]>;
-            this.platformCards = this.viewPlatformCards = platforms.body;
-        }, error => {
-            this.toastNotifications.error(`${error}`, 'Error', 2000);
-        }, () => this.loadingNumber -= 1);
+            .getPlatforms()
+            .pipe(this.untilThis)
+            .subscribe(platforms => {
+                this.platformCards = this.viewPlatformCards = platforms;
+                this.loadingNumber -= 1;
+            }, error => {
+                this.toastNotifications.error(`${error}`);
+                this.loadingNumber -= 1;
+            });
     }
 
     initFakeData() {
@@ -111,19 +112,19 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
         this.selectedPlatformId = undefined;
         switch (event?.item.label ?? '') {
             case 'Browser': {
-                this.viewPlatformCards = [...this.platformCards.filter(value => value.platformTypes.includes('browser'))];
+                this.viewPlatformCards = [...this.platformCards.filter(value => value.platformTypes.isBrowser)];
                 break;
             }
             case 'Server': {
-                this.viewPlatformCards = [...this.platformCards.filter(value => value.platformTypes.includes('server'))];
+                this.viewPlatformCards = [...this.platformCards.filter(value => value.platformTypes.isServer)];
                 break;
             }
             case 'Mobile': {
-                this.viewPlatformCards = [...this.platformCards.filter(value => value.platformTypes.includes('mobile'))];
+                this.viewPlatformCards = [...this.platformCards.filter(value => value.platformTypes.isMobile)];
                 break;
             }
             case 'Desktop': {
-                this.viewPlatformCards = [...this.platformCards.filter(value => value.platformTypes.includes('desktop'))];
+                this.viewPlatformCards = [...this.platformCards.filter(value => value.platformTypes.isDesktop)];
                 break;
             }
             default: {
