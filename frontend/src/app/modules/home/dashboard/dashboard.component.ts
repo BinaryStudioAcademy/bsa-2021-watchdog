@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardService } from '@core/services/dashboard.service';
-import { DataService } from '@core/services/share-data.service';
+import { ShareDataService } from '@core/services/share-data.service';
 import { Subscription } from 'rxjs';
 import { BaseComponent } from '@core/components/base/base.component';
 import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
@@ -24,10 +24,10 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         private route: ActivatedRoute,
         private router: Router,
         private dashboardService: DashboardService,
+        private updateDataService: ShareDataService<Dashboard>,
+        private deleteDataService: ShareDataService<number>,
         private toastNotificationService: ToastNotificationService,
-        private spinnerService: SpinnerService,
-        private updateDataService: DataService<Dashboard>,
-        private deleteDataService: DataService<number>
+        private spinnerService: SpinnerService
     ) {
         super();
     }

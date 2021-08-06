@@ -19,7 +19,7 @@ namespace Watchdog.Core.API.Controllers
             _logger = logger;
             _teamService = teamService;
         }
-        
+
         [HttpGet("{organizationId:int}")]
         public async Task<ActionResult<ICollection<TeamDto>>> GetAllAsync(int organizationId)
         {
@@ -33,14 +33,14 @@ namespace Watchdog.Core.API.Controllers
             var team = await _teamService.GetMemberTeamsAsync(organizationId, memberId, true);
             return Ok(team);
         }
-        
+
         [HttpGet("organization/{organizationId:int}/notMember/{memberId:int}")]
         public async Task<ActionResult<TeamDto>> GetNotByMemberAsync(int organizationId, int memberId)
         {
             var team = await _teamService.GetMemberTeamsAsync(organizationId, memberId, false);
             return Ok(team);
         }
-        
+
         [HttpPost]
         public async Task<ActionResult<TeamDto>> CreateAsync(NewTeamDto newTeam)
         {
@@ -51,7 +51,7 @@ namespace Watchdog.Core.API.Controllers
             var createdTeam = await _teamService.CreateTeamAsync(newTeam);
             return Ok(createdTeam);
         }
-        
+
         [HttpPost("joinTeam")]
         public async Task<ActionResult<TeamDto>> AddMemberAsync(TeamMemberDto teamMember)
         {
@@ -62,7 +62,7 @@ namespace Watchdog.Core.API.Controllers
             var updatedTeam = await _teamService.AddMemberToTeamAsync(teamMember);
             return Ok(updatedTeam);
         }
-        
+
         [HttpPut("{teamId:int}")]
         public async Task<ActionResult<TeamDto>> UpdateAsync(int teamId, UpdateTeamDto updateDto)
         {
@@ -70,23 +70,23 @@ namespace Watchdog.Core.API.Controllers
             {
                 return BadRequest();
             }
-            
+
             var updateTeam = await _teamService.UpdateTeamAsync(teamId, updateDto);
             return Ok(updateTeam);
         }
-            
+
         [HttpDelete("leaveTeam/{teamId:int}/member/{memberId:int}")]
         public async Task<ActionResult> LeaveFromTeamAsync(int teamId, int memberId)
         {
             var updatedTeam = await _teamService.LeaveTeamAsync(teamId, memberId);
             return Ok(updatedTeam);
         }
-        
+
         [HttpDelete("{teamId:int}")]
         public async Task<ActionResult> DeleteAsync(int teamId)
         {
             await _teamService.DeleteTeamAsync(teamId);
-            
+
             return NoContent();
         }
     }
