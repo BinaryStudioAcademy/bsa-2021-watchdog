@@ -10,8 +10,9 @@ namespace Watchdog.Core.BLL.MappingProfiles
         {
             CreateMap<User, UserDto>();
             CreateMap<UserDto, User>();
+
+            CreateMap<User, UpdateUserDto>();
             CreateMap<UpdateUserDto, User>();
-            CreateMap<UpdateUserPasswordDto, User>();
         }
     }
 }
