@@ -60,7 +60,7 @@ namespace Watchdog.Core.BLL.Services
             var updatedDashboard = _context.Update(mergedDashboard);
             await _context.SaveChangesAsync();
 
-            return _mapper.Map<DashboardDto>(await GetDashboardAsync(updatedDashboard.Entity.Id));
+            return _mapper.Map<DashboardDto>(updatedDashboard.Entity);
         }
 
         public async Task DeleteDashboardAsync(int dashboardId)
