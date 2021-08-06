@@ -30,11 +30,6 @@ namespace Watchdog.Core.API.Extensions
 
         public static void AddAutoMapper(this IServiceCollection services)
         {
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(SampleProfile)));
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(DashboardProfile)));
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(TeamProfile)));
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(MemberProfile)));
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(UserProfile)));
             services.AddAutoMapper(Assembly.GetAssembly(typeof(OrganizationProfile)));
         }
 
