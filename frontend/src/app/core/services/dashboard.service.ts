@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { NewDashboard } from '@shared/models/dashboard/new-dashboard';
 import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
 import { HttpInternalService } from './http-internal.service';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
-import { HttpResponse } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
-
     constructor(private http: HttpInternalService) { }
 
     public getIcons(): string[] {

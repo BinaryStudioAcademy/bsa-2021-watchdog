@@ -1,4 +1,4 @@
-import { Tile } from "../tile/tile";
+import { Tile } from '../tile/tile';
 
 export interface Dashboard {
     id: number,

@@ -30,7 +30,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         private deleteDataService: DataService<number>
     ) {
         super();
-     }
+    }
 
     async ngOnInit() {
         this.authorizedUser = { ...this.authorizedUser, firstName: 'Andriy' };
