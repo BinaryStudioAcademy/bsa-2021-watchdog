@@ -9,7 +9,6 @@ namespace Watchdog.Core.BLL.MappingProfiles
         public DashboardProfile()
         {
             CreateMap<Dashboard, DashboardDto>();
-
             CreateMap<DashboardDto, Dashboard>();
             CreateMap<NewDashboardDto, Dashboard>();
             CreateMap<UpdateDashboardDto, Dashboard>();

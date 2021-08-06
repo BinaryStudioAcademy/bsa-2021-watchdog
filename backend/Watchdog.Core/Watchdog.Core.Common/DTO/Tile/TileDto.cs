@@ -7,7 +7,7 @@ namespace Watchdog.Core.Common.DTO.Tile
     {
         public string Name { get; set; }
 
-        public UserDto User { get; set; }
+        public int CreatedBy { get; set; }
 
         public int DashboardId { get; set; }
 
