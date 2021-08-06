@@ -3,7 +3,6 @@ using Bogus.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Watchdog.Core.DAL.Context.EntityConfigurations;
 using Watchdog.Core.DAL.Entities;
 
@@ -11,13 +10,13 @@ namespace Watchdog.Core.DAL.Context
 {
     public static class ModelBuilderExtensions
     {
-        private const int _numberOfApplications = 10;
+        private const int _numberOfApplications = 15;
         private const int _numberOfApplicationTeams = 20;
         private const int _numberOfDashboards = 15;
         private const int _numberOfEnvironments = 5;
         private const int _numberOfMembers = 30;
         private const int _numberOfOrganizations = 5;
-        private const int _numberOfPlatforms = 10;
+        private const int _numberOfPlatforms = 18;
         private const int _numberOfTeams = 5;
         private const int _numberOfTeamMembers = 25;
         private const int _numberOfTiles = 25;
@@ -67,7 +66,8 @@ namespace Watchdog.Core.DAL.Context
             return new Faker<Application>()
                 .UseSeed(9326)
                 .RuleFor(a => a.Id, f => ++f.IndexVariable)
-                .RuleFor(a => a.Name, f => f.Lorem.Word())
+                .RuleFor(a => a.Name, f => f.Company.CompanyName())
+                .RuleFor(a => a.Description, f => f.Company.Bs())
                 .RuleFor(a => a.SecurityToken, f => f.Random.Hash(32))
                 .RuleFor(a => a.OrganizationId, f => f.Random.Number(1, _numberOfOrganizations))
                 .RuleFor(a => a.PlatformId, f => f.Random.Number(1, _numberOfPlatforms))
@@ -134,12 +134,12 @@ namespace Watchdog.Core.DAL.Context
                 .RuleFor(o => o.CreatedAt, f => f.Date.Past(2, new DateTime(2021, 7, 20)))
                 .Generate(count);
         }
-        private static IList<Platform> GeneratePlatforms(int count = _numberOfPlatforms)
+        private static IList<Platform> GeneratePlatforms()
         {
             var platforms = new List<Platform>()
             {
-                new Platform 
-                { 
+                new Platform
+                {
                     Name = "Android",
                     PlatformTypes = PlatformTypes.Mobile,
                     AvatarUrl = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MCA4MCI+PHBhdGggZD0iTTU4LjM3IDQ4Ljk0YTMuMzMgMy4zMyAwIDExMy4zMi0zLjMyIDMuMzMgMy4zMyAwIDAxLTMuMzIgMy4zMm0tMzYuNzQgMEEzLjMzIDMuMzMgMCAxMTI1IDQ1LjYyYTMuMzIgMy4zMiAwIDAxLTMuMzIgMy4zMm0zNy45My0yMGw2LjY0LTExLjVBMS4zOCAxLjM4IDAgMDA2My44MSAxNmwtNi43MyAxMS42OGE0MS43OSA0MS43OSAwIDAwLTM0LjE2IDBMMTYuMTkgMTZhMS4zOCAxLjM4IDAgMDAtMi4zOSAxLjM4bDYuNjQgMTEuNTFBMzkuMiAzOS4yIDAgMDAuMDkgNjAuMzJoNzkuODJhMzkuMiAzOS4yIDAgMDAtMjAuMzUtMzEuNCIgZmlsbD0iIzNkZGM4NCIvPjwvc3ZnPg=="
@@ -246,7 +246,7 @@ namespace Watchdog.Core.DAL.Context
                     PlatformTypes = PlatformTypes.Desktop,
                     AvatarUrl = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MCA4MCI+PHBhdGggZmlsbD0iIzUxMmJkNCIgZD0iTTAgMGg4MHY4MEgweiIvPjxwYXRoIGQ9Ik0xNC4yNiA1MS4xMWEyIDIgMCAwMS0xLjQ0LS41NiAxLjkgMS45IDAgMDEwLTIuNzcgMiAyIDAgMDExLjQ0LS41OCAyIDIgMCAwMTEuNDUuNTggMS44OCAxLjg4IDAgMDEwIDIuNzcgMiAyIDAgMDEtMS40NS41NnptMjIuNjEtLjMyaC0zLjY4bC05LjY4LTE1LjI4YTYuNzggNi43OCAwIDAxLS42MS0xLjJoLS4wOWEyMC41MyAyMC41MyAwIDAxLjEyIDIuODV2MTMuNjNoLTMuMjZWMzBoMy45MkwzMyA0NC45MmMuNC42Mi42NSAxIC43NyAxLjI4aC4wNWExOS42OCAxOS42OCAwIDAxLS4xNC0yLjhWMzBoMy4yNHptMTUuODQgMEg0MS4zM1YzMGgxMC45M3YyLjkzaC03LjU3djUuODloN3YyLjkxaC03djYuMTVoOHptMTYuMTgtMTcuODZoLTUuODN2MTcuODZoLTMuMzdWMzIuOTNoLTUuODFWMzBoMTV6IiBmaWxsPSIjZmZmIi8+PC9zdmc+"
                 },
-                
+
             };
 
 
