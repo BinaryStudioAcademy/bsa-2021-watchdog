@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BroadcastHubService } from '@core/hubs/broadcast-hub.service';
 import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { DashboardService } from '@core/services/dashboard.service';
-import { DataService } from '@core/services/share-data.service';
+import { ShareDataService } from '@core/services/share-data.service';
 import { Subscription } from 'rxjs';
 import { NewDashboard } from '@shared/models/dashboard/new-dashboard';
 import { User } from '@core/models/user';
@@ -23,8 +23,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     constructor(
         private broadcastHub: BroadcastHubService,
         public dashboardService: DashboardService,
-        private updateDataService: DataService<Dashboard>,
-        private deleteDataService: DataService<number>
+        private updateDataService: ShareDataService<Dashboard>,
+        private deleteDataService: ShareDataService<number>
     ) { }
 
     async ngOnInit() {

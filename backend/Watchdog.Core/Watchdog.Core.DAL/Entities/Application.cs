@@ -16,9 +16,9 @@ namespace Watchdog.Core.DAL.Entities
         public string Description { get; set; }
 
         public string SecurityToken { get; set; }
-        
+
         public User User { get; set; }
-        
+
         public int OrganizationId { get; set; }
 
         public Organization Organization { get; set; }
