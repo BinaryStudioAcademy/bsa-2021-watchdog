@@ -34,24 +34,9 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
 
     ngOnInit(): void {
         this.spinnerService.show();
-        this.route.params.subscribe(params => {
-            const { id } = params;
-            this.showTileMenu = false;
-            this.dashboardService.get(id)
-                .pipe(this.untilThis)
-                .subscribe(dashboard => {
-                    this.dashboard = dashboard;
-                    this.updateSubscription$ = this.updateDataService.currentMessage
-                        .subscribe((dashboard) => {
-                            this.dashboard = dashboard;
-                        }, error => {
-                            this.toastNotificationService.error(`${error}`, 'Error', 2000);
-                        });
-                    this.spinnerService.hide();
-                }, error => {
-                    this.toastNotificationService.error(`${error}`, 'Error', 2000);
-                });
-        });
+        this.route.params
+            .pipe(this.untilThis)
+            .subscribe(params => this.getParams(params));
     }
 
     updateDashboard(dashboard: UpdateDashboard) {
@@ -79,6 +64,24 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
             }, error => {
                 this.toastNotificationService.error(`${error}`, 'Error', 2000);
                 this.spinnerService.hide();
+            });
+    }
+
+    getParams(params) {
+        const { id } = params;
+        this.showTileMenu = false; this.dashboardService.get(id)
+            .pipe(this.untilThis)
+            .subscribe(dashboard => {
+                this.dashboard = dashboard;
+                this.updateSubscription$ = this.updateDataService.currentMessage
+                    .subscribe((dashboard) => {
+                        this.dashboard = dashboard;
+                    }, error => {
+                        this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                    });
+                this.spinnerService.hide();
+            }, error => {
+                this.toastNotificationService.error(`${error}`, 'Error', 2000);
             });
     }
 
