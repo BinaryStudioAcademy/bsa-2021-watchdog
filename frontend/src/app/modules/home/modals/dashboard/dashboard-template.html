@@ -6,7 +6,7 @@
                 <div *ngIf="formGroup.controls.name.touched && formGroup.controls.name.invalid" class="validation">
                     <small *ngIf="formGroup.controls.name.errors.required">Field name can't be empty</small>
                     <small *ngIf="formGroup.controls.name.value.length < 3">Min name length 3</small>
-                    <small *ngIf="formGroup.controls.name.value.length > 3">Max name length 50</small>
+                    <small *ngIf="formGroup.controls.name.value.length > 50">Max name length 50</small>
                     <small *ngIf="formGroup.controls.name.hasError('pattern')">Name must contain letters, numbers, underscore, dot, space</small>
                 </div>
                 <div>Icon</div>

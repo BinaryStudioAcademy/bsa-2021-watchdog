@@ -21,6 +21,7 @@ export class UpdateDashboardComponent implements OnInit {
     }
 
     ngOnInit() {
+        const namePattern = new RegExp('^[a-zA-Z0-9_. ]*$');
         this.formGroup = new FormGroup({
             id: new FormControl(
                 this.dashboard.id,
@@ -34,7 +35,7 @@ export class UpdateDashboardComponent implements OnInit {
                     Validators.required,
                     Validators.minLength(3),
                     Validators.maxLength(50),
-                    Validators.pattern('^[a-zA-Z0-9_. ]*$')
+                    Validators.pattern(namePattern)
                 ]
             ),
             icon: new FormControl(
