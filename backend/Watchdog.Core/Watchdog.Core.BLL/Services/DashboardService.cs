@@ -51,9 +51,9 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<DashboardDto>(dashboard);
         }
 
-        public async Task<DashboardDto> UpdateDashboardAsync(int dashboardId, UpdateDashboardDto updateDashboard)
+        public async Task<DashboardDto> UpdateDashboardAsync(UpdateDashboardDto updateDashboard)
         {
-            var existedDashboard = await _context.Dashboards.FirstOrDefaultAsync(t => t.Id == dashboardId);
+            var existedDashboard = await _context.Dashboards.FirstOrDefaultAsync(t => t.Id == updateDashboard.Id);
 
             var mergedDashboard = _mapper.Map(updateDashboard, existedDashboard);
 
@@ -65,7 +65,7 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task DeleteDashboardAsync(int dashboardId)
         {
-            var dashboard = await _context.Dashboards.FirstAsync(t => t.Id == dashboardId);
+            var dashboard = await _context.Dashboards.FirstOrDefaultAsync(t => t.Id == dashboardId);
             _context.Remove(dashboard);
 
             await _context.SaveChangesAsync();

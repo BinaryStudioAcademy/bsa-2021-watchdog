@@ -9,7 +9,7 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<ICollection<DashboardDto>> GetAllDashboardsAsync();
         Task<DashboardDto> GetDashboardAsync(int dashboardId);
         Task<DashboardDto> CreateDashboardAsync(NewDashboardDto newDashboard);
-        Task<DashboardDto> UpdateDashboardAsync(int dashboardId, UpdateDashboardDto updateDashboard);
+        Task<DashboardDto> UpdateDashboardAsync(UpdateDashboardDto updateDashboard);
         Task DeleteDashboardAsync(int dashboardId);
     }
 }
