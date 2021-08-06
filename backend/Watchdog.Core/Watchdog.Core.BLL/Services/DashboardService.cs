@@ -53,7 +53,7 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<DashboardDto> UpdateDashboardAsync(int dashboardId, UpdateDashboardDto updateDashboard)
         {
-            var existedDashboard = await _context.Dashboards.FirstAsync(t => t.Id == dashboardId);
+            var existedDashboard = await _context.Dashboards.FirstOrDefaultAsync(t => t.Id == dashboardId);
 
             var mergedDashboard = _mapper.Map(updateDashboard, existedDashboard);
 
