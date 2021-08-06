@@ -43,8 +43,8 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         this.isEditing = false;
         this.dashboardService.updateDashboard(dashboard)
             .pipe(this.untilThis)
-            .subscribe(dashboard => {
-                this.dashboard = dashboard;
+            .subscribe(updatedDashboard => {
+                this.dashboard = updatedDashboard;
                 this.updateDataService.changeMessage(this.dashboard);
                 this.toastNotificationService.success('Dashboard has been updateded');
             }, error => {
@@ -71,8 +71,8 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         const { id } = params;
         this.showTileMenu = false; this.dashboardService.get(id)
             .pipe(this.untilThis)
-            .subscribe(dashboard => {
-                this.dashboard = dashboard;
+            .subscribe(dashboardById => {
+                this.dashboard = dashboardById;
                 this.updateSubscription$ = this.updateDataService.currentMessage
                     .subscribe((dashboard) => {
                         this.dashboard = dashboard;

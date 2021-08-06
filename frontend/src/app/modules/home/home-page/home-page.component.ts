@@ -3,7 +3,6 @@ import { BroadcastHubService } from '@core/hubs/broadcast-hub.service';
 import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { DashboardService } from '@core/services/dashboard.service';
 import { ShareDataService } from '@core/services/share-data.service';
-import { Subscription } from 'rxjs';
 import { NewDashboard } from '@shared/models/dashboard/new-dashboard';
 import { User } from '@core/models/user';
 import { BaseComponent } from '@core/components/base/base.component';
@@ -60,9 +59,9 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
                 this.dashboards = dashboard;
                 this.updateDataService.currentMessage
                     .pipe(this.untilThis)
-                    .subscribe(dashboard => {
+                    .subscribe(в => {
                         const key = this.dashboards.findIndex(el => el.id === dashboard.id);
-                        this.dashboards[key] = dashboard;
+                        this.dashboards[key] = в;
                     });
 
                 this.deleteDataService.currentMessage

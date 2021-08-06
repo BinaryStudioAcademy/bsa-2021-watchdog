@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { NewDashboard } from '@shared/models/dashboard/new-dashboard';
 import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
 import { environment } from 'src/environments/environment';
 import { HttpInternalService } from './http-internal.service';
-import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
