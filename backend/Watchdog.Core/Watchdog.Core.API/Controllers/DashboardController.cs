@@ -22,10 +22,10 @@ namespace Watchdog.Core.API.Controllers
             _dashboardService = dashboardService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<ICollection<DashboardDto>>> Get()
+        [HttpGet("organization/{organizationId}")]
+        public async Task<ActionResult<ICollection<DashboardDto>>> GetByOrganization(int organizationId)
         {
-            var dashboards = await _dashboardService.GetAllDashboardsAsync();
+            var dashboards = await _dashboardService.GetAllDashboardsByOrganizationAsync(organizationId);
             return Ok(dashboards); 
         }
 
@@ -48,15 +48,15 @@ namespace Watchdog.Core.API.Controllers
             return Ok(createdDashboard);
         }
 
-        [HttpPut("{dashboardId}")]
-        public async Task<ActionResult<DashboardDto>> Put(int dashboardId, UpdateDashboardDto updateDashboard)
+        [HttpPut]
+        public async Task<ActionResult<DashboardDto>> Put(UpdateDashboardDto updateDashboard)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            var updatedDashboard = await _dashboardService.UpdateDashboardAsync(dashboardId, updateDashboard);
+            var updatedDashboard = await _dashboardService.UpdateDashboardAsync(updateDashboard);
             return Ok(updatedDashboard);
         }
 

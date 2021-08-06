@@ -7,6 +7,7 @@ using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Dashboard;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
+using System.Linq;
 
 namespace Watchdog.Core.BLL.Services
 {
@@ -14,13 +15,12 @@ namespace Watchdog.Core.BLL.Services
     {
         public DashboardService(WatchdogCoreContext context, IMapper mapper) : base(context, mapper) { }
 
-        public async Task<ICollection<DashboardDto>> GetAllDashboardsAsync()
+        public async Task<ICollection<DashboardDto>> GetAllDashboardsByOrganizationAsync(int organizationId)
         {
             var dashboards = await _context.Dashboards
                 .Include(dashboard => dashboard.Tiles)
                     .ThenInclude(tile => tile.Dashboard)
-                .Include(dashboard => dashboard.Tiles)
-                    .ThenInclude(tile => tile.User)
+                .Where(dashboard => dashboard.OrganizationId == organizationId)
                 .ToListAsync();
 
             return _mapper.Map<ICollection<DashboardDto>>(dashboards);
