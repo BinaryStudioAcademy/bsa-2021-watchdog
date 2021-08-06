@@ -1,0 +1,34 @@
+@import src/styles/variables
+@import src/styles/mixins
+
+.invite-wrapper
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    align-items: center
+    padding: 20px
+    @include title
+    @include background-gray
+
+.members-container
+    padding: 20px
+
+.filter
+    display: flex
+    flex-direction: row
+    align-items: center
+    grid-gap: 20px
+    padding: 20px
+    .search-members
+        width: 100%
+.filter-input
+    display: flex
+    flex-direction: row
+    align-items: center
+    height: 30px
+    width: 100%
+    .search-button
+        padding: 10px
+    input
+        width: 100%
+    
