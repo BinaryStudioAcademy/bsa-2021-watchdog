@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Watchdog.Core.DAL.Context.EntityConfigurations;
 using Watchdog.Core.DAL.Entities;
 

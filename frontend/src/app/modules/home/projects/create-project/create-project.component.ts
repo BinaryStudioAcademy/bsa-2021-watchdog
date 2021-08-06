@@ -8,9 +8,6 @@ import { PlatformService } from '@core/services/platform.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { Platform } from '@shared/models/platforms/platform';
 import { Team } from '@shared/models/projects/team';
-import { DomSanitizer } from '@angular/platform-browser';
-import { HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-create-project',
@@ -41,8 +38,7 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
     constructor(
         private toastNotifications: ToastNotificationService,
         private platformService: PlatformService,
-        private fakeData: FakeData,
-        private sanitizer: DomSanitizer
+        private fakeData: FakeData
     ) {
         super();
     }
@@ -51,11 +47,11 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
         this.initData();
         this.initFakeData();
         this.platformTabItems = [
-            { label: 'All', command: (event) => this.onTabChange(event) },
-            { label: 'Browser', command: (event) => this.onTabChange(event) },
-            { label: 'Server', command: (event) => this.onTabChange(event) },
-            { label: 'Mobile', command: (event) => this.onTabChange(event) },
-            { label: 'Desktop', command: (event) => this.onTabChange(event) }
+            { label: 'All', disabled: true, command: (event) => this.onTabChange(event?.item.label) },
+            { label: 'Browser', disabled: true, command: (event) => this.onTabChange(event?.item.label) },
+            { label: 'Server', disabled: true, command: (event) => this.onTabChange(event?.item.label) },
+            { label: 'Mobile', disabled: true, command: (event) => this.onTabChange(event?.item.label) },
+            { label: 'Desktop', disabled: true, command: (event) => this.onTabChange(event?.item.label) }
         ];
         this.activePlatformTabItem = Object.assign(this.platformTabItems[0]);
         this.selectedAlertType = String(this.alertTypes[0]);
@@ -91,9 +87,16 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
         this.platformService
             .getPlatforms()
             .pipe(this.untilThis)
-            .subscribe(platforms => {
-                this.platformCards = this.viewPlatformCards = platforms;
+            .subscribe(async platforms => {
+                await new Promise((x) => setTimeout(x,2000));
+                for (const platformTabItem of this.platformTabItems) {
+                    platformTabItem.disabled = false;
+                }
+                this.platformTabItems = this.platformTabItems.concat();
+                this.platformCards = platforms;
+                this.viewPlatformCards = [...platforms];
                 this.loadingNumber -= 1;
+
             }, error => {
                 this.toastNotifications.error(`${error}`);
                 this.loadingNumber -= 1;
@@ -108,29 +111,31 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
         this.userTeams = this.fakeData.fakeTeams;
     }
 
-    onTabChange(event?: any): void {
+    onTabChange(label: string = ''): void {
         this.selectedPlatformId = undefined;
-        switch (event?.item.label ?? '') {
-            case 'Browser': {
-                this.viewPlatformCards = [...this.platformCards.filter(value => value.platformTypes.isBrowser)];
-                break;
-            }
-            case 'Server': {
-                this.viewPlatformCards = [...this.platformCards.filter(value => value.platformTypes.isServer)];
-                break;
-            }
-            case 'Mobile': {
-                this.viewPlatformCards = [...this.platformCards.filter(value => value.platformTypes.isMobile)];
-                break;
-            }
-            case 'Desktop': {
-                this.viewPlatformCards = [...this.platformCards.filter(value => value.platformTypes.isDesktop)];
-                break;
-            }
-            default: {
-                this.viewPlatformCards = [...this.platformCards];
-                break;
-            }
+        if (this.platformCards) {
+            switch (label) {    
+                case 'Browser': {
+                    this.viewPlatformCards = this.platformCards.filter(value => value.platformTypes.isBrowser);
+                    break;
+                }
+                case 'Server': {
+                    this.viewPlatformCards = this.platformCards.filter(value => value.platformTypes.isServer);
+                    break;
+                }
+                case 'Mobile': {
+                    this.viewPlatformCards = this.platformCards.filter(value => value.platformTypes.isMobile);
+                    break;
+                }
+                case 'Desktop': {
+                    this.viewPlatformCards = this.platformCards.filter(value => value.platformTypes.isDesktop);
+                    break;
+                }
+                default: {
+                    this.viewPlatformCards = this.platformCards.concat();
+                    break;
+                }
+            } 
         }
     }
 
