@@ -18,7 +18,9 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     dashboardsShown: boolean = false;
     displayModal: boolean = false;
     authorizedUser: User;
+    //fake
     fakeOrganizationId = 1;
+    //TODO Change fake by real data
 
     constructor(
         private broadcastHub: BroadcastHubService,

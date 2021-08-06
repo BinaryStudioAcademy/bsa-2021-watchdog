@@ -16,7 +16,7 @@ export class AddDashboardComponent implements OnInit {
     //fake data
     fakeOrganizationId = 1;
     fakeUserId = 1;
-
+    //TODO Change fake by real data
     constructor(private dashboardService: DashboardService) {
         this.icons = dashboardService.getIcons();
     }
