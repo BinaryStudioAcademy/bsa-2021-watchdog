@@ -13,7 +13,7 @@ namespace Watchdog.Core.API.Middlewares
 
         private readonly RequestDelegate _next;
         private readonly ILogger<GenericExceptionHandlerMiddleware> _logger;
-       
+
         public GenericExceptionHandlerMiddleware(RequestDelegate next, ILogger<GenericExceptionHandlerMiddleware> logger)
         {
             _next = next;

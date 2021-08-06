@@ -23,7 +23,7 @@ namespace Watchdog.Core.DAL.Context
         private const int _numberOfTiles = 25;
         private const int _numberOfUsers = 20;
 
-        private static readonly string[] _roles =  { "Owner", "Manager", "Viewer" };
+        private static readonly string[] _roles = { "Owner", "Manager", "Viewer" };
 
         public static void Configure(this ModelBuilder modelBuilder)
         {
@@ -125,7 +125,7 @@ namespace Watchdog.Core.DAL.Context
             return new Faker<Organization>()
                 .UseSeed(7927)
                 .RuleFor(o => o.Id, f => ++f.IndexVariable)
-                .RuleFor(o => o.OrganizationSlug, f => f.Lorem.Word().ClampLength(3,50,'-'))
+                .RuleFor(o => o.OrganizationSlug, f => f.Lorem.Word().ClampLength(3, 50, '-'))
                 .RuleFor(o => o.Name, f => f.Company.CompanyName().ClampLength(3, 50, ' '))
                 .RuleFor(o => o.OpenMembership, f => f.Random.Bool())
                 .RuleFor(o => o.DefaultRoleId, f => f.Random.Number(1, _roles.Length))

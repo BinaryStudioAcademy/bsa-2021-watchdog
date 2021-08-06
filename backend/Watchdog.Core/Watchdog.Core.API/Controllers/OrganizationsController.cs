@@ -59,10 +59,15 @@ namespace Watchdog.Core.API.Controllers
             return Ok(organization);
         }
         [HttpPatch("{organizationId}")]
-        public async Task<ActionResult<OrganizationDto>> Patch(int organizationId,[FromBody] JsonPatchDocument<SettingsOrganizationDto> organizationPatch)
+        public async Task<ActionResult<OrganizationDto>> Patch(int organizationId, [FromBody] JsonPatchDocument<SettingsOrganizationDto> organizationPatch)
         {
             var organization = new SettingsOrganizationDto();
-            organizationPatch.ApplyTo(organization);
+            organizationPatch.ApplyTo(organization, ModelState);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
 
             var updatedOrganization = await _organizationService.UpdateSettingsAsync(organizationId, organization);
             return Ok(updatedOrganization);

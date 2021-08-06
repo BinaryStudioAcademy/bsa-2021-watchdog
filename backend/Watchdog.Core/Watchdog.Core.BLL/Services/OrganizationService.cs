@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -8,7 +7,6 @@ using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Organization;
 using Watchdog.Core.DAL.Context;
-using Watchdog.Core.DAL.Entities;
 
 namespace Watchdog.Core.BLL.Services
 {
@@ -67,8 +65,8 @@ namespace Watchdog.Core.BLL.Services
         {
             var reg = new Regex(@"^[\w\-]+$");
             if (organizationSlug.Length > 50 || organizationSlug.Length < 3 || !reg.IsMatch(organizationSlug))
-            { 
-                return false; 
+            {
+                return false;
             }
 
             return !(await _context.Organizations.ToListAsync()).Where(o => o.OrganizationSlug == organizationSlug).Any();
