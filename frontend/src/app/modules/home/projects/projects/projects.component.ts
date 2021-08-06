@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Project } from '@shared/models/projects/project';
 import { FakeData } from '@modules/home/projects/fake-data';
+import { BaseComponent } from '@core/components/base/base.component';
+import { ProjectService } from '@core/services/project.service';
+import { ToastNotificationService } from '@core/services/toast-notification.service';
 
 @Component({
     selector: 'app-projects',
@@ -9,22 +12,31 @@ import { FakeData } from '@modules/home/projects/fake-data';
     styleUrls: ['./projects.component.sass'],
     providers: [FakeData]
 })
-export class ProjectsComponent implements OnInit {
+export class ProjectsComponent extends BaseComponent implements OnInit {
     public projects: Project[];
-
-    constructor(private router: Router,
-        private fakeData: FakeData) {
+    public loadingNumber = 0;
+    constructor(
+        private projectService: ProjectService,
+        private toastNotifications: ToastNotificationService) {
+        super();
     }
 
     ngOnInit(): void {
-        this.initFakeData();
+        this.initData();
     }
 
-    initFakeData() {
-        this.projects = this.fakeData.fakeProjects;
-    }
+    initData() {
+        this.loadingNumber += 1;
+        this.projectService
+        .getProjectsByOrganizationId(1)
+        .pipe(this.untilThis)
+        .subscribe(projects => {
+            this.projects = projects
+            this.loadingNumber -= 1;
 
-    public onClickCreateProject(): void {
-        this.router.navigateByUrl(`${this.router.url}/create`).then(r => r);
+        }, error => {
+            this.toastNotifications.error(`${error}`);
+            this.loadingNumber -= 1;
+        });
     }
 }

@@ -87,8 +87,7 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
         this.platformService
             .getPlatforms()
             .pipe(this.untilThis)
-            .subscribe(async platforms => {
-                await new Promise((x) => setTimeout(x,2000));
+            .subscribe(platforms => {
                 for (const platformTabItem of this.platformTabItems) {
                     platformTabItem.disabled = false;
                 }

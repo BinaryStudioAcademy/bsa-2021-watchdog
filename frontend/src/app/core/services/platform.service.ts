@@ -1,4 +1,3 @@
-import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Platform } from '@shared/models/platforms/platform';
 import { Observable } from 'rxjs';
