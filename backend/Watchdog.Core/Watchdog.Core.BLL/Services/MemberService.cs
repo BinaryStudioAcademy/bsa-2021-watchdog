@@ -26,7 +26,7 @@ namespace Watchdog.Core.BLL.Services
         {
             ExampleTemplateData data = new()
             {
-                Name = memberDto.FullName,
+                Name = memberDto.User.FirstName,
                 Subject = "Invitation letter"
             };
             return _emailSendService.SendAsync(memberDto.User.Email, data);
@@ -61,7 +61,7 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<IEnumerable<MemberDto>> GetMembersByOrganizationIdAsync(int id)
         {
-            return _mapper.Map<IEnumerable<MemberDto>>(await _context.Members.Where(m => m.OrganizationId == id).Include(m => m.User).ToListAsync());
+            return _mapper.Map<IEnumerable<MemberDto>>(await _context.Members.Where(m => m.OrganizationId == id).Include(m => m.User).Include(m=> m.Team).Include(m=> m.Role).ToListAsync());
         }
 
         public async Task<MemberDto> GetMemberByIdAsync(int id)
