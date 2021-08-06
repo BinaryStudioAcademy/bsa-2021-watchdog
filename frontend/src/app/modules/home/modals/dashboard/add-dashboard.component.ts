@@ -24,8 +24,9 @@ export class AddDashboardComponent implements OnInit {
                 '',
                 [
                     Validators.required,
-                    Validators.minLength(5),
-                    Validators.maxLength(50)
+                    Validators.minLength(3),
+                    Validators.maxLength(50),
+                    Validators.pattern('^[a-zA-Z0-9_. ]*$')
                 ]
             ),
             icon: new FormControl(

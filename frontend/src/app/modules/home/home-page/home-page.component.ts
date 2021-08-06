@@ -52,10 +52,12 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
             .subscribe(() => {
                 this.getAllDashboards();
                 this.toastNotificationService.success('Dashboard has been added');
+            }, error => {
+                this.toastNotificationService.error(`${error}`, 'Error', 2000);
             });
     }
 
-    getAllDashboards() {
+    async getAllDashboards() {
         this.dashboardService.getAll()
             .pipe(this.untilThis)
             .subscribe(resp => {
@@ -69,6 +71,8 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
                 this.deleteSubscription$ = this.deleteDataService.currentMessage
                     .subscribe(id => {
                         this.dashboards = this.dashboards.filter(d => d.id !== id);
+                    }, error => {
+                        this.toastNotificationService.error(`${error}`, 'Error', 2000);
                     });
             });
     }

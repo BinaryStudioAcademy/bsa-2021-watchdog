@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { BaseComponent } from '@core/components/base/base.component';
 import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
+import { SpinnerService } from '@core/services/spinner.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -24,6 +25,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         private router: Router,
         private dashboardService: DashboardService,
         private toastNotificationService: ToastNotificationService,
+        private spinnerService: SpinnerService,
         private updateDataService: DataService<Dashboard>,
         private deleteDataService: DataService<number>
     ) {
@@ -31,6 +33,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     }
 
     ngOnInit(): void {
+        this.spinnerService.show();
         this.route.params.subscribe(params => {
             const { id } = params;
             this.showTileMenu = false;
@@ -41,7 +44,12 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                     this.updateSubscription$ = this.updateDataService.currentMessage
                         .subscribe((dashboard) => {
                             this.dashboard = dashboard;
+                        }, error => {
+                            this.toastNotificationService.error(`${error}`, 'Error', 2000);
                         });
+                    this.spinnerService.hide();
+                }, error => {
+                    this.toastNotificationService.error(`${error}`, 'Error', 2000)
                 });
         });
     }
@@ -54,17 +62,24 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                 this.dashboard = resp.body;
                 this.updateDataService.changeMessage(this.dashboard);
                 this.toastNotificationService.success('Dashboard has been updateded');
+            }, error => {
+                this.toastNotificationService.error(`${error}`, 'Error', 2000);
             });
     }
 
     deleteDashboard() {
+        this.spinnerService.show();
         this.dashboardService.deleteDashboard(this.dashboard.id)
             .pipe(this.untilThis)
             .subscribe(() => {
                 this.router.navigate(['/home/projects']).then(r => r);
                 this.toastNotificationService.success('Dashboard has been deleted');
+                this.deleteDataService.changeMessage(this.dashboard.id);
+                this.spinnerService.hide();
+            }, error => {
+                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.spinnerService.hide();
             });
-        this.deleteDataService.changeMessage(this.dashboard.id);
     }
 
     toggleTileMenu(): void {
