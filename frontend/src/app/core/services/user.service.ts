@@ -11,7 +11,7 @@ import { HttpInternalService } from './http-internal.service';
 export class UserService {
     constructor(private http: HttpInternalService) { }
 
-    public getUserById(id: number) {
+    public getUserById(id: number): Observable<HttpResponse<User>> {
         return this.http.getFullRequest<User>(`${environment.coreUrl}/user`, { id });
     }
 
