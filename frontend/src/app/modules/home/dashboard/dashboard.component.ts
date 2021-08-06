@@ -49,7 +49,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                         });
                     this.spinnerService.hide();
                 }, error => {
-                    this.toastNotificationService.error(`${error}`, 'Error', 2000)
+                    this.toastNotificationService.error(`${error}`, 'Error', 2000);
                 });
         });
     }

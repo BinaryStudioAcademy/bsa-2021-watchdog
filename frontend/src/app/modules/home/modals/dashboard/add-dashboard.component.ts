@@ -40,6 +40,9 @@ export class AddDashboardComponent implements OnInit {
 
     saveHandle(): void {
         const dashboard: NewDashboard = <NewDashboard> this.formGroup.value;
+        //fake date
+        dashboard.createdBy = 1;
+        dashboard.organizationId = 1;
         this.save.emit(dashboard);
     }
 }

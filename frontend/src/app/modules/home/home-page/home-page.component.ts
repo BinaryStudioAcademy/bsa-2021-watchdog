@@ -45,8 +45,6 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
 
     addDashboard(newDashboard: NewDashboard) {
         this.displayModal = false;
-        newDashboard.createdBy = 1;
-        newDashboard.organizationId = 1;
         this.dashboardService.addDashboard(newDashboard)
             .pipe(this.untilThis)
             .subscribe(() => {
