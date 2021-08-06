@@ -1,25 +1,25 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Watchdog.Core.DAL.Context;
+using Watchdog.Core.BLL.Services.Abstract;
+using Watchdog.Core.Common.DTO.Application;
 
 namespace Watchdog.Core.API.Controllers
 {
-    [AllowAnonymous] // ??
     [Route("[controller]")]
     [ApiController]
     public class ApplicationController : ControllerBase
     {
-        private readonly WatchdogCoreContext _context;
+        private readonly IApplicationService _applicationService;
 
-        public ApplicationController(WatchdogCoreContext context)
+        public ApplicationController(IApplicationService applicationService)
         {
-            _context = context;
+            _applicationService = applicationService;
         }
-        [HttpGet]
-        public async Task<ActionResult> GetAllProgects()
+        [HttpGet("organization/{organizationId}")]
+        public async Task<ActionResult<IEnumerable<ApplicationDto>>> GetApplicationsByOrganizationId(int organizationId)
         {
-            return Ok(_context.Platforms);
+            return Ok(await _applicationService.GetApplicationsByApplicationId(organizationId));
         }
     }
 }

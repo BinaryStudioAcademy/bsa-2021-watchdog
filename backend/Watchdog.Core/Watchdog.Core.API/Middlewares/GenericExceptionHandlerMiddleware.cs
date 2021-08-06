@@ -44,7 +44,7 @@ namespace Watchdog.Core.API.Middlewares
                 _ => 500
             };
 
-            return context.Response.WriteAsync(exception.Message);
+            return context.Response.WriteAsync($"{{ \"message\":\"{exception.Message}\" }}");
         }
     }
 }

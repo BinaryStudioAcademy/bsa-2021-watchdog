@@ -19,6 +19,7 @@ namespace Watchdog.Core.API.Extensions
                 .AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
+            services.AddTransient<IApplicationService, ApplicationService>();
             services.AddTransient<IPlatformService, PlatformService>();
             services.AddTransient<ISampleService, SampleService>();
             services.AddTransient<IOrganizationService, OrganizationService>();
