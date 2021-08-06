@@ -16,7 +16,7 @@ export class DashboardService {
     }
 
     public getAll(): Observable<HttpResponse<Dashboard[]>> {
-        return this.httpService.getFullRequest<Dashboard[]>(`${environment.coreUrl}/dashboard`);
+        return this.httpService.getFullRequest<Dashboard[]>(`${environment.coreUrl}/dashboard/organization/1`);
     }
 
     public get(id: string): Observable<HttpResponse<Dashboard>> {
@@ -32,6 +32,6 @@ export class DashboardService {
     }
 
     public updateDashboard(updateDashboard: UpdateDashboard): Observable<HttpResponse<Dashboard>> {
-        return this.httpService.putFullRequest<Dashboard>(`${environment.coreUrl}/dashboard/${updateDashboard.id}`, updateDashboard);
+        return this.httpService.putFullRequest<Dashboard>(`${environment.coreUrl}/dashboard`, updateDashboard);
     }
 }
