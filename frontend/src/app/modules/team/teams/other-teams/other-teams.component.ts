@@ -37,7 +37,7 @@ export class OtherTeamsComponent extends BaseComponent implements OnInit {
 
     joinTeam(teamId: number) {
         this.teamService
-            .joinTeam({ teamId, memberId: this.currentUserId })
+            .joinTeam(teamId, this.currentUserId)
             .pipe(this.untilThis)
             .subscribe(response => {
                 this.joinTeamEvent.emit(response.body);

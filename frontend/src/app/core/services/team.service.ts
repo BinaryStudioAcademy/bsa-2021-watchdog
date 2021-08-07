@@ -32,7 +32,8 @@ export class TeamService {
         return this.httpService.postFullRequest(`${this.routePrefix}`, newTeam);
     }
 
-    public joinTeam(teamMember: TeamMember): Observable<HttpResponse<Team>> {
+    public joinTeam(teamId: number, memberId: number): Observable<HttpResponse<Team>> {
+        const teamMember: TeamMember = { teamId, memberId };
         return this.httpService.postFullRequest(`${this.routePrefix}/joinTeam`, teamMember);
     }
 

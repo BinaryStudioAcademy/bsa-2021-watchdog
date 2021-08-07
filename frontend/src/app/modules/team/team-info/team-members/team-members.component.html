@@ -3,7 +3,7 @@
         <button pButton pRipple>Add member</button>
     </ng-template>
     <div class="list">
-        <app-loading-spinner position="absolute"></app-loading-spinner>
+        <app-loading-spinner *ngIf="isLoading" [overlay]="true"></app-loading-spinner>
         <div class="list-item" *ngFor="let member of team.members">
             <p-avatar size="large" shape="circle"
                 [label]="member?.user.firstName.substr(0,1).toUpperCase()+member?.user.lastName.substr(0,1).toUpperCase()">
