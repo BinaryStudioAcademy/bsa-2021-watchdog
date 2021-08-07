@@ -11,6 +11,7 @@ namespace Watchdog.Core.DAL.Entities
         }
 
         public string Name { get; set; }
+        public string Icon { get; set; }
 
         public User User { get; set; }
 
