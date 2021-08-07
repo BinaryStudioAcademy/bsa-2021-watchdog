@@ -6,6 +6,7 @@ namespace Watchdog.Core.BLL.Services.Abstract
 {
     public interface ITeamService
     {
+        Task<TeamDto> GetTeamAsync(int teamId);
         Task<ICollection<TeamDto>> GetAllTeamsAsync(int organizationId);
         Task<ICollection<TeamDto>> GetMemberTeamsAsync(int organizationId, int memberId, bool isForMemberInTeam);
         Task<TeamDto> CreateTeamAsync(NewTeamDto newTeam);

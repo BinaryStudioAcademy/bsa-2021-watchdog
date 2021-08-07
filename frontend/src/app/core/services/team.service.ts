@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpInternalService } from '@core/services/http-internal.service';
-import { Observable } from 'rxjs';
+import { Observable } from "rxjs";
 import { Team } from '@shared/models/team/team';
 import { HttpResponse } from '@angular/common/http';
 import { TeamMember } from '@shared/models/team/team-member';
@@ -8,12 +8,16 @@ import { NewTeam } from '@shared/models/team/new-team';
 
 @Injectable({ providedIn: 'root' })
 export class TeamService {
-    public readonly routePrefix = '/team';
+    public readonly routePrefix = '/teams';
 
     constructor(private httpService: HttpInternalService) { }
 
-    public getTeams(): Observable<HttpResponse<Team[]>> {
-        return this.httpService.getFullRequest(`${this.routePrefix}`);
+    public getTeam(id: number): Observable<Team> {
+        return this.httpService.getRequest<Team>(`${this.routePrefix}/${id}`);
+    }
+
+    public getTeams(id: number): Observable<Team[]> {
+        return this.httpService.getRequest<Team[]>(`${this.routePrefix}/organization/${id}`);
     }
 
     public getMemberTeams(organizationId: number, memberId: number): Observable<HttpResponse<Team[]>> {

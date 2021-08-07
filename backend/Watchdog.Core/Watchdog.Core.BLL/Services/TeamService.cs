@@ -15,12 +15,17 @@ namespace Watchdog.Core.BLL.Services
     {
         public TeamService(WatchdogCoreContext context, IMapper mapper) : base(context, mapper) { }
 
+        public async Task<TeamDto> GetTeamAsync(int teamId)
+        {
+            var teamEntity = await GetTeamsWithMembersAsQueryable()
+                .FirstOrDefaultAsync(team => team.Id == teamId);
+
+            return _mapper.Map<TeamDto>(teamEntity);
+        }
+
         public async Task<ICollection<TeamDto>> GetAllTeamsAsync(int organizationId)
         {
-            var teams = await _context.Teams
-                .Include(team => team.TeamMembers)
-                    .ThenInclude(teamMember => teamMember.Member)
-                    .ThenInclude(teamMember => teamMember.User)
+            var teams = await GetTeamsWithMembersAsQueryable()
                 .Where(t => t.OrganizationId == organizationId)
                 .ToListAsync();
 
@@ -29,10 +34,7 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<ICollection<TeamDto>> GetMemberTeamsAsync(int organizationId, int memberId, bool isForMemberInTeam)
         {
-            var memberTeams = await _context.Teams
-                .Include(team => team.TeamMembers)
-                    .ThenInclude(teamMember => teamMember.Member)
-                    .ThenInclude(teamMember => teamMember.User)
+            var memberTeams = await GetTeamsWithMembersAsQueryable()
                 .Where(t => t.OrganizationId == organizationId)
                 .Where(t => isForMemberInTeam ?
                         t.TeamMembers.Any(tm => tm.MemberId == memberId) :
@@ -64,7 +66,7 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<TeamDto> UpdateTeamAsync(int teamId, UpdateTeamDto updateTeam)
         {
-            var existedTeam = await _context.Teams.FirstAsync(t => t.Id == teamId);
+            var existedTeam = await _context.Teams.FirstOrDefaultAsync(t => t.Id == teamId);
 
             var mergedTeam = _mapper.Map(updateTeam, existedTeam);
 
@@ -98,21 +100,18 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task DeleteTeamAsync(int teamId)
         {
-            var team = await _context.Teams.FirstAsync(t => t.Id == teamId);
+            var team = await _context.Teams.FirstOrDefaultAsync(t => t.Id == teamId);
             _context.Remove(team);
 
             await _context.SaveChangesAsync();
         }
 
-        private async Task<TeamDto> GetTeamAsync(int teamId)
+        private IQueryable<Team> GetTeamsWithMembersAsQueryable()
         {
-            var teamEntity = await _context.Teams
+            return _context.Teams
                 .Include(team => team.TeamMembers)
                     .ThenInclude(teamMember => teamMember.Member)
-                    .ThenInclude(teamMember => teamMember.User)
-                .FirstOrDefaultAsync(team => team.Id == teamId);
-
-            return _mapper.Map<TeamDto>(teamEntity);
+                    .ThenInclude(teamMember => teamMember.User);
         }
     }
 }
