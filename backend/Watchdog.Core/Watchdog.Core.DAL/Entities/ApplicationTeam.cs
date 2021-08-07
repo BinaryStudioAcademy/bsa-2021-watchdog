@@ -11,5 +11,7 @@ namespace Watchdog.Core.DAL.Entities
         public int TeamId { get; set; }
 
         public Team Team { get; set; }
+
+        public bool IsFavorite { get; set; }
     }
 }
