@@ -1,0 +1,27 @@
+<div class="title">#{{team?.name}}</div>
+<p-tabView styleClass="tabview-custom">
+    <p-tabPanel pStyleClass="panel" class="panel">
+        <ng-template pTemplate="header">
+            <div class="header">
+                <span>Members</span>
+            </div>
+        </ng-template>
+        <app-team-members *ngIf="team" [team]="team"></app-team-members>
+    </p-tabPanel>
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <div class="header">
+                <span>Projects</span>
+            </div>
+        </ng-template>
+        <app-team-projects></app-team-projects>
+    </p-tabPanel>
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <div class="header">
+                <span>Settings</span>
+            </div>
+        </ng-template>
+        <app-team-settings></app-team-settings>
+    </p-tabPanel>
+</p-tabView>

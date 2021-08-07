@@ -1,3 +1,7 @@
+import { TeamMembersComponent } from "./team-info/team-members/team-members.component";
+import { TeamProjectsComponent } from "./team-info/team-projects/team-projects.component";
+import { TeamSettingsComponent } from "./team-info/team-settings/team-settings.component";
+import { TeamInfoComponent } from "./team-info/team-info.component";
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
 import { TeamRoutingModule } from '@modules/team/team-routing.module';
@@ -11,7 +15,11 @@ import { CreateTeamComponent } from './create-team/create-team.component';
         TeamsComponent,
         UserTeamsComponent,
         OtherTeamsComponent,
-        CreateTeamComponent
+        CreateTeamComponent,
+        TeamInfoComponent,
+        TeamSettingsComponent,
+        TeamProjectsComponent,
+        TeamMembersComponent
     ],
     imports: [
         SharedModule,

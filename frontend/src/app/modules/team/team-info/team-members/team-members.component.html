@@ -1,0 +1,19 @@
+<p-panel styleClass="custom-panel" header="Members">
+    <ng-template pTemplate="header">
+        <button pButton pRipple>Add member</button>
+    </ng-template>
+    <div class="list">
+        <app-loading-spinner position="absolute"></app-loading-spinner>
+        <div class="list-item" *ngFor="let member of team.members">
+            <p-avatar size="large" shape="circle"
+                [label]="member?.user.firstName.substr(0,1).toUpperCase()+member?.user.lastName.substr(0,1).toUpperCase()">
+            </p-avatar>
+            <div>
+                <div>{{member?.user.firstName+"
+                    "+member?.user.lastName}}</div>
+                <div>{{member?.user.email}}</div>
+            </div>
+            <button pButton (click)="removeFromTeam(member.id)">Remove</button>
+        </div>
+    </div>
+</p-panel>

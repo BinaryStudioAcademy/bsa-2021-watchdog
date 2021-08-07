@@ -1,0 +1,21 @@
+@import src/styles/variables
+
+button
+    margin-left: auto
+
+
+.list
+    &-item
+        border-bottom: 1px solid $border-color
+        padding: $half-indent
+        display: flex
+        flex-direction: row
+        align-items: center
+        gap: $half-indent
+        justify-content: space-between
+    .list-item:last-child
+        border-bottom: none
+
+::ng-deep
+    .custom-panel .p-panel-content
+        padding: 0

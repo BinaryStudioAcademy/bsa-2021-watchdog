@@ -3,17 +3,17 @@
         <app-loading-spinner *ngIf="isLoading" [size]="'10px'"></app-loading-spinner>
         <div class="team" *ngFor="let team of teams">
             <div class="team-info">
-                <div class="team-avatar">
+                <a class="team-avatar" [routerLink]="'./'+team.id">
                     <p-avatar styleClass="team-info-avatar" label="{{teamService.getLabel(team.name)}}"></p-avatar>
-                </div>
-                <div class="team-title">
+                </a>
+                <a class="team-title" [routerLink]="'./'+team.id">
                     <div class="team-name">
                         #{{team.name}}
                     </div>
                     <div class="team-members">
                         {{team.members.length}} members
                     </div>
-                </div>
+                </a>
             </div>
             <div>
                 <button pButton pRipple type="button" label="Join Team" class="teams-button join-leave-button"

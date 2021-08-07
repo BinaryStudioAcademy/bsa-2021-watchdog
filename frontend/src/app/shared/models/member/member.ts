@@ -1,4 +1,4 @@
-import { User } from '@shared/models/user/user';
+import { User } from '@core/models/user';
 
 export interface Member {
     id: number,

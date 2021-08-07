@@ -1,4 +1,4 @@
-import { User } from '@shared/models/user/user';
+import { User } from '@core/models/user';
 import { Organization } from '@shared/models/organization/organization';
 import { Member } from '@shared/models/member/member';
 
