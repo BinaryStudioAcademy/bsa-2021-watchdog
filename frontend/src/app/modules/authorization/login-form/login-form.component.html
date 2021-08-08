@@ -1,11 +1,11 @@
 <form action="/login" method="POST" class="login-inp">
     <span class="p-float-label">
-        <input id="float-input-email" type="text" name="email" pInputText [(ngModel)]="user.email">
+        <input id="float-input-email" type="text" name="email" pInputText [(ngModel)]="email">
         <label for="float-input-email">Email</label>
     </span>
     <span class="p-float-label">
-        <p-password id="float-input-pass" name="password" [(ngModel)]="user.password" [feedback]="false"
-            [toggleMask]="true"></p-password>
+        <p-password id="float-input-pass" name="password" [(ngModel)]="password" [feedback]="false" [toggleMask]="true">
+        </p-password>
         <label for="float-input-pass">Password</label>
     </span>
     <span class="p-field-checkbox">

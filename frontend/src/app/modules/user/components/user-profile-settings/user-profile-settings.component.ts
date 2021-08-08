@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { BaseComponent } from '@core/components/base/base.component';
 import { User } from '@core/models/user';
@@ -12,9 +12,7 @@ import { UserService } from '@core/services/user.service';
     styleUrls: ['./user-profile-settings.component.sass']
 })
 export class UserProfileSettingsComponent extends BaseComponent implements OnInit {
-    public user = {} as User;
-    userName: string;
-    userEmail: string;
+    public user: User;
 
     editProfileForm: FormGroup;
 
@@ -24,6 +22,7 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
         private toastNotificationService: ToastNotificationService
     ) {
         super();
+        this.user = authService.getUser();
     }
 
     ngOnInit(): void {
@@ -36,21 +35,11 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
         );
     }
 
-    submit(editForm) {
-        this.user.password = editForm.value.password;
+    onSubmit() {
         this.userService.updateUser(this.user)
             .pipe(this.untilThis)
             .subscribe(() => {
-                this.authService.updatePassword(this.user.password);
-                this.updateInfo();
                 this.toastNotificationService.success('Information has been updated');
             });
-    }
-
-    updateInfo() {
-        // TODO: Implement user provider
-        // this.user = this.authService.getUser();
-        this.userName = `${this.user.firstName} ${this.user.lastName}`;
-        this.userEmail = this.user.email;
     }
 }
