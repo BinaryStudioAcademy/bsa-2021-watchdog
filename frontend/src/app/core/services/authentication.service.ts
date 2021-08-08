@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { filter, mergeMap, tap } from 'rxjs/operators';
 import { from, of } from 'rxjs';
-import { User } from '@core/models/user';
+import { User } from '@shared/models/user/user';
 import { UserService } from './user.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { HttpResponse } from '@angular/common/http';
