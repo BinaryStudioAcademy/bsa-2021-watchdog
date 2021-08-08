@@ -1,43 +1,51 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Member } from '@core/models/member';
-import { Option } from '@core/models/Option';
-import { Organization } from '@core/models/organization';
-import { User } from '@core/models/user';
+import { User } from '@shared/models/user/user';
+import { Role } from '@shared/models/role/role';
+import { Member } from '@shared/models/member/member'
+import { Organization } from '@shared/models/organization/organization';
 import { AuthenticationService } from '@core/services/authentication.service';
+import { RoleService } from '@core/services/role.service';
+import { BaseComponent } from '@core/components/base/base.component';
 
 @Component({
     selector: 'app-registration-form',
     templateUrl: './registration-form.component.html',
     styleUrls: ['./registration-form.component.sass']
 })
-export class RegistrationFormComponent implements OnInit {
+export class RegistrationFormComponent extends BaseComponent implements OnInit {
     public user = {} as User;
+    public role: Role;
     public member = {} as Member; // TODO: needs implementation (public role: string;)
     public organization = {} as Organization;
 
     public password: string;
     public confirmPassword: string;
     public rememberMe: boolean;
-    public role: string;
+    public organizationSize: string;
 
-    public roles: Option[];
-    public organizationSizes: Option[];
+    public roles: Role[];
+    public organizationSizes: { id: number, name: string }[];
 
-    constructor(private authService: AuthenticationService) { }
+    constructor(
+        private authService: AuthenticationService,
+        private roleService: RoleService
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
-        this.roles = [
-            { name: 'frontend-dev', code: 'fd' },
-            { name: 'backend-dev', code: 'bd' },
-            { name: 'devOps', code: 'do' },
-        ];
+        this.roleService.getRoles()
+            .pipe(this.untilThis)
+            .subscribe((roles: Role[]) => {
+                this.roles = roles;
+            });
+
         this.organizationSizes = [
-            { name: '1-10', code: 'ten' },
-            { name: '11-50', code: 'fifty' },
-            { name: '51-100', code: 'hundred' },
-            { name: '101-200', code: 'twohundred' },
-            { name: '200+', code: 'more' }
+            { id: 1, name: '1-10' },
+            { id: 2, name: '11-50' },
+            { id: 3, name: '51-100' },
+            { id: 4, name: '101-200' },
+            { id: 5, name: '200+' }
         ];
     }
 

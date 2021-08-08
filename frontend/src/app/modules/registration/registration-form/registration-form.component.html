@@ -22,13 +22,12 @@
     <div class="reg-block">
         <span class="p-float-label">
             <p-dropdown [options]="roles" name="roles" id="float-input-role" [(ngModel)]="role" placeholder=" "
-                [showClear]="true" optionValue="code" optionLabel="name"></p-dropdown>
+                [showClear]="true" optionValue="id" optionLabel="name"></p-dropdown>
             <label for="float-input-role">Role</label>
         </span>
         <span class="p-float-label">
             <p-dropdown [options]="organizationSizes" name="organizationSizes" id="float-input-comp-size"
-                [(ngModel)]="organization.size" placeholder=" " [showClear]="true" optionValue="code"
-                optionLabel="name">
+                [(ngModel)]="organizationSize" placeholder=" " [showClear]="true" optionValue="id" optionLabel="name">
             </p-dropdown>
             <label for="float-input-comp-size">Organization size</label>
         </span>
