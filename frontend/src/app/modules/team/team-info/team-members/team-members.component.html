@@ -1,6 +1,11 @@
 <p-panel styleClass="custom-panel" header="Members">
     <ng-template pTemplate="header">
-        <button pButton pRipple>Add member</button>
+        <button pButton pRipple (click)="op.toggle($event)">Add member</button>
+        <p-overlayPanel #op>
+            <ng-template pTemplate>
+                Content
+            </ng-template>
+        </p-overlayPanel>
     </ng-template>
     <div class="list">
         <app-loading-spinner *ngIf="isLoading" [overlay]="true"></app-loading-spinner>
