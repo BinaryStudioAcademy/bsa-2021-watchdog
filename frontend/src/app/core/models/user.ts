@@ -1,7 +1,8 @@
 export interface User {
-    id: number;
+    uid: string;
     email: string;
-    password: string;
     firstName: string;
     lastName: string;
+    avatarUrl: string;
+    registeredAt: string;
 }
