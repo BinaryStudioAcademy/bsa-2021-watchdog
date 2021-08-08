@@ -5,14 +5,17 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { filter, mergeMap, tap } from 'rxjs/operators';
 import { from, of } from 'rxjs';
-import { AuthUser } from '@core/models/auth/auth-user';
+import { User } from '@core/models/user';
+import { UserService } from './user.service';
+import { BaseComponent } from '@core/components/base/base.component';
+import { HttpResponse } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
 })
-export class AuthenticationService {
+export class AuthenticationService extends BaseComponent {
     private firebaseUser: firebase.User;
-    private authUser: AuthUser;
+    private user: User;
     private readonly tokenHelper: JwtHelperService;
 
     private token: string | null;
@@ -20,8 +23,10 @@ export class AuthenticationService {
 
     constructor(
         private angularFireAuth: AngularFireAuth,
+        private userService: UserService,
         private router: Router
     ) {
+        super();
         this.tokenHelper = new JwtHelperService();
     }
 
@@ -42,15 +47,15 @@ export class AuthenticationService {
     }
 
     getUser() {
-        if (!this.authUser) {
-            this.authUser = JSON.parse(localStorage.getItem('authUser'));
+        if (!this.user) {
+            this.user = JSON.parse(localStorage.getItem('user'));
         }
-        return this.authUser;
+        return this.user;
     }
 
-    setUser(user: AuthUser) {
-        this.authUser = user;
-        localStorage.setItem('authUser', JSON.stringify(this.authUser));
+    setUser(user: User) {
+        this.user = user;
+        localStorage.setItem('user', JSON.stringify(this.user));
     }
 
     getJwToken() {
@@ -84,11 +89,20 @@ export class AuthenticationService {
             );
     }
 
-    signOnWithEmailAndPassword(email: string, password: string, route: string[]) {
+    signOnWithEmailAndPassword(userInfo: User, password: string, route: string[]) {
         return this.angularFireAuth
-            .createUserWithEmailAndPassword(email, password)
+            .createUserWithEmailAndPassword(userInfo.email, password)
             .then(userCredential => {
-                this.login(userCredential.user, route);
+                userInfo.uid = userCredential.user.uid;
+                userInfo.avatarUrl = "";
+                userInfo.registeredAt = new Date().toISOString();
+
+                this.pushUserInfoToApi(userInfo)
+                    .pipe(this.untilThis)
+                    .subscribe(() => {
+                        this.setUser(userInfo);
+                        this.login(userCredential.user, route);
+                    });
             })
             .catch(error => {
                 console.warn(error);
@@ -99,7 +113,12 @@ export class AuthenticationService {
         return this.angularFireAuth
             .signInWithEmailAndPassword(email, password)
             .then(userCredential => {
-                this.login(userCredential.user, route);
+                this.pullUserInfoFromApi(userCredential.user.uid)
+                    .pipe(this.untilThis)
+                    .subscribe((response: HttpResponse<User>) => {
+                        this.setUser(response.body);
+                        this.login(userCredential.user, route);
+                    });
             })
             .catch(error => {
                 console.warn(error);
@@ -113,9 +132,23 @@ export class AuthenticationService {
         return this.angularFireAuth
             .signInWithPopup(provider)
             .then(userCredential => {
-                this.login(userCredential.user, route);
-                const userInfo = this.pullUserInfoFromGitHub(userCredential);
-                this.setUser(userInfo);
+                if (userCredential.additionalUserInfo.isNewUser) {
+                    const userInfo = this.pullUserInfoFromGitHub(userCredential);
+                    this.pushUserInfoToApi(userInfo)
+                        .pipe(this.untilThis)
+                        .subscribe(() => {
+                            this.setUser(userInfo);
+                            this.login(userCredential.user, route);
+                        });
+                }
+                else {
+                    this.pullUserInfoFromApi(userCredential.user.uid)
+                        .pipe(this.untilThis)
+                        .subscribe((response: HttpResponse<User>) => {
+                            this.setUser(response.body);
+                            this.login(userCredential.user, route);
+                        });
+                }
             })
             .catch(error => {
                 console.warn(error);
@@ -129,9 +162,23 @@ export class AuthenticationService {
         return this.angularFireAuth
             .signInWithPopup(provider)
             .then(userCredential => {
-                this.login(userCredential.user, route);
-                const userInfo = this.pullUserInfoFromGoogle(userCredential);
-                this.setUser(userInfo);
+                if (userCredential.additionalUserInfo.isNewUser) {
+                    const userInfo = this.pullUserInfoFromGoogle(userCredential);
+                    this.pushUserInfoToApi(userInfo)
+                        .pipe(this.untilThis)
+                        .subscribe(() => {
+                            this.setUser(userInfo);
+                            this.login(userCredential.user, route);
+                        });
+                }
+                else {
+                    this.pullUserInfoFromApi(userCredential.user.uid)
+                        .pipe(this.untilThis)
+                        .subscribe((response: HttpResponse<User>) => {
+                            this.setUser(response.body);
+                            this.login(userCredential.user, route);
+                        });
+                }
             })
             .catch(error => {
                 console.warn(error);
@@ -144,19 +191,28 @@ export class AuthenticationService {
             .signInWithPopup(provider)
             .then(userCredential => {
                 this.login(userCredential.user, route);
+                // TODO: implement setUser()
             })
             .catch(error => {
                 console.warn(error);
             });
     }
 
+    pushUserInfoToApi(user: User) {
+        return this.userService.createUser(user);
+    }
+
+    pullUserInfoFromApi(uid: string) {
+        return this.userService.getUser(uid);
+    }
+
     pullUserInfoFromGitHub(credential: firebase.auth.UserCredential) {
         const user = {
-            uId: credential.user.uid,
+            uid: credential.user.uid,
             email: credential.user.email,
-            username: credential.additionalUserInfo.username,
-            avatarUrl: credential.user.photoURL
-        } as AuthUser;
+            avatarUrl: credential.user.photoURL,
+            registeredAt: new Date().toISOString()
+        } as User;
 
         const name: string = credential.additionalUserInfo.profile['name'];
         if (name != null) {
@@ -168,13 +224,13 @@ export class AuthenticationService {
 
     pullUserInfoFromGoogle(credential: firebase.auth.UserCredential) {
         const user = {
-            uId: credential.user.uid,
+            uid: credential.user.uid,
             email: credential.user.email,
-            username: credential.user.displayName,
             firstName: credential.additionalUserInfo.profile['given_name'],
             lastName: credential.additionalUserInfo.profile['family_name'],
-            avatarUrl: credential.user.photoURL
-        } as AuthUser;
+            avatarUrl: credential.user.photoURL,
+            registeredAt: new Date().toISOString()
+        } as User;
 
         return user;
     }
