@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Watchdog.Core.DAL.Context;
 
 namespace Watchdog.Core.DAL.Migrations
 {
     [DbContext(typeof(WatchdogCoreContext))]
-    partial class WatchdogCoreContextModelSnapshot : ModelSnapshot
+    [Migration("20210808125710_UpdateDashboards")]
+    partial class UpdateDashboards
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,9 +173,6 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<int>("ApplicationId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsFavorite")
-                        .HasColumnType("bit");
-
                     b.Property<int>("TeamId")
                         .HasColumnType("int");
 
@@ -190,140 +189,120 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 1,
                             ApplicationId = 3,
-                            IsFavorite = false,
                             TeamId = 5
                         },
                         new
                         {
                             Id = 2,
                             ApplicationId = 2,
-                            IsFavorite = false,
                             TeamId = 1
                         },
                         new
                         {
                             Id = 3,
                             ApplicationId = 6,
-                            IsFavorite = false,
                             TeamId = 1
                         },
                         new
                         {
                             Id = 4,
                             ApplicationId = 2,
-                            IsFavorite = false,
                             TeamId = 5
                         },
                         new
                         {
                             Id = 5,
                             ApplicationId = 4,
-                            IsFavorite = false,
                             TeamId = 1
                         },
                         new
                         {
                             Id = 6,
                             ApplicationId = 5,
-                            IsFavorite = false,
                             TeamId = 3
                         },
                         new
                         {
                             Id = 7,
                             ApplicationId = 10,
-                            IsFavorite = false,
                             TeamId = 5
                         },
                         new
                         {
                             Id = 8,
                             ApplicationId = 10,
-                            IsFavorite = false,
                             TeamId = 4
                         },
                         new
                         {
                             Id = 9,
                             ApplicationId = 5,
-                            IsFavorite = false,
                             TeamId = 3
                         },
                         new
                         {
                             Id = 10,
                             ApplicationId = 5,
-                            IsFavorite = false,
                             TeamId = 3
                         },
                         new
                         {
                             Id = 11,
                             ApplicationId = 1,
-                            IsFavorite = false,
                             TeamId = 4
                         },
                         new
                         {
                             Id = 12,
                             ApplicationId = 5,
-                            IsFavorite = false,
                             TeamId = 1
                         },
                         new
                         {
                             Id = 13,
                             ApplicationId = 7,
-                            IsFavorite = false,
                             TeamId = 3
                         },
                         new
                         {
                             Id = 14,
                             ApplicationId = 3,
-                            IsFavorite = false,
                             TeamId = 2
                         },
                         new
                         {
                             Id = 15,
                             ApplicationId = 1,
-                            IsFavorite = false,
                             TeamId = 3
                         },
                         new
                         {
                             Id = 16,
                             ApplicationId = 1,
-                            IsFavorite = false,
                             TeamId = 5
                         },
                         new
                         {
                             Id = 17,
                             ApplicationId = 5,
-                            IsFavorite = false,
                             TeamId = 2
                         },
                         new
                         {
                             Id = 18,
                             ApplicationId = 9,
-                            IsFavorite = false,
                             TeamId = 4
                         },
                         new
                         {
                             Id = 19,
                             ApplicationId = 2,
-                            IsFavorite = false,
                             TeamId = 5
                         },
                         new
                         {
                             Id = 20,
                             ApplicationId = 4,
-                            IsFavorite = false,
                             TeamId = 5
                         });
                 });
@@ -1032,19 +1011,19 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "Quia dolores minus iusto delectus numquam ipsa vel aliquam quos. Sed ullam est. Ut et nihil nihil voluptatem neque. Occaecati voluptas perferendis impedit qui. Iusto ducimus sed qui quo consequatur eum doloremque sint. Eligendi minus minima molestiae voluptatem.",
+                            Description = "Sit est commodi explicabo numquam eaque aut est. Hic expedita natus ut impedit. Natus voluptas delectus. Cum dignissimos rem quaerat reiciendis incidunt dicta quam veritatis.",
                             Name = "Owner"
                         },
                         new
                         {
                             Id = 2,
-                            Description = "Velit officia voluptas rem voluptatem itaque ut ipsam quisquam. Aut reiciendis delectus quam quaerat qui ipsum autem consequatur. Reiciendis optio nostrum vero vel aliquid architecto minus eligendi officiis. Doloremque consequatur rerum vel. Omnis qui quis.",
+                            Description = "Ab hic incidunt alias omnis totam molestias et beatae. Soluta maxime cum repudiandae. Voluptatem et aspernatur explicabo voluptatibus adipisci. Totam id incidunt perspiciatis reprehenderit. Et magni et qui voluptas et. Nihil voluptas ut non provident illo voluptate rerum cupiditate asperiores.",
                             Name = "Manager"
                         },
                         new
                         {
                             Id = 3,
-                            Description = "Dolorem sed et vero ab hic recusandae. Voluptates odit unde molestias iste voluptas. Ullam maiores explicabo quibusdam eos labore dolorum. Cupiditate rerum ut sit id qui ut omnis sunt. Iure sequi culpa quae alias.",
+                            Description = "Ut omnis beatae expedita voluptatem ut eos et est. Dolores assumenda incidunt beatae quia inventore. Est eos reiciendis dolor aut quisquam dolorem non dolorem natus. Repellendus iure earum maxime provident placeat quae fugiat temporibus voluptatum. At ut accusamus consequuntur modi.",
                             Name = "Viewer"
                         });
                 });
