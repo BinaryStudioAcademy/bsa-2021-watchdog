@@ -4,4 +4,17 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NEST" Version="7.13.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DTO" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Watchdog.RabbitMQ.Shared\Watchdog.RabbitMQ.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

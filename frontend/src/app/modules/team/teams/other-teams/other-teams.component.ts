@@ -25,6 +25,8 @@ export class OtherTeamsComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        throw new Error();
+
         this.loadTeams();
 
         this.leavedTeam

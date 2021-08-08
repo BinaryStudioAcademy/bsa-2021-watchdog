@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.Collector.API", "Watchdog.Collector\Watchdog.Collector.API\Watchdog.Collector.API.csproj", "{814F7F69-49DD-4591-A704-D9715DEBCD84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watchdog.Collector.BLL", "Watchdog.Collector\Watchdog.Collector.BLL\Watchdog.Collector.BLL.csproj", "{EEB83E7E-852C-4BDB-BB95-0902996B8069}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.Collector.BLL", "Watchdog.Collector\Watchdog.Collector.BLL\Watchdog.Collector.BLL.csproj", "{EEB83E7E-852C-4BDB-BB95-0902996B8069}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.RabbitMQ.Shared", "Watchdog.RabbitMQ.Shared\Watchdog.RabbitMQ.Shared.csproj", "{9E5884EC-6894-4789-92D5-F5104300A44B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{EEB83E7E-852C-4BDB-BB95-0902996B8069}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEB83E7E-852C-4BDB-BB95-0902996B8069}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEB83E7E-852C-4BDB-BB95-0902996B8069}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E5884EC-6894-4789-92D5-F5104300A44B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E5884EC-6894-4789-92D5-F5104300A44B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E5884EC-6894-4789-92D5-F5104300A44B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E5884EC-6894-4789-92D5-F5104300A44B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
