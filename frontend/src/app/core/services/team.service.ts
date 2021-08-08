@@ -52,4 +52,8 @@ export class TeamService {
 
         return label.toUpperCase();
     }
+
+    public isNameUnique(teamName: string): Observable<boolean> {
+        return this.httpService.getRequest(`${this.routePrefix}/teamName/${teamName}`);
+    }
 }
