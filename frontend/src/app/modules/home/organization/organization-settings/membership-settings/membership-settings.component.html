@@ -1,8 +1,5 @@
-<form [formGroup]="membershipForm" class="container-group">
-    <div class="container-header">
-        <h2>Membership</h2>
-    </div>
-    <div class="item">
+<p-panel header="Membership" class="container-group">
+    <form [formGroup]="membershipForm" class="item">
         <label class="item-definition">
             <div>Default Role</div>
             <div class="item-sub-text">The default role new members will receive</div>
@@ -19,8 +16,8 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="item">
+    </form>
+    <form [formGroup]="membershipForm" class="item">
         <label class="item-definition">
             <div>Open Membership</div>
             <div class="item-sub-text">Allow organization members to freely join or leave any team</div>
@@ -36,5 +33,5 @@
                 </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</p-panel>

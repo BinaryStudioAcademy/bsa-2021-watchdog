@@ -13,24 +13,24 @@ import { Team } from "@shared/models/team/team";
 })
 export class TeamInfoComponent extends BaseComponent implements OnInit {
     team: Team;
+    isLoading: boolean = false;
     constructor(
         private router: ActivatedRoute,
         public teamService: TeamService,
-        private spinnerService: SpinnerService,
         private toastService: ToastNotificationService
     ) { super(); }
 
     ngOnInit() {
-        this.spinnerService.show(true);
+        this.isLoading = true;
         this.router.paramMap.pipe(this.untilThis)
             .subscribe(param => {
                 this.teamService.getTeam(param.get('id'))
                     .subscribe(team => {
                         this.team = team;
-                        this.spinnerService.hide();
+                        this.isLoading = false;
                     }, error => {
-                        this.spinnerService.hide();
                         this.toastService.error(error);
+                        this.isLoading = false;
                     });
             })
     }
