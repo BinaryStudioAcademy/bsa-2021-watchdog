@@ -1,12 +1,12 @@
 @import src/styles/mixins
-@import ../../common-styles/variables
+@import src/styles/variables
 @import ../../common-styles/mixins
-    
+
 .content-container
     padding-top: $half-indent
     display: grid
     grid-auto-flow: row
-    
+
 
 .title-block
     padding: $indent
@@ -14,13 +14,14 @@
     display: grid
     grid-template-columns: 1fr 1fr
     @include title
-    
-    
+
+
 
     img
+        @include disable-select
         position: absolute
         left: 50%
-        
+
 
 .content-block
     display: grid

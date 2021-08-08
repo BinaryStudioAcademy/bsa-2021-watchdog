@@ -318,6 +318,9 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
+                    b.Property<string>("Icon")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(128)
@@ -338,122 +341,137 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2019, 10, 12, 6, 42, 6, 525, DateTimeKind.Unspecified).AddTicks(2732),
-                            CreatedBy = 3,
+                            CreatedAt = new DateTime(2021, 7, 7, 12, 18, 32, 231, DateTimeKind.Unspecified).AddTicks(2842),
+                            CreatedBy = 18,
+                            Icon = "pi-chart-line",
                             Name = "debitis",
-                            OrganizationId = 2
+                            OrganizationId = 1
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2019, 11, 3, 11, 13, 40, 934, DateTimeKind.Unspecified).AddTicks(2638),
+                            CreatedAt = new DateTime(2020, 11, 16, 13, 23, 24, 72, DateTimeKind.Unspecified).AddTicks(4979),
                             CreatedBy = 12,
-                            Name = "sit",
-                            OrganizationId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(2021, 2, 3, 17, 43, 11, 653, DateTimeKind.Unspecified).AddTicks(4170),
-                            CreatedBy = 7,
-                            Name = "error",
-                            OrganizationId = 2
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedAt = new DateTime(2020, 10, 22, 5, 11, 19, 396, DateTimeKind.Unspecified).AddTicks(4577),
-                            CreatedBy = 11,
-                            Name = "itaque",
-                            OrganizationId = 1
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedAt = new DateTime(2021, 7, 8, 13, 52, 55, 910, DateTimeKind.Unspecified).AddTicks(1221),
-                            CreatedBy = 19,
-                            Name = "voluptatibus",
-                            OrganizationId = 3
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CreatedAt = new DateTime(2020, 9, 14, 18, 10, 26, 80, DateTimeKind.Unspecified).AddTicks(7223),
-                            CreatedBy = 4,
-                            Name = "fugiat",
+                            Icon = "pi-chart-bar",
+                            Name = "aliquid",
                             OrganizationId = 5
                         },
                         new
                         {
-                            Id = 7,
-                            CreatedAt = new DateTime(2021, 6, 25, 15, 10, 12, 305, DateTimeKind.Unspecified).AddTicks(8976),
-                            CreatedBy = 20,
-                            Name = "dolore",
-                            OrganizationId = 4
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CreatedAt = new DateTime(2021, 4, 9, 12, 29, 21, 740, DateTimeKind.Unspecified).AddTicks(5356),
-                            CreatedBy = 11,
-                            Name = "doloribus",
-                            OrganizationId = 2
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CreatedAt = new DateTime(2021, 6, 2, 21, 59, 55, 122, DateTimeKind.Unspecified).AddTicks(4800),
+                            Id = 3,
+                            CreatedAt = new DateTime(2020, 6, 25, 3, 54, 40, 463, DateTimeKind.Unspecified).AddTicks(4845),
                             CreatedBy = 3,
-                            Name = "recusandae",
-                            OrganizationId = 4
+                            Icon = "pi-chart-line",
+                            Name = "sit",
+                            OrganizationId = 5
                         },
                         new
                         {
-                            Id = 10,
-                            CreatedAt = new DateTime(2021, 2, 21, 5, 1, 25, 731, DateTimeKind.Unspecified).AddTicks(7636),
+                            Id = 4,
+                            CreatedAt = new DateTime(2021, 7, 8, 13, 52, 55, 910, DateTimeKind.Unspecified).AddTicks(1221),
+                            CreatedBy = 19,
+                            Icon = "pi-chart-bar",
+                            Name = "quis",
+                            OrganizationId = 3
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2021, 1, 19, 14, 4, 14, 838, DateTimeKind.Unspecified).AddTicks(7674),
                             CreatedBy = 9,
-                            Name = "dolorem",
+                            Icon = "pi-chart-bar",
+                            Name = "fugiat",
                             OrganizationId = 1
                         },
                         new
                         {
-                            Id = 11,
-                            CreatedAt = new DateTime(2021, 7, 2, 7, 47, 50, 697, DateTimeKind.Unspecified).AddTicks(4443),
-                            CreatedBy = 7,
-                            Name = "eum",
-                            OrganizationId = 4
+                            Id = 6,
+                            CreatedAt = new DateTime(2021, 1, 26, 12, 10, 12, 919, DateTimeKind.Unspecified).AddTicks(858),
+                            CreatedBy = 20,
+                            Icon = "pi-chart-bar",
+                            Name = "est",
+                            OrganizationId = 1
                         },
                         new
                         {
-                            Id = 12,
-                            CreatedAt = new DateTime(2020, 11, 9, 11, 16, 38, 651, DateTimeKind.Unspecified).AddTicks(8274),
+                            Id = 7,
+                            CreatedAt = new DateTime(2021, 4, 3, 16, 37, 56, 229, DateTimeKind.Unspecified).AddTicks(682),
+                            CreatedBy = 13,
+                            Icon = "pi-chart-line",
+                            Name = "molestias",
+                            OrganizationId = 5
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CreatedAt = new DateTime(2021, 2, 21, 5, 1, 25, 731, DateTimeKind.Unspecified).AddTicks(7636),
                             CreatedBy = 9,
-                            Name = "excepturi",
+                            Icon = "pi-chart-bar",
+                            Name = "et",
+                            OrganizationId = 1
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CreatedAt = new DateTime(2020, 7, 10, 5, 58, 24, 127, DateTimeKind.Unspecified).AddTicks(2249),
+                            CreatedBy = 1,
+                            Icon = "pi-chart-bar",
+                            Name = "eum",
                             OrganizationId = 2
                         },
                         new
                         {
+                            Id = 10,
+                            CreatedAt = new DateTime(2020, 6, 27, 23, 12, 19, 637, DateTimeKind.Unspecified).AddTicks(5211),
+                            CreatedBy = 1,
+                            Icon = "pi-chart-line",
+                            Name = "quaerat",
+                            OrganizationId = 2
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CreatedAt = new DateTime(2020, 4, 30, 1, 5, 53, 311, DateTimeKind.Unspecified).AddTicks(8922),
+                            CreatedBy = 9,
+                            Icon = "pi-chart-line",
+                            Name = "fugit",
+                            OrganizationId = 5
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CreatedAt = new DateTime(2020, 9, 23, 15, 54, 42, 918, DateTimeKind.Unspecified).AddTicks(8524),
+                            CreatedBy = 13,
+                            Icon = "pi-chart-line",
+                            Name = "tenetur",
+                            OrganizationId = 4
+                        },
+                        new
+                        {
                             Id = 13,
-                            CreatedAt = new DateTime(2020, 10, 18, 23, 59, 10, 615, DateTimeKind.Unspecified).AddTicks(7577),
-                            CreatedBy = 3,
-                            Name = "quae",
-                            OrganizationId = 3
+                            CreatedAt = new DateTime(2019, 11, 21, 20, 24, 3, 447, DateTimeKind.Unspecified).AddTicks(3782),
+                            CreatedBy = 7,
+                            Icon = "pi-chart-bar",
+                            Name = "ea",
+                            OrganizationId = 5
                         },
                         new
                         {
                             Id = 14,
-                            CreatedAt = new DateTime(2019, 8, 22, 13, 56, 3, 86, DateTimeKind.Unspecified).AddTicks(1337),
-                            CreatedBy = 13,
-                            Name = "saepe",
-                            OrganizationId = 3
+                            CreatedAt = new DateTime(2020, 8, 11, 5, 54, 45, 341, DateTimeKind.Unspecified).AddTicks(45),
+                            CreatedBy = 20,
+                            Icon = "pi-chart-line",
+                            Name = "adipisci",
+                            OrganizationId = 2
                         },
                         new
                         {
                             Id = 15,
-                            CreatedAt = new DateTime(2020, 9, 23, 15, 54, 42, 918, DateTimeKind.Unspecified).AddTicks(8524),
-                            CreatedBy = 13,
-                            Name = "aspernatur",
-                            OrganizationId = 4
+                            CreatedAt = new DateTime(2020, 4, 14, 13, 23, 49, 497, DateTimeKind.Unspecified).AddTicks(2242),
+                            CreatedBy = 15,
+                            Icon = "pi-chart-bar",
+                            Name = "perspiciatis",
+                            OrganizationId = 5
                         });
                 });
 
@@ -544,242 +562,242 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2020, 6, 23, 17, 55, 40, 784, DateTimeKind.Unspecified).AddTicks(6587),
-                            CreatedBy = 19,
-                            OrganizationId = 1,
-                            RoleId = 3
+                            CreatedAt = new DateTime(2020, 3, 8, 20, 29, 56, 733, DateTimeKind.Unspecified).AddTicks(99),
+                            CreatedBy = 3,
+                            OrganizationId = 5,
+                            RoleId = 2
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2019, 11, 11, 3, 10, 6, 170, DateTimeKind.Unspecified).AddTicks(2841),
-                            CreatedBy = 16,
-                            OrganizationId = 1,
-                            RoleId = 5
+                            CreatedAt = new DateTime(2019, 11, 16, 1, 22, 22, 917, DateTimeKind.Unspecified).AddTicks(2673),
+                            CreatedBy = 20,
+                            OrganizationId = 4,
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2019, 10, 5, 13, 0, 34, 132, DateTimeKind.Unspecified).AddTicks(3117),
-                            CreatedBy = 2,
-                            OrganizationId = 3,
-                            RoleId = 4
+                            CreatedAt = new DateTime(2020, 1, 3, 8, 25, 34, 990, DateTimeKind.Unspecified).AddTicks(521),
+                            CreatedBy = 3,
+                            OrganizationId = 1,
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2021, 4, 27, 7, 55, 58, 628, DateTimeKind.Unspecified).AddTicks(106),
-                            CreatedBy = 6,
-                            OrganizationId = 5,
-                            RoleId = 4
+                            CreatedAt = new DateTime(2020, 4, 25, 10, 18, 40, 933, DateTimeKind.Unspecified).AddTicks(8555),
+                            CreatedBy = 10,
+                            OrganizationId = 4,
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2020, 8, 11, 5, 32, 51, 930, DateTimeKind.Unspecified).AddTicks(3850),
-                            CreatedBy = 5,
-                            OrganizationId = 5,
+                            CreatedAt = new DateTime(2019, 9, 16, 10, 2, 15, 309, DateTimeKind.Unspecified).AddTicks(5491),
+                            CreatedBy = 3,
+                            OrganizationId = 3,
                             RoleId = 3
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2020, 8, 29, 8, 18, 24, 585, DateTimeKind.Unspecified).AddTicks(9893),
-                            CreatedBy = 16,
+                            CreatedAt = new DateTime(2021, 6, 15, 20, 0, 11, 725, DateTimeKind.Unspecified).AddTicks(3505),
+                            CreatedBy = 3,
                             OrganizationId = 5,
-                            RoleId = 5
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2021, 2, 5, 12, 28, 51, 771, DateTimeKind.Unspecified).AddTicks(7583),
-                            CreatedBy = 13,
-                            OrganizationId = 4,
-                            RoleId = 2
+                            CreatedAt = new DateTime(2020, 1, 21, 6, 5, 21, 218, DateTimeKind.Unspecified).AddTicks(6260),
+                            CreatedBy = 4,
+                            OrganizationId = 1,
+                            RoleId = 3
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2019, 11, 14, 5, 32, 33, 474, DateTimeKind.Unspecified).AddTicks(6814),
-                            CreatedBy = 20,
-                            OrganizationId = 2,
-                            RoleId = 2
+                            CreatedAt = new DateTime(2019, 12, 23, 10, 22, 47, 210, DateTimeKind.Unspecified).AddTicks(1299),
+                            CreatedBy = 11,
+                            OrganizationId = 1,
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2020, 3, 1, 10, 50, 38, 346, DateTimeKind.Unspecified).AddTicks(2283),
-                            CreatedBy = 18,
+                            CreatedAt = new DateTime(2020, 7, 6, 4, 7, 57, 503, DateTimeKind.Unspecified).AddTicks(5793),
+                            CreatedBy = 10,
+                            OrganizationId = 1,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CreatedAt = new DateTime(2020, 1, 29, 1, 2, 39, 606, DateTimeKind.Unspecified).AddTicks(1635),
+                            CreatedBy = 1,
+                            OrganizationId = 1,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CreatedAt = new DateTime(2020, 5, 19, 20, 41, 5, 50, DateTimeKind.Unspecified).AddTicks(7290),
+                            CreatedBy = 16,
+                            OrganizationId = 2,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CreatedAt = new DateTime(2021, 5, 21, 12, 57, 44, 740, DateTimeKind.Unspecified).AddTicks(9150),
+                            CreatedBy = 2,
+                            OrganizationId = 3,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CreatedAt = new DateTime(2020, 1, 13, 19, 47, 33, 819, DateTimeKind.Unspecified).AddTicks(6240),
+                            CreatedBy = 3,
+                            OrganizationId = 5,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CreatedAt = new DateTime(2020, 5, 5, 6, 58, 55, 90, DateTimeKind.Unspecified).AddTicks(7547),
+                            CreatedBy = 10,
+                            OrganizationId = 4,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CreatedAt = new DateTime(2021, 7, 5, 3, 30, 54, 448, DateTimeKind.Unspecified).AddTicks(9294),
+                            CreatedBy = 15,
+                            OrganizationId = 1,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CreatedAt = new DateTime(2021, 6, 14, 18, 35, 8, 962, DateTimeKind.Unspecified).AddTicks(783),
+                            CreatedBy = 12,
                             OrganizationId = 2,
                             RoleId = 2
                         },
                         new
                         {
-                            Id = 10,
-                            CreatedAt = new DateTime(2021, 7, 14, 18, 53, 43, 769, DateTimeKind.Unspecified).AddTicks(5102),
-                            CreatedBy = 14,
-                            OrganizationId = 4,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CreatedAt = new DateTime(2021, 6, 23, 23, 17, 16, 155, DateTimeKind.Unspecified).AddTicks(5266),
+                            Id = 17,
+                            CreatedAt = new DateTime(2019, 11, 27, 0, 59, 19, 851, DateTimeKind.Unspecified).AddTicks(207),
                             CreatedBy = 2,
                             OrganizationId = 2,
                             RoleId = 2
                         },
                         new
                         {
-                            Id = 12,
-                            CreatedAt = new DateTime(2021, 4, 5, 17, 35, 33, 328, DateTimeKind.Unspecified).AddTicks(4435),
-                            CreatedBy = 9,
-                            OrganizationId = 1,
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            Id = 13,
-                            CreatedAt = new DateTime(2020, 6, 5, 23, 26, 15, 564, DateTimeKind.Unspecified).AddTicks(274),
-                            CreatedBy = 12,
-                            OrganizationId = 3,
-                            RoleId = 3
-                        },
-                        new
-                        {
-                            Id = 14,
-                            CreatedAt = new DateTime(2020, 2, 16, 2, 0, 40, 350, DateTimeKind.Unspecified).AddTicks(4718),
-                            CreatedBy = 6,
-                            OrganizationId = 3,
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            Id = 15,
-                            CreatedAt = new DateTime(2021, 1, 15, 16, 3, 46, 55, DateTimeKind.Unspecified).AddTicks(7176),
-                            CreatedBy = 4,
-                            OrganizationId = 3,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            Id = 16,
-                            CreatedAt = new DateTime(2020, 11, 26, 21, 33, 26, 251, DateTimeKind.Unspecified).AddTicks(4354),
-                            CreatedBy = 10,
-                            OrganizationId = 3,
-                            RoleId = 3
-                        },
-                        new
-                        {
-                            Id = 17,
-                            CreatedAt = new DateTime(2020, 8, 9, 5, 46, 45, 899, DateTimeKind.Unspecified).AddTicks(7907),
-                            CreatedBy = 12,
-                            OrganizationId = 2,
-                            RoleId = 4
-                        },
-                        new
-                        {
                             Id = 18,
-                            CreatedAt = new DateTime(2020, 3, 28, 11, 51, 59, 488, DateTimeKind.Unspecified).AddTicks(8865),
-                            CreatedBy = 18,
-                            OrganizationId = 3,
-                            RoleId = 5
+                            CreatedAt = new DateTime(2020, 2, 24, 22, 7, 24, 896, DateTimeKind.Unspecified).AddTicks(9869),
+                            CreatedBy = 14,
+                            OrganizationId = 5,
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 19,
-                            CreatedAt = new DateTime(2020, 8, 26, 0, 42, 7, 317, DateTimeKind.Unspecified).AddTicks(8157),
-                            CreatedBy = 5,
+                            CreatedAt = new DateTime(2021, 6, 29, 4, 27, 33, 463, DateTimeKind.Unspecified).AddTicks(2445),
+                            CreatedBy = 16,
                             OrganizationId = 2,
                             RoleId = 2
                         },
                         new
                         {
                             Id = 20,
-                            CreatedAt = new DateTime(2020, 12, 4, 13, 22, 46, 624, DateTimeKind.Unspecified).AddTicks(5014),
-                            CreatedBy = 6,
-                            OrganizationId = 4,
-                            RoleId = 4
+                            CreatedAt = new DateTime(2020, 8, 31, 3, 14, 25, 440, DateTimeKind.Unspecified).AddTicks(6945),
+                            CreatedBy = 20,
+                            OrganizationId = 3,
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 21,
-                            CreatedAt = new DateTime(2019, 8, 24, 23, 59, 6, 250, DateTimeKind.Unspecified).AddTicks(1004),
-                            CreatedBy = 16,
-                            OrganizationId = 3,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            Id = 22,
-                            CreatedAt = new DateTime(2019, 12, 13, 13, 57, 12, 13, DateTimeKind.Unspecified).AddTicks(984),
-                            CreatedBy = 15,
-                            OrganizationId = 3,
-                            RoleId = 4
-                        },
-                        new
-                        {
-                            Id = 23,
-                            CreatedAt = new DateTime(2020, 1, 14, 18, 54, 42, 990, DateTimeKind.Unspecified).AddTicks(701),
-                            CreatedBy = 9,
+                            CreatedAt = new DateTime(2020, 10, 19, 4, 23, 25, 774, DateTimeKind.Unspecified).AddTicks(1835),
+                            CreatedBy = 14,
                             OrganizationId = 1,
                             RoleId = 1
                         },
                         new
                         {
-                            Id = 24,
-                            CreatedAt = new DateTime(2020, 2, 26, 14, 59, 29, 473, DateTimeKind.Unspecified).AddTicks(5763),
-                            CreatedBy = 9,
-                            OrganizationId = 3,
-                            RoleId = 4
-                        },
-                        new
-                        {
-                            Id = 25,
-                            CreatedAt = new DateTime(2019, 9, 5, 4, 2, 59, 158, DateTimeKind.Unspecified).AddTicks(4664),
-                            CreatedBy = 9,
+                            Id = 22,
+                            CreatedAt = new DateTime(2021, 7, 15, 16, 39, 54, 102, DateTimeKind.Unspecified).AddTicks(9813),
+                            CreatedBy = 12,
                             OrganizationId = 4,
-                            RoleId = 5
+                            RoleId = 3
                         },
                         new
                         {
-                            Id = 26,
-                            CreatedAt = new DateTime(2019, 10, 12, 15, 15, 12, 766, DateTimeKind.Unspecified).AddTicks(6699),
-                            CreatedBy = 4,
+                            Id = 23,
+                            CreatedAt = new DateTime(2019, 11, 13, 12, 40, 5, 13, DateTimeKind.Unspecified).AddTicks(878),
+                            CreatedBy = 15,
                             OrganizationId = 5,
                             RoleId = 3
                         },
                         new
                         {
-                            Id = 27,
-                            CreatedAt = new DateTime(2019, 10, 3, 14, 41, 15, 275, DateTimeKind.Unspecified).AddTicks(7289),
-                            CreatedBy = 6,
-                            OrganizationId = 5,
-                            RoleId = 3
-                        },
-                        new
-                        {
-                            Id = 28,
-                            CreatedAt = new DateTime(2020, 6, 30, 21, 45, 53, 833, DateTimeKind.Unspecified).AddTicks(6612),
-                            CreatedBy = 20,
+                            Id = 24,
+                            CreatedAt = new DateTime(2019, 9, 1, 23, 36, 12, 841, DateTimeKind.Unspecified).AddTicks(6973),
+                            CreatedBy = 5,
                             OrganizationId = 5,
                             RoleId = 2
                         },
                         new
                         {
+                            Id = 25,
+                            CreatedAt = new DateTime(2020, 2, 9, 19, 23, 50, 460, DateTimeKind.Unspecified).AddTicks(534),
+                            CreatedBy = 20,
+                            OrganizationId = 4,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            Id = 26,
+                            CreatedAt = new DateTime(2021, 4, 23, 7, 4, 13, 49, DateTimeKind.Unspecified).AddTicks(4808),
+                            CreatedBy = 16,
+                            OrganizationId = 2,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 27,
+                            CreatedAt = new DateTime(2019, 11, 23, 18, 4, 52, 732, DateTimeKind.Unspecified).AddTicks(9426),
+                            CreatedBy = 6,
+                            OrganizationId = 3,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 28,
+                            CreatedAt = new DateTime(2021, 1, 17, 9, 54, 56, 29, DateTimeKind.Unspecified).AddTicks(2520),
+                            CreatedBy = 11,
+                            OrganizationId = 3,
+                            RoleId = 3
+                        },
+                        new
+                        {
                             Id = 29,
-                            CreatedAt = new DateTime(2021, 4, 26, 1, 36, 51, 405, DateTimeKind.Unspecified).AddTicks(6570),
-                            CreatedBy = 1,
-                            OrganizationId = 5,
+                            CreatedAt = new DateTime(2020, 9, 4, 5, 54, 15, 840, DateTimeKind.Unspecified).AddTicks(7823),
+                            CreatedBy = 20,
+                            OrganizationId = 2,
                             RoleId = 1
                         },
                         new
                         {
                             Id = 30,
-                            CreatedAt = new DateTime(2021, 3, 13, 14, 30, 36, 921, DateTimeKind.Unspecified).AddTicks(1544),
-                            CreatedBy = 12,
-                            OrganizationId = 3,
-                            RoleId = 4
+                            CreatedAt = new DateTime(2019, 11, 5, 17, 30, 28, 659, DateTimeKind.Unspecified).AddTicks(2449),
+                            CreatedBy = 1,
+                            OrganizationId = 1,
+                            RoleId = 2
                         });
                 });
 
@@ -800,14 +818,28 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
+                    b.Property<int>("DefaultRoleId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("OpenMembership")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("OrganizationSlug")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("OrganizationSlug")
+                        .IsUnique();
 
                     b.ToTable("Organizations");
 
@@ -815,42 +847,57 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            AvatarUrl = "https://picsum.photos/250/250/?image=144",
-                            CreatedAt = new DateTime(2020, 3, 30, 18, 37, 49, 810, DateTimeKind.Unspecified).AddTicks(7734),
-                            CreatedBy = 19,
-                            Name = "Rogahn, Oberbrunner and Lebsack"
+                            AvatarUrl = "https://picsum.photos/250/250/?image=319",
+                            CreatedAt = new DateTime(2020, 10, 27, 4, 1, 42, 509, DateTimeKind.Unspecified).AddTicks(6365),
+                            CreatedBy = 14,
+                            DefaultRoleId = 2,
+                            Name = "Oberbrunner, Lebsack and Collier",
+                            OpenMembership = false,
+                            OrganizationSlug = "doloribus"
                         },
                         new
                         {
                             Id = 2,
-                            AvatarUrl = "https://picsum.photos/250/250/?image=384",
-                            CreatedAt = new DateTime(2021, 6, 8, 4, 26, 15, 192, DateTimeKind.Unspecified).AddTicks(4559),
-                            CreatedBy = 4,
-                            Name = "Parisian and Sons"
+                            AvatarUrl = "https://picsum.photos/250/250/?image=52",
+                            CreatedAt = new DateTime(2021, 1, 7, 22, 2, 16, 309, DateTimeKind.Unspecified).AddTicks(4029),
+                            CreatedBy = 15,
+                            DefaultRoleId = 2,
+                            Name = "Beer LLC",
+                            OpenMembership = false,
+                            OrganizationSlug = "ex-"
                         },
                         new
                         {
                             Id = 3,
-                            AvatarUrl = "https://picsum.photos/250/250/?image=52",
-                            CreatedAt = new DateTime(2021, 1, 7, 22, 2, 16, 309, DateTimeKind.Unspecified).AddTicks(4029),
-                            CreatedBy = 15,
-                            Name = "Okuneva - Mohr"
+                            AvatarUrl = "https://picsum.photos/250/250/?image=41",
+                            CreatedAt = new DateTime(2020, 11, 28, 3, 22, 46, 820, DateTimeKind.Unspecified).AddTicks(713),
+                            CreatedBy = 6,
+                            DefaultRoleId = 2,
+                            Name = "Murray LLC",
+                            OpenMembership = true,
+                            OrganizationSlug = "est"
                         },
                         new
                         {
                             Id = 4,
-                            AvatarUrl = "https://picsum.photos/250/250/?image=322",
-                            CreatedAt = new DateTime(2021, 6, 22, 5, 11, 9, 722, DateTimeKind.Unspecified).AddTicks(9234),
-                            CreatedBy = 12,
-                            Name = "Bode, Murray and Powlowski"
+                            AvatarUrl = "https://picsum.photos/250/250/?image=631",
+                            CreatedAt = new DateTime(2020, 11, 2, 5, 50, 23, 307, DateTimeKind.Unspecified).AddTicks(1008),
+                            CreatedBy = 7,
+                            DefaultRoleId = 3,
+                            Name = "Okuneva and Sons",
+                            OpenMembership = false,
+                            OrganizationSlug = "dicta"
                         },
                         new
                         {
                             Id = 5,
-                            AvatarUrl = "https://picsum.photos/250/250/?image=180",
-                            CreatedAt = new DateTime(2020, 8, 3, 16, 48, 30, 79, DateTimeKind.Unspecified).AddTicks(9857),
-                            CreatedBy = 14,
-                            Name = "Hammes Inc"
+                            AvatarUrl = "https://picsum.photos/250/250/?image=332",
+                            CreatedAt = new DateTime(2021, 1, 2, 9, 40, 40, 506, DateTimeKind.Unspecified).AddTicks(7949),
+                            CreatedBy = 13,
+                            DefaultRoleId = 1,
+                            Name = "Watsica, Bartell and Balistreri",
+                            OpenMembership = false,
+                            OrganizationSlug = "dolorum"
                         });
                 });
 
@@ -962,32 +1009,20 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "Labore vitae inventore. Et sunt ipsum quis labore in quia repellendus. Ut provident rerum fugit quia optio. Soluta iure animi qui pariatur maiores. Qui at similique neque nihil sit suscipit.",
-                            Name = "explicabo"
+                            Description = "Sit est commodi explicabo numquam eaque aut est. Hic expedita natus ut impedit. Natus voluptas delectus. Cum dignissimos rem quaerat reiciendis incidunt dicta quam veritatis.",
+                            Name = "Owner"
                         },
                         new
                         {
                             Id = 2,
-                            Description = "Quos qui ea enim adipisci consequatur eveniet omnis id veritatis. Fugiat fuga asperiores. In iure molestiae pariatur deleniti sit. Debitis natus qui sint tempore ut quas animi dolores. Eveniet sapiente dolorum.",
-                            Name = "non"
+                            Description = "Ab hic incidunt alias omnis totam molestias et beatae. Soluta maxime cum repudiandae. Voluptatem et aspernatur explicabo voluptatibus adipisci. Totam id incidunt perspiciatis reprehenderit. Et magni et qui voluptas et. Nihil voluptas ut non provident illo voluptate rerum cupiditate asperiores.",
+                            Name = "Manager"
                         },
                         new
                         {
                             Id = 3,
-                            Description = "Corrupti vel nihil. Fugit molestiae sint facere. Sunt omnis corporis autem.",
-                            Name = "ullam"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Description = "Deserunt dolorum rerum et. Cum sit distinctio ab dolores molestiae sapiente recusandae. Quis aut veritatis ad earum rem omnis nesciunt.",
-                            Name = "voluptates"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Description = "Fugiat quis aut. Velit aut tempora eligendi quod quis. Ex sed molestiae. Quae quae quia reiciendis alias iste illum error velit. Et sint delectus necessitatibus vel iusto eos asperiores. At iure incidunt sit at sit optio ut adipisci.",
-                            Name = "omnis"
+                            Description = "Ut omnis beatae expedita voluptatem ut eos et est. Dolores assumenda incidunt beatae quia inventore. Est eos reiciendis dolor aut quisquam dolorem non dolorem natus. Repellendus iure earum maxime provident placeat quae fugiat temporibus voluptatum. At ut accusamus consequuntur modi.",
+                            Name = "Viewer"
                         });
                 });
 

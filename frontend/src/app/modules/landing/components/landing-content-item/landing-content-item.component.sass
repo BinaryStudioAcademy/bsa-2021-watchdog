@@ -1,10 +1,12 @@
-@import ../../common-styles/variables
+@import src/styles/mixins
+@import src/styles/variables
 @import ../../common-styles/mixins
 .item-block
     display: grid
     grid-auto-flow: row
     padding: $half-indent
-    @include backgroung-gray
+    @include background-gray
+    height: 100%
 
 .title
     font-size: 1.3rem
@@ -16,7 +18,7 @@
     text-decoration: none
     display: flex
     align-items: center
-    
+
 
     i
         margin-left: 5px

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Watchdog.Core.Common.DTO.User;
 using Watchdog.Core.DAL.Entities;
 

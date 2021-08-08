@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Watchdog.Core.Common.DTO.User
 {

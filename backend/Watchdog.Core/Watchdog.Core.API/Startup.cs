@@ -15,7 +15,6 @@ using Serilog;
 using Watchdog.Core.API.Extensions;
 using Watchdog.Core.API.Middlewares;
 using Watchdog.Core.BLL.Services;
-using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.RabbitMQ.Shared.Models;
 using Watchdog.RabbitMQ.Shared.Services;
 
@@ -64,7 +63,7 @@ namespace Watchdog.Core.API
 
             services.AddSwaggerGen(o =>
             {
-                o.SwaggerDoc("v1", new OpenApiInfo {Title = "Watchdog.Core", Version = "v1"});
+                o.SwaggerDoc("v1", new OpenApiInfo { Title = "Watchdog.Core", Version = "v1" });
                 o.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.ApiKey,
@@ -113,7 +112,7 @@ namespace Watchdog.Core.API
             services.AddSingleton(x =>
             {
                 var amqpConnection = new Uri(Configuration.GetSection("RabbitMQConfiguration").GetSection("Uri").Value);
-                var connectionFactory = new ConnectionFactory {Uri = amqpConnection};
+                var connectionFactory = new ConnectionFactory { Uri = amqpConnection };
                 return connectionFactory.CreateConnection();
             });
             var producerSettings = new ProducerSettings();

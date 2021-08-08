@@ -1,18 +1,20 @@
 @import src/styles/mixins
-@import ../../common-styles/variables
+@import src/styles/variables
 @import ../../common-styles/mixins
-    
+
 .header
     display: grid
     grid-template-columns: 3fr 7fr 3fr
     align-items: center
     grid-gap: $half-indent
     background-color: rgba(255,255,255,0.8)
+    height: 60px
 
 .logo
     display: flex
     justify-content: center
     img
+        @include disable-select
         display: block
         width: 70%
 
@@ -36,12 +38,13 @@
 
     button
         margin: 10px 0
+        font-weight: bold
 
 .sign-in-button
     background-color: white !important
 
     &:hover
-        background-color: white !important    
+        background-color: white !important
 
 @media screen and ( max-width: 1150px )
     .header

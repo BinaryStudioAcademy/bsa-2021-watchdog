@@ -2,7 +2,7 @@ version: '3.8'
 services:
 
     sql_server:
-        image: mcr.microsoft.com/mssql/server:2017-latest
+        image: mcr.microsoft.com/mssql/server:2019-latest
         container_name: sql_server
         ports:
             - 1433:1433
@@ -15,7 +15,7 @@ services:
             - ./mssql:/var/opt/mssql
 
     rabbitmq:
-        image: rabbitmq:3.8.6-alpine
+        image: rabbitmq:3.8.19-management
         container_name: rabbitmq
         restart: on-failure
         ports:
@@ -27,7 +27,7 @@ services:
             - RABBITMQ_DEFAULT_PASS=${RABBIT_MQ_PASSWORD}
 
     elasticsearch:
-        image: elasticsearch:7.8.1
+        image: elasticsearch:7.13.4
         container_name: elasticsearch
         ports:
             - 9200:9200
@@ -44,13 +44,14 @@ services:
     kibana:
         depends_on:
             - elasticsearch
-        image: kibana:7.8.1
+        image: kibana:7.13.4
         container_name: kibana
         ports:
             - 5601:5601
         environment:
             - ELASTICSEARCH_URL=http://elasticsearch:9200
             - SERVER_BASEPATH=/kibana
+            - SERVER_HOST=0.0.0.0
         networks:
             - back
 
