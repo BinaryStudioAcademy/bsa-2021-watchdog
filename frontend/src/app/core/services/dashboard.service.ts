@@ -10,10 +10,6 @@ import { HttpInternalService } from './http-internal.service';
 export class DashboardService {
     constructor(private httpService: HttpInternalService) { }
 
-    public getIcons(): string[] {
-        return ['pi-chart-bar', 'pi-chart-line'];
-    }
-
     public getAllByOrganization(id: number): Observable<Dashboard[]> {
         return this.httpService.getRequest<Dashboard[]>(`${environment.coreUrl}/dashboard/organization/${id}`);
     }
