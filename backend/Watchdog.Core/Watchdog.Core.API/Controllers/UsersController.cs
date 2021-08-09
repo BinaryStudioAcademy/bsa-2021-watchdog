@@ -9,16 +9,30 @@ namespace Watchdog.Core.API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
-        private readonly ILogger<UserController> _logger;
+        private readonly ILogger<UsersController> _logger;
         private readonly IUserService _userService;
 
-        public UserController(ILogger<UserController> logger,
+        public UsersController(ILogger<UsersController> logger,
                               IUserService userService)
         {
             _logger = logger;
             _userService = userService;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<ICollection<UserDto>>> GetAllAsync()
+        {
+            var users = await _userService.GetAllUsersAsync();
+            return Ok(users);
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<UserDto>> GetUserByIdAsync(int id)
+        {
+            var user = await _userService.GetUserByIdAsync(id);
+            return Ok(user);
         }
 
         [HttpGet("{uid}")]
@@ -29,13 +43,8 @@ namespace Watchdog.Core.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserDto>> CreateAsync(UserDto userDto)
+        public async Task<ActionResult<UserDto>> CreateUserAsync(NewUserDto userDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
             var user = await _userService.CreateUserAsync(userDto);
             return Ok(user);
         }

@@ -1,11 +1,9 @@
-using System;
+﻿using System;
 
 namespace Watchdog.Core.Common.DTO.User
 {
-    public class UserDto
+    public class NewUserDto
     {
-        public int Id { get; set; }
-
         public string Uid { get; set; }
 
         public string FirstName { get; set; }

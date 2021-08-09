@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.User;
@@ -11,6 +12,18 @@ namespace Watchdog.Core.BLL.Services
     public class UserService: BaseService, IUserService
     {
         public UserService(WatchdogCoreContext context, IMapper mapper) : base(context, mapper) { }
+        
+        public async Task<ICollection<UserDto>> GetAllUsersAsync()
+        {
+            var users = await _context.Users.ToListAsync();
+            return _mapper.Map<ICollection<UserDto>>(users);
+        }
+
+        public async Task<UserDto> GetUserByIdAsync(int id)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == id);
+            return _mapper.Map<UserDto>(user);
+        }
 
         public async Task<UserDto> GetUserByUidAsync(string uid)
         {
@@ -19,7 +32,7 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<UserDto>(user);
         }
 
-        public async Task<UserDto> CreateUserAsync(UserDto userDto)
+        public async Task<UserDto> CreateUserAsync(NewUserDto userDto)
         {
             var user = _mapper.Map<User>(userDto);
 
