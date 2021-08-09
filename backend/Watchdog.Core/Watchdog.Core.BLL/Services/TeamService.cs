@@ -114,5 +114,14 @@ namespace Watchdog.Core.BLL.Services
 
             return _mapper.Map<TeamDto>(teamEntity);
         }
+
+        public async Task<ICollection<TeamOptionDto>> GetTeamsOptionsByOrganizationIdAsync(int organizationId)
+        {
+            var teams = await _context.Teams
+                .Where(t => t.OrganizationId == organizationId)
+                .ToListAsync();
+
+            return _mapper.Map<ICollection<TeamOptionDto>>(teams);
+        }
     }
 }

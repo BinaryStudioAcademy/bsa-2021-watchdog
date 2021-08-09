@@ -6,6 +6,8 @@ namespace Watchdog.Core.BLL.Services.Abstract
 {
     public interface IApplicationService
     {
-        Task<IEnumerable<ApplicationDto>> GetApplicationsByApplicationId(int id);
+        Task<IEnumerable<ApplicationDto>> GetApplicationsByApplicationIdAsync(int id);
+
+        Task<ApplicationDto> CreateApplicationAsync(NewApplicationDto dto);
     }
 }

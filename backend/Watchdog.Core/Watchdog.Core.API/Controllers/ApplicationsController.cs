@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
@@ -8,18 +9,25 @@ namespace Watchdog.Core.API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class ApplicationController : ControllerBase
+    public class ApplicationsController : ControllerBase
     {
         private readonly IApplicationService _applicationService;
 
-        public ApplicationController(IApplicationService applicationService)
+        public ApplicationsController(IApplicationService applicationService)
         {
             _applicationService = applicationService;
         }
         [HttpGet("organization/{organizationId}")]
         public async Task<ActionResult<IEnumerable<ApplicationDto>>> GetApplicationsByOrganizationId(int organizationId)
         {
-            return Ok(await _applicationService.GetApplicationsByApplicationId(organizationId));
+            return Ok(await _applicationService.GetApplicationsByApplicationIdAsync(organizationId));
         }
+        
+/*        [HttpPost]
+        public async Task<ActionResult<ApplicationDto>> Create(NewApplicationDto dto)
+        {
+
+            return Created(new Uri("/"))
+        }*/
     }
 }

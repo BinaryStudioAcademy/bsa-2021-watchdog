@@ -9,6 +9,7 @@ namespace Watchdog.Core.BLL.MappingProfiles
         public ApplicationProfile()
         {
             CreateMap<Application, ApplicationDto>();
+            CreateMap<NewApplicationDto, Application>();
         }
     }
 }
