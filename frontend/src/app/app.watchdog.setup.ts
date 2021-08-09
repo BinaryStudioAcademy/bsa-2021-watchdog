@@ -1,16 +1,12 @@
-import {ErrorHandler, Injectable} from '@angular/core';
+import { ErrorHandler, Injectable } from '@angular/core';
 import { HttpInternalService } from '@core/services/http-internal.service';
-import { environment } from '@env/environment';
+import { ErrorsService } from '@core/services/errors.service';
 
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable()
 export class WatchDogErrorHandler implements ErrorHandler {
-    private apiUrl = environment.collectorUrl;
+    constructor(private httpService: HttpInternalService, private errorsService: ErrorsService) { }
 
-    constructor(private httpService: HttpInternalService) { }
-
-    handleError(e: any) {
-        //this.httpService.postFullRequest(`${this.apiUrl}/`, e);
+    handleError(error: any) {
+        this.errorsService.log(error);
     }
 }

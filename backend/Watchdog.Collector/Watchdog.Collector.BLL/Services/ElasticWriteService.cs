@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using Nest;
-using Watchdog.Collector.BLL.Entities;
 using Watchdog.Collector.BLL.Services.Abstract;
+using Watchdog.Collector.Common.Models;
 
 namespace Watchdog.Collector.BLL.Services
 {

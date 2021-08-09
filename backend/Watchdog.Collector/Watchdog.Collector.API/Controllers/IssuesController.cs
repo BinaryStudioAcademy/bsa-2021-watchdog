@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Watchdog.Collector.BLL.Entities;
 using Watchdog.Collector.BLL.Services.Abstract;
+using Watchdog.Collector.Common.Models;
 
 namespace Watchdog.Collector.API.Controllers
 {

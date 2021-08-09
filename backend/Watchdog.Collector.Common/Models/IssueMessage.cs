@@ -1,6 +1,6 @@
 using System;
 
-namespace Watchdog.Collector.BLL.Entities
+namespace Watchdog.Collector.Common.Models
 {
     public class IssueMessage
     {

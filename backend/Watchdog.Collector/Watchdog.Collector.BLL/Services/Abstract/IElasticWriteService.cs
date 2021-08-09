@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Watchdog.Collector.BLL.Entities;
+using Watchdog.Collector.Common.Models;
 
 namespace Watchdog.Collector.BLL.Services.Abstract
 {
