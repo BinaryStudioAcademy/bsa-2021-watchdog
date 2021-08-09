@@ -9,6 +9,7 @@ namespace Watchdog.Core.BLL.MappingProfiles
         public UserProfile()
         {
             CreateMap<User, UserDto>();
+            CreateMap<User, NewUserDto>();
 
             CreateMap<NewUserDto, User>();
         }
