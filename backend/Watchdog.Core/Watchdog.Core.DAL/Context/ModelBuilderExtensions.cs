@@ -1,7 +1,9 @@
 ﻿using Bogus;
+using Bogus.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Watchdog.Core.DAL.Context.EntityConfigurations;
 using Watchdog.Core.DAL.Entities;
 
@@ -16,11 +18,13 @@ namespace Watchdog.Core.DAL.Context
         private const int _numberOfMembers = 30;
         private const int _numberOfOrganizations = 5;
         private const int _numberOfPlatforms = 10;
-        private const int _numberOfRoles = 5;
         private const int _numberOfTeams = 5;
         private const int _numberOfTeamMembers = 25;
         private const int _numberOfTiles = 25;
         private const int _numberOfUsers = 20;
+        private static readonly List<string> _icons  = new List<string>() { "pi-chart-line", "pi-chart-bar" };
+
+        private static readonly string[] _roles = { "Owner", "Manager", "Viewer" };
 
         public static void Configure(this ModelBuilder modelBuilder)
         {
@@ -89,6 +93,7 @@ namespace Watchdog.Core.DAL.Context
                 .UseSeed(5291)
                 .RuleFor(d => d.Id, f => ++f.IndexVariable)
                 .RuleFor(d => d.Name, f => f.Lorem.Word())
+                .RuleFor(d => d.Icon, f => f.PickRandom(_icons))
                 .RuleFor(d => d.OrganizationId, f => f.Random.Number(1, _numberOfOrganizations))
                 .RuleFor(d => d.CreatedBy, f => f.Random.Number(1, _numberOfUsers))
                 .RuleFor(d => d.CreatedAt, f => f.Date.Past(2, new DateTime(2021, 7, 20)))
@@ -108,9 +113,9 @@ namespace Watchdog.Core.DAL.Context
         private static IList<Member> GenerateMembers(int count = _numberOfMembers)
         {
             return new Faker<Member>()
-                .UseSeed(1129)
+                .UseSeed(1125)
                 .RuleFor(m => m.Id, f => ++f.IndexVariable)
-                .RuleFor(m => m.RoleId, f => f.Random.Number(1, _numberOfRoles))
+                .RuleFor(m => m.RoleId, f => f.Random.Number(1, _roles.Length))
                 .RuleFor(m => m.OrganizationId, f => f.Random.Number(1, _numberOfOrganizations))
                 .RuleFor(m => m.CreatedBy, f => f.Random.Number(1, _numberOfUsers))
                 .RuleFor(m => m.CreatedAt, f => f.Date.Past(2, new DateTime(2021, 7, 20)))
@@ -122,7 +127,10 @@ namespace Watchdog.Core.DAL.Context
             return new Faker<Organization>()
                 .UseSeed(7927)
                 .RuleFor(o => o.Id, f => ++f.IndexVariable)
-                .RuleFor(o => o.Name, f => f.Company.CompanyName())
+                .RuleFor(o => o.OrganizationSlug, f => f.Lorem.Word().ClampLength(3, 50, '-'))
+                .RuleFor(o => o.Name, f => f.Company.CompanyName().ClampLength(3, 50, ' '))
+                .RuleFor(o => o.OpenMembership, f => f.Random.Bool())
+                .RuleFor(o => o.DefaultRoleId, f => f.Random.Number(1, _roles.Length))
                 .RuleFor(o => o.AvatarUrl, f => f.Image.PicsumUrl(250, 250))
                 .RuleFor(o => o.CreatedBy, f => f.Random.Number(1, _numberOfUsers))
                 .RuleFor(o => o.CreatedAt, f => f.Date.Past(2, new DateTime(2021, 7, 20)))
@@ -139,14 +147,13 @@ namespace Watchdog.Core.DAL.Context
                 .Generate(count);
         }
 
-        private static IList<Role> GenerateRoles(int count = _numberOfRoles)
+        private static IList<Role> GenerateRoles()
         {
             return new Faker<Role>()
-                .UseSeed(3517)
                 .RuleFor(r => r.Id, f => ++f.IndexVariable)
-                .RuleFor(r => r.Name, f => f.Lorem.Word())
-                .RuleFor(r => r.Description, f => f.Lorem.Sentences(separator: " "))
-                .Generate(count);
+                .RuleFor(r => r.Name, f => _roles[f.IndexVariable - 1])
+                .RuleFor(r => r.Description, f => f.Lorem.Paragraph())
+                .Generate(_roles.Length);
         }
 
         private static IList<Team> GenerateTeams(int count = _numberOfTeams)

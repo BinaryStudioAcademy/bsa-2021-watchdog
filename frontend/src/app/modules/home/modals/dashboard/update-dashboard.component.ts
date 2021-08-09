@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Dashboard } from '@shared/models/dashboard/Dashboard';
+import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { DashboardService } from '@core/services/dashboard.service';
-import { UpdateDashboard } from '@shared/models/dashboard/UpdateDashboard';
+import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
 
 @Component({
     selector: 'app-update-dashboard',
@@ -21,6 +21,7 @@ export class UpdateDashboardComponent implements OnInit {
     }
 
     ngOnInit() {
+        const namePattern = new RegExp('^[a-zA-Z0-9_. ]*$');
         this.formGroup = new FormGroup({
             id: new FormControl(
                 this.dashboard.id,
@@ -32,8 +33,9 @@ export class UpdateDashboardComponent implements OnInit {
                 this.dashboard.name,
                 [
                     Validators.required,
-                    Validators.minLength(5),
-                    Validators.maxLength(50)
+                    Validators.minLength(3),
+                    Validators.maxLength(50),
+                    Validators.pattern(namePattern)
                 ]
             ),
             icon: new FormControl(

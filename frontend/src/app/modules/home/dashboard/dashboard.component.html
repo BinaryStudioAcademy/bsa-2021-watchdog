@@ -1,16 +1,18 @@
-<div class="dashboard-header">
+<div [ngClass]="{'remove-margin-box-shadow': showTileMenu}" class="dashboard-header">
     <div class="dashboard-name">
-        <h2>{{dashboard.name}}</h2>
+        <h2>{{dashboard?.name}}</h2>
     </div>
     <div class="action-buttons">
-        <button pButton pRipple label="Delete" class="p-button-danger" (click)="deleteDashboard()"></button>
-        <button pButton pRipple label="Edit" class="p-button-info" (click)="isEditing = true"></button>
+        <button (click)="deleteDashboard()" class="p-button-danger" label="Delete" pButton pRipple></button>
+        <button (click)="isEditing = true" class="p-button-info" label="Edit" pButton pRipple></button>
+        <button (click)="toggleTileMenu()" class="p-button-secondary" label="Edit Tiles" pButton pRipple></button>
     </div>
 </div>
+<app-tile-menu (closeMenu)="tileMenuClosed()" *ngIf="showTileMenu" [dashboardId]="dashboard.id"></app-tile-menu>
 
 <app-update-dashboard
-    *ngIf="isEditing"
-    (save)="updateDashboard($event)"
     (closeModal)="isEditing = !isEditing"
+    (save)="updateDashboard($event)"
+    *ngIf="isEditing"
     [dashboard]="dashboard">
 </app-update-dashboard>

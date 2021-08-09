@@ -26,8 +26,16 @@ const routes: Routes = [{
         path: 'issues',
         component: IssuesComponent,
     }, {
+        path: 'teams',
+        loadChildren: () => import('../team/team.module')
+            .then(m => m.TeamModule),
+    }, {
         path: 'dashboard/:id',
         component: DashboardComponent,
+    }, {
+        path: 'organization',
+        loadChildren: () => import('./organization/organization.module')
+            .then(m => m.OrganizationModule),
     }, {
         path: '**',
         component: NotFoundComponent,

@@ -1,0 +1,18 @@
+<div class="org-label" (click)="menu.toggle($event)">
+    <div class="org-avatar">
+        <p-avatar styleClass="org-avatar-item" size="large" *ngIf="organization?.avatarUrl"
+            [image]="organization.avatarUrl"></p-avatar>
+        <p-avatar styleClass="org-avatar-item" size="large" *ngIf="!organization?.avatarUrl"
+            [label]="organization?.name.substr(0,2)"></p-avatar>
+    </div>
+    <div class="org-title">
+        <div class="org-name text-ellipsis">
+            {{organization?.name}}
+        </div>
+        <div class="org-user text-ellipsis">
+            user@mail.user
+        </div>
+    </div>
+</div>
+<p-menu #menu [popup]="true" [model]="menuItems">
+</p-menu>

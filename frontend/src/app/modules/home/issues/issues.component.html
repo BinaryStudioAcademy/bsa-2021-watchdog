@@ -1,1 +1,96 @@
-<p>issues works!</p>
+<div class="title">Issues</div>
+<div class="issues-content">
+    <p-tabView styleClass="tabview-custom">
+
+        <div class="search-block">
+            <div class="p-inputgroup">
+                <span class="p-inputgroup-addon search-button"><i class="pi pi-search"></i></span>
+                <input type="text" pInputText placeholder="Search" name="search">
+                <span class="p-inputgroup-addon search-button search-additional"><i class="pi pi-paperclip"></i></span>
+                <span class="p-inputgroup-addon search-button search-additional"><i class="pi pi-plus"></i></span>
+                <span class="p-inputgroup-addon search-button search-additional"><i class="pi pi-ellipsis-v"></i></span>
+                <span class="p-inputgroup-addon search-button"><i class="pi pi-times"></i></span>
+            </div>
+
+            <p-dropdown [options]="sortedOptions" [(ngModel)]="sortedBy" optionLabel="name" inputName="sortedBy" [autoDisplayFirst]="true"> 
+                <ng-template pTemplate="selectedItem">
+                    <p>Sorted by: <span class="bold">{{sortedBy.name}}</span></p>
+                </ng-template>
+            </p-dropdown>
+        </div>
+
+
+
+        <p-tabPanel>
+            <ng-template pTemplate = "header">
+                <div class="header">
+                    <span>All Unresolved</span>
+                    <p-badge *ngIf="countNew.all > 0" [value]="countNew.all.toString()"></p-badge>
+                </div>
+            </ng-template>
+
+            <p-table [value]="issues" [paginator]="true" [rows]="10">
+                <ng-template pTemplate="colgroup">
+                    <colgroup>
+                        <col id = "issue-col">
+                        <col id = "events-col">
+                        <col id = "users-col">
+                        <col id = "assignee-col">
+                    </colgroup>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th class="name" pSortableColumn="name"> 
+                            <div class="issue">
+                                <p-checkbox name="allIssues" (onChange) = "selectAll($event)"></p-checkbox>
+                                <span>Issue <p-sortIcon field="name"></p-sortIcon></span>
+                            </div>
+                            <p-selectButton [options]="timeOptions" [(ngModel)]="selectedTime" (onChange) = "disableParentEvent($event)" (onOptionClick) = "disableParentEvent($event)"></p-selectButton>
+                        </th>
+                        <th class="center" pSortableColumn="events"><span>Events <p-sortIcon field="events"></p-sortIcon></span></th>
+                        <th class="center" pSortableColumn="users"><span>Users <p-sortIcon field="users"></p-sortIcon></span></th>
+                        <th class="center"><span>Assignee</span></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-issue>
+                    <tr>
+                        <td>
+                            <div class="issue-block">
+                                <p-checkbox name="selectedIssues" [value]="issue" [(ngModel)]="selectedIssues"></p-checkbox>
+                                <div class="content">
+                                    <span class="name">{{issue.name}}</span> 
+                                    <span class="description">{{issue.description}}</span>
+                                    <div class="additional-info">
+                                        <p-tag class="new-issue" *ngIf="issue.isNew" styleClass="p-mr-2" value="New issue" [rounded]="true"></p-tag>
+                                        <span>{{issue.projectTag}}</span>
+                                        <span><i class="pi pi-clock time-icon"></i>{{issue.createdAt | timeAgo}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{issue.events}}</td>
+                        <td>{{issue.users}}</td>
+                        <td><div class="assignee"><i class="pi pi-user"></i><i class="pi pi-chevron-down"></i></div></td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+        </p-tabPanel >
+        <p-tabPanel [disabled]="true">
+            <ng-template pTemplate = "header">
+                <div class="header">
+                    <span>Second Type</span>
+                    <p-badge *ngIf="countNew.secondtype > 0" [value]="countNew.secondtype.toString()"></p-badge>
+                </div>
+            </ng-template>
+        </p-tabPanel>
+        <p-tabPanel [disabled]="true">
+            <ng-template pTemplate = "header">
+                <div class="header">
+                    <span>Third Type</span>
+                    <p-badge *ngIf="countNew.thirdtype > 0" [value]="countNew.thirdtype.toString()"></p-badge>
+                </div>
+            </ng-template> 
+        </p-tabPanel>
+    </p-tabView>
+</div>
