@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 import { AuthenticationService } from '@core/services/authentication.service';
+import { ToastNotificationService } from '@core/services/toast-notification.service';
 
 @Component({
     selector: 'app-socials-login',
@@ -11,22 +11,31 @@ export class SocialsLoginComponent {
 
     constructor(
         private authService: AuthenticationService,
-        private router: Router
+        private toastService: ToastNotificationService
     ) { }
 
     signInWithGitHub() {
         this.authService.signInWithGitHub(['home'])
-            .subscribe(() => { });
+            .subscribe(() => { },
+                error => {
+                    this.toastService.error(`${error}`, 'Error', 2000);
+                });
     }
 
     signInWithGoogle() {
         this.authService.signInWithGoogle(['home'])
-            .subscribe(() => { });
+            .subscribe(() => { },
+                error => {
+                    this.toastService.error(`${error}`, 'Error', 2000);
+                });
     }
 
     signInWithFacebook() {
         this.authService.signInWithFacebook(['home'])
-            .subscribe(() => { });
+            .subscribe(() => { },
+                error => {
+                    this.toastService.error(`${error}`, 'Error', 2000);
+                });
     }
 
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from '@core/services/authentication.service';
+import { ToastNotificationService } from '@core/services/toast-notification.service';
 
 @Component({
     selector: 'app-login-form',
@@ -12,13 +13,17 @@ export class LoginFormComponent {
     public password: string;
 
     constructor(
-        private authService: AuthenticationService
+        private authService: AuthenticationService,
+        private toastService: ToastNotificationService
     ) { }
 
     onSubmit() {
         localStorage.setItem('rememberUser', JSON.stringify(this.rememberMe));
         this.authService.signInWithEmailAndPassword(this.email, this.password, ['home'])
-            .subscribe(() => { });
+            .subscribe(() => { },
+                error => {
+                    this.toastService.error(`${error}`, 'Error', 2000);
+                });
     }
 
 }

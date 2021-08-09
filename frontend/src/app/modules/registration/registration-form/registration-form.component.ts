@@ -3,9 +3,8 @@ import { User } from '@shared/models/user/user';
 import { Member } from '@shared/models/member/member'
 import { AuthenticationService } from '@core/services/authentication.service';
 import { BaseComponent } from '@core/components/base/base.component';
-import { OrganizationService } from '@core/services/organization.service';
 import { NewOrganization } from '@shared/models/organization/newOrganization';
-import { Subscription } from 'rxjs';
+import { ToastNotificationService } from '@core/services/toast-notification.service';
 
 @Component({
     selector: 'app-registration-form',
@@ -23,7 +22,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
 
     constructor(
         private authService: AuthenticationService,
-        private organizationService: OrganizationService
+        private toastService: ToastNotificationService
     ) {
         super();
     }
@@ -35,11 +34,8 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
         this.authService.signOnWithEmailAndPassword(this.user, this.password, ['home'])
             .subscribe(() => {
                 this.authService.getUser();
+            }, error => {
+                this.toastService.error(`${error}`, 'Error', 2000);
             });
-
-
-        //console.log(this.organization);
-
-        //this.organizationService.createOrganization(this.organization);
     }
 }
