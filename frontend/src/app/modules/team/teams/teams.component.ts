@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Team } from '@shared/models/team/team';
+import { Team } from '@shared/models/teams/team';
 import { TeamService } from '@core/services/team.service';
 import { Subject } from 'rxjs';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -39,7 +39,7 @@ export class TeamsComponent extends BaseComponent implements OnDestroy {
         this.createTeamDialog.onClose
             .pipe(this.untilThis)
             .subscribe((name: string) => {
-                if (name) {
+                if (name) { 
                     this.teamService
                         .createTeam({
                             createdBy: this.currentUserId,
@@ -49,7 +49,6 @@ export class TeamsComponent extends BaseComponent implements OnDestroy {
                         .pipe(this.untilThis)
                         .subscribe(response => {
                             this.teamCreated$.next(response.body);
-                            this.toastService.success('Team successfully created!', '', 2000);
                         }, error => {
                             this.toastService.error(`${error}`, 'Error', 2000);
                         });
