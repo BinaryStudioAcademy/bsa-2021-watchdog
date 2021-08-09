@@ -8,7 +8,7 @@ import { HttpInternalService } from './http-internal.service';
 })
 export class ProjectService {
 
-    public readonly routePrefix = '/application';
+    public readonly routePrefix = '/applications';
 
     constructor(private httpService: HttpInternalService) { }
 

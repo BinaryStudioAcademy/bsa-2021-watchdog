@@ -1,4 +1,4 @@
-<app-loading-spinner *ngIf="loadingNumber > 0" [size]="'10px'"></app-loading-spinner>
+<app-loading-spinner *ngIf="loadingNumber > 0" [overlay]="true"></app-loading-spinner> 
 <div class="create-project-container">
     <!--    Header    -->
     <div class="header">
@@ -11,19 +11,19 @@
     <!--    Platform Section    -->
     <div class="choose-platform-section">
         <h2 class="title">Choose a platform</h2>
-        <p-tabMenu [activeItem]="platformTabItems[0]" [model]="platformTabItems"></p-tabMenu>
+        <p-tabMenu [activeItem]="platforms.platformTabItems[0]" [model]="platforms.platformTabItems"></p-tabMenu>
         <!--    Platform Cards    -->
         <div class="platform-cards">
-            <div (click)="onPlatformSelected(platform.id)"
-                 *ngFor="let platform of viewPlatformCards"
-                 [ngClass]="{ 'selected-card': platform.id === this.selectedPlatformId}" class="card">
+                <div (click)="newProject.platformId = platform.id"
+                 *ngFor="let platform of platforms.viewPlatformCards"
+                 [ngClass]="{ 'selected-card': platform.id === this.newProject.platformId}" class="card">
                 <img alt="{{platform.name}}" [src]="platform.avatarUrl | save">
                 <h3>{{platform.name}}</h3>
             </div>
         </div>
     </div>
     <!--    Platform is not selected Warning    -->
-    <small *ngIf="!selectedPlatformId" class="p-error">
+    <small *ngIf="!newProject.platformId" class="p-error">
         Please choose a platform
     </small>
     <!--    Alert RadioButtons    -->
@@ -31,7 +31,7 @@
         <h2 class="title">Set your default alert settings</h2>
         <p-divider></p-divider>
 
-        <div *ngFor="let category of alertCategories" class="alert-form">
+        <div *ngFor="let category of alerts.alertCategories" class="alert-form">
             <form [formGroup]="formGroup">
                 <p-radioButton [inputId]="category" [value]="category"
                                formControlName="alertCategory" name="alertCategory">
@@ -40,20 +40,20 @@
             <label [for]="category" class="radiobutton-label">{{category}}</label>
             <!--    Specific Alert Settings    -->
             <ng-container *ngIf="category === SPECIAL_ALERT_CATEGORY">
-                <p-inputNumber [(ngModel)]="alertsCount"
+                <p-inputNumber [(ngModel)]="alerts.alertsCount"
                                [disabled]="formGroup.controls.alertCategory.value !== SPECIAL_ALERT_CATEGORY"
                                [min]="0" [showButtons]="true" [size]="2" [step]="1"
                                class="radiobutton-settings-alerts-count"
                                mode="decimal">
                 </p-inputNumber>
-                <p-dropdown [(ngModel)]="selectedAlertType"
+                <p-dropdown [(ngModel)]="alerts.selectedAlertType"
                             [disabled]="formGroup.controls.alertCategory.value !== SPECIAL_ALERT_CATEGORY"
-                            [options]="alertTypes" class="radiobutton-settings-alert-type">
+                            [options]="alerts.alertTypes" class="radiobutton-settings-alert-type">
                 </p-dropdown>
                 <span>a unique error in</span>
-                <p-dropdown [(ngModel)]="selectedAlertTimeInterval"
+                <p-dropdown [(ngModel)]="alerts.selectedAlertTimeInterval"
                             [disabled]="formGroup.controls.alertCategory.value !== SPECIAL_ALERT_CATEGORY"
-                            [options]="alertTimeIntervals" class="radiobutton-settings-alert-type"
+                            [options]="alerts.alertTimeIntervals" class="radiobutton-settings-alert-type"
                 >
                 </p-dropdown>
             </ng-container>
@@ -71,7 +71,8 @@
                     <i class="pi pi-file"></i>
                     <input aria-describedby="projectName" formControlName="projectName" pInputText
                            placeholder="Project name"
-                           type="text">
+                           type="text"
+                           [(ngModel)] = "newProject.name">
                 </div>
                 <div *ngIf="formGroup.controls.projectName.touched && formGroup.controls.projectName.invalid"
                      class="input-validation-error" id="projectName">
@@ -85,8 +86,8 @@
                         No more than 50 characters
                     </small>
                     <small *ngIf="formGroup.controls.projectName.errors.pattern" class="p-error">
-                        May contain lowercase (a-z) and uppercase (A-Z) letters, numbers (0-9), dashes and
-                        underscores
+                        May contain lowercase (a-z) and uppercase (A-Z) letters, numbers (0-9), dashes, 
+                        underscores and spaces
                     </small>
                 </div>
 
@@ -95,16 +96,20 @@
             <div [formGroup]="formGroup" class="project-team">
                 <span class="title">Team</span>
                 <div class="dropdown-with-button">
-                    <p-dropdown [options]="userTeams" aria-describedby="team" class="radiobutton-settings-alert-type"
-                                formControlName="team" optionLabel="name" placeholder="Select team">
+                    <p-dropdown [options]="teams" aria-describedby="team" class="radiobutton-settings-alert-type"
+                                formControlName="team" optionLabel="name" placeholder="Select team" optionValue="id"
+                                [(ngModel)] = "newProject.teamId">
+                        <ng-template let-team pTemplate="item">#{{team.name}}</ng-template>
+                        <ng-template let-team pTemplate="selectedItem">#{{team.name}}</ng-template>
                     </p-dropdown>
 
                     <button class="p-button-text button-add-team" icon="pi pi-plus-circle" pButton pRipple
                             pTooltip="Create a team"
-                            tooltipPosition="top" type="button"></button>
+                            tooltipPosition="top" type="button"
+                            (click) = "openDialog()"></button>
                     <!--    Submit Button   -->
                     <button (click)="createProject()"
-                            [disabled]="!formGroup.valid || !selectedPlatformId"
+                            [disabled]="!formGroup.valid || !newProject.platformId"
                             class="p-button-secondary button-create-project" label="Create Project"
                             pButton></button>
                 </div>

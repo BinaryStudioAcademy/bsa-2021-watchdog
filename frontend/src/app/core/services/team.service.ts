@@ -1,16 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpInternalService } from '@core/services/http-internal.service';
 import { Observable } from 'rxjs';
-import { Team } from '@shared/models/team/team';
+import { Team } from '@shared/models/teams/team';
 import { HttpResponse } from '@angular/common/http';
-import { TeamMember } from '@shared/models/team/team-member';
-import { NewTeam } from '@shared/models/team/new-team';
+import { TeamMember } from '@shared/models/teams/team-member';
+import { NewTeam } from '@shared/models/teams/new-team';
+import { TeamOption } from '@shared/models/teams/team-option';
 
 @Injectable({ providedIn: 'root' })
 export class TeamService {
-    public readonly routePrefix = '/team';
+    public readonly routePrefix = '/teams';
 
     constructor(private httpService: HttpInternalService) { }
+
+    public getTeamOptionsByOrganizationId(organizationId: number): Observable<TeamOption[]> {
+        return this.httpService.getRequest(`${this.routePrefix}/organization/${organizationId}/options`);
+    }
 
     public getTeams(): Observable<HttpResponse<Team[]>> {
         return this.httpService.getFullRequest(`${this.routePrefix}`);

@@ -5,7 +5,7 @@ import { HttpInternalService } from './http-internal.service';
 
 @Injectable({ providedIn: 'root' })
 export class PlatformService {
-    public readonly routePrefix = '/platform';
+    public readonly routePrefix = '/platforms';
 
     constructor(private httpService: HttpInternalService) { }
 
