@@ -40,14 +40,18 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<UserDto> GetUserByIdAsync(int userId)
         {
-            var user = await _context.Users
-                .Include(user => user.FirstName)
-                .Include(user => user.LastName)
-                .Include(user => user.Email)
-                .FirstOrDefaultAsync(user => user.Id == userId);
+            var user = await GetUserByIdInternal(userId);
 
             return _mapper.Map<UserDto>(user);
         }
 
+        private async Task<User> GetUserByIdInternal(int userId)
+        {
+            return await _context.Users
+                .Include(f => f.FirstName)
+                .Include(l => l.LastName)
+                .Include(e => e.Email)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+        }
     }
 }
