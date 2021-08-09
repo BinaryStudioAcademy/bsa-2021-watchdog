@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Watchdog.Core.Common.DTO.User
 {
@@ -8,7 +9,9 @@ namespace Watchdog.Core.Common.DTO.User
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        public string PasswordHash { get; set; }
         public DateTime RegisteredAt { get; set; }
         public string AvatarUrl { get; set; }
+
     }
 }

@@ -1,14 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.ExceptionsCustom;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.User;
 using Watchdog.Core.DAL.Context;
-using Watchdog.Core.DAL.Entities;
 
 namespace Watchdog.Core.BLL.Services
 {
@@ -18,9 +15,21 @@ namespace Watchdog.Core.BLL.Services
         {
         }
 
-        public async Task<UserDto> UpdateUserAsync(UpdateUserDto updateUserDto)
+        public async Task<ICollection<UserDto>> GetAllUsersAsync()
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == updateUserDto.Id);
+            var user = await _context.Users.ToListAsync();
+            return _mapper.Map<ICollection<UserDto>>(user);
+        }
+
+        public async Task<UserDto> GetUserAsync(int userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            return _mapper.Map<UserDto>(user);
+        }
+
+        public async Task<UserDto> UpdateUserAsync(int userId, UpdateUserDto updateUserDto)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null)
             {
@@ -35,23 +44,8 @@ namespace Watchdog.Core.BLL.Services
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
-            return await GetUserByIdAsync(updateUserDto.Id);
+            return await GetUserAsync(userId);
         }
 
-        public async Task<UserDto> GetUserByIdAsync(int userId)
-        {
-            var user = await GetUserByIdInternal(userId);
-
-            return _mapper.Map<UserDto>(user);
-        }
-
-        private async Task<User> GetUserByIdInternal(int userId)
-        {
-            return await _context.Users
-                .Include(f => f.FirstName)
-                .Include(l => l.LastName)
-                .Include(e => e.Email)
-                .FirstOrDefaultAsync(u => u.Id == userId);
-        }
     }
 }

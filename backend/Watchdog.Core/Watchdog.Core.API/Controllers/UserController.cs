@@ -1,41 +1,49 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.User;
 
 namespace Watchdog.Core.API.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly ILogger<UserController> _logger;
         private readonly IUserService _userService;
 
-        public UserController(ILogger<UserController> logger, IUserService userService)
+        public UserController(IUserService userService)
         {
-            _logger = logger;
             _userService = userService;
         }
 
-        [HttpPut("user")]
-        public async Task<ActionResult<UserDto>> UpdateUserAsync(UpdateUserDto updateUserDto)
+        [HttpGet]
+        public async Task<ActionResult<ICollection<UserDto>>> GetAllAsync()
         {
-            _logger.LogInformation(1002, $"Update user");
-            //var updateUser = await _userService.UpdateUserAsync(userId, updateUserDto);
-            //return Ok(updateUser);
-            return Ok(await _userService.UpdateUserAsync(updateUserDto));
+            var user = await _userService.GetAllUsersAsync();
+            return Ok(user);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<UserDto>> GetUserByIdAsync(int userId)
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<UserDto>> GetAsync(int userId)
         {
-            _logger.LogInformation(1002, $"Get user by id {userId}");
-            return Ok(await _userService.GetUserByIdAsync(userId));
+            var user = await _userService.GetUserAsync(userId);
+            return Ok(user);
+        }
+
+        [HttpPut("{userId}")]
+        public async Task<ActionResult<UserDto>> UpdateAsync(int userId, UpdateUserDto updateUserDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var user = await _userService.UpdateUserAsync(userId, updateUserDto);
+            return Ok(user);
         }
 
     }
