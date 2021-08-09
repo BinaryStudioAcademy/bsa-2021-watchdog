@@ -14,12 +14,12 @@ import { Subscription } from 'rxjs';
 })
 export class RegistrationFormComponent extends BaseComponent implements OnInit {
     user = {} as User;
-    member = {} as Member;
     organization = {} as NewOrganization;
 
     password: string;
     confirmPassword: string;
-    rememberMe: boolean;
+
+    isNotFinishedRegistration = false;
 
     constructor(
         private authService: AuthenticationService,
@@ -29,17 +29,20 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        const user = this.authService.getUser();
+        this.isNotFinishedRegistration = Boolean(user) && !user.registeredAt;
+        if(this.isNotFinishedRegistration) {
+            this.user = user;
+        }
     }
 
     onSubmit() {
-        this.authService.signOnWithEmailAndPassword(this.user, this.password, ['home'])
-            .subscribe(() => {
-                this.authService.getUser();
-            });
+        if(!this.isNotFinishedRegistration) {
+            this.authService.signOnWithEmailAndPassword(this.user, this.password, ['home'])
+            .subscribe();
+        } else {
+            // Create organization + member
+        }
 
-
-        //console.log(this.organization);
-
-        //this.organizationService.createOrganization(this.organization);
     }
 }

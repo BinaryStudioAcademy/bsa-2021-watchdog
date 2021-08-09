@@ -3,9 +3,8 @@ import firebase from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { filter, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { filter, mergeMap, switchMap, tap, map } from 'rxjs/operators';
 import { from, of } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { User } from '@shared/models/user/user';
 import { NewUser } from '@shared/models/user/newUser';
 import { UserService } from './user.service';
@@ -16,6 +15,8 @@ import { UserService } from './user.service';
 export class AuthenticationService {
     private user: User;
     private readonly tokenHelper: JwtHelperService;
+
+    private isSignByEmailAndPassword = false;
 
     private token: string | null;
     private rememberUser: boolean;
@@ -28,8 +29,12 @@ export class AuthenticationService {
         this.tokenHelper = new JwtHelperService();
     }
 
-    isAuthenticated() {
-        return Boolean(this.getUser());
+    isUserSignByEmailAndPassword(){
+        return this.isSignByEmailAndPassword;
+    }
+
+    isAuthenticated(): boolean {
+        return Boolean(this.getUser()) && Boolean(this.getUser().registeredAt);
     }
 
     getUser() {
@@ -87,10 +92,12 @@ export class AuthenticationService {
                 map(userCredential => ({
                     ...newUser,
                     uid: userCredential.user.uid,
-                    registeredAt: new Date().toISOString() // to back-end
-                })),
+                }) ),
                 switchMap(user => this.userService.createUser(user)),
-                tap(user => this.setUser(user)),
+                tap(user => {
+                    this.isSignByEmailAndPassword = true;
+                    return this.setUser(user);
+                }),
                 switchMap(() => this.login(route))
             );
     }
@@ -100,7 +107,10 @@ export class AuthenticationService {
             .signInWithEmailAndPassword(email, password))
             .pipe(
                 switchMap(userCredential => this.userService.getUser(userCredential.user.uid)),
-                tap(user => this.setUser(user)),
+                tap(user => {
+                    this.isSignByEmailAndPassword = true;
+                    return this.setUser(user);
+                }),
                 switchMap(() => this.login(route))
             );
     }
@@ -158,7 +168,6 @@ export class AuthenticationService {
             uid: credential.user.uid,
             email: credential.user.email,
             avatarUrl: credential.user.photoURL,
-            registeredAt: new Date().toISOString()
         } as NewUser;
 
         const name: string = credential.additionalUserInfo.profile['name'];
@@ -175,8 +184,7 @@ export class AuthenticationService {
             email: credential.user.email,
             firstName: credential.additionalUserInfo.profile['given_name'],
             lastName: credential.additionalUserInfo.profile['family_name'],
-            avatarUrl: credential.user.photoURL,
-            registeredAt: new Date().toISOString()
+            avatarUrl: credential.user.photoURL
         } as NewUser;
 
         return user;
@@ -207,7 +215,6 @@ export class AuthenticationService {
         this.angularFireAuth.currentUser
             .then(user => {
                 user.updatePassword(newPassword)
-                    .then(() => { })
                     .catch((error) => {
                         console.warn(error);
                     });

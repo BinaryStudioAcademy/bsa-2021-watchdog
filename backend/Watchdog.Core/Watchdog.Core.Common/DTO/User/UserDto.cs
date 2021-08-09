@@ -16,6 +16,6 @@ namespace Watchdog.Core.Common.DTO.User
 
         public string AvatarUrl { get; set; }
 
-        public DateTime RegisteredAt { get; set; }
+        public DateTime? RegisteredAt { get; set; }
     }
 }

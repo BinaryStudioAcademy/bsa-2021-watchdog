@@ -1,11 +1,11 @@
 <form action="/signon" method="POST" class="reg-form">
     <div class="reg-block">
         <span class="p-float-label">
-            <input id="float-input-first-name" type="text" name="first-name" pInputText [(ngModel)]="user.firstName">
+            <input id="float-input-first-name" type="text" name="first-name" pInputText [(ngModel)]="user.firstName" [disabled]="isNotFinishedRegistration">
             <label for="float-input-first-name">First Name</label>
         </span>
         <span class="p-float-label">
-            <input id="float-input-last-name" type="text" name="last-name" pInputText [(ngModel)]="user.lastName">
+            <input id="float-input-last-name" type="text" name="last-name" pInputText [(ngModel)]="user.lastName" [disabled]="isNotFinishedRegistration">
             <label for="float-input-last-name">Last Name</label>
         </span>
     </div>
@@ -15,24 +15,11 @@
             <label for="float-input-comp-name">Organization name</label>
         </span>
         <span class="p-float-label">
-            <input id="float-input-email" type="text" name="email" pInputText [(ngModel)]="user.email">
+            <input id="float-input-email" type="text" name="email" pInputText [(ngModel)]="user.email" [disabled]="isNotFinishedRegistration">
             <label for="float-input-email">Email</label>
         </span>
     </div>
-    <!-- <div class="reg-block">
-        <span class="p-float-label">
-            <p-dropdown [options]="roles" name="roles" id="float-input-role" [(ngModel)]="role" placeholder=" "
-                [showClear]="true" optionValue="id" optionLabel="name"></p-dropdown>
-            <label for="float-input-role">Role</label>
-        </span>
-        <span class="p-float-label">
-            <p-dropdown [options]="organizationSizes" name="organizationSizes" id="float-input-comp-size"
-                [(ngModel)]="organizationSize" placeholder=" " [showClear]="true" optionValue="id" optionLabel="name">
-            </p-dropdown>
-            <label for="float-input-comp-size">Organization size</label>
-        </span>
-    </div> -->
-    <div class="reg-block">
+    <div class="reg-block" *ngIf="!isNotFinishedRegistration">
         <span class="p-float-label">
             <p-password id="float-input-pass" name="password" [(ngModel)]="password" [feedback]="false"
                 [toggleMask]="true"></p-password>
@@ -42,13 +29,6 @@
             <p-password id="float-input-pass" name="confirm-password" [(ngModel)]="confirmPassword" [feedback]="false"
                 [toggleMask]="true"></p-password>
             <label for="float-input-role">Confirm password</label>
-        </span>
-    </div>
-    <div class="reg-block">
-        <span class="p-field-checkbox">
-            <p-checkbox class="remember-check" name="remember" [(ngModel)]="rememberMe" [binary]="true"
-                inputId="binary"></p-checkbox>
-            <label for="binary">Remember me</label>
         </span>
     </div>
     <div class="reg-block">
