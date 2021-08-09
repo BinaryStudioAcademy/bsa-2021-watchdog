@@ -56,15 +56,16 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
     }
 
     submit(editForm) {
-        //this.getValuesForUpdateInfo();
-        this.userService.updateUser(this.userUpdate)
-            .subscribe(resp => {
-                this.toastNotificationService.success('Information has been updated');
-                window.location.reload();
-            },
-            error => {
-                this.toastNotificationService.error('An error occured while updating the profile');
-            });
+
+        // this.getValuesForUpdateInfo();
+        // this.userService.updateUser(this.userUpdate)
+        //     .subscribe(resp => {
+        //         this.toastNotificationService.success('Information has been updated');
+        //         window.location.reload();
+        //     },
+        //     error => {
+        //         this.toastNotificationService.error('An error occured while updating the profile');
+        //     });
     }
 
     ngOnDestroy() {
