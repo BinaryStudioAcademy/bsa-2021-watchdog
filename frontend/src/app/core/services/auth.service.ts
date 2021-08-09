@@ -58,16 +58,16 @@ export class AuthService {
         return this.currentUserSubject.value?.user;
     }
 
-    public getUsers() {
-        return this.user
-            ? of(this.user)
-            : this.userService.getUserById(10).pipe(
-                map((resp) => {
-                    this.user = resp.body;
-                    return this.user;
-                })
-            );
-    }
+    // public getUsers() {
+    //     return this.user
+    //         ? of(this.user)
+    //         : this.userService.getUserById(10).pipe(
+    //             map((resp) => {
+    //                 this.user = resp.body;
+    //                 return this.user;
+    //             })
+    //         );
+    // }
 
     public setUser(user: User) {
         this.currentUserSubject.value.user = user;

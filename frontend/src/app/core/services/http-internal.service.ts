@@ -14,7 +14,7 @@ export class HttpInternalService {
         return this.headers;
     }
 
-    public getHeader(key: string) {
+    public getHeader(key: string): string {
         return this.headers[key];
     }
 
@@ -26,8 +26,8 @@ export class HttpInternalService {
         delete this.headers[key];
     }
 
-    public getRequest<T>(url: string, httpParams?: any): Observable<HttpResponse<T>> {
-        return this.http.get<T>(this.buildUrl(url), { headers: this.headers, params: httpParams, observe: 'response' });
+    public getRequest<T>(url: string, httpParams?: any): Observable<T> {
+        return this.http.get<T>(this.buildUrl(url), { headers: this.getHeaders(), params: httpParams });
     }
 
     public getFullRequest<T>(url: string, httpParams?: any): Observable<HttpResponse<T>> {
@@ -46,8 +46,8 @@ export class HttpInternalService {
         return this.http.post<T>(this.buildUrl(url), payload, { headers: this.getHeaders(), observe: 'response' });
     }
 
-    public putRequest<T>(url: string, body: any | null): Observable<HttpResponse<T>> {
-        return this.http.put<T>(this.buildUrl(url), body, { headers: this.headers, observe: 'response' });
+    public putRequest<T>(url: string, payload: object): Observable<T> {
+        return this.http.put<T>(this.buildUrl(url), payload, { headers: this.getHeaders() });
     }
 
     public putFullRequest<T>(url: string, payload: object): Observable<HttpResponse<T>> {
