@@ -15,15 +15,18 @@ export class SocialsLoginComponent {
     ) { }
 
     signInWithGitHub() {
-        this.authService.signInWithGitHub(['home']);
+        this.authService.signInWithGitHub(['home'])
+            .subscribe(() => { });
     }
 
     signInWithGoogle() {
-        this.authService.signInWithGoogle(['home']);
+        this.authService.signInWithGoogle(['home'])
+            .subscribe(() => { });
     }
 
     signInWithFacebook() {
-        this.authService.signInWithFacebook(['home']);
+        this.authService.signInWithFacebook(['home'])
+            .subscribe(() => { });
     }
 
 }

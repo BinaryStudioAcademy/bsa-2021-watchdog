@@ -17,7 +17,8 @@ export class LoginFormComponent {
 
     onSubmit() {
         localStorage.setItem('rememberUser', JSON.stringify(this.rememberMe));
-        this.authService.signInWithEmailAndPassword(this.email, this.password, ['home']);
+        this.authService.signInWithEmailAndPassword(this.email, this.password, ['home'])
+            .subscribe(() => { });
     }
 
 }

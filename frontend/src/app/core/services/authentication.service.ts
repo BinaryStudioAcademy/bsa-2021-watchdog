@@ -3,18 +3,17 @@ import firebase from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { filter, mergeMap, tap } from 'rxjs/operators';
+import { filter, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { from, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { User } from '@shared/models/user/user';
+import { NewUser } from '@shared/models/user/newUser';
 import { UserService } from './user.service';
-import { BaseComponent } from '@core/components/base/base.component';
-import { HttpResponse } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
 })
-export class AuthenticationService extends BaseComponent {
-    private firebaseUser: firebase.User;
+export class AuthenticationService {
     private user: User;
     private readonly tokenHelper: JwtHelperService;
 
@@ -26,24 +25,11 @@ export class AuthenticationService extends BaseComponent {
         private userService: UserService,
         private router: Router
     ) {
-        super();
         this.tokenHelper = new JwtHelperService();
     }
 
-    getFirebaseUser() {
-        if (!this.firebaseUser) {
-            this.firebaseUser = JSON.parse(localStorage.getItem('firebaseUser'));
-        }
-        return this.firebaseUser;
-    }
-
-    setFirebaseUser(user: firebase.User) {
-        this.firebaseUser = user;
-        localStorage.setItem('firebaseUser', JSON.stringify(this.firebaseUser));
-    }
-
     isAuthenticated() {
-        return Boolean(this.getFirebaseUser());
+        return Boolean(this.getUser());
     }
 
     getUser() {
@@ -56,6 +42,11 @@ export class AuthenticationService extends BaseComponent {
     setUser(user: User) {
         this.user = user;
         localStorage.setItem('user', JSON.stringify(this.user));
+    }
+
+    removeUser() {
+        this.user = null;
+        localStorage.removeItem('user');
     }
 
     getJwToken() {
@@ -89,130 +80,86 @@ export class AuthenticationService extends BaseComponent {
             );
     }
 
-    signOnWithEmailAndPassword(userInfo: User, password: string, route: string[]) {
-        return this.angularFireAuth
-            .createUserWithEmailAndPassword(userInfo.email, password)
-            .then(userCredential => {
-                userInfo.uid = userCredential.user.uid;
-                userInfo.avatarUrl = "";
-                userInfo.registeredAt = new Date().toISOString();
-
-                this.pushUserInfoToApi(userInfo)
-                    .pipe(this.untilThis)
-                    .subscribe(() => {
-                        this.setUser(userInfo);
-                        this.login(userCredential.user, route);
-                    });
-            })
-            .catch(error => {
-                console.warn(error);
-            });
+    signOnWithEmailAndPassword(newUser: NewUser, password: string, route: string[]) {
+        return from(this.angularFireAuth
+            .createUserWithEmailAndPassword(newUser.email, password))
+            .pipe(
+                map(userCredential => ({
+                    ...newUser,
+                    uid: userCredential.user.uid,
+                    registeredAt: new Date().toISOString() // to back-end
+                })),
+                switchMap(user => this.userService.createUser(user)),
+                tap(user => this.setUser(user)),
+                switchMap(() => this.login(route))
+            );
     }
 
     signInWithEmailAndPassword(email: string, password: string, route: string[]) {
-        return this.angularFireAuth
-            .signInWithEmailAndPassword(email, password)
-            .then(userCredential => {
-                this.pullUserInfoFromApi(userCredential.user.uid)
-                    .pipe(this.untilThis)
-                    .subscribe((response: HttpResponse<User>) => {
-                        this.setUser(response.body);
-                        this.login(userCredential.user, route);
-                    });
-            })
-            .catch(error => {
-                console.warn(error);
-            });
+        return from(this.angularFireAuth
+            .signInWithEmailAndPassword(email, password))
+            .pipe(
+                switchMap(userCredential => this.userService.getUser(userCredential.user.uid)),
+                tap(user => this.setUser(user)),
+                switchMap(() => this.login(route))
+            );
     }
 
     signInWithGitHub(route: string[]) {
         const provider = new firebase.auth.GithubAuthProvider();
         provider.addScope('user');
 
-        return this.angularFireAuth
-            .signInWithPopup(provider)
-            .then(userCredential => {
-                if (userCredential.additionalUserInfo.isNewUser) {
-                    const userInfo = this.pullUserInfoFromGitHub(userCredential);
-                    this.pushUserInfoToApi(userInfo)
-                        .pipe(this.untilThis)
-                        .subscribe(() => {
-                            this.setUser(userInfo);
-                            this.login(userCredential.user, route);
-                        });
-                }
-                else {
-                    this.pullUserInfoFromApi(userCredential.user.uid)
-                        .pipe(this.untilThis)
-                        .subscribe((response: HttpResponse<User>) => {
-                            this.setUser(response.body);
-                            this.login(userCredential.user, route);
-                        });
-                }
-            })
-            .catch(error => {
-                console.warn(error);
-            });
+        return from(this.angularFireAuth
+            .signInWithPopup(provider))
+            .pipe(
+                switchMap(userCredential => {
+                    if (userCredential.additionalUserInfo.isNewUser) {
+                        const newUser = this.pullNewUserFromGitHub(userCredential);
+                        return this.userService.createUser(newUser);
+                    }
+                    return this.userService.getUser(userCredential.user.uid);
+                }),
+                tap(user => this.setUser(user)),
+                switchMap(() => this.login(route))
+            );
     }
 
     signInWithGoogle(route: string[]) {
         const provider = new firebase.auth.GoogleAuthProvider();
         provider.addScope('https://www.googleapis.com/auth/userinfo.email');
 
-        return this.angularFireAuth
-            .signInWithPopup(provider)
-            .then(userCredential => {
-                if (userCredential.additionalUserInfo.isNewUser) {
-                    const userInfo = this.pullUserInfoFromGoogle(userCredential);
-                    this.pushUserInfoToApi(userInfo)
-                        .pipe(this.untilThis)
-                        .subscribe(() => {
-                            this.setUser(userInfo);
-                            this.login(userCredential.user, route);
-                        });
-                }
-                else {
-                    this.pullUserInfoFromApi(userCredential.user.uid)
-                        .pipe(this.untilThis)
-                        .subscribe((response: HttpResponse<User>) => {
-                            this.setUser(response.body);
-                            this.login(userCredential.user, route);
-                        });
-                }
-            })
-            .catch(error => {
-                console.warn(error);
-            });
+        return from(this.angularFireAuth
+            .signInWithPopup(provider))
+            .pipe(
+                switchMap(userCredential => {
+                    if (userCredential.additionalUserInfo.isNewUser) {
+                        const newUser = this.pullNewUserFromGoogle(userCredential);
+                        return this.userService.createUser(newUser);
+                    }
+                    return this.userService.getUser(userCredential.user.uid);
+                }),
+                tap(user => this.setUser(user)),
+                switchMap(() => this.login(route))
+            );
     }
 
     signInWithFacebook(route: string[]) {
         const provider = new firebase.auth.FacebookAuthProvider();
-        return this.angularFireAuth
-            .signInWithPopup(provider)
-            .then(userCredential => {
-                this.login(userCredential.user, route);
-                // TODO: implement setUser()
-            })
-            .catch(error => {
-                console.warn(error);
-            });
+
+        return from(this.angularFireAuth
+            .signInWithPopup(provider))
+            .pipe(
+                switchMap(() => this.login(route))
+            );
     }
 
-    pushUserInfoToApi(user: User) {
-        return this.userService.createUser(user);
-    }
-
-    pullUserInfoFromApi(uid: string) {
-        return this.userService.getUser(uid);
-    }
-
-    pullUserInfoFromGitHub(credential: firebase.auth.UserCredential) {
+    pullNewUserFromGitHub(credential: firebase.auth.UserCredential) {
         const user = {
             uid: credential.user.uid,
             email: credential.user.email,
             avatarUrl: credential.user.photoURL,
             registeredAt: new Date().toISOString()
-        } as User;
+        } as NewUser;
 
         const name: string = credential.additionalUserInfo.profile['name'];
         if (name != null) {
@@ -222,7 +169,7 @@ export class AuthenticationService extends BaseComponent {
         return user;
     }
 
-    pullUserInfoFromGoogle(credential: firebase.auth.UserCredential) {
+    pullNewUserFromGoogle(credential: firebase.auth.UserCredential) {
         const user = {
             uid: credential.user.uid,
             email: credential.user.email,
@@ -230,25 +177,27 @@ export class AuthenticationService extends BaseComponent {
             lastName: credential.additionalUserInfo.profile['family_name'],
             avatarUrl: credential.user.photoURL,
             registeredAt: new Date().toISOString()
-        } as User;
+        } as NewUser;
 
         return user;
     }
 
-    login(firebaseUser: firebase.User, route?: string[]) {
+    login(route?: string[]) {
         this.rememberUser = localStorage.getItem('rememberUser') === 'true';
-        this.setFirebaseUser(firebaseUser);
-        firebaseUser.getIdToken()
-            .then(token => {
-                this.setJwToken(token);
-                this.router.navigate(route);
-            });
+        return this.angularFireAuth.authState
+            .pipe(
+                switchMap(firebaseUser => from(firebaseUser.getIdToken())),
+                tap(token => {
+                    this.setJwToken(token);
+                    this.router.navigate(route);
+                })
+            )
     }
 
     logout() {
         this.removeJwToken();
+        this.removeUser();
         this.angularFireAuth.signOut()
-            .then(() => { })
             .catch(error => {
                 console.warn(error);
             });
