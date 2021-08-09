@@ -12,16 +12,16 @@
             <div class="user-info-body">
                 <ul>
                     <li>
-                        <span id="user-name"></span>
+                        <span id="user-name">{{user.firstName}}</span>
                     </li>
                     <li>
-                        <span id="user-email"></span>
+                        <span id="user-email">{{user.email}}</span>
                     </li>
                 </ul>
             </div>
         </div>
         <div class="info-settings">
-            <form [formGroup]="editProfileForm" (ngSubmit)="submit(editProfileForm)"></form>
+            <form #editProfileForm="ngForm" (ngSubmit)="submit(editProfileForm.form)">
                 <h4>Edit profile</h4>
                 <div class="input-container">
                     <div class="input-section">
