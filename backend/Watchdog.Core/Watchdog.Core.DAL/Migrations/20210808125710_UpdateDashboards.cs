@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Watchdog.Core.DAL.Migrations
 {
-    public partial class UpdateDashboard : Migration
+    public partial class UpdateDashboards : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -117,6 +117,27 @@ namespace Watchdog.Core.DAL.Migrations
                 keyValue: 15,
                 columns: new[] { "CreatedAt", "CreatedBy", "Icon", "Name", "OrganizationId" },
                 values: new object[] { new DateTime(2020, 4, 14, 13, 23, 49, 497, DateTimeKind.Unspecified).AddTicks(2242), 15, "pi-chart-bar", "perspiciatis", 5 });
+
+            migrationBuilder.UpdateData(
+                table: "Roles",
+                keyColumn: "Id",
+                keyValue: 1,
+                column: "Description",
+                value: "Sit est commodi explicabo numquam eaque aut est. Hic expedita natus ut impedit. Natus voluptas delectus. Cum dignissimos rem quaerat reiciendis incidunt dicta quam veritatis.");
+
+            migrationBuilder.UpdateData(
+                table: "Roles",
+                keyColumn: "Id",
+                keyValue: 2,
+                column: "Description",
+                value: "Ab hic incidunt alias omnis totam molestias et beatae. Soluta maxime cum repudiandae. Voluptatem et aspernatur explicabo voluptatibus adipisci. Totam id incidunt perspiciatis reprehenderit. Et magni et qui voluptas et. Nihil voluptas ut non provident illo voluptate rerum cupiditate asperiores.");
+
+            migrationBuilder.UpdateData(
+                table: "Roles",
+                keyColumn: "Id",
+                keyValue: 3,
+                column: "Description",
+                value: "Ut omnis beatae expedita voluptatem ut eos et est. Dolores assumenda incidunt beatae quia inventore. Est eos reiciendis dolor aut quisquam dolorem non dolorem natus. Repellendus iure earum maxime provident placeat quae fugiat temporibus voluptatum. At ut accusamus consequuntur modi.");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -229,6 +250,27 @@ namespace Watchdog.Core.DAL.Migrations
                 keyValue: 15,
                 columns: new[] { "CreatedAt", "CreatedBy", "Name", "OrganizationId" },
                 values: new object[] { new DateTime(2020, 9, 23, 15, 54, 42, 918, DateTimeKind.Unspecified).AddTicks(8524), 13, "aspernatur", 4 });
+
+            migrationBuilder.UpdateData(
+                table: "Roles",
+                keyColumn: "Id",
+                keyValue: 1,
+                column: "Description",
+                value: "Quo quas dolorem quisquam culpa. Occaecati est et nemo. Nulla qui sit quaerat error placeat deleniti odit. Ut quam atque iure et blanditiis error impedit velit. Eius aut eveniet ullam molestiae. Similique qui enim fugiat quisquam quo similique ut.");
+
+            migrationBuilder.UpdateData(
+                table: "Roles",
+                keyColumn: "Id",
+                keyValue: 2,
+                column: "Description",
+                value: "Voluptatibus amet nihil dolor delectus exercitationem aperiam. Sit quam voluptatem odio. Consequuntur laborum vel adipisci deserunt sunt earum hic. Aliquam et asperiores molestiae dolorem ad doloremque. Pariatur dolores et blanditiis voluptatum autem alias. Ut et assumenda omnis veniam molestias dolorum consequuntur.");
+
+            migrationBuilder.UpdateData(
+                table: "Roles",
+                keyColumn: "Id",
+                keyValue: 3,
+                column: "Description",
+                value: "Modi et rerum reiciendis. Dolorem expedita praesentium non dicta. Eaque magni omnis aut molestias similique rerum dolorem sed.");
         }
     }
 }

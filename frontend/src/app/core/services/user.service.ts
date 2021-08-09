@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
 import { User } from '../models/user';
 import { HttpInternalService } from './http-internal.service';
 
@@ -7,9 +6,11 @@ import { HttpInternalService } from './http-internal.service';
     providedIn: 'root'
 })
 export class UserService {
-    constructor(private http: HttpInternalService) { }
+    public readonly routePrefix = '/user';
+
+    constructor(private httpService: HttpInternalService) { }
 
     public updateUser(user: User) {
-        return this.http.putFullRequest<User>(`${environment.coreUrl}/user`, user);
+        return this.httpService.putFullRequest<User>(`${this.routePrefix}`, user);
     }
 }
