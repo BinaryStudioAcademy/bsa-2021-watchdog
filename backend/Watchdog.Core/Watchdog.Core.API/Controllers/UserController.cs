@@ -22,26 +22,21 @@ namespace Watchdog.Core.API.Controllers
             _userService = userService;
         }
 
-        [HttpPut("{userId:int}")]
-        public async Task<ActionResult<UserDto>> UpdateUserAsync(int userId, UpdateUserDto updateUserDto)
+        [HttpPut("user")]
+        public async Task<ActionResult<UserDto>> UpdateUserAsync(UpdateUserDto updateUserDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-            var updateUser = await _userService.UpdateUserAsync(userId, updateUserDto);
-            return Ok(updateUser);
+            _logger.LogInformation(1002, $"Update user");
+            //var updateUser = await _userService.UpdateUserAsync(userId, updateUserDto);
+            //return Ok(updateUser);
+            return Ok(await _userService.UpdateUserAsync(updateUserDto));
         }
 
-        [HttpPut("{userId:int}")]
-        public async Task<ActionResult<UserDto>> UpdateUserPasswordAsync(int userId, UpdateUserPasswordDto updateUserPasswordDto)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserDto>> GetUserById(int userId)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-            var updateUserPassword = await _userService.UpdateUserPasswordAsync(userId, updateUserPasswordDto);
-            return Ok(updateUserPassword);
+            _logger.LogInformation(1002, $"Get user by id {userId}");
+            return Ok(await _userService.GetUserAsync(userId));
         }
+
     }
 }

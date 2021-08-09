@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Watchdog.Core.BLL.Services.Abstract
 {
-    class IImageUpload
+    public interface IImageUpload
     {
+        Task<string> UploadAsync(string imgUri);
+        Task<string> UploadAsync(byte[] byteArray);
     }
 }
