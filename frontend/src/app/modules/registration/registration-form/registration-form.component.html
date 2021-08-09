@@ -1,39 +1,88 @@
-<form action="/signon" method="POST" class="reg-form">
+<form action="/signon" method="POST" class="reg-form" [formGroup]="formGroup">
     <div class="reg-block">
-        <span class="p-float-label">
-            <input id="float-input-first-name" type="text" name="first-name" pInputText [(ngModel)]="user.firstName" [disabled]="isNotFinishedRegistration">
-            <label for="float-input-first-name">First Name</label>
-        </span>
-        <span class="p-float-label">
-            <input id="float-input-last-name" type="text" name="last-name" pInputText [(ngModel)]="user.lastName" [disabled]="isNotFinishedRegistration">
-            <label for="float-input-last-name">Last Name</label>
-        </span>
+        <div class="input-block">
+            <span class="p-float-label">
+                <input id="float-input-first-name" type="text" formControlName="firstName" name="first-name" pInputText [(ngModel)]="user.firstName" [disabled]="isNotFinishedRegistration">
+                <label for="float-input-first-name">First Name</label>
+            </span>
+            <div *ngIf="formGroup.controls.firstName.touched && formGroup.controls.firstName.invalid" class="validation">
+                <small *ngIf="formGroup.controls.firstName.errors.required">Field name can't be empty</small>
+                <small *ngIf="formGroup.controls.firstName.value?.length < 2">Min name length 2</small>
+                <small *ngIf="formGroup.controls.firstName.value?.length > 20">Max name length 20</small>
+                <small *ngIf="formGroup.controls.firstName.hasError('pattern')">May contain letters and dashes</small>
+            </div>
+        </div>
+        <div class="input-block">
+            <span class="p-float-label">
+                <input id="float-input-last-name" type="text" formControlName="lastName" name="last-name" pInputText [(ngModel)]="user.lastName" [disabled]="isNotFinishedRegistration">
+                <label for="float-input-last-name">Last Name</label>
+            </span>
+            <div *ngIf="formGroup.controls.lastName.touched && formGroup.controls.lastName.invalid" class="validation">
+                <small *ngIf="formGroup.controls.lastName.errors.required">Field name can't be empty</small>
+                <small *ngIf="formGroup.controls.lastName.value?.length < 2">Min name length 2</small>
+                <small *ngIf="formGroup.controls.lastName.value?.length > 20">Max name length 20</small>
+                <small *ngIf="formGroup.controls.lastName.hasError('pattern')">May contain letters, dashes and space</small>
+            </div>
+        </div>
     </div>
     <div class="reg-block">
-        <span class="p-float-label">
-            <input id="float-input-comp-name" type="text" name="comp-name" pInputText [(ngModel)]="organization.name">
-            <label for="float-input-comp-name">Organization name</label>
-        </span>
-        <span class="p-float-label">
-            <input id="float-input-email" type="text" name="email" pInputText [(ngModel)]="user.email" [disabled]="isNotFinishedRegistration">
-            <label for="float-input-email">Email</label>
-        </span>
+        <div class="input-block">
+            <span class="p-float-label">
+                <input id="float-input-comp-name" type="text" formControlName="organizationName" name="comp-name" pInputText [(ngModel)]="organization.name">
+                <label for="float-input-comp-name">Organization name</label>
+            </span>
+            <div *ngIf="formGroup.controls.organizationName.touched && formGroup.controls.organizationName.invalid" class="validation">
+                <small *ngIf="formGroup.controls.organizationName.errors.required">Field name can't be empty</small>
+                <small *ngIf="formGroup.controls.organizationName.value?.length < 3">Min name length 3</small>
+                <small *ngIf="formGroup.controls.organizationName.value?.length > 50">Max name length 50</small>
+                <small *ngIf="formGroup.controls.organizationName.hasError('pattern')">May contain letters, numbers, space, special character: !#$%&‘*+—/=?^_`&#123;|&#125;~</small>
+            </div>
+        </div>
+        <div class="input-block">
+            <span class="p-float-label">
+                <input id="float-input-email" type="text" formControlName="email" name="email" pInputText [(ngModel)]="user.email" [disabled]="isNotFinishedRegistration">
+                <label for="float-input-email">Email</label>
+            </span>
+            <div *ngIf="formGroup.controls.email.touched && formGroup.controls.email.invalid" class="validation">
+                <small *ngIf="formGroup.controls.email.errors.required">Field name can't be empty</small>
+                <small *ngIf="formGroup.controls.email.value?.length < 5">Min name length 5</small>
+                <small *ngIf="formGroup.controls.email.value?.length > 30">Max name length 30</small>
+                <small *ngIf="formGroup.controls.email.hasError('pattern')">Invalid Email</small>
+            </div>
+        </div>
     </div>
     <div class="reg-block" *ngIf="!isNotFinishedRegistration">
-        <span class="p-float-label">
-            <p-password id="float-input-pass" name="password" [(ngModel)]="password" [feedback]="false"
-                [toggleMask]="true"></p-password>
-            <label for="float-input-role">Password</label>
-        </span>
-        <span class="p-float-label">
-            <p-password id="float-input-pass" name="confirm-password" [(ngModel)]="confirmPassword" [feedback]="false"
-                [toggleMask]="true"></p-password>
-            <label for="float-input-role">Confirm password</label>
-        </span>
+        <div class="input-block">
+            <span class="p-float-label">
+                <p-password id="float-input-pass" formControlName="password" name="password" [(ngModel)]="password" [feedback]="false"
+                    [toggleMask]="true"></p-password>
+                <label for="float-input-role">Password</label>
+            </span>
+            <div *ngIf="formGroup.controls.password.touched && formGroup.controls.password.invalid" class="validation">
+                <small *ngIf="formGroup.controls.password.errors.required">Field name can't be empty</small>
+                <small *ngIf="formGroup.controls.password.value?.length < 8">Min name length 8</small>
+                <small *ngIf="formGroup.controls.password.value?.length > 30">Max name length 30</small>
+                <small *ngIf="formGroup.controls.password.hasError('pattern')">Must contain at least 1 lowercase letter, 1 uppercase letter, 1 number, 1 special character: !#$%&‘*+—/=?^_`&#123;|&#125;~ </small>
+            </div>
+        </div>
+        <div class="input-block">
+            <span class="p-float-label">
+                <p-password id="float-input-pass" formControlName="confirmPassword" name="confirm-password" [(ngModel)]="confirmPassword" [feedback]="false"
+                    [toggleMask]="true"></p-password>
+                <label for="float-input-role">Confirm password</label>
+            </span>
+            <div *ngIf="formGroup.controls.confirmPassword.touched && formGroup.controls.confirmPassword.invalid" class="validation">
+                <small *ngIf="formGroup.controls.confirmPassword.errors.required">Field name can't be empty</small>
+                <small *ngIf="formGroup.controls.confirmPassword.value?.length < 8">Min name length 8</small>
+                <small *ngIf="formGroup.controls.confirmPassword.value?.length > 30">Max name length 30</small>
+                <small *ngIf="formGroup.controls.confirmPassword.hasError('pattern')">Must contain at least 1 lowercase letter, 1 uppercase letter, 1 number, 1 special character: !#$%&‘*+—/=?^_`&#123;|&#125;~ </small>
+                <small *ngIf="formGroup.controls.confirmPassword.errors.notEqual">Passwords must match</small>
+            </div>
+        </div>
     </div>
-    <div class="reg-block">
+    <div class="submit-block">
         <span>
-            <button pButton class="submit-button" label="Submit" (click)="onSubmit()"></button>
+            <button pButton class="submit-button" label="Submit" (click)="onSubmit()" [disabled]="!formGroup.valid"></button>
         </span>
     </div>
 </form>

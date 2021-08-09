@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '@shared/models/user/user';
-import { Member } from '@shared/models/member/member'
 import { AuthenticationService } from '@core/services/authentication.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { OrganizationService } from '@core/services/organization.service';
 import { NewOrganization } from '@shared/models/organization/newOrganization';
-import { Subscription } from 'rxjs';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-registration-form',
@@ -13,6 +12,7 @@ import { Subscription } from 'rxjs';
     styleUrls: ['./registration-form.component.sass']
 })
 export class RegistrationFormComponent extends BaseComponent implements OnInit {
+    formGroup: FormGroup;
     user = {} as User;
     organization = {} as NewOrganization;
 
@@ -33,6 +33,78 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
         this.isNotFinishedRegistration = Boolean(user) && !user.registeredAt;
         if(this.isNotFinishedRegistration) {
             this.user = user;
+        }
+
+
+        const firstNamePattern = new RegExp(/^[a-zA-Z-]*$/);
+        const lastNamePattern = new RegExp(/^[a-zA-Z- ]*$/);
+        const organizationNamePattern = new RegExp('^[\\w\\s-!#$%&\'*+—/=?^`{|}~]+$');
+        const emailPattern = new RegExp(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+        const passwordPattern = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/);
+        this.formGroup = new FormGroup({
+            firstName: new FormControl(
+                {value: '', disabled: this.isNotFinishedRegistration},
+                [
+                    Validators.required,
+                    Validators.minLength(2),
+                    Validators.maxLength(20),
+                    Validators.pattern(firstNamePattern)
+                ]
+            ),
+            lastName: new FormControl(
+                {value: '', disabled: this.isNotFinishedRegistration},
+                [
+                    Validators.required,
+                    Validators.minLength(2),
+                    Validators.maxLength(20),
+                    Validators.pattern(lastNamePattern)
+                ]
+            ),
+            organizationName: new FormControl(
+                '',
+                [
+                    Validators.required,
+                    Validators.minLength(3),
+                    Validators.maxLength(50),
+                    Validators.pattern(organizationNamePattern),
+                ]
+            ),
+            email: new FormControl(
+                {value: '', disabled: this.isNotFinishedRegistration},
+                [
+                    Validators.required,
+                    Validators.minLength(5),
+                    Validators.maxLength(30),
+                    Validators.pattern(emailPattern)
+                ]
+            ),
+            password: new FormControl(
+                {value: '', disabled: this.isNotFinishedRegistration},
+                [
+                    Validators.required,
+                    Validators.minLength(8),
+                    Validators.maxLength(30),
+                    Validators.pattern(passwordPattern)
+                ]
+            ),
+            confirmPassword: new FormControl(
+                {value: '', disabled: this.isNotFinishedRegistration},
+                [
+                    Validators.required,
+                    Validators.minLength(8),
+                    Validators.maxLength(30),
+                    Validators.pattern(passwordPattern),
+                    this.equals
+                ]
+            )
+        });
+        
+
+    }
+
+    equals = (control: AbstractControl) => {
+        if (control.value !== this.password) {
+            return {notEqual: true};
         }
     }
 
