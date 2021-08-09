@@ -1,0 +1,22 @@
+<p-dialog
+    [visible]="true"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [closable]="false">
+    <form>
+        <p-panel header = "Invite new member">
+            <input pInputText type="text" name="members-email">
+        </p-panel>
+
+        <button
+            pButton
+            pRipple
+            type="button"
+            label="Cancel"
+            class="p-button-danger"
+            (click)="closeModal.emit()">
+
+        </button>
+    </form>
+</p-dialog>

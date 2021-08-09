@@ -12,6 +12,8 @@
 
 .members-container
     padding: 20px
+    display: flex
+    flex-direction: column
 
 .filter
     display: flex
@@ -21,14 +23,14 @@
     padding: 20px
     .search-members
         width: 100%
+
 .filter-input
-    display: flex
-    flex-direction: row
+    margin-bottom: 20px
+
+.table-header-cell
+    display: flex !important
+    justify-content: space-between
     align-items: center
-    height: 30px
-    width: 100%
-    .search-button
-        padding: 10px
-    input
-        width: 100%
-    
+
+td
+    overflow: hidden

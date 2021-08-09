@@ -13,9 +13,9 @@ styleUrls: ['./members-page.component.sass']
 
 export class MembersPageComponent extends BaseComponent implements OnInit {
 
-    public loadingNumber = 0;
-    public members : Member [] = [];
-
+    loadingNumber = 0;
+    members : Member [] = [];
+    isInviting : Boolean;
 
 constructor(
     private memberService: MemberService,
@@ -25,8 +25,9 @@ constructor(
 }
 
 ngOnInit(): void {
+    this.isInviting = false;
     this.loadingNumber += 1;
-    this.memberService.getMembersByOrganizationId(1) //1 - organization id ?? from current user
+    this.memberService.getMembersByOrganizationId(2) //1 - organization id ?? from current user
         .pipe(this.untilThis)
         .subscribe(members => {
             this.members = members;

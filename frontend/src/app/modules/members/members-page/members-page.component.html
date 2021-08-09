@@ -1,37 +1,56 @@
 <app-loading-spinner *ngIf="loadingNumber > 0" [size]="'10px'"></app-loading-spinner>
-<div class="invite-wrapper">
-    <div class="title">Members</div>
-    <button pButton class="inviteMembers" pRipple type="button" label="Invite members"></button>
-</div>
-<div class="filter">
-    <div class="filter-title">Filter</div>
-    <div class="filter-input">
-        <span class="p-inputgroup-addon search-button"><i class="pi pi-search"></i></span>
-        <input type="text" pInputText placeholder="Search members" name="search">
+    <div class="invite-wrapper">
+        <div class="title">Members</div>
+        <button pButton class="inviteMembers" (click)="isInviting=true" pRipple type="button" label="Invite"></button>
     </div>
-   </div>
 <div class="members-container">
-    <p-table #dt1 [value]="members" class="members-table" [rows]="10" [paginator]="true">
+    <div class="p-inputgroup filter-input">
+        <span class="p-inputgroup-addon search-button"><i class="pi pi-search"></i></span>
+        <input type="text" pInputText placeholder="Search" name="search" (input)="table.filterGlobal($event.target.value, 'contains')">
+    </div>
+    <p-table #table [value]="members" class="members-table" [rows]="10" [paginator]="true"  [globalFilterFields]="['user.firstName','user.email','teamId','team.name','role.name']">
         <ng-template pTemplate="header">
             <tr>
-                <th pSortableColumn="member.firstName">Full Name <p-sortIcon field="name"></p-sortIcon></th>
-                <th pSortableColumn="member.user.email">Email <p-sortIcon field="member.user.email"></p-sortIcon></th>
-                <th pSortableColumn="member.teamId">Team Id <p-sortIcon field="member.teamId"></p-sortIcon></th>
-                <th pSortableColumn="member.team.name">Team name <p-sortIcon field="member.team.name"></p-sortIcon></th>
-                <th pSortableColumn="member.role.name">Role <p-sortIcon field="member.role.name"></p-sortIcon></th>
-            </tr>
-            <tr>
-                <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'name', 'contains')" [value]="dt1.filters['name']" placeholder="Search by Name" class="p-column-filter">
+                <th pSortableColumn="user.firstName">
+                    <div class="table-header-cell" id="name-col">
+                        <span>
+                            Full Name
+                            <p-sortIcon field="user.firstName"></p-sortIcon>
+                        </span>
+                        <p-columnFilter type="text" field="user.firstName" display="menu"></p-columnFilter>
+                    </div>
                 </th>
-                <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'member.user.email', 'contains')" [value]="dt1.filters['member.user.email']" placeholder="Search by Country" class="p-column-filter">
+                <th pSortableColumn="user.email">
+                    <div class="table-header-cell" id="email-col">
+                        <span>
+                            Email <p-sortIcon field="user.email"></p-sortIcon>
+                        </span>
+                        <p-columnFilter type="text" field="user.email" display="menu"></p-columnFilter>
+                    </div>
                 </th>
-                <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'member.teamId', 'contains')" [value]="dt1.filters['member.teamId']" placeholder="Search by Representative" class="p-column-filter">
+                <th pSortableColumn="teamId">
+                    <div class="table-header-cell" id="teamId-col">
+                        <span>
+                            Team Id <p-sortIcon field="teamId"></p-sortIcon>
+                        </span>
+                        <p-columnFilter type="text" field="teamId" display="menu"></p-columnFilter>
+                    </div>
                 </th>
-                <th>
-                    <input pInputText type="text" (input)="dt1.filter($event.target.value, 'member.team.name', 'contains')" [value]="dt1.filters['member.team.name']" placeholder="Search by Status" class="p-column-filter">
+                <th pSortableColumn="team.name" id="team-name-col">
+                    <div class="table-header-cell">
+                        <span>
+                            Team name <p-sortIcon field="team.name"></p-sortIcon>
+                        </span>
+                    <p-columnFilter type="text" field="team.name" display="menu"></p-columnFilter>
+                    </div>
+                </th>
+                <th pSortableColumn="role.name">
+                    <div class="table-header-cell" id="role-col">
+                        <span>
+                            Role <p-sortIcon field="role.name"></p-sortIcon>
+                        </span>
+                        <p-columnFilter type="text" field="role.name" display="menu"></p-columnFilter>
+                    </div>
                 </th>
             </tr>
         </ng-template>
@@ -46,3 +65,8 @@
         </ng-template>
     </p-table>
 </div>
+
+<app-invite
+    *ngIf="isInviting">
+    
+</app-invite>
