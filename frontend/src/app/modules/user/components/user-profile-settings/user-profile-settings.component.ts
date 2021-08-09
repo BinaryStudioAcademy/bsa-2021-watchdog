@@ -36,7 +36,7 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
     //     this.authService
     //         .getUser()
     //         .pipe(takeUntil(this.unsubscribe$))
-    //         .subscribe((user) => (this.user = this.userService.copyUser(user)));
+    //         .subscribe((user) => (this.user = this.userService.getUserById(1)));
     // }
 
     ngOnInit(): void {
@@ -64,6 +64,10 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
         this.user = this.authService.getUser();
         this.userName = `${this.user.firstName} ${this.user.lastName}`;
         this.userEmail = this.user.email;
+    }
+
+    loadUser() {
+
     }
 
     ngOnDestroy() {
