@@ -1,7 +1,5 @@
-import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserUpdateDto } from '@core/models/userUpdate';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user';
 import { HttpInternalService } from './http-internal.service';
@@ -19,5 +17,4 @@ export class UserService {
     public updateUser(user: UserUpdateDto) {
         return this.httpService.putRequest<UserUpdateDto>(`${environment.coreUrl}/user`, user);
     }
-
 }

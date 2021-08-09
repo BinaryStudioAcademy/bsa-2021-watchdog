@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.ExceptionsCustom;
 using Watchdog.Core.BLL.Services.Abstract;
-using Watchdog.Core.Common.DTO.Image;
 using Watchdog.Core.Common.DTO.User;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
@@ -15,10 +14,8 @@ namespace Watchdog.Core.BLL.Services
 {
     public class UserService : BaseService, IUserService
     {
-        private readonly IImageUpload _imageUpload;
-        public UserService(WatchdogCoreContext context, IMapper mapper, IImageUpload imageUpload) : base (context, mapper) 
+        public UserService(WatchdogCoreContext context, IMapper mapper) : base (context, mapper) 
         {
-            _imageUpload = imageUpload;
         }
 
         public async Task<UserDto> UpdateUserAsync(UpdateUserDto updateUserDto)
@@ -52,10 +49,5 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<UserDto>(user);
         }
 
-        public async Task UpdateUserAvatar(ImageUploadDto imageUploadDto, int userId)
-        {
-            var imgUri = await _imageUpload.UploadAsync(imageUploadDto.uri);
-            var userEntity = await _context.Users.FirstOrDefaultAsync(user => user.Id == userId);
-        }
     }
 }
