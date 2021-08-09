@@ -4,5 +4,5 @@ export interface NewUser {
     lastName: string;
     email: string;
     avatarUrl: string;
-    registeredAt: string;
+    registeredAt?: string;
 }

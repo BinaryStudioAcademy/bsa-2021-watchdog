@@ -5,5 +5,5 @@ export interface User {
     lastName: string;
     email: string;
     avatarUrl: string;
-    registeredAt: string;
+    registeredAt?: string;
 }

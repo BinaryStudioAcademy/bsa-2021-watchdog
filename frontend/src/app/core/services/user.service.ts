@@ -14,8 +14,7 @@ export class UserService {
     constructor(private http: HttpInternalService) { }
 
     public getUser(uid: string) {
-        return this.http.getFullRequest<User>(`${environment.coreUrl}/${this.apiPrefix}/${uid}`)
-            .pipe(map(response => response.body));
+        return this.http.getRequest<User>(`${environment.coreUrl}/${this.apiPrefix}/${uid}`);
     }
 
     public createUser(user: NewUser) {
