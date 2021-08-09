@@ -15,15 +15,15 @@ export class SocialsLoginComponent {
     ) { }
 
     signInWithGitHub() {
-        this.authService.signInWithGitHub(['home']);
+        this.authService.signInWithGitHub(['signon']);
     }
 
     signInWithGoogle() {
-        this.authService.signInWithGoogle(['home']);
+        this.authService.signInWithGoogle(['signon']);
     }
 
     signInWithFacebook() {
-        this.authService.signInWithFacebook(['home']);
+        this.authService.signInWithFacebook(['signon']);
     }
 
 }
