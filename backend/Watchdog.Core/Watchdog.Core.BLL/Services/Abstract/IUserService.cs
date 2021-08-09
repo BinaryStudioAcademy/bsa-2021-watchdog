@@ -10,6 +10,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
     public interface IUserService
     {
         Task<UserDto> UpdateUserAsync(UpdateUserDto updateUser);
-        Task<UserDto> GetUserAsync(int userId);
+        Task<UserDto> GetUserByIdAsync(int userId);
     }
 }

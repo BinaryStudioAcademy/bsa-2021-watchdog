@@ -20,7 +20,7 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<UserDto> UpdateUserAsync(UpdateUserDto updateUserDto)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == updateUserDto.Id);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == updateUserDto.Id);
 
             if (user == null)
             {
@@ -35,10 +35,10 @@ namespace Watchdog.Core.BLL.Services
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
-            return await GetUserAsync(updateUserDto.Id);
+            return await GetUserByIdAsync(updateUserDto.Id);
         }
 
-        public async Task<UserDto> GetUserAsync(int userId)
+        public async Task<UserDto> GetUserByIdAsync(int userId)
         {
             var user = await _context.Users
                 .Include(user => user.FirstName)

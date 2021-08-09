@@ -32,10 +32,10 @@ namespace Watchdog.Core.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserDto>> GetUserById(int userId)
+        public async Task<ActionResult<UserDto>> GetUserByIdAsync(int userId)
         {
             _logger.LogInformation(1002, $"Get user by id {userId}");
-            return Ok(await _userService.GetUserAsync(userId));
+            return Ok(await _userService.GetUserByIdAsync(userId));
         }
 
     }
