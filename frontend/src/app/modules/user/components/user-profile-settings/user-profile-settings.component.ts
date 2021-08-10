@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AuthenticationService } from '@core/services/authentication.service';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { BaseComponent } from '@core/components/base/base.component';
-import { User } from '@core/models/user';
-import { UserUpdateDto } from '@core/models/userUpdate';
+import { User } from '@shared/models/user/user';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { UserService } from '@core/services/user.service';
 
@@ -11,23 +11,21 @@ import { UserService } from '@core/services/user.service';
     templateUrl: './user-profile-settings.component.html',
     styleUrls: ['./user-profile-settings.component.sass']
 })
-export class UserProfileSettingsComponent extends BaseComponent implements OnInit, OnDestroy {
+export class UserProfileSettingsComponent extends BaseComponent implements OnInit {
     public user: User;
-    public editedUser: User;
-    public userUpdate: UserUpdateDto;
-    public userUpdateStartState: UserUpdateDto;
-    public firstName: string;
-    public lastName: string;
 
+    //fake
     public userId: number = 3;
 
     editProfileForm: FormGroup;
 
     constructor(
+        private authService: AuthenticationService,
         private userService: UserService,
         private toastNotificationService: ToastNotificationService
     ) {
         super();
+        //this.user = authService.getUser();
     }
 
     ngOnInit(): void {
@@ -48,7 +46,7 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
         this.user.firstName = editForm.value.firstName;
         this.user.lastName = editForm.value.lastName;
         this.user.email = editForm.value.email;
-        this.user.avatar = editForm.value.avatar;
+        this.user.avatarUrl = editForm.value.avatarUrl;
 
         this.userService.updateUsersById(this.userId, this.user)
             .pipe(this.untilThis)

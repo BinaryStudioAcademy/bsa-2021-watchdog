@@ -4,7 +4,7 @@ using Watchdog.Core.DAL.Entities;
 
 namespace Watchdog.Core.BLL.MappingProfiles
 {
-    public class UserProfile : Profile
+    public sealed class UserProfile : Profile
     {
         public UserProfile()
         {
@@ -13,6 +13,9 @@ namespace Watchdog.Core.BLL.MappingProfiles
 
             CreateMap<User, UpdateUserDto>();
             CreateMap<UpdateUserDto, User>();
+            
+            CreateMap<User, NewUserDto>();
+            CreateMap<NewUserDto, User>();
         }
     }
 }

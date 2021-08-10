@@ -18,8 +18,6 @@ namespace Watchdog.Core.BLL.Services
         public async Task<ICollection<DashboardDto>> GetAllDashboardsByOrganizationAsync(int organizationId)
         {
             var dashboards = await _context.Dashboards
-                .Include(dashboard => dashboard.Tiles)
-                    .ThenInclude(tile => tile.Dashboard)
                 .Where(dashboard => dashboard.OrganizationId == organizationId)
                 .ToListAsync();
 
@@ -29,10 +27,6 @@ namespace Watchdog.Core.BLL.Services
         public async Task<DashboardDto> GetDashboardAsync(int dashboardId)
         {
             var dashboard = await _context.Dashboards
-                .Include(dashboard => dashboard.Tiles)
-                    .ThenInclude(tile => tile.Dashboard)
-                .Include(dashboard => dashboard.Tiles)
-                    .ThenInclude(tile => tile.User)
                 .FirstOrDefaultAsync(dashboard => dashboard.Id == dashboardId);
 
             return _mapper.Map<DashboardDto>(dashboard);

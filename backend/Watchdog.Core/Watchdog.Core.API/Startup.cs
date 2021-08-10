@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
 using Serilog;
@@ -94,6 +95,21 @@ namespace Watchdog.Core.API
             });
 
             services.AddFluentValidationRulesToSwagger();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.Authority = Configuration["Authentication:JwtBearer:Authority"];
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuer = true,
+                            ValidIssuer = Configuration["Authentication:JwtBearer:TokenValidation:Issuer"],
+                            ValidateAudience = true,
+                            ValidAudience = Configuration["Authentication:JwtBearer:TokenValidation:Audience"],
+                            ValidateLifetime = true
+                        };
+                    });
+
             // test rabbitmq
             services.AddSingleton(x =>
             {
@@ -131,6 +147,8 @@ namespace Watchdog.Core.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

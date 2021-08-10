@@ -8,6 +8,8 @@ import { BaseComponent } from '@core/components/base/base.component';
 import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { SpinnerService } from '@core/services/spinner.service';
+import { ConfirmOptions } from '@shared/models/confirm-window/confirm-options';
+import { ConfirmWindowService } from '@core/services/confirm-window.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -27,7 +29,8 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         private updateDataService: ShareDataService<Dashboard>,
         private deleteDataService: ShareDataService<number>,
         private toastNotificationService: ToastNotificationService,
-        private spinnerService: SpinnerService
+        private spinnerService: SpinnerService,
+        private confirmWindowService: ConfirmWindowService
     ) {
         super();
     }
@@ -65,6 +68,18 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                 this.toastNotificationService.error(`${error}`, 'Error', 2000);
                 this.spinnerService.hide();
             });
+    }
+
+    confirmDelete() {
+        if (this.dashboard) {
+            const confirmWindowOptions: ConfirmOptions = {
+                title: `Delete ${this.dashboard.name}`,
+                message: 'Are you sure you want to delete this dashboard? '
+                    + 'If you delete this, then it will be impossible to undo the changes.',
+                accept: () => this.deleteDashboard()
+            };
+            this.confirmWindowService.confirm(confirmWindowOptions);
+        }
     }
 
     getParams(params) {
