@@ -8,6 +8,7 @@ import { IssueEnvironment } from '@shared/models/issues/issue-environment';
 import { HttpResponseErrorMessage } from '@shared/models/issues/http-response.message';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { environment } from '@env/environment';
 import { ToastNotificationService } from './toast-notification.service';
 
 @Injectable({
@@ -21,7 +22,7 @@ export class ErrorsService implements OnDestroy {
     log(error: any) {
         const issueMessage = this.addContextInfo(error);
         console.log(issueMessage);
-        this.httpService.postFullRequest('http://localhost:5090/issues', issueMessage)
+        this.httpService.postFullRequest(`${environment.collectorUrl}/issues`, issueMessage)
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(() => {
                 this.toastNotification.info('Sent error to collector.', null, 1700);
