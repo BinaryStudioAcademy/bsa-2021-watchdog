@@ -1,18 +1,35 @@
-<form action="/login" method="POST" class="login-inp">
-    <span class="p-float-label">
-        <input id="float-input-email" type="text" name="email" pInputText [(ngModel)]="email">
-        <label for="float-input-email">Email</label>
-    </span>
-    <span class="p-float-label">
-        <p-password id="float-input-pass" name="password" [(ngModel)]="password" [feedback]="false" [toggleMask]="true">
-        </p-password>
-        <label for="float-input-pass">Password</label>
-    </span>
+<form action="/login" method="POST" class="login-inp" [formGroup]="formGroup">
+    <div class="input-block">
+        <span class="p-float-label">
+            <input id="float-input-email" type="text" name="email" formControlName="email" pInputText [(ngModel)]="email">
+            <label for="float-input-email">Email</label>
+        </span>
+        <div *ngIf="formGroup.controls.email.touched && formGroup.controls.email.invalid" class="validation">
+            <small *ngIf="formGroup.controls.email.errors.required">Field name can't be empty</small>
+            <small *ngIf="formGroup.controls.email.value?.length < 5">Min name length 5</small>
+            <small *ngIf="formGroup.controls.email.value?.length > 30">Max name length 30</small>
+            <small *ngIf="formGroup.controls.email.hasError('pattern')">Invalid Email</small>
+        </div>
+    </div>
+    <div class="input-block">
+        <span class="p-float-label">
+            <p-password id="float-input-pass" name="password" [(ngModel)]="password" formControlName="password" [feedback]="false" [toggleMask]="true">
+            </p-password>
+            <label for="float-input-pass">Password</label>
+        </span>
+        <div *ngIf="formGroup.controls.password.touched && formGroup.controls.password.invalid" class="validation">
+            <small *ngIf="formGroup.controls.password.errors.required">Field name can't be empty</small>
+            <small *ngIf="formGroup.controls.password.value?.length < 8">Min name length 8</small>
+            <small *ngIf="formGroup.controls.password.value?.length > 30">Max name length 30</small>
+            <small *ngIf="formGroup.controls.password.hasError('pattern')">Must contain at least 1 lowercase letter, 1 uppercase letter, 1 number, 1 special character: !#$%&‘*+—/=?^_`&#123;|&#125;~ </small>
+        </div>
+    </div>
     <span class="p-field-checkbox">
-        <p-checkbox class="remember-check" name="rememberMe" [(ngModel)]="rememberMe" [binary]="true" inputId="binary">
+        <p-checkbox class="remember-check" name="rememberMe" formControlName="rememberMe" [(ngModel)]="rememberMe" [binary]="true" inputId="binary">
         </p-checkbox>
         <label for="binary">Remember me</label>
     </span>
+
     <span>
         <button pButton class="submit-button" label="Submit" type="submit" (click)="onSubmit()"></button>
     </span>

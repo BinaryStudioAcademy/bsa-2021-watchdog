@@ -16,8 +16,6 @@ export class AuthenticationService {
     private user: User;
     private readonly tokenHelper: JwtHelperService;
 
-    private isSignByEmailAndPassword = false;
-
     private token: string | null;
     private rememberUser: boolean;
 
@@ -29,8 +27,8 @@ export class AuthenticationService {
         this.tokenHelper = new JwtHelperService();
     }
 
-    isUserSignByEmailAndPassword(){
-        return this.isSignByEmailAndPassword;
+    isUserSignByEmailAndPassword() {
+        return localStorage.getItem('isSignByEmailAndPassword') === 'true';
     }
 
     isAuthenticated(): boolean {
@@ -92,10 +90,10 @@ export class AuthenticationService {
                 map(userCredential => ({
                     ...newUser,
                     uid: userCredential.user.uid,
-                }) ),
+                })),
                 switchMap(user => this.userService.createUser(user)),
                 tap(user => {
-                    this.isSignByEmailAndPassword = true;
+                    localStorage.setItem('isSignByEmailAndPassword', 'true');
                     return this.setUser(user);
                 }),
                 switchMap(() => this.login(route))
@@ -108,7 +106,7 @@ export class AuthenticationService {
             .pipe(
                 switchMap(userCredential => this.userService.getUser(userCredential.user.uid)),
                 tap(user => {
-                    this.isSignByEmailAndPassword = true;
+                    localStorage.setItem('isSignByEmailAndPassword', 'true');
                     return this.setUser(user);
                 }),
                 switchMap(() => this.login(route))
@@ -129,7 +127,10 @@ export class AuthenticationService {
                     }
                     return this.userService.getUser(userCredential.user.uid);
                 }),
-                tap(user => this.setUser(user)),
+                tap(user => {
+                    localStorage.setItem('isSignByEmailAndPassword', 'false');
+                    return this.setUser(user);
+                }),
                 switchMap(() => this.login(route))
             );
     }
@@ -148,7 +149,10 @@ export class AuthenticationService {
                     }
                     return this.userService.getUser(userCredential.user.uid);
                 }),
-                tap(user => this.setUser(user)),
+                tap(user => {
+                    localStorage.setItem('isSignByEmailAndPassword', 'false');
+                    return this.setUser(user);
+                }),
                 switchMap(() => this.login(route))
             );
     }
@@ -170,7 +174,7 @@ export class AuthenticationService {
             avatarUrl: credential.user.photoURL,
         } as NewUser;
 
-        const name: string = credential.additionalUserInfo.profile['name'];
+        const { name } = credential.additionalUserInfo.profile;
         if (name != null) {
             [user.firstName, user.lastName = ''] = name.split(' ');
         }
@@ -182,8 +186,8 @@ export class AuthenticationService {
         const user = {
             uid: credential.user.uid,
             email: credential.user.email,
-            firstName: credential.additionalUserInfo.profile['given_name'],
-            lastName: credential.additionalUserInfo.profile['family_name'],
+            firstName: credential.additionalUserInfo.profile.given_name,
+            lastName: credential.additionalUserInfo.profile.family_name,
             avatarUrl: credential.user.photoURL
         } as NewUser;
 
@@ -199,7 +203,7 @@ export class AuthenticationService {
                     this.setJwToken(token);
                     this.router.navigate(route);
                 })
-            )
+            );
     }
 
     logout() {
@@ -218,7 +222,6 @@ export class AuthenticationService {
                     .catch((error) => {
                         console.warn(error);
                     });
-            })
+            });
     }
-
 }

@@ -8,7 +8,6 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
     styleUrls: ['./socials-login.component.sass']
 })
 export class SocialsLoginComponent {
-
     constructor(
         private authService: AuthenticationService,
         private toastService: ToastNotificationService
@@ -37,5 +36,4 @@ export class SocialsLoginComponent {
                     this.toastService.error(`${error}`, 'Error', 2000);
                 });
     }
-
 }
