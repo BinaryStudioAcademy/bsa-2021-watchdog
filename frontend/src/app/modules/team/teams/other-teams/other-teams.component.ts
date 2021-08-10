@@ -25,6 +25,8 @@ export class OtherTeamsComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.loadTeams();
+
         this.leavedTeam
             .pipe(this.untilThis)
             .subscribe(team => {
