@@ -46,7 +46,6 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
             firstName: new FormControl(
                 { value: '', disabled: this.isNotFinishedRegistration },
                 [
-                    Validators.required,
                     Validators.minLength(2),
                     Validators.maxLength(20),
                     Validators.pattern(firstNamePattern)
@@ -55,7 +54,6 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
             lastName: new FormControl(
                 { value: '', disabled: this.isNotFinishedRegistration },
                 [
-                    Validators.required,
                     Validators.minLength(2),
                     Validators.maxLength(20),
                     Validators.pattern(lastNamePattern)
@@ -75,7 +73,6 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                 [
                     Validators.required,
                     Validators.minLength(5),
-                    Validators.maxLength(30),
                     Validators.pattern(emailPattern)
                 ]
             ),
@@ -110,7 +107,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
 
     onSubmit() {
         const organizationDto = {
-            organizationSlug: `${this.organization.name}-${this.user.email.split('@')[0]}-slag`, //TEMP
+            organizationSlug: `${this.organization.name.toLowerCase()}-${Date.now()}`, //TEMP
             name: this.organization.name,
             openMembership: true, //TEMP
             defaultRoleId: 1, //TEMP
