@@ -36,9 +36,6 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     }
 
     ngOnInit(): void {
-        //to test error catching
-        throw new Error();
-
         this.spinnerService.show();
         this.route.params
             .pipe(this.untilThis)
