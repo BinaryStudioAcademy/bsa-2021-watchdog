@@ -4,7 +4,7 @@ import { AuthUser } from '@core/models/auth/auth-user';
 import { UserLoginDto } from '@core/models/auth/user-login';
 import { UserRegisterDto } from '@core/models/auth/user-register';
 import { User } from '@core/models/user';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { UserService } from './user.service';

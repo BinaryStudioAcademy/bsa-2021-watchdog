@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { UserUpdateDto } from '@core/models/userUpdate';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
 import { User } from '../models/user';
 import { HttpInternalService } from './http-internal.service';
 import { ShareDataService } from './share-data.service';

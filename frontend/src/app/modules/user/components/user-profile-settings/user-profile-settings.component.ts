@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { BaseComponent } from '@core/components/base/base.component';
 import { User } from '@core/models/user';
 import { UserUpdateDto } from '@core/models/userUpdate';
@@ -31,76 +31,34 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
     }
 
     ngOnInit(): void {
-        this.loadUsers();
-        // this.editProfileForm = this.fb.group({
-        //     firstName: ['', [Validators.required, Validators.maxLength(32)]],
-        //     lastName: ['', [Validators.required, Validators.maxLength(32)]],
-        //     email: ['', [Validators.required, Validators.maxLength(32)]]
-        // });
-
-        // this.userService.getUserById(this.userId)
-        //     .subscribe(
-        //         (resp) => {
-        //             this.Initialize(resp);
-        //         },
-        //         (error) => {
-        //             console.error(error.message);
-        //         }
-        //     );
-
+        this.loadUser();
     }
 
-    loadUsers() {
+    submit(editForm) {
+        this.updateUser(editForm);
+    }
+
+    loadUser() {
         this.userService.getUserById(this.userId).subscribe((data: User) => {
             this.user = data;
         });
     }
 
-    // submit(editForm) {
-    //     // this.getValuesForUpdateInfo();
-    //     // this.userService.updateUser(this.userUpdate)
-    //     //     .subscribe(resp => {
-    //     //         this.toastNotificationService.success('Information has been updated');
-    //     //         window.location.reload();
-    //     //     },
-    //     //     error => {
-    //     //         this.toastNotificationService.error('An error occured while updating the profile');
-    //     //     });
-    // }
-
-    submit(editForm){
+    updateUser(editForm) {
         this.user.firstName = editForm.value.firstName;
         this.user.lastName = editForm.value.lastName;
         this.user.email = editForm.value.email;
         this.user.avatar = editForm.value.avatar;
 
-         this.userService.updateUsersById(this.userId, this.user)
+        this.userService.updateUsersById(this.userId, this.user)
             .pipe(this.untilThis)
-                .subscribe(resp => {
-                    this.toastNotificationService.success('Profile has been updated');
-                    window.location.reload();
-                })
+            .subscribe(resp => {
+                this.toastNotificationService.success('Profile has been updated');
+                console.info(resp);
+            });
     }
 
     ngOnDestroy() {
         super.ngOnDestroy();
     }
-
-    // private Initialize(resp: HttpResponse<User>) {
-    //     this.userUpdateStartState = resp.body;
-    //     this.editProfileForm.patchValue({
-    //         firstName: this.userUpdateStartState.firstName,
-    //         lastName: this.userUpdateStartState.lastName,
-    //         email: this.userUpdateStartState.email
-    //     });
-    // }
-
-    // private getValuesForUpdateInfo() {
-    //     this.userUpdate = {
-    //         id: this.userId,
-    //         firstName: this.editProfileForm.get('firstName').value,
-    //         lastName: this.editProfileForm.get('lastName').value,
-    //         email: this.editProfileForm.get('email').value
-    //     };
-    // }
 }
