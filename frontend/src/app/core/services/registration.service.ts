@@ -13,13 +13,14 @@ export class RegistrationService {
     constructor(private http: HttpInternalService) { }
 
     public performFullRegistration(fullRegistrationDto: FullRegistrationDto) {
-        if (fullRegistrationDto.user.firstName === "") {
-            fullRegistrationDto.user.firstName = null;
+        const dto = fullRegistrationDto;
+        if (dto.user.firstName === '') {
+            dto.user.firstName = null;
         }
-        if (fullRegistrationDto.user.lastName === "") {
-            fullRegistrationDto.user.lastName = null;
+        if (dto.user.lastName === '') {
+            dto.user.lastName = null;
         }
-        return this.http.postRequest<User>(`/${this.apiPrefix}/full`, fullRegistrationDto);
+        return this.http.postRequest<User>(`/${this.apiPrefix}/full`, dto);
     }
 
     public performPartialRegistration(partialRegistrationDto: PartialRegistrationDto) {

@@ -5,9 +5,9 @@ import { BaseComponent } from '@core/components/base/base.component';
 import { NewOrganization } from '@shared/models/organization/newOrganization';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { regexs } from '@shared/constants/regexs';
 import { RegOrganizationDto } from '../DTO/regOrganizationDto';
 import { NewUserDto } from '../DTO/newUserDto';
-import { regexs } from '@shared/constants/regexs'
 
 @Component({
     selector: 'app-registration-form',

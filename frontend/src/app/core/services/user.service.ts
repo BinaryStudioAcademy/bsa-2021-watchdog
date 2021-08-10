@@ -15,11 +15,12 @@ export class UserService {
         return this.http.getRequest<User>(`/${this.apiPrefix}/${uid}`);
     }
 
-    public createUser(user: NewUser) {
-        if (user.firstName === "") {
+    public createUser(newUser: NewUser) {
+        const user = newUser;
+        if (user.firstName === '') {
             user.firstName = null;
         }
-        if (user.lastName === "") {
+        if (user.lastName === '') {
             user.lastName = null;
         }
         return this.http.postRequest<User>(`/${this.apiPrefix}`, user);
