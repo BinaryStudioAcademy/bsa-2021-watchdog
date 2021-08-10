@@ -17,6 +17,6 @@ export class RegistrationService {
     }
 
     public performPartialRegistration(partialRegistrationDto: PartialRegistrationDto) {
-        return this.http.postRequest<User>(`/${this.apiPrefix}/partial`, partialRegistrationDto)
+        return this.http.postRequest<User>(`/${this.apiPrefix}/partial`, partialRegistrationDto);
     }
 }

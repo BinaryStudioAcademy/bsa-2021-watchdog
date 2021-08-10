@@ -37,7 +37,7 @@
         "spaced-comment": "off",
         "object-curly-newline": "off",
         "no-console": "off",
-        "max-len": ["error", { "code": 140 }],
+        "max-len": ["warn", { "code": 140 }],
         "linebreak-style": "off",
         "import/prefer-default-export": "off",
         "implicit-arrow-linebreak": "off",

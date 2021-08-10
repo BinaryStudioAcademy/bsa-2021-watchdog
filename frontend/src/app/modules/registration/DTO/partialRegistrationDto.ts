@@ -1,4 +1,4 @@
-import { RegOrganizationDto } from "./regOrganizationDto";
+import { RegOrganizationDto } from './regOrganizationDto';
 
 export interface PartialRegistrationDto {
     organization: RegOrganizationDto,

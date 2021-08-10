@@ -1,5 +1,5 @@
-import { NewUserDto } from "./newUserDto";
-import { RegOrganizationDto } from "./regOrganizationDto";
+import { NewUserDto } from './newUserDto';
+import { RegOrganizationDto } from './regOrganizationDto';
 
 export interface FullRegistrationDto {
     organization: RegOrganizationDto,

@@ -7,10 +7,10 @@ import { filter, mergeMap, switchMap, tap, map } from 'rxjs/operators';
 import { from, of } from 'rxjs';
 import { User } from '@shared/models/user/user';
 import { NewUser } from '@shared/models/user/newUser';
-import { UserService } from './user.service';
-import { RegistrationService } from './registration.service';
 import { FullRegistrationDto } from '@modules/registration/DTO/fullRegistrationDto';
 import { PartialRegistrationDto } from '@modules/registration/DTO/partialRegistrationDto';
+import { UserService } from './user.service';
+import { RegistrationService } from './registration.service';
 
 @Injectable({
     providedIn: 'root'
@@ -93,18 +93,19 @@ export class AuthenticationService {
                 tap(user => {
                     localStorage.setItem('isSignByEmailAndPassword', 'false');
                     this.setUser(user);
-                    }),
-                switchMap(() => this.login(route)));
+                }),
+                switchMap(() => this.login(route))
+            );
     }
-
 
     signOnWithEmailAndPassword(regDto: FullRegistrationDto, password: string, route: string[]) {
         return from(this.angularFireAuth
             .createUserWithEmailAndPassword(regDto.user.email, password))
             .pipe(
                 map(userCredential => {
-                    regDto.user.uid = userCredential.user.uid;
-                    return regDto;
+                    const dto = regDto;
+                    dto.user.uid = userCredential.user.uid;
+                    return dto;
                 }),
                 switchMap(dto => this.registrationService.performFullRegistration(dto)),
                 tap(user => {
@@ -189,7 +190,7 @@ export class AuthenticationService {
             avatarUrl: credential.user.photoURL,
         } as NewUser;
 
-        const name: string = credential.additionalUserInfo.profile['name'];
+        const { name } = credential.additionalUserInfo.profile as { name: string };
         if (name != null) {
             [user.firstName, user.lastName = ''] = name.split(' ');
         }
@@ -201,8 +202,8 @@ export class AuthenticationService {
         const user = {
             uid: credential.user.uid,
             email: credential.user.email,
-            firstName: credential.additionalUserInfo.profile['given_name'],
-            lastName: credential.additionalUserInfo.profile['family_name'],
+            firstName: (credential.additionalUserInfo.profile as { given_name: string }).given_name,
+            lastName: (credential.additionalUserInfo.profile as { family_name: string }).family_name,
             avatarUrl: credential.user.photoURL
         } as NewUser;
 

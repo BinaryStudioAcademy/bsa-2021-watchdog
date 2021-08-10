@@ -33,18 +33,18 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
     ngOnInit(): void {
         const user = this.authService.getUser();
         this.isNotFinishedRegistration = Boolean(user) && !user.registeredAt;
-        if(this.isNotFinishedRegistration) {
+        if (this.isNotFinishedRegistration) {
             this.user = user;
         }
 
-        const firstNamePattern = new RegExp(/^[a-zA-Z-]*$/);
-        const lastNamePattern = new RegExp(/^[a-zA-Z- ]*$/);
+        const firstNamePattern = /^[a-zA-Z-]*$/;
+        const lastNamePattern = /^[a-zA-Z- ]*$/;
         const organizationNamePattern = new RegExp('^[\\w\\s-!#$%&\'*+—/=?^`{|}~]+$');
-        const emailPattern = new RegExp(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
-        const passwordPattern = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/);
+        const emailPattern =/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
         this.formGroup = new FormGroup({
             firstName: new FormControl(
-                {value: '', disabled: this.isNotFinishedRegistration},
+                { value: '', disabled: this.isNotFinishedRegistration },
                 [
                     Validators.required,
                     Validators.minLength(2),
@@ -53,7 +53,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                 ]
             ),
             lastName: new FormControl(
-                {value: '', disabled: this.isNotFinishedRegistration},
+                { value: '', disabled: this.isNotFinishedRegistration },
                 [
                     Validators.required,
                     Validators.minLength(2),
@@ -71,7 +71,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                 ]
             ),
             email: new FormControl(
-                {value: '', disabled: this.isNotFinishedRegistration},
+                { value: '', disabled: this.isNotFinishedRegistration },
                 [
                     Validators.required,
                     Validators.minLength(5),
@@ -80,7 +80,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                 ]
             ),
             password: new FormControl(
-                {value: '', disabled: this.isNotFinishedRegistration},
+                { value: '', disabled: this.isNotFinishedRegistration },
                 [
                     Validators.required,
                     Validators.minLength(8),
@@ -89,7 +89,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                 ]
             ),
             confirmPassword: new FormControl(
-                {value: '', disabled: this.isNotFinishedRegistration},
+                { value: '', disabled: this.isNotFinishedRegistration },
                 [
                     Validators.required,
                     Validators.minLength(8),
@@ -99,41 +99,40 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                 ]
             )
         });
-        
-
     }
 
     equals = (control: AbstractControl) => {
         if (control.value !== this.password) {
-            return {notEqual: true};
+            return { notEqual: true };
         }
-    }
+        return null;
+    };
 
     onSubmit() {
         const organizationDto = {
-            organizationSlug: this.organization + 'Slag', //TEMP
+            organizationSlug: `${this.organization}Slag`, //TEMP
             name: this.organization.name,
             openMembership: true, //TEMP
             defaultRoleId: 1, //TEMP
             avatarUrl: null //TEMP
         } as RegOrganizationDto;
 
-        if(!this.isNotFinishedRegistration) {
+        if (!this.isNotFinishedRegistration) {
             const userDto = {
                 ...this.user,
             } as NewUserDto;
 
-            this.authService.signOnWithEmailAndPassword({organization: organizationDto, user: userDto}, this.password, ['home'])
-            .subscribe(() => { }, 
-                error => {
-                    this.toastService.error(`${error}`, 'Error');
-                });
+            this.authService.signOnWithEmailAndPassword({ organization: organizationDto, user: userDto }, this.password, ['home'])
+                .subscribe(() => { },
+                    error => {
+                        this.toastService.error(`${error}`, 'Error');
+                    });
         } else {
-            this.authService.finishPartialRegistration({organization: organizationDto, userId: this.user.id}, ['home'])
-            .subscribe(() => { }, 
-                error => {
-                    this.toastService.error(`${error}`, 'Error');
-                });
+            this.authService.finishPartialRegistration({ organization: organizationDto, userId: this.user.id }, ['home'])
+                .subscribe(() => { },
+                    error => {
+                        this.toastService.error(`${error}`, 'Error');
+                    });
         }
     }
 }
