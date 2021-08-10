@@ -44,6 +44,8 @@ namespace Watchdog.Core.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddWatchdogCoreContext(Configuration);
+            
+            services.AddElasticSearch(Configuration);
 
             services.RegisterCustomServices(Configuration);
 

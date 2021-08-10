@@ -12,7 +12,7 @@
                 <span class="p-inputgroup-addon search-button"><i class="pi pi-times"></i></span>
             </div>
 
-            <p-dropdown [options]="sortedOptions" [(ngModel)]="sortedBy" optionLabel="name" inputName="sortedBy" [autoDisplayFirst]="true"> 
+            <p-dropdown [options]="sortedOptions" [(ngModel)]="sortedBy" optionLabel="name" inputName="sortedBy" [autoDisplayFirst]="true">
                 <ng-template pTemplate="selectedItem">
                     <p>Sorted by: <span class="bold">{{sortedBy.name}}</span></p>
                 </ng-template>
@@ -40,7 +40,7 @@
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
-                        <th class="name" pSortableColumn="name"> 
+                        <th class="name" pSortableColumn="name">
                             <div class="issue">
                                 <p-checkbox name="allIssues" (onChange) = "selectAll($event)"></p-checkbox>
                                 <span>Issue <p-sortIcon field="name"></p-sortIcon></span>
@@ -58,12 +58,12 @@
                             <div class="issue-block">
                                 <p-checkbox name="selectedIssues" [value]="issue" [(ngModel)]="selectedIssues"></p-checkbox>
                                 <div class="content">
-                                    <span class="name">{{issue.name}}</span> 
-                                    <span class="description">{{issue.description}}</span>
+                                    <span class="name">{{issue.issueDetails.className}}</span>
+                                    <span class="description">{{issue.issueDetails.errorMessage}}</span>
                                     <div class="additional-info">
-                                        <p-tag class="new-issue" *ngIf="issue.isNew" styleClass="p-mr-2" value="New issue" [rounded]="true"></p-tag>
-                                        <span>{{issue.projectTag}}</span>
-                                        <span><i class="pi pi-clock time-icon"></i>{{issue.createdAt | timeAgo}}</span>
+<!--                                        <p-tag class="new-issue" *ngIf="issue.isNew" styleClass="p-mr-2" value="New issue" [rounded]="true"></p-tag>-->
+<!--                                        <span>{{issue.projectTag}}</span>-->
+                                        <span><i class="pi pi-clock time-icon"></i>{{issue.occurredOn | timeAgo}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -90,7 +90,7 @@
                     <span>Third Type</span>
                     <p-badge *ngIf="countNew.thirdtype > 0" [value]="countNew.thirdtype.toString()"></p-badge>
                 </div>
-            </ng-template> 
+            </ng-template>
         </p-tabPanel>
     </p-tabView>
 </div>
