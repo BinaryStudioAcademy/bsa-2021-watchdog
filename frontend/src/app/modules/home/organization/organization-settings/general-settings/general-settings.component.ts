@@ -7,6 +7,7 @@ import { Organization } from '@shared/models/organization/organization';
 import { Component, Input, OnInit } from '@angular/core';
 
 import { Observable, of } from 'rxjs';
+import { regexs } from '@shared/constants/regexs';
 
 @Component({
     selector: 'app-general-settings',
@@ -35,14 +36,14 @@ export class GeneralSettingsComponent extends BaseComponent implements OnInit {
                 Validators.required,
                 Validators.minLength(3),
                 Validators.maxLength(50),
-                Validators.pattern(new RegExp('^[\\w\\s-!#$%&\'*+—/=?^`{|}~]+$')),
+                Validators.pattern(regexs.organizationName),
             ]),
             organizationSlug: new FormControl(this.organization.organizationSlug, {
                 validators: [
                     Validators.required,
                     Validators.minLength(3),
                     Validators.maxLength(50),
-                    Validators.pattern(new RegExp('^[\\w\\-]+$')),
+                    Validators.pattern(regexs.organizationSlag),
                 ]
             })
         });
