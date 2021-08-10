@@ -36,7 +36,7 @@ export class ErrorsService implements OnDestroy {
             occurredOn: new Date(),
             issueDetails: {
                 url: window.location.href,
-                errorMessage: error.message ? 'Script error' : error.message,
+                errorMessage: error.message === '' ? 'Script error' : error.message,
                 className: error.name,
                 stackTrace: error instanceof Error ? this.getStackTrace(error) : null,
                 responseErrorMessage: error instanceof HttpErrorResponse ? this.getResponseErrorMessage(error) : null,
