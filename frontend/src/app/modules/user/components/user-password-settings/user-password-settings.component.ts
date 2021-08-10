@@ -10,7 +10,6 @@ import firebase from 'firebase/app';
 })
 
 export class UserPasswordSettingsComponent {
-
     public oldPassword: string;
     public newPassword: string;
 
@@ -20,7 +19,7 @@ export class UserPasswordSettingsComponent {
     ) { }
 
     onSubmit() {
-        const currentUser = firebase.auth().currentUser;
+        const { currentUser } = firebase.auth();
         const credentials = firebase.auth.EmailAuthProvider
             .credential(currentUser.email, this.oldPassword);
 

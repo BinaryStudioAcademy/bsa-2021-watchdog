@@ -113,7 +113,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
             .subscribe(() => {
                 this.authService.getUser();
             }, error => {
-                this.toastService.error(`${error}`, 'Error', 2000);
+                this.toastService.error(`${error}`, 'Error');
             });
         } else {
             // Create organization + member

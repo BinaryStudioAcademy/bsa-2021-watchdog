@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '@shared/models/user/user';
 import { NewUser } from '@shared/models/user/newUser';
-import { map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
 import { HttpInternalService } from './http-internal.service';
 
 @Injectable({
@@ -14,16 +12,14 @@ export class UserService {
     constructor(private http: HttpInternalService) { }
 
     public getUser(uid: string) {
-        return this.http.getRequest<User>(`${environment.coreUrl}/${this.apiPrefix}/${uid}`);
+        return this.http.getRequest<User>(`/${this.apiPrefix}/${uid}`);
     }
 
     public createUser(user: NewUser) {
-        return this.http.postFullRequest<User>(`${environment.coreUrl}/${this.apiPrefix}`, user)
-            .pipe(map(response => response.body));
+        return this.http.postRequest<User>(`/${this.apiPrefix}`, user);
     }
 
     public updateUser(user: NewUser) {
-        return this.http.putFullRequest<User>(`${environment.coreUrl}/${this.apiPrefix}`, user)
-            .pipe(map(response => response.body));
+        return this.http.putRequest<User>(`/${this.apiPrefix}`, user);
     }
 }
