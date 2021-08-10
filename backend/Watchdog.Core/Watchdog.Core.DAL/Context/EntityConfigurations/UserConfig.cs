@@ -13,12 +13,10 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
                     .IsRequired();
 
             builder.Property(u => u.FirstName)
-                   .HasMaxLength(128)
-                   .IsRequired();
+                   .HasMaxLength(128);
 
             builder.Property(u => u.LastName)
-                   .HasMaxLength(128)
-                   .IsRequired();
+                   .HasMaxLength(128);
 
             builder.Property(u => u.Email)
                    .HasMaxLength(128)
