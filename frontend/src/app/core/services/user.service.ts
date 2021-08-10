@@ -1,15 +1,25 @@
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
-import { User } from '../models/user';
+import { User } from '@shared/models/user/user';
+import { NewUser } from '@shared/models/user/newUser';
 import { HttpInternalService } from './http-internal.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class UserService {
+    private apiPrefix = 'users';
+
     constructor(private http: HttpInternalService) { }
 
-    public updateUser(user: User) {
-        return this.http.putFullRequest<User>(`${environment.coreUrl}/user`, user);
+    public getUser(uid: string) {
+        return this.http.getRequest<User>(`/${this.apiPrefix}/${uid}`);
+    }
+
+    public createUser(user: NewUser) {
+        return this.http.postRequest<User>(`/${this.apiPrefix}`, user);
+    }
+
+    public updateUser(user: NewUser) {
+        return this.http.putRequest<User>(`/${this.apiPrefix}`, user);
     }
 }

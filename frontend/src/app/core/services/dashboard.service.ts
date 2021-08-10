@@ -1,66 +1,33 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { NewDashboard } from '@shared/models/dashboard/new-dashboard';
 import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
+import { HttpInternalService } from './http-internal.service';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
-    //mock data
-    private dashboards: Dashboard[];
+    public readonly routePrefix = '/dashboard';
 
-    constructor() {
-        //mock data
-        this.dashboards = [
-            {
-                id: 1,
-                name: 'WebAPICharts',
-                icon: 'pi-chart-line'
-            },
-            {
-                id: 2,
-                name: 'JsCharts',
-                icon: 'pi-chart-line'
-            },
-            {
-                id: 3,
-                name: 'Python app',
-                icon: 'pi-chart-line'
-            },
-            {
-                id: 4,
-                name: 'ASP.NET Core',
-                icon: 'pi-chart-line'
-            },
-        ];
+    constructor(private httpService: HttpInternalService) { }
+
+    public getAllByOrganization(id: number): Observable<Dashboard[]> {
+        return this.httpService.getRequest<Dashboard[]>(`${this.routePrefix}/organization/${id}`);
     }
 
-    //mock methods
-    //TODO: Load real data from server
-    public getIcons(): string[] {
-        return ['pi-chart-bar', 'pi-chart-line'];
+    public get(id: string): Observable<Dashboard> {
+        return this.httpService.getRequest<Dashboard>(`${this.routePrefix}/${id}`);
     }
 
-    public getAll(): Dashboard[] {
-        return this.dashboards;
+    public addDashboard(newDashboard: NewDashboard): Observable<Dashboard> {
+        return this.httpService.postRequest<Dashboard>(`${this.routePrefix}`, newDashboard);
     }
 
-    public get(id: string): Dashboard {
-        return this.dashboards.find(d => d.id === +id);
+    public deleteDashboard(id: number) {
+        return this.httpService.deleteFullRequest<number>(`${this.routePrefix}/${id}`);
     }
 
-    public addDashboard(newDashboard: NewDashboard): Dashboard {
-        this.dashboards.push({ id: this.dashboards.length + 1, name: newDashboard.name, icon: newDashboard.icon });
-        return this.dashboards[this.dashboards.length + 1];
-    }
-
-    public deleteDashboard(id: number): boolean {
-        this.dashboards = this.dashboards.filter(d => d.id !== id);
-        return true;
-    }
-
-    public updateDashboard(updateDashboard: UpdateDashboard): Dashboard {
-        const key = this.dashboards.findIndex(el => el.id === updateDashboard.id);
-        this.dashboards[key] = updateDashboard;
-        return this.dashboards[key];
+    public updateDashboard(updateDashboard: UpdateDashboard): Observable<Dashboard> {
+        return this.httpService.putRequest<Dashboard>(`${this.routePrefix}`, updateDashboard);
     }
 }

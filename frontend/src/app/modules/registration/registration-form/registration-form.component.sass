@@ -4,12 +4,23 @@
     grid-gap: 30px
 
 .reg-block
+    display: grid
+    grid-template-columns: repeat(auto-fit, 300px)
+    justify-content: center
+    align-items: center
+    flex-wrap: wrap
+    grid-gap: 30px
+
+.submit-block
     display: flex
     flex-direction: row
     justify-content: center
     align-items: center
     flex-wrap: wrap
     grid-gap: 30px
+
+.input-block
+    height: 100%
     
 .reg-block input
     width: 300px
@@ -32,11 +43,9 @@
         width: 300px
         height: 40px
 
-.p-field-checkbox,    
 .submit-button
     width: 630px
 
 @media screen and ( max-width: 900px)
-    .p-field-checkbox,
     .submit-button
         width: 300px

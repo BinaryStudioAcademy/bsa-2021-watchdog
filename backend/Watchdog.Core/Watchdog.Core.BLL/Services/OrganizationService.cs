@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Organization;
 using Watchdog.Core.DAL.Context;
+using Watchdog.Core.DAL.Entities;
 
 namespace Watchdog.Core.BLL.Services
 {
@@ -26,6 +27,16 @@ namespace Watchdog.Core.BLL.Services
         {
             var organizations = await _context.Organizations.ToListAsync();
             return _mapper.Map<ICollection<OrganizationDto>>(organizations);
+        }
+
+        public async Task<OrganizationDto> CreateOrganizationAsync(OrganizationDto organizationDto)
+        {
+            var organization = _mapper.Map<Organization>(organizationDto);
+
+            var createdUser = _context.Organizations.Add(organization);
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<OrganizationDto>(createdUser.Entity);
         }
 
         public async Task<OrganizationDto> UpdateOrganizationAsync(int organizationId, NewOrganizationDto organizationDto)

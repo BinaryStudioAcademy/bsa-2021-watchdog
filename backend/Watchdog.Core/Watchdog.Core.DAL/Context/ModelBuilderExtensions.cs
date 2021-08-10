@@ -21,6 +21,7 @@ namespace Watchdog.Core.DAL.Context
         private const int _numberOfTeamMembers = 25;
         private const int _numberOfTiles = 25;
         private const int _numberOfUsers = 20;
+        private static readonly List<string> _icons  = new List<string>() { "pi-chart-line", "pi-chart-bar" };
 
         private static readonly string[] _roles = { "Owner", "Manager", "Viewer" };
 
@@ -92,6 +93,7 @@ namespace Watchdog.Core.DAL.Context
                 .UseSeed(5291)
                 .RuleFor(d => d.Id, f => ++f.IndexVariable)
                 .RuleFor(d => d.Name, f => f.Lorem.Word())
+                .RuleFor(d => d.Icon, f => f.PickRandom(_icons))
                 .RuleFor(d => d.OrganizationId, f => f.Random.Number(1, _numberOfOrganizations))
                 .RuleFor(d => d.CreatedBy, f => f.Random.Number(1, _numberOfUsers))
                 .RuleFor(d => d.CreatedAt, f => f.Date.Past(2, new DateTime(2021, 7, 20)))
@@ -305,10 +307,10 @@ namespace Watchdog.Core.DAL.Context
             return new Faker<User>()
                 .UseSeed(1996)
                 .RuleFor(u => u.Id, f => ++f.IndexVariable)
+                .RuleFor(u => u.Uid, f => f.Random.Hash(28))
                 .RuleFor(u => u.FirstName, f => f.Name.FirstName())
                 .RuleFor(u => u.LastName, f => f.Name.LastName())
                 .RuleFor(u => u.Email, (f, u) => f.Internet.Email(u.FirstName, u.LastName).ToLower())
-                .RuleFor(u => u.PasswordHash, f => f.Random.Hash(32))
                 .RuleFor(u => u.RegisteredAt, f => f.Date.Past(2, new DateTime(2021, 7, 20)))
                 .RuleFor(u => u.AvatarUrl, f => f.Internet.Avatar())
                 .Generate(count);
