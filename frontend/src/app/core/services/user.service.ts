@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { User } from '@shared/models/user/user';
 import { NewUser } from '@shared/models/user/newUser';
 import { HttpInternalService } from './http-internal.service';
@@ -11,7 +10,6 @@ import { ShareDataService } from './share-data.service';
 })
 export class UserService {
     private apiPrefix = '/users';
-    private apiPrefixRegister = 'users';
 
     constructor(
         private httpService: HttpInternalService,
