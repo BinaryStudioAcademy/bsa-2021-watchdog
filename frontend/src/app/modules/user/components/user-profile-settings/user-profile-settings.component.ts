@@ -29,9 +29,6 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
     }
 
     ngOnInit(): void {
-        if (this.authService.getUser().registeredAt) {
-
-        }
         this.loadUser();
     }
 
