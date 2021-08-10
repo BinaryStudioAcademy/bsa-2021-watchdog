@@ -1,15 +1,11 @@
-<p-panel styleClass="custom-panel" header="Members">
+<p-panel class="panel-custom" styleClass="team-panel" header="Members">
     <ng-template pTemplate="header">
-        <button pButton pRipple (click)="op.toggle($event)">Add member</button>
-        <p-overlayPanel #op>
-            <ng-template pTemplate>
-                Content
-            </ng-template>
-        </p-overlayPanel>
+        <app-team-add-member class="header-button" (addedMember)="addMember($event)" [team]="team">
+        </app-team-add-member>
     </ng-template>
-    <div class="list">
-        <app-loading-spinner *ngIf="isLoading" [overlay]="true"></app-loading-spinner>
-        <div class="list-item" *ngFor="let member of team?.members">
+    <app-loading-spinner *ngIf="isLoading" [overlay]="true"></app-loading-spinner>
+    <div class="panel-list">
+        <div class="panel-list-item" *ngFor="let member of team?.members">
             <p-avatar size="large" shape="circle"
                 [label]="member?.user.firstName.substr(0,1).toUpperCase()+member?.user.lastName.substr(0,1).toUpperCase()">
             </p-avatar>
@@ -18,8 +14,9 @@
                     "+member?.user.lastName}}</div>
                 <div>{{member?.user.email}}</div>
             </div>
-            <button pButton (click)="removeFromTeam(member.id)">Remove</button>
+            <button pButton pRipple type="button" label="Remove" class="panel-button panel-button-danger"
+                icon="pi pi-minus-circle" (click)="removeMember(member.id)"></button>
         </div>
-        <div class="list-item" *ngIf="team.members.length===0">No members yet...</div>
+        <div class="panel-list-item" *ngIf="team.members.length===0">No members yet...</div>
     </div>
 </p-panel>

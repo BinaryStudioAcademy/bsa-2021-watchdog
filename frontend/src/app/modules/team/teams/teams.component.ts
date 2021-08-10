@@ -10,7 +10,7 @@ import { BaseComponent } from '@core/components/base/base.component';
 @Component({
     selector: 'app-teams',
     templateUrl: './teams.component.html',
-    styleUrls: ['./teams.component.sass'],
+    styleUrls: ['./teams.component.sass', '../team.style.sass'],
     providers: [DialogService]
 })
 export class TeamsComponent extends BaseComponent implements OnDestroy {
@@ -19,6 +19,7 @@ export class TeamsComponent extends BaseComponent implements OnDestroy {
     public notifyMemberTeams$: Subject<Team> = new Subject<Team>();
 
     createTeamDialog: DynamicDialogRef;
+    isLoading: boolean = false;
 
     //fake
     currentUserId: number = 9;
@@ -40,6 +41,7 @@ export class TeamsComponent extends BaseComponent implements OnDestroy {
             .pipe(this.untilThis)
             .subscribe((name: string) => {
                 if (name) {
+                    this.isLoading = true;
                     this.teamService
                         .createTeam({
                             createdBy: this.currentUserId,
@@ -49,9 +51,11 @@ export class TeamsComponent extends BaseComponent implements OnDestroy {
                         .pipe(this.untilThis)
                         .subscribe(response => {
                             this.teamCreated$.next(response.body);
+                            this.isLoading = false;
                             this.toastService.success('Team successfully created!', '', 2000);
                         }, error => {
                             this.toastService.error(`${error}`, 'Error', 2000);
+                            this.isLoading = false;
                         });
                 }
             });

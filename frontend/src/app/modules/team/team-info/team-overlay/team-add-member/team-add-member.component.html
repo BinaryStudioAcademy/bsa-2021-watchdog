@@ -1,0 +1,15 @@
+<button pButton pRipple label="Add member" icon="pi pi-plus-circle" class="panel-button panel-button-success"
+    (click)="toggle($event,op)"></button>
+<p-overlayPanel #op [appendTo]="'body'" styleClass="overlaypanel">
+    <ng-template pTemplate>
+        <input #srch pInputText type="search" placeholder="Filter search" (input)="search(srch.value)">
+        <div *ngIf="members?.length>0" class="overlay-container">
+            <div (click)="addMember(member,op)" role="button" class="overlay-item" *ngFor="let member of members">
+                <p-avatar shape="circle" [label]="this.memberService.getInitials(member)">
+                </p-avatar>
+                <div>{{member?.user.email}}</div>
+            </div>
+        </div>
+        <div class="overlay-item" *ngIf="!(members?.length>0)">Loading</div>
+    </ng-template>
+</p-overlayPanel>

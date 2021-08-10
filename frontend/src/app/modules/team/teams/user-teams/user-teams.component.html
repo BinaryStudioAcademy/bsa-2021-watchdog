@@ -1,5 +1,5 @@
 <p-panel header="Your Teams">
-    <app-loading-spinner *ngIf="isLoading" [size]="'10px'"></app-loading-spinner>
+    <app-loading-spinner *ngIf="isLoading" [overlay]="true" [size]="'10px'"></app-loading-spinner>
     <div class="teams">
         <div class="team" *ngFor="let team of teams">
             <div class="team-info">
@@ -16,8 +16,8 @@
                 </a>
             </div>
             <div>
-                <button pButton pRipple type="button" label="Leave Team" class="teams-button join-leave-button"
-                    icon="pi pi-minus-circle" (click)="leaveTeam(team.id)"></button>
+                <button pButton pRipple type="button" label="Leave Team" class="panel-button" icon="pi pi-minus-circle"
+                    (click)="leaveTeam(team.id)"></button>
             </div>
         </div>
     </div>

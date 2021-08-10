@@ -8,7 +8,7 @@ import { BaseComponent } from '@core/components/base/base.component';
 @Component({
     selector: 'app-other-teams',
     templateUrl: './other-teams.component.html',
-    styleUrls: ['../teams.component.sass']
+    styleUrls: ['../teams.component.sass', '../../team.style.sass']
 })
 export class OtherTeamsComponent extends BaseComponent implements OnInit {
     @Input() leavedTeam: Observable<Team> = new Observable<Team>();

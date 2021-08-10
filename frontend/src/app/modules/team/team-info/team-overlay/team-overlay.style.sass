@@ -1,0 +1,17 @@
+@import src/styles/variables
+
+.overlay-item
+    display: flex
+    align-items: center
+    font-weight: bold
+    padding: .3em
+    height: 2em
+    border-bottom: 1px solid $border-color
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+    &:hover
+        background-color: $penging-color
+::ng-deep
+    .p-overlaypanel-content
+        padding:0

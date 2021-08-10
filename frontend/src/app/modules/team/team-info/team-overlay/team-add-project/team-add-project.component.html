@@ -1,0 +1,11 @@
+<button pButton pRipple label="Add project" icon="pi pi-plus-circle" class="panel-button panel-button-success"
+    (click)="toggle($event,op)"></button>
+<p-overlayPanel #op [appendTo]="'body'" styleClass="team-overlaypanel">
+    <ng-template class="overlay-container" pTemplate>
+        <input pInputText type="search" placeholder="Filter search" #srch (input)="search(srch.value)">
+        <div role="button" role="button" class="overlay-item" *ngFor="let project of projects"
+            (click)="addProject(project, op)">
+            <div>{{project.name}}</div>
+        </div>
+    </ng-template>
+</p-overlayPanel>

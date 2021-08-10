@@ -22,9 +22,11 @@ export class TeamInfoComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         this.isLoading = true;
-        this.router.paramMap.pipe(this.untilThis)
+        this.router.paramMap
+            .pipe(this.untilThis)
             .subscribe(param => {
                 this.teamService.getTeam(param.get('id'))
+                    .pipe(this.untilThis)
                     .subscribe(team => {
                         this.team = team;
                         this.isLoading = false;
@@ -32,6 +34,6 @@ export class TeamInfoComponent extends BaseComponent implements OnInit {
                         this.toastService.error(error);
                         this.isLoading = false;
                     });
-            })
+            });
     }
 }

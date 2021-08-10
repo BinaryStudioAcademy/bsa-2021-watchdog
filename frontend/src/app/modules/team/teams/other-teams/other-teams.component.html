@@ -1,6 +1,6 @@
 <div class="teams-panel">
     <p-panel header="Other Teams">
-        <app-loading-spinner *ngIf="isLoading" [size]="'10px'"></app-loading-spinner>
+        <app-loading-spinner *ngIf="isLoading" [overlay]="true" [size]="'10px'"></app-loading-spinner>
         <div class="team" *ngFor="let team of teams">
             <div class="team-info">
                 <a class="team-avatar" [routerLink]="'./'+team.id">
@@ -16,8 +16,8 @@
                 </a>
             </div>
             <div>
-                <button pButton pRipple type="button" label="Join Team" class="teams-button join-leave-button"
-                    icon="pi pi-plus-circle" (click)="joinTeam(team.id)">
+                <button pButton pRipple type="button" label="Join Team" class="panel-button" icon="pi pi-plus-circle"
+                    (click)="joinTeam(team.id)">
                 </button>
             </div>
         </div>

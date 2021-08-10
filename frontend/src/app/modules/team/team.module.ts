@@ -1,3 +1,5 @@
+import { TeamAddMemberComponent } from "./team-info/team-overlay/team-add-member/team-add-member.component";
+import { TeamAddProjectComponent } from "./team-info/team-overlay/team-add-project/team-add-project.component";
 import { TeamMembersComponent } from "./team-info/team-members/team-members.component";
 import { TeamProjectsComponent } from "./team-info/team-projects/team-projects.component";
 import { TeamSettingsComponent } from "./team-info/team-settings/team-settings.component";
@@ -19,7 +21,9 @@ import { CreateTeamComponent } from './create-team/create-team.component';
         TeamInfoComponent,
         TeamSettingsComponent,
         TeamProjectsComponent,
-        TeamMembersComponent
+        TeamMembersComponent,
+        TeamAddMemberComponent,
+        TeamAddProjectComponent
     ],
     imports: [
         SharedModule,
