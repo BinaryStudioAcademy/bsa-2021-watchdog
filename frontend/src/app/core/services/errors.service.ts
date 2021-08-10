@@ -47,9 +47,7 @@ export class ErrorsService implements OnDestroy {
     private getStackTrace(error: Error): StackTrace[] {
         const parsedStackTrace = stackTraceParser.parse(error.stack);
 
-        const result: StackTrace[] = parsedStackTrace.map(item => ({ ...item }));
-
-        return result;
+        return parsedStackTrace.map(item => ({ ...item }));
     }
 
     private getResponseErrorMessage(error: HttpErrorResponse): HttpResponseErrorMessage {
