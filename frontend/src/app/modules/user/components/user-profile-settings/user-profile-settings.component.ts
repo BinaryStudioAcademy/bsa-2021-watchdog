@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { BaseComponent } from '@core/components/base/base.component';
 import { User } from '@core/models/user';
 import { UserUpdateDto } from '@core/models/userUpdate';
@@ -13,6 +13,7 @@ import { UserService } from '@core/services/user.service';
 })
 export class UserProfileSettingsComponent extends BaseComponent implements OnInit, OnDestroy {
     public user: User;
+    public editedUser: User;
     public userUpdate: UserUpdateDto;
     public userUpdateStartState: UserUpdateDto;
     public firstName: string;
@@ -55,17 +56,30 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
         });
     }
 
-    submit(editForm) {
+    // submit(editForm) {
+    //     // this.getValuesForUpdateInfo();
+    //     // this.userService.updateUser(this.userUpdate)
+    //     //     .subscribe(resp => {
+    //     //         this.toastNotificationService.success('Information has been updated');
+    //     //         window.location.reload();
+    //     //     },
+    //     //     error => {
+    //     //         this.toastNotificationService.error('An error occured while updating the profile');
+    //     //     });
+    // }
 
-        // this.getValuesForUpdateInfo();
-        // this.userService.updateUser(this.userUpdate)
-        //     .subscribe(resp => {
-        //         this.toastNotificationService.success('Information has been updated');
-        //         window.location.reload();
-        //     },
-        //     error => {
-        //         this.toastNotificationService.error('An error occured while updating the profile');
-        //     });
+    submit(editForm){
+        this.user.firstName = editForm.value.firstName;
+        this.user.lastName = editForm.value.lastName;
+        this.user.email = editForm.value.email;
+        this.user.avatar = editForm.value.avatar;
+
+         this.userService.updateUsersById(this.userId, this.user)
+            .pipe(this.untilThis)
+                .subscribe(resp => {
+                    this.toastNotificationService.success('Profile has been updated');
+                    window.location.reload();
+                })
     }
 
     ngOnDestroy() {

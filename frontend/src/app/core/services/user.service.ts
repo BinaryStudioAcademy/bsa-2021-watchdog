@@ -24,6 +24,14 @@ export class UserService {
     }
 
     public updateUser(user: UserUpdateDto): Observable<UserUpdateDto> {
+        return this.httpService.putFullRequest<User>(`${this.apiPrefix}`, user)
+            .pipe(map(response => {
+                this.dataService.changeMessage(response.body);
+                return response.body;
+            }));
+    }
+
+    public updateUsersById(id: number, user: UserUpdateDto): Observable<UserUpdateDto> {
         return this.httpService.putFullRequest<User>(`${this.apiPrefix}/${user.id}`, user)
             .pipe(map(response => {
                 this.dataService.changeMessage(response.body);
