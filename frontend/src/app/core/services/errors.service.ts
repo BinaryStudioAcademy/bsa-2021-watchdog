@@ -8,6 +8,7 @@ import { IssueEnvironment } from '@shared/models/issues/issue-environment';
 import { HttpResponseErrorMessage } from '@shared/models/issues/http-response.message';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { ToastNotificationService } from './toast-notification.service';
 
 @Injectable({
     providedIn: 'root'
@@ -15,15 +16,17 @@ import { Subject } from 'rxjs';
 export class ErrorsService implements OnDestroy {
     private unsubscribe$: Subject<void> = new Subject<void>();
 
-    constructor(private httpService: HttpInternalService) { }
+    constructor(private httpService: HttpInternalService, private toastNotification: ToastNotificationService) { }
 
     log(error: any) {
         const issueMessage = this.addContextInfo(error);
         console.log(issueMessage);
         this.httpService.postFullRequest('http://localhost:5090/issues', issueMessage)
             .pipe(takeUntil(this.unsubscribe$))
-            .subscribe(response => console.log(response.status), error => {
-                console.log(error)
+            .subscribe(() => {
+                this.toastNotification.info('Sent error to collector.', null, 1700);
+            }, () => {
+                this.toastNotification.info('Are you sure that collector is running?', null, 1700);
             });
     }
 
@@ -44,13 +47,7 @@ export class ErrorsService implements OnDestroy {
     private getStackTrace(error: Error): StackTrace[] {
         const parsedStackTrace = stackTraceParser.parse(error.stack);
 
-        const result: StackTrace[] =  parsedStackTrace.map(item => ({
-            file: item.file,
-            methodName: item.methodName,
-            arguments: item.arguments,
-            lineNumber: item.lineNumber,
-            column: item.column
-        }));
+        const result: StackTrace[] = parsedStackTrace.map(item => ({ ...item }));
 
         return result;
     }
