@@ -110,7 +110,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
 
     onSubmit() {
         const organizationDto = {
-            organizationSlug: `${this.organization}Slag`, //TEMP
+            organizationSlug: `${this.organization.name}-${this.user.email.split('@')[0]}-slag`, //TEMP
             name: this.organization.name,
             openMembership: true, //TEMP
             defaultRoleId: 1, //TEMP
