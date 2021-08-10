@@ -25,7 +25,7 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
         private toastNotificationService: ToastNotificationService
     ) {
         super();
-        //this.user = authService.getUser();
+        this.user = authService.getUser();
     }
 
     ngOnInit(): void {
@@ -54,9 +54,5 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
                 this.toastNotificationService.success('Profile has been updated');
                 console.info(resp);
             });
-    }
-
-    ngOnDestroy() {
-        super.ngOnDestroy();
     }
 }
