@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
@@ -11,14 +10,10 @@ namespace Watchdog.Core.API.Controllers
     [ApiController]
     public class MembersController : ControllerBase
     {
-
-        private readonly ILogger<SampleController> _logger;
         private readonly IMemberService _memberService;
 
-        public MembersController(ILogger<SampleController> logger,
-                                 IMemberService memberService)
+        public MembersController(IMemberService memberService)
         {
-            _logger = logger;
             _memberService = memberService;
         }
 

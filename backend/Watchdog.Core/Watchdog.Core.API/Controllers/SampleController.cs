@@ -42,8 +42,8 @@ namespace Watchdog.Core.API.Controllers
         [Authorize]
         public async Task<ActionResult<ICollection<SampleDto>>> GetAllWithAuthNAsync()
         {
-            var samples = await _sampleService.GetAllSamplesAsync();
-            return Ok(samples);
+            var authSamples = await _sampleService.GetAllSamplesAsync();
+            return Ok(authSamples);
         }
 
         [HttpGet("{sampleId}")]
