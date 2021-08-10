@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Watchdog.Core.DAL.Migrations
 {
-    public partial class ChangeTeamMemberRelations : Migration
+    public partial class TeamMemberRelations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -38,12 +38,6 @@ namespace Watchdog.Core.DAL.Migrations
             migrationBuilder.DropTable(
                 name: "TeamMembers");
 
-            migrationBuilder.AddColumn<string>(
-                name: "Email",
-                table: "Members",
-                type: "nvarchar(128)",
-                nullable: true);
-
             migrationBuilder.AddColumn<bool>(
                 name: "IsAccepted",
                 table: "Members",
@@ -58,6 +52,13 @@ namespace Watchdog.Core.DAL.Migrations
                 nullable: false,
                 defaultValue: 0);
 
+            migrationBuilder.AddColumn<int>(
+                name: "UserId",
+                table: "Members",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
             migrationBuilder.AddUniqueConstraint(
                 name: "AK_Users_Email",
                 table: "Users",
@@ -67,221 +68,242 @@ namespace Watchdog.Core.DAL.Migrations
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 1,
-                columns: new[] { "Email", "TeamId" },
-                values: new object[] { "bailee.berge@yahoo.com", 5 });
+                columns: new[] { "TeamId", "UserId" },
+                values: new object[] { 1, 14 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 2,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "OrganizationId", "TeamId" },
-                values: new object[] { new DateTime(2021, 6, 5, 15, 33, 52, 668, DateTimeKind.Unspecified).AddTicks(8238), 12, "christopher_weimann25@hotmail.com", 4, 5 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2021, 4, 27, 20, 21, 58, 172, DateTimeKind.Unspecified).AddTicks(5799), 3, 1, 3, 4, 1 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 3,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "OrganizationId", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2019, 8, 7, 13, 50, 23, 863, DateTimeKind.Unspecified).AddTicks(6323), 9, "cruz_mcclure42@gmail.com", 1, 2, 2 });
+                columns: new[] { "CreatedAt", "CreatedBy", "IsAccepted", "OrganizationId", "RoleId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2020, 7, 23, 10, 54, 45, 854, DateTimeKind.Unspecified).AddTicks(9241), 16, true, 4, 2, 1, 19 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 4,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "IsAccepted", "OrganizationId", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2020, 11, 7, 7, 48, 7, 318, DateTimeKind.Unspecified).AddTicks(7986), 9, "easton_kassulke7@hotmail.com", true, 4, 5, 4 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2019, 8, 20, 21, 27, 3, 534, DateTimeKind.Unspecified).AddTicks(5410), 1, 1, 3, 1, 4 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 5,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "OrganizationId", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2019, 11, 14, 5, 32, 33, 474, DateTimeKind.Unspecified).AddTicks(6814), 20, "angeline.hand@yahoo.com", 2, 2, 2 });
+                columns: new[] { "CreatedAt", "CreatedBy", "IsAccepted", "OrganizationId", "RoleId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2019, 12, 23, 10, 22, 47, 210, DateTimeKind.Unspecified).AddTicks(1299), 11, true, 1, 1, 4, 4 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 6,
-                columns: new[] { "CreatedAt", "Email", "IsAccepted", "OrganizationId", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2020, 3, 5, 3, 13, 6, 437, DateTimeKind.Unspecified).AddTicks(6226), "arthur.schiller@yahoo.com", true, 2, 4, 1 });
+                columns: new[] { "CreatedAt", "CreatedBy", "IsAccepted", "RoleId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2021, 7, 18, 20, 59, 32, 703, DateTimeKind.Unspecified).AddTicks(9853), 2, true, 2, 4, 4 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 7,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "IsAccepted", "OrganizationId", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2021, 6, 22, 18, 25, 20, 694, DateTimeKind.Unspecified).AddTicks(2971), 4, "anais28@hotmail.com", true, 1, 1, 3 });
+                columns: new[] { "CreatedAt", "CreatedBy", "IsAccepted", "OrganizationId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2020, 7, 8, 18, 12, 38, 93, DateTimeKind.Unspecified).AddTicks(8466), 1, true, 3, 1, 2 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 8,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "OrganizationId", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2021, 4, 16, 15, 25, 9, 203, DateTimeKind.Unspecified).AddTicks(3466), 12, "angeline.hand@yahoo.com", 3, 3, 3 });
+                columns: new[] { "CreatedAt", "CreatedBy", "RoleId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2021, 2, 7, 16, 21, 19, 980, DateTimeKind.Unspecified).AddTicks(3576), 16, 3, 4, 10 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 9,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "IsAccepted", "OrganizationId", "TeamId" },
-                values: new object[] { new DateTime(2021, 1, 15, 16, 3, 46, 55, DateTimeKind.Unspecified).AddTicks(7176), 4, "arturo60@yahoo.com", true, 3, 3 });
+                columns: new[] { "CreatedAt", "CreatedBy", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2021, 7, 5, 3, 30, 54, 448, DateTimeKind.Unspecified).AddTicks(9294), 15, 3, 5 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 10,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "TeamId" },
-                values: new object[] { new DateTime(2020, 5, 8, 6, 46, 11, 349, DateTimeKind.Unspecified).AddTicks(6948), 5, "gregoria0@hotmail.com", 3 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2021, 5, 19, 6, 44, 6, 919, DateTimeKind.Unspecified).AddTicks(278), 7, 4, 1, 5, 6 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 11,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "OrganizationId", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2021, 1, 31, 0, 43, 53, 927, DateTimeKind.Unspecified).AddTicks(6177), 6, "antwan.swift6@yahoo.com", 4, 5, 2 });
+                columns: new[] { "CreatedAt", "CreatedBy", "IsAccepted", "OrganizationId", "RoleId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2020, 10, 3, 22, 16, 27, 247, DateTimeKind.Unspecified).AddTicks(4150), 10, true, 4, 3, 4, 1 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 12,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "OrganizationId", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2021, 1, 30, 18, 46, 23, 83, DateTimeKind.Unspecified).AddTicks(5076), 7, "christopher_weimann25@hotmail.com", 2, 4, 3 });
+                columns: new[] { "CreatedAt", "CreatedBy", "IsAccepted", "OrganizationId", "RoleId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2021, 7, 4, 15, 24, 41, 967, DateTimeKind.Unspecified).AddTicks(8073), 9, true, 5, 2, 1, 14 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 13,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "IsAccepted", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2019, 12, 13, 13, 57, 12, 13, DateTimeKind.Unspecified).AddTicks(984), 15, "bailee.berge@yahoo.com", true, 4, 1 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2021, 7, 15, 16, 39, 54, 102, DateTimeKind.Unspecified).AddTicks(9813), 12, 4, 3, 4, 18 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 14,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "OrganizationId", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2020, 9, 11, 9, 15, 12, 793, DateTimeKind.Unspecified).AddTicks(4954), 9, "stephania_koelpin@hotmail.com", 4, 4, 4 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2021, 2, 15, 7, 36, 57, 651, DateTimeKind.Unspecified).AddTicks(6601), 20, 2, 3, 5, 15 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 15,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "OrganizationId", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2019, 8, 6, 23, 13, 48, 118, DateTimeKind.Unspecified).AddTicks(309), 9, "jamaal_leannon@gmail.com", 5, 3, 1 });
+                columns: new[] { "CreatedAt", "CreatedBy", "IsAccepted", "OrganizationId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2021, 1, 7, 23, 23, 34, 674, DateTimeKind.Unspecified).AddTicks(8980), 9, true, 4, 4, 3 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 16,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "OrganizationId", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2021, 1, 10, 12, 2, 35, 88, DateTimeKind.Unspecified).AddTicks(947), 18, "gregoria0@hotmail.com", 2, 5, 5 });
+                columns: new[] { "CreatedAt", "CreatedBy", "IsAccepted", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2019, 9, 13, 18, 7, 25, 344, DateTimeKind.Unspecified).AddTicks(5872), 17, true, 3, 11 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 17,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "OrganizationId", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2021, 4, 26, 1, 36, 51, 405, DateTimeKind.Unspecified).AddTicks(6570), 1, "arturo60@yahoo.com", 5, 1, 4 });
+                columns: new[] { "CreatedAt", "CreatedBy", "IsAccepted", "RoleId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2020, 9, 4, 5, 54, 15, 840, DateTimeKind.Unspecified).AddTicks(7823), 20, true, 1, 3, 4 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 18,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "IsAccepted", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2020, 9, 6, 19, 18, 22, 748, DateTimeKind.Unspecified).AddTicks(509), 16, "bailee.berge@yahoo.com", true, 1, 5 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2021, 5, 20, 18, 28, 35, 426, DateTimeKind.Unspecified).AddTicks(5341), 2, 4, 3, 3, 5 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 19,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "IsAccepted", "OrganizationId", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2020, 6, 21, 13, 15, 6, 207, DateTimeKind.Unspecified).AddTicks(8475), 17, "jed.kshlerin@hotmail.com", true, 5, 1, 3 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2019, 11, 30, 15, 17, 55, 781, DateTimeKind.Unspecified).AddTicks(7584), 4, 3, 2, 7 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 20,
-                columns: new[] { "CreatedAt", "Email", "OrganizationId", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2020, 12, 17, 19, 34, 20, 969, DateTimeKind.Unspecified).AddTicks(6895), "paula.erdman41@hotmail.com", 5, 2, 5 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2020, 12, 16, 9, 10, 24, 976, DateTimeKind.Unspecified).AddTicks(8307), 16, 1, 3, 4 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 21,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "OrganizationId", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2021, 1, 30, 6, 54, 45, 33, DateTimeKind.Unspecified).AddTicks(484), 11, "jamaal_leannon@gmail.com", 5, 1, 2 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2020, 12, 1, 19, 23, 31, 853, DateTimeKind.Unspecified).AddTicks(3147), 2, 4, 2, 2, 10 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 22,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "IsAccepted", "TeamId" },
-                values: new object[] { new DateTime(2019, 8, 31, 13, 33, 3, 674, DateTimeKind.Unspecified).AddTicks(2628), 7, "bailee.berge@yahoo.com", true, 3 });
+                columns: new[] { "CreatedAt", "CreatedBy", "IsAccepted", "OrganizationId", "RoleId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2020, 9, 22, 14, 47, 55, 958, DateTimeKind.Unspecified).AddTicks(4884), 16, true, 5, 1, 3, 14 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 23,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "OrganizationId", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2020, 11, 3, 15, 22, 10, 442, DateTimeKind.Unspecified).AddTicks(8194), 11, "antwan.swift6@yahoo.com", 4, 3, 4 });
+                columns: new[] { "CreatedAt", "CreatedBy", "IsAccepted", "OrganizationId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2020, 10, 21, 18, 46, 42, 78, DateTimeKind.Unspecified).AddTicks(2145), 4, true, 2, 5, 8 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 24,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "OrganizationId", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2020, 12, 24, 20, 15, 53, 153, DateTimeKind.Unspecified).AddTicks(2359), 15, "bailee.berge@yahoo.com", 1, 3, 5 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2021, 4, 28, 1, 57, 4, 519, DateTimeKind.Unspecified).AddTicks(2546), 3, 4, 3, 2, 14 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 25,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "IsAccepted", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2019, 11, 1, 7, 49, 17, 589, DateTimeKind.Unspecified).AddTicks(9121), 17, "terrill.lueilwitz@yahoo.com", true, 1, 1 });
+                columns: new[] { "CreatedAt", "CreatedBy", "IsAccepted", "OrganizationId", "RoleId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2019, 8, 22, 5, 8, 52, 971, DateTimeKind.Unspecified).AddTicks(5025), 3, true, 2, 1, 1, 10 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 26,
-                columns: new[] { "CreatedAt", "Email", "IsAccepted", "OrganizationId", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2020, 4, 26, 15, 3, 39, 855, DateTimeKind.Unspecified).AddTicks(2801), "lambert.gusikowski33@yahoo.com", true, 2, 4, 2 });
+                columns: new[] { "CreatedAt", "IsAccepted", "OrganizationId", "RoleId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2021, 5, 14, 1, 44, 54, 610, DateTimeKind.Unspecified).AddTicks(3587), true, 5, 1, 4, 2 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 27,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "OrganizationId", "TeamId" },
-                values: new object[] { new DateTime(2021, 5, 9, 17, 49, 41, 427, DateTimeKind.Unspecified).AddTicks(2032), 12, "elbert14@gmail.com", 3, 5 });
+                columns: new[] { "CreatedAt", "CreatedBy", "IsAccepted", "RoleId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2020, 1, 3, 20, 5, 35, 131, DateTimeKind.Unspecified).AddTicks(2006), 9, true, 2, 4, 9 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 28,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "OrganizationId", "TeamId" },
-                values: new object[] { new DateTime(2021, 3, 18, 8, 26, 12, 459, DateTimeKind.Unspecified).AddTicks(5733), 19, "gregoria0@hotmail.com", 4, 5 });
+                columns: new[] { "CreatedAt", "CreatedBy", "RoleId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2020, 3, 25, 4, 9, 19, 385, DateTimeKind.Unspecified).AddTicks(2515), 19, 2, 4, 11 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 29,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "RoleId", "TeamId" },
-                values: new object[] { new DateTime(2021, 1, 9, 2, 53, 25, 743, DateTimeKind.Unspecified).AddTicks(3222), 20, "terrill.lueilwitz@yahoo.com", 4, 4 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2021, 4, 17, 15, 20, 35, 476, DateTimeKind.Unspecified).AddTicks(8086), 5, 5, 4, 20 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 30,
-                columns: new[] { "CreatedAt", "CreatedBy", "Email", "TeamId" },
-                values: new object[] { new DateTime(2020, 12, 4, 19, 55, 17, 960, DateTimeKind.Unspecified).AddTicks(9409), 2, "arthur.schiller@yahoo.com", 3 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId", "TeamId", "UserId" },
+                values: new object[] { new DateTime(2020, 7, 4, 10, 40, 44, 199, DateTimeKind.Unspecified).AddTicks(7424), 10, 4, 3, 2, 16 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Members_Email",
-                table: "Members",
-                column: "Email");
+            migrationBuilder.UpdateData(
+                table: "Roles",
+                keyColumn: "Id",
+                keyValue: 1,
+                column: "Description",
+                value: "Sunt maxime numquam alias alias placeat corrupti nisi veniam. In adipisci ipsa doloribus amet. Earum dolore enim sapiente.");
+
+            migrationBuilder.UpdateData(
+                table: "Roles",
+                keyColumn: "Id",
+                keyValue: 2,
+                column: "Description",
+                value: "Eligendi aspernatur molestias et eum et. Ipsa inventore quam qui dolor. Minus non repudiandae harum architecto nesciunt reprehenderit. Numquam sunt nostrum fugiat. Occaecati aut quam consequatur aliquid eius sed quia ab.");
+
+            migrationBuilder.UpdateData(
+                table: "Roles",
+                keyColumn: "Id",
+                keyValue: 3,
+                column: "Description",
+                value: "Iure sint dolorum maiores et eius. Maxime eos quis qui. Doloremque laborum ut aut tempora.");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Members_TeamId",
                 table: "Members",
                 column: "TeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Members_UserId",
+                table: "Members",
+                column: "UserId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Applications_Users_CreatedBy",
@@ -320,11 +342,12 @@ namespace Watchdog.Core.DAL.Migrations
                 principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Members_Users_Email",
+                name: "FK_Members_Users_UserId",
                 table: "Members",
-                column: "Email",
+                column: "UserId",
                 principalTable: "Users",
-                principalColumn: "Email");
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Organizations_Users_CreatedBy",
@@ -371,7 +394,7 @@ namespace Watchdog.Core.DAL.Migrations
                 table: "Members");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Members_Users_Email",
+                name: "FK_Members_Users_UserId",
                 table: "Members");
 
             migrationBuilder.DropForeignKey(
@@ -391,15 +414,11 @@ namespace Watchdog.Core.DAL.Migrations
                 table: "Users");
 
             migrationBuilder.DropIndex(
-                name: "IX_Members_Email",
-                table: "Members");
-
-            migrationBuilder.DropIndex(
                 name: "IX_Members_TeamId",
                 table: "Members");
 
-            migrationBuilder.DropColumn(
-                name: "Email",
+            migrationBuilder.DropIndex(
+                name: "IX_Members_UserId",
                 table: "Members");
 
             migrationBuilder.DropColumn(
@@ -408,6 +427,10 @@ namespace Watchdog.Core.DAL.Migrations
 
             migrationBuilder.DropColumn(
                 name: "TeamId",
+                table: "Members");
+
+            migrationBuilder.DropColumn(
+                name: "UserId",
                 table: "Members");
 
             migrationBuilder.CreateTable(
@@ -440,204 +463,225 @@ namespace Watchdog.Core.DAL.Migrations
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 2,
-                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId" },
-                values: new object[] { new DateTime(2019, 11, 11, 3, 10, 6, 170, DateTimeKind.Unspecified).AddTicks(2841), 16, 1 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
+                values: new object[] { new DateTime(2019, 11, 16, 1, 22, 22, 917, DateTimeKind.Unspecified).AddTicks(2673), 20, 4, 1 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 3,
                 columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
-                values: new object[] { new DateTime(2019, 10, 5, 13, 0, 34, 132, DateTimeKind.Unspecified).AddTicks(3117), 2, 3, 4 });
+                values: new object[] { new DateTime(2020, 1, 3, 8, 25, 34, 990, DateTimeKind.Unspecified).AddTicks(521), 3, 1, 1 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 4,
                 columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
-                values: new object[] { new DateTime(2021, 4, 27, 7, 55, 58, 628, DateTimeKind.Unspecified).AddTicks(106), 6, 5, 4 });
+                values: new object[] { new DateTime(2020, 4, 25, 10, 18, 40, 933, DateTimeKind.Unspecified).AddTicks(8555), 10, 4, 1 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 5,
                 columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
-                values: new object[] { new DateTime(2020, 8, 11, 5, 32, 51, 930, DateTimeKind.Unspecified).AddTicks(3850), 5, 5, 3 });
+                values: new object[] { new DateTime(2019, 9, 16, 10, 2, 15, 309, DateTimeKind.Unspecified).AddTicks(5491), 3, 3, 3 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 6,
-                columns: new[] { "CreatedAt", "OrganizationId", "RoleId" },
-                values: new object[] { new DateTime(2020, 8, 29, 8, 18, 24, 585, DateTimeKind.Unspecified).AddTicks(9893), 5, 5 });
+                columns: new[] { "CreatedAt", "CreatedBy", "RoleId" },
+                values: new object[] { new DateTime(2021, 6, 15, 20, 0, 11, 725, DateTimeKind.Unspecified).AddTicks(3505), 3, 1 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 7,
-                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
-                values: new object[] { new DateTime(2021, 2, 5, 12, 28, 51, 771, DateTimeKind.Unspecified).AddTicks(7583), 13, 4, 2 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId" },
+                values: new object[] { new DateTime(2020, 1, 21, 6, 5, 21, 218, DateTimeKind.Unspecified).AddTicks(6260), 4, 1 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 8,
-                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
-                values: new object[] { new DateTime(2019, 11, 14, 5, 32, 33, 474, DateTimeKind.Unspecified).AddTicks(6814), 20, 2, 2 });
+                columns: new[] { "CreatedAt", "CreatedBy", "RoleId" },
+                values: new object[] { new DateTime(2019, 12, 23, 10, 22, 47, 210, DateTimeKind.Unspecified).AddTicks(1299), 11, 1 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 9,
-                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId" },
-                values: new object[] { new DateTime(2020, 3, 1, 10, 50, 38, 346, DateTimeKind.Unspecified).AddTicks(2283), 18, 2 });
+                columns: new[] { "CreatedAt", "CreatedBy" },
+                values: new object[] { new DateTime(2020, 7, 6, 4, 7, 57, 503, DateTimeKind.Unspecified).AddTicks(5793), 10 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 10,
-                columns: new[] { "CreatedAt", "CreatedBy" },
-                values: new object[] { new DateTime(2021, 7, 14, 18, 53, 43, 769, DateTimeKind.Unspecified).AddTicks(5102), 14 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
+                values: new object[] { new DateTime(2020, 1, 29, 1, 2, 39, 606, DateTimeKind.Unspecified).AddTicks(1635), 1, 1, 3 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 11,
                 columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
-                values: new object[] { new DateTime(2021, 6, 23, 23, 17, 16, 155, DateTimeKind.Unspecified).AddTicks(5266), 2, 2, 2 });
+                values: new object[] { new DateTime(2020, 5, 19, 20, 41, 5, 50, DateTimeKind.Unspecified).AddTicks(7290), 16, 2, 1 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 12,
                 columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
-                values: new object[] { new DateTime(2021, 4, 5, 17, 35, 33, 328, DateTimeKind.Unspecified).AddTicks(4435), 9, 1, 1 });
+                values: new object[] { new DateTime(2021, 5, 21, 12, 57, 44, 740, DateTimeKind.Unspecified).AddTicks(9150), 2, 3, 1 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 13,
-                columns: new[] { "CreatedAt", "CreatedBy", "RoleId" },
-                values: new object[] { new DateTime(2020, 6, 5, 23, 26, 15, 564, DateTimeKind.Unspecified).AddTicks(274), 12, 3 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
+                values: new object[] { new DateTime(2020, 1, 13, 19, 47, 33, 819, DateTimeKind.Unspecified).AddTicks(6240), 3, 5, 1 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 14,
                 columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
-                values: new object[] { new DateTime(2020, 2, 16, 2, 0, 40, 350, DateTimeKind.Unspecified).AddTicks(4718), 6, 3, 1 });
+                values: new object[] { new DateTime(2020, 5, 5, 6, 58, 55, 90, DateTimeKind.Unspecified).AddTicks(7547), 10, 4, 1 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 15,
-                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
-                values: new object[] { new DateTime(2021, 1, 15, 16, 3, 46, 55, DateTimeKind.Unspecified).AddTicks(7176), 4, 3, 2 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId" },
+                values: new object[] { new DateTime(2021, 7, 5, 3, 30, 54, 448, DateTimeKind.Unspecified).AddTicks(9294), 15, 1 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 16,
-                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
-                values: new object[] { new DateTime(2020, 11, 26, 21, 33, 26, 251, DateTimeKind.Unspecified).AddTicks(4354), 10, 3, 3 });
+                columns: new[] { "CreatedAt", "CreatedBy" },
+                values: new object[] { new DateTime(2021, 6, 14, 18, 35, 8, 962, DateTimeKind.Unspecified).AddTicks(783), 12 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 17,
-                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
-                values: new object[] { new DateTime(2020, 8, 9, 5, 46, 45, 899, DateTimeKind.Unspecified).AddTicks(7907), 12, 2, 4 });
+                columns: new[] { "CreatedAt", "CreatedBy", "RoleId" },
+                values: new object[] { new DateTime(2019, 11, 27, 0, 59, 19, 851, DateTimeKind.Unspecified).AddTicks(207), 2, 2 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 18,
-                columns: new[] { "CreatedAt", "CreatedBy", "RoleId" },
-                values: new object[] { new DateTime(2020, 3, 28, 11, 51, 59, 488, DateTimeKind.Unspecified).AddTicks(8865), 18, 5 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
+                values: new object[] { new DateTime(2020, 2, 24, 22, 7, 24, 896, DateTimeKind.Unspecified).AddTicks(9869), 14, 5, 1 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 19,
-                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
-                values: new object[] { new DateTime(2020, 8, 26, 0, 42, 7, 317, DateTimeKind.Unspecified).AddTicks(8157), 5, 2, 2 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId" },
+                values: new object[] { new DateTime(2021, 6, 29, 4, 27, 33, 463, DateTimeKind.Unspecified).AddTicks(2445), 16, 2 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 20,
-                columns: new[] { "CreatedAt", "OrganizationId", "RoleId" },
-                values: new object[] { new DateTime(2020, 12, 4, 13, 22, 46, 624, DateTimeKind.Unspecified).AddTicks(5014), 4, 4 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId" },
+                values: new object[] { new DateTime(2020, 8, 31, 3, 14, 25, 440, DateTimeKind.Unspecified).AddTicks(6945), 20, 3 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 21,
                 columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
-                values: new object[] { new DateTime(2019, 8, 24, 23, 59, 6, 250, DateTimeKind.Unspecified).AddTicks(1004), 16, 3, 2 });
+                values: new object[] { new DateTime(2020, 10, 19, 4, 23, 25, 774, DateTimeKind.Unspecified).AddTicks(1835), 14, 1, 1 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 22,
-                columns: new[] { "CreatedAt", "CreatedBy" },
-                values: new object[] { new DateTime(2019, 12, 13, 13, 57, 12, 13, DateTimeKind.Unspecified).AddTicks(984), 15 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
+                values: new object[] { new DateTime(2021, 7, 15, 16, 39, 54, 102, DateTimeKind.Unspecified).AddTicks(9813), 12, 4, 3 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 23,
-                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
-                values: new object[] { new DateTime(2020, 1, 14, 18, 54, 42, 990, DateTimeKind.Unspecified).AddTicks(701), 9, 1, 1 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId" },
+                values: new object[] { new DateTime(2019, 11, 13, 12, 40, 5, 13, DateTimeKind.Unspecified).AddTicks(878), 15, 5 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 24,
                 columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
-                values: new object[] { new DateTime(2020, 2, 26, 14, 59, 29, 473, DateTimeKind.Unspecified).AddTicks(5763), 9, 3, 4 });
+                values: new object[] { new DateTime(2019, 9, 1, 23, 36, 12, 841, DateTimeKind.Unspecified).AddTicks(6973), 5, 5, 2 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 25,
-                columns: new[] { "CreatedAt", "CreatedBy", "RoleId" },
-                values: new object[] { new DateTime(2019, 9, 5, 4, 2, 59, 158, DateTimeKind.Unspecified).AddTicks(4664), 9, 5 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
+                values: new object[] { new DateTime(2020, 2, 9, 19, 23, 50, 460, DateTimeKind.Unspecified).AddTicks(534), 20, 4, 3 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 26,
                 columns: new[] { "CreatedAt", "OrganizationId", "RoleId" },
-                values: new object[] { new DateTime(2019, 10, 12, 15, 15, 12, 766, DateTimeKind.Unspecified).AddTicks(6699), 5, 3 });
+                values: new object[] { new DateTime(2021, 4, 23, 7, 4, 13, 49, DateTimeKind.Unspecified).AddTicks(4808), 2, 2 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 27,
-                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId" },
-                values: new object[] { new DateTime(2019, 10, 3, 14, 41, 15, 275, DateTimeKind.Unspecified).AddTicks(7289), 6, 5 });
+                columns: new[] { "CreatedAt", "CreatedBy", "RoleId" },
+                values: new object[] { new DateTime(2019, 11, 23, 18, 4, 52, 732, DateTimeKind.Unspecified).AddTicks(9426), 6, 1 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 28,
-                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId" },
-                values: new object[] { new DateTime(2020, 6, 30, 21, 45, 53, 833, DateTimeKind.Unspecified).AddTicks(6612), 20, 5 });
+                columns: new[] { "CreatedAt", "CreatedBy", "RoleId" },
+                values: new object[] { new DateTime(2021, 1, 17, 9, 54, 56, 29, DateTimeKind.Unspecified).AddTicks(2520), 11, 3 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 29,
-                columns: new[] { "CreatedAt", "CreatedBy", "RoleId" },
-                values: new object[] { new DateTime(2021, 4, 26, 1, 36, 51, 405, DateTimeKind.Unspecified).AddTicks(6570), 1, 1 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId" },
+                values: new object[] { new DateTime(2020, 9, 4, 5, 54, 15, 840, DateTimeKind.Unspecified).AddTicks(7823), 20, 2 });
 
             migrationBuilder.UpdateData(
                 table: "Members",
                 keyColumn: "Id",
                 keyValue: 30,
-                columns: new[] { "CreatedAt", "CreatedBy" },
-                values: new object[] { new DateTime(2021, 3, 13, 14, 30, 36, 921, DateTimeKind.Unspecified).AddTicks(1544), 12 });
+                columns: new[] { "CreatedAt", "CreatedBy", "OrganizationId", "RoleId" },
+                values: new object[] { new DateTime(2019, 11, 5, 17, 30, 28, 659, DateTimeKind.Unspecified).AddTicks(2449), 1, 1, 2 });
+
+            migrationBuilder.UpdateData(
+                table: "Roles",
+                keyColumn: "Id",
+                keyValue: 1,
+                column: "Description",
+                value: "Sit est commodi explicabo numquam eaque aut est. Hic expedita natus ut impedit. Natus voluptas delectus. Cum dignissimos rem quaerat reiciendis incidunt dicta quam veritatis.");
+
+            migrationBuilder.UpdateData(
+                table: "Roles",
+                keyColumn: "Id",
+                keyValue: 2,
+                column: "Description",
+                value: "Ab hic incidunt alias omnis totam molestias et beatae. Soluta maxime cum repudiandae. Voluptatem et aspernatur explicabo voluptatibus adipisci. Totam id incidunt perspiciatis reprehenderit. Et magni et qui voluptas et. Nihil voluptas ut non provident illo voluptate rerum cupiditate asperiores.");
+
+            migrationBuilder.UpdateData(
+                table: "Roles",
+                keyColumn: "Id",
+                keyValue: 3,
+                column: "Description",
+                value: "Ut omnis beatae expedita voluptatem ut eos et est. Dolores assumenda incidunt beatae quia inventore. Est eos reiciendis dolor aut quisquam dolorem non dolorem natus. Repellendus iure earum maxime provident placeat quae fugiat temporibus voluptatum. At ut accusamus consequuntur modi.");
 
             migrationBuilder.InsertData(
                 table: "TeamMembers",
@@ -653,10 +697,7 @@ namespace Watchdog.Core.DAL.Migrations
                     { 7, 30, 5 },
                     { 8, 5, 4 },
                     { 9, 4, 1 },
-                    { 10, 13, 2 },
-                    { 11, 16, 3 },
-                    { 25, 29, 1 },
-                    { 12, 8, 2 }
+                    { 10, 13, 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -664,6 +705,9 @@ namespace Watchdog.Core.DAL.Migrations
                 columns: new[] { "Id", "MemberId", "TeamId" },
                 values: new object[,]
                 {
+                    { 11, 16, 3 },
+                    { 25, 29, 1 },
+                    { 12, 8, 2 },
                     { 14, 6, 2 },
                     { 15, 6, 5 },
                     { 16, 30, 4 },

@@ -61,7 +61,7 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<IEnumerable<MemberDto>> GetMembersByOrganizationIdAsync(int id)
         {
-            return _mapper.Map<IEnumerable<MemberDto>>(await _context.Members.Where(m => m.OrganizationId == id).Include(m => m.User).Include(m=> m.Team).Include(m=> m.Role).ToListAsync());
+            return _mapper.Map<IEnumerable<MemberDto>>(await _context.Members.Where(m => m.OrganizationId == id).Include(m => m.User).Include(m => m.Team).Include(m => m.Role).ToListAsync());
         }
 
         public async Task<MemberDto> GetMemberByIdAsync(int id)
@@ -72,11 +72,20 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<MemberDto> UpdateMemberAsync(UpdateMemberDto member)
         {
-            var result = await _context.Members.Include(m=> m.User).FirstOrDefaultAsync(m=> m.Id == member.Id) ?? throw new KeyNotFoundException("Member doesn't exist");
+            var result = await _context.Members.Include(m => m.User).FirstOrDefaultAsync(m => m.Id == member.Id) ?? throw new KeyNotFoundException("Member doesn't exist");
             _context.Entry(result).CurrentValues.SetValues(member);
 
             await _context.SaveChangesAsync();
             return _mapper.Map<MemberDto>(result);
+        }
+
+        public async Task<IEnumerable<MemberDto>> SearchMembersNotInOrganizationAsync(int orgId, string memberEmail)
+        {
+            var members = await _context.Members
+                .Include(m => m.User)
+                .Where(m => m.User.Email.Contains(memberEmail) && m.OrganizationId != orgId)
+                .ToListAsync();
+            return _mapper.Map<IEnumerable<MemberDto>>(members);
         }
     }
 }

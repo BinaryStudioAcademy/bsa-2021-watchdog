@@ -6,7 +6,7 @@ using System.Reflection;
 using Watchdog.Core.BLL.MappingProfiles;
 using Watchdog.Core.BLL.Services;
 using Watchdog.Core.BLL.Services.Abstract;
-using Watchdog.Core.Common.Validators.Sample;
+using Watchdog.Core.Common.Validators.Organization;
 using Watchdog.Core.DAL.Context;
 
 namespace Watchdog.Core.API.Extensions
@@ -25,19 +25,24 @@ namespace Watchdog.Core.API.Extensions
 
             services.AddTransient<ITeamService, TeamService>();
 
+            
+            services.AddTransient<IDashboardService, DashboardService>();
+            services.AddTransient<IOrganizationService, OrganizationService>();
+            services.AddTransient<IRoleService, RoleService>();
             services.AddEmailSendService(configuration);
         }
 
         public static void AddAutoMapper(this IServiceCollection services)
         {
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(TeamProfile)));
+
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(OrganizationProfile)));
         }
 
         public static void AddValidation(this IServiceCollection services)
         {
             services
                 .AddControllers()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<NewSampleDtoValidator>());
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<NewOrganizationDtoValidator>());
         }
 
         public static void AddWatchdogCoreContext(this IServiceCollection services, IConfiguration configuration)
@@ -58,7 +63,7 @@ namespace Watchdog.Core.API.Extensions
                 SenderEmail = configuration["SendGridConfiguration:SenderEmail"],
                 SenderName = configuration["SendGridConfiguration:SenderName"],
                 TemplateId = configuration["SendGridConfiguration:TemplateId"],  // templates you can create on sendgrid site
-                                                                                  // for this template automatically sended in the promotions.
+                                                                                 // for this template automatically sended in the promotions.
             }));
         }
     }

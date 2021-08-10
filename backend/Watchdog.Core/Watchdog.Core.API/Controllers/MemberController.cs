@@ -63,6 +63,13 @@ namespace Watchdog.Core.API.Controllers
         {
             await _memberService.DeleteMemberAsync(id);
             return NoContent();
-        } 
+        }
+
+        [HttpGet("organization/{orgId}/notInOrg/")]
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetMembersNotInOrganization(int orgId, string memberEmail = "")
+        {
+            var members = await _memberService.SearchMembersNotInOrganizationAsync(orgId, memberEmail);
+            return Ok(members);
+        }
     }
 }

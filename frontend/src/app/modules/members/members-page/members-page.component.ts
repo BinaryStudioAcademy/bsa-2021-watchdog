@@ -5,37 +5,34 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
 import { Member } from '@shared/models/member/member';
 
 @Component({
-selector: 'app-members-page',
-templateUrl: './members-page.component.html',
-styleUrls: ['./members-page.component.sass']
+    selector: 'app-members-page',
+    templateUrl: './members-page.component.html',
+    styleUrls: ['./members-page.component.sass']
 })
 
-
 export class MembersPageComponent extends BaseComponent implements OnInit {
-
     loadingNumber = 0;
-    members : Member [] = [];
-    isInviting : Boolean;
+    members: Member [] = [];
+    isInviting: Boolean;
 
-constructor(
-    private memberService: MemberService,
-    private toastNotifications : ToastNotificationService,
+    constructor(
+        private memberService: MemberService,
+        private toastNotifications: ToastNotificationService,
     ) {
-    super();
-}
+        super();
+    }
 
-ngOnInit(): void {
-    this.isInviting = false;
-    this.loadingNumber += 1;
-    this.memberService.getMembersByOrganizationId(2) //1 - organization id ?? from current user
-        .pipe(this.untilThis)
-        .subscribe(members => {
-            this.members = members;
-            this.loadingNumber -= 1;
-        }, error => {
-            this.toastNotifications.error(error.toString());
-            this.loadingNumber -= 1;
-        });
-}
-
+    ngOnInit(): void {
+        this.isInviting = false;
+        this.loadingNumber += 1;
+        this.memberService.getMembersByOrganizationId(2) //1 - organization id ?? from current user
+            .pipe(this.untilThis)
+            .subscribe(members => {
+                this.members = members;
+                this.loadingNumber -= 1;
+            }, error => {
+                this.toastNotifications.error(error.toString());
+                this.loadingNumber -= 1;
+            });
+    }
 }

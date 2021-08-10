@@ -17,5 +17,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
 
         Task DeleteMemberAsync(int id);
         Task<Response> InviteMember(MemberDto memberDto);
+        Task<IEnumerable<MemberDto>> SearchMembersNotInOrganizationAsync(int orgId, string memberEmail);
     }
 }

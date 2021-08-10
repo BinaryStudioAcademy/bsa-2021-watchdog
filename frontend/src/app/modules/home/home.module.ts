@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
 
 import { HomeComponent } from './home-page/home-page.component';
+import { OrganizationModule } from './organization/organization.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeRoutingModule } from './home-routing.module';
 import { ProjectsComponent } from './projects/projects/projects.component';
@@ -25,6 +26,7 @@ import { TileMenuComponent } from './dashboard/tile-menu/tile-menu.component';
     imports: [
         SharedModule,
         HomeRoutingModule,
+        OrganizationModule
     ],
 })
 export class HomeModule {

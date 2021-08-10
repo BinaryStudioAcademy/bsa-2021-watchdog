@@ -34,8 +34,12 @@ const routes: Routes = [{
         component: DashboardComponent,
     }, {
         path: 'members',
-        loadChildren:()=> import('../members/members.module')
-            .then(m=> m.MembersModule),
+        loadChildren: () => import('../members/members.module')
+            .then(m => m.MembersModule),
+    }, {
+        path: 'organization',
+        loadChildren: () => import('./organization/organization.module')
+            .then(m => m.OrganizationModule),
     }, {
         path: '**',
         component: NotFoundComponent,

@@ -38,6 +38,10 @@ export class HttpInternalService {
         return this.http.post<T>(this.buildUrl(url), payload, { headers: this.getHeaders() });
     }
 
+    public patchFullRequest<T>(url: string, payload: object) {
+        return this.http.patch<T>(this.buildUrl(url), payload, { headers: this.getHeaders(), observe: 'response' });
+    }
+
     public postFullRequest<T>(url: string, payload: object): Observable<HttpResponse<T>> {
         return this.http.post<T>(this.buildUrl(url), payload, { headers: this.getHeaders(), observe: 'response' });
     }

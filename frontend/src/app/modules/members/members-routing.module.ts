@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MembersPageComponent } from './members-page/members-page.component';
 
-
 export const routes: Routes = [
     {
         path: '',
@@ -16,9 +15,8 @@ export const routes: Routes = [
 
 ];
 
-
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class MembersRoutingModule { }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,6 +10,8 @@ namespace Watchdog.Core.API.Middlewares
 {
     public class GenericExceptionHandlerMiddleware
     {
+        public const int SqlServerViolationOfUniqueIndex = 2601;
+
         private readonly RequestDelegate _next;
         private readonly ILogger<GenericExceptionHandlerMiddleware> _logger;
 
@@ -39,7 +42,7 @@ namespace Watchdog.Core.API.Middlewares
             {
                 ArgumentNullException => 400,
                 KeyNotFoundException => 404,
-                DbUpdateException => 422,
+                DbUpdateException ex => (ex.InnerException as SqlException).Number == SqlServerViolationOfUniqueIndex ? 409 : 500,
                 _ => 500
             };
 

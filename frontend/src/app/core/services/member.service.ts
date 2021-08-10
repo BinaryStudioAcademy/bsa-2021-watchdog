@@ -7,13 +7,11 @@ import { HttpInternalService } from './http-internal.service';
     providedIn: 'root'
 })
 export class MemberService {
-
     public readonly routePrefix = '/member';
 
     constructor(private httpService: HttpInternalService) { }
 
-    getMembersByOrganizationId(id: number) : Observable<Member[]>
-    {
+    getMembersByOrganizationId(id: number): Observable<Member[]> {
         return this.httpService.getRequest(`${this.routePrefix}/organization/${id}`);
     }
 }
