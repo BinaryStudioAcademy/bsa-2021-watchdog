@@ -1,15 +1,15 @@
 <div class="layout-wrapper">
 
     <div class="layout-topbar">
-        <div class="logo">
+        <div class="logo" [routerLink]="['']">
             <img src="assets\logo-white.svg" alt="logo">
         </div>
         <div *ngIf="!authorizedUser" class="user-info">
             <button pButton pRipple type="button" label="Sign in" class="p-button-outlined sign-in-button"></button>
         </div>
         <div *ngIf="authorizedUser" class="user-info">
-            <img class="avatar" src="assets\avatar.png" alt="Ava">
-            <div routerLink="/user" class="user-name">{{authorizedUser.firstName}}</div>
+            <img class="avatar" [src]="authorizedUser.avatarUrl" alt="Ava">
+            <div routerLink="/user" class="user-name">{{authorizedUser.firstName}} {{authorizedUser.lastName}}</div>
         </div>
     </div>
 

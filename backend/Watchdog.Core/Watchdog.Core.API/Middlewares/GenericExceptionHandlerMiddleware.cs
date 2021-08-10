@@ -44,7 +44,7 @@ namespace Watchdog.Core.API.Middlewares
                 _ => 500
             };
 
-            return context.Response.WriteAsync($"{{ \"message\": \"{exception.Message}\" }}");
+            return context.Response.WriteAsync(string.Format("{{ \"message\": \"{0}\" }}", exception is DbUpdateException ? exception.InnerException.Message : exception.Message));
         }
     }
 }

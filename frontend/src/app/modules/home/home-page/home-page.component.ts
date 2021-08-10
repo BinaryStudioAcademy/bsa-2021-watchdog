@@ -7,6 +7,8 @@ import { NewDashboard } from '@shared/models/dashboard/new-dashboard';
 import { User } from '@shared/models/user/user';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
+import { AuthenticationService } from '@core/services/authentication.service';
+import { Organization } from '@shared/models/organization/organization';
 
 @Component({
     selector: 'app-home',
@@ -18,24 +20,27 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     dashboardsShown: boolean = false;
     displayModal: boolean = false;
     authorizedUser: User;
-    //fake
-    fakeOrganizationId = 1;
-    //TODO Change fake by real data
+    organization: Organization;
 
     constructor(
         private broadcastHub: BroadcastHubService,
         public dashboardService: DashboardService,
         private updateDataService: ShareDataService<Dashboard>,
         private deleteDataService: ShareDataService<number>,
+        private authService: AuthenticationService,
         private toastNotificationService: ToastNotificationService
     ) {
         super();
     }
 
     async ngOnInit() {
-        this.authorizedUser = { ...this.authorizedUser, firstName: 'Andriy' };
+        this.authorizedUser = this.authService.getUser();
+
+        this.authService.getOrganization()
+            .subscribe(organization => this.organization = organization);
 
         this.getAllDashboards();
+        
 
         await this.broadcastHub.start();
         this.broadcastHub.listenMessages((msg) => {
@@ -56,7 +61,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     }
 
     async getAllDashboards() {
-        this.dashboardService.getAllByOrganization(this.fakeOrganizationId)
+        this.dashboardService.getAllByOrganization(this.organization.id)
             .pipe(this.untilThis)
             .subscribe(dashboard => {
                 this.dashboards = dashboard;

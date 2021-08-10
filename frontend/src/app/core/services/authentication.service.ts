@@ -11,12 +11,15 @@ import { FullRegistrationDto } from '@modules/registration/DTO/fullRegistrationD
 import { PartialRegistrationDto } from '@modules/registration/DTO/partialRegistrationDto';
 import { UserService } from './user.service';
 import { RegistrationService } from './registration.service';
+import { Organization } from '@shared/models/organization/organization';
+import { OrganizationService } from './organization.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthenticationService {
     private user: User;
+    private organization: Organization;
     private readonly tokenHelper: JwtHelperService;
 
     private token: string | null;
@@ -26,6 +29,7 @@ export class AuthenticationService {
         private angularFireAuth: AngularFireAuth,
         private userService: UserService,
         private registrationService: RegistrationService,
+        private organizationService: OrganizationService,
         private router: Router
     ) {
         this.tokenHelper = new JwtHelperService();
@@ -44,6 +48,23 @@ export class AuthenticationService {
             this.user = JSON.parse(localStorage.getItem('user'));
         }
         return this.user;
+    }
+ 
+    getOrganization() {
+        if (!this.organization) {
+            const organization = localStorage.getItem('organization');
+            if (!organization) {
+                return this.organizationService.getOrganizationsByUserId(this.getUser().id)
+                        .pipe(
+                            map(organizations => {
+                                localStorage.setItem('organization', JSON.stringify(organizations[0]));
+                                this.organization = organizations[0];
+                                return this.organization;   
+                            }));
+            }
+            this.organization = JSON.parse(localStorage.getItem('organization'));
+        }
+        return from([this.organization]);
     }
 
     setUser(user: User) {
