@@ -6,6 +6,7 @@ using Watchdog.Core.BLL.ExceptionsCustom;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.User;
 using Watchdog.Core.DAL.Context;
+using Watchdog.Core.DAL.Entities;
 
 namespace Watchdog.Core.BLL.Services
 {
@@ -45,12 +46,6 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
 
             return await GetUserAsync(userId);
-        }
-
-        public async Task<ICollection<UserDto>> GetAllUsersAsync()
-        {
-            var users = await _context.Users.ToListAsync();
-            return _mapper.Map<ICollection<UserDto>>(users);
         }
 
         public async Task<UserDto> GetUserByIdAsync(int id)
