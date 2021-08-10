@@ -16,6 +16,12 @@ export class UserService {
     }
 
     public createUser(user: NewUser) {
+        if (user.firstName === "") {
+            user.firstName = null;
+        }
+        if (user.lastName === "") {
+            user.lastName = null;
+        }
         return this.http.postRequest<User>(`/${this.apiPrefix}`, user);
     }
 
