@@ -18,10 +18,11 @@ namespace Watchdog.Collector.API.Extensions
         public static void AddElasticSearch(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration["ElasticConfiguration:Uri"];
-
+            
             var settings = new ConnectionSettings(new Uri(connectionString))
-                .DefaultIndex("default_index")
-                .DefaultMappingFor<IssueMessage>(m => m .IndexName("issues"));
+                .DefaultIndex(configuration["ElasticConfiguration:DefaultIndex"])
+                .DefaultMappingFor<IssueMessage>(m => 
+                    m.IndexName(configuration["ElasticConfiguration:IssueMessageIndex"]));
             
             services.AddSingleton<IElasticClient>(new ElasticClient(settings));
         }
