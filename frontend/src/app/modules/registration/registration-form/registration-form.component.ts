@@ -40,7 +40,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
         const firstNamePattern = /^[a-zA-Z-]*$/;
         const lastNamePattern = /^[a-zA-Z- ]*$/;
         const organizationNamePattern = new RegExp('^[\\w\\s-!#$%&\'*+—/=?^`{|}~]+$');
-        const emailPattern =/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
         this.formGroup = new FormGroup({
             firstName: new FormControl(
