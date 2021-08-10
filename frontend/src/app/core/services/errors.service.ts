@@ -8,8 +8,8 @@ import { HttpResponseErrorMessage } from '@shared/models/issues/http-response.me
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { environment } from '@env/environment';
-import { ToastNotificationService } from './toast-notification.service';
 import * as stackTraceParser from 'stacktrace-parser';
+import { ToastNotificationService } from './toast-notification.service';
 
 @Injectable({
     providedIn: 'root'
