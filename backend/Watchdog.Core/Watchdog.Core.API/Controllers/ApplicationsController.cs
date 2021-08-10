@@ -49,5 +49,11 @@ namespace Watchdog.Core.API.Controllers
             var updatedAppTeam = await _appService.UpdateFavoriteStateAsync(appTeamId, state);
             return Ok(updatedAppTeam);
         }
+        [HttpDelete("team/{appTeamId}")]
+        public async Task<IActionResult> DeleteApplicationFromTeam(int appTeamId)
+        {
+            await _appService.RemoveAppTeam(appTeamId);
+            return NoContent();
+        }
     }
 }

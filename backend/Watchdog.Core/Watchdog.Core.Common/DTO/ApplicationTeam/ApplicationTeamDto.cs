@@ -6,6 +6,8 @@ namespace Watchdog.Core.Common.DTO.ApplicationTeam
 {
     public class ApplicationTeamDto
     {
+        public int Id { get; set; }
+
         [JsonProperty("projectId")]
         public int ApplicationId { get; set; }
 

@@ -26,10 +26,11 @@ namespace Watchdog.Core.BLL.Services
 
             if (existingAppTeam != null) throw new Exception("This application already exists in this team!");
 
-            var addedAppTeam = await _context.AddAsync(mappedAppTeam);
+            var addedAppTeam = await _context.ApplicationTeams.AddAsync(mappedAppTeam);
             await _context.SaveChangesAsync();
+            await addedAppTeam.Reference(at => at.Application).LoadAsync();
 
-            return _mapper.Map<ApplicationTeamDto>(addedAppTeam);
+            return _mapper.Map<ApplicationTeamDto>(addedAppTeam.Entity);
         }
 
         public async Task<bool> UpdateFavoriteStateAsync(int appTeamId, bool state)
@@ -74,6 +75,15 @@ namespace Watchdog.Core.BLL.Services
                         && a.Name.Contains(teamName))
                 .ToListAsync();
             return _mapper.Map<ICollection<ApplicationDto>>(applications);
+        }
+
+        public async Task RemoveAppTeam(int appTeamId)
+        {
+            var appTeam = await _context.ApplicationTeams.FirstOrDefaultAsync(t => t.Id == appTeamId);
+            if (appTeam == null) throw new Exception("Application in this team not found!");
+
+            _context.ApplicationTeams.Remove(appTeam);
+            await _context.SaveChangesAsync();
         }
     }
 }

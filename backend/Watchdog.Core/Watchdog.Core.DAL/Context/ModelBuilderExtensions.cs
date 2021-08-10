@@ -149,6 +149,7 @@ namespace Watchdog.Core.DAL.Context
         private static IList<Role> GenerateRoles()
         {
             return new Faker<Role>()
+                .UseSeed(1804)
                 .RuleFor(r => r.Id, f => ++f.IndexVariable)
                 .RuleFor(r => r.Name, f => _roles[f.IndexVariable - 1])
                 .RuleFor(r => r.Description, f => f.Lorem.Paragraph())
