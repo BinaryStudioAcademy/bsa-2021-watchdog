@@ -41,11 +41,6 @@ namespace Watchdog.Core.API.Controllers
         [HttpPut("{userId}")]
         public async Task<ActionResult<UserDto>> UpdateAsync(int userId, UpdateUserDto updateUserDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
             var user = await _userService.UpdateUserAsync(userId, updateUserDto);
             return Ok(user);
         }
