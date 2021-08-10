@@ -63,7 +63,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
                 this.updateDataService.currentMessage
                     .pipe(this.untilThis)
                     .subscribe(d => {
-                        const key = this.dashboards.findIndex(el => el.id === dashboard.id);
+                        const key = this.dashboards.findIndex(el => el.id === d.id);
                         this.dashboards[key] = d;
                     });
 
