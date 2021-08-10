@@ -5,9 +5,8 @@
             <label for="float-input-email">Email</label>
         </span>
         <div *ngIf="formGroup.controls.email.touched && formGroup.controls.email.invalid" class="validation">
-            <small *ngIf="formGroup.controls.email.errors.required">Field name can't be empty</small>
+            <small *ngIf="formGroup.controls.email.errors.required">Сan not be empty</small>
             <small *ngIf="formGroup.controls.email.value?.length < 5">Min name length 5</small>
-            <small *ngIf="formGroup.controls.email.value?.length > 30">Max name length 30</small>
             <small *ngIf="formGroup.controls.email.hasError('pattern')">Invalid Email</small>
         </div>
     </div>
@@ -18,7 +17,7 @@
             <label for="float-input-pass">Password</label>
         </span>
         <div *ngIf="formGroup.controls.password.touched && formGroup.controls.password.invalid" class="validation">
-            <small *ngIf="formGroup.controls.password.errors.required">Field name can't be empty</small>
+            <small *ngIf="formGroup.controls.password.errors.required">Сan not be empty</small>
             <small *ngIf="formGroup.controls.password.value?.length < 8">Min name length 8</small>
             <small *ngIf="formGroup.controls.password.value?.length > 30">Max name length 30</small>
             <small *ngIf="formGroup.controls.password.hasError('pattern')">Must contain at least 1 lowercase letter, 1 uppercase letter, 1 number, 1 special character: !#$%&‘*+—/=?^_`&#123;|&#125;~ </small>
