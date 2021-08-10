@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
-import { FakeData } from '@modules/home/projects/fake-data';
+import { Data } from '@modules/home/projects/data';
 import { PlatformService } from '@core/services/platform.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { Platform } from '@shared/models/platforms/platform';
@@ -11,78 +11,62 @@ import { TeamService } from '@core/services/team.service';
 import { TeamOption } from '@shared/models/teams/team-option';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CreateTeamComponent } from '@modules/team/create-team/create-team.component';
+import { AuthenticationService } from '@core/services/authentication.service';
+import { User } from '@shared/models/user/user';
+import { Organization } from '@shared/models/organization/organization';
+import { AlertSettings } from '@shared/models/alert-settings/alert-settings';
 
 @Component({
     selector: 'app-create-project',
     templateUrl: './create-project.component.html',
     styleUrls: ['./create-project.component.sass'],
-    providers: [FakeData, DialogService]
+    providers: [Data, DialogService]
 })
 export class CreateProjectComponent extends BaseComponent implements OnInit {
 
-    ORGANIZATION_ID = 1;
-    USER_ID = 9;
-
-
+    user: User;
+    organization: Organization;
     loadingNumber: number = 0;
-
     newProject = {} as NewProject;
-    
-    platforms = {} as {
-        platformTabItems: MenuItem[],
-        activePlatformTabItem: MenuItem,
-        viewPlatformCards: Platform[],
-        platformCards: Platform[]
+    platforms = {
+        platformTabItems: [] as MenuItem[],
+        activePlatformTabItem: {} as MenuItem,
+        viewPlatformCards: [] as Platform[],
+        platformCards: [] as Platform[]
     };
-
     teams: TeamOption[];
-
-    alerts = {} as {
-        alertCategories: string[],
-        alertTypes: string[],
-        alertTimeIntervals: string[],
+    alertSetting = {} as AlertSettings;
+    formGroup = {} as FormGroup;
+    createTeamDialog: DynamicDialogRef;
     
-        alertsCount: number,
-        selectedAlertCategory?: string,
-        selectedAlertType?: string,
-        selectedAlertTimeInterval?: string,
-        
-        isSpecialAlertCategory: boolean
-    }
-
-   
-    formGroup: FormGroup;
-    SPECIAL_ALERT_CATEGORY: string = 'When there are more than';
-    
-
     constructor(
         private toastNotifications: ToastNotificationService,
         private platformService: PlatformService,
         private teamService: TeamService,
         private dialogService: DialogService,
-        private fakeData: FakeData
+        private authService: AuthenticationService,
+        public alertData: Data
     ) {
         super();
     }
 
     ngOnInit() {
-        this.initPlatforms();
-        this.loadTeams();
-        this.initFakeData();
-
-        this.alerts.selectedAlertType = String(this.alerts.alertTypes[0]);
-        this.alerts.selectedAlertTimeInterval = String(this.alerts.alertTimeIntervals[0]);
-        this.alerts.alertsCount = 10;
-
-        this.addValidation();
-        
+        this.user = this.authService.getUser();
+        this.authService.getOrganization()
+            .subscribe(organization => {
+                this.organization = organization;
+                this.loadTeams();     
+            });
+        this.initPlatforms(); 
+        this.initAlertData();
+        this.addValidation();  
     }
 
     private addValidation()
     {
         this.formGroup = new FormGroup({
             alertCategory: new FormControl(
-                this.alerts.alertCategories[0],
+                this.alertData.alertCategories[0].value,
                 [
                     Validators.required
                 ]
@@ -118,21 +102,6 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
         
     }
 
-    private loadTeams() {
-        this.loadingNumber += 1;
-        this.teamService
-            .getTeamOptionsByOrganizationId(this.ORGANIZATION_ID)
-            .pipe(this.untilThis)
-            .subscribe(teamOptions => {
-                this.teams = teamOptions;
-                this.loadingNumber -= 1;
-
-            }, error => {
-                this.toastNotifications.error(`${error}`);
-                this.loadingNumber -= 1;
-            });
-    }
-    
     private loadPlatforms() {
         this.loadingNumber += 1;
         this.platformService
@@ -149,10 +118,28 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
             });
     }
 
-    initFakeData() {
-        this.alerts.alertTypes = this.fakeData.fakeAlertTypes;
-        this.alerts.alertTimeIntervals = this.fakeData.fakeAlertTimeIntervals;
-        this.alerts.alertCategories = this.fakeData.fakeAlertCategories;
+    private loadTeams() {
+        this.loadingNumber += 1;
+        this.teamService
+            .getTeamOptionsByOrganizationId(this.organization.id)
+            .pipe(this.untilThis)
+            .subscribe(teamOptions => {
+                this.teams = teamOptions;
+                this.loadingNumber -= 1;
+
+            }, error => {
+                this.toastNotifications.error(`${error}`);
+                this.loadingNumber -= 1;
+            });
+    }
+    
+    private initAlertData() {
+        this.alertSetting.alertCategory = this.alertData.initAlertCategory;
+        this.alertSetting.specialAlertSetting = {
+            alertsCount: this.alertData.initAlertsCount,
+            specialAlertType: this.alertData.initSpecialAlertType,
+            alertTimeInterval: this.alertData.initAlertTimeInterval
+        }
     }
 
     private onTabChange(label: string = ''): void {
@@ -182,9 +169,6 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
             } 
         }
     }
-
-
-    createTeamDialog: DynamicDialogRef;
     
     openDialog() {
         this.createTeamDialog = this.dialogService.open(CreateTeamComponent, {
@@ -200,8 +184,8 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                 if (name) {
                     this.teamService
                         .createTeam({
-                            createdBy: this.USER_ID,
-                            organizationId: this.ORGANIZATION_ID,
+                            createdBy: this.user.id,
+                            organizationId: this.organization.id,
                             name
                         })
                         .pipe(this.untilThis)
@@ -233,6 +217,6 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
             // console.log(project);
             // this.toastNotifications.success(`${project.name} created!`);
         // }
-        console.log(this.newProject);
+        alert(JSON.stringify(this.alertSetting));
     }
 }
