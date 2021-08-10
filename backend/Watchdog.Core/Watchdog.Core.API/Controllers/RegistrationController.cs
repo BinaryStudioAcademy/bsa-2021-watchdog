@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Registration;
+using Watchdog.Core.Common.DTO.User;
 
 namespace Watchdog.Core.API.Controllers
 {
@@ -18,17 +18,17 @@ namespace Watchdog.Core.API.Controllers
         }
 
         [HttpPost("full")]
-        public async Task<ActionResult<DateTime>> FullRegistrationAsync(FullRegistrationDto registrationDto)
+        public async Task<ActionResult<UserDto>> FullRegistrationAsync(FullRegistrationDto registrationDto)
         {
-            var registeredAt = await _registrationService.FullRegistrationAsync(registrationDto);
-            return Ok(registeredAt);
+            var user = await _registrationService.FullRegistrationAsync(registrationDto);
+            return Ok(user);
         }
 
         [HttpPost("partial")]
-        public async Task<ActionResult<DateTime>> PartialRegistrationAsync(PartialRegistrationDto registrationDto)
+        public async Task<ActionResult<UserDto>> PartialRegistrationAsync(PartialRegistrationDto registrationDto)
         {
-            var registeredAt = await _registrationService.PartialRegistrationAsync(registrationDto);
-            return Ok(registeredAt);
+            var user = await _registrationService.PartialRegistrationAsync(registrationDto);
+            return Ok(user);
         }
     }
 }

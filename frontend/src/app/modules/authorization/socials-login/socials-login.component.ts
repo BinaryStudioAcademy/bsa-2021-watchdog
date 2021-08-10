@@ -14,26 +14,26 @@ export class SocialsLoginComponent {
     ) { }
 
     signInWithGitHub() {
-        this.authService.signInWithGitHub(['home'])
+        this.authService.signInWithGitHub(['signon'])
             .subscribe(() => { },
                 error => {
-                    this.toastService.error(`${error}`, 'Error', 2000);
+                    this.toastService.error(`${error}`, 'Error');
                 });
     }
 
     signInWithGoogle() {
-        this.authService.signInWithGoogle(['home'])
+        this.authService.signInWithGoogle(['signon'])
             .subscribe(() => { },
                 error => {
-                    this.toastService.error(`${error}`, 'Error', 2000);
+                    this.toastService.error(`${error}`, 'Error');
                 });
     }
 
     signInWithFacebook() {
-        this.authService.signInWithFacebook(['home'])
+        this.authService.signInWithFacebook(['signon'])
             .subscribe(() => { },
                 error => {
-                    this.toastService.error(`${error}`, 'Error', 2000);
+                    this.toastService.error(`${error}`, 'Error');
                 });
     }
 }

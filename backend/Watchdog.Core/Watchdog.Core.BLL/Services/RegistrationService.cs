@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Registration;
+using Watchdog.Core.Common.DTO.User;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
 
@@ -15,7 +16,7 @@ namespace Watchdog.Core.BLL.Services
         {
         }
 
-        public async Task<DateTime> FullRegistrationAsync(FullRegistrationDto fullRegistrationDto)
+        public async Task<UserDto> FullRegistrationAsync(FullRegistrationDto fullRegistrationDto)
         {
             var user = _mapper.Map<User>(fullRegistrationDto.User);
             user.RegisteredAt = DateTime.Now;
@@ -38,10 +39,10 @@ namespace Watchdog.Core.BLL.Services
             _context.Members.Add(member);
             await _context.SaveChangesAsync();
 
-            return user.RegisteredAt;
+            return _mapper.Map<UserDto>(user);
         }
 
-        public async Task<DateTime> PartialRegistrationAsync(PartialRegistrationDto partialRegistrationDto)
+        public async Task<UserDto> PartialRegistrationAsync(PartialRegistrationDto partialRegistrationDto)
         {
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == partialRegistrationDto.UserId);
             user.RegisteredAt = DateTime.Now;
@@ -64,7 +65,7 @@ namespace Watchdog.Core.BLL.Services
             _context.Members.Add(member);
             await _context.SaveChangesAsync();
 
-            return user.RegisteredAt;
+            return _mapper.Map<UserDto>(user);
         }
     }
 }

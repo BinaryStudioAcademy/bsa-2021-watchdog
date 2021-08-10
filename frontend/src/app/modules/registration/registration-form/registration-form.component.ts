@@ -5,6 +5,8 @@ import { BaseComponent } from '@core/components/base/base.component';
 import { NewOrganization } from '@shared/models/organization/newOrganization';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { RegOrganizationDto } from '../DTO/regOrganizationDto';
+import { NewUserDto } from '../DTO/newUserDto';
 
 @Component({
     selector: 'app-registration-form',
@@ -108,15 +110,30 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
     }
 
     onSubmit() {
+        const organizationDto = {
+            organizationSlug: this.organization + 'Slag', //TEMP
+            name: this.organization.name,
+            openMembership: true, //TEMP
+            defaultRoleId: 1, //TEMP
+            avatarUrl: null //TEMP
+        } as RegOrganizationDto;
+
         if(!this.isNotFinishedRegistration) {
-            this.authService.signOnWithEmailAndPassword(this.user, this.password, ['home'])
-            .subscribe(() => {
-                this.authService.getUser();
-            }, error => {
-                this.toastService.error(`${error}`, 'Error');
-            });
+            const userDto = {
+                ...this.user,
+            } as NewUserDto;
+
+            this.authService.signOnWithEmailAndPassword({organization: organizationDto, user: userDto}, this.password, ['home'])
+            .subscribe(() => { }, 
+                error => {
+                    this.toastService.error(`${error}`, 'Error');
+                });
         } else {
-            // Create organization + member
+            this.authService.finishPartialRegistration({organization: organizationDto, userId: this.user.id}, ['home'])
+            .subscribe(() => { }, 
+                error => {
+                    this.toastService.error(`${error}`, 'Error');
+                });
         }
     }
 }

@@ -8,6 +8,9 @@ import { from, of } from 'rxjs';
 import { User } from '@shared/models/user/user';
 import { NewUser } from '@shared/models/user/newUser';
 import { UserService } from './user.service';
+import { RegistrationService } from './registration.service';
+import { FullRegistrationDto } from '@modules/registration/DTO/fullRegistrationDto';
+import { PartialRegistrationDto } from '@modules/registration/DTO/partialRegistrationDto';
 
 @Injectable({
     providedIn: 'root'
@@ -22,6 +25,7 @@ export class AuthenticationService {
     constructor(
         private angularFireAuth: AngularFireAuth,
         private userService: UserService,
+        private registrationService: RegistrationService,
         private router: Router
     ) {
         this.tokenHelper = new JwtHelperService();
@@ -83,18 +87,29 @@ export class AuthenticationService {
             );
     }
 
-    signOnWithEmailAndPassword(newUser: NewUser, password: string, route: string[]) {
-        return from(this.angularFireAuth
-            .createUserWithEmailAndPassword(newUser.email, password))
+    finishPartialRegistration(regDto: PartialRegistrationDto, route: string[]) {
+        return this.registrationService.performPartialRegistration(regDto)
             .pipe(
-                map(userCredential => ({
-                    ...newUser,
-                    uid: userCredential.user.uid,
-                })),
-                switchMap(user => this.userService.createUser(user)),
+                tap(user => {
+                    localStorage.setItem('isSignByEmailAndPassword', 'false');
+                    this.setUser(user);
+                    }),
+                switchMap(() => this.login(route)));
+    }
+
+
+    signOnWithEmailAndPassword(regDto: FullRegistrationDto, password: string, route: string[]) {
+        return from(this.angularFireAuth
+            .createUserWithEmailAndPassword(regDto.user.email, password))
+            .pipe(
+                map(userCredential => {
+                    regDto.user.uid = userCredential.user.uid;
+                    return regDto;
+                }),
+                switchMap(dto => this.registrationService.performFullRegistration(dto)),
                 tap(user => {
                     localStorage.setItem('isSignByEmailAndPassword', 'true');
-                    return this.setUser(user);
+                    this.setUser(user);
                 }),
                 switchMap(() => this.login(route))
             );
@@ -174,7 +189,7 @@ export class AuthenticationService {
             avatarUrl: credential.user.photoURL,
         } as NewUser;
 
-        const { name } = credential.additionalUserInfo.profile;
+        const name: string = credential.additionalUserInfo.profile['name'];
         if (name != null) {
             [user.firstName, user.lastName = ''] = name.split(' ');
         }
@@ -186,8 +201,8 @@ export class AuthenticationService {
         const user = {
             uid: credential.user.uid,
             email: credential.user.email,
-            firstName: credential.additionalUserInfo.profile.given_name,
-            lastName: credential.additionalUserInfo.profile.family_name,
+            firstName: credential.additionalUserInfo.profile['given_name'],
+            lastName: credential.additionalUserInfo.profile['family_name'],
             avatarUrl: credential.user.photoURL
         } as NewUser;
 
