@@ -19,27 +19,22 @@ export class UserService {
     ) { }
 
     public getUserById(id: number): Observable<User> {
-        return this.httpService.getFullRequest<User>(`${this.apiPrefix}/${id}`)
-            .pipe(map(response => response.body));
+        return this.httpService.getRequest<User>(`${this.apiPrefix}/${id}`);
     }
 
     public updateUsersById(id: number, user: User): Observable<User> {
-        return this.httpService.putFullRequest<User>(`${this.apiPrefix}/${user.id}`, user)
-            .pipe(map(response => {
-                this.dataService.changeMessage(response.body);
-                return response.body;
-            }));
+        return this.httpService.putRequest<User>(`${this.apiPrefix}/${user.id}`, user);
     }
 
     public getUser(uid: string) {
-        return this.httpService.getRequest<User>(`/${this.apiPrefixRegister}/${uid}`);
+        return this.httpService.getRequest<User>(`/${this.apiPrefix}/${uid}`);
     }
 
     public createUser(user: NewUser) {
-        return this.httpService.postRequest<User>(`/${this.apiPrefixRegister}`, user);
+        return this.httpService.postRequest<User>(`/${this.apiPrefix}`, user);
     }
 
     public updateUser(user: NewUser) {
-        return this.httpService.putRequest<User>(`/${this.apiPrefixRegister}`, user);
+        return this.httpService.putRequest<User>(`/${this.apiPrefix}`, user);
     }
 }
