@@ -1,4 +1,4 @@
-import { StackTrace } from '@shared/models/issues/stack.trace';
+import { StackTrace } from '@shared/models/issues/stack-trace';
 import { HttpResponseErrorMessage } from '@shared/models/issues/http-response.message';
 import { IssueEnvironment } from '@shared/models/issues/issue-environment';
 
