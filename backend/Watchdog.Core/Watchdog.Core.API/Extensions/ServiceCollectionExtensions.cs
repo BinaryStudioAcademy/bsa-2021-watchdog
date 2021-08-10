@@ -20,10 +20,13 @@ namespace Watchdog.Core.API.Extensions
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddTransient<ISampleService, SampleService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IMemberService, MemberService>();
             services.AddTransient<IDashboardService, DashboardService>();
             services.AddTransient<IOrganizationService, OrganizationService>();
             services.AddTransient<IRoleService, RoleService>();
             services.AddScoped<ITeamService, TeamService>();
+            services.AddScoped<IRegistrationService, RegistrationService>();
         }
 
         public static void AddAutoMapper(this IServiceCollection services)

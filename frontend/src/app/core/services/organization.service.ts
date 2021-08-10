@@ -22,6 +22,11 @@ export class OrganizationService {
             .pipe(map(response => response.body));
     }
 
+    createOrganization(organization: Organization) {
+        return this.httpService.postFullRequest<Organization>(this.apiPrefix, organization)
+            .pipe(map(response => response.body));
+    }
+
     updateOrganization(organization: Organization): Observable<Organization> {
         return this.httpService.putFullRequest<Organization>(`${this.apiPrefix}/${organization.id}`, organization)
             .pipe(map(response => {

@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { Organization } from '@shared/models/organization/organization';
 import { BaseComponent } from '@core/components/base/base.component';
 import { MenuItem } from 'primeng/api';
-import { User } from '@core/models/user';
+import { User } from '@shared/models/user/user';
 
 @Component({
     selector: 'app-organization-menu',
