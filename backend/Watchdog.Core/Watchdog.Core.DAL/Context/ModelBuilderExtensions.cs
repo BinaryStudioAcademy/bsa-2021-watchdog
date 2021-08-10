@@ -195,10 +195,10 @@ namespace Watchdog.Core.DAL.Context
             return new Faker<User>()
                 .UseSeed(1996)
                 .RuleFor(u => u.Id, f => ++f.IndexVariable)
+                .RuleFor(u => u.Uid, f => f.Random.Hash(28))
                 .RuleFor(u => u.FirstName, f => f.Name.FirstName())
                 .RuleFor(u => u.LastName, f => f.Name.LastName())
                 .RuleFor(u => u.Email, (f, u) => f.Internet.Email(u.FirstName, u.LastName).ToLower())
-                .RuleFor(u => u.PasswordHash, f => f.Random.Hash(32))
                 .RuleFor(u => u.RegisteredAt, f => f.Date.Past(2, new DateTime(2021, 7, 20)))
                 .RuleFor(u => u.AvatarUrl, f => f.Internet.Avatar())
                 .Generate(count);
