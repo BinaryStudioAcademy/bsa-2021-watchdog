@@ -12,7 +12,7 @@ import { Member } from '@shared/models/member/member';
 
 export class MembersPageComponent extends BaseComponent implements OnInit {
     loadingNumber = 0;
-    members: Member [] = [];
+    members: Member[] = [];
     isInviting: Boolean;
 
     constructor(
@@ -25,7 +25,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
     ngOnInit(): void {
         this.isInviting = false;
         this.loadingNumber += 1;
-        this.memberService.getMembersByOrganizationId(2) //1 - organization id ?? from current user
+        this.memberService.getMembersByOrganizationId(2) //2 - organization id ?? from current user
             .pipe(this.untilThis)
             .subscribe(members => {
                 this.members = members;
