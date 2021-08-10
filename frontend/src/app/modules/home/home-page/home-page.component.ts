@@ -4,7 +4,7 @@ import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { DashboardService } from '@core/services/dashboard.service';
 import { ShareDataService } from '@core/services/share-data.service';
 import { NewDashboard } from '@shared/models/dashboard/new-dashboard';
-import { User } from '@core/models/user';
+import { User } from '@shared/models/user/user';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 

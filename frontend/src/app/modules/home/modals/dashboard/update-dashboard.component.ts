@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Dashboard } from '@shared/models/dashboard/dashboard';
-import { DashboardService } from '@core/services/dashboard.service';
 import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
+import { SelectItem } from 'primeng/api/selectitem';
 
 @Component({
     selector: 'app-update-dashboard',
@@ -10,14 +10,18 @@ import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
     styleUrls: ['./dashboard-template.sass']
 })
 export class UpdateDashboardComponent implements OnInit {
+    title: string = 'Edit dashboard';
     public formGroup: FormGroup = {} as FormGroup;
-    icons: string[];
+    icons: SelectItem[];
     @Input() dashboard: Dashboard;
     @Output() closeModal = new EventEmitter<void>();
     @Output() save = new EventEmitter<UpdateDashboard>();
 
-    constructor(private dashboardService: DashboardService) {
-        this.icons = dashboardService.getIcons();
+    constructor() {
+        this.icons = [
+            { label: 'pi pi-chart-bar', value: 'pi-chart-bar' },
+            { label: 'pi pi-chart-line', value: 'pi-chart-line' }
+        ];
     }
 
     ngOnInit() {
