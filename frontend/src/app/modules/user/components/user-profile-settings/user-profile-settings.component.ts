@@ -29,6 +29,9 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
     }
 
     ngOnInit(): void {
+        if (this.authService.getUser().registeredAt) {
+
+        }
         this.loadUser();
     }
 
@@ -37,7 +40,7 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
     }
 
     loadUser() {
-        this.userService.getUserById(this.userId).subscribe((data: User) => {
+        this.userService.getUserById(this.user.id).subscribe((data: User) => {
             this.user = data;
         });
     }
@@ -49,7 +52,7 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
             email: editForm.value.email,
             avatarUrl: editForm.value.avatarUrl };
 
-        this.userService.updateUsersById(this.userId, this.user)
+        this.userService.updateUsersById(this.user.id, this.user)
             .pipe(this.untilThis)
             .subscribe(resp => {
                 this.toastNotificationService.success('Profile has been updated');

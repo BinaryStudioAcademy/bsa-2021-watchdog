@@ -4,12 +4,12 @@
         <div class="logo">
             <img src="assets\logo-white.svg" alt="logo">
         </div>
-        <div *ngIf="!authorizedUser" class="user-info">
+        <div *ngIf="!user" class="user-info">
             <button pButton pRipple type="button" label="Sign in" class="p-button-outlined sign-in-button"></button>
         </div>
-        <div *ngIf="authorizedUser" class="user-info">
+        <div *ngIf="user" class="user-info">
             <img class="avatar" src="assets\avatar.png" alt="Ava">
-            <div routerLink="/user" class="user-name">{{authorizedUser.firstName}}</div>
+            <div routerLink="/user" class="user-name">{{user.firstName}}</div>
         </div>
     </div>
 
