@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { DashboardService } from '@core/services/dashboard.service';
 import { NewDashboard } from '@shared/models/dashboard/new-dashboard';
+import { SelectItem } from 'primeng/api/selectitem';
 
 @Component({
     selector: 'app-add-dashboard',
@@ -9,16 +9,20 @@ import { NewDashboard } from '@shared/models/dashboard/new-dashboard';
     styleUrls: ['./dashboard-template.sass']
 })
 export class AddDashboardComponent implements OnInit {
+    title: string = 'Add dashboard';
     public formGroup: FormGroup = {} as FormGroup;
-    icons: string[];
+    icons: SelectItem[];
     @Output() closeModal = new EventEmitter<void>();
     @Output() save = new EventEmitter<NewDashboard>();
     //fake data
     fakeOrganizationId = 1;
     fakeUserId = 1;
     //TODO Change fake by real data
-    constructor(private dashboardService: DashboardService) {
-        this.icons = dashboardService.getIcons();
+    constructor() {
+        this.icons = [
+            { label: 'pi pi-chart-bar', value: 'pi-chart-bar' },
+            { label: 'pi pi-chart-line', value: 'pi-chart-line' }
+        ];
     }
 
     ngOnInit() {
