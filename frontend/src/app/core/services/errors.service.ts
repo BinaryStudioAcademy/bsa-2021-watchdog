@@ -1,7 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IssueMessage } from '@shared/models/issues/issue-message';
-import * as stackTraceParser from 'stacktrace-parser';
 import { HttpInternalService } from '@core/services/http-internal.service';
 import { StackTrace } from '@shared/models/issues/stack-trace';
 import { IssueEnvironment } from '@shared/models/issues/issue-environment';
@@ -10,6 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { environment } from '@env/environment';
 import { ToastNotificationService } from './toast-notification.service';
+import * as stackTraceParser from 'stacktrace-parser';
 
 @Injectable({
     providedIn: 'root'
