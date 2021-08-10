@@ -7,11 +7,25 @@ namespace Watchdog.Core.Common.Validators.User
     {
         public UserDtoValidator()
         {
-            RuleFor(u => u.Uid).NotEmpty();
-            RuleFor(u => u.FirstName).NotNull();
-            RuleFor(u => u.LastName).NotNull();
-            RuleFor(u => u.Email).NotEmpty();
-            RuleFor(u => u.AvatarUrl).NotNull();
+            RuleFor(x => x.Uid)
+                .NotEmpty();
+
+            RuleFor(x => x.FirstName)
+                .MinimumLength(2)
+                .MaximumLength(20)
+                .Matches("^[a-zA-Z-]*$");
+
+            RuleFor(x => x.LastName)
+                .MinimumLength(2)
+                .MaximumLength(20)
+                .Matches("[a-zA-Z- ]*$");
+
+
+            RuleFor(x => x.Email)
+                .NotEmpty()
+                .MinimumLength(5)
+                .Matches(@"^(([^<>()[\]\\.,;:\s@""]+(\.[^<>()[\]\\.,;:\s@""]+)*)|("".+""))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$");
+
         }
     }
 }

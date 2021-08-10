@@ -6,10 +6,10 @@
                 <label for="float-input-first-name">First Name</label>
             </span>
             <div *ngIf="formGroup.controls.firstName.touched && formGroup.controls.firstName.invalid" class="validation">
-                <small *ngIf="formGroup.controls.firstName.errors.required">Field name can't be empty</small>
-                <small *ngIf="formGroup.controls.firstName.value?.length < 2">Min name length 2</small>
-                <small *ngIf="formGroup.controls.firstName.value?.length > 20">Max name length 20</small>
-                <small *ngIf="formGroup.controls.firstName.hasError('pattern')">May contain letters and dashes</small>
+                <small *ngIf="formGroup.controls.firstName.errors.required">Сan not be empty</small>
+                <small *ngIf="formGroup.controls.firstName.value?.length < 2">Min length 2</small>
+                <small *ngIf="formGroup.controls.firstName.value?.length > 20">Max length 20</small>
+                <small *ngIf="formGroup.controls.firstName.hasError('pattern')">May letters and dashes</small>
             </div>
         </div>
         <div class="input-block">
@@ -18,9 +18,9 @@
                 <label for="float-input-last-name">Last Name</label>
             </span>
             <div *ngIf="formGroup.controls.lastName.touched && formGroup.controls.lastName.invalid" class="validation">
-                <small *ngIf="formGroup.controls.lastName.errors.required">Field name can't be empty</small>
-                <small *ngIf="formGroup.controls.lastName.value?.length < 2">Min name length 2</small>
-                <small *ngIf="formGroup.controls.lastName.value?.length > 20">Max name length 20</small>
+                <small *ngIf="formGroup.controls.lastName.errors.required">Сan not be empty</small>
+                <small *ngIf="formGroup.controls.lastName.value?.length < 2">Min length 2</small>
+                <small *ngIf="formGroup.controls.lastName.value?.length > 20">Max length 20</small>
                 <small *ngIf="formGroup.controls.lastName.hasError('pattern')">May contain letters, dashes and space</small>
             </div>
         </div>
@@ -32,9 +32,9 @@
                 <label for="float-input-comp-name">Organization name</label>
             </span>
             <div *ngIf="formGroup.controls.organizationName.touched && formGroup.controls.organizationName.invalid" class="validation">
-                <small *ngIf="formGroup.controls.organizationName.errors.required">Field name can't be empty</small>
-                <small *ngIf="formGroup.controls.organizationName.value?.length < 3">Min name length 3</small>
-                <small *ngIf="formGroup.controls.organizationName.value?.length > 50">Max name length 50</small>
+                <small *ngIf="formGroup.controls.organizationName.errors.required">Сan not be empty</small>
+                <small *ngIf="formGroup.controls.organizationName.value?.length < 3">Min length 3</small>
+                <small *ngIf="formGroup.controls.organizationName.value?.length > 50">Max length 50</small>
                 <small *ngIf="formGroup.controls.organizationName.hasError('pattern')">May contain letters, numbers, space, special character: !#$%&‘*+—/=?^_`&#123;|&#125;~</small>
             </div>
         </div>
@@ -44,9 +44,8 @@
                 <label for="float-input-email">Email</label>
             </span>
             <div *ngIf="formGroup.controls.email.touched && formGroup.controls.email.invalid" class="validation">
-                <small *ngIf="formGroup.controls.email.errors.required">Field name can't be empty</small>
-                <small *ngIf="formGroup.controls.email.value?.length < 5">Min name length 5</small>
-                <small *ngIf="formGroup.controls.email.value?.length > 30">Max name length 30</small>
+                <small *ngIf="formGroup.controls.email.errors.required">Сan not be empty</small>
+                <small *ngIf="formGroup.controls.email.value?.length < 5">Min length 5</small>
                 <small *ngIf="formGroup.controls.email.hasError('pattern')">Invalid Email</small>
             </div>
         </div>
@@ -59,9 +58,9 @@
                 <label for="float-input-role">Password</label>
             </span>
             <div *ngIf="formGroup.controls.password.touched && formGroup.controls.password.invalid" class="validation">
-                <small *ngIf="formGroup.controls.password.errors.required">Field name can't be empty</small>
-                <small *ngIf="formGroup.controls.password.value?.length < 8">Min name length 8</small>
-                <small *ngIf="formGroup.controls.password.value?.length > 30">Max name length 30</small>
+                <small *ngIf="formGroup.controls.password.errors.required">Сan not be empty</small>
+                <small *ngIf="formGroup.controls.password.value?.length < 8">Min length 8</small>
+                <small *ngIf="formGroup.controls.password.value?.length > 30">Max length 30</small>
                 <small *ngIf="formGroup.controls.password.hasError('pattern')">Must contain at least 1 lowercase letter, 1 uppercase letter, 1 number, 1 special character: !#$%&‘*+—/=?^_`&#123;|&#125;~ </small>
             </div>
         </div>
@@ -72,9 +71,9 @@
                 <label for="float-input-role">Confirm password</label>
             </span>
             <div *ngIf="formGroup.controls.confirmPassword.touched && formGroup.controls.confirmPassword.invalid" class="validation">
-                <small *ngIf="formGroup.controls.confirmPassword.errors.required">Field name can't be empty</small>
-                <small *ngIf="formGroup.controls.confirmPassword.value?.length < 8">Min name length 8</small>
-                <small *ngIf="formGroup.controls.confirmPassword.value?.length > 30">Max name length 30</small>
+                <small *ngIf="formGroup.controls.confirmPassword.errors.required">Сan not be empty</small>
+                <small *ngIf="formGroup.controls.confirmPassword.value?.length < 8">Min length 8</small>
+                <small *ngIf="formGroup.controls.confirmPassword.value?.length > 30">Max length 30</small>
                 <small *ngIf="formGroup.controls.confirmPassword.hasError('pattern')">Must contain at least 1 lowercase letter, 1 uppercase letter, 1 number, 1 special character: !#$%&‘*+—/=?^_`&#123;|&#125;~ </small>
                 <small *ngIf="formGroup.controls.confirmPassword.errors.notEqual">Passwords must match</small>
             </div>
