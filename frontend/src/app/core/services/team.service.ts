@@ -1,3 +1,4 @@
+import { UpdateTeam } from "./../../shared/models/team/update-team";
 import { Injectable } from '@angular/core';
 import { HttpInternalService } from '@core/services/http-internal.service';
 import { Observable } from "rxjs";
@@ -41,6 +42,18 @@ export class TeamService {
         return this.httpService.deleteFullRequest(`${this.routePrefix}/leaveTeam/${teamId}/member/${memberId}`);
     }
 
+    public isNameUnique(teamName: string): Observable<boolean> {
+        return this.httpService.getRequest(`${this.routePrefix}/teamName/${teamName}`);
+    }
+
+    public updateTeam(id: number, team: UpdateTeam): Observable<Team> {
+        return this.httpService.putRequest<Team>(`${this.routePrefix}/${id}`, team);
+    }
+
+    public removeTeam(id: number) {
+        return this.httpService.deleteRequest(`${this.routePrefix}/${id}`);
+    }
+
     public getLabel(teamName: string): string {
         const words = teamName.split(' ');
 
@@ -51,9 +64,5 @@ export class TeamService {
         }
 
         return label.toUpperCase();
-    }
-
-    public isNameUnique(teamName: string): Observable<boolean> {
-        return this.httpService.getRequest(`${this.routePrefix}/teamName/${teamName}`);
     }
 }

@@ -6,10 +6,10 @@
     <app-loading-spinner *ngIf="isLoading" [overlay]="true" size="10px"></app-loading-spinner>
     <div class="panel-list">
         <div class="panel-list-item" *ngFor="let projectTeam of projectTeams">
-            <div>
-                <div>{{projectTeam.project?.name}}</div>
-            </div>
-            <button icon="pi pi-minus-circle" class="panel-button panel-button-danger" pButton label="Remove"
+            <div (click)="toggleStar(projectTeam.id)" *ngIf="projectTeam.isFavorite"><i class="pi pi-star"></i></div>
+            <div (click)="toggleStar(projectTeam.id)" *ngIf="!projectTeam.isFavorite"><i class="pi pi-star-o"></i></div>
+            <div>{{projectTeam.project?.name}}</div>
+            <button icon="pi pi-minus-circle" class="p-button-outlined p-button-danger" pButton label="Remove"
                 (click)="removeFromTeam(projectTeam.id)"></button>
         </div>
         <div class="panel-list-item" *ngIf="projectTeams?.length===0">No projects yet...</div>

@@ -1,3 +1,4 @@
+import { AuthenticationService } from "./../../../core/services/authentication.service";
 import { Component, OnDestroy } from '@angular/core';
 import { Team } from '@shared/models/team/team';
 import { TeamService } from '@core/services/team.service';
@@ -25,9 +26,14 @@ export class TeamsComponent extends BaseComponent implements OnDestroy {
     currentUserId: number = 9;
     currentOrganizationId: number = 1;
 
-    constructor(private teamService: TeamService, public dialogService: DialogService, private toastService: ToastNotificationService) {
+    constructor(private teamService: TeamService, public authService: AuthenticationService, public dialogService: DialogService, private toastService: ToastNotificationService) {
         super();
     }
+
+    ngOnInit() {
+        this.currentUserId = this.authService.getUser().id;
+    }
+
 
     openDialog() {
         this.createTeamDialog = this.dialogService.open(CreateTeamComponent, {

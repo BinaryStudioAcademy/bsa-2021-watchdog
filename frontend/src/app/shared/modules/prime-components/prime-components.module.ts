@@ -33,6 +33,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { StyleClassModule } from 'primeng/styleclass';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { RatingModule } from 'primeng/rating';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -70,6 +71,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
         StyleClassModule,
         TieredMenuModule,
         OverlayPanelModule,
+        RatingModule,
     ],
     exports: [
         ButtonModule,
@@ -104,6 +106,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
         StyleClassModule,
         TieredMenuModule,
         OverlayPanelModule,
+        RatingModule,
     ],
     declarations: [],
     providers: [

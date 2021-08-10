@@ -10,7 +10,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<ICollection<MemberDto>> GetMembersByOrganizationIdAsync(int id);
         Task<ICollection<MemberDto>> SearchMembersNotInTeamAsync(int teamId, string memberEmail);
         Task<ICollection<MemberDto>> GetAllMembersAsync();
-        Task<MemberDto> GetMemberByIdAsync(int id);
         Task<MemberDto> CreateMemberAsync(MemberDto memberDto);
     }
 }

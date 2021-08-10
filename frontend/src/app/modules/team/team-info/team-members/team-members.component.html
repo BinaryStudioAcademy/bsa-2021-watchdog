@@ -14,7 +14,7 @@
                     "+member?.user.lastName}}</div>
                 <div>{{member?.user.email}}</div>
             </div>
-            <button pButton pRipple type="button" label="Remove" class="panel-button panel-button-danger"
+            <button pButton pRipple type="button" label="Remove" class="p-button-outlined p-button-danger"
                 icon="pi pi-minus-circle" (click)="removeMember(member.id)"></button>
         </div>
         <div class="panel-list-item" *ngIf="team.members.length===0">No members yet...</div>

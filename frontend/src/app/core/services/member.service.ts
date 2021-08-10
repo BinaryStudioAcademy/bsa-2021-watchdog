@@ -8,7 +8,7 @@ import { HttpInternalService } from './http-internal.service';
     providedIn: 'root'
 })
 export class MemberService {
-    readonly routePrefix = '/member';
+    readonly routePrefix = '/members';
 
     constructor(private httpService: HttpInternalService) { }
 

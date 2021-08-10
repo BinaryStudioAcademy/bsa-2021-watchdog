@@ -1,9 +1,9 @@
+import { Subject } from "rxjs";
 import { ToastNotificationService } from "@core/services/toast-notification.service";
-import { SpinnerService } from "@core/services/spinner.service";
 import { BaseComponent } from "@core/components/base/base.component";
 import { TeamService } from "@core/services/team.service";
-import { ActivatedRoute } from "@angular/router";
-import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from "@angular/router";
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Team } from "@shared/models/team/team";
 
 @Component({
@@ -13,16 +13,23 @@ import { Team } from "@shared/models/team/team";
 })
 export class TeamInfoComponent extends BaseComponent implements OnInit {
     team: Team;
+    isSettings: boolean = false;
     isLoading: boolean = false;
+
+    reset: Subject<void> = new Subject<void>();
+    save: Subject<void> = new Subject<void>();
+
+    @ViewChild("saveBut") saveButton: ElementRef<HTMLButtonElement>;
     constructor(
-        private router: ActivatedRoute,
+        private activatedRoute: ActivatedRoute,
         public teamService: TeamService,
+        private router: Router,
         private toastService: ToastNotificationService
     ) { super(); }
 
     ngOnInit() {
         this.isLoading = true;
-        this.router.paramMap
+        this.activatedRoute.paramMap
             .pipe(this.untilThis)
             .subscribe(param => {
                 this.teamService.getTeam(param.get('id'))
@@ -35,5 +42,20 @@ export class TeamInfoComponent extends BaseComponent implements OnInit {
                         this.isLoading = false;
                     });
             });
+    }
+
+    resetButtonsState(event: any) {
+        if (event.index === 2) {
+            this.isSettings = true;
+        }
+        else this.isSettings = false;
+    }
+
+    pickCanSaveState(state: boolean) {
+        this.saveButton.nativeElement.disabled = !state;
+    }
+
+    removed() {
+        this.router.navigate(['home/teams']);
     }
 }

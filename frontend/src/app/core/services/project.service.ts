@@ -1,4 +1,4 @@
-import { ProjectTeam } from "./../../shared/models/projects/project-team";
+import { ProjectTeam } from "@shared/models/projects/project-team";
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Project } from '@shared/models/projects/project';
@@ -39,5 +39,9 @@ export class ProjectService {
     searchProjectsNotInTeam(teamId: number, projectName: string) {
         const url = `team/${teamId}/exceptTeam/${projectName !== '' ? '?appName=' + projectName : ''}`;
         return this.httpService.getRequest<Project[]>(`${this.apiPrefix}/${url}`);
+    }
+
+    setProjectForTeamAsFavorite(projectTeamId: number, state: boolean): Observable<boolean> {
+        return this.httpService.putRequest<boolean>(`${this.apiPrefix}/team/${projectTeamId}/favorite/${state}`, { });
     }
 }

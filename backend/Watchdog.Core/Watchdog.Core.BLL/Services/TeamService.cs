@@ -103,7 +103,7 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task DeleteTeamAsync(int teamId)
         {
-            var team = await _context.Teams.FirstOrDefaultAsync(t => t.Id == teamId);
+            var team = await _context.Teams.Include(t => t.ApplicationTeams).Include(t => t.TeamMembers).FirstOrDefaultAsync(t => t.Id == teamId);
             _context.Remove(team);
 
             await _context.SaveChangesAsync();
@@ -115,6 +115,11 @@ namespace Watchdog.Core.BLL.Services
                 .Include(team => team.TeamMembers)
                     .ThenInclude(teamMember => teamMember.Member)
                     .ThenInclude(teamMember => teamMember.User);
+        }
+
+        public async Task<bool> IsTeamNameUniqueAsync(string teamName)
+        {
+            return !await _context.Teams.AnyAsync(t => t.Name == teamName);
         }
     }
 }

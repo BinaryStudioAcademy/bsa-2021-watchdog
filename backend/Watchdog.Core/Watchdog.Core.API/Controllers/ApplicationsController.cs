@@ -43,11 +43,11 @@ namespace Watchdog.Core.API.Controllers
             return Ok(createdAppTeam);
         }
 
-        [HttpPut("team/{appTeamId}/favorite")]
+        [HttpPut("team/{appTeamId}/favorite/{state}")]
         public async Task<ActionResult<bool>> SetFavoriteAppForTeam(bool state, int appTeamId)
         {
-            var updatedAppTeam = await _appService.UpdateFavoriteStateAsync(appTeamId, state);
-            return Ok(updatedAppTeam);
+            var updatedState = await _appService.UpdateFavoriteStateAsync(appTeamId, state);
+            return Ok(updatedState);
         }
         [HttpDelete("team/{appTeamId}")]
         public async Task<IActionResult> DeleteApplicationFromTeam(int appTeamId)
