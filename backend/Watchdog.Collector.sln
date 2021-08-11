@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.Collector.BLL", "W
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.RabbitMQ.Shared", "Watchdog.RabbitMQ.Shared\Watchdog.RabbitMQ.Shared.csproj", "{9E5884EC-6894-4789-92D5-F5104300A44B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watchdog.Collector.Common", "Watchdog.Collector.Common\Watchdog.Collector.Common.csproj", "{E8EA7369-7C3F-49C1-A001-159ECAB7939E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.Collector.Common", "Watchdog.Collector\Watchdog.Collector.Common\Watchdog.Collector.Common.csproj", "{A3B916A0-A13A-40C5-9BE0-CEB2206171DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{9E5884EC-6894-4789-92D5-F5104300A44B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E5884EC-6894-4789-92D5-F5104300A44B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E5884EC-6894-4789-92D5-F5104300A44B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E8EA7369-7C3F-49C1-A001-159ECAB7939E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E8EA7369-7C3F-49C1-A001-159ECAB7939E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E8EA7369-7C3F-49C1-A001-159ECAB7939E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E8EA7369-7C3F-49C1-A001-159ECAB7939E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3B916A0-A13A-40C5-9BE0-CEB2206171DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3B916A0-A13A-40C5-9BE0-CEB2206171DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3B916A0-A13A-40C5-9BE0-CEB2206171DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3B916A0-A13A-40C5-9BE0-CEB2206171DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
