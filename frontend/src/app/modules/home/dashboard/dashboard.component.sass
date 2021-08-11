@@ -24,7 +24,15 @@
         button
             width: 100px
             white-space: nowrap
-
+    h2
+        max-width: 450px
+        overflow-x: auto
+        overflow-y: hidden
+        &::-webkit-scrollbar-thumb
+            border-radius: 6px
+            background-color: $primary-color-lightest
+        &::-webkit-scrollbar
+            height: 6px
 .tiles-not-found
     display: flex
     flex-direction: row
