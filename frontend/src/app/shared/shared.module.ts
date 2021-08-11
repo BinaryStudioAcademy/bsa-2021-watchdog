@@ -7,6 +7,7 @@ import { UserInitialsPipe } from './pipes/user-initials.pipe';
 
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { TooltipWithFullNameDirective } from './directives/dashboard/tooltip-with-full-name';
 import { PrimeComponentsModule } from './modules/prime-components/prime-components.module';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 
@@ -23,6 +24,7 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
         NotFoundComponent,
         TimeAgoPipe,
         UserInitialsPipe,
+        TooltipWithFullNameDirective,
     ],
     exports: [
         CommonModule,
@@ -35,6 +37,7 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
         TimeAgoPipe,
         UserInitialsPipe,
         NgxChartsModule,
+        TooltipWithFullNameDirective,
     ]
 })
 export class SharedModule { }

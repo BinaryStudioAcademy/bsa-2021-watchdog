@@ -11,7 +11,7 @@ namespace Watchdog.Core.Common.Validators.Dashboard
                 .NotEmpty()
                 .MinimumLength(3)
                 .MaximumLength(50)
-                .Matches(@"^[a-zA-Z0-9_. ]*$");
+                .Matches(@"^[a-zA-Z0-9-_. ]*$");
             RuleFor(d => d.CreatedBy).NotEmpty();
         }
     }

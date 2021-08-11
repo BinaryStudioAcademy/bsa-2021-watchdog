@@ -22,7 +22,16 @@
         button
             width: 100px
             white-space: nowrap
+    h2
+        max-width: 450px
+        overflow-x: auto
+        overflow-y: hidden
+        &::-webkit-scrollbar-thumb
+            border-radius: 6px
+            background-color: $primary-color-lightest
 
+        &::-webkit-scrollbar
+            height: 6px
 
 .dashboard-container
     padding: 20px 20px 0
