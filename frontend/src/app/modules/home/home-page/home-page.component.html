@@ -9,7 +9,7 @@
         </div>
         <div *ngIf="authorizedUser" class="user-info">
             <img class="avatar" src="assets\avatar.png" alt="Ava">
-            <div routerLink="/user" class="user-name">{{authorizedUser.firstName}}</div>
+            <div routerLink="users" [routerLinkActive]="['active']" class="user-name">{{authorizedUser.firstName}}</div>
         </div>
     </div>
 
@@ -29,13 +29,6 @@
                 <button class="button" routerLink="issues" [routerLinkActive]="['active']">
                     <i class="pi pi-exclamation-circle"></i>
                     <span>Issues</span>
-                </button>
-            </div>
-
-            <div>
-                <button class="button" routerLink="users" [routerLinkActive]="['active']">
-                    <i class="pi pi-exclamation-circle"></i>
-                    <span>Users Profile</span>
                 </button>
             </div>
 

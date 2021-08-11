@@ -1,8 +1,15 @@
 @import ../../styles/user.styles
-    
+
+@import src/styles/variables
+@import src/styles/mixins
+
+.title
+    @include title
+    @include background-gray
+
 html
     scroll-behavior: smooth
-    
+
 .profile-header
     box-sizing: border-box
     position: fixed
@@ -30,7 +37,7 @@ html
 .navigation-item
     display: inline-block
     margin-right: 10px
-    
+
 h1, .navigation-item-link
     white-space: nowrap
 
@@ -52,7 +59,7 @@ h1, .navigation-item-link
 
 .pi
     display: inline-block
-    margin-right: 5px 
+    margin-right: 5px
 
 .content-container
     padding: 24px
