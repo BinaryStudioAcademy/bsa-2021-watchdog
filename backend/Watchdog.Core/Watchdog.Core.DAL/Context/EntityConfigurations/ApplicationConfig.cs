@@ -14,9 +14,6 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
                    .HasMaxLength(128)
                    .IsRequired();
 
-            builder.Property(a => a.SecurityToken)
-                   .HasMaxLength(256)
-                   .IsRequired();
 
             builder.Property(a => a.AlertSettings)
                    .HasConversion(

@@ -69,7 +69,6 @@ namespace Watchdog.Core.DAL.Context
                 .RuleFor(a => a.Id, f => ++f.IndexVariable)
                 .RuleFor(a => a.Name, f => f.Company.CompanyName())
                 .RuleFor(a => a.Description, f => f.Company.Bs())
-                .RuleFor(a => a.SecurityToken, f => f.Random.Hash(32))
                 .RuleFor(a => a.OrganizationId, f => f.Random.Number(1, _numberOfOrganizations))
                 .RuleFor(a => a.PlatformId, f => f.Random.Number(1, _numberOfPlatforms))
                 .RuleFor(a => a.CreatedBy, f => f.Random.Number(1, _numberOfUsers))

@@ -24,7 +24,6 @@ namespace Watchdog.Core.BLL.Services
         public async Task<ApplicationDto> CreateApplicationAsync(NewApplicationDto dto)
         {
             var application = _mapper.Map<Application>(dto);
-            application.SecurityToken = "SuperSecureTocken";
             await _context.AddAsync(application);
             await _context.SaveChangesAsync();
             return _mapper.Map<ApplicationDto>(application);
