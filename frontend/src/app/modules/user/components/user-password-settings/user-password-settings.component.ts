@@ -11,6 +11,7 @@ import firebase from 'firebase/app';
 
 export class UserPasswordSettingsComponent {
     public oldPassword: string;
+    public newPasswordRepeat: string;
     public newPassword: string;
 
     constructor(
@@ -19,7 +20,8 @@ export class UserPasswordSettingsComponent {
     ) { }
 
     onSubmit() {
-        const { currentUser } = firebase.auth();
+        if (this.newPassword === this.newPasswordRepeat) {
+            const { currentUser } = firebase.auth();
         const credentials = firebase.auth.EmailAuthProvider
             .credential(currentUser.email, this.oldPassword);
 
@@ -32,5 +34,10 @@ export class UserPasswordSettingsComponent {
                 console.warn(error);
                 this.toastNotificationService.error('Current password is incorrect');
             });
+        }
+        else {
+            this.toastNotificationService.error('Input correct new password');
+        }
+
     }
 }
