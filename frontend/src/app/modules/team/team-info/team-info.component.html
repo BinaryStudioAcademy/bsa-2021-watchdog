@@ -1,13 +1,16 @@
 <div class="title"><button routerLink="../" tooltipPosition="bottom" pTooltip="Back to Teams" pButton pRipple
         icon="pi pi-chevron-left " class="p-button-outlined back-button"></button>#{{team?.name}}
-    <div [hidden]="!isSettings" class="header-buttons">
-        <button #saveBut disabled pButton pRipple class="p-button-outlined" label="Save" (click)="save.next()"></button>
-        <button pButton pRipple class="p-button-outlined p-button-secondary" label="Reset"
-            (click)="reset.next()"></button>
+    <div class="header-buttons" [hidden]="!isSettings">
+        <div class="buttons-container">
+            <button #saveBut disabled pButton pRipple class="p-button-primary" label="Save"
+                (click)="save.next()"></button>
+            <button pButton pRipple class="p-button-secondary" label="Reset" (click)="reset.next()"></button>
+            <button pButton pRipple class="p-button-danger" label="Remove" (click)="removeTeam()"></button>
+        </div>
     </div>
 </div>
 <app-loading-spinner *ngIf="isLoading" [overlay]="true"></app-loading-spinner>
-<p-tabView (onChange)="resetButtonsState($event)" styleClass="tabview-custom">
+<p-tabView (onChange)="resetButtonsState($event)">
     <p-tabPanel>
         <ng-template pTemplate="header">
             <div class="header">
@@ -30,7 +33,7 @@
                 <span>Settings</span>
             </div>
         </ng-template>
-        <app-team-settings *ngIf="team" [team]="team" (wasRemoved)="removed()" (canSave)="pickCanSaveState($event)"
-            [save]="save.asObservable()" [reset]="reset.asObservable()"></app-team-settings>
+        <app-team-settings *ngIf="team" [team]="team" (canSave)="setSaveState($event)" [save]="save.asObservable()"
+            [reset]="reset.asObservable()"></app-team-settings>
     </p-tabPanel>
 </p-tabView>

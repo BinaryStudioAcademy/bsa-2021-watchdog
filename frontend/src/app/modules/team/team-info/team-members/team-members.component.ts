@@ -30,7 +30,7 @@ export class TeamMembersComponent extends BaseComponent implements OnInit {
         this.teamService.leaveTeam(this.team.id, memberId)
             .subscribe(() => {
                 this.team.members = this.team.members.filter(member => member.id != memberId);
-                this.toastService.success("Successfully removed team member");
+                this.toastService.success("Member was removed!");
                 this.isLoading = false;
             }, error => {
                 this.toastService.error(error);
@@ -45,8 +45,10 @@ export class TeamMembersComponent extends BaseComponent implements OnInit {
             .subscribe(() => {
                 this.team.members = this.team.members.concat(member);
                 this.isLoading = false;
+                this.toastService.success("Member was added!");
             }, error => {
                 this.isLoading = false;
+                this.toastService.error(error);
             });
     }
 }

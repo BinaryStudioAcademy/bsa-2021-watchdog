@@ -5,11 +5,15 @@
     @include title
     @include background-gray
     display: flex
+
     .back-button
         margin-right: .2em
         border: none
         border-radius: 100%
+
 .header-buttons
     margin-left: auto
-    button
-        margin-left: .3em
+    & .buttons-container
+        display: flex
+        align-items: center
+        gap: .2em

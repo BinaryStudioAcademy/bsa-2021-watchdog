@@ -1,25 +1,5 @@
 @import src/styles/variables
 
-.panel-button
-    border: 1px solid $border-color
-    background-color: #FFFFFF
-    margin-left: auto
-    color: black
-    &:hover
-        box-shadow: 0 4px 2px -2px $border-color
-        border: 1px solid $border-color
-        color: black
-    &-danger:hover
-        box-shadow: 0 4px 2px -2px $border-color
-        background-color: rgba(255,0,0,.2)
-        border: 1px solid $border-color
-        color: black
-    &-success:hover
-        box-shadow: 0 4px 2px -2px $border-color
-        background-color: rgba(0,255,0,.2)
-        border: 1px solid $border-color
-        color: black
-
 .panel-list
     position: relative
     &-item
@@ -41,18 +21,6 @@
         padding: 0
     .team-panel.p-panel
         position: relative
-    .team-overlaypanel.p-overlaypanel
-        width: 180px
-        input
-            border: none
-            border-bottom: 1px solid $border-color
-            width: 100%
-            border-bottom-left-radius: 0
-            border-bottom-right-radius: 0
-            &:focus
-                box-shadow: none
-        .p-overlaypanel-content
-            padding:0
 
 .panel-custom
     position: relative
@@ -60,3 +28,6 @@
 .p-button-outlined
     margin-left: auto
     font-size: .8rem
+
+.star
+    color: rgb(245, 207, 35)

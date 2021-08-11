@@ -39,6 +39,10 @@ export class TeamProjectsComponent extends BaseComponent implements OnInit {
                 this.projectTeams = this.projectTeams.filter(p => p.id != projectTeamId);
                 this.projectTeams.sort((p1, p2) => p1.isFavorite === p2.isFavorite ? 0 : p1.isFavorite ? -1 : 1);
                 this.isLoading = false;
+                this.toastService.success("Project was removed!");
+            }, error => {
+                this.isLoading = false;
+                this.toastService.error(error);
             });
     }
 
@@ -50,17 +54,23 @@ export class TeamProjectsComponent extends BaseComponent implements OnInit {
                 this.projectTeams = this.projectTeams.concat(projectTeam);
                 this.projectTeams.sort((p1, p2) => p1.isFavorite === p2.isFavorite ? 0 : p1.isFavorite ? -1 : 1);
                 this.isLoading = false;
+                this.toastService.success("Project was added!");
+            }, error => {
+                this.isLoading = false;
+                this.toastService.error(error);
             });
     }
 
-    toggleStar(id: number) {
+    toggleStar(projectTeam: ProjectTeam) {
         this.isLoading = true;
-        const project = this.projectTeams.find(p => p.id === id);
-        this.projectService.setProjectForTeamAsFavorite(project.id, !project.isFavorite)
+        this.projectService.setProjectForTeamAsFavorite(projectTeam.id, !projectTeam.isFavorite)
             .pipe(this.untilThis)
             .subscribe(state => {
-                project.isFavorite = state;
+                projectTeam.isFavorite = state;
                 this.isLoading = false;
+            }, error => {
+                this.isLoading = false;
+                this.toastService.error(error);
             });
     }
 }

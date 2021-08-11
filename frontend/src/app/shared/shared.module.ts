@@ -1,3 +1,4 @@
+import { UserInitialsPipe } from "./pipes/user-initials.pipe";
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -14,12 +15,13 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
         RouterModule,
         FormsModule,
         ReactiveFormsModule,
-        PrimeComponentsModule
+        PrimeComponentsModule,
     ],
     declarations: [
         LoadingSpinnerComponent,
         NotFoundComponent,
         TimeAgoPipe,
+        UserInitialsPipe,
     ],
     exports: [
         CommonModule,
@@ -30,6 +32,7 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
         NotFoundComponent,
         PrimeComponentsModule,
         TimeAgoPipe,
+        UserInitialsPipe,
     ]
 })
 export class SharedModule { }

@@ -1,13 +1,12 @@
+import { ToastNotificationService } from "@core/services/toast-notification.service";
+import { uniqueTeamNameValidator } from "@shared/validators/unique-team-name.validator";
 import { BaseComponent } from "@core/components/base/base.component";
-import { PrimeIcons } from "primeng/api";
-import { ConfirmWindowService } from "@core/services/confirm-window.service";
 import { UpdateTeam } from "@shared/models/team/update-team";
 import { TeamService } from "@core/services/team.service";
-import { Observable, of } from "rxjs";
+import { Observable } from "rxjs";
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import { FormGroup, FormBuilder, Validators, FormControl, AsyncValidatorFn, AbstractControl } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
 import { Team } from '@shared/models/team/team';
-import { catchError, delay, map, switchMap, take } from "rxjs/operators";
 
 @Component({
     selector: 'app-team-settings',
@@ -15,16 +14,19 @@ import { catchError, delay, map, switchMap, take } from "rxjs/operators";
     styleUrls: ['./team-settings.component.sass']
 })
 export class TeamSettingsComponent extends BaseComponent implements OnInit {
-    isLoading: boolean = false;
     @Input() team: Team;
     @Input() reset: Observable<void>;
     @Input() save: Observable<void>;
+    @Output() canSave: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     formGroup: FormGroup = new FormGroup({});
-    constructor(private fb: FormBuilder, private teamService: TeamService, private confirmService: ConfirmWindowService) { super(); }
+    isLoading: boolean = false;
 
-    @Output() canSave: EventEmitter<boolean> = new EventEmitter<boolean>();
-    @Output() wasRemoved: EventEmitter<void> = new EventEmitter<void>();
+    constructor(
+        private fb: FormBuilder,
+        private teamService: TeamService,
+        private toastService: ToastNotificationService
+    ) { super(); }
 
     ngOnInit() {
         this.formGroup = this.fb.group({
@@ -33,44 +35,37 @@ export class TeamSettingsComponent extends BaseComponent implements OnInit {
                 Validators.minLength(3),
                 Validators.maxLength(50),
                 Validators.pattern(new RegExp('^[\\w_-]+$')),
-            ], [this.validateName])
+            ], [
+                uniqueTeamNameValidator(this.team, this.teamService)
+            ])
         });
 
-        this.save.subscribe(() => {
+        this.save.pipe(this.untilThis).subscribe(() => {
             this.isLoading = true;
-            const updatedTeam: UpdateTeam = { ...this.formGroup.value };
-            this.teamService.updateTeam(this.team.id, updatedTeam)
-                .subscribe((t) => {
-                    Object.assign(this.team, t);
+            const teamValues: UpdateTeam = { ...this.formGroup.value };
+            this.teamService.updateTeam(this.team.id, teamValues)
+                .pipe(this.untilThis)
+                .subscribe(updatedTeam => {
+                    Object.assign(this.team, updatedTeam);
                     this.isLoading = false;
                     this.canSave.emit(false);
-                })
+                    this.toastService.success("Team was saved!");
+                }, error => {
+                    this.isLoading = false;
+                    this.canSave.emit(true);
+                    this.toastService.error(error);
+                });
         });
+
         this.reset.subscribe(() => {
             this.formGroup.reset(this.team);
         });
+
         this.formGroup.statusChanges.subscribe(() => {
             this.checkSaveStatus();
         });
     }
 
-    removeTeam() {
-        this.confirmService.confirm({
-            title: "Remove Team #" + this.team.name,
-            message: "Are you sure, you want to delete this team?",
-            icon: PrimeIcons.BAN,
-            acceptButton: { class: "p-button-outlined p-button-danger" },
-            cancelButton: { class: "p-button-outlined p-button-secondary" },
-            accept: () => {
-                this.isLoading = true;
-                this.teamService.removeTeam(this.team.id)
-                    .subscribe(() => {
-                        this.wasRemoved.next();
-                        this.isLoading = false;
-                    });
-            }
-        });
-    }
 
     checkSaveStatus() {
         if (this.formGroup.untouched || this.formGroup.pending || this.formGroup.invalid) {
@@ -82,16 +77,6 @@ export class TeamSettingsComponent extends BaseComponent implements OnInit {
             if (unsavedChangesProps.length > 0) this.canSave.next(true);
             else this.canSave.next(false);
         }
-    }
-
-    validateName: AsyncValidatorFn = (control: AbstractControl) => {
-        if (this.team?.name === this.name?.value) return of(null);
-
-        return of(control.value).pipe(
-            delay(500),
-            switchMap((name) => this.teamService.isNameUnique(name).pipe(
-                map(isUnique => isUnique ? null : of({ notUnique: true })),
-                catchError(error => of({ serverError: true })))), take(1));
     }
 
     get name() {

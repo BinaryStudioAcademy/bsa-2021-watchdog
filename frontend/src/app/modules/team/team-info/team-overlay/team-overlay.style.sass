@@ -5,13 +5,37 @@
     align-items: center
     font-weight: bold
     padding: .3em
-    height: 2em
+    gap: .3em
+    width: 100%
+    font-size: .8rem
     border-bottom: 1px solid $border-color
-    overflow: hidden
-    text-overflow: ellipsis
-    white-space: nowrap
     &:hover
         background-color: $penging-color
+    &.state
+        padding: 1em
+    &.project
+        padding: 1em
+    & .member
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
+        height: 1em
+
 ::ng-deep
-    .p-overlaypanel-content
-        padding:0
+    .overlaypanel .p-overlaypanel-content
+        padding: 0
+        width: 250px
+        & input
+            width: 100%
+            border: none
+            border-bottom: 1px solid $border-color
+            border-bottom-left-radius: 0
+            border-bottom-right-radius: 0
+
+.members-invite
+    background-color: $background-color
+    padding: .5rem
+    display: flex
+    font-size: .75rem
+    font-weight: bold
+    justify-content: space-between

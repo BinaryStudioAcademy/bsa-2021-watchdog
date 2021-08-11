@@ -1,3 +1,4 @@
+<app-loading-spinner *ngIf="isLoading" [overlay]="true"></app-loading-spinner>
 <p-panel header="Settings" class="panel">
     <form [formGroup]="formGroup" class="item">
         <label class="item-definition">
@@ -21,18 +22,3 @@
         </div>
     </form>
 </p-panel>
-<p-panel header="Remove Team" class="panel">
-    <div class="item">
-        <label class="item-definition">
-            <div class="item-sub-text">This may affect team members' access to projects and associated alert delivery.
-            </div>
-        </label>
-        <div class="item-field">
-            <div class="item-form-complex">
-                <button pButton pRipple class="p-button-outlined p-button-danger" label="Remove team"
-                    (click)="removeTeam()"></button>
-            </div>
-        </div>
-    </div>
-</p-panel>
-<app-loading-spinner *ngIf="isLoading" [overlay]="true"></app-loading-spinner>

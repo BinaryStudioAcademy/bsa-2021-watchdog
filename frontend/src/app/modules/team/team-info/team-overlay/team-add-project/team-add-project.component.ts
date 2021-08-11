@@ -1,3 +1,4 @@
+import { ToastNotificationService } from "./../../../../../core/services/toast-notification.service";
 import { BaseComponent } from "@core/components/base/base.component";
 import { ProjectService } from "@core/services/project.service";
 import { OverlayPanel } from "primeng/overlaypanel";
@@ -16,9 +17,14 @@ export class TeamAddProjectComponent extends BaseComponent implements OnInit {
     @Input() team: Team;
     @Output() addedProject: EventEmitter<Project> = new EventEmitter<Project>();
 
+    isLoading: boolean = false;
     projects: Project[];
     searchTerm: Subject<string> = new Subject<string>();
-    constructor(public projectService: ProjectService) { super(); }
+
+    constructor(
+        private projectService: ProjectService,
+        private toastService: ToastNotificationService
+    ) { super(); }
 
     ngOnInit() {
         this.loadData();
@@ -27,16 +33,21 @@ export class TeamAddProjectComponent extends BaseComponent implements OnInit {
     loadData() {
         this.searchTerm.pipe(
             this.untilThis,
-            debounceTime(100),
+            debounceTime(300),
             switchMap((term: string) =>
                 this.projectService.searchProjectsNotInTeam(this.team.id, term)
                     .pipe(this.untilThis)
             )).subscribe(projects => {
                 this.projects = projects;
+                this.isLoading = false;
+            }, error => {
+                this.toastService.error(error);
+                this.isLoading = false;
             });
     }
 
     search(input: string) {
+        this.isLoading = true;
         this.projects = [];
         this.searchTerm.next(input);
     }

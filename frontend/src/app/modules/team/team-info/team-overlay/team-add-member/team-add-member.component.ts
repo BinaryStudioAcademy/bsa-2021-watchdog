@@ -1,3 +1,4 @@
+import { ToastNotificationService } from "./../../../../../core/services/toast-notification.service";
 import { Team } from "@shared/models/team/team";
 import { BaseComponent } from "@core/components/base/base.component";
 import { MemberService } from "@core/services/member.service";
@@ -16,9 +17,14 @@ export class TeamAddMemberComponent extends BaseComponent implements OnInit {
     @Input() team: Team;
     @Output() addedMember: EventEmitter<Member> = new EventEmitter<Member>();
 
+    isLoading: boolean = false;
     members: Member[];
     searchTerm: Subject<string> = new Subject<string>();
-    constructor(public memberService: MemberService) { super(); }
+
+    constructor(
+        private memberService: MemberService,
+        private toastService: ToastNotificationService
+    ) { super(); }
 
     ngOnInit() {
         this.loadData();
@@ -27,16 +33,21 @@ export class TeamAddMemberComponent extends BaseComponent implements OnInit {
     loadData() {
         this.searchTerm.pipe(
             this.untilThis,
-            debounceTime(100),
+            debounceTime(300),
             switchMap((term: string) =>
                 this.memberService.searchMembersNotInTeam(this.team.id, term)
                     .pipe(this.untilThis)
             )).subscribe(members => {
                 this.members = members;
+                this.isLoading = false;
+            }, error => {
+                this.isLoading = false;
+                this.toastService.error(error);
             });
     }
 
     search(input: string) {
+        this.isLoading = true;
         this.members = [];
         this.searchTerm.next(input);
     }

@@ -1,15 +1,15 @@
 <button pButton pRipple label="Add member" icon="pi pi-plus-circle" class="p-button-outlined"
     (click)="toggle($event,op)"></button>
 <p-overlayPanel #op [appendTo]="'body'" styleClass="overlaypanel">
-    <ng-template pTemplate>
+    <ng-template class="overlay-container" pTemplate>
         <input #srch pInputText type="search" placeholder="Filter search" (input)="search(srch.value)">
-        <div *ngIf="members?.length>0" class="overlay-container">
-            <div (click)="addMember(member,op)" role="button" class="overlay-item" *ngFor="let member of members">
-                <p-avatar shape="circle" [label]="this.memberService.getInitials(member)">
-                </p-avatar>
-                <div>{{member?.user.email}}</div>
-            </div>
+        <div class="members-invite">Members <a>Invite Member</a></div>
+        <div (click)="addMember(member,op)" role="button" class="overlay-item" *ngFor="let member of members">
+            <p-avatar shape="circle" [label]="member.user | userInitials">
+            </p-avatar>
+            <div class="member">{{member?.user.email}}</div>
         </div>
-        <div class="overlay-item" *ngIf="!(members?.length>0)">Loading</div>
+        <div class="overlay-item state" *ngIf="!isLoading && members?.length==0">Members not found</div>
+        <div class="overlay-item state" *ngIf="isLoading">Searching...</div>
     </ng-template>
 </p-overlayPanel>
