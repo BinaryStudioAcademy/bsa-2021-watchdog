@@ -16,13 +16,18 @@ import { ToastNotificationService } from './toast-notification.service';
 })
 export class ErrorsService implements OnDestroy {
     private unsubscribe$: Subject<void> = new Subject<void>();
+    private issuesEndpoint: string = `${environment.collectorUrl}/issues`;
 
     constructor(private httpService: HttpInternalService, private toastNotification: ToastNotificationService) { }
 
     log(error: any) {
         const issueMessage = this.addContextInfo(error);
-        console.log(issueMessage);
-        this.httpService.postFullRequest(`${environment.collectorUrl}/issues`, issueMessage)
+
+        if (error instanceof HttpErrorResponse && error.url === this.issuesEndpoint) {
+            return;
+        }
+
+        this.httpService.postFullRequest(this.issuesEndpoint, issueMessage)
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(() => {
                 this.toastNotification.info('Sent error to collector.', null, 1700);
