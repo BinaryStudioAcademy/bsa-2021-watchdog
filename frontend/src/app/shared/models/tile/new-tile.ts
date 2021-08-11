@@ -1,5 +1,5 @@
-import { TileCategory } from '@shared/models/tile/tile-category';
-import { TileType } from '@shared/models/tile/tile-type';
+import { TileCategory } from '@shared/models/tile/enums/tile-category';
+import { TileType } from '@shared/models/tile/enums/tile-type';
 
 export interface NewTile {
     name: string,

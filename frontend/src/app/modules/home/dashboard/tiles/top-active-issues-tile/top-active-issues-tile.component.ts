@@ -1,22 +1,24 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Project } from '@shared/models/projects/project';
 import { Issue } from '@shared/models/issue/issue';
-import { TopActiveIssuesSettings } from '@shared/models/tile/tiles-settings/top-active-issues-settings';
+import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
 import { TileService } from '@core/services/tile.service';
-import { TileType } from '@shared/models/tile/tile-type';
+import { TileType } from '@shared/models/tile/enums/tile-type';
 import { Tile } from '@shared/models/tile/tile';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmWindowService } from '@core/services/confirm-window.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
 import { regexs } from '@shared/constants/regexs';
+import { BaseComponent } from '@core/components/base/base.component';
+import { UpdateTile } from '@shared/models/tile/update-tile';
 
 @Component({
     selector: 'app-top-active-issues-tile[tile][isShownMenu]',
     templateUrl: './top-active-issues-tile.component.html',
     styleUrls: ['./top-active-issues-tile.component.sass']
 })
-export class TopActiveIssuesTileComponent implements OnInit {
+export class TopActiveIssuesTileComponent extends BaseComponent implements OnInit {
     @Input() issues: Issue[] = [];
     @Input() userProjects: Project[] = [];
     @Input() tile: Tile;
@@ -35,6 +37,7 @@ export class TopActiveIssuesTileComponent implements OnInit {
         private confirmWindowService: ConfirmWindowService,
         private tileDialogService: TileDialogService
     ) {
+        super();
     }
 
     @Input() set isShownMenu(val: boolean) {
@@ -71,11 +74,20 @@ export class TopActiveIssuesTileComponent implements OnInit {
     }
 
     saveNameChanges() {
+        this.isEditName = false;
         this.tile.name = this.formGroup.controls.name.value;
-        this.toggleNameEditor();
-        this.toastNotificationService.success('Name changed');
-        this.toastNotificationService.specificNotification({});
-        //TODO: update name
+        this.tileService.updateTile(this.tile as UpdateTile)
+            .pipe(this.untilThis)
+            .subscribe((response) => {
+                if (response) {
+                    this.tile = response as Tile;
+                    this.resetFormGroup();
+                    this.toastNotificationService.success('Name changed');
+                }
+            }, error => {
+                this.resetFormGroup();
+                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+            });
     }
 
     deleteTile() {
@@ -107,6 +119,7 @@ export class TopActiveIssuesTileComponent implements OnInit {
         })];
         this.displayedIssues = [...this.issues];
         //TODO: filter issues by required projects and display them on the table
+        //TODO: filter real issues(createdAt) with settings DateRange
         this.displayedIssues.sort((a, b) => b.events - a.events);
         this.displayedIssues.splice(this.tileSettings.issuesCount);
     }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Watchdog.Core.Common.Enums.Tiles;
 using Watchdog.Core.DAL.Context.EntityConfigurations;
 using Watchdog.Core.DAL.Entities;
 
@@ -20,11 +21,11 @@ namespace Watchdog.Core.DAL.Context
         private const int _numberOfPlatforms = 10;
         private const int _numberOfTeams = 5;
         private const int _numberOfTeamMembers = 25;
-        private const int _numberOfTiles = 25;
+        private const int _numberOfTiles = 35;
         private const int _numberOfUsers = 20;
-        private static readonly List<string> _icons  = new List<string>() { "pi-chart-line", "pi-chart-bar" };
+        private static readonly List<string> _icons = new List<string>() {"pi-chart-line", "pi-chart-bar"};
 
-        private static readonly string[] _roles = { "Owner", "Manager", "Viewer" };
+        private static readonly string[] _roles = {"Owner", "Manager", "Viewer"};
 
         public static void Configure(this ModelBuilder modelBuilder)
         {
@@ -183,10 +184,21 @@ namespace Watchdog.Core.DAL.Context
             return new Faker<Tile>()
                 .UseSeed(2246)
                 .RuleFor(t => t.Id, f => ++f.IndexVariable)
-                .RuleFor(t => t.Name, f => f.Lorem.Word())
+                .RuleFor(t => t.Name, f => f.Commerce.ProductName().ClampLength(3, 50, ' '))
                 .RuleFor(t => t.DashboardId, f => f.Random.Number(1, _numberOfDashboards))
+                .RuleFor(t => t.Type, f => f.PickRandom<TileType>())
+                .RuleFor(t => t.Category,
+                    (f, tile) => tile.Type == TileType.TopActiveIssues
+                        ? TileCategory.List
+                        : f.PickRandom<TileCategory>())
                 .RuleFor(t => t.CreatedBy, f => f.Random.Number(1, _numberOfUsers))
-                .RuleFor(t => t.CreatedAt, f => f.Date.Past(2, new DateTime(2021, 7, 20)))
+                .RuleFor(t => t.CreatedAt, f => f.Date.Past(2, DateTime.Now))
+                .RuleFor(t => t.Settings, f =>
+                    "{" +
+                    $"\"sourceProjects\": [{f.Random.Number(1, _numberOfApplications)}]," +
+                    $"\"dateRange\": {f.Random.Number(0, 4)}," +
+                    $"\"issuesCount\": {f.Random.Number(1, 1000)}" +
+                    "}")
                 .Generate(count);
         }
 

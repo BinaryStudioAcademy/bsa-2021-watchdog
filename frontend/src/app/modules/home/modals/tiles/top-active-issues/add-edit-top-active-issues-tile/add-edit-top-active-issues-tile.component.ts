@@ -4,10 +4,10 @@ import { Project } from '@shared/models/projects/project';
 import { NewTile } from '@shared/models/tile/new-tile';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { TileService } from '@core/services/tile.service';
-import { TileDateRangeType } from '@shared/models/tile/tile-date-range-type';
-import { TileCategory } from '@shared/models/tile/tile-category';
-import { TileType } from '@shared/models/tile/tile-type';
-import { TopActiveIssuesSettings } from '@shared/models/tile/tiles-settings/top-active-issues-settings';
+import { TileDateRangeType } from '@shared/models/tile/enums/tile-date-range-type';
+import { TileCategory } from '@shared/models/tile/enums/tile-category';
+import { TileType } from '@shared/models/tile/enums/tile-type';
+import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
 import { UpdateTile } from '@shared/models/tile/update-tile';
 import { Tile } from '@shared/models/tile/tile';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -24,11 +24,8 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
     public dateRangeDropdown: DateRangeDropdown[];
     public headerTitle: string;
     public submitButtonText: string;
-    //for new tile
     currentDashboardId: number;
-    //for update
     tileToEdit: Tile;
-    //main
     isAddMode: boolean;
     userProjects: Project[];
 

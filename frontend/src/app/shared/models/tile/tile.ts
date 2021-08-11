@@ -1,5 +1,5 @@
-import { TileCategory } from '@shared/models/tile/tile-category';
-import { TileType } from '@shared/models/tile/tile-type';
+import { TileCategory } from '@shared/models/tile/enums/tile-category';
+import { TileType } from '@shared/models/tile/enums/tile-type';
 
 export interface Tile {
     id: number,
@@ -8,5 +8,6 @@ export interface Tile {
     type: TileType,
     dashboardId: number,
     createdBy: number,
+    createdAt: Date,
     settings: string
 }

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
-import { TileType } from '@shared/models/tile/tile-type';
+import { TileType } from '@shared/models/tile/enums/tile-type';
 import { Tile } from '@shared/models/tile/tile';
 import { Project } from '@shared/models/projects/project';
 import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';

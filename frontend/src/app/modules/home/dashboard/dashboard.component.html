@@ -12,7 +12,7 @@
                 pButton pRipple></button>
     </div>
 </div>
-<app-tile-menu (clearTiles)="clearTiles()" (closeMenu)="tileMenuClosed()"
+<app-tile-menu (clearTiles)="deleteAllTiles(dashboard.id)" (closeMenu)="this.showTileMenu = false;"
                *ngIf="showTileMenu && dashboard" [dashboardId]="dashboard.id" [tiles]="tiles" [userProjects]="projects">
 </app-tile-menu>
 <app-update-dashboard (closeModal)="isEditing = !isEditing" (save)="updateDashboard($event)" *ngIf="isEditing"

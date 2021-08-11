@@ -6,11 +6,14 @@ import { Tile } from '@shared/models/tile/tile';
 import { NewTile } from '@shared/models/tile/new-tile';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { UpdateTile } from '@shared/models/tile/update-tile';
+import { TileService } from '@core/services/tile.service';
+import { BaseComponent } from '@core/components/base/base.component';
+import { SpinnerService } from '@core/services/spinner.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class TileDialogService implements OnDestroy {
+export class TileDialogService extends BaseComponent implements OnDestroy {
     ref: DynamicDialogRef;
     dialogContentStyles = {
         width: '100%',
@@ -20,8 +23,11 @@ export class TileDialogService implements OnDestroy {
 
     constructor(
         public dialogService: DialogService,
-        private toastNotificationService: ToastNotificationService
+        private toastNotificationService: ToastNotificationService,
+        private tileService: TileService,
+        private spinnerService: SpinnerService
     ) {
+        super();
     }
 
     showTopActiveIssuesCreateDialog(userProjects: Project[], dashboardId: number, dashboardTiles: Tile[]) {
@@ -40,9 +46,7 @@ export class TileDialogService implements OnDestroy {
 
         this.ref.onClose.subscribe((newTile: NewTile) => {
             if (newTile) {
-                //TODO: create real tile
-                dashboardTiles.push(newTile as Tile);
-                this.toastNotificationService.success('Tile Created');
+                this.addTile(newTile, dashboardTiles);
             }
         });
     }
@@ -63,10 +67,7 @@ export class TileDialogService implements OnDestroy {
 
         this.ref.onClose.subscribe((updatedTile: UpdateTile) => {
             if (updatedTile) {
-                //TODO: update real tile
-                Object.assign(tileToUpdate, updatedTile);
-                applySettings();
-                this.toastNotificationService.success('Updated');
+                this.updateTile(updatedTile, tileToUpdate, applySettings);
             }
         });
     }
@@ -75,5 +76,38 @@ export class TileDialogService implements OnDestroy {
         if (this.ref) {
             this.ref.close();
         }
+    }
+
+    private addTile(newTile: NewTile, dashboardTiles: Tile[]) {
+        this.spinnerService.show();
+        this.tileService.addTile(newTile)
+            .pipe(this.untilThis)
+            .subscribe((response) => {
+                if (response) {
+                    this.spinnerService.hide();
+                    dashboardTiles.push(response);
+                    this.toastNotificationService.success('Tile has been added');
+                }
+            }, error => {
+                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.spinnerService.hide();
+            });
+    }
+
+    private updateTile(updatedTile: UpdateTile, tileToUpdate: Tile, applySettings: () => void) {
+        this.spinnerService.show();
+        this.tileService.updateTile(updatedTile)
+            .pipe(this.untilThis)
+            .subscribe((response) => {
+                if (response) {
+                    this.spinnerService.hide();
+                    Object.assign(tileToUpdate, updatedTile);
+                    applySettings();
+                    this.toastNotificationService.success('Tile has been updated');
+                }
+            }, error => {
+                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.spinnerService.hide();
+            });
     }
 }

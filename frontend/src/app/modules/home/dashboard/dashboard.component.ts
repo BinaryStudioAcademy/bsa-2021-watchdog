@@ -9,13 +9,12 @@ import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { SpinnerService } from '@core/services/spinner.service';
 import { Tile } from '@shared/models/tile/tile';
-import { TileType } from '@shared/models/tile/tile-type';
-import { TileCategory } from '@shared/models/tile/tile-category';
+import { TileType } from '@shared/models/tile/enums/tile-type';
 import { Issue } from '@shared/models/issue/issue';
 import { ConfirmOptions } from '@shared/models/confirm-window/confirm-options';
 import { ConfirmWindowService } from '@core/services/confirm-window.service';
 import { Project } from '@shared/models/projects/project';
-import { NewTile } from '@shared/models/tile/new-tile';
+import { TileService } from '@core/services/tile.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -40,13 +39,13 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         private deleteDataService: ShareDataService<number>,
         private toastNotificationService: ToastNotificationService,
         private spinnerService: SpinnerService,
-        private confirmWindowService: ConfirmWindowService
+        private confirmWindowService: ConfirmWindowService,
+        private tileService: TileService
     ) {
         super();
     }
 
     ngOnInit(): void {
-        this.spinnerService.show();
         this.route.params
             .pipe(this.untilThis)
             .subscribe(params => this.getParams(params));
@@ -101,13 +100,13 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         this.initFakeProjects();
         //TODO: Get issues of all currentUser projects
         this.initFakeIssues();
-        //TODO: Get real tiles of currentDashboard
-        this.initFakeTiles(id as number);
 
         this.getDashboard(id);
+        this.getDashboardTiles(+id);
     }
 
     getDashboard(dashboardId: string) {
+        this.spinnerService.show();
         this.dashboardService.get(dashboardId)
             .pipe(this.untilThis)
             .subscribe(dashboardById => {
@@ -116,11 +115,24 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                     .subscribe((dashboard) => {
                         this.dashboard = dashboard;
                     }, error => {
-                        this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                        this.toastNotificationService.error(`${error}`, '', 2000);
                     });
                 this.spinnerService.hide();
             }, error => {
+                this.toastNotificationService.error(`${error}`, '', 2000);
+            });
+    }
+
+    getDashboardTiles(dashboardId: number) {
+        this.spinnerService.show();
+        this.tileService.getAllTilesByDashboardId(dashboardId)
+            .pipe(this.untilThis)
+            .subscribe(response => {
+                this.tiles = response;
+                this.spinnerService.hide();
+            }, error => {
                 this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.spinnerService.hide();
             });
     }
 
@@ -133,123 +145,29 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         super.ngOnDestroy();
     }
 
-    tileMenuClosed() {
-        this.showTileMenu = false;
-    }
-
-    clearTiles() {
-        this.tiles = [];
-        this.toastNotificationService.warning('Tiles Cleared');
-    }
-
     deleteTile(tile: Tile) {
-        console.log(tile);
-        this.tiles.splice(this.tiles.findIndex(value => value.id === tile.id), 1);
-        this.toastNotificationService.success('Tile Deleted');
-        //TODO: delete tile
+        this.spinnerService.show();
+        this.tileService.deleteTile(tile.id)
+            .pipe(this.untilThis)
+            .subscribe(() => {
+                this.spinnerService.hide();
+                this.tiles.splice(this.tiles.findIndex(value => value.id === tile.id), 1);
+                this.toastNotificationService.success('Tile Deleted');
+            }, error => {
+                this.spinnerService.hide();
+                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+            });
     }
 
-    private initFakeTiles(dashboardId: number) {
-        this.tiles = [{
-            category: TileCategory.List,
-            type: TileType.TopActiveIssues,
-            dashboardId,
-            name: 'Top Active Issues',
-            id: 1,
-            createdBy: 1,
-            settings: '{"tileType":0,"issuesCount":1,"sourceProjects":[1,2,4],"dateRange":1}'
-        },
-        {
-            category: TileCategory.List,
-            type: TileType.TopActiveIssues,
-            dashboardId,
-            name: 'My Issues',
-            id: 2,
-            createdBy: 1,
-            settings: '{"tileType":0,"issuesCount":3,"sourceProjects":[1,3,4],"dateRange":2}'
-        },
-        {
-            category: TileCategory.List,
-            type: TileType.TopActiveIssues,
-            dashboardId,
-            name: 'Cool Issues',
-            id: 3,
-            createdBy: 1,
-            settings: '{"tileType":0,"issuesCount":22,"sourceProjects":[1,2],"dateRange":0}'
-        },
-        {
-            category: TileCategory.List,
-            type: TileType.TopActiveIssues,
-            dashboardId,
-            name: 'Test Issues',
-            id: 4,
-            createdBy: 1,
-            settings: '{"tileType":0,"issuesCount":2,"sourceProjects":[1,2],"dateRange":3}'
-        },
-        {
-            category: TileCategory.List,
-            type: TileType.TopActiveIssues,
-            dashboardId,
-            name: 'Info Issues',
-            id: 5,
-            createdBy: 1,
-            settings: '{"tileType":0,"issuesCount":4,"sourceProjects":[1,2,4],"dateRange":2}'
-        },
-        {
-            category: TileCategory.List,
-            type: TileType.TopActiveIssues,
-            dashboardId,
-            name: 'Main Issues',
-            id: 6,
-            createdBy: 1,
-            settings: '{"tileType":0,"issuesCount":1,"sourceProjects":[1,2,3],"dateRange":3}'
-        },
-        {
-            category: TileCategory.List,
-            type: TileType.TopActiveIssues,
-            dashboardId,
-            name: 'Strange Issues',
-            id: 7,
-            createdBy: 1,
-            settings: '{"tileType":0,"issuesCount":3,"sourceProjects":[2,3,4],"dateRange":2}'
-        },
-        {
-            category: TileCategory.List,
-            type: TileType.TopActiveIssues,
-            dashboardId,
-            name: 'Core Issues',
-            id: 8,
-            createdBy: 1,
-            settings: '{"tileType":0,"issuesCount":6,"sourceProjects":[3,4],"dateRange":1}'
-        },
-        {
-            category: TileCategory.List,
-            type: TileType.TopActiveIssues,
-            dashboardId,
-            name: 'Good Issues',
-            id: 9,
-            createdBy: 1,
-            settings: '{"tileType":0,"issuesCount":7,"sourceProjects":[2,3],"dateRange":1}'
-        },
-        {
-            category: TileCategory.List,
-            type: TileType.TopActiveIssues,
-            dashboardId,
-            name: 'Issues',
-            id: 10,
-            createdBy: 1,
-            settings: '{"tileType":0,"issuesCount":5,"sourceProjects":[3,4],"dateRange":3}'
-        },
-        {
-            category: TileCategory.List,
-            type: TileType.TopActiveIssues,
-            dashboardId,
-            name: 'One Issue',
-            id: 11,
-            createdBy: 1,
-            settings: '{"tileType":0,"issuesCount":1,"sourceProjects":[1,2,3,4],"dateRange":2}'
-        }
-        ];
+    deleteAllTiles(dashboardId: number) {
+        this.tileService.deleteAllTilesByDashboardId(dashboardId)
+            .pipe(this.untilThis)
+            .subscribe(() => {
+                this.tiles = [];
+                this.toastNotificationService.success('Tile Cleared');
+            }, error => {
+                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+            });
     }
 
     private initFakeIssues() {
