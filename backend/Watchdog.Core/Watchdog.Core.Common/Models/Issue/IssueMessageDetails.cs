@@ -4,7 +4,6 @@ namespace Watchdog.Core.Common.Models.Issue
 {
     public class IssueMessageDetails
     {
-        public IssueMessageDetails(){}
         public string Url { get; set; }
         public string ErrorMessage { get; set; }
         public string ClassName { get; set; }

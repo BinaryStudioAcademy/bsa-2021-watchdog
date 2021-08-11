@@ -18,7 +18,13 @@ namespace Watchdog.Core.BLL.Services
         
         public async Task<ICollection<IssueMessage>> GetIssuesAsync()
         {
-            var result = await _client.SearchAsync<IssueMessage>();
+            var result = await _client.SearchAsync<IssueMessage>(s => s
+                    .From(0)
+                    .Size(200)
+                    .MatchAll()
+                    .Sort(sorter => sorter.Descending(issue => issue.OccurredOn))
+            );
+            
             return result.Documents.ToList();
         }
     }

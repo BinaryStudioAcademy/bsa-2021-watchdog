@@ -38,8 +38,9 @@ namespace Watchdog.Core.API.Extensions
             var connectionString = configuration["ElasticConfiguration:Uri"];
 
             var settings = new ConnectionSettings(new Uri(connectionString))
-                .DefaultMappingFor<IssueMessage>(m => m.IndexName("issues"));
-
+                .DefaultMappingFor<IssueMessage>(
+                    m => m.IndexName(configuration["ElasticConfiguration:IssueMessageIndex"]));
+            
             services.AddSingleton<IElasticClient>(new ElasticClient(settings));
         }
 
