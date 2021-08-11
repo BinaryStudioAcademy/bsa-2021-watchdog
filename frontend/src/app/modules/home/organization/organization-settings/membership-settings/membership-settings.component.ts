@@ -1,13 +1,12 @@
 import { OrganizationService } from '@core/services/organization.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { RoleService } from '@core/services/role.service';
-import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Organization } from '@shared/models/organization/organization';
 import { Role } from '@shared/models/role/role';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
-import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-membership-settings',
@@ -16,6 +15,10 @@ import { catchError, map } from 'rxjs/operators';
 })
 export class MembershipSettingsComponent extends BaseComponent implements OnInit {
     @Input() organization: Organization;
+    @Input() save: Observable<void>;
+    @Input() reset: Observable<void>;
+    @Output() canSave: EventEmitter<boolean> = new EventEmitter<boolean>();
+
     roles: Role[];
     loading = false;
     membershipForm: FormGroup = {} as FormGroup;
@@ -33,39 +36,33 @@ export class MembershipSettingsComponent extends BaseComponent implements OnInit
             .subscribe(r => {
                 this.roles = r;
             });
+
         this.createForm();
+
+        this.membershipForm.statusChanges.subscribe(() => {
+            this.checkSaveStatus();
+        });
     }
-
-    pending(propName: string) {
-        const control = this.membershipForm.controls[propName];
-        if (control.invalid) return;
-
-        control.setAsyncValidators(this.saveValidator.bind(this));
-        control.updateValueAndValidity({ onlySelf: true, emitEvent: false });
-        control.setAsyncValidators([]);
-    }
-
-    saveValidator = (control: AbstractControl): Observable<ValidationErrors | null> => {
-        const { parent } = control;
-        const propName = Object.keys(parent.controls).find(name => control === parent.controls[name]);
-        console.log('save');
-        if (this.organization[propName] === control.value) {
-            return of(null);
-        }
-        return this.organizationService.updateProperty(this.organization.id, propName, control.value)
-            .pipe(map(organization => {
-                this.organization[propName] = organization[propName];
-                this.toastService.success('Changes were saved!');
-                control.setValue(organization[propName]);
-                return of(null);
-            }), catchError(() => of({ serverError: true })));
-    };
 
     createForm(): void {
         this.membershipForm = this.fb.group({
             openMembership: [this.organization.openMembership, Validators.required],
             defaultRoleId: [this.organization.defaultRoleId, Validators.required]
         });
+    }
+
+    checkSaveStatus() {
+        if (this.membershipForm.untouched || this.membershipForm.pending || this.membershipForm.invalid) {
+            this.canSave.next(false);
+        }
+        if (this.membershipForm.valid && (this.membershipForm.touched || this.membershipForm.dirty)) {
+            const unsavedChangesProps = Object.keys(this.membershipForm.controls)
+                .filter(key =>
+                    this.membershipForm.controls[key].value !== this.organization[key]);
+
+            if (unsavedChangesProps.length > 0) this.canSave.next(true);
+            else this.canSave.next(false);
+        }
     }
 
     get openMembership() { return this.membershipForm.controls.openMembership; }

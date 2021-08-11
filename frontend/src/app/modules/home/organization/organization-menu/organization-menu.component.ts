@@ -13,9 +13,9 @@ import { User } from '@shared/models/user/user';
     styleUrls: ['./organization-menu.style.sass'],
 })
 export class OrganizationMenuComponent extends BaseComponent implements OnInit {
+    isLoading: boolean = false;
     organization: Organization;
     menuItems: MenuItem[];
-    currentUser: User;
 
     constructor(
         private organizationService: OrganizationService,
@@ -24,12 +24,14 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
     ) { super(); }
 
     ngOnInit(): void {
-        this.organizationService.getOrganization(1)
+        this.isLoading = true;
+        this.organizationService.getCurrentOrganization()
             .pipe(this.untilThis)
             .subscribe(organization => {
                 this.organization = organization;
                 this.checkUpdates();
-            }, error => { this.toastService.error(error); });
+                this.isLoading = false;
+            }, error => { this.toastService.error(error); this.isLoading = false; });
 
         this.menuItems = [
             { label: 'Organization settings', routerLink: './organization/settings' },

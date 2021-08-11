@@ -4,10 +4,11 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
 import { OrganizationService } from '@core/services/organization.service';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Organization } from '@shared/models/organization/organization';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output } from "@angular/core";
 
 import { Observable, of } from 'rxjs';
 import { regexs } from '@shared/constants/regexs';
+import { uniqueSlugValidator } from '@shared/validators/unique-slug.validator';
 
 @Component({
     selector: 'app-general-settings',
@@ -16,6 +17,11 @@ import { regexs } from '@shared/constants/regexs';
 })
 export class GeneralSettingsComponent extends BaseComponent implements OnInit {
     @Input() organization: Organization;
+    @Input() save: Observable<void>;
+    @Input() reset: Observable<void>;
+    @Output() canSave: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+
     loading: boolean = false;
     errorUpdateMessage: string;
     generalForm: FormGroup = {} as FormGroup;
@@ -28,6 +34,10 @@ export class GeneralSettingsComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         this.createForm();
+
+        this.generalForm.statusChanges.subscribe(() => {
+            this.checkSaveStatus();
+        });
     }
 
     createForm(): void {
@@ -44,58 +54,27 @@ export class GeneralSettingsComponent extends BaseComponent implements OnInit {
                     Validators.minLength(3),
                     Validators.maxLength(50),
                     Validators.pattern(regexs.organizationSlag),
+                ],
+                asyncValidators: [
+                    uniqueSlugValidator(this.organization, this.organizationService)
                 ]
             })
         });
     }
 
-    pendingSlug() {
-        const control = this.organizationSlug;
-        control.setAsyncValidators(this.validateSlug);
-        control.updateValueAndValidity({ onlySelf: true, emitEvent: true });
-        control.setAsyncValidators([]);
-    }
-
-    pending(propName: string) {
-        const control = this.generalForm.controls[propName];
-        if (control.invalid) return;
-
-        control.setAsyncValidators(this.saveValidator);
-        control.updateValueAndValidity({ onlySelf: true, emitEvent: false });
-        control.setAsyncValidators([]);
-    }
-
-    validateSlug = (control: AbstractControl): Observable<ValidationErrors | null> => {
-        const propName = this.getPropNameFromControl(control);
-        if (this.organization[propName] === control.value) {
-            return of(null);
+    checkSaveStatus() {
+        if (this.generalForm.untouched || this.generalForm.pending || this.generalForm.invalid) {
+            this.canSave.next(false);
         }
+        if (this.generalForm.valid && (this.generalForm.touched || this.generalForm.dirty)) {
+            const unsavedChangesProps = Object.keys(this.generalForm.controls)
+                .filter(key =>
+                    this.generalForm.controls[key].value !== this.organization[key]);
 
-        return this.organizationService.isSlugUnique(control.value).pipe(
-            map(isUnique => {
-                if (!isUnique) {
-                    return { notUnique: true };
-                }
-                this.saveValidator(control).subscribe();
-                return null;
-            }), catchError(() => of({ serverError: true }))
-        );
-    };
-
-    saveValidator = (control: AbstractControl): Observable<ValidationErrors | null> => {
-        const propName = this.getPropNameFromControl(control);
-        console.log('save');
-        if (this.organization[propName] === control.value) {
-            return of(null);
+            if (unsavedChangesProps.length > 0) this.canSave.next(true);
+            else this.canSave.next(false);
         }
-        return this.organizationService.updateProperty(this.organization.id, propName, control.value)
-            .pipe(map(organization => {
-                this.organization[propName] = organization[propName];
-                this.toastService.success('Changes were saved!');
-                control.setValue(organization[propName]);
-                return of(null);
-            }), catchError(() => of({ serverError: true })));
-    };
+    }
 
     get name() { return this.generalForm.controls.name; }
 

@@ -1,8 +1,17 @@
 <h1 class="content-title">
     Organization Settings
+    <div class="header-buttons">
+        <button disabled #saveBut pButton pRipple class="p-button-primary" label="Save"></button>
+        <button pButton pRipple class="p-button-secondary" label="Reset"></button>
+    </div>
 </h1>
 
 <div class="settings-container">
-    <app-general-settings *ngIf="organization" [organization]="organization"></app-general-settings>
-    <app-membership-settings *ngIf="organization" [organization]="organization"></app-membership-settings>
+    <app-general-settings [save]="save.asObservable()" [reset]="reset.asObservable()"
+        (canSave)="changeGeneralSaveState($event)" *ngIf="organization" [organization]="organization">
+    </app-general-settings>
+    <app-membership-settings [save]="save.asObservable()" [reset]="reset.asObservable()"
+        (canSave)="changeMembershipSaveState($event)" *ngIf="organization" [organization]="organization">
+    </app-membership-settings>
 </div>
+<app-loading-spinner *ngIf="isLoading" [overlay]="true"></app-loading-spinner>
