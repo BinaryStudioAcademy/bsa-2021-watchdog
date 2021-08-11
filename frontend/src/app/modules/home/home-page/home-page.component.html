@@ -2,14 +2,16 @@
 
     <div class="layout-topbar">
         <div class="logo">
-            <img src="assets\logo-white.svg" alt="logo">
+            <a routerLink="/home">
+                <img alt="logo" src="assets/logo-white.svg">
+            </a>
         </div>
         <div *ngIf="!authorizedUser" class="user-info">
-            <button pButton pRipple type="button" label="Sign in" class="p-button-outlined sign-in-button"></button>
+            <button class="p-button-outlined sign-in-button" label="Sign in" pButton pRipple type="button"></button>
         </div>
         <div *ngIf="authorizedUser" class="user-info">
-            <img class="avatar" src="assets\avatar.png" alt="Ava">
-            <div routerLink="/user" class="user-name">{{authorizedUser.firstName}}</div>
+            <img alt="Ava" class="avatar" src="assets/avatar.png">
+            <div class="user-name" routerLink="/user">{{authorizedUser.firstName}}</div>
         </div>
     </div>
 
@@ -19,38 +21,39 @@
         </div>
         <div class="sidebar-top">
             <div>
-                <button class="button" routerLink="projects" [routerLinkActive]="['active']">
+                <button [routerLinkActive]="['active']" class="button" routerLink="projects">
                     <i class="pi pi-file"></i>
                     <span>Projects</span>
                 </button>
             </div>
 
             <div>
-                <button class="button" routerLink="issues" [routerLinkActive]="['active']">
+                <button [routerLinkActive]="['active']" class="button" routerLink="issues">
                     <i class="pi pi-exclamation-circle"></i>
                     <span>Issues</span>
                 </button>
             </div>
 
             <div>
-                <button class="button" (click)="dashboardsShown = !dashboardsShown">
+                <button (click)="dashboardsShown = !dashboardsShown" class="button">
                     <i class="pi pi-chart-line"></i>
                     <span>Dashboards</span>
-                    <i class="pi pi-angle-down" *ngIf="!dashboardsShown"></i>
-                    <i class="pi pi-angle-up" *ngIf="dashboardsShown"></i>
+                    <i *ngIf="!dashboardsShown" class="pi pi-angle-down"></i>
+                    <i *ngIf="dashboardsShown" class="pi pi-angle-up"></i>
                 </button>
             </div>
-
-            <div [class.dashboards-none]="!dashboardsShown" [class.dashboards]="dashboardsShown"
-                *ngFor="let dashboard of dashboards">
-                <button class="button" [routerLink]="['dashboard', dashboard.id]" [routerLinkActive]="['active']">
-                    <i class="pi {{dashboard.icon}}"></i>
-                    <span>{{dashboard.name}}</span>
-                </button>
+            <div class="dashboards-buttons">
+                <div *ngFor="let dashboard of dashboards" [class.dashboards-none]="!dashboardsShown"
+                     [class.dashboards]="dashboardsShown">
+                    <button [routerLinkActive]="['active']" [routerLink]="['dashboard', dashboard.id]" class="button">
+                        <i class="pi {{dashboard.icon}}"></i>
+                        <span>{{dashboard.name}}</span>
+                    </button>
+                </div>
             </div>
         </div>
         <div class="sidebar-bottom">
-            <button class="button" (click)="displayModal=true">
+            <button (click)="displayModal=true" class="button">
                 <i class="pi pi-plus"></i>
                 <span>Add dashboard</span>
             </button>
@@ -61,7 +64,7 @@
         </div>
     </div>
 
-    <app-add-dashboard *ngIf="displayModal" (save)="addDashboard($event)" (closeModal)="displayModal = !displayModal">
+    <app-add-dashboard (closeModal)="displayModal = !displayModal" (save)="addDashboard($event)" *ngIf="displayModal">
     </app-add-dashboard>
 
     <div class="home-content-wrp">
