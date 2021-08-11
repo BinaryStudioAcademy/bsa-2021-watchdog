@@ -7,6 +7,7 @@ import { IssuesComponent } from '@modules/home/issues/issues.component';
 import { CreateProjectComponent } from '@modules/home/projects/create-project/create-project.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home-page/home-page.component';
+import { UserProfileComponent } from '@modules/user/components/user-profile/user-profile.component';
 
 const routes: Routes = [{
     path: '',
@@ -25,6 +26,9 @@ const routes: Routes = [{
     {
         path: 'issues',
         component: IssuesComponent,
+    }, {
+        path: 'users',
+        component: UserProfileComponent,
     }, {
         path: 'teams',
         loadChildren: () => import('../team/team.module')
