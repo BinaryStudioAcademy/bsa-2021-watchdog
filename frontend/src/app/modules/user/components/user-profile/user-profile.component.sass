@@ -1,5 +1,3 @@
-@import ../../styles/user.styles
-
 @import src/styles/variables
 @import src/styles/mixins
 
@@ -7,25 +5,20 @@
     @include title
     @include background-gray
 
-html
-    scroll-behavior: smooth
+.header
+    height: 44px
+    display: flex
+    align-items: center
+    grid-gap: 5px
 
-.profile-header
-    box-sizing: border-box
-    position: fixed
-    width: 100%
-    padding: 8px 24px
-    background-color: $white
-    @include border-gray
-    padding-bottom: 0
-
-.center
+.position
     margin-left: auto
     margin-right: auto
-    max-width: $max-width
+    max-width: fit-content
 
 .profile-header-title
     margin: 4px
+
 
 .profile-header-container, .profile-header-title, .profile-header-navigation-container
     padding: 5px
@@ -46,16 +39,16 @@ h1, .navigation-item-link
     display: block
     margin: 4px
     text-decoration: none
-    color: $black
+    color: $text-color
     margin-bottom: 0
 
 .navigation-item-link:hover
-    border-bottom: 3px solid $light-gray
+    border-bottom: 3px solid gray
 
 #profile-settings
-    background: $white
-    color: $black
-    border-bottom: 3px solid  $blue
+    background: white
+    color: $primary-color
+    border-bottom: 2px solid  $primary-color
 
 .pi
     display: inline-block
@@ -63,4 +56,4 @@ h1, .navigation-item-link
 
 .content-container
     padding: 24px
-    padding-top: 130px
+    padding-top: 30px
