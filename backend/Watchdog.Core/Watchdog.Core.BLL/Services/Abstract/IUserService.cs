@@ -5,8 +5,8 @@ using Watchdog.Core.Common.DTO.User;
 namespace Watchdog.Core.BLL.Services.Abstract
 {
     public interface IUserService
-    {
-        Task<ICollection<UserDto>> GetAllUsersAsync();
+    {           
+        Task<UserDto> UpdateUserAsync(int userId, UpdateUserDto updateUserDto);
 
         Task<UserDto> GetUserByIdAsync(int id);
 
