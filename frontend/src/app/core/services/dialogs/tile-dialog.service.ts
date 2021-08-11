@@ -1,6 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { AddEditTopActiveIssuesTileComponent } from '@modules/home/modals/tiles/top-active-issues/add-edit-top-active-issues-tile/add-edit-top-active-issues-tile.component';
+import { AddEditTopActiveIssuesTileComponent }
+    from '@modules/home/modals/tiles/top-active-issues/add-edit-top-active-issues-tile/add-edit-top-active-issues-tile.component';
 import { Project } from '@shared/models/projects/project';
 import { Tile } from '@shared/models/tile/tile';
 import { NewTile } from '@shared/models/tile/new-tile';
