@@ -1,39 +1,47 @@
 <div class="menu">
     <!--    Left Buttons    -->
     <div class="left-buttons">
-        <button (click)="clearDashboardTiles()" class="p-button-danger" label="Clear" pButton
+        <button (click)="clearDashboardTiles()" class="p-button-danger p-button-outlined" label="Clear" pButton
                 pRipple pTooltip="Clear dashboard" tooltipPosition="bottom"></button>
-        <button (click)="resetDashboardTiles()" class="p-button-warning" label="Reset" pButton
-                pRipple pTooltip="Reset dashboard" tooltipPosition="bottom"></button>
     </div>
     <!--    Center Buttons    -->
     <div class="center-buttons">
-        <button (click)="textMenu.toggle($event)" class="dropdown-button p-button-outlined"
+        <button (click)="textMenu.toggle($event)" [disabled]="!menuTextItems.length"
+                class="dropdown-button p-button-outlined"
                 icon="pi pi-bars" pButton pTooltip="Text" tooltipPosition="bottom" type="button"></button>
-        <p-tieredMenu #textMenu (click)="tileSelected($event)" [model]="menuTextItems" [popup]="true"></p-tieredMenu>
+        <p-tieredMenu #textMenu [model]="menuTextItems" [popup]="true"></p-tieredMenu>
 
-        <button (click)="listMenu.toggle($event)" class="dropdown-button p-button-outlined"
+        <button (click)="listMenu.toggle($event)" [disabled]="!menuListItems.length"
+                class="dropdown-button p-button-outlined"
                 icon="pi pi-list" pButton pTooltip="List" tooltipPosition="bottom" type="button"></button>
-        <p-tieredMenu #listMenu (click)="tileSelected($event)" [model]="menuListItems" [popup]="true"></p-tieredMenu>
+        <p-tieredMenu #listMenu [model]="menuListItems" [popup]="true"></p-tieredMenu>
 
         <div class="number-button">
-            <button (click)="valueMenu.toggle($event)" class="p-button-outlined"
+            <button (click)="valueMenu.toggle($event)" [disabled]="!menuValueItems.length" class="p-button-outlined"
                     label="1.2" pButton pTooltip="Value" tooltipPosition="bottom" type="button"></button>
-            <p-tieredMenu #valueMenu (click)="tileSelected($event)"
+            <p-tieredMenu #valueMenu
                           [model]="menuValueItems" [popup]="true"></p-tieredMenu>
         </div>
 
-        <button (click)="chartMenu.toggle($event)" class="dropdown-button p-button-outlined"
+        <button (click)="chartMenu.toggle($event)" [disabled]="!menuChartItems.length"
+                class="dropdown-button p-button-outlined"
                 icon="pi pi-chart-line" pButton pTooltip="Chart" tooltipPosition="bottom" type="button"></button>
-        <p-tieredMenu #chartMenu (click)="tileSelected($event)" [model]="menuChartItems" [popup]="true"></p-tieredMenu>
+        <p-tieredMenu #chartMenu [model]="menuChartItems" [popup]="true"></p-tieredMenu>
     </div>
     <!--    Right Buttons    -->
     <div class="right-buttons">
-        <button (click)="saveChanges()" class="p-button-info" label="Save Changes" pButton pRipple
-                pTooltip="Save changes" tooltipPosition="bottom"></button>
-        <button (click)="discardChanges()" class="p-button-rounded p-button-text p-button-plain" icon="pi pi-times"
-                pButton
-                pRipple pTooltip="Discard changes" tooltipPosition="bottom" type="button"></button>
+        <button (click)="close()" class="p-button-raised p-button-text p-button-plain" icon="pi pi-times"
+                pButton pTooltip="Close Menu" tooltipPosition="bottom" type="button"></button>
     </div>
 
 </div>
+
+<!--<app-add-edit-top-active-issues-tile-->
+<!--    (closeModalEvent)="isCreatingTopActiveIssuesTile = !isCreatingTopActiveIssuesTile"-->
+<!--    (newTileEvent)="addTile($event)"-->
+<!--    *ngIf="isCreatingTopActiveIssuesTile"-->
+<!--    [currentDashboardId]="dashboardId"-->
+<!--    [isAddMode]="true"-->
+<!--    [userProjects]="projects">-->
+<!--</app-add-edit-top-active-issues-tile>-->
+

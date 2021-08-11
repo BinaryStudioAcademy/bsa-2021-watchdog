@@ -32,6 +32,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { TooltipModule } from 'primeng/tooltip';
 import { StyleClassModule } from 'primeng/styleclass';
 import { TieredMenuModule } from 'primeng/tieredmenu';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DialogService } from 'primeng/dynamicdialog';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -68,6 +70,7 @@ import { TieredMenuModule } from 'primeng/tieredmenu';
         TooltipModule,
         StyleClassModule,
         TieredMenuModule,
+        MultiSelectModule,
     ],
     exports: [
         ButtonModule,
@@ -101,12 +104,14 @@ import { TieredMenuModule } from 'primeng/tieredmenu';
         TooltipModule,
         StyleClassModule,
         TieredMenuModule,
+        MultiSelectModule,
     ],
     declarations: [],
     providers: [
         MessageService,
         ConfirmationService,
         PrimeNGConfig,
+        DialogService
     ]
 })
 export class PrimeComponentsModule {
