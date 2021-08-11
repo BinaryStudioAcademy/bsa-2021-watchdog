@@ -8,6 +8,7 @@ namespace Watchdog.Core.BLL.Services.Abstract
     {
         Task<OrganizationDto> GetOrganizationAsync(int organizationId);
         Task<ICollection<OrganizationDto>> GetAllOrganizationsAsync();
+        Task<OrganizationDto> CreateOrganizationAsync(OrganizationDto organizationDto);
         Task<OrganizationDto> UpdateOrganizationAsync(int organizationId, NewOrganizationDto organizationDto);
         Task<OrganizationDto> UpdateSettingsAsync(int organizationId, SettingsOrganizationDto settingsDto);
         Task<ICollection<OrganizationDto>> GetUserOrganizationsAsync(int userId);

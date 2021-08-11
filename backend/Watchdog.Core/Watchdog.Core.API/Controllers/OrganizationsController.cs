@@ -47,6 +47,13 @@ namespace Watchdog.Core.API.Controllers
             return Ok(organizations);
         }
 
+        [HttpPost]
+        public async Task<ActionResult<OrganizationDto>> CreateOrganizationAsync(OrganizationDto organizationDto)
+        {
+            var organization = await _organizationService.CreateOrganizationAsync(organizationDto);
+            return Ok(organization);
+        }
+
         [HttpPut("{organizationId}")]
         public async Task<ActionResult<OrganizationDto>> UpdateAsync(int organizationId, NewOrganizationDto organizationDto)
         {

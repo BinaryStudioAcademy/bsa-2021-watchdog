@@ -2,7 +2,6 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { BaseComponent } from '@core/components/base/base.component';
 import { MemberService } from '@core/services/member.service';
 import { Member } from '@shared/models/member/member';
-import { OverlayPanel } from 'primeng/overlaypanel';
 import { Subject } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { RoleService } from '@core/services/role.service';
@@ -84,7 +83,6 @@ export class InviteComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis)
             .subscribe(roles => this.roles = roles);
     }
-
 
     search(event: any) {
         const value = event.query;

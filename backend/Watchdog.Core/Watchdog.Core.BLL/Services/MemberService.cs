@@ -62,6 +62,7 @@ namespace Watchdog.Core.BLL.Services
         public async Task<IEnumerable<MemberDto>> GetMembersByOrganizationIdAsync(int id)
         {
             return _mapper.Map<IEnumerable<MemberDto>>(await _context.Members.Where(m => m.OrganizationId == id).Include(m => m.User).Include(m => m.Team).Include(m => m.Role).ToListAsync());
+
         }
 
         public async Task<MemberDto> GetMemberByIdAsync(int id)
@@ -89,3 +90,16 @@ namespace Watchdog.Core.BLL.Services
         }
     }
 }
+        //    var member = await _context.Members.SingleOrDefaultAsync(m => m.Id == id);
+        //    return _mapper.Map<MemberDto>(member);
+        //}
+
+        //public async Task<MemberDto> CreateMemberAsync(MemberDto memberDto)
+        //{
+        //    var member = _mapper.Map<Member>(memberDto);
+
+        //    var createdMember = _context.Members.Add(member);
+        //    await _context.SaveChangesAsync();
+
+        //    return _mapper.Map<MemberDto>(createdMember.Entity);
+        //}

@@ -4,9 +4,10 @@ import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { DashboardService } from '@core/services/dashboard.service';
 import { ShareDataService } from '@core/services/share-data.service';
 import { NewDashboard } from '@shared/models/dashboard/new-dashboard';
-import { User } from '@core/models/user';
+import { User } from '@shared/models/user/user';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
+import { AuthenticationService } from '@core/services/authentication.service';
 
 @Component({
     selector: 'app-home',
@@ -17,7 +18,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     dashboards: Dashboard[];
     dashboardsShown: boolean = false;
     displayModal: boolean = false;
-    authorizedUser: User;
+    user: User;
     //fake
     fakeOrganizationId = 1;
     //TODO Change fake by real data
@@ -27,14 +28,14 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         public dashboardService: DashboardService,
         private updateDataService: ShareDataService<Dashboard>,
         private deleteDataService: ShareDataService<number>,
-        private toastNotificationService: ToastNotificationService
+        private toastNotificationService: ToastNotificationService,
+        private authService: AuthenticationService
     ) {
         super();
+        this.user = authService.getUser();
     }
 
     async ngOnInit() {
-        this.authorizedUser = { ...this.authorizedUser, firstName: 'Andriy' };
-
         this.getAllDashboards();
 
         await this.broadcastHub.start();

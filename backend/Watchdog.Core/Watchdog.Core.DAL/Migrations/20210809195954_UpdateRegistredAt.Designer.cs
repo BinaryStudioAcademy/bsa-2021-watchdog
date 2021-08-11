@@ -10,8 +10,8 @@ using Watchdog.Core.DAL.Context;
 namespace Watchdog.Core.DAL.Migrations
 {
     [DbContext(typeof(WatchdogCoreContext))]
-    [Migration("20210809135445_TeamMemberRelations")]
-    partial class TeamMemberRelations
+    [Migration("20210809195954_UpdateRegistredAt")]
+    partial class UpdateRegistredAt
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -544,19 +544,10 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsAccepted")
-                        .HasColumnType("bit");
-
                     b.Property<int>("OrganizationId")
                         .HasColumnType("int");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TeamId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -567,10 +558,6 @@ namespace Watchdog.Core.DAL.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.HasIndex("TeamId");
-
-                    b.HasIndex("UserId");
-
                     b.ToTable("Members");
 
                     b.HasData(
@@ -579,330 +566,240 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 1,
                             CreatedAt = new DateTime(2020, 3, 8, 20, 29, 56, 733, DateTimeKind.Unspecified).AddTicks(99),
                             CreatedBy = 3,
-                            IsAccepted = false,
                             OrganizationId = 5,
-                            RoleId = 2,
-                            TeamId = 1,
-                            UserId = 14
+                            RoleId = 2
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2021, 4, 27, 20, 21, 58, 172, DateTimeKind.Unspecified).AddTicks(5799),
-                            CreatedBy = 3,
-                            IsAccepted = false,
-                            OrganizationId = 1,
-                            RoleId = 3,
-                            TeamId = 4,
-                            UserId = 1
+                            CreatedAt = new DateTime(2019, 11, 16, 1, 22, 22, 917, DateTimeKind.Unspecified).AddTicks(2673),
+                            CreatedBy = 20,
+                            OrganizationId = 4,
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2020, 7, 23, 10, 54, 45, 854, DateTimeKind.Unspecified).AddTicks(9241),
-                            CreatedBy = 16,
-                            IsAccepted = true,
-                            OrganizationId = 4,
-                            RoleId = 2,
-                            TeamId = 1,
-                            UserId = 19
+                            CreatedAt = new DateTime(2020, 1, 3, 8, 25, 34, 990, DateTimeKind.Unspecified).AddTicks(521),
+                            CreatedBy = 3,
+                            OrganizationId = 1,
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2019, 8, 20, 21, 27, 3, 534, DateTimeKind.Unspecified).AddTicks(5410),
-                            CreatedBy = 1,
-                            IsAccepted = false,
-                            OrganizationId = 1,
-                            RoleId = 3,
-                            TeamId = 1,
-                            UserId = 4
+                            CreatedAt = new DateTime(2020, 4, 25, 10, 18, 40, 933, DateTimeKind.Unspecified).AddTicks(8555),
+                            CreatedBy = 10,
+                            OrganizationId = 4,
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2019, 12, 23, 10, 22, 47, 210, DateTimeKind.Unspecified).AddTicks(1299),
-                            CreatedBy = 11,
-                            IsAccepted = true,
-                            OrganizationId = 1,
-                            RoleId = 1,
-                            TeamId = 4,
-                            UserId = 4
+                            CreatedAt = new DateTime(2019, 9, 16, 10, 2, 15, 309, DateTimeKind.Unspecified).AddTicks(5491),
+                            CreatedBy = 3,
+                            OrganizationId = 3,
+                            RoleId = 3
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2021, 7, 18, 20, 59, 32, 703, DateTimeKind.Unspecified).AddTicks(9853),
-                            CreatedBy = 2,
-                            IsAccepted = true,
+                            CreatedAt = new DateTime(2021, 6, 15, 20, 0, 11, 725, DateTimeKind.Unspecified).AddTicks(3505),
+                            CreatedBy = 3,
                             OrganizationId = 5,
-                            RoleId = 2,
-                            TeamId = 4,
-                            UserId = 4
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2020, 7, 8, 18, 12, 38, 93, DateTimeKind.Unspecified).AddTicks(8466),
-                            CreatedBy = 1,
-                            IsAccepted = true,
-                            OrganizationId = 3,
-                            RoleId = 3,
-                            TeamId = 1,
-                            UserId = 2
+                            CreatedAt = new DateTime(2020, 1, 21, 6, 5, 21, 218, DateTimeKind.Unspecified).AddTicks(6260),
+                            CreatedBy = 4,
+                            OrganizationId = 1,
+                            RoleId = 3
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2021, 2, 7, 16, 21, 19, 980, DateTimeKind.Unspecified).AddTicks(3576),
-                            CreatedBy = 16,
-                            IsAccepted = false,
+                            CreatedAt = new DateTime(2019, 12, 23, 10, 22, 47, 210, DateTimeKind.Unspecified).AddTicks(1299),
+                            CreatedBy = 11,
                             OrganizationId = 1,
-                            RoleId = 3,
-                            TeamId = 4,
-                            UserId = 10
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2021, 7, 5, 3, 30, 54, 448, DateTimeKind.Unspecified).AddTicks(9294),
-                            CreatedBy = 15,
-                            IsAccepted = false,
+                            CreatedAt = new DateTime(2020, 7, 6, 4, 7, 57, 503, DateTimeKind.Unspecified).AddTicks(5793),
+                            CreatedBy = 10,
                             OrganizationId = 1,
-                            RoleId = 3,
-                            TeamId = 3,
-                            UserId = 5
+                            RoleId = 3
                         },
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(2021, 5, 19, 6, 44, 6, 919, DateTimeKind.Unspecified).AddTicks(278),
-                            CreatedBy = 7,
-                            IsAccepted = false,
-                            OrganizationId = 4,
-                            RoleId = 1,
-                            TeamId = 5,
-                            UserId = 6
+                            CreatedAt = new DateTime(2020, 1, 29, 1, 2, 39, 606, DateTimeKind.Unspecified).AddTicks(1635),
+                            CreatedBy = 1,
+                            OrganizationId = 1,
+                            RoleId = 3
                         },
                         new
                         {
                             Id = 11,
-                            CreatedAt = new DateTime(2020, 10, 3, 22, 16, 27, 247, DateTimeKind.Unspecified).AddTicks(4150),
-                            CreatedBy = 10,
-                            IsAccepted = true,
-                            OrganizationId = 4,
-                            RoleId = 3,
-                            TeamId = 4,
-                            UserId = 1
+                            CreatedAt = new DateTime(2020, 5, 19, 20, 41, 5, 50, DateTimeKind.Unspecified).AddTicks(7290),
+                            CreatedBy = 16,
+                            OrganizationId = 2,
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 12,
-                            CreatedAt = new DateTime(2021, 7, 4, 15, 24, 41, 967, DateTimeKind.Unspecified).AddTicks(8073),
-                            CreatedBy = 9,
-                            IsAccepted = true,
-                            OrganizationId = 5,
-                            RoleId = 2,
-                            TeamId = 1,
-                            UserId = 14
+                            CreatedAt = new DateTime(2021, 5, 21, 12, 57, 44, 740, DateTimeKind.Unspecified).AddTicks(9150),
+                            CreatedBy = 2,
+                            OrganizationId = 3,
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 13,
-                            CreatedAt = new DateTime(2021, 7, 15, 16, 39, 54, 102, DateTimeKind.Unspecified).AddTicks(9813),
-                            CreatedBy = 12,
-                            IsAccepted = false,
-                            OrganizationId = 4,
-                            RoleId = 3,
-                            TeamId = 4,
-                            UserId = 18
+                            CreatedAt = new DateTime(2020, 1, 13, 19, 47, 33, 819, DateTimeKind.Unspecified).AddTicks(6240),
+                            CreatedBy = 3,
+                            OrganizationId = 5,
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 14,
-                            CreatedAt = new DateTime(2021, 2, 15, 7, 36, 57, 651, DateTimeKind.Unspecified).AddTicks(6601),
-                            CreatedBy = 20,
-                            IsAccepted = false,
-                            OrganizationId = 2,
-                            RoleId = 3,
-                            TeamId = 5,
-                            UserId = 15
+                            CreatedAt = new DateTime(2020, 5, 5, 6, 58, 55, 90, DateTimeKind.Unspecified).AddTicks(7547),
+                            CreatedBy = 10,
+                            OrganizationId = 4,
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 15,
-                            CreatedAt = new DateTime(2021, 1, 7, 23, 23, 34, 674, DateTimeKind.Unspecified).AddTicks(8980),
-                            CreatedBy = 9,
-                            IsAccepted = true,
-                            OrganizationId = 4,
-                            RoleId = 3,
-                            TeamId = 4,
-                            UserId = 3
+                            CreatedAt = new DateTime(2021, 7, 5, 3, 30, 54, 448, DateTimeKind.Unspecified).AddTicks(9294),
+                            CreatedBy = 15,
+                            OrganizationId = 1,
+                            RoleId = 3
                         },
                         new
                         {
                             Id = 16,
-                            CreatedAt = new DateTime(2019, 9, 13, 18, 7, 25, 344, DateTimeKind.Unspecified).AddTicks(5872),
-                            CreatedBy = 17,
-                            IsAccepted = true,
+                            CreatedAt = new DateTime(2021, 6, 14, 18, 35, 8, 962, DateTimeKind.Unspecified).AddTicks(783),
+                            CreatedBy = 12,
                             OrganizationId = 2,
-                            RoleId = 2,
-                            TeamId = 3,
-                            UserId = 11
+                            RoleId = 2
                         },
                         new
                         {
                             Id = 17,
-                            CreatedAt = new DateTime(2020, 9, 4, 5, 54, 15, 840, DateTimeKind.Unspecified).AddTicks(7823),
-                            CreatedBy = 20,
-                            IsAccepted = true,
+                            CreatedAt = new DateTime(2019, 11, 27, 0, 59, 19, 851, DateTimeKind.Unspecified).AddTicks(207),
+                            CreatedBy = 2,
                             OrganizationId = 2,
-                            RoleId = 1,
-                            TeamId = 3,
-                            UserId = 4
+                            RoleId = 2
                         },
                         new
                         {
                             Id = 18,
-                            CreatedAt = new DateTime(2021, 5, 20, 18, 28, 35, 426, DateTimeKind.Unspecified).AddTicks(5341),
-                            CreatedBy = 2,
-                            IsAccepted = false,
-                            OrganizationId = 4,
-                            RoleId = 3,
-                            TeamId = 3,
-                            UserId = 5
+                            CreatedAt = new DateTime(2020, 2, 24, 22, 7, 24, 896, DateTimeKind.Unspecified).AddTicks(9869),
+                            CreatedBy = 14,
+                            OrganizationId = 5,
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 19,
-                            CreatedAt = new DateTime(2019, 11, 30, 15, 17, 55, 781, DateTimeKind.Unspecified).AddTicks(7584),
-                            CreatedBy = 4,
-                            IsAccepted = false,
-                            OrganizationId = 3,
-                            RoleId = 2,
-                            TeamId = 2,
-                            UserId = 7
+                            CreatedAt = new DateTime(2021, 6, 29, 4, 27, 33, 463, DateTimeKind.Unspecified).AddTicks(2445),
+                            CreatedBy = 16,
+                            OrganizationId = 2,
+                            RoleId = 2
                         },
                         new
                         {
                             Id = 20,
-                            CreatedAt = new DateTime(2020, 12, 16, 9, 10, 24, 976, DateTimeKind.Unspecified).AddTicks(8307),
-                            CreatedBy = 16,
-                            IsAccepted = false,
-                            OrganizationId = 1,
-                            RoleId = 1,
-                            TeamId = 3,
-                            UserId = 4
+                            CreatedAt = new DateTime(2020, 8, 31, 3, 14, 25, 440, DateTimeKind.Unspecified).AddTicks(6945),
+                            CreatedBy = 20,
+                            OrganizationId = 3,
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 21,
-                            CreatedAt = new DateTime(2020, 12, 1, 19, 23, 31, 853, DateTimeKind.Unspecified).AddTicks(3147),
-                            CreatedBy = 2,
-                            IsAccepted = false,
-                            OrganizationId = 4,
-                            RoleId = 2,
-                            TeamId = 2,
-                            UserId = 10
+                            CreatedAt = new DateTime(2020, 10, 19, 4, 23, 25, 774, DateTimeKind.Unspecified).AddTicks(1835),
+                            CreatedBy = 14,
+                            OrganizationId = 1,
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 22,
-                            CreatedAt = new DateTime(2020, 9, 22, 14, 47, 55, 958, DateTimeKind.Unspecified).AddTicks(4884),
-                            CreatedBy = 16,
-                            IsAccepted = true,
-                            OrganizationId = 5,
-                            RoleId = 1,
-                            TeamId = 3,
-                            UserId = 14
+                            CreatedAt = new DateTime(2021, 7, 15, 16, 39, 54, 102, DateTimeKind.Unspecified).AddTicks(9813),
+                            CreatedBy = 12,
+                            OrganizationId = 4,
+                            RoleId = 3
                         },
                         new
                         {
                             Id = 23,
-                            CreatedAt = new DateTime(2020, 10, 21, 18, 46, 42, 78, DateTimeKind.Unspecified).AddTicks(2145),
-                            CreatedBy = 4,
-                            IsAccepted = true,
-                            OrganizationId = 2,
-                            RoleId = 3,
-                            TeamId = 5,
-                            UserId = 8
+                            CreatedAt = new DateTime(2019, 11, 13, 12, 40, 5, 13, DateTimeKind.Unspecified).AddTicks(878),
+                            CreatedBy = 15,
+                            OrganizationId = 5,
+                            RoleId = 3
                         },
                         new
                         {
                             Id = 24,
-                            CreatedAt = new DateTime(2021, 4, 28, 1, 57, 4, 519, DateTimeKind.Unspecified).AddTicks(2546),
-                            CreatedBy = 3,
-                            IsAccepted = false,
-                            OrganizationId = 4,
-                            RoleId = 3,
-                            TeamId = 2,
-                            UserId = 14
+                            CreatedAt = new DateTime(2019, 9, 1, 23, 36, 12, 841, DateTimeKind.Unspecified).AddTicks(6973),
+                            CreatedBy = 5,
+                            OrganizationId = 5,
+                            RoleId = 2
                         },
                         new
                         {
                             Id = 25,
-                            CreatedAt = new DateTime(2019, 8, 22, 5, 8, 52, 971, DateTimeKind.Unspecified).AddTicks(5025),
-                            CreatedBy = 3,
-                            IsAccepted = true,
-                            OrganizationId = 2,
-                            RoleId = 1,
-                            TeamId = 1,
-                            UserId = 10
+                            CreatedAt = new DateTime(2020, 2, 9, 19, 23, 50, 460, DateTimeKind.Unspecified).AddTicks(534),
+                            CreatedBy = 20,
+                            OrganizationId = 4,
+                            RoleId = 3
                         },
                         new
                         {
                             Id = 26,
-                            CreatedAt = new DateTime(2021, 5, 14, 1, 44, 54, 610, DateTimeKind.Unspecified).AddTicks(3587),
+                            CreatedAt = new DateTime(2021, 4, 23, 7, 4, 13, 49, DateTimeKind.Unspecified).AddTicks(4808),
                             CreatedBy = 16,
-                            IsAccepted = true,
-                            OrganizationId = 5,
-                            RoleId = 1,
-                            TeamId = 4,
-                            UserId = 2
+                            OrganizationId = 2,
+                            RoleId = 2
                         },
                         new
                         {
                             Id = 27,
-                            CreatedAt = new DateTime(2020, 1, 3, 20, 5, 35, 131, DateTimeKind.Unspecified).AddTicks(2006),
-                            CreatedBy = 9,
-                            IsAccepted = true,
+                            CreatedAt = new DateTime(2019, 11, 23, 18, 4, 52, 732, DateTimeKind.Unspecified).AddTicks(9426),
+                            CreatedBy = 6,
                             OrganizationId = 3,
-                            RoleId = 2,
-                            TeamId = 4,
-                            UserId = 9
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 28,
-                            CreatedAt = new DateTime(2020, 3, 25, 4, 9, 19, 385, DateTimeKind.Unspecified).AddTicks(2515),
-                            CreatedBy = 19,
-                            IsAccepted = false,
+                            CreatedAt = new DateTime(2021, 1, 17, 9, 54, 56, 29, DateTimeKind.Unspecified).AddTicks(2520),
+                            CreatedBy = 11,
                             OrganizationId = 3,
-                            RoleId = 2,
-                            TeamId = 4,
-                            UserId = 11
+                            RoleId = 3
                         },
                         new
                         {
                             Id = 29,
-                            CreatedAt = new DateTime(2021, 4, 17, 15, 20, 35, 476, DateTimeKind.Unspecified).AddTicks(8086),
-                            CreatedBy = 5,
-                            IsAccepted = false,
-                            OrganizationId = 5,
-                            RoleId = 1,
-                            TeamId = 4,
-                            UserId = 20
+                            CreatedAt = new DateTime(2020, 9, 4, 5, 54, 15, 840, DateTimeKind.Unspecified).AddTicks(7823),
+                            CreatedBy = 20,
+                            OrganizationId = 2,
+                            RoleId = 1
                         },
                         new
                         {
                             Id = 30,
-                            CreatedAt = new DateTime(2020, 7, 4, 10, 40, 44, 199, DateTimeKind.Unspecified).AddTicks(7424),
-                            CreatedBy = 10,
-                            IsAccepted = false,
-                            OrganizationId = 4,
-                            RoleId = 3,
-                            TeamId = 2,
-                            UserId = 16
+                            CreatedAt = new DateTime(2019, 11, 5, 17, 30, 28, 659, DateTimeKind.Unspecified).AddTicks(2449),
+                            CreatedBy = 1,
+                            OrganizationId = 1,
+                            RoleId = 2
                         });
                 });
 
@@ -1114,19 +1011,19 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "Sunt maxime numquam alias alias placeat corrupti nisi veniam. In adipisci ipsa doloribus amet. Earum dolore enim sapiente.",
+                            Description = "Dolorem deleniti est dolorum nihil odio. Ut ab cupiditate aut harum nihil similique occaecati. Fugit numquam numquam autem. Ut accusantium ducimus omnis. Nisi facere vel minima nulla sit voluptatem.",
                             Name = "Owner"
                         },
                         new
                         {
                             Id = 2,
-                            Description = "Eligendi aspernatur molestias et eum et. Ipsa inventore quam qui dolor. Minus non repudiandae harum architecto nesciunt reprehenderit. Numquam sunt nostrum fugiat. Occaecati aut quam consequatur aliquid eius sed quia ab.",
+                            Description = "Tenetur aut autem voluptatem fugit voluptatum facilis. Quam odio necessitatibus amet cumque sapiente quia hic quis. Labore minima vero.",
                             Name = "Manager"
                         },
                         new
                         {
                             Id = 3,
-                            Description = "Iure sint dolorum maiores et eius. Maxime eos quis qui. Doloremque laborum ut aut tempora.",
+                            Description = "Eos consequuntur aspernatur necessitatibus officia. Soluta doloribus ipsam nemo veritatis error ut voluptatem veritatis. Ut omnis neque. Aut accusamus reprehenderit rerum autem quaerat sit.",
                             Name = "Viewer"
                         });
                 });
@@ -1308,6 +1205,180 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedBy = 4,
                             Name = "blanditiis",
                             OrganizationId = 5
+                        });
+                });
+
+            modelBuilder.Entity("Watchdog.Core.DAL.Entities.TeamMember", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("TeamMembers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            MemberId = 9,
+                            TeamId = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            MemberId = 12,
+                            TeamId = 3
+                        },
+                        new
+                        {
+                            Id = 3,
+                            MemberId = 10,
+                            TeamId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            MemberId = 1,
+                            TeamId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            MemberId = 28,
+                            TeamId = 2
+                        },
+                        new
+                        {
+                            Id = 6,
+                            MemberId = 4,
+                            TeamId = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            MemberId = 30,
+                            TeamId = 5
+                        },
+                        new
+                        {
+                            Id = 8,
+                            MemberId = 5,
+                            TeamId = 4
+                        },
+                        new
+                        {
+                            Id = 9,
+                            MemberId = 4,
+                            TeamId = 1
+                        },
+                        new
+                        {
+                            Id = 10,
+                            MemberId = 13,
+                            TeamId = 2
+                        },
+                        new
+                        {
+                            Id = 11,
+                            MemberId = 16,
+                            TeamId = 3
+                        },
+                        new
+                        {
+                            Id = 12,
+                            MemberId = 8,
+                            TeamId = 2
+                        },
+                        new
+                        {
+                            Id = 13,
+                            MemberId = 29,
+                            TeamId = 1
+                        },
+                        new
+                        {
+                            Id = 14,
+                            MemberId = 6,
+                            TeamId = 2
+                        },
+                        new
+                        {
+                            Id = 15,
+                            MemberId = 6,
+                            TeamId = 5
+                        },
+                        new
+                        {
+                            Id = 16,
+                            MemberId = 30,
+                            TeamId = 4
+                        },
+                        new
+                        {
+                            Id = 17,
+                            MemberId = 7,
+                            TeamId = 1
+                        },
+                        new
+                        {
+                            Id = 18,
+                            MemberId = 20,
+                            TeamId = 1
+                        },
+                        new
+                        {
+                            Id = 19,
+                            MemberId = 19,
+                            TeamId = 4
+                        },
+                        new
+                        {
+                            Id = 20,
+                            MemberId = 1,
+                            TeamId = 1
+                        },
+                        new
+                        {
+                            Id = 21,
+                            MemberId = 23,
+                            TeamId = 3
+                        },
+                        new
+                        {
+                            Id = 22,
+                            MemberId = 7,
+                            TeamId = 3
+                        },
+                        new
+                        {
+                            Id = 23,
+                            MemberId = 26,
+                            TeamId = 4
+                        },
+                        new
+                        {
+                            Id = 24,
+                            MemberId = 7,
+                            TeamId = 2
+                        },
+                        new
+                        {
+                            Id = 25,
+                            MemberId = 29,
+                            TeamId = 1
                         });
                 });
 
@@ -1569,17 +1640,15 @@ namespace Watchdog.Core.DAL.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
-
-                    b.Property<DateTime>("RegisteredAt")
+                    b.Property<DateTime?>("RegisteredAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.Property<string>("Uid")
+                        .IsRequired()
+                        .HasMaxLength(28)
+                        .HasColumnType("nvarchar(28)");
 
-                    b.HasAlternateKey("Email");
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
 
@@ -1587,202 +1656,202 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/202.jpg",
-                            Email = "jed.kshlerin@hotmail.com",
-                            FirstName = "Jed",
-                            LastName = "Kshlerin",
-                            PasswordHash = "d3ce4ccce29e8b208555506d913e0946",
-                            RegisteredAt = new DateTime(2020, 3, 29, 21, 59, 37, 349, DateTimeKind.Unspecified).AddTicks(9351)
+                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/754.jpg",
+                            Email = "sandy93@gmail.com",
+                            FirstName = "Sandy",
+                            LastName = "Mayert",
+                            RegisteredAt = new DateTime(2021, 6, 28, 10, 18, 23, 123, DateTimeKind.Unspecified).AddTicks(5316),
+                            Uid = "77f95d3ce4ccce29e8b208555506"
                         },
                         new
                         {
                             Id = 2,
-                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/221.jpg",
-                            Email = "elbert14@gmail.com",
-                            FirstName = "Elbert",
-                            LastName = "Shanahan",
-                            PasswordHash = "486b204532df2940dce539dc4d23565c",
-                            RegisteredAt = new DateTime(2020, 9, 18, 15, 52, 23, 708, DateTimeKind.Unspecified).AddTicks(6237)
+                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/198.jpg",
+                            Email = "eudora_feil29@yahoo.com",
+                            FirstName = "Eudora",
+                            LastName = "Feil",
+                            RegisteredAt = new DateTime(2019, 10, 30, 2, 0, 41, 493, DateTimeKind.Unspecified).AddTicks(5757),
+                            Uid = "46a24d412486b204532df2940dce"
                         },
                         new
                         {
                             Id = 3,
-                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/650.jpg",
-                            Email = "anais28@hotmail.com",
-                            FirstName = "Anais",
-                            LastName = "Runolfsson",
-                            PasswordHash = "d4bfc2a1c61705ceaba64d0fcc18f982",
-                            RegisteredAt = new DateTime(2020, 6, 23, 13, 43, 50, 92, DateTimeKind.Unspecified).AddTicks(2415)
+                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/72.jpg",
+                            Email = "marianna.rau@yahoo.com",
+                            FirstName = "Marianna",
+                            LastName = "Rau",
+                            RegisteredAt = new DateTime(2019, 10, 20, 21, 37, 4, 161, DateTimeKind.Unspecified).AddTicks(2171),
+                            Uid = "3565c620ce44d4bfc2a1c61705ce"
                         },
                         new
                         {
                             Id = 4,
-                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/860.jpg",
-                            Email = "bailee.berge@yahoo.com",
-                            FirstName = "Bailee",
-                            LastName = "Berge",
-                            PasswordHash = "9ab5d3f57a4603dff3c201223efe83b6",
-                            RegisteredAt = new DateTime(2021, 5, 29, 16, 20, 19, 156, DateTimeKind.Unspecified).AddTicks(244)
+                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/218.jpg",
+                            Email = "america_ferry21@hotmail.com",
+                            FirstName = "America",
+                            LastName = "Ferry",
+                            RegisteredAt = new DateTime(2019, 12, 24, 16, 33, 25, 220, DateTimeKind.Unspecified).AddTicks(4395),
+                            Uid = "fcc18f98288107909ab5d3f57a46"
                         },
                         new
                         {
                             Id = 5,
-                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/30.jpg",
-                            Email = "arthur.schiller@yahoo.com",
-                            FirstName = "Arthur",
-                            LastName = "Schiller",
-                            PasswordHash = "bd79eb27ea82db6f7892f40d3ed45217",
-                            RegisteredAt = new DateTime(2020, 8, 21, 15, 27, 45, 439, DateTimeKind.Unspecified).AddTicks(7151)
+                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/602.jpg",
+                            Email = "marc_lebsack43@gmail.com",
+                            FirstName = "Marc",
+                            LastName = "Lebsack",
+                            RegisteredAt = new DateTime(2019, 7, 23, 17, 56, 25, 628, DateTimeKind.Unspecified).AddTicks(1090),
+                            Uid = "01223efe83b61b1c883bd79eb27e"
                         },
                         new
                         {
                             Id = 6,
-                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/362.jpg",
-                            Email = "angeline.hand@yahoo.com",
-                            FirstName = "Angeline",
-                            LastName = "Hand",
-                            PasswordHash = "60604f1ebab94e637da6fee1c90ada16",
-                            RegisteredAt = new DateTime(2021, 7, 15, 8, 59, 55, 774, DateTimeKind.Unspecified).AddTicks(8519)
+                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/345.jpg",
+                            Email = "arlo_thiel@hotmail.com",
+                            FirstName = "Arlo",
+                            LastName = "Thiel",
+                            RegisteredAt = new DateTime(2020, 5, 5, 23, 31, 19, 283, DateTimeKind.Unspecified).AddTicks(8044),
+                            Uid = "892f40d3ed45217700597360604f"
                         },
                         new
                         {
                             Id = 7,
-                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/43.jpg",
-                            Email = "cloyd78@yahoo.com",
-                            FirstName = "Cloyd",
-                            LastName = "Bogisich",
-                            PasswordHash = "d201aa8c81d98f138254ae601849fb4a",
-                            RegisteredAt = new DateTime(2021, 2, 23, 18, 31, 26, 64, DateTimeKind.Unspecified).AddTicks(717)
+                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/98.jpg",
+                            Email = "alejandrin_brekke80@hotmail.com",
+                            FirstName = "Alejandrin",
+                            LastName = "Brekke",
+                            RegisteredAt = new DateTime(2020, 6, 13, 23, 56, 25, 451, DateTimeKind.Unspecified).AddTicks(4553),
+                            Uid = "e637da6fee1c90ada16043183cd2"
                         },
                         new
                         {
                             Id = 8,
-                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1150.jpg",
-                            Email = "paula.erdman41@hotmail.com",
-                            FirstName = "Paula",
-                            LastName = "Erdman",
-                            PasswordHash = "3c890097e0ae3f1ecf026fddc2672e4c",
-                            RegisteredAt = new DateTime(2019, 8, 13, 15, 40, 29, 274, DateTimeKind.Unspecified).AddTicks(8803)
+                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/22.jpg",
+                            Email = "connie_johnson60@gmail.com",
+                            FirstName = "Connie",
+                            LastName = "Johnson",
+                            RegisteredAt = new DateTime(2021, 7, 17, 10, 50, 46, 816, DateTimeKind.Unspecified).AddTicks(6310),
+                            Uid = "d98f138254ae601849fb4a30c3fc"
                         },
                         new
                         {
                             Id = 9,
-                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1193.jpg",
+                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1014.jpg",
                             Email = "antwan.swift6@yahoo.com",
                             FirstName = "Antwan",
                             LastName = "Swift",
-                            PasswordHash = "ecae0563ee7fb004facd9240cef4e37f",
-                            RegisteredAt = new DateTime(2019, 9, 19, 17, 36, 17, 907, DateTimeKind.Unspecified).AddTicks(4010)
+                            RegisteredAt = new DateTime(2019, 9, 11, 5, 12, 42, 621, DateTimeKind.Unspecified).AddTicks(4741),
+                            Uid = "97e0ae3f1ecf026fddc2672e4cfe"
                         },
                         new
                         {
                             Id = 10,
-                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/486.jpg",
-                            Email = "cruz_mcclure42@gmail.com",
-                            FirstName = "Cruz",
-                            LastName = "McClure",
-                            PasswordHash = "b284640eedebf37c8a22615a671cd7f1",
-                            RegisteredAt = new DateTime(2019, 9, 27, 10, 3, 13, 442, DateTimeKind.Unspecified).AddTicks(2050)
+                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1108.jpg",
+                            Email = "jesse.wintheiser58@hotmail.com",
+                            FirstName = "Jesse",
+                            LastName = "Wintheiser",
+                            RegisteredAt = new DateTime(2021, 1, 3, 23, 42, 56, 548, DateTimeKind.Unspecified).AddTicks(5804),
+                            Uid = "ae0563ee7fb004facd9240cef4e3"
                         },
                         new
                         {
                             Id = 11,
-                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/58.jpg",
-                            Email = "arturo60@yahoo.com",
-                            FirstName = "Arturo",
-                            LastName = "Johnson",
-                            PasswordHash = "8d0615cfb7619c909ddee2307dcd9203",
-                            RegisteredAt = new DateTime(2020, 8, 7, 0, 15, 16, 197, DateTimeKind.Unspecified).AddTicks(7668)
+                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1131.jpg",
+                            Email = "arnoldo_schiller@hotmail.com",
+                            FirstName = "Arnoldo",
+                            LastName = "Schiller",
+                            RegisteredAt = new DateTime(2021, 5, 15, 16, 35, 43, 754, DateTimeKind.Unspecified).AddTicks(4296),
+                            Uid = "c6b284640eedebf37c8a22615a67"
                         },
                         new
                         {
                             Id = 12,
-                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/668.jpg",
-                            Email = "lambert.gusikowski33@yahoo.com",
-                            FirstName = "Lambert",
-                            LastName = "Gusikowski",
-                            PasswordHash = "986465554679b2a5aff38e68639924ae",
-                            RegisteredAt = new DateTime(2020, 7, 3, 9, 11, 22, 889, DateTimeKind.Unspecified).AddTicks(4516)
+                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/171.jpg",
+                            Email = "darby_beer83@yahoo.com",
+                            FirstName = "Darby",
+                            LastName = "Beer",
+                            RegisteredAt = new DateTime(2020, 5, 10, 0, 27, 49, 614, DateTimeKind.Unspecified).AddTicks(386),
+                            Uid = "6169098d0615cfb7619c909ddee2"
                         },
                         new
                         {
                             Id = 13,
-                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1099.jpg",
-                            Email = "easton_kassulke7@hotmail.com",
-                            FirstName = "Easton",
-                            LastName = "Kassulke",
-                            PasswordHash = "7783a78553a6c1cb2de3cc2fc812d39b",
-                            RegisteredAt = new DateTime(2020, 10, 31, 15, 53, 56, 719, DateTimeKind.Unspecified).AddTicks(9479)
+                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/245.jpg",
+                            Email = "vesta.feest55@yahoo.com",
+                            FirstName = "Vesta",
+                            LastName = "Feest",
+                            RegisteredAt = new DateTime(2020, 9, 12, 9, 25, 30, 496, DateTimeKind.Unspecified).AddTicks(8441),
+                            Uid = "0370945b45986465554679b2a5af"
                         },
                         new
                         {
                             Id = 14,
-                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1193.jpg",
-                            Email = "olaf87@yahoo.com",
-                            FirstName = "Olaf",
-                            LastName = "Bechtelar",
-                            PasswordHash = "fa43fa327b94f065a58726581af0e4c4",
-                            RegisteredAt = new DateTime(2019, 8, 24, 7, 46, 4, 209, DateTimeKind.Unspecified).AddTicks(8706)
+                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1003.jpg",
+                            Email = "rachel_powlowski23@gmail.com",
+                            FirstName = "Rachel",
+                            LastName = "Powlowski",
+                            RegisteredAt = new DateTime(2020, 1, 6, 18, 17, 38, 650, DateTimeKind.Unspecified).AddTicks(9773),
+                            Uid = "9924ae8846cea17783a78553a6c1"
                         },
                         new
                         {
                             Id = 15,
-                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/124.jpg",
-                            Email = "terrill.lueilwitz@yahoo.com",
-                            FirstName = "Terrill",
-                            LastName = "Lueilwitz",
-                            PasswordHash = "586974f9af91bdbc95b14b342f4501dc",
-                            RegisteredAt = new DateTime(2021, 6, 13, 12, 3, 21, 539, DateTimeKind.Unspecified).AddTicks(1403)
+                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/401.jpg",
+                            Email = "eliane.will@gmail.com",
+                            FirstName = "Eliane",
+                            LastName = "Will",
+                            RegisteredAt = new DateTime(2020, 3, 25, 10, 45, 6, 36, DateTimeKind.Unspecified).AddTicks(3026),
+                            Uid = "2fc812d39b5ec062efa43fa327b9"
                         },
                         new
                         {
                             Id = 16,
-                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/620.jpg",
-                            Email = "christopher_weimann25@hotmail.com",
-                            FirstName = "Christopher",
-                            LastName = "Weimann",
-                            PasswordHash = "204142073353c8fa4177f9991c0aac0d",
-                            RegisteredAt = new DateTime(2020, 9, 13, 6, 37, 58, 834, DateTimeKind.Unspecified).AddTicks(4018)
+                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1066.jpg",
+                            Email = "leopoldo.pfannerstill@hotmail.com",
+                            FirstName = "Leopoldo",
+                            LastName = "Pfannerstill",
+                            RegisteredAt = new DateTime(2020, 2, 1, 19, 39, 17, 212, DateTimeKind.Unspecified).AddTicks(3797),
+                            Uid = "8726581af0e4c4ffe8893586974f"
                         },
                         new
                         {
                             Id = 17,
-                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/192.jpg",
-                            Email = "stanford96@yahoo.com",
-                            FirstName = "Stanford",
-                            LastName = "Ernser",
-                            PasswordHash = "ffd1cc90828a947497af816c728c4ab3",
-                            RegisteredAt = new DateTime(2021, 4, 4, 3, 53, 51, 406, DateTimeKind.Unspecified).AddTicks(7802)
+                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/286.jpg",
+                            Email = "dessie2@gmail.com",
+                            FirstName = "Dessie",
+                            LastName = "Bernhard",
+                            RegisteredAt = new DateTime(2020, 8, 24, 12, 17, 18, 626, DateTimeKind.Unspecified).AddTicks(6944),
+                            Uid = "bc95b14b342f4501dc012fbce420"
                         },
                         new
                         {
                             Id = 18,
-                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/788.jpg",
-                            Email = "jamaal_leannon@gmail.com",
-                            FirstName = "Jamaal",
-                            LastName = "Leannon",
-                            PasswordHash = "c7b872268f35cc36d80a94dcd6577de2",
-                            RegisteredAt = new DateTime(2021, 5, 22, 4, 51, 14, 422, DateTimeKind.Unspecified).AddTicks(9085)
+                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/980.jpg",
+                            Email = "camden_wisoky11@hotmail.com",
+                            FirstName = "Camden",
+                            LastName = "Wisoky",
+                            RegisteredAt = new DateTime(2019, 12, 13, 10, 32, 1, 457, DateTimeKind.Unspecified).AddTicks(5363),
+                            Uid = "353c8fa4177f9991c0aac0d67e37"
                         },
                         new
                         {
                             Id = 19,
-                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/804.jpg",
-                            Email = "stephania_koelpin@hotmail.com",
-                            FirstName = "Stephania",
-                            LastName = "Koelpin",
-                            PasswordHash = "a4cfd04f7fb9f1d38afa0cafa1142db9",
-                            RegisteredAt = new DateTime(2020, 12, 11, 18, 50, 9, 819, DateTimeKind.Unspecified).AddTicks(713)
+                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/616.jpg",
+                            Email = "jamaal_leannon@gmail.com",
+                            FirstName = "Jamaal",
+                            LastName = "Leannon",
+                            RegisteredAt = new DateTime(2019, 12, 23, 7, 37, 36, 280, DateTimeKind.Unspecified).AddTicks(2979),
+                            Uid = "90828a947497af816c728c4ab322"
                         },
                         new
                         {
                             Id = 20,
-                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/826.jpg",
-                            Email = "gregoria0@hotmail.com",
-                            FirstName = "Gregoria",
-                            LastName = "Hills",
-                            PasswordHash = "b97d8b4f0476cdeddac5cf0c93145a75",
-                            RegisteredAt = new DateTime(2021, 2, 13, 8, 22, 26, 387, DateTimeKind.Unspecified).AddTicks(4942)
+                            AvatarUrl = "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1012.jpg",
+                            Email = "thelma_considine@gmail.com",
+                            FirstName = "Thelma",
+                            LastName = "Considine",
+                            RegisteredAt = new DateTime(2020, 8, 18, 4, 29, 1, 814, DateTimeKind.Unspecified).AddTicks(3646),
+                            Uid = "b872268f35cc36d80a94dcd6577d"
                         });
                 });
 
@@ -1791,7 +1860,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Applications")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Organization", "Organization")
@@ -1837,7 +1906,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Dashboards")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Organization", "Organization")
@@ -1864,16 +1933,16 @@ namespace Watchdog.Core.DAL.Migrations
 
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Member", b =>
                 {
-                    b.HasOne("Watchdog.Core.DAL.Entities.User", "CreatedByUser")
-                        .WithMany("CreatedMembers")
+                    b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
+                        .WithMany("Members")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Organization", "Organization")
                         .WithMany("Members")
                         .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Role", "Role")
@@ -1882,25 +1951,9 @@ namespace Watchdog.Core.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Watchdog.Core.DAL.Entities.Team", "Team")
-                        .WithMany("Members")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
-                        .WithMany("Members")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CreatedByUser");
-
                     b.Navigation("Organization");
 
                     b.Navigation("Role");
-
-                    b.Navigation("Team");
 
                     b.Navigation("User");
                 });
@@ -1910,7 +1963,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Organizations")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -1921,7 +1974,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Teams")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Organization", "Organization")
@@ -1935,12 +1988,31 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Watchdog.Core.DAL.Entities.TeamMember", b =>
+                {
+                    b.HasOne("Watchdog.Core.DAL.Entities.Member", "Member")
+                        .WithMany("TeamMembers")
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Watchdog.Core.DAL.Entities.Team", "Team")
+                        .WithMany("TeamMembers")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.Navigation("Member");
+
+                    b.Navigation("Team");
+                });
+
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Tile", b =>
                 {
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Tiles")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Dashboard", "Dashboard")
@@ -1964,6 +2036,11 @@ namespace Watchdog.Core.DAL.Migrations
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Dashboard", b =>
                 {
                     b.Navigation("Tiles");
+                });
+
+            modelBuilder.Entity("Watchdog.Core.DAL.Entities.Member", b =>
+                {
+                    b.Navigation("TeamMembers");
                 });
 
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Organization", b =>
@@ -1991,14 +2068,12 @@ namespace Watchdog.Core.DAL.Migrations
                 {
                     b.Navigation("ApplicationTeams");
 
-                    b.Navigation("Members");
+                    b.Navigation("TeamMembers");
                 });
 
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.User", b =>
                 {
                     b.Navigation("Applications");
-
-                    b.Navigation("CreatedMembers");
 
                     b.Navigation("Dashboards");
 

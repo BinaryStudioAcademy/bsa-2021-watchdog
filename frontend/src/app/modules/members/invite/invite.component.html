@@ -46,7 +46,7 @@
                     <p-overlayPanel #op [appendTo]="'body'">
                         <ng-template pTemplate>
                             <div class="availiable-members" *ngFor="let member of members">
-                                <button (click)="invation.member.email = member.user.email"> 
+                                <button> 
                                     <span> {{member.user.firstName}} {{member.user.lastName}}</span>
                                     <span> {{member.user.email}} </span> 
                                 </button>

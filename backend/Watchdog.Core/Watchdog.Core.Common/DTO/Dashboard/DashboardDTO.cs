@@ -11,7 +11,6 @@ namespace Watchdog.Core.Common.DTO.Dashboard
         public string Icon { get; set; }
         public int OrganizationId { get; set; }
         public int CreatedBy { get; set; }
-        public ICollection<TileDto> Tiles { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

@@ -3,16 +3,16 @@
         <h2>{{dashboard?.name}}</h2>
     </div>
     <div class="action-buttons">
-        <button (click)="deleteDashboard()" class="p-button-danger" label="Delete" pButton pRipple></button>
-        <button (click)="isEditing = true" class="p-button-info" label="Edit" pButton pRipple></button>
-        <button (click)="toggleTileMenu()" class="p-button-secondary" label="Edit Tiles" pButton pRipple></button>
+        <button (click)="confirmDelete()" class="p-button-danger p-button-outlined" label="Delete"
+            [disabled]="!dashboard" pButton pRipple></button>
+        <button (click)="isEditing = true" class="p-button-primary p-button-outlined" label="Edit"
+            [disabled]="!dashboard" pButton pRipple></button>
+        <button (click)="toggleTileMenu()" class="p-button-secondary p-button-outlined" label="Edit Tiles" pButton
+            [disabled]="!dashboard" pRipple></button>
     </div>
 </div>
 <app-tile-menu (closeMenu)="tileMenuClosed()" *ngIf="showTileMenu" [dashboardId]="dashboard.id"></app-tile-menu>
 
-<app-update-dashboard
-    (closeModal)="isEditing = !isEditing"
-    (save)="updateDashboard($event)"
-    *ngIf="isEditing"
+<app-update-dashboard (closeModal)="isEditing = !isEditing" (save)="updateDashboard($event)" *ngIf="isEditing"
     [dashboard]="dashboard">
 </app-update-dashboard>

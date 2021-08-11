@@ -30,6 +30,15 @@ namespace Watchdog.Core.API.Extensions
             services.AddTransient<IOrganizationService, OrganizationService>();
             services.AddTransient<IRoleService, RoleService>();
             services.AddEmailSendService(configuration);
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IMemberService, MemberService>();
+            services.AddTransient<IDashboardService, DashboardService>();
+            services.AddTransient<IOrganizationService, OrganizationService>();
+            services.AddTransient<IRoleService, RoleService>();
+            services.AddScoped<ITeamService, TeamService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddScoped<IRegistrationService, RegistrationService>();
+
         }
 
         public static void AddAutoMapper(this IServiceCollection services)

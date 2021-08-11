@@ -279,21 +279,21 @@ namespace Watchdog.Core.DAL.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "Description",
-                value: "Sunt maxime numquam alias alias placeat corrupti nisi veniam. In adipisci ipsa doloribus amet. Earum dolore enim sapiente.");
+                value: "Nostrum consequuntur qui quis alias est est. Sunt ipsa quibusdam odio necessitatibus est doloribus omnis. Illo laboriosam dolore nihil neque quas in et repudiandae. Qui consequatur ut voluptas enim. Ea et iure doloremque.");
 
             migrationBuilder.UpdateData(
                 table: "Roles",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "Description",
-                value: "Eligendi aspernatur molestias et eum et. Ipsa inventore quam qui dolor. Minus non repudiandae harum architecto nesciunt reprehenderit. Numquam sunt nostrum fugiat. Occaecati aut quam consequatur aliquid eius sed quia ab.");
+                value: "Totam non aperiam quo reprehenderit consequatur quasi vitae blanditiis placeat. Atque officia quis totam. Consequuntur dolorum asperiores quae sunt sit enim aut quod.");
 
             migrationBuilder.UpdateData(
                 table: "Roles",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "Description",
-                value: "Iure sint dolorum maiores et eius. Maxime eos quis qui. Doloremque laborum ut aut tempora.");
+                value: "Ut corrupti voluptatem id minus quo. Officiis ipsam tempore. Fugit qui quia fugiat ut nihil. Et dolor voluptatem nihil sed quis voluptas.");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Members_TeamId",
@@ -667,21 +667,21 @@ namespace Watchdog.Core.DAL.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "Description",
-                value: "Sit est commodi explicabo numquam eaque aut est. Hic expedita natus ut impedit. Natus voluptas delectus. Cum dignissimos rem quaerat reiciendis incidunt dicta quam veritatis.");
+                value: "Expedita omnis voluptatem magnam repellat omnis quidem necessitatibus. In hic beatae eius ipsam. At totam alias non ipsa. Inventore nemo velit corporis nulla. Rerum dolor adipisci voluptate dolorem qui. Ipsam et et.");
 
             migrationBuilder.UpdateData(
                 table: "Roles",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "Description",
-                value: "Ab hic incidunt alias omnis totam molestias et beatae. Soluta maxime cum repudiandae. Voluptatem et aspernatur explicabo voluptatibus adipisci. Totam id incidunt perspiciatis reprehenderit. Et magni et qui voluptas et. Nihil voluptas ut non provident illo voluptate rerum cupiditate asperiores.");
+                value: "Quod maxime modi exercitationem atque totam unde ipsum enim voluptatem. Pariatur maiores et at blanditiis animi totam quia. Sequi voluptatem asperiores quo quia asperiores dolor recusandae adipisci repellat. Ab ut sunt consectetur exercitationem ipsa voluptas qui. Possimus cum sunt quos praesentium ut quam sint. Error porro sit soluta voluptatibus.");
 
             migrationBuilder.UpdateData(
                 table: "Roles",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "Description",
-                value: "Ut omnis beatae expedita voluptatem ut eos et est. Dolores assumenda incidunt beatae quia inventore. Est eos reiciendis dolor aut quisquam dolorem non dolorem natus. Repellendus iure earum maxime provident placeat quae fugiat temporibus voluptatum. At ut accusamus consequuntur modi.");
+                value: "Placeat molestias quia quos nobis laborum aut. Dignissimos libero nemo eveniet praesentium. Velit quo est iure amet voluptatum inventore. Magnam omnis sunt ut rerum harum minima. Quis natus voluptas animi unde provident officia. Quae qui nihil omnis quae.");
 
             migrationBuilder.InsertData(
                 table: "TeamMembers",

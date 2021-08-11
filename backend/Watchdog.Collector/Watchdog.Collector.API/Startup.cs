@@ -9,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using Watchdog.Collector.API.Extensions;
 
 namespace Watchdog.Collector.API
 {
@@ -36,7 +37,10 @@ namespace Watchdog.Collector.API
         {
             services.AddControllers();
             services.AddHealthChecks();
-
+            
+            services.AddElasticSearch(Configuration);
+            services.RegisterCustomServices();
+            
             services.AddCors(options =>
             {
                 options.AddPolicy("AnyOrigin", x => x

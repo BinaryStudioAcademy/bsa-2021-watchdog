@@ -1,11 +1,15 @@
 @import src/styles/variables
 
 button
-    width: 100%
     margin: 4px 0
+    width: 45%
 
-.p-button-text
-    background-color: $background-color
+.buttons-container
+    display: flex
+    justify-content: space-between
+
+.input-section
+    padding: 8px 0
 
 :host ::ng-deep
     .p-dropdown
@@ -28,15 +32,7 @@ button
             padding: 0
 :host ::ng-deep
     .p-panel
+        overflow-y: hidden
         .p-panel-header,
         .p-panel-content
             border-radius: 0
-
-.validation
-    width: 100%
-    margin: 4px auto
-    color: $validation-color
-    font-size: 12px
-    small
-        display: block
-        margin-top: 3px
