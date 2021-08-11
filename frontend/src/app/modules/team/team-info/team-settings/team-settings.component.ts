@@ -1,12 +1,12 @@
-import { regexs } from "@shared/constants/regexs";
-import { ToastNotificationService } from "@core/services/toast-notification.service";
-import { uniqueTeamNameValidator } from "@shared/validators/unique-team-name.validator";
-import { BaseComponent } from "@core/components/base/base.component";
-import { UpdateTeam } from "@shared/models/team/update-team";
-import { TeamService } from "@core/services/team.service";
-import { Observable } from "rxjs";
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
+import { regexs } from '@shared/constants/regexs';
+import { ToastNotificationService } from '@core/services/toast-notification.service';
+import { uniqueTeamNameValidator } from '@shared/validators/unique-team-name.validator';
+import { BaseComponent } from '@core/components/base/base.component';
+import { UpdateTeam } from '@shared/models/team/update-team';
+import { TeamService } from '@core/services/team.service';
+import { Observable } from 'rxjs';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Team } from '@shared/models/team/team';
 
 @Component({
@@ -50,7 +50,7 @@ export class TeamSettingsComponent extends BaseComponent implements OnInit {
                     Object.assign(this.team, updatedTeam);
                     this.isLoading = false;
                     this.canSave.emit(false);
-                    this.toastService.success("Team was saved!");
+                    this.toastService.success('Team was saved!');
                 }, error => {
                     this.isLoading = false;
                     this.canSave.emit(true);
@@ -67,13 +67,14 @@ export class TeamSettingsComponent extends BaseComponent implements OnInit {
         });
     }
 
-
     checkSaveStatus() {
         if (this.formGroup.untouched || this.formGroup.pending || this.formGroup.invalid) {
             this.canSave.next(false);
         }
         if (this.formGroup.valid && (this.formGroup.touched || this.formGroup.dirty)) {
-            const unsavedChangesProps = Object.keys(this.formGroup.controls).filter(key => this.formGroup.controls[key].value != this.team[key]);
+            const unsavedChangesProps = Object.keys(this.formGroup.controls)
+                .filter(key =>
+                    this.formGroup.controls[key].value !== this.team[key]);
 
             if (unsavedChangesProps.length > 0) this.canSave.next(true);
             else this.canSave.next(false);
@@ -81,6 +82,6 @@ export class TeamSettingsComponent extends BaseComponent implements OnInit {
     }
 
     get name() {
-        return this.formGroup.controls['name'];
+        return this.formGroup.controls.name;
     }
 }

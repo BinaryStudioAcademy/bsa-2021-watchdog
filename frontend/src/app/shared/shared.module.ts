@@ -1,9 +1,9 @@
-import { UserInitialsPipe } from "./pipes/user-initials.pipe";
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { UserInitialsPipe } from './pipes/user-initials.pipe';
 
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';

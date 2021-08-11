@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import { Member } from '@shared/models/member/member';
 import { Observable } from 'rxjs';
@@ -17,7 +16,7 @@ export class MemberService {
     }
 
     searchMembersNotInTeam(teamId: number, memberEmail: string): Observable<Member[]> {
-        const url = `team/${teamId}/exceptTeam/${memberEmail !== '' ? '?memberEmail=' + memberEmail : ''}`;
+        const url = `team/${teamId}/exceptTeam/${memberEmail !== '' ? `?memberEmail=${memberEmail}` : ''}`;
         return this.httpService.getRequest<Member[]>(`${this.routePrefix}/${url}`);
     }
 

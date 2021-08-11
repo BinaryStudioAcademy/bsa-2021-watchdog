@@ -1,12 +1,12 @@
-import { ConfirmWindowService } from "@core/services/confirm-window.service";
-import { Subject } from "rxjs";
-import { ToastNotificationService } from "@core/services/toast-notification.service";
-import { BaseComponent } from "@core/components/base/base.component";
-import { TeamService } from "@core/services/team.service";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ConfirmWindowService } from '@core/services/confirm-window.service';
+import { Subject } from 'rxjs';
+import { ToastNotificationService } from '@core/services/toast-notification.service';
+import { BaseComponent } from '@core/components/base/base.component';
+import { TeamService } from '@core/services/team.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Team } from "@shared/models/team/team";
-import { PrimeIcons } from "primeng/api";
+import { Team } from '@shared/models/team/team';
+import { PrimeIcons } from 'primeng/api';
 
 @Component({
     selector: 'app-team-info',
@@ -21,11 +21,11 @@ export class TeamInfoComponent extends BaseComponent implements OnInit {
     reset: Subject<void> = new Subject<void>();
     save: Subject<void> = new Subject<void>();
 
-    @ViewChild("saveBut") saveButton: ElementRef<HTMLButtonElement>;
+    @ViewChild('saveBut') saveButton: ElementRef<HTMLButtonElement>;
 
     constructor(
         private activatedRoute: ActivatedRoute,
-        public teamService: TeamService,
+        private teamService: TeamService,
         private router: Router,
         private toastService: ToastNotificationService,
         private confirmService: ConfirmWindowService
@@ -49,7 +49,7 @@ export class TeamInfoComponent extends BaseComponent implements OnInit {
     }
 
     resetButtonsState(event: any) {
-        this.isSettings = event.index === 2 ? true : false;
+        this.isSettings = event.index === 2;
     }
 
     setSaveState(state: boolean) {
@@ -58,11 +58,11 @@ export class TeamInfoComponent extends BaseComponent implements OnInit {
 
     removeTeam() {
         this.confirmService.confirm({
-            title: "Remove Team #" + this.team.name,
-            message: "Are you sure, you want to delete this team?",
+            title: `Remove Team #${this.team.name}`,
+            message: 'Are you sure, you want to delete this team?',
             icon: PrimeIcons.BAN,
-            acceptButton: { label: "Yes", class: "p-button-outlined p-button-danger" },
-            cancelButton: { label: "No", class: "p-button-outlined p-button-secondary" },
+            acceptButton: { label: 'Yes', class: 'p-button-outlined p-button-danger' },
+            cancelButton: { label: 'No', class: 'p-button-outlined p-button-secondary' },
             accept: () => {
                 this.isLoading = true;
                 this.teamService.removeTeam(this.team.id)
@@ -70,9 +70,9 @@ export class TeamInfoComponent extends BaseComponent implements OnInit {
                     .subscribe(() => {
                         this.isLoading = false;
                         this.router.navigate(['home/teams']).then(() => {
-                            this.toastService.success("Team was removed!");
+                            this.toastService.success('Team was removed!');
                         });
-                    }, error => { this.toastService.error(error) });
+                    }, error => { this.toastService.error(error); });
             }
         });
     }

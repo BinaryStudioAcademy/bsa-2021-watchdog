@@ -1,12 +1,12 @@
-import { ToastNotificationService } from "./../../../../../core/services/toast-notification.service";
-import { Team } from "@shared/models/team/team";
-import { BaseComponent } from "@core/components/base/base.component";
-import { MemberService } from "@core/services/member.service";
+import { ToastNotificationService } from '@core/services/toast-notification.service';
+import { Team } from '@shared/models/team/team';
+import { BaseComponent } from '@core/components/base/base.component';
+import { MemberService } from '@core/services/member.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Member } from '@shared/models/member/member';
-import { OverlayPanel } from "primeng/overlaypanel";
-import { debounceTime, distinctUntilChanged, switchMap } from "rxjs/operators";
-import { Subject } from "rxjs";
+import { OverlayPanel } from 'primeng/overlaypanel';
+import { debounceTime, switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
     selector: 'app-team-add-member',
@@ -36,14 +36,14 @@ export class TeamAddMemberComponent extends BaseComponent implements OnInit {
             debounceTime(300),
             switchMap((term: string) =>
                 this.memberService.searchMembersNotInTeam(this.team.id, term)
-                    .pipe(this.untilThis)
-            )).subscribe(members => {
-                this.members = members;
-                this.isLoading = false;
-            }, error => {
-                this.isLoading = false;
-                this.toastService.error(error);
-            });
+                    .pipe(this.untilThis))
+        ).subscribe(members => {
+            this.members = members;
+            this.isLoading = false;
+        }, error => {
+            this.isLoading = false;
+            this.toastService.error(error);
+        });
     }
 
     search(input: string) {

@@ -1,12 +1,12 @@
-import { ToastNotificationService } from "./../../../../../core/services/toast-notification.service";
-import { BaseComponent } from "@core/components/base/base.component";
-import { ProjectService } from "@core/services/project.service";
-import { OverlayPanel } from "primeng/overlaypanel";
-import { Project } from "@shared/models/projects/project";
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { Team } from "@shared/models/team/team";
-import { Subject } from "rxjs";
-import { debounceTime, switchMap } from "rxjs/operators";
+import { ToastNotificationService } from '@core/services/toast-notification.service';
+import { BaseComponent } from '@core/components/base/base.component';
+import { ProjectService } from '@core/services/project.service';
+import { OverlayPanel } from 'primeng/overlaypanel';
+import { Project } from '@shared/models/projects/project';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Team } from '@shared/models/team/team';
+import { Subject } from 'rxjs';
+import { debounceTime, switchMap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-team-add-project',
@@ -36,14 +36,14 @@ export class TeamAddProjectComponent extends BaseComponent implements OnInit {
             debounceTime(300),
             switchMap((term: string) =>
                 this.projectService.searchProjectsNotInTeam(this.team.id, term)
-                    .pipe(this.untilThis)
-            )).subscribe(projects => {
-                this.projects = projects;
-                this.isLoading = false;
-            }, error => {
-                this.toastService.error(error);
-                this.isLoading = false;
-            });
+                    .pipe(this.untilThis))
+        ).subscribe(projects => {
+            this.projects = projects;
+            this.isLoading = false;
+        }, error => {
+            this.toastService.error(error);
+            this.isLoading = false;
+        });
     }
 
     search(input: string) {

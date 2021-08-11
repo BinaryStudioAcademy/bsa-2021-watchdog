@@ -1,11 +1,11 @@
-import { UpdateTeam } from "./../../shared/models/team/update-team";
 import { Injectable } from '@angular/core';
 import { HttpInternalService } from '@core/services/http-internal.service';
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs';
 import { Team } from '@shared/models/team/team';
 import { HttpResponse } from '@angular/common/http';
 import { TeamMember } from '@shared/models/team/team-member';
 import { NewTeam } from '@shared/models/team/new-team';
+import { UpdateTeam } from '../../shared/models/team/update-team';
 
 @Injectable({ providedIn: 'root' })
 export class TeamService {

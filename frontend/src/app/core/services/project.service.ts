@@ -1,9 +1,9 @@
-import { ProjectTeam } from "@shared/models/projects/project-team";
+import { ProjectTeam } from '@shared/models/projects/project-team';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Project } from '@shared/models/projects/project';
+import { NewProjectTeam } from '@shared/models/projects/new-project-team';
 import { HttpInternalService } from './http-internal.service';
-import { NewProjectTeam } from "@shared/models/projects/new-project-team";
 
 @Injectable({
     providedIn: 'root',
@@ -37,7 +37,7 @@ export class ProjectService {
     }
 
     searchProjectsNotInTeam(teamId: number, projectName: string) {
-        const url = `team/${teamId}/exceptTeam/${projectName !== '' ? '?appName=' + projectName : ''}`;
+        const url = `team/${teamId}/exceptTeam/${projectName !== '' ? `?appName=${projectName}` : ''}`;
         return this.httpService.getRequest<Project[]>(`${this.apiPrefix}/${url}`);
     }
 

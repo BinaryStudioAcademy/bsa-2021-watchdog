@@ -1,4 +1,4 @@
-import { User } from "@shared/models/user/user";
+import { User } from '@shared/models/user/user';
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({

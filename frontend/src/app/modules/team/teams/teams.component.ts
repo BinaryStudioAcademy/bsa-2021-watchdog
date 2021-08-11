@@ -1,5 +1,4 @@
-import { AuthenticationService } from "./../../../core/services/authentication.service";
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Team } from '@shared/models/team/team';
 import { TeamService } from '@core/services/team.service';
 import { Subject } from 'rxjs';
@@ -7,6 +6,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CreateTeamComponent } from '@modules/team/create-team/create-team.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { BaseComponent } from '@core/components/base/base.component';
+import { AuthenticationService } from '@core/services/authentication.service';
 
 @Component({
     selector: 'app-teams',
@@ -14,7 +14,7 @@ import { BaseComponent } from '@core/components/base/base.component';
     styleUrls: ['./teams.component.sass', '../team.style.sass'],
     providers: [DialogService]
 })
-export class TeamsComponent extends BaseComponent implements OnDestroy {
+export class TeamsComponent extends BaseComponent implements OnInit, OnDestroy {
     public teamCreated$: Subject<Team> = new Subject<Team>();
     public notifyOtherTeams$: Subject<Team> = new Subject<Team>();
     public notifyMemberTeams$: Subject<Team> = new Subject<Team>();
@@ -26,14 +26,16 @@ export class TeamsComponent extends BaseComponent implements OnDestroy {
     currentUserId: number = 9;
     currentOrganizationId: number = 1;
 
-    constructor(private teamService: TeamService, public authService: AuthenticationService, public dialogService: DialogService, private toastService: ToastNotificationService) {
-        super();
-    }
+    constructor(
+        private teamService: TeamService,
+        public authService: AuthenticationService,
+        public dialogService: DialogService,
+        private toastService: ToastNotificationService
+    ) { super(); }
 
     ngOnInit() {
         this.currentUserId = this.authService.getUser().id;
     }
-
 
     openDialog() {
         this.createTeamDialog = this.dialogService.open(CreateTeamComponent, {
