@@ -9,7 +9,8 @@
             <div class="star" (click)="toggleStar(projectTeam)" *ngIf="projectTeam.isFavorite"><i
                     class="pi pi-star"></i>
             </div>
-            <div (click)="toggleStar(projectTeam)" *ngIf="!projectTeam.isFavorite"><i class="pi pi-star-o"></i></div>
+            <div class="star" (click)="toggleStar(projectTeam)" *ngIf="!projectTeam.isFavorite"><i
+                    class="pi pi-star-o"></i></div>
             <div>{{projectTeam.project?.name}}</div>
             <button icon="pi pi-minus-circle" class="p-button-outlined p-button-danger" pButton label="Remove"
                 (click)="removeFromTeam(projectTeam.id)"></button>

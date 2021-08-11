@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
@@ -10,14 +9,22 @@ using Watchdog.Core.DAL.Entities;
 
 namespace Watchdog.Core.BLL.Services
 {
-    public class UserService: BaseService, IUserService
+    public class UserService : BaseService, IUserService
     {
-        public UserService(WatchdogCoreContext context, IMapper mapper) : base(context, mapper) { }
-        
-        public async Task<ICollection<UserDto>> GetAllUsersAsync()
+        public UserService(WatchdogCoreContext context, IMapper mapper) : base (context, mapper) 
         {
-            var users = await _context.Users.ToListAsync();
-            return _mapper.Map<ICollection<UserDto>>(users);
+        }
+
+        public async Task<UserDto> UpdateUserAsync(int userId, UpdateUserDto updateUserDto)
+        {
+            var existedUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            var mergedUser = _mapper.Map(updateUserDto, existedUser);
+
+            var updatedUser = _context.Update(mergedUser);
+            await _context.SaveChangesAsync();
+
+            return await GetUserByIdAsync(updatedUser.Entity.Id);
         }
 
         public async Task<UserDto> GetUserByIdAsync(int id)

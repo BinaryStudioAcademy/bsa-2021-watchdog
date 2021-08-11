@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
@@ -33,6 +34,7 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
         PrimeComponentsModule,
         TimeAgoPipe,
         UserInitialsPipe,
+        NgxChartsModule,
     ]
 })
 export class SharedModule { }

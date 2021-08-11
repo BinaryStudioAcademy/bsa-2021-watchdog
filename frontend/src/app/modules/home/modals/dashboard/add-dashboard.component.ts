@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { regexs } from '@shared/constants/regexs';
 import { NewDashboard } from '@shared/models/dashboard/new-dashboard';
 import { SelectItem } from 'primeng/api/selectitem';
 
@@ -26,7 +27,6 @@ export class AddDashboardComponent implements OnInit {
     }
 
     ngOnInit() {
-        const namePattern = new RegExp('^[a-zA-Z0-9_. ]*$');
         this.formGroup = new FormGroup({
             name: new FormControl(
                 '',
@@ -34,7 +34,7 @@ export class AddDashboardComponent implements OnInit {
                     Validators.required,
                     Validators.minLength(3),
                     Validators.maxLength(50),
-                    Validators.pattern(namePattern)
+                    Validators.pattern(regexs.dashboardName)
                 ]
             ),
             icon: new FormControl(

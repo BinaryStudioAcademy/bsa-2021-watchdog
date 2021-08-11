@@ -1,3 +1,4 @@
+import { regexs } from "@shared/constants/regexs";
 import { ToastNotificationService } from "@core/services/toast-notification.service";
 import { uniqueTeamNameValidator } from "@shared/validators/unique-team-name.validator";
 import { BaseComponent } from "@core/components/base/base.component";
@@ -34,7 +35,7 @@ export class TeamSettingsComponent extends BaseComponent implements OnInit {
                 Validators.required,
                 Validators.minLength(3),
                 Validators.maxLength(50),
-                Validators.pattern(new RegExp('^[\\w_-]+$')),
+                Validators.pattern(regexs.teamName),
             ], [
                 uniqueTeamNameValidator(this.team, this.teamService)
             ])

@@ -76,7 +76,9 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                 title: `Delete ${this.dashboard.name}`,
                 message: 'Are you sure you want to delete this dashboard? '
                     + 'If you delete this, then it will be impossible to undo the changes.',
-                accept: () => this.deleteDashboard()
+                accept: () => this.deleteDashboard(),
+                acceptButton: { class: 'p-button-primary p-button-outlined' },
+                cancelButton: { class: 'p-button-secondary p-button-outlined' }
             };
             this.confirmWindowService.confirm(confirmWindowOptions);
         }
