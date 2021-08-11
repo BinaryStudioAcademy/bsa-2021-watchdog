@@ -6,6 +6,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { TooltipWithFullNameDirective } from './directives/dashboard/tooltip-with-full-name';
 import { PrimeComponentsModule } from './modules/prime-components/prime-components.module';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 
@@ -21,6 +22,7 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
         LoadingSpinnerComponent,
         NotFoundComponent,
         TimeAgoPipe,
+        TooltipWithFullNameDirective
     ],
     exports: [
         CommonModule,
@@ -31,7 +33,8 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
         NotFoundComponent,
         PrimeComponentsModule,
         TimeAgoPipe,
-        NgxChartsModule
+        NgxChartsModule,
+        TooltipWithFullNameDirective
     ]
 })
 export class SharedModule { }
