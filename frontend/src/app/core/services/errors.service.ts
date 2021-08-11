@@ -8,7 +8,7 @@ import { HttpResponseErrorMessage } from '@shared/models/issues/http-response.me
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { environment } from '@env/environment';
-import * as stackTraceParser from 'stacktrace-parser';
+//import * as stackTraceParser from 'stacktrace-parser';
 import { ToastNotificationService } from './toast-notification.service';
 
 @Injectable({
@@ -38,18 +38,18 @@ export class ErrorsService implements OnDestroy {
                 url: window.location.href,
                 errorMessage: error.message === '' ? 'Script error' : error.message,
                 className: error.name,
-                stackTrace: error instanceof Error ? this.getStackTrace(error) : null,
+                //stackTrace: error instanceof Error ? this.getStackTrace(error) : null,
                 responseErrorMessage: error instanceof HttpErrorResponse ? this.getResponseErrorMessage(error) : null,
                 environmentMessage: this.getEnvironment()
             }
         };
     }
 
-    private getStackTrace(error: Error): StackTrace[] {
-        const parsedStackTrace = stackTraceParser.parse(error.stack);
+    // private getStackTrace(error: Error): StackTrace[] {
+    //     const parsedStackTrace = stackTraceParser.parse(error.stack);
 
-        return parsedStackTrace.map(item => ({ ...item }));
-    }
+    //     return parsedStackTrace.map(item => ({ ...item }));
+    // }
 
     private getResponseErrorMessage(error: HttpErrorResponse): HttpResponseErrorMessage {
         return {
