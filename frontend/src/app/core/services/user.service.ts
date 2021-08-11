@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { User } from '@shared/models/user/user';
 import { NewUser } from '@shared/models/user/newUser';
 import { HttpInternalService } from './http-internal.service';
+import { clear } from './registration.utils';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +16,8 @@ export class UserService {
         return this.http.getRequest<User>(`/${this.apiPrefix}/${uid}`);
     }
 
-    public createUser(user: NewUser) {
+    public createUser(newUser: NewUser) {
+        const user = clear(newUser);
         return this.http.postRequest<User>(`/${this.apiPrefix}`, user);
     }
 
