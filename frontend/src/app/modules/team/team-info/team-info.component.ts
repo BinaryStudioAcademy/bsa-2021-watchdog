@@ -1,5 +1,5 @@
+import { FormGroup } from '@angular/forms';
 import { ConfirmWindowService } from '@core/services/confirm-window.service';
-import { Subject } from 'rxjs';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { TeamService } from '@core/services/team.service';
@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Team } from '@shared/models/team/team';
 import { PrimeIcons } from 'primeng/api';
+import { UpdateTeam } from '@shared/models/team/update-team';
 
 @Component({
     selector: 'app-team-info',
@@ -18,8 +19,7 @@ export class TeamInfoComponent extends BaseComponent implements OnInit {
     isSettings: boolean = false;
     isLoading: boolean = false;
 
-    reset: Subject<void> = new Subject<void>();
-    save: Subject<void> = new Subject<void>();
+    parentForm: FormGroup = new FormGroup({});
 
     @ViewChild('saveBut') saveButton: ElementRef<HTMLButtonElement>;
 
@@ -46,14 +46,32 @@ export class TeamInfoComponent extends BaseComponent implements OnInit {
                         this.isLoading = false;
                     });
             });
+
+        this.parentForm.statusChanges.subscribe(() => { this.checkSaveStatus(); });
     }
 
     resetButtonsState(event: any) {
         this.isSettings = event.index === 2;
     }
 
-    setSaveState(state: boolean) {
-        this.saveButton.nativeElement.disabled = !state;
+    reset() {
+        this.parentForm.reset(this.team);
+    }
+
+    saveTeam() {
+        this.isLoading = true;
+        const teamValues: UpdateTeam = { ...this.parentForm.value };
+        this.teamService.updateTeam(this.team.id, teamValues)
+            .pipe(this.untilThis)
+            .subscribe(updatedTeam => {
+                Object.assign(this.team, updatedTeam);
+                this.isLoading = false;
+                this.saveButton.nativeElement.disabled = true;
+                this.toastService.success('Team was saved!');
+            }, error => {
+                this.isLoading = false;
+                this.toastService.error(error);
+            });
     }
 
     removeTeam() {
@@ -75,5 +93,19 @@ export class TeamInfoComponent extends BaseComponent implements OnInit {
                     }, error => { this.toastService.error(error); });
             }
         });
+    }
+
+    checkSaveStatus() {
+        if (this.parentForm.untouched || this.parentForm.pending || this.parentForm.invalid) {
+            this.saveButton.nativeElement.disabled = true;
+        }
+        if (this.parentForm.valid && (this.parentForm.touched || this.parentForm.dirty)) {
+            const unsavedChangesProps = Object.keys(this.parentForm.controls)
+                .filter(key =>
+                    this.parentForm.controls[key].value !== this.team[key]);
+
+            if (unsavedChangesProps.length > 0) this.saveButton.nativeElement.disabled = false;
+            else this.saveButton.nativeElement.disabled = true;
+        }
     }
 }

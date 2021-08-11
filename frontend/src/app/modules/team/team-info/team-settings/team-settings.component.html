@@ -1,6 +1,6 @@
 <app-loading-spinner *ngIf="isLoading" [overlay]="true"></app-loading-spinner>
 <p-panel header="Settings" class="panel">
-    <form [formGroup]="formGroup" class="item">
+    <form [formGroup]="parentForm" class="item">
         <label class="item-definition">
             <div>Name</div>
             <div class="item-sub-text">A unique ID used to identify the team</div>
