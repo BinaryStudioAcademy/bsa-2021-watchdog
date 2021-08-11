@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Option } from '@core/models/Option';
 import { Issue } from '@shared/models/issue/issue';
 
 @Component({
@@ -10,16 +9,9 @@ import { Issue } from '@shared/models/issue/issue';
 export class IssuesComponent implements OnInit {
     public countNew: { [type: string]: number };
 
-    public sortedBy: Option;
-    public sortedOptions: Option[];
-
     public issues: Issue[];
 
     public selectedIssues: Issue[] = [];
-
-    public timeOptions: string[];
-
-    public selectedTime: string;
 
     ngOnInit(): void {
         this.setAllFieldsTemp();
@@ -45,19 +37,6 @@ export class IssuesComponent implements OnInit {
             thirdtype: 0
         };
 
-        this.sortedOptions = [
-            {
-                name: 'Last Seen',
-                code: 'last-seen'
-            },
-            {
-                name: 'Newest',
-                code: 'newest'
-            }
-        ];
-
-        [this.sortedBy] = this.sortedOptions;
-
         this.issues = [];
 
         for (let i = 1; i <= 25; i += 1) {
@@ -72,9 +51,5 @@ export class IssuesComponent implements OnInit {
             };
             this.issues.push(issue);
         }
-
-        this.timeOptions = ['24h', '14d'];
-
-        [this.selectedTime] = this.timeOptions;
     }
 }
