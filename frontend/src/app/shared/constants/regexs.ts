@@ -10,5 +10,5 @@ export const regexs = {
     dashboardName: /^[a-zA-Z0-9_. ]*$/,
 
     projectName: /^[a-zA-Z0-9-_]+$/,
-    teamName: /^[\w_]+$/,
+    teamName: /^[\w-]+$/,
 };
