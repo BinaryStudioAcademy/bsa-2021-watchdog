@@ -24,15 +24,15 @@ export class UserService {
     }
 
     public getUser(uid: string) {
-        return this.httpService.getRequest<User>(`/${this.apiPrefix}/${uid}`);
+        return this.httpService.getRequest<User>(`${this.apiPrefix}/${uid}`);
     }
 
     public createUser(newUser: NewUser) {
         const user = clear(newUser);
-        return this.httpService.postRequest<User>(`/${this.apiPrefix}`, user);
+        return this.httpService.postRequest<User>(`${this.apiPrefix}`, user);
     }
 
     public updateUser(user: NewUser) {
-        return this.httpService.putRequest<User>(`/${this.apiPrefix}`, user);
+        return this.httpService.putRequest<User>(`${this.apiPrefix}`, user);
     }
 }
