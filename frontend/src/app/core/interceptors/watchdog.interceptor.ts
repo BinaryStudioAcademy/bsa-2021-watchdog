@@ -8,5 +8,6 @@ export class WatchDogErrorHandler implements ErrorHandler {
 
     handleError(error: any) {
         this.errorsService.log(error);
+        console.error(error);
     }
 }
