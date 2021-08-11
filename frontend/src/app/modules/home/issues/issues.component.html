@@ -61,8 +61,8 @@
                                     <span class="name">{{issue.issueDetails.className}}</span>
                                     <span class="description">{{issue.issueDetails.errorMessage}}</span>
                                     <div class="additional-info">
-<!--                                        <p-tag class="new-issue" *ngIf="issue.isNew" styleClass="p-mr-2" value="New issue" [rounded]="true"></p-tag>-->
-<!--                                        <span>{{issue.projectTag}}</span>-->
+                                        <p-tag class="new-issue" *ngIf="issue.isNew" styleClass="p-mr-2" value="New issue" [rounded]="true"></p-tag>
+                                        <span>{{issue.projectTag}}</span>
                                         <span><i class="pi pi-clock time-icon"></i>{{issue.occurredOn | timeAgo}}</span>
                                     </div>
                                 </div>
