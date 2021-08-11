@@ -1,3 +1,4 @@
+import { FormGroup } from "@angular/forms";
 import { Subject } from "rxjs";
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { BaseComponent } from '@core/components/base/base.component';
@@ -13,12 +14,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 export class OrganizationSettingsComponent extends BaseComponent implements OnInit {
     isLoading: boolean = false;
     organization: Organization;
-    save: Subject<void> = new Subject<void>();
-    reset: Subject<void> = new Subject<void>();
-    canSaveMembership: boolean = true;
-    canSaveGeneral: boolean = true;
-
-
+    parentForm: FormGroup = new FormGroup({});
 
     @ViewChild("saveBut") saveButton: ElementRef<HTMLButtonElement>;
 
@@ -41,27 +37,29 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
                     this.isLoading = false;
                 }
             );
+
+        this.parentForm.statusChanges.subscribe(() => { this.checkSaveStatus(); });
     }
 
-    changeGeneralSaveState(state: boolean) {
-        this.canSaveGeneral = state;
-
-        if (this.canSaveMembership) {
-            this.saveButton.nativeElement.disabled = false;
-        }
-        else {
+    checkSaveStatus() {
+        if (this.parentForm.untouched || this.parentForm.pending || this.parentForm.invalid) {
             this.saveButton.nativeElement.disabled = true;
+        }
+        if (this.parentForm.valid && (this.parentForm.touched || this.parentForm.dirty)) {
+            const unsavedChangesProps = Object.keys(this.parentForm.controls)
+                .filter(key =>
+                    this.parentForm.controls[key].value !== this.organization[key]);
+
+            if (unsavedChangesProps.length > 0) this.saveButton.nativeElement.disabled = false;
+            else this.saveButton.nativeElement.disabled = true;
         }
     }
 
-    changeMembershipSaveState(state: boolean) {
-        this.canSaveMembership = state;
+    reset() {
+        this.parentForm.reset(this.organization);
+    }
 
-        if (this.canSaveGeneral) {
-            this.saveButton.nativeElement.disabled = false;
-        }
-        else {
-            this.saveButton.nativeElement.disabled = true;
-        }
+    save() {
+
     }
 }
