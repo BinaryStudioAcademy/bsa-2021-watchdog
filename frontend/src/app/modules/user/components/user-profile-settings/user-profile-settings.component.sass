@@ -1,4 +1,8 @@
-@import ../../styles/user.styles
+@import src/styles/variables
+@import src/styles/mixins
+
+*
+    font-size: 1.1rem
 
 .user-info
     display: flex
@@ -17,5 +21,90 @@
     padding-top: 7px
     padding-bottom: 7px
     padding-left: 7px
+
+    form
+    padding-top: 15px
+
+.info-settings
+    padding-top: 12px
+
+.user-container
+    min-width: 350px
+
+.section-header
+    padding: 15px
+    @mixin bold-font
+
+.border-on-sides
+    @mixin border-gray-on-sides
+
+.border
+    @mixin border-gray
+
+.user-settings
+    padding: bottom
+    @mixin border-gray-on-sides
+
+.user-settings h3
+    margin-bottom: 10px
+
+#user-name, h3, h4
+    font-weight: bold
+
+.last-section
+    border-bottom: 1px solid #dcdcdc
+
+.input-container
+    display: flex
+    flex-wrap: wrap
+
+.input-section
+    min-width: 50%
+    float: left
+    padding: 10px
+
+.items-container
+    margin-top: 10px
+
+.form-label
+    padding: 5px 0 10px
+
+input
+    width: 100%
+    min-width: 230px
+
+input:focus
+    border: 1px solid #000000
+
+input, label
+    display: block
+
+.form-footer
+    width: 100%
+    height: 46px
+    padding-right: 10px
+    margin-top: 10px
+
+.save-changes
+    float: right
+    height: 46px
+    min-width: 46px
+    padding: 5px
+    font-size: 1.2rem
+    border: 1px solid #0b60a5
+    border-radius: 4px
+    color: #ffffff
+    background-color: #158FEF
+
+.save-changes:hover
+    background-color: #63b5f3
+
+.alert-incorrect
+    color: red
+    margin: 8px
+
+@media screen and ( max-width:  700px)
+    .input-section
+        width: 100%
 
 
