@@ -48,6 +48,8 @@ namespace Watchdog.Core.API
             services.AddRouting(options => options.LowercaseUrls = true);
 
             services.AddWatchdogCoreContext(Configuration);
+            
+            services.AddElasticSearch(Configuration);
 
             services.RegisterCustomServices(Configuration);
 

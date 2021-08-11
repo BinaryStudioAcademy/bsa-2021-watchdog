@@ -1,11 +1,14 @@
-﻿using FluentValidation.AspNetCore;
+﻿using System;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using Nest;
 using Watchdog.Core.BLL.MappingProfiles;
 using Watchdog.Core.BLL.Services;
 using Watchdog.Core.BLL.Services.Abstract;
+using Watchdog.Core.Common.Models.Issue;
 using Watchdog.Core.Common.Validators.Organization;
 using Watchdog.Core.DAL.Context;
 
@@ -27,9 +30,21 @@ namespace Watchdog.Core.API.Extensions
             services.AddTransient<IDashboardService, DashboardService>();
             services.AddTransient<IOrganizationService, OrganizationService>();
             services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<IIssueService, IssueService>();
             services.AddScoped<ITeamService, TeamService>();
             services.AddTransient<IUserService, UserService>();
             services.AddScoped<IRegistrationService, RegistrationService>();
+        }
+        
+        public static void AddElasticSearch(this IServiceCollection services, IConfiguration configuration)
+        {
+            var connectionString = configuration["ElasticConfiguration:Uri"];
+
+            var settings = new ConnectionSettings(new Uri(connectionString))
+                .DefaultMappingFor<IssueMessage>(
+                    m => m.IndexName(configuration["ElasticConfiguration:IssueMessageIndex"]));
+            
+            services.AddSingleton<IElasticClient>(new ElasticClient(settings));
         }
 
         public static void AddAutoMapper(this IServiceCollection services)
