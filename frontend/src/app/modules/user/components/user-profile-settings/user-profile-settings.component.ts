@@ -14,9 +14,6 @@ import { UserService } from '@core/services/user.service';
 export class UserProfileSettingsComponent extends BaseComponent implements OnInit {
     public user: User;
 
-    //fake tets user with id = 1
-    public userId: number = 1;
-
     editProfileForm: FormGroup;
 
     constructor(

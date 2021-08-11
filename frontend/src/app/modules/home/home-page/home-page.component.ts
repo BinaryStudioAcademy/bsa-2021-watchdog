@@ -36,8 +36,6 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     }
 
     async ngOnInit() {
-        this.user = { ...this.user, firstName: this.user.firstName };
-        //this.authorizedUser = { ...this.authorizedUser, firstName: 'Andriy' };
 
         this.getAllDashboards();
 
