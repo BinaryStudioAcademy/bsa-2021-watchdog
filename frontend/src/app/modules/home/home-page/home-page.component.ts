@@ -36,7 +36,6 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     }
 
     async ngOnInit() {
-
         this.getAllDashboards();
 
         await this.broadcastHub.start();
