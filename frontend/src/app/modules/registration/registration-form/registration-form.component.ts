@@ -5,6 +5,7 @@ import { BaseComponent } from '@core/components/base/base.component';
 import { NewOrganization } from '@shared/models/organization/newOrganization';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { regexs } from '@shared/constants/regexs';
 import { RegOrganizationDto } from '../DTO/regOrganizationDto';
 import { NewUserDto } from '../DTO/newUserDto';
 
@@ -17,6 +18,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
     formGroup: FormGroup;
     user = {} as User;
     organization = {} as NewOrganization;
+    organizationSlug: string;
 
     password: string;
     confirmPassword: string;
@@ -37,35 +39,23 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
             this.user = user;
         }
 
-        const firstNamePattern = /^[a-zA-Z-]*$/;
-        const lastNamePattern = /^[a-zA-Z- ]*$/;
-        const organizationNamePattern = new RegExp('^[\\w\\s-!#$%&\'*+—/=?^`{|}~]+$');
-        const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
         this.formGroup = new FormGroup({
             firstName: new FormControl(
                 { value: '', disabled: this.isNotFinishedRegistration },
                 [
+                    Validators.required,
                     Validators.minLength(2),
                     Validators.maxLength(20),
-                    Validators.pattern(firstNamePattern)
+                    Validators.pattern(regexs.firstName)
                 ]
             ),
             lastName: new FormControl(
                 { value: '', disabled: this.isNotFinishedRegistration },
                 [
+                    Validators.required,
                     Validators.minLength(2),
                     Validators.maxLength(20),
-                    Validators.pattern(lastNamePattern)
-                ]
-            ),
-            organizationName: new FormControl(
-                '',
-                [
-                    Validators.required,
-                    Validators.minLength(3),
-                    Validators.maxLength(50),
-                    Validators.pattern(organizationNamePattern),
+                    Validators.pattern(regexs.lastName)
                 ]
             ),
             email: new FormControl(
@@ -73,7 +63,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                 [
                     Validators.required,
                     Validators.minLength(5),
-                    Validators.pattern(emailPattern)
+                    Validators.pattern(regexs.email)
                 ]
             ),
             password: new FormControl(
@@ -82,7 +72,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                     Validators.required,
                     Validators.minLength(8),
                     Validators.maxLength(30),
-                    Validators.pattern(passwordPattern)
+                    Validators.pattern(regexs.password)
                 ]
             ),
             confirmPassword: new FormControl(
@@ -91,8 +81,26 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                     Validators.required,
                     Validators.minLength(8),
                     Validators.maxLength(30),
-                    Validators.pattern(passwordPattern),
+                    Validators.pattern(regexs.password),
                     this.equals
+                ]
+            ),
+            organizationName: new FormControl(
+                '',
+                [
+                    Validators.required,
+                    Validators.minLength(3),
+                    Validators.maxLength(50),
+                    Validators.pattern(regexs.organizationName),
+                ]
+            ),
+            organizationSlug: new FormControl(
+                '',
+                [
+                    Validators.required,
+                    Validators.minLength(3),
+                    Validators.maxLength(50),
+                    Validators.pattern(regexs.organizationSlag),
                 ]
             )
         });
@@ -106,8 +114,8 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
     };
 
     onSubmit() {
-        const organizationDto = {
-            organizationSlug: `${this.organization.name.toLowerCase()}-${Date.now()}`, //TEMP
+        const organizationDto: RegOrganizationDto = {
+            organizationSlug: this.organizationSlug,
             name: this.organization.name,
             openMembership: true, //TEMP
             defaultRoleId: 1, //TEMP

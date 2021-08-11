@@ -61,8 +61,8 @@
                                 <p-checkbox name="selectedIssues" [value]="issue" [(ngModel)]="selectedIssues">
                                 </p-checkbox>
                                 <div class="content">
-                                    <span class="name">{{issue.name}}</span>
-                                    <span class="description">{{issue.description}}</span>
+                                    <span class="name">{{issue.issueDetails.className}}</span>
+                                    <span class="description">{{issue.issueDetails.errorMessage}}</span>
                                     <div class="additional-info">
                                         <p-tag class="new-issue" *ngIf="issue.isNew" styleClass="p-mr-2"
                                             value="New issue" [rounded]="true"></p-tag>
@@ -70,7 +70,7 @@
                                         <div class="tooltip">
                                             <span><i class="pi pi-clock time-icon"></i>{{issue.createdAt |
                                                 timeAgo}}</span>
-                                            <span class="tooltiptext">{{issue.createdAt | date:'MMMM d, y h:mm
+                                            <span class="tooltiptext">{{issue.occurredOn | date:'MMMM d, y h:mm
                                                 a'}}</span>
                                         </div>
                                     </div>

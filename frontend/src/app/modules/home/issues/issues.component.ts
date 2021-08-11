@@ -1,19 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { Issue } from '@shared/models/issue/issue';
+import { IssueService } from '@core/services/issue.service';
+import { IssueMessage } from '@shared/models/issues/issue-message';
+import { BaseComponent } from '@core/components/base/base.component';
+import { ToastNotificationService } from '@core/services/toast-notification.service';
 
 @Component({
     selector: 'app-issues',
     templateUrl: './issues.component.html',
     styleUrls: ['./issues.component.sass']
 })
-export class IssuesComponent implements OnInit {
+export class IssuesComponent extends BaseComponent implements OnInit {
+
     public countNew: { [type: string]: number };
 
     public issues: Issue[];
 
     public selectedIssues: Issue[] = [];
 
+    public timeOptions: string[];
+
+    public selectedTime: string;
+
+    constructor(private issueService: IssueService, private toastNotification: ToastNotificationService) {
+        super();
+    }
+
     ngOnInit(): void {
+        this.loadIssues();
         this.setAllFieldsTemp();
     }
 
@@ -28,6 +42,16 @@ export class IssuesComponent implements OnInit {
 
     disableParentEvent(event: { originalEvent: Event }) { // to disable sorting
         event.originalEvent.stopPropagation();
+    }
+
+    private loadIssues() {
+        this.issueService.getIssues()
+            .pipe(this.untilThis)
+            .subscribe(response => {
+                this.issues = response.body;
+            }, errorResponse => {
+                this.toastNotification.error(errorResponse, 'Error', 1500);
+            });
     }
 
     private setAllFieldsTemp() {
