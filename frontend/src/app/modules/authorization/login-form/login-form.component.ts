@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
+import { regexs } from '@shared/constants/regexs';
 
 @Component({
     selector: 'app-login-form',
@@ -20,16 +21,13 @@ export class LoginFormComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        const emailPattern = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-        const passwordPattern = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/);
         this.formGroup = new FormGroup({
             email: new FormControl(
                 '',
                 [
                     Validators.required,
                     Validators.minLength(5),
-                    Validators.maxLength(30),
-                    Validators.pattern(emailPattern)
+                    Validators.pattern(regexs.email)
                 ]
             ),
             password: new FormControl(
@@ -38,7 +36,7 @@ export class LoginFormComponent implements OnInit {
                     Validators.required,
                     Validators.minLength(8),
                     Validators.maxLength(30),
-                    Validators.pattern(passwordPattern)
+                    Validators.pattern(regexs.password)
                 ]
             ),
             rememberMe: new FormControl(

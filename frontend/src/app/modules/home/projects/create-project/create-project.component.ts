@@ -6,6 +6,7 @@ import { Platform } from '@shared/models/projects/platform';
 import { FakeData } from '@modules/home/projects/fake-data';
 import { Team } from '@shared/models/projects/team';
 import { Project } from '@shared/models/projects/project';
+import { regexs } from '@shared/constants/regexs';
 
 @Component({
     selector: 'app-create-project',
@@ -63,7 +64,7 @@ export class CreateProjectComponent implements OnInit {
                     Validators.required,
                     Validators.minLength(3),
                     Validators.maxLength(50),
-                    Validators.pattern('^[a-zA-Z0-9-_]+$')
+                    Validators.pattern(regexs.projectName)
                 ]
             ),
             team: new FormControl(

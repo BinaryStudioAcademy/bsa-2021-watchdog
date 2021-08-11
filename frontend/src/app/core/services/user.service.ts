@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { User } from '@shared/models/user/user';
 import { NewUser } from '@shared/models/user/newUser';
 import { HttpInternalService } from './http-internal.service';
-import { ShareDataService } from './share-data.service';
+import { clear } from './registration.utils';
 
 @Injectable({
     providedIn: 'root'
@@ -12,8 +12,7 @@ export class UserService {
     private apiPrefix = '/users';
 
     constructor(
-        private httpService: HttpInternalService,
-        private dataService: ShareDataService<User>
+        private httpService: HttpInternalService
     ) { }
 
     public getUserById(id: number): Observable<User> {
@@ -28,7 +27,8 @@ export class UserService {
         return this.httpService.getRequest<User>(`/${this.apiPrefix}/${uid}`);
     }
 
-    public createUser(user: NewUser) {
+    public createUser(newUser: NewUser) {
+        const user = clear(newUser);
         return this.httpService.postRequest<User>(`/${this.apiPrefix}`, user);
     }
 
