@@ -17,13 +17,6 @@ namespace Watchdog.Core.API.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<ICollection<UserDto>>> GetAllAsync()
-        {
-            var users = await _userService.GetAllUsersAsync();
-            return Ok(users);
-        }
-
         [HttpGet("{id:int}")]
         public async Task<ActionResult<UserDto>> GetUserByIdAsync(int id)
         {
@@ -42,6 +35,13 @@ namespace Watchdog.Core.API.Controllers
         public async Task<ActionResult<UserDto>> CreateUserAsync(NewUserDto userDto)
         {
             var user = await _userService.CreateUserAsync(userDto);
+            return Ok(user);
+        }
+
+        [HttpPut("{userId}")]
+        public async Task<ActionResult<UserDto>> UpdateAsync(int userId, UpdateUserDto updateUserDto)
+        {
+            var user = await _userService.UpdateUserAsync(userId, updateUserDto);
             return Ok(user);
         }
     }
