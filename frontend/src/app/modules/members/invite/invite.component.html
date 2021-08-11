@@ -13,11 +13,16 @@
                 <!-- email -->
                 <form [formGroup]="invation.groupForm" *ngFor="let invation of invations">
                     <div class="invite-form">
-                        <div class="email-inp">
-                            <input pInputText type="text" [(ngModel)]="invation.member.email" #srch formControlName="name"  placeholder="Enter email..."  (input)="search($event, op, srch.value)"  (focusout)="func()">
-                            <div *ngIf="invation.groupForm.controls.name.touched && invation.groupForm.controls.name.invalid" class="validation">
-                                <div *ngIf="invation.groupForm.controls.name.errors.required"><p class="error">Can not be empty</p></div>
-                            </div>
+                        <div class="p-field p-col-12 p-md-4">
+                            <p-autoComplete [appendTo] = "'body'" 
+                            field="user.email" formControlName="name" [forceSelection]="true" 
+                            [suggestions]="members" (completeMethod)="search($event)"
+                            dropdownMode="current">
+                                <ng-template let-member pTemplate="item">
+                                    <span> {{member.user.firstName}} {{member.user.lastName}}</span>
+                                    <span> {{member.user.email}} </span> 
+                                </ng-template>
+                            </p-autoComplete>
                         </div>
                         <!-- role -->
                         <p-dropdown class="role-dropdown"  [appendTo] = "'body'" [(ngModel)]="invation.member.roleId" [options]="roles" optionValue="id"  optionLabel="name"  name="roles-dropdown"
@@ -35,7 +40,7 @@
                         type="submit"
                         label="Invite"
                         [disabled]="!invation.groupForm.valid"
-                        (click)="invate(invation.member)">
+                        (click)="invate(invation.groupForm)">
                         </button>
                     </div>
                     <p-overlayPanel #op [appendTo]="'body'">

@@ -16,7 +16,7 @@ export class MemberService {
     }
 
     searchMembersNotInOrganization(orgId: number, memberEmail: string): Observable<Member[]> {
-        const url = `organization/${orgId}/notInOrg/${memberEmail !== '' ? '?memberEmail=' + memberEmail : ''}`;
+        const url = `organization/${orgId}/notInOrg/${memberEmail !== '' ? `?memberEmail=${memberEmail}` : ''}`;
         return this.httpService.getRequest<Member[]>(`${this.routePrefix}/${url}`);
     }
 }

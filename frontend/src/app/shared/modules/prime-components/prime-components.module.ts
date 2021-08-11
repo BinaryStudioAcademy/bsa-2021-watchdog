@@ -32,8 +32,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { TooltipModule } from 'primeng/tooltip';
 import { StyleClassModule } from 'primeng/styleclass';
 import { TieredMenuModule } from 'primeng/tieredmenu';
-import {OverlayPanelModule} from 'primeng/overlaypanel';
-
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 // import and export here all required modules from primeng
 @NgModule({
     imports: [
@@ -70,6 +70,7 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
         StyleClassModule,
         TieredMenuModule,
         OverlayPanelModule,
+        AutoCompleteModule
     ],
     exports: [
         ButtonModule,
@@ -104,6 +105,7 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
         StyleClassModule,
         TieredMenuModule,
         OverlayPanelModule,
+        AutoCompleteModule
     ],
     declarations: [],
     providers: [
