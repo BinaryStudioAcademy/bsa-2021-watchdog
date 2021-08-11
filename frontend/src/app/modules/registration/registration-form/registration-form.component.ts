@@ -52,6 +52,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
             lastName: new FormControl(
                 { value: '', disabled: this.isNotFinishedRegistration },
                 [
+                    Validators.required,
                     Validators.minLength(2),
                     Validators.maxLength(20),
                     Validators.pattern(regexs.lastName)
