@@ -1,3 +1,4 @@
+import { OrganizationSettings } from "./../../../../shared/models/organization/organization-settings";
 import { FormGroup } from "@angular/forms";
 import { Subject } from "rxjs";
 import { ToastNotificationService } from '@core/services/toast-notification.service';
@@ -60,6 +61,17 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
     }
 
     save() {
-
+        this.isLoading = true;
+        const updateOrg: OrganizationSettings = { ...this.parentForm.value };
+        this.organizationService.updateSettings(this.organization.id, updateOrg)
+            .pipe(this.untilThis).subscribe(updatedOrg => {
+                Object.assign(this.organization, updatedOrg);
+                this.isLoading = false;
+                this.saveButton.nativeElement.disabled = true;
+                this.toastService.success("Organization was updated!");
+            }, error => {
+                this.isLoading = false;
+                this.toastService.error(error);
+            });
     }
 }

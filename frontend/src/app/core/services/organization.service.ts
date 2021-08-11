@@ -1,3 +1,4 @@
+import { OrganizationSettings } from "./../../shared/models/organization/organization-settings";
 import { AuthenticationService } from "./authentication.service";
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -44,10 +45,8 @@ export class OrganizationService {
             }));
     }
 
-    updateProperty(organizationId: number, propName: string, propValue: string) {
-        const patchFile: JsonPatch[] = [{ op: 'replace', path: `/${propName}`, value: propValue }];
-
-        return this.httpService.patchFullRequest<Organization>(`${this.apiPrefix}/${organizationId}`, patchFile)
+    updateSettings(organizationId: number, settings: OrganizationSettings) {
+        return this.httpService.putFullRequest<Organization>(`${this.apiPrefix}/settings/${organizationId}`, settings)
             .pipe(map(response => {
                 this.dataService.changeMessage(response.body);
                 return response.body;
