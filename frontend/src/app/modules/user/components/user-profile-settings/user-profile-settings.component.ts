@@ -43,8 +43,7 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
         this.user = { ...this.user,
             firstName: editForm.value.firstName,
             lastName: editForm.value.lastName,
-            email: editForm.value.email,
-            avatarUrl: editForm.value.avatarUrl };
+            email: editForm.value.email };
 
         this.userService.updateUsersById(this.user.id, this.user)
             .pipe(this.untilThis)
