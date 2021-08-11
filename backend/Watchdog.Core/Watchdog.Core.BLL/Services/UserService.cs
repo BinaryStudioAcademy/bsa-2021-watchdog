@@ -17,17 +17,14 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<UserDto> UpdateUserAsync(int userId, UpdateUserDto updateUserDto)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var existedUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
-            user.FirstName = updateUserDto.FirstName;
-            user.LastName = updateUserDto.LastName;
-            user.Email = updateUserDto.Email;
-            user.AvatarUrl = updateUserDto.AvatarUrl;
+            var mergedUser = _mapper.Map(updateUserDto, existedUser);
 
-            _context.Users.Update(user);
+            var updatedUser = _context.Update(mergedUser);
             await _context.SaveChangesAsync();
 
-            return await GetUserByIdAsync(userId);
+            return await GetUserByIdAsync(updatedUser.Entity.Id);
         }
 
         public async Task<UserDto> GetUserByIdAsync(int id)
