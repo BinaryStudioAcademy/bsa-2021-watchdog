@@ -22,12 +22,12 @@ namespace Watchdog.Core.API.Controllers
         {
             return Ok(await _applicationService.GetApplicationsByApplicationIdAsync(organizationId));
         }
-        
-/*        [HttpPost]
+
+        [HttpPost]
         public async Task<ActionResult<ApplicationDto>> Create(NewApplicationDto dto)
         {
-
-            return Created(new Uri("/"))
-        }*/
+            var application = await _applicationService.CreateApplicationAsync(dto);
+            return Created($"/applications/{application.Id}", application);
+        }
     }
 }

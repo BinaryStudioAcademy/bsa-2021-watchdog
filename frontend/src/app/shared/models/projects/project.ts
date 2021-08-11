@@ -1,4 +1,4 @@
-import { Platform } from '../platforms/platform'
+import { Platform } from '../platforms/platform';
 // edit this when you need
 export interface Project {
     id: number,

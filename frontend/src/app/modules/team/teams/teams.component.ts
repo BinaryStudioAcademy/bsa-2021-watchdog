@@ -39,7 +39,7 @@ export class TeamsComponent extends BaseComponent implements OnDestroy {
         this.createTeamDialog.onClose
             .pipe(this.untilThis)
             .subscribe((name: string) => {
-                if (name) { 
+                if (name) {
                     this.teamService
                         .createTeam({
                             createdBy: this.currentUserId,

@@ -9,9 +9,9 @@ import { User } from '@shared/models/user/user';
 import { NewUser } from '@shared/models/user/newUser';
 import { FullRegistrationDto } from '@modules/registration/DTO/fullRegistrationDto';
 import { PartialRegistrationDto } from '@modules/registration/DTO/partialRegistrationDto';
+import { Organization } from '@shared/models/organization/organization';
 import { UserService } from './user.service';
 import { RegistrationService } from './registration.service';
-import { Organization } from '@shared/models/organization/organization';
 import { OrganizationService } from './organization.service';
 
 @Injectable({
@@ -49,18 +49,19 @@ export class AuthenticationService {
         }
         return this.user;
     }
- 
+
     getOrganization() {
         if (!this.organization) {
             const organization = localStorage.getItem('organization');
             if (!organization) {
                 return this.organizationService.getOrganizationsByUserId(this.getUser().id)
-                        .pipe(
-                            map(organizations => {
-                                localStorage.setItem('organization', JSON.stringify(organizations[0]));
-                                this.organization = organizations[0];
-                                return this.organization;   
-                            }));
+                    .pipe(
+                        map(organizations => {
+                            localStorage.setItem('organization', JSON.stringify(organizations[0]));
+                            [this.organization] = organizations;
+                            return this.organization;
+                        })
+                    );
             }
             this.organization = JSON.parse(localStorage.getItem('organization'));
         }

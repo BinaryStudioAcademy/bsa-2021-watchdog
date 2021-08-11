@@ -1,5 +1,5 @@
 export enum AlertCategory {
-    None = 1, 
-    EveryNew, 
+    None = 1,
+    EveryNew,
     Special
 }

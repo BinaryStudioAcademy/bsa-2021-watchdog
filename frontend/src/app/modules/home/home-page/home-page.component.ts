@@ -32,17 +32,17 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         private toastNotificationService: ToastNotificationService
     ) {
         super();
-        
     }
 
     async ngOnInit() {
         this.user = this.authService.getUser();
 
         this.authService.getOrganization()
-            .subscribe(organization => this.organization = organization);
+            .subscribe(organization => {
+                this.organization = organization;
+            });
 
         this.getAllDashboards();
-        
 
         await this.broadcastHub.start();
         this.broadcastHub.listenMessages((msg) => {

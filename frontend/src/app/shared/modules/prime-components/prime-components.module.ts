@@ -32,6 +32,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { TooltipModule } from 'primeng/tooltip';
 import { StyleClassModule } from 'primeng/styleclass';
 import { TieredMenuModule } from 'primeng/tieredmenu';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -68,6 +69,7 @@ import { TieredMenuModule } from 'primeng/tieredmenu';
         TooltipModule,
         StyleClassModule,
         TieredMenuModule,
+        InputTextareaModule
     ],
     exports: [
         ButtonModule,
@@ -101,6 +103,7 @@ import { TieredMenuModule } from 'primeng/tieredmenu';
         TooltipModule,
         StyleClassModule,
         TieredMenuModule,
+        InputTextareaModule
     ],
     declarations: [],
     providers: [

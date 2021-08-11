@@ -1,4 +1,4 @@
-﻿namespace Watchdog.Core.DAL.Entities.AlertSettings
+﻿namespace Watchdog.Core.Common.DTO.Application.AlertSettings
 {
     public enum AlertCategory
     {

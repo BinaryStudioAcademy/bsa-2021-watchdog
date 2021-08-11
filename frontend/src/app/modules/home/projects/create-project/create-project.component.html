@@ -38,7 +38,7 @@
                 </p-radioButton>
             </form>
             <!--    Specific Alert Settings    -->
-            <ng-container *ngIf="category.value === 3">
+            <div class="special-settings" *ngIf="category.value === 3">
                 <p-inputNumber [(ngModel)]="alertSetting.specialAlertSetting.alertsCount"
                                [disabled]="formGroup.controls.alertCategory.value !== 3"
                                [min]="0" [showButtons]="true" [size]="2" [step]="1"
@@ -59,12 +59,12 @@
                             class="radiobutton-settings-alert-type"
                 >
                 </p-dropdown>
-            </ng-container>
+            </div>
         </div>
     </div>
     <!--    Name and Team inputs    -->
     <div class="project-name-settings">
-        <h2 class="title">Give your project a name</h2>
+        <h2 class="title">Give your project name and description</h2>
         <p-divider></p-divider>
         <div class="name-settings">
             <!--    Name input    -->
@@ -75,12 +75,13 @@
                     <input aria-describedby="projectName" formControlName="projectName" pInputText
                            placeholder="Project name"
                            type="text"
+                           class="project-name-input"
                            [(ngModel)] = "newProject.name">
                 </div>
                 <div *ngIf="formGroup.controls.projectName.touched && formGroup.controls.projectName.invalid"
                      class="input-validation-error" id="projectName">
                     <small *ngIf="formGroup.controls.projectName.errors.required" class="p-error">
-                        Required field
+                        Сan not be empty
                     </small>
                     <small *ngIf="formGroup.controls.projectName.errors.minlength" class="p-error">
                         At least 3 characters
@@ -106,16 +107,6 @@
                         <ng-template let-team pTemplate="selectedItem">#{{team.name}}</ng-template>
                     </p-dropdown>
 
-                    <button class="p-button-text button-add-team" icon="pi pi-plus-circle" pButton pRipple
-                            pTooltip="Create a team"
-                            tooltipPosition="top" type="button"
-                            (click) = "openDialog()"></button>
-                    <!--    Submit Button   -->
-                    <button (click)="createProject()"
-                            
-                            class="p-button-secondary button-create-project" label="Create Project"
-                            pButton></button>
-                            <!-- [disabled]="!formGroup.valid || !newProject.platformId" -->
                 </div>
                 <!--    Team not selected Warning   -->
                 <div *ngIf="formGroup.controls.team.dirty && formGroup.controls.team.invalid"
@@ -125,6 +116,39 @@
                     </small>
                 </div>
             </div>
+            <div class="add-team-block">
+                <button class="p-button-text button-add-team" icon="pi pi-plus-circle" pButton pRipple
+                pTooltip="Create a team"
+                tooltipPosition="top" type="button"
+                (click) = "openDialog()"></button>
+            </div>
+            <!-- Description -->
+            <div [formGroup]="formGroup" class="project-description">
+                <span class="title">Project name</span>
+                <textarea [autoResize]="true" formControlName="projectDescription" pInputTextarea
+                    placeholder="Description"
+                    type="textarea" maxlength="1000"
+                    [(ngModel)] = "newProject.description">
+                </textarea>
+                <div *ngIf="formGroup.controls.projectDescription.touched && formGroup.controls.projectDescription.invalid"
+                     class="validation" id="projectDescription">
+                     <small *ngIf="formGroup.controls.projectDescription.errors.maxlength" class="p-error">
+                        No more than 1000 characters
+                    </small>
+                    <small *ngIf="formGroup.controls.projectDescription.errors.pattern" class="p-error">
+                        May contain lowercase (a-z) and uppercase (A-Z) letters, numbers (0-9) and symbols<br>-_!#$%&'*+—/=?^`&#123;|&#125;~.,:;`"\№@()<>[]
+                    </small>
+                </div>
+
+            </div>
+            <!--    Submit Button   -->
+            <div class="button-block">
+                <button (click)="createProject()"
+                [disabled]="!formGroup.valid || !newProject.platformId"
+                class="p-button-secondary button-create-project" label="Create Project"
+                pButton></button>
+            </div>
+
         </div>
     </div>
 </div>

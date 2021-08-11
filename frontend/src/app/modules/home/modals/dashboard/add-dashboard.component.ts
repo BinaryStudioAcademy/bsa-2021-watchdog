@@ -34,7 +34,9 @@ export class AddDashboardComponent implements OnInit {
     ngOnInit() {
         this.user = this.authService.getUser();
         this.authService.getOrganization()
-            .subscribe(organization => this.organization = organization);
+            .subscribe(organization => {
+                this.organization = organization;
+            });
         this.formGroup = new FormGroup({
             name: new FormControl(
                 '',

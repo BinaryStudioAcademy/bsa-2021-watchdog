@@ -1,6 +1,5 @@
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { ShareDataService } from '@core/services/share-data.service';
-import { OrganizationService } from '@core/services/organization.service';
 import { Component, OnInit } from '@angular/core';
 import { Organization } from '@shared/models/organization/organization';
 import { BaseComponent } from '@core/components/base/base.component';

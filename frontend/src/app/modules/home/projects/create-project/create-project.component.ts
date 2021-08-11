@@ -16,6 +16,8 @@ import { User } from '@shared/models/user/user';
 import { Organization } from '@shared/models/organization/organization';
 import { AlertSettings } from '@shared/models/alert-settings/alert-settings';
 import { regexs } from '@shared/constants/regexs';
+import { ProjectService } from '@core/services/project.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-create-project',
@@ -24,7 +26,6 @@ import { regexs } from '@shared/constants/regexs';
     providers: [Data, DialogService]
 })
 export class CreateProjectComponent extends BaseComponent implements OnInit {
-
     user: User;
     organization: Organization;
     loadingNumber: number = 0;
@@ -39,14 +40,16 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
     alertSetting = {} as AlertSettings;
     formGroup = {} as FormGroup;
     createTeamDialog: DynamicDialogRef;
-    
+
     constructor(
         private toastNotifications: ToastNotificationService,
         private platformService: PlatformService,
         private teamService: TeamService,
         private dialogService: DialogService,
         private authService: AuthenticationService,
-        public alertData: Data
+        private projectService: ProjectService,
+        public alertData: Data,
+        private router: Router
     ) {
         super();
     }
@@ -56,15 +59,14 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
         this.authService.getOrganization()
             .subscribe(organization => {
                 this.organization = organization;
-                this.loadTeams();     
+                this.loadTeams();
             });
-        this.initPlatforms(); 
+        this.initPlatforms();
         this.initAlertData();
-        this.addValidation();  
+        this.addValidation();
     }
 
-    private addValidation()
-    {
+    private addValidation() {
         this.formGroup = new FormGroup({
             alertCategory: new FormControl(
                 this.alertData.alertCategories[0].value,
@@ -81,6 +83,13 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                     Validators.pattern(regexs.projectName)
                 ]
             ),
+            projectDescription: new FormControl(
+                '',
+                [
+                    Validators.maxLength(1000),
+                    Validators.pattern(regexs.projectDescription)
+                ]
+            ),
             team: new FormControl(
                 '',
                 [
@@ -95,12 +104,11 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
         this.platforms.platformTabItems = [
             { label: 'All', command: (event) => this.onTabChange(event?.item.label) },
             { label: 'Browser', command: (event) => this.onTabChange(event?.item.label) },
-            { label: 'Server',  command: (event) => this.onTabChange(event?.item.label) },
+            { label: 'Server', command: (event) => this.onTabChange(event?.item.label) },
             { label: 'Mobile', command: (event) => this.onTabChange(event?.item.label) },
             { label: 'Desktop', command: (event) => this.onTabChange(event?.item.label) }
         ];
         this.platforms.activePlatformTabItem = Object.assign(this.platforms.platformTabItems[0]);
-        
     }
 
     private loadPlatforms() {
@@ -112,7 +120,6 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                 this.platforms.platformCards = platforms;
                 this.onTabChange();
                 this.loadingNumber -= 1;
-
             }, error => {
                 this.toastNotifications.error(`${error}`);
                 this.loadingNumber -= 1;
@@ -127,26 +134,25 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
             .subscribe(teamOptions => {
                 this.teams = teamOptions;
                 this.loadingNumber -= 1;
-
             }, error => {
                 this.toastNotifications.error(`${error}`);
                 this.loadingNumber -= 1;
             });
     }
-    
+
     private initAlertData() {
         this.alertSetting.alertCategory = this.alertData.initAlertCategory;
         this.alertSetting.specialAlertSetting = {
             alertsCount: this.alertData.initAlertsCount,
             specialAlertType: this.alertData.initSpecialAlertType,
             alertTimeInterval: this.alertData.initAlertTimeInterval
-        }
+        };
     }
 
     private onTabChange(label: string = ''): void {
         this.newProject.platformId = undefined;
         if (this.platforms.platformCards) {
-            switch (label) {    
+            switch (label) {
                 case 'Browser': {
                     this.platforms.viewPlatformCards = this.platforms.platformCards.filter(value => value.platformTypes.isBrowser);
                     break;
@@ -167,10 +173,10 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                     this.platforms.viewPlatformCards = this.platforms.platformCards.concat();
                     break;
                 }
-            } 
+            }
         }
     }
-    
+
     openDialog() {
         this.createTeamDialog = this.dialogService.open(CreateTeamComponent, {
             header: 'Creating team',
@@ -183,6 +189,7 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis)
             .subscribe((name: string) => {
                 if (name) {
+                    this.loadingNumber += 1;
                     this.teamService
                         .createTeam({
                             createdBy: this.user.id,
@@ -192,32 +199,40 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                         .pipe(this.untilThis)
                         .subscribe(response => {
                             this.toastNotifications.success(`Team #${name} created!`, '', 2000);
-                            this.teams = this.teams.concat({name: name, id: response.body.id});
+                            this.teams = this.teams.concat({ name, id: response.body.id });
                             this.newProject.teamId = response.body.id;
+                            this.loadingNumber -= 1;
                         }, error => {
                             this.toastNotifications.error(`${error}`, 'Error');
+                            this.loadingNumber -= 1;
                         });
                 }
             });
     }
 
     createProject(): void {
-        // if (this.formGroup.valid && this.newProject.platformId) {
-            // const project: Project = {
-            //     id: 5,
-            //     name: this.formGroup.controls.projectName.value,
-            //     platform: this.platformCards.find(value => value.id === this.selectedPlatformId),
-            //     alertSettings:
-            //         {
-            //             alertCategory: this.selectedAlertCategory,
-            //             alertsCount: this.alertsCount,
-            //             alertType: this.selectedAlertType,
-            //             alertTimeInterval: this.selectedAlertTimeInterval
-            //         }
-            // };
-            // console.log(project);
-            // this.toastNotifications.success(`${project.name} created!`);
-        // }
-        alert(JSON.stringify(this.alertSetting));
+        if (this.formGroup.valid && this.newProject.platformId) {
+            this.newProject.organizationId = this.organization.id;
+            this.newProject.createdBy = this.user.id;
+            this.newProject.alertSettings = {
+                alertCategory: this.alertSetting.alertCategory,
+                specialAlertSetting: this.alertSetting.alertCategory === 3 ? this.alertSetting.specialAlertSetting : null
+            };
+            this.loadingNumber += 1;
+            this.projectService.createProject(this.newProject)
+                .subscribe(
+                    project => {
+                        this.toastNotifications.success(`${project.name} created!`);
+                        this.router.navigate(['home', 'projects']);
+                        this.loadingNumber -= 1;
+                    },
+                    error => {
+                        this.toastNotifications.error(`${error}`, 'Error');
+                        this.loadingNumber -= 1;
+                    }
+                );
+        } else {
+            this.toastNotifications.error('Form is not valid', 'Error');
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Watchdog.Core.DAL.Entities.AlertSettings
 {
-    public class AlertSettings
+    public class AlertSetting
     {
         public AlertCategory AlertCategory { get; set; }
         /// <summary>

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Project } from '@shared/models/projects/project';
 import { Data } from '@modules/home/projects/data';
 import { BaseComponent } from '@core/components/base/base.component';
@@ -21,7 +20,8 @@ export class ProjectsComponent extends BaseComponent implements OnInit {
     constructor(
         private projectService: ProjectService,
         private toastNotifications: ToastNotificationService,
-        private authService: AuthenticationService) {
+        private authService: AuthenticationService
+    ) {
         super();
     }
 
@@ -32,21 +32,19 @@ export class ProjectsComponent extends BaseComponent implements OnInit {
     initData() {
         this.loadingNumber += 1;
         this.authService.getOrganization()
-        .pipe(this.untilThis)
-        .subscribe(organization => {
-            this.organization = organization;
-            this.projectService
-            .getProjectsByOrganizationId(this.organization.id)
             .pipe(this.untilThis)
-            .subscribe(projects => {
-                this.projects = projects
-                this.loadingNumber -= 1;
-    
-            }, error => {
-                this.toastNotifications.error(`${error}`);
-                this.loadingNumber -= 1;
+            .subscribe(organization => {
+                this.organization = organization;
+                this.projectService
+                    .getProjectsByOrganizationId(this.organization.id)
+                    .pipe(this.untilThis)
+                    .subscribe(projects => {
+                        this.projects = projects;
+                        this.loadingNumber -= 1;
+                    }, error => {
+                        this.toastNotifications.error(`${error}`);
+                        this.loadingNumber -= 1;
+                    });
             });
-        })
-
     }
 }
