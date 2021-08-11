@@ -15,6 +15,7 @@ import { AuthenticationService } from '@core/services/authentication.service';
 import { User } from '@shared/models/user/user';
 import { Organization } from '@shared/models/organization/organization';
 import { AlertSettings } from '@shared/models/alert-settings/alert-settings';
+import { regexs } from '@shared/constants/regexs';
 
 @Component({
     selector: 'app-create-project',
@@ -77,7 +78,7 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                     Validators.required,
                     Validators.minLength(3),
                     Validators.maxLength(50),
-                    Validators.pattern('^[a-zA-Z0-9-_ ]+$')
+                    Validators.pattern(regexs.projectName)
                 ]
             ),
             team: new FormControl(

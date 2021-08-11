@@ -19,7 +19,8 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     dashboards: Dashboard[];
     dashboardsShown: boolean = false;
     displayModal: boolean = false;
-    authorizedUser: User;
+
+    user: User;
     organization: Organization;
 
     constructor(
@@ -31,10 +32,11 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         private toastNotificationService: ToastNotificationService
     ) {
         super();
+        
     }
 
     async ngOnInit() {
-        this.authorizedUser = this.authService.getUser();
+        this.user = this.authService.getUser();
 
         this.authService.getOrganization()
             .subscribe(organization => this.organization = organization);

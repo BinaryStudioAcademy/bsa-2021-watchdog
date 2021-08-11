@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '@core/services/authentication.service';
+import { regexs } from '@shared/constants/regexs';
 import { NewDashboard } from '@shared/models/dashboard/new-dashboard';
 import { Organization } from '@shared/models/organization/organization';
 import { User } from '@shared/models/user/user';
@@ -31,12 +32,9 @@ export class AddDashboardComponent implements OnInit {
     }
 
     ngOnInit() {
-
         this.user = this.authService.getUser();
         this.authService.getOrganization()
             .subscribe(organization => this.organization = organization);
-        
-        const namePattern = new RegExp('^[a-zA-Z0-9_. ]*$');
         this.formGroup = new FormGroup({
             name: new FormControl(
                 '',
@@ -44,7 +42,7 @@ export class AddDashboardComponent implements OnInit {
                     Validators.required,
                     Validators.minLength(3),
                     Validators.maxLength(50),
-                    Validators.pattern(namePattern)
+                    Validators.pattern(regexs.dashboardName)
                 ]
             ),
             icon: new FormControl(
