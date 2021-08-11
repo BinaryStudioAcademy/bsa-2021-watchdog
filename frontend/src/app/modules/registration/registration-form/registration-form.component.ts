@@ -18,6 +18,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
     formGroup: FormGroup;
     user = {} as User;
     organization = {} as NewOrganization;
+    organizationSlug: string;
 
     password: string;
     confirmPassword: string;
@@ -42,6 +43,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
             firstName: new FormControl(
                 { value: '', disabled: this.isNotFinishedRegistration },
                 [
+                    Validators.required,
                     Validators.minLength(2),
                     Validators.maxLength(20),
                     Validators.pattern(regexs.firstName)
@@ -50,18 +52,10 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
             lastName: new FormControl(
                 { value: '', disabled: this.isNotFinishedRegistration },
                 [
+                    Validators.required,
                     Validators.minLength(2),
                     Validators.maxLength(20),
                     Validators.pattern(regexs.lastName)
-                ]
-            ),
-            organizationName: new FormControl(
-                '',
-                [
-                    Validators.required,
-                    Validators.minLength(3),
-                    Validators.maxLength(50),
-                    Validators.pattern(regexs.organizationName),
                 ]
             ),
             email: new FormControl(
@@ -90,6 +84,24 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                     Validators.pattern(regexs.password),
                     this.equals
                 ]
+            ),
+            organizationName: new FormControl(
+                '',
+                [
+                    Validators.required,
+                    Validators.minLength(3),
+                    Validators.maxLength(50),
+                    Validators.pattern(regexs.organizationName),
+                ]
+            ),
+            organizationSlug: new FormControl(
+                '',
+                [
+                    Validators.required,
+                    Validators.minLength(3),
+                    Validators.maxLength(50),
+                    Validators.pattern(regexs.organizationSlag),
+                ]
             )
         });
     }
@@ -102,8 +114,8 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
     };
 
     onSubmit() {
-        const organizationDto = {
-            organizationSlug: `${this.organization.name.toLowerCase()}-${Date.now()}`, //TEMP
+        const organizationDto: RegOrganizationDto = {
+            organizationSlug: this.organizationSlug,
             name: this.organization.name,
             openMembership: true, //TEMP
             defaultRoleId: 1, //TEMP
