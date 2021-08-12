@@ -248,6 +248,7 @@ export class AuthenticationService {
         this.rememberUser = localStorage.getItem('rememberUser') === 'true';
         return from(this.angularFireAuth.currentUser)
             .pipe(
+                filter(firebaseUser => Boolean(firebaseUser)),
                 switchMap(firebaseUser => from(firebaseUser.getIdToken())),
                 tap(token => {
                     this.setJwToken(token);
