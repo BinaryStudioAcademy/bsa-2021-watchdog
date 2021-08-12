@@ -1,3 +1,4 @@
+import { Organization } from "@shared/models/organization/organization";
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Team } from '@shared/models/teams/team';
 import { TeamService } from '@core/services/team.service';
@@ -7,6 +8,7 @@ import { CreateTeamComponent } from '@modules/team/create-team/create-team.compo
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { AuthenticationService } from '@core/services/authentication.service';
+import { User } from "@shared/models/user/user";
 
 @Component({
     selector: 'app-teams',
@@ -21,10 +23,8 @@ export class TeamsComponent extends BaseComponent implements OnInit, OnDestroy {
 
     createTeamDialog: DynamicDialogRef;
     isLoading: boolean = false;
-
-    //fake
-    currentUserId: number = 9;
-    currentOrganizationId: number = 1;
+    user: User;
+    organization: Organization;
 
     constructor(
         private teamService: TeamService,
@@ -34,7 +34,12 @@ export class TeamsComponent extends BaseComponent implements OnInit, OnDestroy {
     ) { super(); }
 
     ngOnInit() {
-        this.currentUserId = this.authService.getUser().id;
+        this.isLoading = true;
+        this.user = this.authService.getUser();
+        this.authService.getOrganization().subscribe(org => {
+            this.organization = org;
+            this.isLoading = false;
+        });
     }
 
     openDialog() {
@@ -52,8 +57,8 @@ export class TeamsComponent extends BaseComponent implements OnInit, OnDestroy {
                     this.isLoading = true;
                     this.teamService
                         .createTeam({
-                            createdBy: this.currentUserId,
-                            organizationId: this.currentOrganizationId,
+                            createdBy: this.user.id,
+                            organizationId: this.organization.id,
                             name
                         })
                         .pipe(this.untilThis)

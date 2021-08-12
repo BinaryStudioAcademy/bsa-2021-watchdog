@@ -11,13 +11,13 @@
 </div>
 
 <div class="panel">
-    <app-user-teams [currentUserId]="currentUserId" [currentOrganizationId]="currentOrganizationId"
+    <app-user-teams [currentUserId]="user.id" [currentOrganizationId]="organization.id"
         [newTeamCreated]="teamCreated$.asObservable()" [joinNewTeam]="notifyMemberTeams$.asObservable()"
         (leaveTeamEvent)="notifyOtherTeams$.next($event)">
     </app-user-teams>
 </div>
 <div class="panel">
-    <app-other-teams [currentUserId]="currentUserId" [currentOrganizationId]="currentOrganizationId"
+    <app-other-teams [currentUserId]="user.id" [currentOrganizationId]="organization.id"
         [leavedTeam]="notifyOtherTeams$.asObservable()" (joinTeamEvent)="notifyMemberTeams$.next($event)">
     </app-other-teams>
 </div>
