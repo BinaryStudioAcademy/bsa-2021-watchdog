@@ -101,6 +101,15 @@ export class AuthenticationService {
         localStorage.removeItem('user');
     }
 
+    removeOrganization() {
+        this.organization = null;
+        localStorage.removeItem('organization');
+    }
+
+    removeIsSignByEmailAndPassword() {
+        localStorage.removeItem('isSignByEmailAndPassword');
+    }
+
     getJwToken() {
         let currentToken = this.token;
         if (!currentToken && this.rememberUser) {
@@ -162,6 +171,7 @@ export class AuthenticationService {
     }
 
     signInWithEmailAndPassword(email: string, password: string, route: string[]) {
+        this.logout();
         return from(this.angularFireAuth
             .signInWithEmailAndPassword(email, password))
             .pipe(
@@ -175,6 +185,7 @@ export class AuthenticationService {
     }
 
     signInWithGitHub(route: string[]) {
+        this.logout();
         const provider = new firebase.auth.GithubAuthProvider();
         provider.addScope('user');
 
@@ -197,6 +208,7 @@ export class AuthenticationService {
     }
 
     signInWithGoogle(route: string[]) {
+        this.logout();
         const provider = new firebase.auth.GoogleAuthProvider();
         provider.addScope('https://www.googleapis.com/auth/userinfo.email');
 
@@ -219,6 +231,7 @@ export class AuthenticationService {
     }
 
     signInWithFacebook(route: string[]) {
+        this.logout();
         const provider = new firebase.auth.FacebookAuthProvider();
 
         return from(this.angularFireAuth
@@ -256,8 +269,9 @@ export class AuthenticationService {
 
     login(route?: string[]) {
         this.rememberUser = localStorage.getItem('rememberUser') === 'true';
-        return this.angularFireAuth.authState
+        return from(this.angularFireAuth.currentUser)
             .pipe(
+                filter(firebaseUser => Boolean(firebaseUser)),
                 switchMap(firebaseUser => from(firebaseUser.getIdToken())),
                 tap(token => {
                     this.setJwToken(token);
@@ -269,6 +283,8 @@ export class AuthenticationService {
     logout() {
         this.removeJwToken();
         this.removeUser();
+        this.removeOrganization();
+        this.removeIsSignByEmailAndPassword();
         this.angularFireAuth.signOut()
             .catch(error => {
                 console.warn(error);

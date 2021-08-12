@@ -1,9 +1,9 @@
+import { CoreHttpService } from '@core/services/core-http.service';
+import { OrganizationSettings } from '@shared/models/organization/organization-settings';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Organization } from '@shared/models/organization/organization';
-import { tap } from 'rxjs/operators';
-import { JsonPatch } from '@shared/models/json-patch';
-import { CoreHttpService } from './core-http.service';
+import { map, tap } from 'rxjs/operators';
 import { ShareDataService } from './share-data.service';
 
 @Injectable({
@@ -34,11 +34,12 @@ export class OrganizationService {
             .pipe(tap(response => this.dataService.changeMessage(response)));
     }
 
-    updateProperty(organizationId: number, propName: string, propValue: string) {
-        const patchFile: JsonPatch[] = [{ op: 'replace', path: `/${propName}`, value: propValue }];
-
-        return this.httpService.patchRequest<Organization>(`${this.apiPrefix}/${organizationId}`, patchFile)
-            .pipe(tap(response => this.dataService.changeMessage(response)));
+    updateSettings(organizationId: number, settings: OrganizationSettings) {
+        return this.httpService.putRequest<Organization>(`${this.apiPrefix}/settings/${organizationId}`, settings)
+            .pipe(map(organization => {
+                this.dataService.changeMessage(organization);
+                return organization;
+            }));
     }
 
     isSlugUnique(slug: string): Observable<boolean> {

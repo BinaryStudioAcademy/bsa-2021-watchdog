@@ -13,7 +13,7 @@ namespace Watchdog.Core.Common.Validators.User
             RuleFor(x => x.FirstName)
                 .MinimumLength(2)
                 .MaximumLength(20)
-                .Matches("^[a-zA-Z-]*$");
+                .Matches("^[a-zA-Z- ]*$");
 
             RuleFor(x => x.LastName)
                 .MinimumLength(2)

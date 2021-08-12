@@ -10,8 +10,8 @@
                 class="validation">
                 <small *ngIf="formGroup.controls.firstName.errors.required">Сan not be empty</small>
                 <small *ngIf="formGroup.controls.firstName.value?.length < 2">Min length 2</small>
-                <small *ngIf="formGroup.controls.firstName.value?.length > 20">Max length 20</small>
-                <small *ngIf="formGroup.controls.firstName.hasError('pattern')">May letters and dashes</small>
+                <small *ngIf="formGroup.controls.firstName.value?.length > 30">Max length 30</small>
+                <small *ngIf="formGroup.controls.firstName.hasError('pattern')">May letters, dashes and space</small>
             </div>
         </div>
         <div class="input-block">
@@ -20,12 +20,10 @@
                     [(ngModel)]="user.lastName" [disabled]="isNotFinishedRegistration">
                 <label for="float-input-last-name">Last Name</label>
             </span>
-            <div *ngIf="formGroup.controls.lastName.touched && formGroup.controls.lastName.invalid" class="validation">
-                <small *ngIf="formGroup.controls.lastName.errors.required">Сan not be empty</small>
+            <div *ngIf="formGroup.controls.lastName.touched && formGroup.controls.lastName.invalid" class="validation">>
                 <small *ngIf="formGroup.controls.lastName.value?.length < 2">Min length 2</small>
-                <small *ngIf="formGroup.controls.lastName.value?.length > 20">Max length 20</small>
-                <small *ngIf="formGroup.controls.lastName.hasError('pattern')">May contain letters, dashes and
-                    space</small>
+                <small *ngIf="formGroup.controls.lastName.value?.length > 30">Max length 30</small>
+                <small *ngIf="formGroup.controls.lastName.hasError('pattern')">May contain letters, dashes and space</small>
             </div>
         </div>
     </div>
@@ -38,11 +36,11 @@
             </span>
             <div *ngIf="formGroup.controls.email.touched && formGroup.controls.email.invalid" class="validation">
                 <small *ngIf="formGroup.controls.email.errors.required">Сan not be empty</small>
-                <small *ngIf="formGroup.controls.email.value?.length < 5">Min length 5</small>
+                <small *ngIf="formGroup.controls.email.value?.length < 6">Min length 6</small>
                 <small *ngIf="formGroup.controls.email.hasError('pattern')">Invalid Email</small>
             </div>
         </div>
-        <div class="input-block">
+        <div class="input-block blank-block">
         </div>
     </div>
     <div class="reg-block" *ngIf="!isNotFinishedRegistration">
@@ -57,7 +55,7 @@
                 <small *ngIf="formGroup.controls.password.value?.length < 8">Min length 8</small>
                 <small *ngIf="formGroup.controls.password.value?.length > 30">Max length 30</small>
                 <small *ngIf="formGroup.controls.password.hasError('pattern')">Must contain at least 1 lowercase letter,
-                    1 uppercase letter, 1 number, 1 special character: !#$%&‘*+—/=?^_`&#123;|&#125;~ </small>
+                    1 uppercase letter, 1 number, 1 symbol </small>
             </div>
         </div>
         <div class="input-block">
@@ -69,10 +67,6 @@
             <div *ngIf="formGroup.controls.confirmPassword.touched && formGroup.controls.confirmPassword.invalid"
                 class="validation">
                 <small *ngIf="formGroup.controls.confirmPassword.errors.required">Сan not be empty</small>
-                <small *ngIf="formGroup.controls.confirmPassword.value?.length < 8">Min length 8</small>
-                <small *ngIf="formGroup.controls.confirmPassword.value?.length > 30">Max length 30</small>
-                <small *ngIf="formGroup.controls.confirmPassword.hasError('pattern')">Must contain at least 1 lowercase
-                    letter, 1 uppercase letter, 1 number, 1 special character: !#$%&‘*+—/=?^_`&#123;|&#125;~ </small>
                 <small *ngIf="formGroup.controls.confirmPassword.errors.notEqual">Passwords must match</small>
             </div>
         </div>
@@ -104,6 +98,7 @@
                 class="validation">
                 <small *ngIf="formGroup.controls.organizationSlug.errors.required">Сan not be empty</small>
                 <small *ngIf="formGroup.controls.organizationSlug.value?.length < 3">Min length 3</small>
+                <small *ngIf="formGroup.controls.organizationSlug.value?.length > 50">Max length 50</small>
                 <small *ngIf="formGroup.controls.organizationSlug.hasError('pattern')">May contain letters, numbers,
                     space, dashes and underscores</small>
             </div>
