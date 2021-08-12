@@ -11,7 +11,7 @@ export class ToastNotificationService {
     constructor(private messageService: MessageService) {
     }
 
-    info(message: string, title: string = 'Info', durationMs: number = 2000): void {
+    info(message: string, title: string = 'Info', durationMs: number = 3000): void {
         this.message({
             severity: 'info',
             summary: title === '' ? 'Info' : title,
@@ -21,7 +21,7 @@ export class ToastNotificationService {
         });
     }
 
-    success(message: string, title: string = 'Success', durationMs: number = 2000): void {
+    success(message: string, title: string = 'Success', durationMs: number = 3000): void {
         console.log(message);
         this.message({
             severity: 'success',
@@ -32,7 +32,7 @@ export class ToastNotificationService {
         });
     }
 
-    warning(message: string, title: string = 'Warn', durationMs: number = 2000): void {
+    warning(message: string, title: string = 'Warn', durationMs: number = 3000): void {
         this.message({
             severity: 'warn',
             summary: title === '' ? 'Warn' : title,
@@ -43,7 +43,7 @@ export class ToastNotificationService {
         });
     }
 
-    error(message: string, title: string = 'Error', durationMs: number = 2000): void {
+    error(message: string, title: string = 'Error', durationMs: number = 3000): void {
         let errorMessage = message;
         let errorTitle = title;
 
