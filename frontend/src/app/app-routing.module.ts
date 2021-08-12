@@ -20,7 +20,7 @@ const routes: Routes = [
             .then(m => m.AuthorizationModule)
     },
     {
-        path: 'signon',
+        path: 'signup',
         loadChildren: () => import('./modules/registration/registration.module')
             .then(m => m.RegistrationModule)
     },

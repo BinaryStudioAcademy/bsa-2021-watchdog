@@ -26,17 +26,14 @@ export class LoginFormComponent implements OnInit {
                 '',
                 [
                     Validators.required,
-                    Validators.minLength(5),
+                    Validators.minLength(6),
                     Validators.pattern(regexs.email)
                 ]
             ),
             password: new FormControl(
                 '',
                 [
-                    Validators.required,
-                    Validators.minLength(8),
-                    Validators.maxLength(30),
-                    Validators.pattern(regexs.password)
+                    Validators.required
                 ]
             ),
             rememberMe: new FormControl(
