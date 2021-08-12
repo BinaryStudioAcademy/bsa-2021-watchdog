@@ -9,7 +9,7 @@ import { clear } from './registration.utils';
     providedIn: 'root'
 })
 export class UserService {
-    private apiPrefix = 'users';
+    private apiPrefix = '/users';
 
     constructor(
         private httpService: HttpInternalService

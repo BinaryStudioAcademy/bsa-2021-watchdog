@@ -10,8 +10,8 @@ using Watchdog.Core.DAL.Context;
 namespace Watchdog.Core.DAL.Migrations
 {
     [DbContext(typeof(WatchdogCoreContext))]
-    [Migration("20210811135123_Alerts")]
-    partial class Alerts
+    [Migration("20210812104743_ProjectsUpdate")]
+    partial class ProjectsUpdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,11 +51,6 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<int>("PlatformId")
                         .HasColumnType("int");
 
-                    b.Property<string>("SecurityToken")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
@@ -70,167 +65,152 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2019, 8, 18, 22, 5, 24, 907, DateTimeKind.Unspecified).AddTicks(5351),
-                            CreatedBy = 15,
+                            CreatedAt = new DateTime(2021, 6, 20, 4, 1, 54, 96, DateTimeKind.Unspecified).AddTicks(6185),
+                            CreatedBy = 5,
                             Description = "unleash back-end supply-chains",
                             Name = "Fisher, Lehner and Champlin",
-                            OrganizationId = 2,
-                            PlatformId = 1,
-                            SecurityToken = "2c306c5e42126fd20bd128d2f8c1e307"
+                            OrganizationId = 1,
+                            PlatformId = 14
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2019, 8, 13, 23, 53, 43, 570, DateTimeKind.Unspecified).AddTicks(6998),
-                            CreatedBy = 14,
-                            Description = "enhance efficient communities",
-                            Name = "Vandervort - Nolan",
-                            OrganizationId = 3,
-                            PlatformId = 17,
-                            SecurityToken = "def5780176e65ae10e04f11ad54e7109"
+                            CreatedAt = new DateTime(2019, 8, 12, 17, 20, 56, 326, DateTimeKind.Unspecified).AddTicks(9638),
+                            CreatedBy = 8,
+                            Description = "cultivate granular infrastructures",
+                            Name = "Schmidt - Hilpert",
+                            OrganizationId = 1,
+                            PlatformId = 3
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2020, 8, 3, 23, 52, 58, 240, DateTimeKind.Unspecified).AddTicks(6701),
-                            CreatedBy = 8,
-                            Description = "incentivize robust applications",
-                            Name = "Muller Inc",
-                            OrganizationId = 2,
-                            PlatformId = 3,
-                            SecurityToken = "b98db018db344bc481419654e6fee6db"
+                            CreatedAt = new DateTime(2019, 7, 30, 17, 0, 56, 106, DateTimeKind.Unspecified).AddTicks(8790),
+                            CreatedBy = 3,
+                            Description = "exploit scalable platforms",
+                            Name = "Cole, Bartoletti and Prohaska",
+                            OrganizationId = 3,
+                            PlatformId = 16
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2021, 6, 15, 19, 59, 35, 109, DateTimeKind.Unspecified).AddTicks(3753),
-                            CreatedBy = 3,
-                            Description = "aggregate next-generation methodologies",
-                            Name = "Yost LLC",
-                            OrganizationId = 2,
-                            PlatformId = 12,
-                            SecurityToken = "4554af2e1fff3533f41296e701552871"
+                            CreatedAt = new DateTime(2020, 2, 23, 12, 13, 2, 529, DateTimeKind.Unspecified).AddTicks(289),
+                            CreatedBy = 1,
+                            Description = "cultivate one-to-one web-readiness",
+                            Name = "Schmeler - Boehm",
+                            OrganizationId = 3,
+                            PlatformId = 6
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2020, 1, 25, 22, 41, 22, 327, DateTimeKind.Unspecified).AddTicks(9806),
-                            CreatedBy = 1,
-                            Description = "drive clicks-and-mortar e-services",
-                            Name = "Mohr, Rosenbaum and Balistreri",
-                            OrganizationId = 4,
-                            PlatformId = 2,
-                            SecurityToken = "ec3f03e051b5d6e399dc98eb83345815"
+                            CreatedAt = new DateTime(2020, 10, 29, 10, 39, 4, 413, DateTimeKind.Unspecified).AddTicks(5606),
+                            CreatedBy = 20,
+                            Description = "enhance efficient communities",
+                            Name = "Nitzsche, Vandervort and Nolan",
+                            OrganizationId = 5,
+                            PlatformId = 17
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2021, 4, 21, 14, 16, 33, 196, DateTimeKind.Unspecified).AddTicks(986),
-                            CreatedBy = 20,
-                            Description = "architect sexy partnerships",
-                            Name = "Conroy, Hane and Boyer",
-                            OrganizationId = 1,
-                            PlatformId = 8,
-                            SecurityToken = "f94490637f3b5d86c09ad05bb62664b8"
+                            CreatedAt = new DateTime(2020, 4, 6, 21, 58, 23, 764, DateTimeKind.Unspecified).AddTicks(5366),
+                            CreatedBy = 7,
+                            Description = "transform dot-com content",
+                            Name = "Leuschke - Adams",
+                            OrganizationId = 5,
+                            PlatformId = 8
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2019, 9, 25, 2, 56, 57, 323, DateTimeKind.Unspecified).AddTicks(3454),
-                            CreatedBy = 9,
-                            Description = "enhance holistic action-items",
-                            Name = "Wiza LLC",
-                            OrganizationId = 4,
-                            PlatformId = 9,
-                            SecurityToken = "9655ae4c809e4e3983efc33bafd62d75"
+                            CreatedAt = new DateTime(2019, 11, 9, 2, 34, 53, 333, DateTimeKind.Unspecified).AddTicks(609),
+                            CreatedBy = 14,
+                            Description = "implement B2B blockchains",
+                            Name = "Breitenberg, Bednar and Ullrich",
+                            OrganizationId = 1,
+                            PlatformId = 2
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2020, 6, 28, 13, 18, 7, 643, DateTimeKind.Unspecified).AddTicks(9586),
-                            CreatedBy = 10,
-                            Description = "architect innovative infomediaries",
-                            Name = "Hintz - Runte",
-                            OrganizationId = 5,
-                            PlatformId = 2,
-                            SecurityToken = "baf221ea765f963abb1d9b933c75226a"
+                            CreatedAt = new DateTime(2020, 3, 12, 14, 10, 16, 522, DateTimeKind.Unspecified).AddTicks(8649),
+                            CreatedBy = 19,
+                            Description = "target leading-edge paradigms",
+                            Name = "Gleichner - Tromp",
+                            OrganizationId = 4,
+                            PlatformId = 10
                         },
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2021, 3, 1, 22, 43, 39, 144, DateTimeKind.Unspecified).AddTicks(7803),
+                            CreatedAt = new DateTime(2019, 10, 29, 10, 58, 52, 199, DateTimeKind.Unspecified).AddTicks(4340),
                             CreatedBy = 11,
-                            Description = "deliver web-enabled portals",
-                            Name = "Kutch, Schneider and Satterfield",
-                            OrganizationId = 1,
-                            PlatformId = 6,
-                            SecurityToken = "10aefaba124101bf59884fa27fbe3e44"
+                            Description = "incentivize robust applications",
+                            Name = "Dibbert, Muller and Beier",
+                            OrganizationId = 4,
+                            PlatformId = 12
                         },
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(2021, 4, 20, 3, 4, 26, 305, DateTimeKind.Unspecified).AddTicks(8228),
-                            CreatedBy = 12,
-                            Description = "expedite bleeding-edge vortals",
-                            Name = "Towne - Kutch",
-                            OrganizationId = 1,
-                            PlatformId = 16,
-                            SecurityToken = "5880670873ff126860fc72effb88671e"
+                            CreatedAt = new DateTime(2019, 12, 8, 6, 2, 36, 243, DateTimeKind.Unspecified).AddTicks(7412),
+                            CreatedBy = 15,
+                            Description = "exploit bricks-and-clicks communities",
+                            Name = "Beier, Bergnaum and Lesch",
+                            OrganizationId = 2,
+                            PlatformId = 5
                         },
                         new
                         {
                             Id = 11,
-                            CreatedAt = new DateTime(2019, 12, 26, 15, 15, 1, 457, DateTimeKind.Unspecified).AddTicks(1356),
-                            CreatedBy = 15,
-                            Description = "architect customized systems",
-                            Name = "Kshlerin - Macejkovic",
-                            OrganizationId = 5,
-                            PlatformId = 16,
-                            SecurityToken = "714246c077aaf2a91be72f11e394fe7c"
+                            CreatedAt = new DateTime(2019, 10, 13, 12, 5, 2, 725, DateTimeKind.Unspecified).AddTicks(731),
+                            CreatedBy = 7,
+                            Description = "morph scalable e-commerce",
+                            Name = "Larkin Inc",
+                            OrganizationId = 2,
+                            PlatformId = 7
                         },
                         new
                         {
                             Id = 12,
-                            CreatedAt = new DateTime(2019, 11, 21, 9, 47, 19, 338, DateTimeKind.Unspecified).AddTicks(7899),
-                            CreatedBy = 11,
-                            Description = "innovate viral blockchains",
-                            Name = "Schaden, Koch and Corkery",
+                            CreatedAt = new DateTime(2020, 10, 16, 17, 41, 22, 99, DateTimeKind.Unspecified).AddTicks(4346),
+                            CreatedBy = 4,
+                            Description = "cultivate killer metrics",
+                            Name = "Wintheiser - Ward",
                             OrganizationId = 4,
-                            PlatformId = 18,
-                            SecurityToken = "946d6706d4677f330d8180eb27de44cc"
+                            PlatformId = 4
                         },
                         new
                         {
                             Id = 13,
-                            CreatedAt = new DateTime(2020, 8, 28, 1, 4, 9, 926, DateTimeKind.Unspecified).AddTicks(4139),
-                            CreatedBy = 10,
-                            Description = "extend plug-and-play relationships",
-                            Name = "Hintz - Daniel",
-                            OrganizationId = 1,
-                            PlatformId = 1,
-                            SecurityToken = "97854c787524685abf92298ab776baac"
+                            CreatedAt = new DateTime(2020, 10, 20, 17, 49, 27, 974, DateTimeKind.Unspecified).AddTicks(474),
+                            CreatedBy = 7,
+                            Description = "expedite sticky applications",
+                            Name = "Conroy - Yost",
+                            OrganizationId = 5,
+                            PlatformId = 5
                         },
                         new
                         {
                             Id = 14,
-                            CreatedAt = new DateTime(2021, 5, 30, 7, 45, 50, 91, DateTimeKind.Unspecified).AddTicks(1381),
-                            CreatedBy = 16,
-                            Description = "optimize killer deliverables",
-                            Name = "Runolfsson Inc",
-                            OrganizationId = 4,
-                            PlatformId = 8,
-                            SecurityToken = "c7988f7da32c60eeac50dca6261e7fc8"
+                            CreatedAt = new DateTime(2021, 2, 15, 8, 18, 38, 596, DateTimeKind.Unspecified).AddTicks(2936),
+                            CreatedBy = 20,
+                            Description = "orchestrate customized partnerships",
+                            Name = "Olson Group",
+                            OrganizationId = 5,
+                            PlatformId = 18
                         },
                         new
                         {
                             Id = 15,
-                            CreatedAt = new DateTime(2021, 1, 18, 16, 18, 45, 797, DateTimeKind.Unspecified).AddTicks(5286),
-                            CreatedBy = 16,
-                            Description = "syndicate plug-and-play functionalities",
-                            Name = "Donnelly Group",
+                            CreatedAt = new DateTime(2019, 10, 6, 4, 20, 27, 200, DateTimeKind.Unspecified).AddTicks(4990),
+                            CreatedBy = 9,
+                            Description = "redefine B2B partnerships",
+                            Name = "Franecki - Fahey",
                             OrganizationId = 1,
-                            PlatformId = 17,
-                            SecurityToken = "0695a78516c5e0c252e95a7a1f3dd7ec"
+                            PlatformId = 12
                         });
                 });
 
@@ -243,6 +223,11 @@ namespace Watchdog.Core.DAL.Migrations
 
                     b.Property<int>("ApplicationId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsFavorite")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<int>("TeamId")
                         .HasColumnType("int");
@@ -260,120 +245,140 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 1,
                             ApplicationId = 4,
+                            IsFavorite = false,
                             TeamId = 5
                         },
                         new
                         {
                             Id = 2,
                             ApplicationId = 2,
+                            IsFavorite = false,
                             TeamId = 1
                         },
                         new
                         {
                             Id = 3,
                             ApplicationId = 8,
+                            IsFavorite = false,
                             TeamId = 1
                         },
                         new
                         {
                             Id = 4,
                             ApplicationId = 3,
+                            IsFavorite = false,
                             TeamId = 5
                         },
                         new
                         {
                             Id = 5,
                             ApplicationId = 6,
+                            IsFavorite = false,
                             TeamId = 1
                         },
                         new
                         {
                             Id = 6,
                             ApplicationId = 7,
+                            IsFavorite = false,
                             TeamId = 3
                         },
                         new
                         {
                             Id = 7,
                             ApplicationId = 15,
+                            IsFavorite = false,
                             TeamId = 5
                         },
                         new
                         {
                             Id = 8,
                             ApplicationId = 15,
+                            IsFavorite = false,
                             TeamId = 4
                         },
                         new
                         {
                             Id = 9,
                             ApplicationId = 7,
+                            IsFavorite = false,
                             TeamId = 3
                         },
                         new
                         {
                             Id = 10,
                             ApplicationId = 7,
+                            IsFavorite = false,
                             TeamId = 3
                         },
                         new
                         {
                             Id = 11,
                             ApplicationId = 1,
+                            IsFavorite = false,
                             TeamId = 4
                         },
                         new
                         {
                             Id = 12,
                             ApplicationId = 7,
+                            IsFavorite = false,
                             TeamId = 1
                         },
                         new
                         {
                             Id = 13,
                             ApplicationId = 10,
+                            IsFavorite = false,
                             TeamId = 3
                         },
                         new
                         {
                             Id = 14,
                             ApplicationId = 4,
+                            IsFavorite = false,
                             TeamId = 2
                         },
                         new
                         {
                             Id = 15,
                             ApplicationId = 1,
+                            IsFavorite = false,
                             TeamId = 3
                         },
                         new
                         {
                             Id = 16,
                             ApplicationId = 1,
+                            IsFavorite = false,
                             TeamId = 5
                         },
                         new
                         {
                             Id = 17,
                             ApplicationId = 7,
+                            IsFavorite = false,
                             TeamId = 2
                         },
                         new
                         {
                             Id = 18,
                             ApplicationId = 13,
+                            IsFavorite = false,
                             TeamId = 4
                         },
                         new
                         {
                             Id = 19,
                             ApplicationId = 3,
+                            IsFavorite = false,
                             TeamId = 5
                         },
                         new
                         {
                             Id = 20,
                             ApplicationId = 5,
+                            IsFavorite = false,
                             TeamId = 5
                         });
                 });
@@ -1150,128 +1155,20 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "Velit et quis non impedit saepe rerum aut. Et nemo sit recusandae officia et ut repudiandae doloremque maxime. Ullam adipisci aliquid. Sed magni error. Vel modi laudantium sed laboriosam quia.",
+                            Description = "Quod est nobis quasi. Deleniti neque et ex. Autem aut minus nam consectetur voluptatum excepturi fugiat sint iusto.",
                             Name = "Owner"
                         },
                         new
                         {
                             Id = 2,
-                            Description = "Deleniti voluptatem adipisci. Dicta tenetur nemo. Quo vel aut sed. Voluptas ipsa quia impedit optio voluptas consequatur sunt sit qui. Sit rem adipisci est laboriosam odit soluta.",
+                            Description = "Quas eum hic praesentium fugiat. Sit rerum qui numquam natus rerum quis aut veniam ad. Voluptates enim quam ipsa totam aspernatur. Iure expedita repellat dolor est aut voluptate maxime. Corrupti odit vero quia quod. Non ipsam quo ratione culpa ducimus repellendus exercitationem.",
                             Name = "Manager"
                         },
                         new
                         {
                             Id = 3,
-                            Description = "Accusantium veritatis deserunt fugiat quisquam sint ut necessitatibus qui voluptas. Voluptatem dignissimos cupiditate ab sit aliquam quos rerum pariatur. Rem ratione officia et optio et omnis. Accusamus id cumque ut ratione molestiae cumque. Autem maiores dolor voluptatibus fugit et. Voluptates iste rerum.",
+                            Description = "Labore ea id neque. Non aperiam minus incidunt architecto dolor. In hic porro aut vel cum aut optio nihil sequi. Voluptatem inventore aut voluptas quia sint enim animi.",
                             Name = "Viewer"
-                        });
-                });
-
-            modelBuilder.Entity("Watchdog.Core.DAL.Entities.Sample", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Body")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Samples");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 2,
-                            Body = "Eligendi quisquam ullam iure praesentium numquam sapiente distinctio ad. Tempore voluptatibus ad et adipisci hic amet. Corporis soluta cupiditate soluta. Provident rerum nemo dolores debitis dicta voluptatem labore dolores adipisci. Adipisci illo quidem sit dolores. Ea dolor animi quod laborum quia perspiciatis sunt tempora.",
-                            CreatedAt = new DateTime(2020, 7, 1, 1, 14, 20, 556, DateTimeKind.Unspecified).AddTicks(7372),
-                            CreatedBy = 5,
-                            Title = "hic"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Body = "Incidunt perferendis omnis. Quas voluptatem beatae vitae sunt a ut sed repellendus. Accusamus eos enim consequatur et praesentium ad ut beatae eius. Omnis voluptas error et velit autem ipsa atque consequuntur vitae. Nostrum accusamus soluta nisi.",
-                            CreatedAt = new DateTime(2020, 11, 26, 1, 10, 54, 982, DateTimeKind.Unspecified).AddTicks(9175),
-                            CreatedBy = 4,
-                            Title = "velit"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Body = "Architecto laboriosam culpa cumque dicta in. Perspiciatis amet autem rerum recusandae perspiciatis pariatur. Eum sint molestiae quis neque tempora ab distinctio. Nobis nulla dignissimos voluptas nemo cumque tenetur quod et placeat. Nihil sit eos similique fuga enim dolores ullam suscipit.",
-                            CreatedAt = new DateTime(2021, 1, 18, 12, 14, 38, 642, DateTimeKind.Unspecified).AddTicks(7703),
-                            CreatedBy = 1,
-                            Title = "est"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Body = "Sapiente et saepe ut atque dolore accusantium soluta cumque perferendis. Magni adipisci labore corrupti. Ratione et quibusdam consequatur voluptatem velit expedita eos maxime.",
-                            CreatedAt = new DateTime(2020, 2, 2, 15, 3, 56, 551, DateTimeKind.Unspecified).AddTicks(1864),
-                            CreatedBy = 5,
-                            Title = "placeat"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Body = "Iusto aspernatur nihil iure ut blanditiis veritatis quas. Et illum quod atque nulla voluptas quos beatae quaerat consequatur. Ab placeat tenetur perferendis et omnis. Doloremque corrupti deserunt sint enim ex sit.",
-                            CreatedAt = new DateTime(2021, 4, 7, 16, 50, 6, 239, DateTimeKind.Unspecified).AddTicks(5929),
-                            CreatedBy = 3,
-                            Title = "facere"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Body = "Doloremque omnis facilis unde exercitationem consectetur culpa porro consequatur sed. Vel rem rerum eum harum. Ratione voluptate est officia accusamus doloremque perferendis ea. Unde iure laudantium ut amet repellendus enim consequatur dolor porro. Sed expedita dolorem aperiam ipsa omnis. Ut omnis ipsa quia cupiditate iure.",
-                            CreatedAt = new DateTime(2019, 7, 23, 7, 33, 40, 245, DateTimeKind.Unspecified).AddTicks(9313),
-                            CreatedBy = 5,
-                            Title = "impedit"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Body = "Nesciunt placeat et consectetur enim. Consectetur magnam perspiciatis ut rem perspiciatis odit dolorem. Modi corrupti corrupti.",
-                            CreatedAt = new DateTime(2020, 1, 27, 9, 1, 30, 801, DateTimeKind.Unspecified).AddTicks(8159),
-                            CreatedBy = 3,
-                            Title = "corporis"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Body = "Omnis culpa earum modi eos beatae autem. Deleniti labore veritatis dolorum. Omnis perferendis ut sit nulla autem ut voluptatem voluptas ut.",
-                            CreatedAt = new DateTime(2021, 3, 25, 21, 11, 5, 602, DateTimeKind.Unspecified).AddTicks(6614),
-                            CreatedBy = 5,
-                            Title = "perspiciatis"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Body = "Molestias porro exercitationem omnis et eius. Est consequatur esse sit quia dolorem sequi doloribus corporis. Perspiciatis qui dignissimos.",
-                            CreatedAt = new DateTime(2021, 4, 7, 22, 46, 32, 439, DateTimeKind.Unspecified).AddTicks(5958),
-                            CreatedBy = 3,
-                            Title = "esse"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Body = "Eos eum perferendis nisi alias et ducimus repudiandae ut. Voluptas rerum ullam omnis placeat non ea voluptatibus. Sint et et asperiores omnis recusandae saepe laborum enim. Non consequatur voluptatem in aut quia quo quo. Commodi aliquid aut quaerat adipisci. Modi ea maxime doloribus qui sint.",
-                            CreatedAt = new DateTime(2021, 3, 24, 14, 25, 37, 776, DateTimeKind.Unspecified).AddTicks(56),
-                            CreatedBy = 1,
-                            Title = "in"
                         });
                 });
 
@@ -1299,6 +1196,9 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.HasIndex("OrganizationId");
 
@@ -1528,6 +1428,9 @@ namespace Watchdog.Core.DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -1539,8 +1442,14 @@ namespace Watchdog.Core.DAL.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Settings")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -1554,202 +1463,387 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2019, 8, 24, 19, 56, 57, 207, DateTimeKind.Unspecified).AddTicks(5964),
-                            CreatedBy = 14,
-                            DashboardId = 13,
-                            Name = "explicabo"
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 2, 17, 3, 12, 8, 478, DateTimeKind.Local).AddTicks(2495),
+                            CreatedBy = 7,
+                            DashboardId = 15,
+                            Name = "Ergonomic Fresh Chicken",
+                            Settings = "{\"sourceProjects\": [4],\"dateRange\": 4,\"issuesCount\": 489}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2021, 2, 5, 6, 31, 9, 575, DateTimeKind.Unspecified).AddTicks(2253),
-                            CreatedBy = 5,
-                            DashboardId = 6,
-                            Name = "et"
+                            Category = 1,
+                            CreatedAt = new DateTime(2019, 8, 20, 17, 33, 22, 701, DateTimeKind.Local).AddTicks(7613),
+                            CreatedBy = 15,
+                            DashboardId = 15,
+                            Name = "Tasty Frozen Tuna",
+                            Settings = "{\"sourceProjects\": [8],\"dateRange\": 2,\"issuesCount\": 977}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2019, 8, 24, 2, 50, 19, 608, DateTimeKind.Unspecified).AddTicks(3027),
-                            CreatedBy = 20,
-                            DashboardId = 8,
-                            Name = "nulla"
+                            Category = 1,
+                            CreatedAt = new DateTime(2019, 9, 6, 8, 3, 25, 729, DateTimeKind.Local).AddTicks(273),
+                            CreatedBy = 3,
+                            DashboardId = 10,
+                            Name = "Gorgeous Fresh Towels",
+                            Settings = "{\"sourceProjects\": [5],\"dateRange\": 4,\"issuesCount\": 919}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2020, 2, 21, 3, 45, 34, 720, DateTimeKind.Unspecified).AddTicks(8399),
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 8, 9, 22, 17, 12, 301, DateTimeKind.Local).AddTicks(8247),
                             CreatedBy = 3,
-                            DashboardId = 15,
-                            Name = "est"
+                            DashboardId = 5,
+                            Name = "Fantastic Steel Shoes",
+                            Settings = "{\"sourceProjects\": [1],\"dateRange\": 4,\"issuesCount\": 244}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2019, 8, 5, 23, 45, 48, 298, DateTimeKind.Unspecified).AddTicks(8056),
-                            CreatedBy = 10,
-                            DashboardId = 8,
-                            Name = "doloribus"
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 8, 30, 21, 4, 19, 128, DateTimeKind.Local).AddTicks(8308),
+                            CreatedBy = 15,
+                            DashboardId = 7,
+                            Name = "Handmade Metal Keyboard",
+                            Settings = "{\"sourceProjects\": [10],\"dateRange\": 2,\"issuesCount\": 74}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2020, 3, 22, 0, 4, 45, 919, DateTimeKind.Unspecified).AddTicks(3908),
-                            CreatedBy = 12,
-                            DashboardId = 14,
-                            Name = "et"
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 2, 4, 16, 41, 16, 758, DateTimeKind.Local).AddTicks(2352),
+                            CreatedBy = 5,
+                            DashboardId = 1,
+                            Name = "Incredible Frozen Sausages",
+                            Settings = "{\"sourceProjects\": [1],\"dateRange\": 0,\"issuesCount\": 128}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2020, 11, 22, 21, 23, 48, 733, DateTimeKind.Unspecified).AddTicks(9480),
-                            CreatedBy = 20,
-                            DashboardId = 2,
-                            Name = "qui"
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 8, 23, 12, 13, 0, 610, DateTimeKind.Local).AddTicks(5836),
+                            CreatedBy = 19,
+                            DashboardId = 14,
+                            Name = "Fantastic Frozen Gloves",
+                            Settings = "{\"sourceProjects\": [6],\"dateRange\": 0,\"issuesCount\": 19}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2021, 6, 2, 10, 46, 7, 850, DateTimeKind.Unspecified).AddTicks(6927),
-                            CreatedBy = 8,
-                            DashboardId = 14,
-                            Name = "et"
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 3, 8, 18, 19, 58, 792, DateTimeKind.Local).AddTicks(7240),
+                            CreatedBy = 11,
+                            DashboardId = 4,
+                            Name = "Intelligent Frozen Hat",
+                            Settings = "{\"sourceProjects\": [3],\"dateRange\": 2,\"issuesCount\": 109}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2021, 5, 7, 18, 59, 13, 655, DateTimeKind.Unspecified).AddTicks(9528),
-                            CreatedBy = 18,
-                            DashboardId = 5,
-                            Name = "totam"
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 4, 26, 12, 36, 50, 124, DateTimeKind.Local).AddTicks(8362),
+                            CreatedBy = 8,
+                            DashboardId = 13,
+                            Name = "Generic Plastic Cheese",
+                            Settings = "{\"sourceProjects\": [7],\"dateRange\": 1,\"issuesCount\": 679}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(2021, 1, 23, 5, 49, 51, 384, DateTimeKind.Unspecified).AddTicks(794),
-                            CreatedBy = 20,
-                            DashboardId = 1,
-                            Name = "quas"
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 10, 21, 3, 2, 35, 133, DateTimeKind.Local).AddTicks(389),
+                            CreatedBy = 17,
+                            DashboardId = 13,
+                            Name = "Refined Granite Salad",
+                            Settings = "{\"sourceProjects\": [4],\"dateRange\": 1,\"issuesCount\": 156}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 11,
-                            CreatedAt = new DateTime(2020, 9, 1, 12, 11, 57, 170, DateTimeKind.Unspecified).AddTicks(2604),
-                            CreatedBy = 4,
-                            DashboardId = 11,
-                            Name = "placeat"
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 9, 15, 9, 39, 3, 446, DateTimeKind.Local).AddTicks(3407),
+                            CreatedBy = 8,
+                            DashboardId = 9,
+                            Name = "Intelligent Wooden Towels",
+                            Settings = "{\"sourceProjects\": [11],\"dateRange\": 4,\"issuesCount\": 375}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 12,
-                            CreatedAt = new DateTime(2020, 4, 6, 2, 33, 56, 395, DateTimeKind.Unspecified).AddTicks(7716),
-                            CreatedBy = 10,
-                            DashboardId = 11,
-                            Name = "beatae"
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 4, 21, 22, 47, 7, 618, DateTimeKind.Local).AddTicks(7519),
+                            CreatedBy = 1,
+                            DashboardId = 1,
+                            Name = "Sleek Wooden Table",
+                            Settings = "{\"sourceProjects\": [7],\"dateRange\": 1,\"issuesCount\": 760}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 13,
-                            CreatedAt = new DateTime(2019, 7, 25, 21, 17, 2, 688, DateTimeKind.Unspecified).AddTicks(6748),
-                            CreatedBy = 7,
-                            DashboardId = 2,
-                            Name = "similique"
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 6, 26, 12, 48, 57, 981, DateTimeKind.Local).AddTicks(655),
+                            CreatedBy = 15,
+                            DashboardId = 6,
+                            Name = "Licensed Steel Chips",
+                            Settings = "{\"sourceProjects\": [11],\"dateRange\": 1,\"issuesCount\": 391}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 14,
-                            CreatedAt = new DateTime(2021, 2, 9, 17, 55, 34, 126, DateTimeKind.Unspecified).AddTicks(4772),
-                            CreatedBy = 19,
-                            DashboardId = 1,
-                            Name = "sint"
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 2, 14, 15, 15, 23, 972, DateTimeKind.Local).AddTicks(7722),
+                            CreatedBy = 11,
+                            DashboardId = 7,
+                            Name = "Rustic Granite Bacon",
+                            Settings = "{\"sourceProjects\": [4],\"dateRange\": 4,\"issuesCount\": 183}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 15,
-                            CreatedAt = new DateTime(2021, 4, 17, 15, 59, 57, 251, DateTimeKind.Unspecified).AddTicks(3258),
-                            CreatedBy = 3,
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 7, 25, 22, 12, 32, 652, DateTimeKind.Local).AddTicks(1648),
+                            CreatedBy = 15,
                             DashboardId = 1,
-                            Name = "quaerat"
+                            Name = "Unbranded Granite Towels",
+                            Settings = "{\"sourceProjects\": [14],\"dateRange\": 1,\"issuesCount\": 833}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 16,
-                            CreatedAt = new DateTime(2019, 9, 11, 17, 20, 24, 304, DateTimeKind.Unspecified).AddTicks(4056),
-                            CreatedBy = 7,
-                            DashboardId = 14,
-                            Name = "consequatur"
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 4, 17, 22, 29, 41, 828, DateTimeKind.Local).AddTicks(5684),
+                            CreatedBy = 4,
+                            DashboardId = 9,
+                            Name = "Handcrafted Frozen Salad",
+                            Settings = "{\"sourceProjects\": [3],\"dateRange\": 1,\"issuesCount\": 143}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 17,
-                            CreatedAt = new DateTime(2020, 11, 5, 17, 32, 45, 18, DateTimeKind.Unspecified).AddTicks(7950),
-                            CreatedBy = 10,
-                            DashboardId = 14,
-                            Name = "consequuntur"
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 1, 8, 20, 4, 5, 303, DateTimeKind.Local).AddTicks(8051),
+                            CreatedBy = 1,
+                            DashboardId = 7,
+                            Name = "Incredible Soft Gloves",
+                            Settings = "{\"sourceProjects\": [1],\"dateRange\": 0,\"issuesCount\": 970}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 18,
-                            CreatedAt = new DateTime(2019, 8, 17, 3, 34, 59, 276, DateTimeKind.Unspecified).AddTicks(8512),
-                            CreatedBy = 5,
-                            DashboardId = 1,
-                            Name = "et"
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 8, 13, 4, 49, 4, 746, DateTimeKind.Local).AddTicks(6605),
+                            CreatedBy = 7,
+                            DashboardId = 3,
+                            Name = "Incredible Frozen Shoes",
+                            Settings = "{\"sourceProjects\": [15],\"dateRange\": 1,\"issuesCount\": 457}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 19,
-                            CreatedAt = new DateTime(2020, 6, 23, 7, 29, 11, 206, DateTimeKind.Unspecified).AddTicks(8352),
-                            CreatedBy = 5,
-                            DashboardId = 4,
-                            Name = "ut"
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 5, 29, 0, 53, 33, 735, DateTimeKind.Local).AddTicks(780),
+                            CreatedBy = 4,
+                            DashboardId = 8,
+                            Name = "Handcrafted Concrete Gloves",
+                            Settings = "{\"sourceProjects\": [5],\"dateRange\": 0,\"issuesCount\": 729}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 20,
-                            CreatedAt = new DateTime(2021, 5, 1, 12, 45, 22, 202, DateTimeKind.Unspecified).AddTicks(5966),
-                            CreatedBy = 12,
-                            DashboardId = 3,
-                            Name = "quo"
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 5, 2, 11, 4, 7, 650, DateTimeKind.Local).AddTicks(6242),
+                            CreatedBy = 4,
+                            DashboardId = 13,
+                            Name = "Fantastic Rubber Pizza",
+                            Settings = "{\"sourceProjects\": [3],\"dateRange\": 3,\"issuesCount\": 148}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 21,
-                            CreatedAt = new DateTime(2019, 11, 8, 11, 46, 14, 149, DateTimeKind.Unspecified).AddTicks(9025),
-                            CreatedBy = 16,
-                            DashboardId = 5,
-                            Name = "rerum"
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 9, 5, 22, 44, 37, 772, DateTimeKind.Local).AddTicks(9524),
+                            CreatedBy = 15,
+                            DashboardId = 6,
+                            Name = "Practical Steel Fish",
+                            Settings = "{\"sourceProjects\": [11],\"dateRange\": 3,\"issuesCount\": 69}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 22,
-                            CreatedAt = new DateTime(2020, 9, 24, 0, 42, 48, 413, DateTimeKind.Unspecified).AddTicks(3080),
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 10, 1, 23, 45, 56, 272, DateTimeKind.Local).AddTicks(4255),
                             CreatedBy = 3,
-                            DashboardId = 6,
-                            Name = "similique"
+                            DashboardId = 14,
+                            Name = "Handcrafted Concrete Chips",
+                            Settings = "{\"sourceProjects\": [12],\"dateRange\": 3,\"issuesCount\": 60}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 23,
-                            CreatedAt = new DateTime(2020, 8, 9, 10, 30, 58, 62, DateTimeKind.Unspecified).AddTicks(3863),
-                            CreatedBy = 17,
-                            DashboardId = 11,
-                            Name = "iure"
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 5, 30, 20, 10, 20, 814, DateTimeKind.Local).AddTicks(2083),
+                            CreatedBy = 15,
+                            DashboardId = 7,
+                            Name = "Practical Steel Chips",
+                            Settings = "{\"sourceProjects\": [10],\"dateRange\": 1,\"issuesCount\": 691}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 24,
-                            CreatedAt = new DateTime(2019, 11, 16, 22, 4, 38, 925, DateTimeKind.Unspecified).AddTicks(8090),
-                            CreatedBy = 18,
-                            DashboardId = 13,
-                            Name = "eveniet"
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 9, 15, 0, 40, 15, 246, DateTimeKind.Local).AddTicks(876),
+                            CreatedBy = 15,
+                            DashboardId = 1,
+                            Name = "Rustic Plastic Mouse",
+                            Settings = "{\"sourceProjects\": [15],\"dateRange\": 4,\"issuesCount\": 969}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 25,
-                            CreatedAt = new DateTime(2021, 3, 28, 8, 14, 13, 190, DateTimeKind.Unspecified).AddTicks(2898),
-                            CreatedBy = 7,
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 6, 17, 22, 55, 15, 954, DateTimeKind.Local).AddTicks(9771),
+                            CreatedBy = 4,
+                            DashboardId = 15,
+                            Name = "Handmade Fresh Towels",
+                            Settings = "{\"sourceProjects\": [14],\"dateRange\": 1,\"issuesCount\": 725}",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 26,
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 7, 16, 17, 49, 39, 347, DateTimeKind.Local).AddTicks(3365),
+                            CreatedBy = 9,
+                            DashboardId = 11,
+                            Name = "Handmade Plastic Shirt",
+                            Settings = "{\"sourceProjects\": [5],\"dateRange\": 3,\"issuesCount\": 790}",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 27,
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 7, 27, 2, 0, 44, 493, DateTimeKind.Local).AddTicks(9978),
+                            CreatedBy = 6,
+                            DashboardId = 1,
+                            Name = "Generic Soft Shirt",
+                            Settings = "{\"sourceProjects\": [14],\"dateRange\": 4,\"issuesCount\": 737}",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 28,
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 9, 15, 6, 2, 29, 186, DateTimeKind.Local).AddTicks(8987),
+                            CreatedBy = 11,
+                            DashboardId = 12,
+                            Name = "Handcrafted Granite Bacon",
+                            Settings = "{\"sourceProjects\": [15],\"dateRange\": 1,\"issuesCount\": 461}",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 29,
+                            Category = 1,
+                            CreatedAt = new DateTime(2019, 9, 10, 12, 13, 35, 264, DateTimeKind.Local).AddTicks(3769),
+                            CreatedBy = 17,
+                            DashboardId = 9,
+                            Name = "Rustic Wooden Ball",
+                            Settings = "{\"sourceProjects\": [8],\"dateRange\": 1,\"issuesCount\": 626}",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 30,
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 8, 3, 11, 1, 53, 468, DateTimeKind.Local).AddTicks(7741),
+                            CreatedBy = 19,
                             DashboardId = 4,
-                            Name = "ea"
+                            Name = "Handcrafted Wooden Keyboard",
+                            Settings = "{\"sourceProjects\": [9],\"dateRange\": 0,\"issuesCount\": 784}",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 31,
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 7, 17, 19, 36, 55, 974, DateTimeKind.Local).AddTicks(3670),
+                            CreatedBy = 5,
+                            DashboardId = 10,
+                            Name = "Rustic Metal Car",
+                            Settings = "{\"sourceProjects\": [10],\"dateRange\": 1,\"issuesCount\": 202}",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 32,
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 6, 25, 18, 4, 0, 458, DateTimeKind.Local).AddTicks(3430),
+                            CreatedBy = 10,
+                            DashboardId = 5,
+                            Name = "Tasty Steel Chips",
+                            Settings = "{\"sourceProjects\": [12],\"dateRange\": 0,\"issuesCount\": 67}",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 33,
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 12, 13, 18, 44, 23, 266, DateTimeKind.Local).AddTicks(7117),
+                            CreatedBy = 12,
+                            DashboardId = 4,
+                            Name = "Incredible Rubber Towels",
+                            Settings = "{\"sourceProjects\": [10],\"dateRange\": 2,\"issuesCount\": 440}",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 34,
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 5, 7, 23, 5, 20, 450, DateTimeKind.Local).AddTicks(4621),
+                            CreatedBy = 11,
+                            DashboardId = 9,
+                            Name = "Small Fresh Salad",
+                            Settings = "{\"sourceProjects\": [9],\"dateRange\": 2,\"issuesCount\": 735}",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 35,
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 4, 29, 9, 22, 2, 206, DateTimeKind.Local).AddTicks(4647),
+                            CreatedBy = 13,
+                            DashboardId = 3,
+                            Name = "Incredible Plastic Computer",
+                            Settings = "{\"sourceProjects\": [13],\"dateRange\": 2,\"issuesCount\": 866}",
+                            Type = 0
                         });
                 });
 
@@ -2030,7 +2124,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.Team", "Team")
                         .WithMany("ApplicationTeams")
                         .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Application");
@@ -2100,7 +2194,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Organizations")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("User");

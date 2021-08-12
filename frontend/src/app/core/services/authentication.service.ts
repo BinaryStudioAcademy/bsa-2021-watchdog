@@ -216,7 +216,6 @@ export class AuthenticationService {
         if (name != null) {
             [user.firstName, user.lastName = ''] = name.split(' ');
         }
-
         return user;
     }
 

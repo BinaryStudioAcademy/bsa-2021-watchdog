@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { NewProject } from '@shared/models/projects/new-project';
 import { Project } from '@shared/models/projects/project';
 import { Observable } from 'rxjs';
-import { HttpInternalService } from './http-internal.service';
 import { ProjectTeam } from '@shared/models/projects/project-team';
 import { NewProjectTeam } from '@shared/models/projects/new-project-team';
+import { HttpInternalService } from './http-internal.service';
 
 @Injectable({
     providedIn: 'root',

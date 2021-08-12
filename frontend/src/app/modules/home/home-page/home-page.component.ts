@@ -40,9 +40,8 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         this.authService.getOrganization()
             .subscribe(organization => {
                 this.organization = organization;
+                this.getAllDashboards();
             });
-
-        this.getAllDashboards();
 
         await this.broadcastHub.start();
         this.broadcastHub.listenMessages((msg) => {
