@@ -11,11 +11,13 @@
     align-items: center
     grid-gap: 5px
 
-.search-block
-    display: grid
-    grid-template-columns: 1fr auto
-    grid-gap: $indent
+.functional-bar
+    display: flex
+    gap: 10px
     margin-bottom: 16px
+
+.action-block
+    display: flex
 
 .bold
     font-weight: bold
@@ -24,9 +26,11 @@
     cursor: pointer
 
 #issue-col
-    width: 70%
-#events-col,
-#users-col,
+    width: 60%
+#events-col
+    width: 15%
+#users-col
+    width: 15%
 #assignee-col
     width: 10%
 
@@ -73,7 +77,37 @@ td,
 .time-icon
     font-size: 0.6rem
     margin-right: 2px
-    
+
+.tooltip
+    position: relative
+    display: inline-block
+    .tooltiptext
+        visibility: hidden
+        background-color: black
+        color: #fff
+        text-align: center
+        font-weight: 600
+        padding: 7px
+        border-radius: 6px
+        position: absolute
+        z-index: 1
+        top: -7px
+        left: 115%
+        &::after
+            content: " "
+            position: absolute
+            top: 50%
+            right: 100%
+            margin-top: -5px
+            border-width: 5px
+            border-style: solid
+            border-color: transparent black transparent transparent
+    &:hover
+        .tooltiptext
+            transition-delay: 250ms
+            visibility: visible
+            width: max-content
+
 :host ::ng-deep
     .p-tabview-nav-link
         &:focus
@@ -81,15 +115,15 @@ td,
 
     .p-badge
         background-color: lightgray
-    
-    .p-highlight 
+
+    .p-highlight
         .p-badge
             background-color: $primary-color
 
     .p-dropdown
         height: 40px
         width: 220px
-    
+
     .p-dropdown-label
         display: flex
         align-items: center
@@ -98,8 +132,3 @@ td,
         height: 1.1rem
         background-color: $tag-color
         color: $text-color
-
-@media screen and ( max-width:960px )
-    .search-additional
-        display: none
-    

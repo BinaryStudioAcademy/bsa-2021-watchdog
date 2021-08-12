@@ -8,6 +8,7 @@ import { User } from '@shared/models/user/user';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { AuthenticationService } from '@core/services/authentication.service';
+import { MenuItem } from 'primeng/api/menuitem';
 import { Organization } from '@shared/models/organization/organization';
 
 @Component({
@@ -17,6 +18,7 @@ import { Organization } from '@shared/models/organization/organization';
 })
 export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     dashboards: Dashboard[];
+    userItems: MenuItem[];
     dashboardsShown: boolean = false;
     displayModal: boolean = false;
 
@@ -32,6 +34,11 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         private toastNotificationService: ToastNotificationService
     ) {
         super();
+        this.user = authService.getUser();
+        this.userItems = [
+            { label: 'My profile', routerLink: '/user' },
+            { label: 'Logout', routerLink: '/', command: () => this.authService.logout() }
+        ];
     }
 
     ngOnInit() {

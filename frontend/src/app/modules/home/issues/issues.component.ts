@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Option } from '@core/models/Option';
 import { Issue } from '@shared/models/issue/issue';
 import { IssueService } from '@core/services/issue.service';
 import { IssueMessage } from '@shared/models/issues/issue-message';
@@ -14,16 +13,13 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
 export class IssuesComponent extends BaseComponent implements OnInit {
     issues: IssueMessage[];
 
-    public countNew: { [type: string]: number };
+    countNew: { [type: string]: number };
 
-    public sortedBy: Option;
-    public sortedOptions: Option[];
+    selectedIssues: Issue[] = [];
 
-    public selectedIssues: Issue[] = [];
+    timeOptions: string[];
 
-    public timeOptions: string[];
-
-    public selectedTime: string;
+    selectedTime: string;
 
     constructor(private issueService: IssueService, private toastNotification: ToastNotificationService) {
         super();
@@ -63,22 +59,5 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             secondtype: 1,
             thirdtype: 0
         };
-
-        this.sortedOptions = [
-            {
-                name: 'Last Seen',
-                code: 'last-seen'
-            },
-            {
-                name: 'Newest',
-                code: 'newest'
-            }
-        ];
-
-        [this.sortedBy] = this.sortedOptions;
-
-        this.timeOptions = ['24h', '14d'];
-
-        [this.selectedTime] = this.timeOptions;
     }
 }
