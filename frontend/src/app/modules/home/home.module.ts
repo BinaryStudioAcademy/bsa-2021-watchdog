@@ -12,6 +12,10 @@ import { UpdateDashboardComponent } from './modals/dashboard/update-dashboard.co
 import { CreateProjectComponent } from './projects/create-project/create-project.component';
 import { TileMenuComponent } from './dashboard/tile-menu/tile-menu.component';
 
+import { TopActiveIssuesTileComponent } from './dashboard/tiles/top-active-issues-tile/top-active-issues-tile.component';
+import { AddEditTopActiveIssuesTileComponent }
+    from './modals/tiles/top-active-issues/add-edit-top-active-issues-tile/add-edit-top-active-issues-tile.component';
+
 @NgModule({
     declarations: [
         HomeComponent,
@@ -22,6 +26,8 @@ import { TileMenuComponent } from './dashboard/tile-menu/tile-menu.component';
         UpdateDashboardComponent,
         CreateProjectComponent,
         TileMenuComponent,
+        TopActiveIssuesTileComponent,
+        AddEditTopActiveIssuesTileComponent,
     ],
     imports: [
         SharedModule,
