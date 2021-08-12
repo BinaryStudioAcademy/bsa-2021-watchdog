@@ -10,7 +10,7 @@ using Watchdog.Core.DAL.Context;
 namespace Watchdog.Core.DAL.Migrations
 {
     [DbContext(typeof(WatchdogCoreContext))]
-    [Migration("20210811192538_UpdateTiles")]
+    [Migration("20210812074858_UpdateTiles")]
     partial class UpdateTiles
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -173,6 +173,11 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<int>("ApplicationId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsFavorite")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<int>("TeamId")
                         .HasColumnType("int");
 
@@ -189,120 +194,140 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 1,
                             ApplicationId = 3,
+                            IsFavorite = false,
                             TeamId = 5
                         },
                         new
                         {
                             Id = 2,
                             ApplicationId = 2,
+                            IsFavorite = false,
                             TeamId = 1
                         },
                         new
                         {
                             Id = 3,
                             ApplicationId = 6,
+                            IsFavorite = false,
                             TeamId = 1
                         },
                         new
                         {
                             Id = 4,
                             ApplicationId = 2,
+                            IsFavorite = false,
                             TeamId = 5
                         },
                         new
                         {
                             Id = 5,
                             ApplicationId = 4,
+                            IsFavorite = false,
                             TeamId = 1
                         },
                         new
                         {
                             Id = 6,
                             ApplicationId = 5,
+                            IsFavorite = false,
                             TeamId = 3
                         },
                         new
                         {
                             Id = 7,
                             ApplicationId = 10,
+                            IsFavorite = false,
                             TeamId = 5
                         },
                         new
                         {
                             Id = 8,
                             ApplicationId = 10,
+                            IsFavorite = false,
                             TeamId = 4
                         },
                         new
                         {
                             Id = 9,
                             ApplicationId = 5,
+                            IsFavorite = false,
                             TeamId = 3
                         },
                         new
                         {
                             Id = 10,
                             ApplicationId = 5,
+                            IsFavorite = false,
                             TeamId = 3
                         },
                         new
                         {
                             Id = 11,
                             ApplicationId = 1,
+                            IsFavorite = false,
                             TeamId = 4
                         },
                         new
                         {
                             Id = 12,
                             ApplicationId = 5,
+                            IsFavorite = false,
                             TeamId = 1
                         },
                         new
                         {
                             Id = 13,
                             ApplicationId = 7,
+                            IsFavorite = false,
                             TeamId = 3
                         },
                         new
                         {
                             Id = 14,
                             ApplicationId = 3,
+                            IsFavorite = false,
                             TeamId = 2
                         },
                         new
                         {
                             Id = 15,
                             ApplicationId = 1,
+                            IsFavorite = false,
                             TeamId = 3
                         },
                         new
                         {
                             Id = 16,
                             ApplicationId = 1,
+                            IsFavorite = false,
                             TeamId = 5
                         },
                         new
                         {
                             Id = 17,
                             ApplicationId = 5,
+                            IsFavorite = false,
                             TeamId = 2
                         },
                         new
                         {
                             Id = 18,
                             ApplicationId = 9,
+                            IsFavorite = false,
                             TeamId = 4
                         },
                         new
                         {
                             Id = 19,
                             ApplicationId = 2,
+                            IsFavorite = false,
                             TeamId = 5
                         },
                         new
                         {
                             Id = 20,
                             ApplicationId = 4,
+                            IsFavorite = false,
                             TeamId = 5
                         });
                 });
@@ -1011,19 +1036,19 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "Distinctio quos soluta tenetur quod dolores odit sunt. Aut quisquam quo qui voluptates labore et dolorem culpa libero. Vel quas quia tempora quibusdam. Maxime minus accusantium eius. Non eos et quis et omnis facere itaque quas rerum.",
+                            Description = "Quod est nobis quasi. Deleniti neque et ex. Autem aut minus nam consectetur voluptatum excepturi fugiat sint iusto.",
                             Name = "Owner"
                         },
                         new
                         {
                             Id = 2,
-                            Description = "Facere maxime aliquam et omnis quis repudiandae iure cupiditate. Ipsam corporis nesciunt consequatur blanditiis sequi iste. Quis perspiciatis omnis necessitatibus adipisci at. Fuga dolorum debitis quasi rerum dolorem autem tempore nam. Atque perspiciatis ad ut dignissimos.",
+                            Description = "Quas eum hic praesentium fugiat. Sit rerum qui numquam natus rerum quis aut veniam ad. Voluptates enim quam ipsa totam aspernatur. Iure expedita repellat dolor est aut voluptate maxime. Corrupti odit vero quia quod. Non ipsam quo ratione culpa ducimus repellendus exercitationem.",
                             Name = "Manager"
                         },
                         new
                         {
                             Id = 3,
-                            Description = "Rem hic unde dolorum consequuntur dolore quia animi vel. In neque beatae. Unde ea aspernatur voluptatem nam eaque ipsam aut velit.",
+                            Description = "Labore ea id neque. Non aperiam minus incidunt architecto dolor. In hic porro aut vel cum aut optio nihil sequi. Voluptatem inventore aut voluptas quia sint enim animi.",
                             Name = "Viewer"
                         });
                 });
@@ -1160,6 +1185,9 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.HasIndex("OrganizationId");
 
@@ -1425,7 +1453,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 1,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 2, 16, 11, 50, 3, 836, DateTimeKind.Local).AddTicks(6835),
+                            CreatedAt = new DateTime(2021, 2, 17, 0, 13, 23, 617, DateTimeKind.Local).AddTicks(4950),
                             CreatedBy = 7,
                             DashboardId = 15,
                             Name = "Ergonomic Fresh Chicken",
@@ -1436,7 +1464,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 2,
                             Category = 1,
-                            CreatedAt = new DateTime(2019, 8, 20, 2, 11, 18, 55, DateTimeKind.Local).AddTicks(8798),
+                            CreatedAt = new DateTime(2019, 8, 20, 14, 34, 37, 836, DateTimeKind.Local).AddTicks(8467),
                             CreatedBy = 15,
                             DashboardId = 15,
                             Name = "Tasty Frozen Tuna",
@@ -1447,7 +1475,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 3,
                             Category = 1,
-                            CreatedAt = new DateTime(2019, 9, 5, 16, 41, 21, 83, DateTimeKind.Local).AddTicks(832),
+                            CreatedAt = new DateTime(2019, 9, 6, 5, 4, 40, 864, DateTimeKind.Local).AddTicks(511),
                             CreatedBy = 3,
                             DashboardId = 10,
                             Name = "Gorgeous Fresh Towels",
@@ -1458,7 +1486,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 4,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 8, 9, 6, 55, 7, 655, DateTimeKind.Local).AddTicks(8709),
+                            CreatedAt = new DateTime(2020, 8, 9, 19, 18, 27, 436, DateTimeKind.Local).AddTicks(8397),
                             CreatedBy = 3,
                             DashboardId = 5,
                             Name = "Fantastic Steel Shoes",
@@ -1469,7 +1497,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 5,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 8, 30, 5, 42, 14, 482, DateTimeKind.Local).AddTicks(8537),
+                            CreatedAt = new DateTime(2020, 8, 30, 18, 5, 34, 263, DateTimeKind.Local).AddTicks(8230),
                             CreatedBy = 15,
                             DashboardId = 7,
                             Name = "Handmade Metal Keyboard",
@@ -1480,7 +1508,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 6,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 2, 4, 1, 19, 12, 112, DateTimeKind.Local).AddTicks(2572),
+                            CreatedAt = new DateTime(2021, 2, 4, 13, 42, 31, 893, DateTimeKind.Local).AddTicks(2296),
                             CreatedBy = 5,
                             DashboardId = 1,
                             Name = "Incredible Frozen Sausages",
@@ -1491,7 +1519,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 7,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 8, 22, 20, 50, 55, 964, DateTimeKind.Local).AddTicks(6045),
+                            CreatedAt = new DateTime(2020, 8, 23, 9, 14, 15, 745, DateTimeKind.Local).AddTicks(5718),
                             CreatedBy = 19,
                             DashboardId = 14,
                             Name = "Fantastic Frozen Gloves",
@@ -1502,7 +1530,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 8,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 3, 8, 2, 57, 54, 146, DateTimeKind.Local).AddTicks(7422),
+                            CreatedAt = new DateTime(2020, 3, 8, 15, 21, 13, 927, DateTimeKind.Local).AddTicks(7090),
                             CreatedBy = 11,
                             DashboardId = 4,
                             Name = "Intelligent Frozen Hat",
@@ -1513,7 +1541,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 9,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 4, 25, 21, 14, 45, 478, DateTimeKind.Local).AddTicks(8506),
+                            CreatedAt = new DateTime(2021, 4, 26, 9, 38, 5, 259, DateTimeKind.Local).AddTicks(8177),
                             CreatedBy = 8,
                             DashboardId = 13,
                             Name = "Generic Plastic Cheese",
@@ -1524,7 +1552,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 10,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 10, 20, 11, 40, 30, 487, DateTimeKind.Local).AddTicks(492),
+                            CreatedAt = new DateTime(2020, 10, 21, 0, 3, 50, 268, DateTimeKind.Local).AddTicks(167),
                             CreatedBy = 17,
                             DashboardId = 13,
                             Name = "Refined Granite Salad",
@@ -1535,7 +1563,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 11,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 9, 14, 18, 16, 58, 800, DateTimeKind.Local).AddTicks(3215),
+                            CreatedAt = new DateTime(2020, 9, 15, 6, 40, 18, 581, DateTimeKind.Local).AddTicks(2895),
                             CreatedBy = 8,
                             DashboardId = 9,
                             Name = "Intelligent Wooden Towels",
@@ -1546,7 +1574,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 12,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 4, 21, 7, 25, 2, 972, DateTimeKind.Local).AddTicks(7279),
+                            CreatedAt = new DateTime(2021, 4, 21, 19, 48, 22, 753, DateTimeKind.Local).AddTicks(6968),
                             CreatedBy = 1,
                             DashboardId = 1,
                             Name = "Sleek Wooden Table",
@@ -1557,7 +1585,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 13,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 6, 25, 21, 26, 53, 335, DateTimeKind.Local).AddTicks(362),
+                            CreatedAt = new DateTime(2021, 6, 26, 9, 50, 13, 116, DateTimeKind.Local).AddTicks(54),
                             CreatedBy = 15,
                             DashboardId = 6,
                             Name = "Licensed Steel Chips",
@@ -1568,7 +1596,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 14,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 2, 13, 23, 53, 19, 326, DateTimeKind.Local).AddTicks(7377),
+                            CreatedAt = new DateTime(2020, 2, 14, 12, 16, 39, 107, DateTimeKind.Local).AddTicks(7075),
                             CreatedBy = 11,
                             DashboardId = 7,
                             Name = "Rustic Granite Bacon",
@@ -1579,7 +1607,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 15,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 7, 25, 6, 50, 28, 6, DateTimeKind.Local).AddTicks(1252),
+                            CreatedAt = new DateTime(2021, 7, 25, 19, 13, 47, 787, DateTimeKind.Local).AddTicks(955),
                             CreatedBy = 15,
                             DashboardId = 1,
                             Name = "Unbranded Granite Towels",
@@ -1590,7 +1618,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 16,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 4, 17, 7, 7, 37, 182, DateTimeKind.Local).AddTicks(5238),
+                            CreatedAt = new DateTime(2021, 4, 17, 19, 30, 56, 963, DateTimeKind.Local).AddTicks(4947),
                             CreatedBy = 4,
                             DashboardId = 9,
                             Name = "Handcrafted Frozen Salad",
@@ -1601,7 +1629,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 17,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 1, 8, 4, 42, 0, 657, DateTimeKind.Local).AddTicks(7534),
+                            CreatedAt = new DateTime(2021, 1, 8, 17, 5, 20, 438, DateTimeKind.Local).AddTicks(7248),
                             CreatedBy = 1,
                             DashboardId = 7,
                             Name = "Incredible Soft Gloves",
@@ -1612,7 +1640,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 18,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 8, 12, 13, 27, 0, 100, DateTimeKind.Local).AddTicks(6009),
+                            CreatedAt = new DateTime(2020, 8, 13, 1, 50, 19, 881, DateTimeKind.Local).AddTicks(5758),
                             CreatedBy = 7,
                             DashboardId = 3,
                             Name = "Incredible Frozen Shoes",
@@ -1623,7 +1651,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 19,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 5, 28, 9, 31, 29, 89, DateTimeKind.Local).AddTicks(150),
+                            CreatedAt = new DateTime(2020, 5, 28, 21, 54, 48, 869, DateTimeKind.Local).AddTicks(9905),
                             CreatedBy = 4,
                             DashboardId = 8,
                             Name = "Handcrafted Concrete Gloves",
@@ -1634,7 +1662,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 20,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 5, 1, 19, 42, 3, 4, DateTimeKind.Local).AddTicks(5554),
+                            CreatedAt = new DateTime(2021, 5, 2, 8, 5, 22, 785, DateTimeKind.Local).AddTicks(5313),
                             CreatedBy = 4,
                             DashboardId = 13,
                             Name = "Fantastic Rubber Pizza",
@@ -1645,7 +1673,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 21,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 9, 5, 7, 22, 33, 126, DateTimeKind.Local).AddTicks(8780),
+                            CreatedAt = new DateTime(2020, 9, 5, 19, 45, 52, 907, DateTimeKind.Local).AddTicks(8544),
                             CreatedBy = 15,
                             DashboardId = 6,
                             Name = "Practical Steel Fish",
@@ -1656,7 +1684,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 22,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 10, 1, 8, 23, 51, 626, DateTimeKind.Local).AddTicks(3447),
+                            CreatedAt = new DateTime(2020, 10, 1, 20, 47, 11, 407, DateTimeKind.Local).AddTicks(3217),
                             CreatedBy = 3,
                             DashboardId = 14,
                             Name = "Handcrafted Concrete Chips",
@@ -1667,7 +1695,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 23,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 5, 30, 4, 48, 16, 168, DateTimeKind.Local).AddTicks(1215),
+                            CreatedAt = new DateTime(2021, 5, 30, 17, 11, 35, 949, DateTimeKind.Local).AddTicks(990),
                             CreatedBy = 15,
                             DashboardId = 7,
                             Name = "Practical Steel Chips",
@@ -1678,7 +1706,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 24,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 9, 14, 9, 18, 10, 599, DateTimeKind.Local).AddTicks(9914),
+                            CreatedAt = new DateTime(2020, 9, 14, 21, 41, 30, 380, DateTimeKind.Local).AddTicks(9745),
                             CreatedBy = 15,
                             DashboardId = 1,
                             Name = "Rustic Plastic Mouse",
@@ -1689,7 +1717,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 25,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 6, 17, 7, 33, 11, 308, DateTimeKind.Local).AddTicks(8745),
+                            CreatedAt = new DateTime(2020, 6, 17, 19, 56, 31, 89, DateTimeKind.Local).AddTicks(8581),
                             CreatedBy = 4,
                             DashboardId = 15,
                             Name = "Handmade Fresh Towels",
@@ -1700,7 +1728,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 26,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 7, 16, 2, 27, 34, 701, DateTimeKind.Local).AddTicks(2285),
+                            CreatedAt = new DateTime(2021, 7, 16, 14, 50, 54, 482, DateTimeKind.Local).AddTicks(2126),
                             CreatedBy = 9,
                             DashboardId = 11,
                             Name = "Handmade Plastic Shirt",
@@ -1711,7 +1739,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 27,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 7, 26, 10, 38, 39, 847, DateTimeKind.Local).AddTicks(8840),
+                            CreatedAt = new DateTime(2021, 7, 26, 23, 1, 59, 628, DateTimeKind.Local).AddTicks(8686),
                             CreatedBy = 6,
                             DashboardId = 1,
                             Name = "Generic Soft Shirt",
@@ -1722,7 +1750,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 28,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 9, 14, 14, 40, 24, 540, DateTimeKind.Local).AddTicks(7765),
+                            CreatedAt = new DateTime(2020, 9, 15, 3, 3, 44, 321, DateTimeKind.Local).AddTicks(7615),
                             CreatedBy = 11,
                             DashboardId = 12,
                             Name = "Handcrafted Granite Bacon",
@@ -1733,7 +1761,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 29,
                             Category = 1,
-                            CreatedAt = new DateTime(2019, 9, 9, 20, 51, 30, 618, DateTimeKind.Local).AddTicks(2492),
+                            CreatedAt = new DateTime(2019, 9, 10, 9, 14, 50, 399, DateTimeKind.Local).AddTicks(2348),
                             CreatedBy = 17,
                             DashboardId = 9,
                             Name = "Rustic Wooden Ball",
@@ -1744,7 +1772,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 30,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 8, 2, 19, 39, 48, 822, DateTimeKind.Local).AddTicks(6381),
+                            CreatedAt = new DateTime(2020, 8, 3, 8, 3, 8, 603, DateTimeKind.Local).AddTicks(6253),
                             CreatedBy = 19,
                             DashboardId = 4,
                             Name = "Handcrafted Wooden Keyboard",
@@ -1755,7 +1783,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 31,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 7, 17, 4, 14, 51, 328, DateTimeKind.Local).AddTicks(2253),
+                            CreatedAt = new DateTime(2020, 7, 17, 16, 38, 11, 109, DateTimeKind.Local).AddTicks(2130),
                             CreatedBy = 5,
                             DashboardId = 10,
                             Name = "Rustic Metal Car",
@@ -1766,7 +1794,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 32,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 6, 25, 2, 41, 55, 812, DateTimeKind.Local).AddTicks(1810),
+                            CreatedAt = new DateTime(2020, 6, 25, 15, 5, 15, 593, DateTimeKind.Local).AddTicks(1691),
                             CreatedBy = 10,
                             DashboardId = 5,
                             Name = "Tasty Steel Chips",
@@ -1777,7 +1805,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 33,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 12, 13, 3, 22, 18, 620, DateTimeKind.Local).AddTicks(5301),
+                            CreatedAt = new DateTime(2020, 12, 13, 15, 45, 38, 401, DateTimeKind.Local).AddTicks(5188),
                             CreatedBy = 12,
                             DashboardId = 4,
                             Name = "Incredible Rubber Towels",
@@ -1788,7 +1816,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 34,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 5, 7, 7, 43, 15, 804, DateTimeKind.Local).AddTicks(2551),
+                            CreatedAt = new DateTime(2021, 5, 7, 20, 6, 35, 585, DateTimeKind.Local).AddTicks(2442),
                             CreatedBy = 11,
                             DashboardId = 9,
                             Name = "Small Fresh Salad",
@@ -1799,7 +1827,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 35,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 4, 28, 17, 59, 57, 560, DateTimeKind.Local).AddTicks(2465),
+                            CreatedAt = new DateTime(2021, 4, 29, 6, 23, 17, 341, DateTimeKind.Local).AddTicks(2360),
                             CreatedBy = 13,
                             DashboardId = 3,
                             Name = "Incredible Plastic Computer",
@@ -2085,7 +2113,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.Team", "Team")
                         .WithMany("ApplicationTeams")
                         .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Application");
@@ -2155,7 +2183,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Organizations")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("User");

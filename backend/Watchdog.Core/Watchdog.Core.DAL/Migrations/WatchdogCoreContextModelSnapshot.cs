@@ -1415,6 +1415,9 @@ namespace Watchdog.Core.DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -1426,8 +1429,14 @@ namespace Watchdog.Core.DAL.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Settings")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -1441,202 +1450,387 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2019, 8, 24, 19, 56, 57, 207, DateTimeKind.Unspecified).AddTicks(5964),
-                            CreatedBy = 14,
-                            DashboardId = 13,
-                            Name = "explicabo"
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 2, 17, 0, 13, 23, 617, DateTimeKind.Local).AddTicks(4950),
+                            CreatedBy = 7,
+                            DashboardId = 15,
+                            Name = "Ergonomic Fresh Chicken",
+                            Settings = "{\"sourceProjects\": [3],\"dateRange\": 4,\"issuesCount\": 489}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2021, 2, 5, 6, 31, 9, 575, DateTimeKind.Unspecified).AddTicks(2253),
-                            CreatedBy = 5,
-                            DashboardId = 6,
-                            Name = "et"
+                            Category = 1,
+                            CreatedAt = new DateTime(2019, 8, 20, 14, 34, 37, 836, DateTimeKind.Local).AddTicks(8467),
+                            CreatedBy = 15,
+                            DashboardId = 15,
+                            Name = "Tasty Frozen Tuna",
+                            Settings = "{\"sourceProjects\": [6],\"dateRange\": 2,\"issuesCount\": 977}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2019, 8, 24, 2, 50, 19, 608, DateTimeKind.Unspecified).AddTicks(3027),
-                            CreatedBy = 20,
-                            DashboardId = 8,
-                            Name = "nulla"
+                            Category = 1,
+                            CreatedAt = new DateTime(2019, 9, 6, 5, 4, 40, 864, DateTimeKind.Local).AddTicks(511),
+                            CreatedBy = 3,
+                            DashboardId = 10,
+                            Name = "Gorgeous Fresh Towels",
+                            Settings = "{\"sourceProjects\": [4],\"dateRange\": 4,\"issuesCount\": 919}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2020, 2, 21, 3, 45, 34, 720, DateTimeKind.Unspecified).AddTicks(8399),
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 8, 9, 19, 18, 27, 436, DateTimeKind.Local).AddTicks(8397),
                             CreatedBy = 3,
-                            DashboardId = 15,
-                            Name = "est"
+                            DashboardId = 5,
+                            Name = "Fantastic Steel Shoes",
+                            Settings = "{\"sourceProjects\": [1],\"dateRange\": 4,\"issuesCount\": 244}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2019, 8, 5, 23, 45, 48, 298, DateTimeKind.Unspecified).AddTicks(8056),
-                            CreatedBy = 10,
-                            DashboardId = 8,
-                            Name = "doloribus"
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 8, 30, 18, 5, 34, 263, DateTimeKind.Local).AddTicks(8230),
+                            CreatedBy = 15,
+                            DashboardId = 7,
+                            Name = "Handmade Metal Keyboard",
+                            Settings = "{\"sourceProjects\": [7],\"dateRange\": 2,\"issuesCount\": 74}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2020, 3, 22, 0, 4, 45, 919, DateTimeKind.Unspecified).AddTicks(3908),
-                            CreatedBy = 12,
-                            DashboardId = 14,
-                            Name = "et"
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 2, 4, 13, 42, 31, 893, DateTimeKind.Local).AddTicks(2296),
+                            CreatedBy = 5,
+                            DashboardId = 1,
+                            Name = "Incredible Frozen Sausages",
+                            Settings = "{\"sourceProjects\": [1],\"dateRange\": 0,\"issuesCount\": 128}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2020, 11, 22, 21, 23, 48, 733, DateTimeKind.Unspecified).AddTicks(9480),
-                            CreatedBy = 20,
-                            DashboardId = 2,
-                            Name = "qui"
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 8, 23, 9, 14, 15, 745, DateTimeKind.Local).AddTicks(5718),
+                            CreatedBy = 19,
+                            DashboardId = 14,
+                            Name = "Fantastic Frozen Gloves",
+                            Settings = "{\"sourceProjects\": [4],\"dateRange\": 0,\"issuesCount\": 19}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2021, 6, 2, 10, 46, 7, 850, DateTimeKind.Unspecified).AddTicks(6927),
-                            CreatedBy = 8,
-                            DashboardId = 14,
-                            Name = "et"
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 3, 8, 15, 21, 13, 927, DateTimeKind.Local).AddTicks(7090),
+                            CreatedBy = 11,
+                            DashboardId = 4,
+                            Name = "Intelligent Frozen Hat",
+                            Settings = "{\"sourceProjects\": [2],\"dateRange\": 2,\"issuesCount\": 109}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 9,
-                            CreatedAt = new DateTime(2021, 5, 7, 18, 59, 13, 655, DateTimeKind.Unspecified).AddTicks(9528),
-                            CreatedBy = 18,
-                            DashboardId = 5,
-                            Name = "totam"
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 4, 26, 9, 38, 5, 259, DateTimeKind.Local).AddTicks(8177),
+                            CreatedBy = 8,
+                            DashboardId = 13,
+                            Name = "Generic Plastic Cheese",
+                            Settings = "{\"sourceProjects\": [5],\"dateRange\": 1,\"issuesCount\": 679}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(2021, 1, 23, 5, 49, 51, 384, DateTimeKind.Unspecified).AddTicks(794),
-                            CreatedBy = 20,
-                            DashboardId = 1,
-                            Name = "quas"
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 10, 21, 0, 3, 50, 268, DateTimeKind.Local).AddTicks(167),
+                            CreatedBy = 17,
+                            DashboardId = 13,
+                            Name = "Refined Granite Salad",
+                            Settings = "{\"sourceProjects\": [3],\"dateRange\": 1,\"issuesCount\": 156}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 11,
-                            CreatedAt = new DateTime(2020, 9, 1, 12, 11, 57, 170, DateTimeKind.Unspecified).AddTicks(2604),
-                            CreatedBy = 4,
-                            DashboardId = 11,
-                            Name = "placeat"
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 9, 15, 6, 40, 18, 581, DateTimeKind.Local).AddTicks(2895),
+                            CreatedBy = 8,
+                            DashboardId = 9,
+                            Name = "Intelligent Wooden Towels",
+                            Settings = "{\"sourceProjects\": [7],\"dateRange\": 4,\"issuesCount\": 375}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 12,
-                            CreatedAt = new DateTime(2020, 4, 6, 2, 33, 56, 395, DateTimeKind.Unspecified).AddTicks(7716),
-                            CreatedBy = 10,
-                            DashboardId = 11,
-                            Name = "beatae"
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 4, 21, 19, 48, 22, 753, DateTimeKind.Local).AddTicks(6968),
+                            CreatedBy = 1,
+                            DashboardId = 1,
+                            Name = "Sleek Wooden Table",
+                            Settings = "{\"sourceProjects\": [5],\"dateRange\": 1,\"issuesCount\": 760}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 13,
-                            CreatedAt = new DateTime(2019, 7, 25, 21, 17, 2, 688, DateTimeKind.Unspecified).AddTicks(6748),
-                            CreatedBy = 7,
-                            DashboardId = 2,
-                            Name = "similique"
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 6, 26, 9, 50, 13, 116, DateTimeKind.Local).AddTicks(54),
+                            CreatedBy = 15,
+                            DashboardId = 6,
+                            Name = "Licensed Steel Chips",
+                            Settings = "{\"sourceProjects\": [7],\"dateRange\": 1,\"issuesCount\": 391}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 14,
-                            CreatedAt = new DateTime(2021, 2, 9, 17, 55, 34, 126, DateTimeKind.Unspecified).AddTicks(4772),
-                            CreatedBy = 19,
-                            DashboardId = 1,
-                            Name = "sint"
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 2, 14, 12, 16, 39, 107, DateTimeKind.Local).AddTicks(7075),
+                            CreatedBy = 11,
+                            DashboardId = 7,
+                            Name = "Rustic Granite Bacon",
+                            Settings = "{\"sourceProjects\": [3],\"dateRange\": 4,\"issuesCount\": 183}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 15,
-                            CreatedAt = new DateTime(2021, 4, 17, 15, 59, 57, 251, DateTimeKind.Unspecified).AddTicks(3258),
-                            CreatedBy = 3,
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 7, 25, 19, 13, 47, 787, DateTimeKind.Local).AddTicks(955),
+                            CreatedBy = 15,
                             DashboardId = 1,
-                            Name = "quaerat"
+                            Name = "Unbranded Granite Towels",
+                            Settings = "{\"sourceProjects\": [9],\"dateRange\": 1,\"issuesCount\": 833}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 16,
-                            CreatedAt = new DateTime(2019, 9, 11, 17, 20, 24, 304, DateTimeKind.Unspecified).AddTicks(4056),
-                            CreatedBy = 7,
-                            DashboardId = 14,
-                            Name = "consequatur"
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 4, 17, 19, 30, 56, 963, DateTimeKind.Local).AddTicks(4947),
+                            CreatedBy = 4,
+                            DashboardId = 9,
+                            Name = "Handcrafted Frozen Salad",
+                            Settings = "{\"sourceProjects\": [2],\"dateRange\": 1,\"issuesCount\": 143}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 17,
-                            CreatedAt = new DateTime(2020, 11, 5, 17, 32, 45, 18, DateTimeKind.Unspecified).AddTicks(7950),
-                            CreatedBy = 10,
-                            DashboardId = 14,
-                            Name = "consequuntur"
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 1, 8, 17, 5, 20, 438, DateTimeKind.Local).AddTicks(7248),
+                            CreatedBy = 1,
+                            DashboardId = 7,
+                            Name = "Incredible Soft Gloves",
+                            Settings = "{\"sourceProjects\": [1],\"dateRange\": 0,\"issuesCount\": 970}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 18,
-                            CreatedAt = new DateTime(2019, 8, 17, 3, 34, 59, 276, DateTimeKind.Unspecified).AddTicks(8512),
-                            CreatedBy = 5,
-                            DashboardId = 1,
-                            Name = "et"
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 8, 13, 1, 50, 19, 881, DateTimeKind.Local).AddTicks(5758),
+                            CreatedBy = 7,
+                            DashboardId = 3,
+                            Name = "Incredible Frozen Shoes",
+                            Settings = "{\"sourceProjects\": [10],\"dateRange\": 1,\"issuesCount\": 457}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 19,
-                            CreatedAt = new DateTime(2020, 6, 23, 7, 29, 11, 206, DateTimeKind.Unspecified).AddTicks(8352),
-                            CreatedBy = 5,
-                            DashboardId = 4,
-                            Name = "ut"
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 5, 28, 21, 54, 48, 869, DateTimeKind.Local).AddTicks(9905),
+                            CreatedBy = 4,
+                            DashboardId = 8,
+                            Name = "Handcrafted Concrete Gloves",
+                            Settings = "{\"sourceProjects\": [3],\"dateRange\": 0,\"issuesCount\": 729}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 20,
-                            CreatedAt = new DateTime(2021, 5, 1, 12, 45, 22, 202, DateTimeKind.Unspecified).AddTicks(5966),
-                            CreatedBy = 12,
-                            DashboardId = 3,
-                            Name = "quo"
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 5, 2, 8, 5, 22, 785, DateTimeKind.Local).AddTicks(5313),
+                            CreatedBy = 4,
+                            DashboardId = 13,
+                            Name = "Fantastic Rubber Pizza",
+                            Settings = "{\"sourceProjects\": [2],\"dateRange\": 3,\"issuesCount\": 148}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 21,
-                            CreatedAt = new DateTime(2019, 11, 8, 11, 46, 14, 149, DateTimeKind.Unspecified).AddTicks(9025),
-                            CreatedBy = 16,
-                            DashboardId = 5,
-                            Name = "rerum"
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 9, 5, 19, 45, 52, 907, DateTimeKind.Local).AddTicks(8544),
+                            CreatedBy = 15,
+                            DashboardId = 6,
+                            Name = "Practical Steel Fish",
+                            Settings = "{\"sourceProjects\": [8],\"dateRange\": 3,\"issuesCount\": 69}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 22,
-                            CreatedAt = new DateTime(2020, 9, 24, 0, 42, 48, 413, DateTimeKind.Unspecified).AddTicks(3080),
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 10, 1, 20, 47, 11, 407, DateTimeKind.Local).AddTicks(3217),
                             CreatedBy = 3,
-                            DashboardId = 6,
-                            Name = "similique"
+                            DashboardId = 14,
+                            Name = "Handcrafted Concrete Chips",
+                            Settings = "{\"sourceProjects\": [8],\"dateRange\": 3,\"issuesCount\": 60}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 23,
-                            CreatedAt = new DateTime(2020, 8, 9, 10, 30, 58, 62, DateTimeKind.Unspecified).AddTicks(3863),
-                            CreatedBy = 17,
-                            DashboardId = 11,
-                            Name = "iure"
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 5, 30, 17, 11, 35, 949, DateTimeKind.Local).AddTicks(990),
+                            CreatedBy = 15,
+                            DashboardId = 7,
+                            Name = "Practical Steel Chips",
+                            Settings = "{\"sourceProjects\": [7],\"dateRange\": 1,\"issuesCount\": 691}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 24,
-                            CreatedAt = new DateTime(2019, 11, 16, 22, 4, 38, 925, DateTimeKind.Unspecified).AddTicks(8090),
-                            CreatedBy = 18,
-                            DashboardId = 13,
-                            Name = "eveniet"
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 9, 14, 21, 41, 30, 380, DateTimeKind.Local).AddTicks(9745),
+                            CreatedBy = 15,
+                            DashboardId = 1,
+                            Name = "Rustic Plastic Mouse",
+                            Settings = "{\"sourceProjects\": [10],\"dateRange\": 4,\"issuesCount\": 969}",
+                            Type = 0
                         },
                         new
                         {
                             Id = 25,
-                            CreatedAt = new DateTime(2021, 3, 28, 8, 14, 13, 190, DateTimeKind.Unspecified).AddTicks(2898),
-                            CreatedBy = 7,
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 6, 17, 19, 56, 31, 89, DateTimeKind.Local).AddTicks(8581),
+                            CreatedBy = 4,
+                            DashboardId = 15,
+                            Name = "Handmade Fresh Towels",
+                            Settings = "{\"sourceProjects\": [10],\"dateRange\": 1,\"issuesCount\": 725}",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 26,
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 7, 16, 14, 50, 54, 482, DateTimeKind.Local).AddTicks(2126),
+                            CreatedBy = 9,
+                            DashboardId = 11,
+                            Name = "Handmade Plastic Shirt",
+                            Settings = "{\"sourceProjects\": [4],\"dateRange\": 3,\"issuesCount\": 790}",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 27,
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 7, 26, 23, 1, 59, 628, DateTimeKind.Local).AddTicks(8686),
+                            CreatedBy = 6,
+                            DashboardId = 1,
+                            Name = "Generic Soft Shirt",
+                            Settings = "{\"sourceProjects\": [10],\"dateRange\": 4,\"issuesCount\": 737}",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 28,
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 9, 15, 3, 3, 44, 321, DateTimeKind.Local).AddTicks(7615),
+                            CreatedBy = 11,
+                            DashboardId = 12,
+                            Name = "Handcrafted Granite Bacon",
+                            Settings = "{\"sourceProjects\": [10],\"dateRange\": 1,\"issuesCount\": 461}",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 29,
+                            Category = 1,
+                            CreatedAt = new DateTime(2019, 9, 10, 9, 14, 50, 399, DateTimeKind.Local).AddTicks(2348),
+                            CreatedBy = 17,
+                            DashboardId = 9,
+                            Name = "Rustic Wooden Ball",
+                            Settings = "{\"sourceProjects\": [5],\"dateRange\": 1,\"issuesCount\": 626}",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 30,
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 8, 3, 8, 3, 8, 603, DateTimeKind.Local).AddTicks(6253),
+                            CreatedBy = 19,
                             DashboardId = 4,
-                            Name = "ea"
+                            Name = "Handcrafted Wooden Keyboard",
+                            Settings = "{\"sourceProjects\": [6],\"dateRange\": 0,\"issuesCount\": 784}",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 31,
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 7, 17, 16, 38, 11, 109, DateTimeKind.Local).AddTicks(2130),
+                            CreatedBy = 5,
+                            DashboardId = 10,
+                            Name = "Rustic Metal Car",
+                            Settings = "{\"sourceProjects\": [7],\"dateRange\": 1,\"issuesCount\": 202}",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 32,
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 6, 25, 15, 5, 15, 593, DateTimeKind.Local).AddTicks(1691),
+                            CreatedBy = 10,
+                            DashboardId = 5,
+                            Name = "Tasty Steel Chips",
+                            Settings = "{\"sourceProjects\": [8],\"dateRange\": 0,\"issuesCount\": 67}",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 33,
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 12, 13, 15, 45, 38, 401, DateTimeKind.Local).AddTicks(5188),
+                            CreatedBy = 12,
+                            DashboardId = 4,
+                            Name = "Incredible Rubber Towels",
+                            Settings = "{\"sourceProjects\": [7],\"dateRange\": 2,\"issuesCount\": 440}",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 34,
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 5, 7, 20, 6, 35, 585, DateTimeKind.Local).AddTicks(2442),
+                            CreatedBy = 11,
+                            DashboardId = 9,
+                            Name = "Small Fresh Salad",
+                            Settings = "{\"sourceProjects\": [6],\"dateRange\": 2,\"issuesCount\": 735}",
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = 35,
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 4, 29, 6, 23, 17, 341, DateTimeKind.Local).AddTicks(2360),
+                            CreatedBy = 13,
+                            DashboardId = 3,
+                            Name = "Incredible Plastic Computer",
+                            Settings = "{\"sourceProjects\": [9],\"dateRange\": 2,\"issuesCount\": 866}",
+                            Type = 0
                         });
                 });
 
