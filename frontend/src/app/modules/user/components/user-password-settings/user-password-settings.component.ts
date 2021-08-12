@@ -20,24 +20,24 @@ export class UserPasswordSettingsComponent {
     ) { }
 
     onSubmit() {
-        if (this.newPassword === this.newPasswordRepeat) {
-            const { currentUser } = firebase.auth();
-        const credentials = firebase.auth.EmailAuthProvider
-            .credential(currentUser.email, this.oldPassword);
+        // if (this.newPassword === this.newPasswordRepeat) {
+        //     const { currentUser } = firebase.auth();
+        // const credentials = firebase.auth.EmailAuthProvider
+        //     .credential(currentUser.email, this.oldPassword);
 
-        currentUser.reauthenticateWithCredential(credentials)
-            .then(() => {
-                this.authService.updatePassword(this.newPassword);
-                this.toastNotificationService.success('Password has been updated');
-            })
-            .catch(error => {
-                console.warn(error);
-                this.toastNotificationService.error('Current password is incorrect');
-            });
-        }
-        else {
-            this.toastNotificationService.error('Input correct new password');
-        }
+        // currentUser.reauthenticateWithCredential(credentials)
+        //     .then(() => {
+        //         this.authService.updatePassword(this.newPassword);
+        //         this.toastNotificationService.success('Password has been updated');
+        //     })
+        //     .catch(error => {
+        //         console.warn(error);
+        //         this.toastNotificationService.error('Current password is incorrect');
+        //     });
+        // }
+        // else {
+        //     this.toastNotificationService.error('Input correct new password');
+        // }
 
     }
 }
