@@ -11,16 +11,15 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
     styleUrls: ['./issues.component.sass']
 })
 export class IssuesComponent extends BaseComponent implements OnInit {
+    issues: IssueMessage[];
 
-    public countNew: { [type: string]: number };
+    countNew: { [type: string]: number };
 
-    public issues: Issue[];
+    selectedIssues: Issue[] = [];
 
-    public selectedIssues: Issue[] = [];
+    timeOptions: string[];
 
-    public timeOptions: string[];
-
-    public selectedTime: string;
+    selectedTime: string;
 
     constructor(private issueService: IssueService, private toastNotification: ToastNotificationService) {
         super();
@@ -48,7 +47,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         this.issueService.getIssues()
             .pipe(this.untilThis)
             .subscribe(response => {
-                this.issues = response.body;
+                this.issues = response;
             }, errorResponse => {
                 this.toastNotification.error(errorResponse, 'Error', 1500);
             });
@@ -60,20 +59,5 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             secondtype: 1,
             thirdtype: 0
         };
-
-        this.issues = [];
-
-        for (let i = 1; i <= 25; i += 1) {
-            const issue = {
-                name: `TypeError${i}`,
-                description: "Object [object object] has no method 'updateForm'",
-                isNew: i % 3 === 0,
-                projectTag: 'BSA-2021-1',
-                createdAt: new Date(Date.now() - (i <= 14 ? ((i - 1) * 30 * 60 * 1000) : (i * 30 * 60 * 1000 * 10))), //2 min
-                events: i,
-                users: i
-            };
-            this.issues.push(issue);
-        }
     }
 }
