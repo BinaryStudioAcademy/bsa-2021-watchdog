@@ -42,20 +42,21 @@
                 </button>
             </div>
 
-            <div [class.dashboards-none]="!dashboardsShown" [class.dashboards]="dashboardsShown"
-                *ngFor="let dashboard of dashboards">
-                <button class="button" [routerLink]="['dashboard', dashboard.id]" [routerLinkActive]="['active']"
-                    appTooltipFullName>
-                    <i class="pi {{dashboard.icon}}"></i>
-                    <span>{{dashboard.name}}</span>
+            <div [class.dashboards-none]="!dashboardsShown" [class.dashboards]="dashboardsShown">
+                <div *ngFor="let dashboard of dashboards">
+                    <button class="button dashboard" [routerLink]="['dashboard', dashboard.id]" [routerLinkActive]="['active']"
+                        appTooltipFullName>
+                        <i class="pi {{dashboard.icon}}"></i>
+                        <span>{{dashboard.name}}</span>
+                    </button>
+                </div>
+                <button class="button dashboard add" (click)="displayModal=true">
+                    <i class="pi pi-plus"></i>
+                    <span>Add</span>
                 </button>
             </div>
         </div>
         <div class="sidebar-bottom">
-            <button class="button" (click)="displayModal=true">
-                <i class="pi pi-plus"></i>
-                <span>Add dashboard</span>
-            </button>
             <button class="button">
                 <i class="pi pi-angle-left"></i>
                 <span>Collapse</span>
