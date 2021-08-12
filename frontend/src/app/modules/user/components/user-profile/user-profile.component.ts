@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { state } from '@angular/animations';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { BaseComponent } from '@core/components/base/base.component';
 import { AuthenticationService } from '@core/services/authentication.service';
@@ -13,9 +14,10 @@ import { User } from '@shared/models/user/user';
 })
 export class UserProfileComponent extends BaseComponent implements OnInit {
     isSignByEmailAndPassword: boolean;
-    public user: User;
+    user: User;
+    editForm: FormGroup = new FormGroup({});
 
-    @Input() editForm: FormGroup;
+    @ViewChild('saveBut') saveButton: ElementRef<HTMLButtonElement>;
 
     constructor(
         private authService: AuthenticationService,
@@ -23,24 +25,50 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
         private toastNotificationService: ToastNotificationService
     ) {
         super();
-        this.user = authService.getUser();
     }
 
     ngOnInit(): void {
-        this.isSignByEmailAndPassword = this.authService.isUserSignByEmailAndPassword();
+        this.user = this.authService.getUser();
+
+        this.editForm.statusChanges.pipe(this.untilThis)
+        .subscribe(()=>{this.checkSaveStatus();});
+        //this.loadUser();
+        //this.isSignByEmailAndPassword = this.authService.isUserSignByEmailAndPassword();
     }
 
-    updateUser(editForm) {
-        this.user = { ...this.user,
-            firstName: editForm.value.firstName,
-            lastName: editForm.value.lastName,
-            email: editForm.value.email };
-
-        this.userService.updateUsersById(this.user.id, this.user)
+    updateUser() {
+        const user = {...this.editForm.value};
+        this.userService.updateUsersById(this.user.id, user)
             .pipe(this.untilThis)
             .subscribe(resp => {
                 this.toastNotificationService.success('Profile has been updated');
-                console.info(resp);
+                Object.assign(this.user,resp);
+            }, error=> {
+                this.toastNotificationService.error(error);
             });
+    }
+
+    checkSaveStatus() {
+        if (this.editForm.untouched || this.editForm.pending || this.editForm.invalid) {
+            this.setSaveButtonDisabled(true);
+        }
+        if (this.editForm.valid && (this.editForm.touched || this.editForm.dirty)) {
+            const unsavedChangesProps = Object.keys(this.editForm.controls)
+                .filter(key =>
+                    this.editForm.controls[key].value !== this.user[key]);
+
+            if (unsavedChangesProps.length > 0) this.setSaveButtonDisabled(false);
+            else this.setSaveButtonDisabled(true);
+        }
+    }
+
+    setSaveButtonDisabled(state:boolean){
+        if(this.saveButton){
+            this.saveButton.nativeElement.disabled = state;
+        }
+    }
+
+    reset(){
+        this.editForm.reset(this.user);
     }
 }
