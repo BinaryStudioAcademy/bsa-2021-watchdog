@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { CoreHttpService } from './core-http.service';
 import { Observable } from 'rxjs';
 import { Team } from '@shared/models/teams/team';
-import { HttpResponse } from '@angular/common/http';
 import { TeamMember } from '@shared/models/teams/team-member';
 import { TeamOption } from '@shared/models/teams/team-option';
 import { NewTeam } from '@shared/models/teams/new-team';

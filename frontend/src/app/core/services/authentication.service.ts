@@ -101,13 +101,13 @@ export class AuthenticationService {
     }
 
     getJwToken() {
-        let currentToken = this.token;
-        if (!currentToken && this.rememberUser) {
-            currentToken = localStorage.getItem('jwt');
+        if (!this.token) {
+            this.token = localStorage.getItem('jwt');
         }
-        return !currentToken || this.tokenHelper.isTokenExpired(currentToken)
-            ? this.refreshJwToken()
-            : of(currentToken);
+        if (this.token && !this.tokenHelper.isTokenExpired(this.token)) {
+            return of(this.token);
+        }
+        return this.refreshJwToken();
     }
 
     setJwToken(token: string) {
@@ -122,12 +122,15 @@ export class AuthenticationService {
         localStorage.removeItem('jwt');
     }
 
-    refreshJwToken() {
+    refreshJwToken(forceRefresh = false) {
         return this.angularFireAuth.authState
             .pipe(
                 filter(firebaseUser => Boolean(firebaseUser)),
-                mergeMap(firebaseUser => from(firebaseUser.getIdToken(true))),
-                tap(token => localStorage.setItem('jwt', token))
+                mergeMap(firebaseUser => from(firebaseUser.getIdToken(forceRefresh))),
+                tap(token => {
+                    localStorage.setItem('jwt', token);
+                    this.token = token;
+                })
             );
     }
 
