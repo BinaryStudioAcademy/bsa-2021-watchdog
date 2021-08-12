@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Models;
 using Watchdog.Core.BLL.Services;
 using Watchdog.Core.BLL.Services.Abstract;
-using Watchdog.Core.Common.DTO.Sample;
 
 namespace Watchdog.Core.API.Controllers
 {
@@ -15,15 +11,12 @@ namespace Watchdog.Core.API.Controllers
     public class SampleController : ControllerBase
     {
 
-        private readonly ILogger<SampleController> _logger;
         private readonly QueueService _queueService;
         private readonly IEmailSendService _emailSendService;
 
-        public SampleController(ILogger<SampleController> logger,
-                                QueueService queueService,
+        public SampleController(QueueService queueService,
                                 IEmailSendService emailSendService)
         {
-            _logger = logger;
             _queueService = queueService;
             _emailSendService = emailSendService;
         }

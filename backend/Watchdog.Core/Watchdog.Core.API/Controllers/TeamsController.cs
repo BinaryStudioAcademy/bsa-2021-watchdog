@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Team;
 
@@ -11,12 +10,10 @@ namespace Watchdog.Core.API.Controllers
     [Route("[controller]")]
     public class TeamsController : ControllerBase
     {
-        private readonly ILogger<TeamsController> _logger;
         private readonly ITeamService _teamService;
 
-        public TeamsController(ILogger<TeamsController> logger, ITeamService teamService)
+        public TeamsController(ITeamService teamService)
         {
-            _logger = logger;
             _teamService = teamService;
         }
 
