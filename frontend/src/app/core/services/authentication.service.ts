@@ -75,8 +75,7 @@ export class AuthenticationService {
                     .pipe(map(member => {
                         this.member = member;
                         return this.member;
-                    }))
-                ));
+                    }))));
         }
         return of(this.member);
     }
