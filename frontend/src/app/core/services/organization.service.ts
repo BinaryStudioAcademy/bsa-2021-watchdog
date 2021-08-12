@@ -1,11 +1,10 @@
-import { OrganizationSettings } from "@shared/models/organization/organization-settings";
-import { AuthenticationService } from "./authentication.service";
+import { CoreHttpService } from '@core/services/core-http.service';
+import { OrganizationSettings } from '@shared/models/organization/organization-settings';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Organization } from '@shared/models/organization/organization';
 import { map, tap } from 'rxjs/operators';
 import { ShareDataService } from './share-data.service';
-import { HttpInternalService } from "./http-internal.service";
 
 @Injectable({
     providedIn: 'root',
@@ -14,7 +13,7 @@ export class OrganizationService {
     private apiPrefix = '/organizations';
 
     constructor(
-        private httpService: HttpInternalService,
+        private httpService: CoreHttpService,
         private dataService: ShareDataService<Organization>
     ) { }
 

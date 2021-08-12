@@ -1,7 +1,7 @@
-import { OrganizationService } from "@core/services/organization.service";
-import { AuthenticationService } from "@core/services/authentication.service";
-import { OrganizationSettings } from "@shared/models/organization/organization-settings";
-import { FormGroup } from "@angular/forms";
+import { OrganizationService } from '@core/services/organization.service';
+import { AuthenticationService } from '@core/services/authentication.service';
+import { OrganizationSettings } from '@shared/models/organization/organization-settings';
+import { FormGroup } from '@angular/forms';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { Organization } from '@shared/models/organization/organization';
@@ -17,7 +17,7 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
     organization: Organization;
     parentForm: FormGroup = new FormGroup({});
 
-    @ViewChild("saveBut") saveButton: ElementRef<HTMLButtonElement>;
+    @ViewChild('saveBut') saveButton: ElementRef<HTMLButtonElement>;
 
     constructor(
         private authService: AuthenticationService,
@@ -45,15 +45,15 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
 
     checkSaveStatus() {
         if (this.parentForm.untouched || this.parentForm.pending || this.parentForm.invalid) {
-            this.saveButton.nativeElement.disabled = true;
+            this.setButtonStateDisabled(true);
         }
         if (this.parentForm.valid && (this.parentForm.touched || this.parentForm.dirty)) {
             const unsavedChangesProps = Object.keys(this.parentForm.controls)
                 .filter(key =>
                     this.parentForm.controls[key].value !== this.organization[key]);
 
-            if (unsavedChangesProps.length > 0) this.saveButton.nativeElement.disabled = false;
-            else this.saveButton.nativeElement.disabled = true;
+            if (unsavedChangesProps.length > 0) this.setButtonStateDisabled(false);
+            else this.setButtonStateDisabled(true);
         }
     }
 
@@ -69,10 +69,14 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
                 Object.assign(this.organization, updatedOrg);
                 this.isLoading = false;
                 this.saveButton.nativeElement.disabled = true;
-                this.toastService.success("Organization was updated!");
+                this.toastService.success('Organization was updated!');
             }, error => {
                 this.isLoading = false;
                 this.toastService.error(error);
             });
+    }
+
+    setButtonStateDisabled(state: boolean) {
+        if (this.saveButton) this.saveButton.nativeElement.disabled = state;
     }
 }

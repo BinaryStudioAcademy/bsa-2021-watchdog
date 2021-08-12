@@ -1,9 +1,8 @@
 import { BaseComponent } from '@core/components/base/base.component';
-import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { OrganizationService } from '@core/services/organization.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Organization } from '@shared/models/organization/organization';
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from '@angular/core';
 import { regexs } from '@shared/constants/regexs';
 import { uniqueSlugValidator } from '@shared/validators/unique-slug.validator';
 
