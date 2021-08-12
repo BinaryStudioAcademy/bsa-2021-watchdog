@@ -1,4 +1,5 @@
 @import src/styles/mixins
+@import src/styles/variables
 
 .create-project-container
     padding: 20px 20px 0
@@ -55,6 +56,9 @@
                 border-radius: 4px
                 cursor: pointer
 
+                &:hover
+                    background-color: $hover-color
+
                 img
                     @include disable-select
                     width: 56px
@@ -79,89 +83,101 @@
             .selected-card
                 background: lightgray
 
-    .alert-settings
-        margin: 30px 0 10px
-        white-space: nowrap
+.alert-settings
+    margin: 30px 0 10px
+    white-space: nowrap
 
-        .title
-            font-size: 22px
-            line-height: 22px
-            font-weight: 400
-            margin-bottom: 10px
+    .alert-form
+        display: flex
+        flex-wrap: wrap
+        align-items: center
+        margin: 10px 0
+        min-height: 40px
+        grid-gap: 10px
+    .special-settings
+        display: flex
+        flex-wrap: wrap
+        grid-gap: 10px
+        align-items: center
+        margin-left: 10px
 
-        .alert-form
-            display: flex
-            align-items: center
-            height: 40px
-            margin: 10px 0
-
-
-            .radiobutton-label
-                margin-left: 10px
-
-            .radiobutton-settings-alerts-count
-                margin-left: 10px
-
-            .radiobutton-settings-alert-type
-                margin-left: 10px
-                height: 39px
-
-                ::ng-deep .p-dropdown
-                    height: 100%
-                    width: 180px
-
-            span
-                margin-left: 10px
-
-    .project-name-settings
-        margin: 30px 0 10px
-        white-space: nowrap
-
-        .title
-            font-size: 22px
-            line-height: 22px
-            font-weight: 400
-            margin-bottom: 10px
+.title
+    font-size: 22px
+    line-height: 22px
+    font-weight: 400
+    margin-bottom: 10px
 
 
-        .name-settings
-            padding-top: 10px
+
+.project-name-settings
+    margin: 30px 0 30px 0
+    white-space: nowrap
+
+.name-settings
+    padding-top: 10px
+    display: grid
+    grid-gap: 15px
+    grid-template-areas: 'name team add-team' 'description description button'
+    justify-content: start
+
+    .title
+        font-size: 19px
+        line-height: 22px
+        font-weight: 400
+        margin-bottom: 10px
+
+    .project-name
+        display: flex
+        grid-area: name
+        flex-direction: column
+
+        .project-name-input
+            width: 300px
+
+    .project-team
+        display: flex
+        grid-area: team
+        flex-direction: column
+
+        .dropdown-with-button
             display: flex
             flex-direction: row
 
-            .title
-                font-size: 19px
-                line-height: 22px
-                font-weight: 400
-                margin-bottom: 10px
+            ::ng-deep .p-dropdown
+                height: 39px
+                width: 300px
+                font-weight: 500
+    .add-team-block
+        grid-area: add-team
+        display: flex
+        align-items: flex-end
+        position: relative
+        left: -10px
+        .button-add-team
+            font-weight: 600
+            height: 40px
+            color: black
 
-            .project-name
-                display: flex
-                flex-direction: column
 
-            .project-team
-                display: flex
-                flex-direction: column
-                padding-left: 20px
+    .project-description
+        display: flex
+        grid-area: description
+        flex-direction: column
 
-                .dropdown-with-button
-                    display: flex
-                    flex-direction: row
-
-                    ::ng-deep .p-dropdown
-                        height: 39px
-                        width: 250px
-                        font-weight: 500
-                        padding-top: 2px
-
-                    .button-add-team
-                        margin-left: 5px
-                        font-weight: 600
-                        color: black
-
-                    .button-create-project
-                        margin-left: 15px
-                        font-weight: 600
+    .button-block
+        grid-area: button
+        align-items: flex-end
+        display: flex
+        .button-create-project
+            height: 40px
+            font-weight: 600
+:host ::ng-deep
+    .p-dropdown
+        display: flex
+        align-items: center
+    .p-dropdown-label
+        display: flex
+        align-items: center
 
 .input-validation-error
     display: flex
@@ -172,3 +188,17 @@
     .p-error
         margin: 4px
         font-size: 12px
+
+@media screen and ( max-width: 1100px )
+    .name-settings
+        display: grid
+        grid-gap: 15px
+        grid-template-areas: 'name team add-team' 'description description description' 'button button button'
+        justify-content: start
+
+@media screen and ( max-width: 950px )
+    .name-settings
+        display: grid
+        grid-gap: 15px
+        grid-template-areas: 'name name' 'team add-team' 'description description' 'button button'
+        justify-content: start

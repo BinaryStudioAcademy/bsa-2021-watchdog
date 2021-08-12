@@ -1,36 +1,26 @@
 <p-panel header="Membership" class="container-group">
-    <form [formGroup]="membershipForm" class="item">
+    <form [formGroup]="parentForm" class="item">
         <label class="item-definition">
             <div>Default Role</div>
             <div class="item-sub-text">The default role new members will receive</div>
         </label>
         <div class="item-field">
             <div class="item-form-complex">
-                <p-dropdown class="item-form-field" (onChange)="pending('defaultRoleId')"
-                    formControlName="defaultRoleId" [options]="roles" optionValue="id" optionLabel="name"
-                    styleClass="item-form-field" placeholder="Role" [readonly]="defaultRoleId?.pending">
+                <p-dropdown class="item-form-field" formControlName="defaultRoleId" [options]="roles" optionValue="id"
+                    optionLabel="name" styleClass="item-form-field" placeholder="Role">
                 </p-dropdown>
-                <i *ngIf="defaultRoleId?.pending" class="pi pi-spin pi-spinner"></i>
-                <div *ngIf="defaultRoleId.invalid && (defaultRoleId.dirty || defaultRoleId.touched)" class="p-error">
-                    <small *ngIf="defaultRoleId.errors?.serverError">Server error.</small>
-                </div>
             </div>
         </div>
     </form>
-    <form [formGroup]="membershipForm" class="item">
+    <form [formGroup]="parentForm" class="item">
         <label class="item-definition">
             <div>Open Membership</div>
             <div class="item-sub-text">Allow organization members to freely join or leave any team</div>
         </label>
         <div class="item-field">
             <div class="item-form-complex">
-                <p-inputSwitch (onChange)="pending('openMembership')" formControlName="openMembership"
-                    class="item-form-field" [readonly]="openMembership?.pending">
+                <p-inputSwitch formControlName="openMembership" class="item-form-field">
                 </p-inputSwitch>
-                <i *ngIf="openMembership?.pending" class="pi pi-spin pi-spinner"></i>
-                <div *ngIf="openMembership.invalid && (openMembership.dirty || openMembership.touched)" class="p-error">
-                    <small *ngIf="openMembership.errors?.serverError">Server error.</small>
-                </div>
             </div>
         </div>
     </form>

@@ -27,6 +27,7 @@
     .logo
         display: inline-block
         margin-left: 1.25em
+        cursor: pointer
         img
             @include disable-select
             display: block
@@ -79,12 +80,8 @@
         margin-top: -0.8em
         height: 40px
         margin-right: 1em
-        border: 2px solid white
         background-color: white
         border-radius: 50px
-
-    .home-content-wrp
-        margin-top: 64px
 
     .user-name
         width: 100%
@@ -129,7 +126,8 @@
         min-height: 80px
         display: flex
         align-items: center
-        padding-left: 16px
+        padding-left: $half-indent
+        padding-right: $half-indent
     &-top
         flex-grow: 1
         overflow: auto
@@ -201,8 +199,10 @@
     padding: 0
     margin-left: 230px
     margin-top: 64px
+    overflow-y: auto
+
     height: calc(100vh - 64px)
 
 .content
     position: relative
-    min-height: calc(100vh - 64px)
+    min-height: 100%

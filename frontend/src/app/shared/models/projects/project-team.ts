@@ -1,4 +1,4 @@
-import { Team } from '@shared/models/team/team';
+import { Team } from '@shared/models/teams/team';
 import { Project } from '@shared/models/projects/project';
 
 export interface ProjectTeam {
