@@ -15,7 +15,7 @@ export class OtherTeamsComponent extends BaseComponent implements OnInit {
     @Output() joinTeamEvent: EventEmitter<Team> = new EventEmitter<Team>();
 
     @Input() currentOrganizationId: number;
-    @Input() currentUserId: number;
+    @Input() currentMemberId: number;
 
     teams: Team[];
     isLoading: boolean = false;
@@ -37,10 +37,10 @@ export class OtherTeamsComponent extends BaseComponent implements OnInit {
 
     joinTeam(teamId: number) {
         this.teamService
-            .joinTeam(teamId, this.currentUserId)
+            .joinTeam(teamId, this.currentMemberId)
             .pipe(this.untilThis)
-            .subscribe(response => {
-                this.joinTeamEvent.emit(response.body);
+            .subscribe(team => {
+                this.joinTeamEvent.emit(team);
                 this.loadTeams();
             }, error => {
                 this.toastService.error(`${error}`, 'Error', 2000);
@@ -51,11 +51,11 @@ export class OtherTeamsComponent extends BaseComponent implements OnInit {
         this.isLoading = true;
 
         this.teamService
-            .getNotMemberTeams(this.currentOrganizationId, this.currentUserId)
+            .getNotMemberTeams(this.currentOrganizationId, this.currentMemberId)
             .pipe(this.untilThis)
             .subscribe(teams => {
                 this.isLoading = false;
-                this.teams = teams.body;
+                this.teams = teams;
             }, error => {
                 this.toastService.error(`${error}`, 'Error', 2000);
             });

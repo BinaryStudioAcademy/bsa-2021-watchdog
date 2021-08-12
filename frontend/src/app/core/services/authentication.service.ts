@@ -1,10 +1,12 @@
+import { MemberService } from '@core/services/member.service';
+import { Member } from '@shared/models/member/member';
 import { Injectable } from '@angular/core';
 import firebase from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { filter, mergeMap, switchMap, tap, map } from 'rxjs/operators';
-import { from, of } from 'rxjs';
+import { from, of, Observable } from 'rxjs';
 import { User } from '@shared/models/user/user';
 import { NewUser } from '@shared/models/user/newUser';
 import { FullRegistrationDto } from '@modules/registration/DTO/fullRegistrationDto';
@@ -20,6 +22,7 @@ import { OrganizationService } from './organization.service';
 export class AuthenticationService {
     private user: User;
     private organization: Organization;
+    private member: Member;
     private readonly tokenHelper: JwtHelperService;
 
     private token: string | null;
@@ -30,6 +33,7 @@ export class AuthenticationService {
         private userService: UserService,
         private registrationService: RegistrationService,
         private organizationService: OrganizationService,
+        private memberService: MemberService,
         private router: Router
     ) {
         this.tokenHelper = new JwtHelperService();
@@ -50,22 +54,30 @@ export class AuthenticationService {
         return this.user;
     }
 
-    getOrganization() {
+    getOrganization(): Observable<Organization> {
         if (!this.organization) {
-            const organization = localStorage.getItem('organization');
-            if (!organization) {
-                return this.organizationService.getOrganizationsByUserId(this.getUser().id)
-                    .pipe(
-                        map(organizations => {
-                            localStorage.setItem('organization', JSON.stringify(organizations[0]));
-                            [this.organization] = organizations;
-                            return this.organization;
-                        })
-                    );
-            }
-            this.organization = JSON.parse(localStorage.getItem('organization'));
+            return this.organizationService.getOrganizationsByUserId(this.getUser().id)
+                .pipe(
+                    map(organizations => {
+                        [this.organization] = organizations;
+                        return this.organization;
+                    })
+                );
         }
-        return from([this.organization]);
+        return of(this.organization);
+    }
+
+    getMember(): Observable<Member> {
+        if (!this.member) {
+            const userId = this.getUser().id;
+            return this.getOrganization()
+                .pipe(switchMap(org => this.memberService.getMemberByUserAndOgranization(org.id, userId)
+                    .pipe(map(member => {
+                        this.member = member;
+                        return this.member;
+                    }))));
+        }
+        return of(this.member);
     }
 
     setUser(user: User) {
@@ -88,13 +100,13 @@ export class AuthenticationService {
     }
 
     getJwToken() {
-        let currentToken = this.token;
-        if (!currentToken && this.rememberUser) {
-            currentToken = localStorage.getItem('jwt');
+        if (!this.token) {
+            this.token = localStorage.getItem('jwt');
         }
-        return !currentToken || this.tokenHelper.isTokenExpired(currentToken)
-            ? this.refreshJwToken()
-            : of(currentToken);
+        if (this.token && !this.tokenHelper.isTokenExpired(this.token)) {
+            return of(this.token);
+        }
+        return this.refreshJwToken();
     }
 
     setJwToken(token: string) {
@@ -109,12 +121,15 @@ export class AuthenticationService {
         localStorage.removeItem('jwt');
     }
 
-    refreshJwToken() {
+    refreshJwToken(forceRefresh = false) {
         return this.angularFireAuth.authState
             .pipe(
                 filter(firebaseUser => Boolean(firebaseUser)),
-                mergeMap(firebaseUser => from(firebaseUser.getIdToken(true))),
-                tap(token => localStorage.setItem('jwt', token))
+                mergeMap(firebaseUser => from(firebaseUser.getIdToken(forceRefresh))),
+                tap(token => {
+                    localStorage.setItem('jwt', token);
+                    this.token = token;
+                })
             );
     }
 
