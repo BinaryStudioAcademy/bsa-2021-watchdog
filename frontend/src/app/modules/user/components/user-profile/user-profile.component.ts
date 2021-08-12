@@ -15,6 +15,7 @@ import { User } from '@shared/models/user/user';
 export class UserProfileComponent extends BaseComponent implements OnInit {
     isSignByEmailAndPassword: boolean;
     user: User;
+
     editForm: FormGroup = new FormGroup({});
 
     @ViewChild('saveBut') saveButton: ElementRef<HTMLButtonElement>;
@@ -32,8 +33,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
 
         this.editForm.statusChanges.pipe(this.untilThis)
         .subscribe(()=>{this.checkSaveStatus();});
-        //this.loadUser();
-        //this.isSignByEmailAndPassword = this.authService.isUserSignByEmailAndPassword();
+        this.isSignByEmailAndPassword = this.authService.isUserSignByEmailAndPassword();
     }
 
     updateUser() {

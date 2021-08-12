@@ -32,6 +32,6 @@
 <div class="settings-container">
     <app-user-profile-settings *ngIf="user" [user]="user" [editForm]="editForm">
     </app-user-profile-settings>
-    <app-user-password-settings id="user-password-settings" *ngIf="isSignByEmailAndPassword">
+    <app-user-password-settings *ngIf="isSignByEmailAndPassword" [user]="user" [editForm]="editForm" id="user-password-settings" >
     </app-user-password-settings>
 </div>

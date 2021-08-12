@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
+import { regexs } from '@shared/constants/regexs';
+import { User } from '@shared/models/user/user';
 import firebase from 'firebase/app';
 
 @Component({
@@ -14,10 +17,34 @@ export class UserPasswordSettingsComponent {
     public newPasswordRepeat: string;
     public newPassword: string;
 
+    @Input() user: User;
+
+    @Input() editForm: FormGroup;
+
     constructor(
         private authService: AuthenticationService,
         private toastNotificationService: ToastNotificationService
     ) { }
+
+    ngOnInit(): void {
+        this.editForm.addControl('oldPassword', new FormControl(null, [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(50),
+            Validators.pattern(regexs.password),
+        ]));
+        this.editForm.addControl('newPasswordRepeat', new FormControl(null, [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(50),
+            Validators.pattern(regexs.password),
+        ]));
+        this.editForm.addControl('newPassword', new FormControl(null, [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(50),
+        ]));
+    }
 
     onSubmit() {
         // if (this.newPassword === this.newPasswordRepeat) {
