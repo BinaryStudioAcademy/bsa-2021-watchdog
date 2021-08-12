@@ -1,7 +1,9 @@
+<!--    Header    -->
 <div *ngIf="dashboard" [ngClass]="{'remove-margin-box-shadow': showTileMenu}" class="dashboard-header">
     <div class="dashboard-name">
         <h2>{{dashboard?.name}}</h2>
     </div>
+    <!--    Right Buttons    -->
     <div class="action-buttons">
         <button (click)="confirmDelete()" [disabled]="!dashboard" class="p-button-danger p-button-outlined"
                 label="Delete" pButton pRipple></button>
@@ -12,13 +14,16 @@
                 pButton pRipple></button>
     </div>
 </div>
+
 <app-tile-menu (clearTiles)="deleteAllTiles(dashboard.id)" (closeMenu)="this.showTileMenu = false;"
                *ngIf="showTileMenu && dashboard" [dashboardId]="dashboard.id" [tiles]="tiles" [userProjects]="projects">
 </app-tile-menu>
+
 <app-update-dashboard (closeModal)="isEditing = !isEditing" (save)="updateDashboard($event)" *ngIf="isEditing"
                       [dashboard]="dashboard">
 </app-update-dashboard>
 
+<!--    Tiles Content    -->
 <ng-template [ngIf]="dashboard">
     <div *ngIf="!tiles.length" class="tiles-not-found">
         <span>There is no tiles...</span>
