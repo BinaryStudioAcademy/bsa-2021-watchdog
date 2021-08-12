@@ -43,7 +43,7 @@ namespace Watchdog.Core.BLL.Services
                 .ToListAsync();
             return _mapper.Map<ICollection<MemberDto>>(members);
         }
-        
+
         public async Task<MemberDto> CreateMemberAsync(MemberDto memberDto)
         {
             var member = _mapper.Map<Member>(memberDto);
@@ -52,6 +52,20 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
 
             return _mapper.Map<MemberDto>(createdMember.Entity);
+        }
+
+        public async Task<MemberDto> GetMemberByUserIdAndOrganizationIdAsync(int userId, int orgId)
+        {
+            var ogranization = await _context.Organizations
+                .Include(o => o.Members)
+                .ThenInclude(m => m.User)
+                .FirstOrDefaultAsync(o => o.Id == orgId)
+                ?? throw new KeyNotFoundException("Organization doesn't exist");
+
+            var member = ogranization.Members.FirstOrDefault(m => m.User.Id == userId)
+                ?? throw new KeyNotFoundException("Member doesn't exist in organization");
+
+            return _mapper.Map<MemberDto>(member);
         }
     }
 }
