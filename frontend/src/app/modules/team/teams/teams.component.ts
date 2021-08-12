@@ -9,6 +9,7 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
 import { BaseComponent } from '@core/components/base/base.component';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { User } from "@shared/models/user/user";
+import { Member } from "@shared/models/member/member";
 
 @Component({
     selector: 'app-teams',
@@ -24,6 +25,7 @@ export class TeamsComponent extends BaseComponent implements OnInit, OnDestroy {
     createTeamDialog: DynamicDialogRef;
     isLoading: boolean = false;
     user: User;
+    member: Member;
     organization: Organization;
 
     constructor(
@@ -36,9 +38,13 @@ export class TeamsComponent extends BaseComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.isLoading = true;
         this.user = this.authService.getUser();
-        this.authService.getOrganization().subscribe(org => {
+        this.authService.getOrganization().pipe(this.untilThis).subscribe(org => {
             this.organization = org;
-            this.isLoading = false;
+            this.authService.getMember().pipe(this.untilThis)
+                .subscribe(member => {
+                    this.member = member;
+                    this.isLoading = false;
+                });
         });
     }
 
@@ -62,8 +68,8 @@ export class TeamsComponent extends BaseComponent implements OnInit, OnDestroy {
                             name
                         })
                         .pipe(this.untilThis)
-                        .subscribe(response => {
-                            this.teamCreated$.next(response.body);
+                        .subscribe(team => {
+                            this.teamCreated$.next(team);
                             this.isLoading = false;
                             this.toastService.success('Team successfully created!', '', 2000);
                         }, error => {

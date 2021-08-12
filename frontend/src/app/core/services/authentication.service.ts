@@ -6,7 +6,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { filter, mergeMap, switchMap, tap, map } from 'rxjs/operators';
-import { from, of } from 'rxjs';
+import { from, of, Observable } from "rxjs";
 import { User } from '@shared/models/user/user';
 import { NewUser } from '@shared/models/user/newUser';
 import { FullRegistrationDto } from '@modules/registration/DTO/fullRegistrationDto';
@@ -54,39 +54,29 @@ export class AuthenticationService {
         return this.user;
     }
 
-    getOrganization() {
+    getOrganization(): Observable<Organization> {
         if (!this.organization) {
-            const organization = localStorage.getItem('organization');
-            if (!organization) {
-                return this.organizationService.getOrganizationsByUserId(this.getUser().id)
-                    .pipe(
-                        map(organizations => {
-                            localStorage.setItem('organization', JSON.stringify(organizations[0]));
-                            [this.organization] = organizations;
-                            return this.organization;
-                        })
-                    );
-            }
-            this.organization = JSON.parse(localStorage.getItem('organization'));
+            return this.organizationService.getOrganizationsByUserId(this.getUser().id)
+                .pipe(
+                    map(organizations => {
+                        this.organization = organizations[0];
+                        return this.organization;
+                    })
+                );
         }
-        return from([this.organization]);
+        return of(this.organization);
     }
 
-    getMember() {
+    getMember(): Observable<Member> {
         if (!this.member) {
-            const member = localStorage.getItem('member');
-            if (!member) {
-                const userId = this.getUser().id;
-                return this.getOrganization().pipe(map(org =>
-                    this.memberService.getMemberByUserAndOgranization(org.id, userId)
-                        .pipe(map(member => {
-                            localStorage.setItem('member', JSON.stringify(member));
-                            this.member = member;
-                            return this.member;
-                        }))
-                ));
-            }
-            this.member = JSON.parse(localStorage.getItem('member'));
+            const userId = this.getUser().id;
+            return this.getOrganization().pipe(switchMap(org => {
+                return this.memberService.getMemberByUserAndOgranization(org.id, userId)
+                    .pipe(map(member => {
+                        this.member = member;
+                        return this.member;
+                    }));
+            }));
         }
         return of(this.member);
     }

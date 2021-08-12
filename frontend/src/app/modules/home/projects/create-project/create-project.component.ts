@@ -197,10 +197,10 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                             name
                         })
                         .pipe(this.untilThis)
-                        .subscribe(response => {
+                        .subscribe(team => {
                             this.toastNotifications.success(`Team #${name} created!`, '', 2000);
-                            this.teams = this.teams.concat({ name, id: response.body.id });
-                            this.newProject.teamId = response.body.id;
+                            this.teams = this.teams.concat({ name, id: team.id });
+                            this.newProject.teamId = team.id;
                             this.loadingNumber -= 1;
                         }, error => {
                             this.toastNotifications.error(`${error}`, 'Error');
@@ -212,6 +212,7 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
 
     createProject(): void {
         if (this.formGroup.valid && this.newProject.platformId) {
+            debugger;
             this.newProject.organizationId = this.organization.id;
             this.newProject.createdBy = this.user.id;
             this.newProject.alertSettings = {
