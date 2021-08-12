@@ -58,7 +58,7 @@ export class ToastNotificationService {
 
         this.message({
             severity: 'error',
-            summary: errorTitle === '' ? 'Error' : title,
+            summary: errorTitle === '' ? 'Error' : errorTitle,
             detail: errorMessage,
             closable: true,
             life: durationMs,
