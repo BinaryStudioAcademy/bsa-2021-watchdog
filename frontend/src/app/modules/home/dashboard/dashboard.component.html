@@ -1,18 +1,40 @@
-<div [ngClass]="{'remove-margin-box-shadow': showTileMenu}" class="dashboard-header">
+<!--    Header    -->
+<div *ngIf="dashboard" [ngClass]="{'remove-margin-box-shadow': showTileMenu}" class="dashboard-header">
     <div class="dashboard-name">
         <h2>{{dashboard?.name}}</h2>
     </div>
+    <!--    Right Buttons    -->
     <div class="action-buttons">
-        <button (click)="confirmDelete()" class="p-button-danger p-button-outlined" label="Delete"
-            [disabled]="!dashboard" pButton pRipple></button>
-        <button (click)="isEditing = true" class="p-button-primary p-button-outlined" label="Edit"
-            [disabled]="!dashboard" pButton pRipple></button>
-        <button (click)="toggleTileMenu()" class="p-button-secondary p-button-outlined" label="Edit Tiles" pButton
-            [disabled]="!dashboard" pRipple></button>
+        <button (click)="confirmDelete()" [disabled]="!dashboard" class="p-button-danger p-button-outlined"
+                label="Delete" pButton pRipple></button>
+        <button (click)="isEditing = true" [disabled]="!dashboard" class="p-button-primary p-button-outlined"
+                label="Edit" pButton pRipple></button>
+        <button (click)="toggleTileMenu()" [disabled]="!dashboard" class="p-button-secondary p-button-outlined"
+                label="Edit Tiles"
+                pButton pRipple></button>
     </div>
 </div>
-<app-tile-menu (closeMenu)="tileMenuClosed()" *ngIf="showTileMenu" [dashboardId]="dashboard.id"></app-tile-menu>
+
+<app-tile-menu (clearTiles)="deleteAllTiles(dashboard.id)" (closeMenu)="this.showTileMenu = false;"
+               *ngIf="showTileMenu && dashboard" [dashboardId]="dashboard.id" [tiles]="tiles" [userProjects]="projects">
+</app-tile-menu>
 
 <app-update-dashboard (closeModal)="isEditing = !isEditing" (save)="updateDashboard($event)" *ngIf="isEditing"
-    [dashboard]="dashboard">
+                      [dashboard]="dashboard">
 </app-update-dashboard>
+
+<!--    Tiles Content    -->
+<ng-template [ngIf]="dashboard">
+    <div *ngIf="!tiles.length" class="tiles-not-found">
+        <span>There is no tiles...</span>
+    </div>
+    <div *ngIf="tiles.length" class="tiles-container">
+        <ng-container *ngFor="let tile of tiles" [ngSwitch]="tile.type">
+            <app-top-active-issues-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.TopActiveIssues"
+                                        [isShownMenu]="showTileMenu" [issues]="issues" [tile]="tile"
+                                        [userProjects]="projects"
+                                        class="top-active-issue">
+            </app-top-active-issues-tile>
+        </ng-container>
+    </div>
+</ng-template>

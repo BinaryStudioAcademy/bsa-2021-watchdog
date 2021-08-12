@@ -5,7 +5,10 @@ $fieldPercentageWidth: 90%
 
 .settings-container
     color: $text-color
-    margin: $indent
+    margin: $half-indent
+    display: flex
+    flex-direction: column
+    gap: $half-indent
 
 .content-title
     display: flex
@@ -13,35 +16,26 @@ $fieldPercentageWidth: 90%
     @include background-gray
     @include title
 
-.container
-    &-group
-        @include background-gray
-        margin: $half-indent 0
-    &-header
-        font-size: 1.5em
-        margin: .5em 0
-        font-weight: 500
-        dispaly: flex
-        flex-direction: row
-        padding: $half-indent
-        color: $primary-color-text
-        background-color: $primary-color-light
 
 .item
-    padding: .4em $half-indent
     display: flex
-    padding-bottom: 1.2em
+    padding-bottom: $indent
     &-definition
         width: 40%
         font-size: 1.2em
         margin-right: 1em
     &-field
         width: 58%
-        height: 3em
+        position: relative
+        align-items: center
     &-sub-text
         font-size: .7em
         margin-top: .2em
         color: $text-color-secondary
+
+.container-group
+    .item:last-child
+        padding-bottom: $half-indent
 
 .item-form-input
     width: 100%
@@ -60,12 +54,12 @@ $fieldPercentageWidth: 90%
     & .pi
         height: 1em
 
-
 .p-error
     color: $validation-color
     font-size: .75em
     margin-top: .1em
     flex-wrap: wrap
+    position: absolute
 
 .buttons-block
     grid-gap: 5px

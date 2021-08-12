@@ -6,6 +6,7 @@ namespace Watchdog.Core.BLL.Services.Abstract
 {
     public interface ITeamService
     {
+        Task<TeamDto> GetTeamAsync(int teamId);
         Task<ICollection<TeamDto>> GetAllTeamsAsync(int organizationId);
         Task<ICollection<TeamOptionDto>> GetTeamsOptionsByOrganizationIdAsync(int organizationId);
         Task<ICollection<TeamDto>> GetMemberTeamsAsync(int organizationId, int memberId, bool isForMemberInTeam);
@@ -14,5 +15,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<TeamDto> AddMemberToTeamAsync(TeamMemberDto teamMemberDto);
         Task<TeamDto> LeaveTeamAsync(int teamId, int memberId);
         Task DeleteTeamAsync(int teamId);
+        Task<bool> IsTeamNameUniqueAsync(string teamName);
     }
 }

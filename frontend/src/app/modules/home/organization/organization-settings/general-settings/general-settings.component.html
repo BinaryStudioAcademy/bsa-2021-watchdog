@@ -1,8 +1,5 @@
-<form [formGroup]="generalForm" class="container-group">
-    <div class="container-header">
-        <h2>General</h2>
-    </div>
-    <div class="item">
+<p-panel header="General" class="container-group">
+    <form [formGroup]="generalForm" class="item">
         <label class="item-definition">
             <div>Organization Slug</div>
             <div class="item-sub-text">A unique ID used to identify this organization</div>
@@ -25,8 +22,8 @@
             </div>
 
         </div>
-    </div>
-    <div class="item">
+    </form>
+    <form [formGroup]="generalForm" class="item">
         <label class="item-definition">
             <div>Display Name</div>
             <div class="item-sub-text">A human-friendly name for the organization</div>
@@ -46,5 +43,5 @@
                 </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</p-panel>

@@ -8,7 +8,7 @@ import { BaseComponent } from '@core/components/base/base.component';
 @Component({
     selector: 'app-user-teams',
     templateUrl: './user-teams.component.html',
-    styleUrls: ['../teams.component.sass']
+    styleUrls: ['../teams.component.sass', '../../team.style.sass']
 })
 export class UserTeamsComponent extends BaseComponent implements OnInit {
     @Input() newTeamCreated: Observable<Team> = new Observable<Team>();
@@ -67,6 +67,7 @@ export class UserTeamsComponent extends BaseComponent implements OnInit {
                 this.teams = teams.body;
             }, error => {
                 this.toastService.error(`${error}`, 'Error', 2000);
+                this.isLoading = false;
             });
     }
 }

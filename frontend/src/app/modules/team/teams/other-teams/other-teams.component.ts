@@ -8,7 +8,7 @@ import { BaseComponent } from '@core/components/base/base.component';
 @Component({
     selector: 'app-other-teams',
     templateUrl: './other-teams.component.html',
-    styleUrls: ['../teams.component.sass']
+    styleUrls: ['../teams.component.sass', '../../team.style.sass']
 })
 export class OtherTeamsComponent extends BaseComponent implements OnInit {
     @Input() leavedTeam: Observable<Team> = new Observable<Team>();
@@ -37,7 +37,7 @@ export class OtherTeamsComponent extends BaseComponent implements OnInit {
 
     joinTeam(teamId: number) {
         this.teamService
-            .joinTeam({ teamId, memberId: this.currentUserId })
+            .joinTeam(teamId, this.currentUserId)
             .pipe(this.untilThis)
             .subscribe(response => {
                 this.joinTeamEvent.emit(response.body);

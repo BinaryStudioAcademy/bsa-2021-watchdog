@@ -33,6 +33,12 @@ namespace Watchdog.Core.API.Controllers
             var teams = await _teamService.GetTeamsOptionsByOrganizationIdAsync(organizationId);
             return Ok(teams);
         }
+        [HttpGet("{teamId}")]
+        public async Task<ActionResult<TeamDto>> Get(int teamId)
+        {
+            var team = await _teamService.GetTeamAsync(teamId);
+            return Ok(team);
+        }
 
         [HttpGet("organization/{organizationId:int}/member/{memberId:int}")]
         public async Task<ActionResult<TeamDto>> GetByMemberAsync(int organizationId, int memberId)
@@ -74,6 +80,13 @@ namespace Watchdog.Core.API.Controllers
         {
             var updatedTeam = await _teamService.LeaveTeamAsync(teamId, memberId);
             return Ok(updatedTeam);
+        }
+
+        [HttpGet("teamName/{teamName}")]
+        public async Task<ActionResult<bool>> CheckTeamName(string teamName)
+        {
+            var isUnique = await _teamService.IsTeamNameUniqueAsync(teamName);
+            return Ok(isUnique);
         }
 
         [HttpDelete("{teamId:int}")]

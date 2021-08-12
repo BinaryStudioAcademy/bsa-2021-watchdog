@@ -3,6 +3,8 @@ using Bogus.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Watchdog.Core.Common.Enums.Tiles;
 using Watchdog.Core.DAL.Context.EntityConfigurations;
 using Watchdog.Core.DAL.Entities;
 
@@ -19,20 +21,19 @@ namespace Watchdog.Core.DAL.Context
         private const int _numberOfPlatforms = 18;
         private const int _numberOfTeams = 5;
         private const int _numberOfTeamMembers = 25;
-        private const int _numberOfTiles = 25;
+        private const int _numberOfTiles = 35;
         private const int _numberOfUsers = 20;
-        private static readonly List<string> _icons  = new List<string>() { "pi-chart-line", "pi-chart-bar" };
+        private static readonly List<string> _icons = new List<string>() { "pi-chart-line", "pi-chart-bar" };
 
-        private static readonly string[] _roles = { "Owner", "Manager", "Viewer" };
+        private static readonly string[] _roles = {"Owner", "Manager", "Viewer"};
 
         public static void Configure(this ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(SampleConfig).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationConfig).Assembly);
         }
 
         public static void Seed(this ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Sample>().HasData(GenerateSamples());
 
             modelBuilder.Entity<Application>().HasData(GenerateApplications());
             modelBuilder.Entity<ApplicationTeam>().HasData(GenerateApplicationTeams());
@@ -46,20 +47,6 @@ namespace Watchdog.Core.DAL.Context
             modelBuilder.Entity<TeamMember>().HasData(GenerateTeamMembers());
             modelBuilder.Entity<Tile>().HasData(GenerateTiles());
             modelBuilder.Entity<User>().HasData(GenerateUsers());
-        }
-
-        private static IList<Sample> GenerateSamples(int count = 10)
-        {
-            Faker.GlobalUniqueIndex = 1;
-
-            return new Faker<Sample>()
-                .UseSeed(10)
-                .RuleFor(e => e.Id, f => f.IndexGlobal)
-                .RuleFor(e => e.Title, f => f.Lorem.Word())
-                .RuleFor(e => e.Body, f => f.Lorem.Paragraph())
-                .RuleFor(e => e.CreatedBy, f => f.Random.Number(1, 5))
-                .RuleFor(e => e.CreatedAt, f => f.Date.Past(2, new DateTime(2021, 7, 20)))
-                .Generate(count);
         }
 
         private static IList<Application> GenerateApplications(int count = _numberOfApplications)
@@ -261,6 +248,7 @@ namespace Watchdog.Core.DAL.Context
         private static IList<Role> GenerateRoles()
         {
             return new Faker<Role>()
+                .UseSeed(1804)
                 .RuleFor(r => r.Id, f => ++f.IndexVariable)
                 .RuleFor(r => r.Name, f => _roles[f.IndexVariable - 1])
                 .RuleFor(r => r.Description, f => f.Lorem.Paragraph())
@@ -294,10 +282,21 @@ namespace Watchdog.Core.DAL.Context
             return new Faker<Tile>()
                 .UseSeed(2246)
                 .RuleFor(t => t.Id, f => ++f.IndexVariable)
-                .RuleFor(t => t.Name, f => f.Lorem.Word())
+                .RuleFor(t => t.Name, f => f.Commerce.ProductName().ClampLength(3, 50, ' '))
                 .RuleFor(t => t.DashboardId, f => f.Random.Number(1, _numberOfDashboards))
+                .RuleFor(t => t.Type, f => f.PickRandom<TileType>())
+                .RuleFor(t => t.Category,
+                    (f, tile) => tile.Type == TileType.TopActiveIssues
+                        ? TileCategory.List
+                        : f.PickRandom<TileCategory>())
                 .RuleFor(t => t.CreatedBy, f => f.Random.Number(1, _numberOfUsers))
-                .RuleFor(t => t.CreatedAt, f => f.Date.Past(2, new DateTime(2021, 7, 20)))
+                .RuleFor(t => t.CreatedAt, f => f.Date.Past(2, DateTime.Now))
+                .RuleFor(t => t.Settings, f =>
+                    "{" +
+                    $"\"sourceProjects\": [{f.Random.Number(1, _numberOfApplications)}]," +
+                    $"\"dateRange\": {f.Random.Number(0, 4)}," +
+                    $"\"issuesCount\": {f.Random.Number(1, 1000)}" +
+                    "}")
                 .Generate(count);
         }
 

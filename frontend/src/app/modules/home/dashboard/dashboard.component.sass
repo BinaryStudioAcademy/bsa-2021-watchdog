@@ -14,20 +14,57 @@
     flex-direction: row
     align-items: center
     justify-content: space-between
+
     .action-buttons
         display: flex
         grid-gap: 5px
         flex-direction: row-reverse
         align-items: center
+
         button
             width: 100px
             white-space: nowrap
+    h2
+        max-width: 450px
+        overflow-x: auto
+        overflow-y: hidden
+        &::-webkit-scrollbar-thumb
+            border-radius: 6px
+            background-color: $primary-color-lightest
+        &::-webkit-scrollbar
+            height: 6px
 
-
-.dashboard-container
-    padding: 20px 20px 0
+.tiles-not-found
     display: flex
-    flex-grow: 1
-    flex-shrink: 1
-    flex-basis: 0
-    flex-direction: column
+    flex-direction: row
+    justify-content: center
+    align-items: flex-end
+    height: 50px
+    width: 100%
+    white-space: nowrap
+
+    span
+        font-weight: 600
+        font-size: 24px
+
+
+// Tiles Container
+.tiles-container
+    padding: 15px 15px 0
+    display: flex
+    flex-flow: row wrap
+    align-content: flex-start
+
+    %card
+        margin: 5px 5px 5px
+        box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12)
+        border: 1px solid #dee2e6
+
+    .top-active-issue
+        @extend %card
+        flex-grow: 1
+        flex-shrink: 0
+        flex-basis: 350px
+        height: 400px
+
+

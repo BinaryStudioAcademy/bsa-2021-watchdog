@@ -84,7 +84,22 @@
         border-radius: 50px
 
     .user-name
+        width: 100%
+        margin-top: 2px
+        font-family: "DM Sans", serif
+        font-weight: 520
+        position: relative
+        background: none
+        border: none
+        color: $primary-color-text
+        font-size: 16px
         cursor: pointer
+        transition: 200ms all ease-in-out
+        text-overflow: ellipsis
+        white-space: nowrap
+        overflow: hidden
+        &:hover
+            color: rgb(255,255,255, 0.55)
 
 @media (max-width: 1024px)
     .layout-wrapper
@@ -120,6 +135,11 @@
         flex-wrap: wrap
         align-content: flex-start
         @include custom-scroll
+        .dashboards-buttons
+            display: flex
+            flex-direction: column
+            align-items: flex-start
+            justify-content: center
     &-bottom
         display: flex
         flex-direction: column

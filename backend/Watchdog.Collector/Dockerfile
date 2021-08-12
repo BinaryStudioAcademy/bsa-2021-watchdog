@@ -7,6 +7,7 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0-focal AS build
 WORKDIR /src
 COPY ["Watchdog.Collector.API/Watchdog.Collector.API.csproj", "Watchdog.Collector.API/"]
 COPY ["Watchdog.Collector.BLL/Watchdog.Collector.BLL.csproj", "Watchdog.Collector.BLL/"]
+COPY ["Watchdog.Collector.Common/Watchdog.Collector.Common.csproj", "Watchdog.Collector.Common/"]
 
 RUN dotnet restore "Watchdog.Collector.API/Watchdog.Collector.API.csproj"
 COPY . .

@@ -3,6 +3,7 @@
     <div class="layout-topbar">
         <div class="logo" [routerLink]="['']">
             <img src="assets\logo-white.svg" alt="logo">
+
         </div>
         <div *ngIf="!user" class="user-info">
             <button pButton pRipple type="button" label="Sign in" class="p-button-outlined sign-in-button"></button>
@@ -43,7 +44,8 @@
 
             <div [class.dashboards-none]="!dashboardsShown" [class.dashboards]="dashboardsShown"
                 *ngFor="let dashboard of dashboards">
-                <button class="button" [routerLink]="['dashboard', dashboard.id]" [routerLinkActive]="['active']">
+                <button class="button" [routerLink]="['dashboard', dashboard.id]" [routerLinkActive]="['active']"
+                appTooltipFullName>
                     <i class="pi {{dashboard.icon}}"></i>
                     <span>{{dashboard.name}}</span>
                 </button>
@@ -69,5 +71,4 @@
             <router-outlet></router-outlet>
         </div>
     </div>
-
 </div>
