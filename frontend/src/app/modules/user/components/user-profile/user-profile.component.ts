@@ -49,14 +49,22 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
 
     updateUser() {
         const user = {...this.editForm.value};
-        this.userService.updateUsersById(this.user.id, user)
-            .pipe(this.untilThis)
-            .subscribe(resp => {
-                this.toastNotificationService.success('Profile has been updated');
-                Object.assign(this.user,resp);
-            }, error=> {
-                this.toastNotificationService.error(error);
-            });
+        if (user.firstName == this.user.firstName &&
+            user.lastName == this.user.lastName &&
+            user.email == this.user.email) {
+                this.toastNotificationService.error('You havent changed anything to make changes');
+        }
+        else {
+            this.userService.updateUsersById(this.user.id, user)
+                .pipe(this.untilThis)
+                .subscribe(resp => {
+                    this.toastNotificationService.success('Profile has been updated');
+                    Object.assign(this.user,resp);
+                }, error=> {
+                    this.toastNotificationService.error(error);
+                });
+        }
+
     }
 
     updatePassword() {
