@@ -29,6 +29,22 @@
             </div>
         </div>
     </div>
+    <div class="reg-block">
+        <div class="input-block">
+            <span class="p-float-label">
+                <input id="float-input-email" type="text" formControlName="email" name="email" pInputText
+                    [(ngModel)]="user.email" [disabled]="isNotFinishedRegistration">
+                <label for="float-input-email">Email</label>
+            </span>
+            <div *ngIf="formGroup.controls.email.touched && formGroup.controls.email.invalid" class="validation">
+                <small *ngIf="formGroup.controls.email.errors.required">Сan not be empty</small>
+                <small *ngIf="formGroup.controls.email.value?.length < 5">Min length 5</small>
+                <small *ngIf="formGroup.controls.email.hasError('pattern')">Invalid Email</small>
+            </div>
+        </div>
+        <div class="input-block">
+        </div>
+    </div>
     <div class="reg-block" *ngIf="!isNotFinishedRegistration">
         <div class="input-block">
             <span class="p-float-label">
@@ -58,22 +74,6 @@
                 <small *ngIf="formGroup.controls.confirmPassword.hasError('pattern')">Must contain at least 1 lowercase
                     letter, 1 uppercase letter, 1 number, 1 special character: !#$%&‘*+—/=?^_`&#123;|&#125;~ </small>
                 <small *ngIf="formGroup.controls.confirmPassword.errors.notEqual">Passwords must match</small>
-            </div>
-        </div>
-    </div>
-    <div class="reg-block">
-        <div class="input-block">
-        </div>
-        <div class="input-block">
-            <span class="p-float-label">
-                <input id="float-input-email" type="text" formControlName="email" name="email" pInputText
-                    [(ngModel)]="user.email" [disabled]="isNotFinishedRegistration">
-                <label for="float-input-email">Email</label>
-            </span>
-            <div *ngIf="formGroup.controls.email.touched && formGroup.controls.email.invalid" class="validation">
-                <small *ngIf="formGroup.controls.email.errors.required">Сan not be empty</small>
-                <small *ngIf="formGroup.controls.email.value?.length < 5">Min length 5</small>
-                <small *ngIf="formGroup.controls.email.hasError('pattern')">Invalid Email</small>
             </div>
         </div>
     </div>
