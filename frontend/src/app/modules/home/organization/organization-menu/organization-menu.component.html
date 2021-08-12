@@ -1,22 +1,21 @@
 <app-loading-spinner *ngIf="isLoading" [overlay]="true"></app-loading-spinner>
-<div pRipple class="org-label" (click)="menu.toggle($event)">
+<div pRipple class="org-label"
+    (click)="menuItems.length>1 ? menu.toggle($event) : router.navigate(['home','organization','settings'])">
     <div class="org-avatar">
-        <p-avatar styleClass="org-avatar-item" size="large" *ngIf="organization?.avatarUrl"
-            [image]="organization.avatarUrl"></p-avatar>
-        <p-avatar styleClass="org-avatar-item" size="large" *ngIf="!organization?.avatarUrl"
+        <p-avatar styleClass="org-avatar-item" *ngIf="organization?.avatarUrl" [image]="organization.avatarUrl">
+        </p-avatar>
+        <p-avatar styleClass="org-avatar-item" *ngIf="!organization?.avatarUrl"
             [label]="organization?.name.substr(0,2)"></p-avatar>
     </div>
     <div class="org-title">
-        <div class="org-name text-ellipsis">
+        <div appTooltipFullName class="org-name text-ellipsis">
             {{organization?.name}}
         </div>
-        <div class="org-user text-ellipsis">
+        <div appTooltipFullName class="org-user text-ellipsis">
             {{organization?.organizationSlug}}
         </div>
     </div>
-    <div>
-        <i class="pi pi-angle-down"></i>
-    </div>
+    <i class="icon pi pi-cog"></i>
 </div>
 <p-menu #menu [popup]="true" [model]="menuItems">
 </p-menu>
