@@ -1,9 +1,9 @@
-import { OrganizationSettings } from "./../../../../shared/models/organization/organization-settings";
+import { OrganizationService } from "@core/services/organization.service";
+import { AuthenticationService } from "@core/services/authentication.service";
+import { OrganizationSettings } from "@shared/models/organization/organization-settings";
 import { FormGroup } from "@angular/forms";
-import { Subject } from "rxjs";
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { BaseComponent } from '@core/components/base/base.component';
-import { OrganizationService } from '@core/services/organization.service';
 import { Organization } from '@shared/models/organization/organization';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
@@ -20,13 +20,14 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
     @ViewChild("saveBut") saveButton: ElementRef<HTMLButtonElement>;
 
     constructor(
-        private organizationService: OrganizationService,
-        private toastService: ToastNotificationService
+        private authService: AuthenticationService,
+        private toastService: ToastNotificationService,
+        private organizationService: OrganizationService
     ) { super(); }
 
     ngOnInit() {
         this.isLoading = true;
-        this.organizationService.getCurrentOrganization()
+        this.authService.getOrganization()
             .pipe(this.untilThis)
             .subscribe(
                 organization => {
