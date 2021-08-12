@@ -1,3 +1,4 @@
+<app-loading-spinner *ngIf="isLoading" [overlay]="true"></app-loading-spinner>
 <div pRipple class="org-label" (click)="menu.toggle($event)">
     <div class="org-avatar">
         <p-avatar styleClass="org-avatar-item" size="large" *ngIf="organization?.avatarUrl"
@@ -10,8 +11,11 @@
             {{organization?.name}}
         </div>
         <div class="org-user text-ellipsis">
-            user@mail.user
+            {{organization?.organizationSlug}}
         </div>
+    </div>
+    <div>
+        <i class="pi pi-angle-down"></i>
     </div>
 </div>
 <p-menu #menu [popup]="true" [model]="menuItems">

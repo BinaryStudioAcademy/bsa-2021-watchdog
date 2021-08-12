@@ -15,9 +15,8 @@
     </div>
 
     <div class="sidebar">
-        <div class="sidebar-avatar">
-            <app-organization-menu></app-organization-menu>
-        </div>
+        <app-organization-menu class="sidebar-avatar"></app-organization-menu>
+
         <div class="sidebar-top">
             <div>
                 <button class="button" routerLink="projects" [routerLinkActive]="['active']">
@@ -45,7 +44,7 @@
             <div [class.dashboards-none]="!dashboardsShown" [class.dashboards]="dashboardsShown"
                 *ngFor="let dashboard of dashboards">
                 <button class="button" [routerLink]="['dashboard', dashboard.id]" [routerLinkActive]="['active']"
-                appTooltipFullName>
+                    appTooltipFullName>
                     <i class="pi {{dashboard.icon}}"></i>
                     <span>{{dashboard.name}}</span>
                 </button>
