@@ -171,6 +171,11 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<int>("ApplicationId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsFavorite")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<int>("TeamId")
                         .HasColumnType("int");
 
@@ -187,120 +192,140 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 1,
                             ApplicationId = 3,
+                            IsFavorite = false,
                             TeamId = 5
                         },
                         new
                         {
                             Id = 2,
                             ApplicationId = 2,
+                            IsFavorite = false,
                             TeamId = 1
                         },
                         new
                         {
                             Id = 3,
                             ApplicationId = 6,
+                            IsFavorite = false,
                             TeamId = 1
                         },
                         new
                         {
                             Id = 4,
                             ApplicationId = 2,
+                            IsFavorite = false,
                             TeamId = 5
                         },
                         new
                         {
                             Id = 5,
                             ApplicationId = 4,
+                            IsFavorite = false,
                             TeamId = 1
                         },
                         new
                         {
                             Id = 6,
                             ApplicationId = 5,
+                            IsFavorite = false,
                             TeamId = 3
                         },
                         new
                         {
                             Id = 7,
                             ApplicationId = 10,
+                            IsFavorite = false,
                             TeamId = 5
                         },
                         new
                         {
                             Id = 8,
                             ApplicationId = 10,
+                            IsFavorite = false,
                             TeamId = 4
                         },
                         new
                         {
                             Id = 9,
                             ApplicationId = 5,
+                            IsFavorite = false,
                             TeamId = 3
                         },
                         new
                         {
                             Id = 10,
                             ApplicationId = 5,
+                            IsFavorite = false,
                             TeamId = 3
                         },
                         new
                         {
                             Id = 11,
                             ApplicationId = 1,
+                            IsFavorite = false,
                             TeamId = 4
                         },
                         new
                         {
                             Id = 12,
                             ApplicationId = 5,
+                            IsFavorite = false,
                             TeamId = 1
                         },
                         new
                         {
                             Id = 13,
                             ApplicationId = 7,
+                            IsFavorite = false,
                             TeamId = 3
                         },
                         new
                         {
                             Id = 14,
                             ApplicationId = 3,
+                            IsFavorite = false,
                             TeamId = 2
                         },
                         new
                         {
                             Id = 15,
                             ApplicationId = 1,
+                            IsFavorite = false,
                             TeamId = 3
                         },
                         new
                         {
                             Id = 16,
                             ApplicationId = 1,
+                            IsFavorite = false,
                             TeamId = 5
                         },
                         new
                         {
                             Id = 17,
                             ApplicationId = 5,
+                            IsFavorite = false,
                             TeamId = 2
                         },
                         new
                         {
                             Id = 18,
                             ApplicationId = 9,
+                            IsFavorite = false,
                             TeamId = 4
                         },
                         new
                         {
                             Id = 19,
                             ApplicationId = 2,
+                            IsFavorite = false,
                             TeamId = 5
                         },
                         new
                         {
                             Id = 20,
                             ApplicationId = 4,
+                            IsFavorite = false,
                             TeamId = 5
                         });
                 });
@@ -1009,19 +1034,19 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "Expedita omnis voluptatem magnam repellat omnis quidem necessitatibus. In hic beatae eius ipsam. At totam alias non ipsa. Inventore nemo velit corporis nulla. Rerum dolor adipisci voluptate dolorem qui. Ipsam et et.",
+                            Description = "Quod est nobis quasi. Deleniti neque et ex. Autem aut minus nam consectetur voluptatum excepturi fugiat sint iusto.",
                             Name = "Owner"
                         },
                         new
                         {
                             Id = 2,
-                            Description = "Quod maxime modi exercitationem atque totam unde ipsum enim voluptatem. Pariatur maiores et at blanditiis animi totam quia. Sequi voluptatem asperiores quo quia asperiores dolor recusandae adipisci repellat. Ab ut sunt consectetur exercitationem ipsa voluptas qui. Possimus cum sunt quos praesentium ut quam sint. Error porro sit soluta voluptatibus.",
+                            Description = "Quas eum hic praesentium fugiat. Sit rerum qui numquam natus rerum quis aut veniam ad. Voluptates enim quam ipsa totam aspernatur. Iure expedita repellat dolor est aut voluptate maxime. Corrupti odit vero quia quod. Non ipsam quo ratione culpa ducimus repellendus exercitationem.",
                             Name = "Manager"
                         },
                         new
                         {
                             Id = 3,
-                            Description = "Placeat molestias quia quos nobis laborum aut. Dignissimos libero nemo eveniet praesentium. Velit quo est iure amet voluptatum inventore. Magnam omnis sunt ut rerum harum minima. Quis natus voluptas animi unde provident officia. Quae qui nihil omnis quae.",
+                            Description = "Labore ea id neque. Non aperiam minus incidunt architecto dolor. In hic porro aut vel cum aut optio nihil sequi. Voluptatem inventore aut voluptas quia sint enim animi.",
                             Name = "Viewer"
                         });
                 });
@@ -1158,6 +1183,9 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.HasIndex("OrganizationId");
 
@@ -1889,7 +1917,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.Team", "Team")
                         .WithMany("ApplicationTeams")
                         .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Application");
@@ -1959,7 +1987,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Organizations")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("User");

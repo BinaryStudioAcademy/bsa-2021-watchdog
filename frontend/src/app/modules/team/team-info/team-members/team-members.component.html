@@ -1,0 +1,21 @@
+<p-panel class="panel-custom" styleClass="team-panel" header="Members">
+    <ng-template pTemplate="header">
+        <app-team-add-member class="header-button" (addedMember)="addMember($event)" [team]="team">
+        </app-team-add-member>
+    </ng-template>
+    <app-loading-spinner *ngIf="isLoading" margin="0" size="10px" [overlay]="true"></app-loading-spinner>
+    <div class="panel-list">
+        <div class="panel-list-item" *ngFor="let member of team?.members">
+            <p-avatar size="large" shape="circle" [label]="member?.user | userInitials">
+            </p-avatar>
+            <div>
+                <div>{{member?.user.firstName+"
+                    "+member?.user.lastName}}</div>
+                <div>{{member?.user.email}}</div>
+            </div>
+            <button pButton pRipple type="button" label="Remove" class="p-button-outlined p-button-danger"
+                icon="pi pi-minus-circle" (click)="removeMember(member.id)"></button>
+        </div>
+        <div class="panel-list-item" *ngIf="team.members.length===0">No members yet...</div>
+    </div>
+</p-panel>

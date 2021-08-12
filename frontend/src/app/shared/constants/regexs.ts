@@ -7,7 +7,8 @@ export const regexs = {
     organizationName: /^[\w\s-!#$%&'*+—/=?^`{|}~]+$/,
     organizationSlag: /^[\w-]+$/,
 
-    dashboardName: /^[a-zA-Z0-9_. ]*$/,
+    dashboardName: /^[a-zA-Z0-9-_. ]*$/,
 
     projectName: /^[a-zA-Z0-9-_]+$/,
+    teamName: /^[\w-]+$/,
 };

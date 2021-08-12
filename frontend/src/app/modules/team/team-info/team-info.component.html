@@ -1,0 +1,38 @@
+<div class="title"><button routerLink="../" tooltipPosition="bottom" pTooltip="Back to Teams" pButton pRipple
+        icon="pi pi-chevron-left " class="p-button-outlined back-button"></button>#{{team?.name}}
+    <div class="header-buttons" [hidden]="!isSettings">
+        <div class="buttons-container">
+            <button #saveBut disabled pButton pRipple class="p-button-primary" label="Save"
+                (click)="saveTeam()"></button>
+            <button pButton pRipple class="p-button-secondary" label="Reset" (click)="reset()"></button>
+            <button pButton pRipple class="p-button-danger" label="Remove" (click)="removeTeam()"></button>
+        </div>
+    </div>
+</div>
+<app-loading-spinner *ngIf="isLoading" [overlay]="true"></app-loading-spinner>
+<p-tabView (onChange)="resetButtonsState($event)">
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <div class="header">
+                <span>Members</span>
+            </div>
+        </ng-template>
+        <app-team-members *ngIf="team" [team]="team"></app-team-members>
+    </p-tabPanel>
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <div class="header">
+                <span>Projects</span>
+            </div>
+        </ng-template>
+        <app-team-projects *ngIf="team" [team]="team"></app-team-projects>
+    </p-tabPanel>
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <div class="header">
+                <span>Settings</span>
+            </div>
+        </ng-template>
+        <app-team-settings [parentForm]="parentForm" *ngIf="team" [team]="team"></app-team-settings>
+    </p-tabPanel>
+</p-tabView>

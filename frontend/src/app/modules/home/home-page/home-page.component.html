@@ -42,7 +42,8 @@
 
             <div [class.dashboards-none]="!dashboardsShown" [class.dashboards]="dashboardsShown"
                 *ngFor="let dashboard of dashboards">
-                <button class="button" [routerLink]="['dashboard', dashboard.id]" [routerLinkActive]="['active']">
+                <button class="button" [routerLink]="['dashboard', dashboard.id]" [routerLinkActive]="['active']"
+                    appTooltipFullName>
                     <i class="pi {{dashboard.icon}}"></i>
                     <span>{{dashboard.name}}</span>
                 </button>
@@ -64,7 +65,8 @@
     </app-add-dashboard>
 
     <div class="home-content-wrp">
-        <router-outlet></router-outlet>
+        <div class="content">
+            <router-outlet></router-outlet>
+        </div>
     </div>
-
 </div>
