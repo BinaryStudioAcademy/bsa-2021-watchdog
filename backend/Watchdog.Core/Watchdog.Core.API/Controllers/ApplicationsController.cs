@@ -56,5 +56,11 @@ namespace Watchdog.Core.API.Controllers
             await _appService.RemoveAppTeam(appTeamId);
             return NoContent();
         }
+        [HttpPost]
+        public async Task<ActionResult<ApplicationDto>> Create(NewApplicationDto dto)
+        {
+            var application = await _appService.CreateAppAsync(dto);
+            return Created($"/applications/{application.Id}", application);
+        }
     }
 }

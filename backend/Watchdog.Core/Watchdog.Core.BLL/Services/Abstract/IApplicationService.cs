@@ -7,6 +7,7 @@ namespace Watchdog.Core.BLL.Services.Abstract
 {
     public interface IApplicationService
     {
+        Task<ApplicationDto> CreateAppAsync(NewApplicationDto dto);
         Task<ICollection<ApplicationDto>> GetAppsByOrganizationIdAsync(int organizationId);
         Task<ICollection<ApplicationTeamDto>> GetAppsByTeamIdAsync(int teamId);
         Task<ICollection<ApplicationDto>> SearchAppsNotInTeamAsync(int teamId, string teamName);

@@ -81,7 +81,7 @@ namespace Watchdog.Core.BLL.Services
             var teamMember = _mapper.Map<TeamMember>(teamMemberDto);
 
             if (await _context.TeamMembers.AnyAsync(t => t.MemberId == teamMember.MemberId && t.TeamId == teamMember.TeamId))
-                throw new Exception("This member is already in team!");
+                throw new InvalidOperationException("This member is already in team!");
 
             var created = _context.TeamMembers.Add(teamMember).Entity;
             await _context.SaveChangesAsync();
@@ -120,6 +120,15 @@ namespace Watchdog.Core.BLL.Services
         public async Task<bool> IsTeamNameUniqueAsync(string teamName)
         {
             return !await _context.Teams.AnyAsync(t => t.Name == teamName);
+        }
+
+        public async Task<ICollection<TeamOptionDto>> GetTeamsOptionsByOrganizationIdAsync(int organizationId)
+        {
+            var teams = await _context.Teams
+                .Where(t => t.OrganizationId == organizationId)
+                .ToListAsync();
+
+            return _mapper.Map<ICollection<TeamOptionDto>>(teams);
         }
     }
 }

@@ -3,7 +3,7 @@ import { uniqueTeamNameValidator } from '@shared/validators/unique-team-name.val
 import { TeamService } from '@core/services/team.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { Team } from '@shared/models/team/team';
+import { Team } from '@shared/models/teams/team';
 
 @Component({
     selector: 'app-team-settings',

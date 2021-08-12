@@ -3,7 +3,7 @@ import { BaseComponent } from '@core/components/base/base.component';
 import { Component, Input, OnInit } from '@angular/core';
 import { ProjectService } from '@core/services/project.service';
 import { Project } from '@shared/models/projects/project';
-import { Team } from '@shared/models/team/team';
+import { Team } from '@shared/models/teams/team';
 import { ProjectTeam } from '@shared/models/projects/project-team';
 
 @Component({

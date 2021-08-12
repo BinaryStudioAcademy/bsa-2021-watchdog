@@ -8,6 +8,7 @@ namespace Watchdog.Core.BLL.Services.Abstract
     {
         Task<TeamDto> GetTeamAsync(int teamId);
         Task<ICollection<TeamDto>> GetAllTeamsAsync(int organizationId);
+        Task<ICollection<TeamOptionDto>> GetTeamsOptionsByOrganizationIdAsync(int organizationId);
         Task<ICollection<TeamDto>> GetMemberTeamsAsync(int organizationId, int memberId, bool isForMemberInTeam);
         Task<TeamDto> CreateTeamAsync(NewTeamDto newTeam);
         Task<TeamDto> UpdateTeamAsync(int teamId, UpdateTeamDto updateTeam);

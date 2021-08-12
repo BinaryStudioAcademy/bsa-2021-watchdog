@@ -14,6 +14,9 @@ namespace Watchdog.Core.DAL.Entities
 
         public string AvatarUrl { get; set; }
 
+        public PlatformTypes PlatformTypes { get; set; }
+
         public ICollection<Application> Applications { get; set; }
+        
     }
 }

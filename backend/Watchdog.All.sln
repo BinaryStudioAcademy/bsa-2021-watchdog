@@ -33,7 +33,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Watchdog.RabbitMQ", "Watchd
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.RabbitMQ.Shared", "Watchdog.RabbitMQ.Shared\Watchdog.RabbitMQ.Shared.csproj", "{902FA3BA-3DE6-4D94-BFB7-155589FDEEA3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.Collector.Common", "Watchdog.Collector\Watchdog.Collector.Common\Watchdog.Collector.Common.csproj", "{CAE180B4-9013-4D29-AB8B-25391BA989F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.Collector.Common", "Watchdog.Collector\Watchdog.Collector.Common\Watchdog.Collector.Common.csproj", "{5EB83DE6-06F2-4B56-9912-844BECD75A68}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,10 +73,10 @@ Global
 		{902FA3BA-3DE6-4D94-BFB7-155589FDEEA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{902FA3BA-3DE6-4D94-BFB7-155589FDEEA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{902FA3BA-3DE6-4D94-BFB7-155589FDEEA3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CAE180B4-9013-4D29-AB8B-25391BA989F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CAE180B4-9013-4D29-AB8B-25391BA989F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CAE180B4-9013-4D29-AB8B-25391BA989F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CAE180B4-9013-4D29-AB8B-25391BA989F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EB83DE6-06F2-4B56-9912-844BECD75A68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EB83DE6-06F2-4B56-9912-844BECD75A68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EB83DE6-06F2-4B56-9912-844BECD75A68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EB83DE6-06F2-4B56-9912-844BECD75A68}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,7 +90,7 @@ Global
 		{615C5D66-3901-49FB-853D-9E8AEA08CEC5} = {F8C29B95-9387-484E-965A-451A173F69D1}
 		{86EAA354-F751-4B0F-89D5-56A8BF0FD283} = {923A91AB-09F7-4C6B-B85B-9BF9F37CCB27}
 		{902FA3BA-3DE6-4D94-BFB7-155589FDEEA3} = {7F8DA369-2F6E-49E2-B3B1-75BE1CFFB558}
-		{CAE180B4-9013-4D29-AB8B-25391BA989F9} = {F8C29B95-9387-484E-965A-451A173F69D1}
+		{5EB83DE6-06F2-4B56-9912-844BECD75A68} = {F8C29B95-9387-484E-965A-451A173F69D1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {53583653-F77E-4F5C-A5E3-97634ABB27C5}
