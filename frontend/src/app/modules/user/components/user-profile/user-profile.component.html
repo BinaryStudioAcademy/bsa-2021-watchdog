@@ -1,7 +1,8 @@
 <h1 class="content-title">
     User Settings
     <div class="header-buttons">
-        <button disabled #saveBut pButton pRipple class="p-button-primary" label="Save" (click)="updateUser()"></button>
+        <button #saveBut pButton pRipple class="p-button-primary" label="Save" (click)="updateUser()"></button>
+        <button #saveButPass pButton pRipple class="p-button-primary" label="Change Password" (click)="updatePassword()"></button>
         <button pButton pRipple class="p-button-secondary" label="Reset" (click)="reset()"></button>
     </div>
 </h1>
@@ -32,6 +33,6 @@
 <div class="settings-container">
     <app-user-profile-settings *ngIf="user" [user]="user" [editForm]="editForm">
     </app-user-profile-settings>
-    <app-user-password-settings *ngIf="isSignByEmailAndPassword" [user]="user" [editForm]="editForm" id="user-password-settings" >
+    <app-user-password-settings *ngIf="isSignByEmailAndPassword" [user]="user" [pass]="pass" id="user-password-settings">
     </app-user-password-settings>
 </div>

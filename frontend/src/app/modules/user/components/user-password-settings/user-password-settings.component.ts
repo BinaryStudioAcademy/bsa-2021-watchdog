@@ -4,7 +4,6 @@ import { AuthenticationService } from '@core/services/authentication.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { regexs } from '@shared/constants/regexs';
 import { User } from '@shared/models/user/user';
-import firebase from 'firebase/app';
 
 @Component({
     selector: 'app-user-password-settings',
@@ -13,13 +12,13 @@ import firebase from 'firebase/app';
 })
 
 export class UserPasswordSettingsComponent {
-    public oldPassword: string;
-    public newPasswordRepeat: string;
-    public newPassword: string;
+    //public oldPassword: string;
+    //public newPasswordRepeat: string;
+    //public newPassword: string;
 
     @Input() user: User;
 
-    @Input() editForm: FormGroup;
+    @Input() pass: FormGroup;
 
     constructor(
         private authService: AuthenticationService,
@@ -27,44 +26,23 @@ export class UserPasswordSettingsComponent {
     ) { }
 
     ngOnInit(): void {
-        this.editForm.addControl('oldPassword', new FormControl(null, [
-            Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(50),
-            Validators.pattern(regexs.password),
-        ]));
-        this.editForm.addControl('newPasswordRepeat', new FormControl(null, [
-            Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(50),
-            Validators.pattern(regexs.password),
-        ]));
-        this.editForm.addControl('newPassword', new FormControl(null, [
+        this.pass.addControl('oldPassword', new FormControl(null, [
             Validators.required,
             Validators.minLength(3),
             Validators.maxLength(50),
         ]));
+        this.pass.addControl('newPassword', new FormControl(null, [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(50),
+        ]));
+        this.pass.addControl('confirmPassword', new FormControl(null));
     }
 
-    onSubmit() {
-        // if (this.newPassword === this.newPasswordRepeat) {
-        //     const { currentUser } = firebase.auth();
-        // const credentials = firebase.auth.EmailAuthProvider
-        //     .credential(currentUser.email, this.oldPassword);
+    get oldPassword() { return this.pass.controls.oldPassword; }
 
-        // currentUser.reauthenticateWithCredential(credentials)
-        //     .then(() => {
-        //         this.authService.updatePassword(this.newPassword);
-        //         this.toastNotificationService.success('Password has been updated');
-        //     })
-        //     .catch(error => {
-        //         console.warn(error);
-        //         this.toastNotificationService.error('Current password is incorrect');
-        //     });
-        // }
-        // else {
-        //     this.toastNotificationService.error('Input correct new password');
-        // }
+    get newPassword() { return this.pass.controls.newPassword; }
 
-    }
+    get confirmPassword() { return this.pass.controls.confirmPassword; }
+
 }
