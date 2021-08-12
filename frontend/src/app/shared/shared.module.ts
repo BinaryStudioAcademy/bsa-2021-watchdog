@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { UserInitialsPipe } from './pipes/user-initials.pipe';
 
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
@@ -16,13 +17,14 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
         RouterModule,
         FormsModule,
         ReactiveFormsModule,
-        PrimeComponentsModule
+        PrimeComponentsModule,
     ],
     declarations: [
         LoadingSpinnerComponent,
         NotFoundComponent,
         TimeAgoPipe,
-        TooltipWithFullNameDirective
+        UserInitialsPipe,
+        TooltipWithFullNameDirective,
     ],
     exports: [
         CommonModule,
@@ -33,8 +35,9 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
         NotFoundComponent,
         PrimeComponentsModule,
         TimeAgoPipe,
+        UserInitialsPipe,
         NgxChartsModule,
-        TooltipWithFullNameDirective
+        TooltipWithFullNameDirective,
     ]
 })
 export class SharedModule { }

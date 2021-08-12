@@ -32,7 +32,8 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
 
             builder.HasMany(u => u.Organizations)
                    .WithOne(o => o.User)
-                   .HasForeignKey(o => o.CreatedBy);
+                   .HasForeignKey(o => o.CreatedBy)
+                   .OnDelete(DeleteBehavior.ClientCascade);
 
             builder.HasMany(u => u.Teams)
                    .WithOne(t => t.User)

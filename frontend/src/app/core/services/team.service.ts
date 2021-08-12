@@ -5,15 +5,20 @@ import { Team } from '@shared/models/team/team';
 import { HttpResponse } from '@angular/common/http';
 import { TeamMember } from '@shared/models/team/team-member';
 import { NewTeam } from '@shared/models/team/new-team';
+import { UpdateTeam } from '../../shared/models/team/update-team';
 
 @Injectable({ providedIn: 'root' })
 export class TeamService {
-    public readonly routePrefix = '/team';
+    public readonly routePrefix = '/teams';
 
     constructor(private httpService: HttpInternalService) { }
 
-    public getTeams(): Observable<HttpResponse<Team[]>> {
-        return this.httpService.getFullRequest(`${this.routePrefix}`);
+    public getTeam(id: number): Observable<Team> {
+        return this.httpService.getRequest<Team>(`${this.routePrefix}/${id}`);
+    }
+
+    public getTeams(id: number): Observable<Team[]> {
+        return this.httpService.getRequest<Team[]>(`${this.routePrefix}/organization/${id}`);
     }
 
     public getMemberTeams(organizationId: number, memberId: number): Observable<HttpResponse<Team[]>> {
@@ -28,12 +33,25 @@ export class TeamService {
         return this.httpService.postFullRequest(`${this.routePrefix}`, newTeam);
     }
 
-    public joinTeam(teamMember: TeamMember): Observable<HttpResponse<Team>> {
+    public joinTeam(teamId: number, memberId: number): Observable<HttpResponse<Team>> {
+        const teamMember: TeamMember = { teamId, memberId };
         return this.httpService.postFullRequest(`${this.routePrefix}/joinTeam`, teamMember);
     }
 
     public leaveTeam(teamId: number, memberId: number): Observable<HttpResponse<Team>> {
         return this.httpService.deleteFullRequest(`${this.routePrefix}/leaveTeam/${teamId}/member/${memberId}`);
+    }
+
+    public isNameUnique(teamName: string): Observable<boolean> {
+        return this.httpService.getRequest(`${this.routePrefix}/teamName/${teamName}`);
+    }
+
+    public updateTeam(id: number, team: UpdateTeam): Observable<Team> {
+        return this.httpService.putRequest<Team>(`${this.routePrefix}/${id}`, team);
+    }
+
+    public removeTeam(id: number) {
+        return this.httpService.deleteRequest(`${this.routePrefix}/${id}`);
     }
 
     public getLabel(teamName: string): string {
