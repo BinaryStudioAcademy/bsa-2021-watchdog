@@ -1,17 +1,22 @@
 import { Injectable } from '@angular/core';
 import { CoreHttpService } from './core-http.service';
 import { Observable } from 'rxjs';
-import { Team } from '@shared/models/team/team';
+import { Team } from '@shared/models/teams/team';
 import { HttpResponse } from '@angular/common/http';
-import { TeamMember } from '@shared/models/team/team-member';
-import { NewTeam } from '@shared/models/team/new-team';
-import { UpdateTeam } from '../../shared/models/team/update-team';
+import { TeamMember } from '@shared/models/teams/team-member';
+import { TeamOption } from '@shared/models/teams/team-option';
+import { NewTeam } from '@shared/models/teams/new-team';
+import { UpdateTeam } from '@shared/models/teams/update-team';
 
 @Injectable({ providedIn: 'root' })
 export class TeamService {
     public readonly routePrefix = '/teams';
 
     constructor(private httpService: CoreHttpService) { }
+
+    public getTeamOptionsByOrganizationId(organizationId: number): Observable<TeamOption[]> {
+        return this.httpService.getRequest(`${this.routePrefix}/organization/${organizationId}/options`);
+    }
 
     public getTeam(id: number | string): Observable<Team> {
         return this.httpService.getRequest<Team>(`${this.routePrefix}/${id}`);

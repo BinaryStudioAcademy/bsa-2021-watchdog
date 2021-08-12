@@ -3,7 +3,7 @@ import { User } from '@shared/models/user/user';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { TeamService } from '@core/services/team.service';
 import { Component, Input } from '@angular/core';
-import { Team } from '@shared/models/team/team';
+import { Team } from '@shared/models/teams/team';
 import { Member } from '@shared/models/member/member';
 
 @Component({

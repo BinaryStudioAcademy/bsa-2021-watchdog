@@ -24,7 +24,7 @@ namespace Watchdog.Core.BLL.Services
             var existingAppTeam = await _context.ApplicationTeams
                 .FirstOrDefaultAsync(t => t.ApplicationId == mappedAppTeam.ApplicationId && t.TeamId == mappedAppTeam.TeamId);
 
-            if (existingAppTeam != null) throw new Exception("This application already exists in this team!");
+            if (existingAppTeam != null) throw new InvalidOperationException("This application already exists in this team!");
 
             var addedAppTeam = await _context.ApplicationTeams.AddAsync(mappedAppTeam);
             await _context.SaveChangesAsync();
@@ -80,10 +80,18 @@ namespace Watchdog.Core.BLL.Services
         public async Task RemoveAppTeam(int appTeamId)
         {
             var appTeam = await _context.ApplicationTeams.FirstOrDefaultAsync(t => t.Id == appTeamId);
-            if (appTeam == null) throw new Exception("Application in this team not found!");
+            if (appTeam == null) throw new InvalidOperationException("Application in this team not found!");
 
             _context.ApplicationTeams.Remove(appTeam);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<ApplicationDto> CreateAppAsync(NewApplicationDto dto)
+        {
+            var application = _mapper.Map<Application>(dto);
+            await _context.AddAsync(application);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<ApplicationDto>(application);
         }
     }
 }

@@ -15,6 +15,11 @@ import { ConfirmOptions } from '@shared/models/confirm-window/confirm-options';
 import { ConfirmWindowService } from '@core/services/confirm-window.service';
 import { Project } from '@shared/models/projects/project';
 import { TileService } from '@core/services/tile.service';
+import { User } from '@shared/models/user/user';
+import { Organization } from '@shared/models/organization/organization';
+import { AuthenticationService } from '@core/services/authentication.service';
+import { ProjectService } from '@core/services/project.service';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-dashboard',
@@ -30,6 +35,8 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     tileTypes = TileType;
     issues: Issue[] = [];
     projects: Project[] = [];
+    user: User;
+    organization: Organization;
 
     constructor(
         private route: ActivatedRoute,
@@ -40,15 +47,24 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         private toastNotificationService: ToastNotificationService,
         private spinnerService: SpinnerService,
         private confirmWindowService: ConfirmWindowService,
-        private tileService: TileService
+        private tileService: TileService,
+        private authService: AuthenticationService,
+        private projectService: ProjectService
     ) {
         super();
     }
 
     ngOnInit(): void {
-        this.route.params
+        this.user = this.authService.getUser();
+        this.authService.getOrganization()
             .pipe(this.untilThis)
-            .subscribe(params => this.getParams(params));
+            .subscribe(organization => {
+                this.organization = organization;
+
+                this.route.params
+                    .pipe(this.untilThis)
+                    .subscribe(params => this.getParams(params));
+            });
     }
 
     updateDashboard(dashboard: UpdateDashboard) {
@@ -96,13 +112,22 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     getParams(params) {
         const { id } = params;
 
-        //TODO: Get projects of currentUser as member or author
-        this.initFakeProjects();
-        //TODO: Get issues of all currentUser projects
-        this.initFakeIssues();
+        this.initProjects()
+            .subscribe(() => {
+                //TODO: Get issues of all currentUser projects
+                this.initFakeIssues();
 
-        this.getDashboard(id);
-        this.getDashboardTiles(+id);
+                this.getDashboard(id);
+                this.getDashboardTiles(+id);
+            });
+    }
+
+    initProjects() {
+        return this.projectService
+            .getProjectsByOrganizationId(this.organization.id)
+            .pipe(map(projects => {
+                this.projects = projects;
+            }));
     }
 
     getDashboard(dashboardId: string) {
@@ -232,38 +257,5 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
             projectTag: 'info',
             createdAt: undefined
         }];
-    }
-
-    private initFakeProjects() {
-        this.projects = [
-            {
-                name: 'DotNet App',
-                description: 'Cool DotNet App',
-                id: 1,
-                platform: undefined,
-                team: undefined
-            },
-            {
-                name: 'JavaScript App',
-                description: 'Cool JavaScript App',
-                id: 2,
-                platform: undefined,
-                team: undefined
-            },
-            {
-                name: 'IOS App',
-                description: 'Cool IOS App',
-                id: 3,
-                platform: undefined,
-                team: undefined
-            },
-            {
-                name: 'Python App',
-                description: 'Cool Python App',
-                id: 4,
-                platform: undefined,
-                team: undefined
-            },
-        ];
     }
 }

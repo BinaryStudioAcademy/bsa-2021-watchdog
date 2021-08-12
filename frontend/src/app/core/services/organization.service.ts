@@ -17,6 +17,10 @@ export class OrganizationService {
         private dataService: ShareDataService<Organization>
     ) { }
 
+    getOrganizationsByUserId(userId: number): Observable<Organization[]> {
+        return this.httpService.getRequest<Organization[]>(`${this.apiPrefix}/user/${userId}`);
+    }
+
     getOrganization(id: number): Observable<Organization> {
         return this.httpService.getRequest<Organization>(`${this.apiPrefix}/${id}`);
     }

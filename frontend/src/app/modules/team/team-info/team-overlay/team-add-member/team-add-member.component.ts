@@ -1,5 +1,5 @@
 import { ToastNotificationService } from '@core/services/toast-notification.service';
-import { Team } from '@shared/models/team/team';
+import { Team } from '@shared/models/teams/team';
 import { BaseComponent } from '@core/components/base/base.component';
 import { MemberService } from '@core/services/member.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';

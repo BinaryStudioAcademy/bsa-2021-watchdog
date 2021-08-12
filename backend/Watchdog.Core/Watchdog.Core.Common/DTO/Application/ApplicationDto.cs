@@ -1,3 +1,4 @@
+using Watchdog.Core.Common.DTO.Application.AlertSettings;
 using Watchdog.Core.Common.DTO.Platform;
 
 namespace Watchdog.Core.Common.DTO.Application
@@ -9,8 +10,6 @@ namespace Watchdog.Core.Common.DTO.Application
         public string Name { get; set; }
 
         public string Description { get; set; }
-
-        public string SecurityToken { get; set; }
 
         public PlatformDto Platform { get; set; }
 

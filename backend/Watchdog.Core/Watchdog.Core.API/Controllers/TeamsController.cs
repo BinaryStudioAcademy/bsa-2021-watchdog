@@ -27,6 +27,12 @@ namespace Watchdog.Core.API.Controllers
             return Ok(teams);
         }
 
+        [HttpGet("organization/{organizationId:int}/options")]
+        public async Task<ActionResult<ICollection<TeamOptionDto>>> GetTeamOptionsAsync(int organizationId)
+        {
+            var teams = await _teamService.GetTeamsOptionsByOrganizationIdAsync(organizationId);
+            return Ok(teams);
+        }
         [HttpGet("{teamId}")]
         public async Task<ActionResult<TeamDto>> Get(int teamId)
         {
@@ -51,10 +57,6 @@ namespace Watchdog.Core.API.Controllers
         [HttpPost]
         public async Task<ActionResult<TeamDto>> CreateAsync(NewTeamDto newTeam)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
             var createdTeam = await _teamService.CreateTeamAsync(newTeam);
             return Ok(createdTeam);
         }
@@ -62,10 +64,6 @@ namespace Watchdog.Core.API.Controllers
         [HttpPost("joinTeam")]
         public async Task<ActionResult<TeamDto>> AddMemberAsync(TeamMemberDto teamMember)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
             var updatedTeam = await _teamService.AddMemberToTeamAsync(teamMember);
             return Ok(updatedTeam);
         }

@@ -1,7 +1,8 @@
-import { ProjectTeam } from '@shared/models/projects/project-team';
-import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { NewProject } from '@shared/models/projects/new-project';
 import { Project } from '@shared/models/projects/project';
+import { Observable } from 'rxjs';
+import { ProjectTeam } from '@shared/models/projects/project-team';
 import { NewProjectTeam } from '@shared/models/projects/new-project-team';
 import { CoreHttpService } from './core-http.service';
 
@@ -14,6 +15,14 @@ export class ProjectService {
     constructor(
         private httpService: CoreHttpService
     ) { }
+
+    getProjectsByOrganizationId(id: number): Observable<Project[]> {
+        return this.httpService.getRequest(`${this.apiPrefix}/organization/${id}`);
+    }
+
+    public createProject(project: NewProject): Observable<Project> {
+        return this.httpService.postRequest(`${this.apiPrefix}`, project);
+    }
 
     getProject(id: number): Observable<Project> {
         return this.httpService.getRequest<Project>(`${this.apiPrefix}/${id}`);
@@ -37,7 +46,8 @@ export class ProjectService {
     }
 
     searchProjectsNotInTeam(teamId: number, projectName: string) {
-        const url = `team/${teamId}/exceptTeam/${projectName !== '' ? `?appName=${projectName}` : ''}`;
+        const appName = projectName !== '' ? `?appName=${projectName}` : '';
+        const url = `team/${teamId}/exceptTeam/${appName}`;
         return this.httpService.getRequest<Project[]>(`${this.apiPrefix}/${url}`);
     }
 

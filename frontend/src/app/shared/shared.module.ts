@@ -10,6 +10,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { TooltipWithFullNameDirective } from './directives/dashboard/tooltip-with-full-name';
 import { PrimeComponentsModule } from './modules/prime-components/prime-components.module';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
+import { SavePipe } from './pipes/save.pipe';
 
 @NgModule({
     imports: [
@@ -23,6 +24,7 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
         LoadingSpinnerComponent,
         NotFoundComponent,
         TimeAgoPipe,
+        SavePipe,
         UserInitialsPipe,
         TooltipWithFullNameDirective,
     ],
@@ -35,6 +37,8 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
         NotFoundComponent,
         PrimeComponentsModule,
         TimeAgoPipe,
+        SavePipe,
+        NgxChartsModule,
         UserInitialsPipe,
         NgxChartsModule,
         TooltipWithFullNameDirective,

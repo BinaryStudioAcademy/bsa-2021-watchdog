@@ -5,9 +5,9 @@ import { BaseComponent } from '@core/components/base/base.component';
 import { TeamService } from '@core/services/team.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Team } from '@shared/models/team/team';
+import { Team } from '@shared/models/teams/team';
 import { PrimeIcons } from 'primeng/api';
-import { UpdateTeam } from '@shared/models/team/update-team';
+import { UpdateTeam } from '@shared/models/teams/update-team';
 
 @Component({
     selector: 'app-team-info',
@@ -36,7 +36,7 @@ export class TeamInfoComponent extends BaseComponent implements OnInit {
         this.activatedRoute.paramMap
             .pipe(this.untilThis)
             .subscribe(param => {
-                this.teamService.getTeam(param.get('id'))
+                this.teamService.getTeam(+param.get('id'))
                     .pipe(this.untilThis)
                     .subscribe(team => {
                         this.team = team;
