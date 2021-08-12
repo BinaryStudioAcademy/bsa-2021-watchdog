@@ -49,7 +49,7 @@ export class UserTeamsComponent extends BaseComponent implements OnInit {
             .leaveTeam(teamId, this.currentUserId)
             .pipe(this.untilThis)
             .subscribe(response => {
-                this.leaveTeamEvent.emit(response.body);
+                this.leaveTeamEvent.emit(response);
                 this.loadMemberTeams();
             }, error => {
                 this.toastService.error(`${error}`, 'Error', 2000);
@@ -64,7 +64,7 @@ export class UserTeamsComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis)
             .subscribe(teams => {
                 this.isLoading = false;
-                this.teams = teams.body;
+                this.teams = teams;
             }, error => {
                 this.toastService.error(`${error}`, 'Error', 2000);
                 this.isLoading = false;

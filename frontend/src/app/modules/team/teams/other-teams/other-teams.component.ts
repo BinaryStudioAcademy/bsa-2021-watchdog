@@ -40,7 +40,7 @@ export class OtherTeamsComponent extends BaseComponent implements OnInit {
             .joinTeam(teamId, this.currentUserId)
             .pipe(this.untilThis)
             .subscribe(response => {
-                this.joinTeamEvent.emit(response.body);
+                this.joinTeamEvent.emit(response);
                 this.loadTeams();
             }, error => {
                 this.toastService.error(`${error}`, 'Error', 2000);
@@ -55,7 +55,7 @@ export class OtherTeamsComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis)
             .subscribe(teams => {
                 this.isLoading = false;
-                this.teams = teams.body;
+                this.teams = teams;
             }, error => {
                 this.toastService.error(`${error}`, 'Error', 2000);
             });
