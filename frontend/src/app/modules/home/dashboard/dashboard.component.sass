@@ -23,15 +23,11 @@
             width: 100px
             white-space: nowrap
     h2
+        padding-bottom: 6px
         max-width: 450px
-        overflow-x: auto
-        overflow-y: hidden
-        &::-webkit-scrollbar-thumb
-            border-radius: 6px
-            background-color: $primary-color-lightest
-
-        &::-webkit-scrollbar
-            height: 6px
+        overflow: hidden
+        text-overflow: ellipsis
+        cursor: default
 
 .dashboard-container
     padding: 20px 20px 0

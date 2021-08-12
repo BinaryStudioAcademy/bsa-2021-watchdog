@@ -1,6 +1,6 @@
 <div [ngClass]="{'remove-margin-box-shadow': showTileMenu}" class="dashboard-header">
     <div class="dashboard-name">
-        <h2>{{dashboard?.name}}</h2>
+        <h2 appTooltipFullName>{{dashboard?.name}}</h2>
     </div>
     <div class="action-buttons">
         <button (click)="confirmDelete()" class="p-button-danger p-button-outlined" label="Delete"
