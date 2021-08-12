@@ -16,13 +16,14 @@ namespace Watchdog.Core.API.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void RegisterCustomServices(this IServiceCollection services, IConfiguration _)
+        public static void RegisterCustomServices(this IServiceCollection services, IConfiguration configuration)
         {
             services
                 .AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-            services.AddTransient<ISampleService, SampleService>();
+            services.AddTransient<IApplicationService, ApplicationService>();
+            services.AddTransient<IPlatformService, PlatformService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IMemberService, MemberService>();
             services.AddTransient<IDashboardService, DashboardService>();
@@ -32,7 +33,10 @@ namespace Watchdog.Core.API.Extensions
             services.AddTransient<ITeamService, TeamService>();
             services.AddTransient<IIssueService, IssueService>();
             services.AddTransient<IUserService, UserService>();
-            services.AddScoped<IRegistrationService, RegistrationService>();
+            services.AddTransient<ITileService, TileService>();
+            services.AddTransient<ITeamService, TeamService>();
+            services.AddTransient<IRegistrationService, RegistrationService>();
+            services.AddEmailSendService(configuration);
         }
         
         public static void AddElasticSearch(this IServiceCollection services, IConfiguration configuration)
@@ -70,7 +74,7 @@ namespace Watchdog.Core.API.Extensions
 
         public static void AddEmailSendService(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IEmailSendService, EmailSendService>(provider => new EmailSendService(new BLL.Services.Options.EmailSendOptions
+            services.AddTransient<IEmailSendService, EmailSendService>(provider => new EmailSendService(new BLL.Services.Options.EmailSendOptions
             {
                 ApiKey = configuration["SENDGRID_API_KEY"], // you need to add SENDGRID_API_KEY to yours environment variables
                 SenderEmail = configuration["SendGridConfiguration:SenderEmail"],

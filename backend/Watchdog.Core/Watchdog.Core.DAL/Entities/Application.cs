@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Watchdog.Core.DAL.Entities.AlertSettings;
 using Watchdog.Core.DAL.Entities.Common;
 
 namespace Watchdog.Core.DAL.Entities
@@ -13,7 +14,7 @@ namespace Watchdog.Core.DAL.Entities
 
         public string Name { get; set; }
 
-        public string SecurityToken { get; set; }
+        public string Description { get; set; }
 
         public User User { get; set; }
 
@@ -24,6 +25,8 @@ namespace Watchdog.Core.DAL.Entities
         public int PlatformId { get; set; }
 
         public Platform Platform { get; set; }
+
+        public AlertSetting AlertSettings { get; set; }
 
         public ICollection<Environment> Environments { get; set; }
 

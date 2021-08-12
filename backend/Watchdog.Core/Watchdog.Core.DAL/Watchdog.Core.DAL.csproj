@@ -14,4 +14,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Watchdog.Core.Common\Watchdog.Core.Common.csproj" />
+  </ItemGroup>
+
 </Project>

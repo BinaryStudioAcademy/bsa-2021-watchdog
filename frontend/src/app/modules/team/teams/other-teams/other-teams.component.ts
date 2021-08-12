@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Team } from '@shared/models/team/team';
+import { Team } from '@shared/models/teams/team';
 import { TeamService } from '@core/services/team.service';
 import { Observable } from 'rxjs';
 import { ToastNotificationService } from '@core/services/toast-notification.service';

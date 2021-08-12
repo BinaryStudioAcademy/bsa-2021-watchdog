@@ -13,6 +13,9 @@ namespace Watchdog.Core.BLL.MappingProfiles
                 .ForMember(t => t.Members,
                     opt => opt.MapFrom(t => t.TeamMembers.Select(teamMember => teamMember.Member)));
             CreateMap<TeamDto, Team>();
+
+            CreateMap<Team, TeamOptionDto>();
+
             CreateMap<NewTeamDto, Team>();
             CreateMap<UpdateTeamDto, Team>();
             CreateMap<TeamMember, TeamMemberDto>();

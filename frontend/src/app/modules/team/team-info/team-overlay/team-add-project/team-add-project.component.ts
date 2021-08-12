@@ -4,7 +4,7 @@ import { ProjectService } from '@core/services/project.service';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { Project } from '@shared/models/projects/project';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Team } from '@shared/models/team/team';
+import { Team } from '@shared/models/teams/team';
 import { Subject } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 

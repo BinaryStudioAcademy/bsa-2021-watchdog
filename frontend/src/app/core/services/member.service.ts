@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Member } from '@shared/models/member/member';
 import { Observable } from 'rxjs';
-import { HttpInternalService } from './http-internal.service';
+import { CoreHttpService } from './core-http.service';
 
 @Injectable({
     providedIn: 'root'
@@ -9,7 +9,7 @@ import { HttpInternalService } from './http-internal.service';
 export class MemberService {
     readonly routePrefix = '/members';
 
-    constructor(private httpService: HttpInternalService) { }
+    constructor(private httpService: CoreHttpService) { }
 
     getMembersByOrganizationId(organizationId: number): Observable<Member[]> {
         return this.httpService.getRequest(`${this.routePrefix}/organization/${organizationId}`);
