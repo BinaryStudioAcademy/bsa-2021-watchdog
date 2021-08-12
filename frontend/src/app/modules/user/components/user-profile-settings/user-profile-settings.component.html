@@ -11,6 +11,7 @@
         </label>
         <div class="item-field">
             <div class="item-form-input p-input-icon-right">
+                <i *ngIf="email?.pending" class="pi pi-spin pi-spinner"></i>
                 <input pInputText formControlName="email" class="item-form-field">
                 <div *ngIf="email.invalid && (email.dirty || email.touched)"
                     class="p-error">
@@ -18,9 +19,8 @@
                     <small *ngIf="email.errors?.minlength || email.errors?.maxlength">
                         Length must be between 3 and 50 characters.
                     </small>
-                    <small *ngIf="email.errors?.pattern">You can use only _, -, A-Z, a-z.</small>
-                    <small *ngIf="email.errors?.notUnique">Slug is not unique, try again.</small>
                     <small *ngIf="email.errors?.serverError">Server error.</small>
+                    <small *ngIf="email.errors?.email">Incorrect email</small>
                 </div>
             </div>
         </div>

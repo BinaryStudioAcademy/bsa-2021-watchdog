@@ -27,20 +27,19 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
     ngOnInit(): void {
         this.editForm.addControl('firstName', new FormControl(this.user.firstName));
         this.editForm.addControl('lastName', new FormControl(this.user.lastName));
-        this.editForm.addControl('email', new FormControl(this.user.email, {
-            validators: [
-                Validators.required,
-                Validators.minLength(3),
-                Validators.maxLength(50)
-            ]
-        }));
+        this.editForm.addControl('email', new FormControl(this.user.email, [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(50),
+            Validators.email,
+        ]));
     }
 
-    // get firstName() { return this.editForm.controls.firstName; }
+    get firstName() { return this.editForm.controls.firstName; }
 
-    // get lastName() { return this.editForm.controls.lastName; }
+    get lastName() { return this.editForm.controls.lastName; }
 
-    // get email() { return this.editForm.controls.email; }
+    get email() { return this.editForm.controls.email; }
 
 
 }
