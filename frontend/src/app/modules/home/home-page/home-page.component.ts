@@ -37,7 +37,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         this.user = authService.getUser();
         this.userItems = [
             { label: 'My profile', routerLink: '/user' },
-            { label: 'Logout', routerLink: '/', command: ()=> this.authService.logout()}
+            { label: 'Logout', routerLink: '/', command: () => this.authService.logout() }
         ];
     }
 
