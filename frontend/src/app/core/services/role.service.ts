@@ -1,8 +1,7 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
 import { Role } from '@shared/models/role/role';
-import { HttpInternalService } from './http-internal.service';
+import { CoreHttpService } from './core-http.service';
 
 @Injectable({
     providedIn: 'root',
@@ -10,10 +9,9 @@ import { HttpInternalService } from './http-internal.service';
 export class RoleService {
     private apiPrefix = '/roles';
 
-    constructor(private httpService: HttpInternalService) { }
+    constructor(private httpService: CoreHttpService) { }
 
     getRoles(): Observable<Role[]> {
-        return this.httpService.getFullRequest<Role[]>(`${this.apiPrefix}`)
-            .pipe(map(response => response.body));
+        return this.httpService.getRequest<Role[]>(`${this.apiPrefix}`);
     }
 }

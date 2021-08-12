@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpInternalService } from '@core/services/http-internal.service';
+import { CoreHttpService } from './core-http.service';
 import { IssueMessage } from '@shared/models/issues/issue-message';
-import { Observable } from 'rxjs';
-import { HttpResponse } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class IssueService {
     public readonly routePrefix = '/issues';
 
-    constructor(private httpService: HttpInternalService) { }
+    constructor(private httpService: CoreHttpService) { }
 
-    public getIssues(): Observable<HttpResponse<IssueMessage[]>> {
-        return this.httpService.getFullRequest(`${this.routePrefix}`);
+    public getIssues() {
+        return this.httpService.getRequest<IssueMessage[]>(`${this.routePrefix}`);
     }
 }
