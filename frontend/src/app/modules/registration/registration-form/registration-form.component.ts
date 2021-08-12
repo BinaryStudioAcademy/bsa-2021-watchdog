@@ -45,16 +45,15 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                 [
                     Validators.required,
                     Validators.minLength(2),
-                    Validators.maxLength(20),
+                    Validators.maxLength(30),
                     Validators.pattern(regexs.firstName)
                 ]
             ),
             lastName: new FormControl(
                 { value: '', disabled: this.isNotFinishedRegistration },
                 [
-                    Validators.required,
                     Validators.minLength(2),
-                    Validators.maxLength(20),
+                    Validators.maxLength(30),
                     Validators.pattern(regexs.lastName)
                 ]
             ),
@@ -62,7 +61,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                 { value: '', disabled: this.isNotFinishedRegistration },
                 [
                     Validators.required,
-                    Validators.minLength(5),
+                    Validators.minLength(6),
                     Validators.pattern(regexs.email)
                 ]
             ),
@@ -79,9 +78,6 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                 { value: '', disabled: this.isNotFinishedRegistration },
                 [
                     Validators.required,
-                    Validators.minLength(8),
-                    Validators.maxLength(30),
-                    Validators.pattern(regexs.password),
                     this.equals
                 ]
             ),
