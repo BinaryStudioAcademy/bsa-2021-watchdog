@@ -162,7 +162,6 @@ export class AuthenticationService {
     }
 
     signInWithGitHub(route: string[]) {
-        debugger;
         this.logout();
         const provider = new firebase.auth.GithubAuthProvider();
         provider.addScope('user');
@@ -249,9 +248,7 @@ export class AuthenticationService {
         this.rememberUser = localStorage.getItem('rememberUser') === 'true';
         return from(this.angularFireAuth.currentUser)
             .pipe(
-                switchMap(firebaseUser => {
-                    return from(firebaseUser.getIdToken());
-                }),
+                switchMap(firebaseUser => from(firebaseUser.getIdToken())),
                 tap(token => {
                     this.setJwToken(token);
                     this.router.navigate(route);
@@ -269,7 +266,6 @@ export class AuthenticationService {
                 console.warn(error);
             });
     }
-
 
     updatePassword(newPassword: string) {
         this.angularFireAuth.currentUser

@@ -84,7 +84,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                 ]
             ),
             password: new FormControl(
-                { value: '', disabled: this.isNotFinishedRegistration }, 
+                { value: '', disabled: this.isNotFinishedRegistration },
             ),
             confirmPassword: new FormControl(
                 { value: '', disabled: this.isNotFinishedRegistration }
@@ -92,7 +92,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
         });
 
         this.formGroup.controls.confirmPassword.setValidators([
-            this.equals(this.formGroup.controls.password), 
+            this.equals(this.formGroup.controls.password),
             Validators.required
         ]);
         this.formGroup.controls.password.setValidators([
@@ -104,7 +104,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
         ]);
     }
 
-    validateAnother = (another: AbstractControl) => (control: AbstractControl) => {
+    validateAnother = (another: AbstractControl) => () => {
         another.updateValueAndValidity();
         return null;
     };
