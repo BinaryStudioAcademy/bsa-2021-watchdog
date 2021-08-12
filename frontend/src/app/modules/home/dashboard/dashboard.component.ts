@@ -8,8 +8,13 @@ import { BaseComponent } from '@core/components/base/base.component';
 import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { SpinnerService } from '@core/services/spinner.service';
+import { Tile } from '@shared/models/tile/tile';
+import { TileType } from '@shared/models/tile/enums/tile-type';
+import { Issue } from '@shared/models/issue/issue';
 import { ConfirmOptions } from '@shared/models/confirm-window/confirm-options';
 import { ConfirmWindowService } from '@core/services/confirm-window.service';
+import { Project } from '@shared/models/projects/project';
+import { TileService } from '@core/services/tile.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -21,6 +26,10 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     showTileMenu: boolean;
     dashboard: Dashboard;
     updateSubscription$: Subscription;
+    tiles: Tile[] = [];
+    tileTypes = TileType;
+    issues: Issue[] = [];
+    projects: Project[] = [];
 
     constructor(
         private route: ActivatedRoute,
@@ -30,13 +39,13 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         private deleteDataService: ShareDataService<number>,
         private toastNotificationService: ToastNotificationService,
         private spinnerService: SpinnerService,
-        private confirmWindowService: ConfirmWindowService
+        private confirmWindowService: ConfirmWindowService,
+        private tileService: TileService
     ) {
         super();
     }
 
     ngOnInit(): void {
-        this.spinnerService.show();
         this.route.params
             .pipe(this.untilThis)
             .subscribe(params => this.getParams(params));
@@ -49,7 +58,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
             .subscribe(updatedDashboard => {
                 this.dashboard = updatedDashboard;
                 this.updateDataService.changeMessage(this.dashboard);
-                this.toastNotificationService.success('Dashboard has been updateded');
+                this.toastNotificationService.success('Dashboard has been updated');
             }, error => {
                 this.toastNotificationService.error(`${error}`, 'Error', 2000);
             });
@@ -86,7 +95,19 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
 
     getParams(params) {
         const { id } = params;
-        this.showTileMenu = false; this.dashboardService.get(id)
+
+        //TODO: Get projects of currentUser as member or author
+        this.initFakeProjects();
+        //TODO: Get issues of all currentUser projects
+        this.initFakeIssues();
+
+        this.getDashboard(id);
+        this.getDashboardTiles(+id);
+    }
+
+    getDashboard(dashboardId: string) {
+        this.spinnerService.show();
+        this.dashboardService.get(dashboardId)
             .pipe(this.untilThis)
             .subscribe(dashboardById => {
                 this.dashboard = dashboardById;
@@ -94,11 +115,24 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                     .subscribe((dashboard) => {
                         this.dashboard = dashboard;
                     }, error => {
-                        this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                        this.toastNotificationService.error(`${error}`, '', 2000);
                     });
                 this.spinnerService.hide();
             }, error => {
+                this.toastNotificationService.error(`${error}`, '', 2000);
+            });
+    }
+
+    getDashboardTiles(dashboardId: number) {
+        this.spinnerService.show();
+        this.tileService.getAllTilesByDashboardId(dashboardId)
+            .pipe(this.untilThis)
+            .subscribe(response => {
+                this.tiles = response;
+                this.spinnerService.hide();
+            }, error => {
                 this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.spinnerService.hide();
             });
     }
 
@@ -111,7 +145,125 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         super.ngOnDestroy();
     }
 
-    tileMenuClosed() {
-        this.showTileMenu = false;
+    deleteTile(tile: Tile) {
+        this.spinnerService.show();
+        this.tileService.deleteTile(tile.id)
+            .pipe(this.untilThis)
+            .subscribe(() => {
+                this.spinnerService.hide();
+                this.tiles.splice(this.tiles.findIndex(value => value.id === tile.id), 1);
+                this.toastNotificationService.success('Tile Deleted');
+            }, error => {
+                this.spinnerService.hide();
+                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+            });
+    }
+
+    deleteAllTiles(dashboardId: number) {
+        this.tileService.deleteAllTilesByDashboardId(dashboardId)
+            .pipe(this.untilThis)
+            .subscribe(() => {
+                this.tiles = [];
+                this.toastNotificationService.success('Tile Cleared');
+            }, error => {
+                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+            });
+    }
+
+    private initFakeIssues() {
+        this.issues = [{
+            name: 'Issue 1',
+            events: 5,
+            description: 'info',
+            isNew: true,
+            users: undefined,
+            projectTag: 'info',
+            createdAt: undefined
+        },
+        {
+            name: 'Issue 2',
+            events: 1,
+            description: 'info',
+            isNew: true,
+            users: undefined,
+            projectTag: 'info',
+            createdAt: undefined
+        }, {
+            name: 'Issue 3',
+            events: 3,
+            description: 'info',
+            isNew: true,
+            users: undefined,
+            projectTag: 'info',
+            createdAt: undefined
+        },
+        {
+            name: 'Issue 4',
+            events: 2,
+            description: 'info',
+            isNew: true,
+            users: undefined,
+            projectTag: 'info',
+            createdAt: undefined
+        }, {
+            name: 'Issue 5',
+            events: 8,
+            description: 'info',
+            isNew: true,
+            users: undefined,
+            projectTag: 'info',
+            createdAt: undefined
+        },
+        {
+            name: 'Issue 6',
+            events: 66,
+            description: 'info',
+            isNew: true,
+            users: undefined,
+            projectTag: 'info',
+            createdAt: undefined
+        },
+        {
+            name: 'Issue 7',
+            events: 11,
+            description: 'info',
+            isNew: true,
+            users: undefined,
+            projectTag: 'info',
+            createdAt: undefined
+        }];
+    }
+
+    private initFakeProjects() {
+        this.projects = [
+            {
+                name: 'DotNet App',
+                description: 'Cool DotNet App',
+                id: 1,
+                platform: undefined,
+                team: undefined
+            },
+            {
+                name: 'JavaScript App',
+                description: 'Cool JavaScript App',
+                id: 2,
+                platform: undefined,
+                team: undefined
+            },
+            {
+                name: 'IOS App',
+                description: 'Cool IOS App',
+                id: 3,
+                platform: undefined,
+                team: undefined
+            },
+            {
+                name: 'Python App',
+                description: 'Cool Python App',
+                id: 4,
+                platform: undefined,
+                team: undefined
+            },
+        ];
     }
 }

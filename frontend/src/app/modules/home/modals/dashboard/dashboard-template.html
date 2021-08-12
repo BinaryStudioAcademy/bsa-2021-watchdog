@@ -2,20 +2,22 @@
     <form [formGroup]="formGroup" (ngSubmit)="saveHandle()">
         <p-panel header={{title}}>
             <div class="input-section">
-                <label>Dashboard name</label>
-                <input type="text" pInputText formControlName="name" placeholder="Name">
+                <span class="p-float-label">
+                    <input id="float-input-dashboard-name" type="text" pInputText formControlName="name">
+                    <label for="float-input-dashboard-name">Dashboard name</label>
+                </span>
                 <div *ngIf="formGroup.controls.name.touched && formGroup.controls.name.invalid" class="validation">
                     <small *ngIf="formGroup.controls.name.errors.required">Field name can't be empty</small>
                     <small *ngIf="formGroup.controls.name.value.length < 3">Min name length 3</small>
                     <small *ngIf="formGroup.controls.name.value.length > 50">Max name length 50</small>
-                    <small *ngIf="formGroup.controls.name.hasError('pattern')">Name must contain letters, numbers,
-                        underscore, dot, space</small>
+                    <small *ngIf="formGroup.controls.name.hasError('pattern')">Name must contain latin letters, numbers,
+                        underscores, dashes, dots or spaces</small>
                 </div>
             </div>
             <div class="input-section">
-                <label>Icon</label>
-                <p-dropdown [options]="icons" appendTo="body" formControlName="icon" tyleClass="dropdown"
-                    [autoDisplayFirst]="false" placeholder="Select icon">
+                <label for="float-dropdown-dashboard-icon">Icon</label>
+                <p-dropdown id="float-dropdown-dashboard-icon" [options]="icons" appendTo="body" formControlName="icon"
+                    tyleClass="dropdown" [autoDisplayFirst]="false" placeholder="Select icon">
                     <ng-template let-item pTemplate="selectedItem">
                         <i class="{{item.label}}"></i>
                     </ng-template>

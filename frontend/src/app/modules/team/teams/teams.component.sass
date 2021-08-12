@@ -5,34 +5,7 @@
     @include background-gray
     @include title
     display: flex
-    flex-direction: row
-    align-items: center
     justify-content: space-between
-    .header-name
-        font-size: 20px
-        font-weight: 480
-
-.teams-panel
-    font-family: "DM Sans", serif
-    font-size: 18px
-    margin: 20px 2rem
-
-.teams-button
-    border: none
-    box-shadow: none
-    font-weight: 500
-
-.join-leave-button
-    border: 1px solid $border-color
-    background-color: #FFFFFF
-    color: black
-    &:hover
-        box-shadow: 0 4px 2px -2px $border-color
-        background-color: #FFFFFF
-        border: 1px solid $border-color
-        color: black
-.teams
-    width: 100%
 
 .team
     display: flex
@@ -82,3 +55,9 @@
         font-size: 2em
         font-weight: 340
         color: #FFFFFF
+
+.panel
+    margin: $half-indent
+
+a
+    text-decoration: none

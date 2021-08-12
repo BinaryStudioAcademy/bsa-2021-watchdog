@@ -1,0 +1,19 @@
+@import src/styles/variables
+@import src/styles/mixins
+
+.title
+    @include title
+    @include background-gray
+    display: flex
+
+    .back-button
+        margin-right: .2em
+        border: none
+        border-radius: 100%
+
+.header-buttons
+    margin-left: auto
+    & .buttons-container
+        display: flex
+        align-items: center
+        gap: .2em
