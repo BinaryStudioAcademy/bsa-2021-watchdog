@@ -32,6 +32,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { TooltipModule } from 'primeng/tooltip';
 import { StyleClassModule } from 'primeng/styleclass';
 import { TieredMenuModule } from 'primeng/tieredmenu';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DialogService } from 'primeng/dynamicdialog';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { RatingModule } from 'primeng/rating';
 
@@ -70,6 +72,7 @@ import { RatingModule } from 'primeng/rating';
         TooltipModule,
         StyleClassModule,
         TieredMenuModule,
+        MultiSelectModule,
         OverlayPanelModule,
         RatingModule,
     ],
@@ -107,12 +110,14 @@ import { RatingModule } from 'primeng/rating';
         TieredMenuModule,
         OverlayPanelModule,
         RatingModule,
+        MultiSelectModule,
     ],
     declarations: [],
     providers: [
         MessageService,
         ConfirmationService,
         PrimeNGConfig,
+        DialogService
     ]
 })
 export class PrimeComponentsModule {
