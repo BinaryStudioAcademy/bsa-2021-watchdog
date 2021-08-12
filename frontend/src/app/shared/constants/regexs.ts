@@ -11,4 +11,5 @@ export const regexs = {
 
     projectName: /^[a-zA-Z0-9-_]+$/,
     tileName: /^[a-zA-Z0-9-_. ]*$/,
+    teamName: /^[\w-]+$/,
 };

@@ -28,6 +28,8 @@ namespace Watchdog.Core.API.Extensions
             services.AddTransient<IDashboardService, DashboardService>();
             services.AddTransient<IOrganizationService, OrganizationService>();
             services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<IApplicationService, ApplicationService>();
+            services.AddTransient<ITeamService, TeamService>();
             services.AddTransient<IIssueService, IssueService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ITileService, TileService>();

@@ -23,7 +23,7 @@ namespace Watchdog.Core.DAL.Context
         private const int _numberOfTeamMembers = 25;
         private const int _numberOfTiles = 35;
         private const int _numberOfUsers = 20;
-        private static readonly List<string> _icons = new List<string>() {"pi-chart-line", "pi-chart-bar"};
+        private static readonly List<string> _icons = new List<string>() { "pi-chart-line", "pi-chart-bar" };
 
         private static readonly string[] _roles = {"Owner", "Manager", "Viewer"};
 
@@ -151,6 +151,7 @@ namespace Watchdog.Core.DAL.Context
         private static IList<Role> GenerateRoles()
         {
             return new Faker<Role>()
+                .UseSeed(1804)
                 .RuleFor(r => r.Id, f => ++f.IndexVariable)
                 .RuleFor(r => r.Name, f => _roles[f.IndexVariable - 1])
                 .RuleFor(r => r.Description, f => f.Lorem.Paragraph())
