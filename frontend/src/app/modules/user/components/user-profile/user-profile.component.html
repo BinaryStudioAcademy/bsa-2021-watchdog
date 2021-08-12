@@ -1,4 +1,11 @@
-<div class="title">User settings</div>
+<h1 class="content-title">
+    User Settings
+    <div class="header-buttons">
+        <button disabled #saveBut pButton pRipple class="p-button-primary" label="Save"></button>
+        <button pButton pRipple class="p-button-secondary" label="Reset"></button>
+    </div>
+</h1>
+
 <header class="header">
     <div class="postion">
         <div class="profile-header-container">
@@ -22,9 +29,9 @@
     </div>
 </header>
 
-<div class="content-container">
-    <div class="center">
-        <app-user-profile-settings></app-user-profile-settings>
-        <app-user-password-settings id="user-password-settings" *ngIf="isSignByEmailAndPassword"></app-user-password-settings>
-    </div>
+<div class="settings-container">
+    <app-user-profile-settings>
+    </app-user-profile-settings>
+    <app-user-password-settings id="user-password-settings" *ngIf="isSignByEmailAndPassword">
+    </app-user-password-settings>
 </div>

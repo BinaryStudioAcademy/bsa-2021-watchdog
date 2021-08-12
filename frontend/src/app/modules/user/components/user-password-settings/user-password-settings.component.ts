@@ -6,7 +6,7 @@ import firebase from 'firebase/app';
 @Component({
     selector: 'app-user-password-settings',
     templateUrl: './user-password-settings.component.html',
-    styleUrls: ['./user-password-settings.component.sass']
+    styleUrls: ['../user-profile/user-profile.component.sass']
 })
 
 export class UserPasswordSettingsComponent {

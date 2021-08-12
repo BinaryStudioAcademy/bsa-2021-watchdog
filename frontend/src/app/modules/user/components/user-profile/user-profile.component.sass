@@ -1,10 +1,127 @@
 @import src/styles/variables
 @import src/styles/mixins
 
-.title
-    @include title
-    @include background-gray
+$fieldPercentageWidth: 90%
 
+.content-title
+    display: flex
+    justify-content: space-between
+    @include background-gray
+    @include title
+
+.header-buttons
+    display: flex
+    gap: .2em
+
+.settings-container
+    color: $text-color
+    margin: $half-indent
+    display: flex
+    flex-direction: column
+    gap: $half-indent
+
+.item
+    display: flex
+    padding-bottom: $indent
+    &-definition
+        width: 40%
+        font-size: 1.2em
+        margin-right: 1em
+        margin-top: 0.5em
+    &-field
+        width: 58%
+        height: 3em
+        position: relative
+        align-items: center
+    &-sub-text
+        font-size: .7em
+        margin-top: .2em
+        color: $text-color-secondary
+
+.container-group
+    .item:last-child
+        padding-bottom: $half-indent
+
+.item-form-input
+    width: 100%
+    align-items: center
+    grid-gap: .2em
+    & input
+        width: 100%
+    & .pi
+        height: 1em
+
+.p-float-label
+    width: 100%
+
+.item-form-complex
+    width: 100%
+    display: flex
+    align-items: center
+    grid-gap: .5em
+    & .pi
+        height: 1em
+
+.p-error
+    color: $validation-color
+    font-size: .75em
+    margin-top: .1em
+    flex-wrap: wrap
+    position: absolute
+
+.buttons-block
+    grid-gap: 5px
+    display: flex
+
+input[readonly]
+    background-color: $penging-color
+    &:focus
+        box-shadow: none
+p-dropdown
+    width: 100%
+
+
+::ng-deep
+    .item-form-field.p-dropdown
+        width: 100%
+//////////////////////////////////////////
+///Profile info
+
+.user-info
+    display: flex
+    margin-left: auto
+    margin-right: auto
+    width: 6em
+    margin-bottom: 30px
+
+.avatar
+    width: 64px
+    height: 64px
+
+.avatar img
+    display: block
+    max-width: 100%
+    border-radius: 50%
+
+.user-info-body li
+    padding-top: 7px
+    padding-bottom: 7px
+    padding-left: 7px
+
+#user-name, h3, h4
+    font-weight: bold
+    padding-left: 7px
+
+#user-email
+    padding-left: 7px
+
+/////////////////////////////////////////////
+///Password settings
+:host ::ng-deep
+    .p-password input,
+    .p-password
+        width: 100%
+/////////////////////////////////////////////////////////
 .header
     height: 44px
     display: flex

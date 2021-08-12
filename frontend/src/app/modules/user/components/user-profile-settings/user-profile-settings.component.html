@@ -1,63 +1,61 @@
-<div class="user-container last-section">
-    <div class="border user-settings">
-        <h3>Profile info</h3>
-        <div class="user-info">
-            <div class="user-avatar">
-                <img src="https://www.gravatar.com/avatar/213dd2d1498b722e98be7fdee00c2769?d=mp&r=pg&s=128"
-                    alt="avatar">
-            </div>
-            <div class="user-info-body">
-                <ul>
-                    <li>
-                        <span id="user-name">{{user.firstName}} {{user.lastName}}</span>
-                    </li>
-                    <li>
-                        <span id="user-email">{{user.email}}</span>
-                    </li>
-                </ul>
-            </div>
+<p-panel header="Profile settings" class="container-group">
+    <div class="user-info">
+        <div class="user-avatar">
+            <img src="https://www.gravatar.com/avatar/213dd2d1498b722e98be7fdee00c2769?d=mp&r=pg&s=128"
+                alt="avatar">
         </div>
-        <div class="info-settings">
-            <form #editProfileForm="ngForm" (ngSubmit)="submit(editProfileForm)">
-                <h4>Edit profile</h4>
-                <div class="input-container">
-                    <div class="input-section">
-                        <div class="items-container">
-                            <label class="form-label" for="email">Email</label>
-                            <input pInputText name="email" type="text" [(ngModel)]="user.email" #email="ngModel"
-                                required=""
-                                pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$">
-                            <div class="alert-incorrect" [hidden]="email.valid || email.untouched">
-                                Incorrect email
-                            </div>
-                        </div>
-                        <div class="items-container">
-                            <label class="form-label" for="firstName">First Name</label>
-                            <input pInputText name="firstName" type="text" [(ngModel)]="user.firstName"
-                                #firstName="ngModel" required="">
-                            <div class="alert-incorrect" [hidden]="firstName.valid || firstName.untouched">
-                                First name is needed
-                            </div>
-                        </div>
-                        <div class="items-container">
-                            <label class="form-label" for="lastName">Last Name</label>
-                            <input pInputText name="lastName" type="text" [(ngModel)]="user.lastName"
-                                #lastName="ngModel" required="">
-                            <div class="alert-incorrect" [hidden]="lastName.valid || lastName.untouched">
-                                Last name is needed
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-section">
-
-                    </div>
-                </div>
-                <div class="form-footer">
-                    <button type="submit" class="save-changes" [disabled]="editProfileForm.invalid"
-                        class="p-button-primary" label="Save changes"
-                        pButton></button>
-                </div>
-            </form>
-        </div>
+        <!-- <div class="user-info-body">
+            <ul>
+                <li>
+                    <span id="user-name">{{user.firstName}} {{user.lastName}}</span>
+                </li>
+                <li>
+                    <span id="user-email">{{user.email}}</span>
+                </li>
+            </ul>
+        </div> -->
     </div>
-</div>
+    <form class="item" #editProfileForm="ngForm" (ngSubmit)="submit(editProfileForm)">
+        <label class="item-definition">
+            <div>Email</div>
+        </label>
+        <div class="item-field">
+            <div class="item-form-input p-input-icon-right">
+                <input pInputText name="email" class="item-form-field" type="text" [(ngModel)]="user.email" #email="ngModel"
+                    required=""
+                    pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$">
+                    <div class="p-error" [hidden]="email.valid || email.untouched">
+                        Incorrect email
+                    </div>
+            </div>
+        </div>
+    </form>
+    <form class="item">
+        <label class="item-definition">
+            <div>First name</div>
+        </label>
+        <div class="item-field">
+            <div class="item-form-input p-input-icon-right">
+                <input pInputText name="firstName" type="text" class="item-form-field" [(ngModel)]="user.firstName"
+                    #firstName="ngModel" required="">
+                    <div class="p-error" [hidden]="firstName.valid || firstName.untouched">
+                        First name is needed
+                    </div>
+            </div>
+        </div>
+    </form>
+    <form class="item">
+        <label class="item-definition">
+            <div>Last name</div>
+        </label>
+        <div class="item-field">
+            <div class="item-form-input p-input-icon-right">
+                <input pInputText name="lastName" type="text" class="item-form-field" [(ngModel)]="user.lastName"
+                    #lastName="ngModel" required="">
+                    <div class="p-error" [hidden]="lastName.valid || lastName.untouched">
+                        Last name is needed
+                    </div>
+            </div>
+        </div>
+    </form>
+</p-panel>

@@ -9,7 +9,7 @@ import { UserService } from '@core/services/user.service';
 @Component({
     selector: 'app-user-profile-settings',
     templateUrl: './user-profile-settings.component.html',
-    styleUrls: ['./user-profile-settings.component.sass']
+    styleUrls: ['../user-profile/user-profile.component.sass']
 })
 export class UserProfileSettingsComponent extends BaseComponent implements OnInit {
     public user: User;
