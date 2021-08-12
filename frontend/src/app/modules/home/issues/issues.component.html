@@ -55,7 +55,9 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-issue>
-                    <tr>
+                    <tr *ngIf="issue.issueDetails.className !== null &&
+                               issue.issueDetails.errorMessage !== null &&
+                               issue.occurredOn !== null">
                         <td>
                             <div class="issue-block">
                                 <p-checkbox name="selectedIssues" [value]="issue" [(ngModel)]="selectedIssues">
@@ -68,7 +70,7 @@
                                             value="New issue" [rounded]="true"></p-tag>
                                         <span>{{issue.projectTag}}</span>
                                         <div class="tooltip">
-                                            <span><i class="pi pi-clock time-icon"></i>{{issue.createdAt |
+                                            <span><i class="pi pi-clock time-icon"></i>{{issue.occurredOn |
                                                 timeAgo}}</span>
                                             <span class="tooltiptext">{{issue.occurredOn | date:'MMMM d, y h:mm
                                                 a'}}</span>
@@ -77,8 +79,8 @@
                                 </div>
                             </div>
                         </td>
-                        <td>{{issue.events}}</td>
-                        <td>{{issue.users}}</td>
+                        <td>{{issue?.events}}</td>
+                        <td>{{issue?.users}}</td>
                         <td>
                             <div class="assignee"><i class="pi pi-user"></i><i class="pi pi-chevron-down"></i></div>
                         </td>
