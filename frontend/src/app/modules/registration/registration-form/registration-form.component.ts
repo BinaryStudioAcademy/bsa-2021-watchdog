@@ -65,22 +65,6 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                     Validators.pattern(regexs.email)
                 ]
             ),
-            password: new FormControl(
-                { value: '', disabled: this.isNotFinishedRegistration },
-                [
-                    Validators.required,
-                    Validators.minLength(8),
-                    Validators.maxLength(30),
-                    Validators.pattern(regexs.password)
-                ]
-            ),
-            confirmPassword: new FormControl(
-                { value: '', disabled: this.isNotFinishedRegistration },
-                [
-                    Validators.required,
-                    this.equals
-                ]
-            ),
             organizationName: new FormControl(
                 '',
                 [
@@ -98,12 +82,35 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                     Validators.maxLength(50),
                     Validators.pattern(regexs.organizationSlag),
                 ]
-            )
+            ),
+            password: new FormControl(
+                { value: '', disabled: this.isNotFinishedRegistration }, 
+            ),
+            confirmPassword: new FormControl(
+                { value: '', disabled: this.isNotFinishedRegistration }
+            ),
         });
+
+        this.formGroup.controls.confirmPassword.setValidators([
+            this.equals(this.formGroup.controls.password), 
+            Validators.required
+        ]);
+        this.formGroup.controls.password.setValidators([
+            Validators.required,
+            Validators.minLength(8),
+            Validators.maxLength(30),
+            Validators.pattern(regexs.password),
+            this.validateAnother(this.formGroup.controls.confirmPassword)
+        ]);
     }
 
-    equals = (control: AbstractControl) => {
-        if (control.value !== this.password) {
+    validateAnother = (another: AbstractControl) => (control: AbstractControl) => {
+        another.updateValueAndValidity();
+        return null;
+    };
+
+    equals = (passwordControl: AbstractControl) => (control: AbstractControl) => {
+        if (control.value !== passwordControl.value) {
             return { notEqual: true };
         }
         return null;
