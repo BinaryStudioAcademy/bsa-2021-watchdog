@@ -1,10 +1,9 @@
 <div class="layout-wrapper">
 
     <div class="layout-topbar">
-        <div class="logo">
-            <a routerLink="/home">
-                <img alt="logo" src="assets/logo-white.svg">
-            </a>
+        <div class="logo" [routerLink]="['']">
+            <img src="assets\logo-white.svg" alt="logo">
+
         </div>
         <div *ngIf="!user" class="user-info">
             <button pButton pRipple type="button" label="Sign in" class="p-button-outlined sign-in-button"></button>

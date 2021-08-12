@@ -9,6 +9,7 @@ import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { MenuItem } from 'primeng/api/menuitem';
+import { Organization } from '@shared/models/organization/organization';
 
 @Component({
     selector: 'app-home',
@@ -20,18 +21,17 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     userItems: MenuItem[];
     dashboardsShown: boolean = false;
     displayModal: boolean = false;
+
     user: User;
-    //fake
-    fakeOrganizationId = 1;
-    //TODO Change fake by real data
+    organization: Organization;
 
     constructor(
         private broadcastHub: BroadcastHubService,
         public dashboardService: DashboardService,
         private updateDataService: ShareDataService<Dashboard>,
         private deleteDataService: ShareDataService<number>,
-        private toastNotificationService: ToastNotificationService,
-        private authService: AuthenticationService
+        private authService: AuthenticationService,
+        private toastNotificationService: ToastNotificationService
     ) {
         super();
         this.user = authService.getUser();
@@ -41,13 +41,22 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         ];
     }
 
-    async ngOnInit() {
-        this.getAllDashboards();
+    ngOnInit() {
+        this.user = this.authService.getUser();
 
-        await this.broadcastHub.start();
-        this.broadcastHub.listenMessages((msg) => {
-            console.log(`The next broadcast message was received: ${msg}`);
-        });
+        this.authService.getOrganization()
+            .subscribe(organization => {
+                this.organization = organization;
+                this.getAllDashboards();
+            });
+        this.runBroadcastHub();
+    }
+
+    runBroadcastHub() {
+        this.broadcastHub.start()
+            .then(() => this.broadcastHub.listenMessages(msg =>
+                this.toastNotificationService.info(`The next broadcast message was received: ${msg}`)))
+            .catch(() => this.toastNotificationService.error('BroadcastHub failed to start.'));
     }
 
     addDashboard(newDashboard: NewDashboard) {
@@ -63,14 +72,14 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     }
 
     async getAllDashboards() {
-        this.dashboardService.getAllByOrganization(this.fakeOrganizationId)
+        this.dashboardService.getAllByOrganization(this.organization.id)
             .pipe(this.untilThis)
             .subscribe(dashboard => {
                 this.dashboards = dashboard;
                 this.updateDataService.currentMessage
                     .pipe(this.untilThis)
                     .subscribe(d => {
-                        const key = this.dashboards.findIndex(el => el.id === dashboard.id);
+                        const key = this.dashboards.findIndex(el => el.id === d.id);
                         this.dashboards[key] = d;
                     });
 

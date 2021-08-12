@@ -39,11 +39,6 @@ namespace Watchdog.Core.API.Controllers
         [HttpPost]
         public async Task<ActionResult<DashboardDto>> Post(NewDashboardDto newDashboard)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
             var createdDashboard = await _dashboardService.CreateDashboardAsync(newDashboard);
             return Ok(createdDashboard);
         }
@@ -51,11 +46,6 @@ namespace Watchdog.Core.API.Controllers
         [HttpPut]
         public async Task<ActionResult<DashboardDto>> Put(UpdateDashboardDto updateDashboard)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
             var updatedDashboard = await _dashboardService.UpdateDashboardAsync(updateDashboard);
             return Ok(updatedDashboard);
         }

@@ -10,23 +10,23 @@
         <button (click)="textMenu.toggle($event)" [disabled]="!menuTextItems.length"
                 class="dropdown-button p-button-outlined"
                 icon="pi pi-bars" pButton pTooltip="Text" tooltipPosition="bottom" type="button"></button>
-        <p-tieredMenu #textMenu [model]="menuTextItems" [popup]="true"></p-tieredMenu>
+        <p-tieredMenu appendTo="body" #textMenu [model]="menuTextItems" [popup]="true"></p-tieredMenu>
         <!--    List Button    -->
         <button (click)="listMenu.toggle($event)" [disabled]="!menuListItems.length"
                 class="dropdown-button p-button-outlined"
                 icon="pi pi-list" pButton pTooltip="List" tooltipPosition="bottom" type="button"></button>
-        <p-tieredMenu #listMenu [model]="menuListItems" [popup]="true"></p-tieredMenu>
+        <p-tieredMenu appendTo="body" #listMenu [model]="menuListItems" [popup]="true"></p-tieredMenu>
         <!--    Number Button    -->
         <div class="number-button">
             <button (click)="valueMenu.toggle($event)" [disabled]="!menuValueItems.length" class="p-button-outlined"
                     label="1.2" pButton pTooltip="Value" tooltipPosition="bottom" type="button"></button>
-            <p-tieredMenu #valueMenu [model]="menuValueItems" [popup]="true"></p-tieredMenu>
+            <p-tieredMenu appendTo="body"  #valueMenu [model]="menuValueItems" [popup]="true"></p-tieredMenu>
         </div>
         <!--    Chart Button    -->
         <button (click)="chartMenu.toggle($event)" [disabled]="!menuChartItems.length"
                 class="dropdown-button p-button-outlined"
                 icon="pi pi-chart-line" pButton pTooltip="Chart" tooltipPosition="bottom" type="button"></button>
-        <p-tieredMenu #chartMenu [model]="menuChartItems" [popup]="true"></p-tieredMenu>
+        <p-tieredMenu appendTo="body" #chartMenu [model]="menuChartItems" [popup]="true"></p-tieredMenu>
     </div>
     <!--    Right Buttons    -->
     <div class="right-buttons">

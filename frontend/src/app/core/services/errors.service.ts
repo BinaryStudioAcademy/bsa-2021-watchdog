@@ -1,24 +1,20 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IssueMessage } from '@shared/models/issues/issue-message';
-import { HttpInternalService } from '@core/services/http-internal.service';
+import { CollectorHttpService } from '@core/services/collector-http.service';
 import { StackTrace } from '@shared/models/issues/stack-trace';
 import { IssueEnvironment } from '@shared/models/issues/issue-environment';
 import { HttpResponseErrorMessage } from '@shared/models/issues/http-response.message';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-import { environment } from '@env/environment';
 import * as stackTraceParser from 'stacktrace-parser';
 import { ToastNotificationService } from './toast-notification.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class ErrorsService implements OnDestroy {
-    private unsubscribe$: Subject<void> = new Subject<void>();
-    private issuesEndpoint: string = `${environment.collectorUrl}/issues`;
+export class ErrorsService {
+    private issuesEndpoint: string = '/issues';
 
-    constructor(private httpService: HttpInternalService, private toastNotification: ToastNotificationService) { }
+    constructor(private httpService: CollectorHttpService, private toastNotification: ToastNotificationService) { }
 
     log(error: any) {
         const issueMessage = this.addContextInfo(error);
@@ -27,8 +23,7 @@ export class ErrorsService implements OnDestroy {
             return;
         }
 
-        this.httpService.postFullRequest(this.issuesEndpoint, issueMessage)
-            .pipe(takeUntil(this.unsubscribe$))
+        this.httpService.postRequest(this.issuesEndpoint, issueMessage)
             .subscribe(() => {
                 this.toastNotification.info('Sent error to collector.', null, 1700);
             }, () => {
@@ -72,10 +67,5 @@ export class ErrorsService implements OnDestroy {
             browserVersion: navigator.appVersion,
             platform: navigator.platform
         };
-    }
-
-    ngOnDestroy(): void {
-        this.unsubscribe$.next();
-        this.unsubscribe$.unsubscribe();
     }
 }

@@ -1,4 +1,4 @@
-import { Team } from '@shared/models/team/team';
+import { Team } from '@shared/models/teams/team';
 import { TeamService } from '@core/services/team.service';
 import { AbstractControl } from '@angular/forms';
 import { of } from 'rxjs';

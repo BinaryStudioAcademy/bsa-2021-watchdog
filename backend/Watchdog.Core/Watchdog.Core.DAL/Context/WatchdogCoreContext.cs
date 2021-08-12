@@ -21,8 +21,6 @@ namespace Watchdog.Core.DAL.Context
 
         public DbSet<Role> Roles { get; private set; }
 
-        public DbSet<Sample> Samples { get; private set; }
-
         public DbSet<Team> Teams { get; private set; }
 
         public DbSet<TeamMember> TeamMembers { get; private set; }
