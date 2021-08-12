@@ -1,3 +1,5 @@
+import { MemberService } from "@core/services/member.service";
+import { Member } from "@shared/models/member/member";
 import { Injectable } from '@angular/core';
 import firebase from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -20,6 +22,7 @@ import { OrganizationService } from './organization.service';
 export class AuthenticationService {
     private user: User;
     private organization: Organization;
+    private member: Member;
     private readonly tokenHelper: JwtHelperService;
 
     private token: string | null;
@@ -30,6 +33,7 @@ export class AuthenticationService {
         private userService: UserService,
         private registrationService: RegistrationService,
         private organizationService: OrganizationService,
+        private memberService: MemberService,
         private router: Router
     ) {
         this.tokenHelper = new JwtHelperService();
@@ -66,6 +70,25 @@ export class AuthenticationService {
             this.organization = JSON.parse(localStorage.getItem('organization'));
         }
         return from([this.organization]);
+    }
+
+    getMember() {
+        if (!this.member) {
+            const member = localStorage.getItem('member');
+            if (!member) {
+                const userId = this.getUser().id;
+                return this.getOrganization().pipe(map(org =>
+                    this.memberService.getMemberByUserAndOgranization(org.id, userId)
+                        .pipe(map(member => {
+                            localStorage.setItem('member', JSON.stringify(member));
+                            this.member = member;
+                            return this.member;
+                        }))
+                ));
+            }
+            this.member = JSON.parse(localStorage.getItem('member'));
+        }
+        return of(this.member);
     }
 
     setUser(user: User) {
