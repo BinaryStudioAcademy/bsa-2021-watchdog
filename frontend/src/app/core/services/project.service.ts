@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Project } from '@shared/models/projects/project';
 import { NewProjectTeam } from '@shared/models/projects/new-project-team';
-import { HttpInternalService } from './http-internal.service';
+import { CoreHttpService } from './core-http.service';
 
 @Injectable({
     providedIn: 'root',
@@ -12,7 +12,7 @@ export class ProjectService {
     private apiPrefix = '/applications';
 
     constructor(
-        private httpService: HttpInternalService
+        private httpService: CoreHttpService
     ) { }
 
     getProject(id: number): Observable<Project> {

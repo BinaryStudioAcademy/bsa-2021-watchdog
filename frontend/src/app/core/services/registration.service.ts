@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FullRegistrationDto } from '@modules/registration/DTO/fullRegistrationDto';
 import { PartialRegistrationDto } from '@modules/registration/DTO/partialRegistrationDto';
 import { User } from '@shared/models/user/user';
-import { HttpInternalService } from './http-internal.service';
+import { CoreHttpService } from './core-http.service';
 import { clear } from './registration.utils';
 
 @Injectable({
@@ -11,7 +11,7 @@ import { clear } from './registration.utils';
 export class RegistrationService {
     private apiPrefix = 'registration';
 
-    constructor(private http: HttpInternalService) { }
+    constructor(private http: CoreHttpService) { }
 
     public performFullRegistration(fullRegistrationDto: FullRegistrationDto) {
         const dto = clear(fullRegistrationDto);

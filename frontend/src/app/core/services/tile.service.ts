@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TileType } from '@shared/models/tile/enums/tile-type';
 import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
-import { HttpInternalService } from '@core/services/http-internal.service';
+import { CoreHttpService } from './core-http.service';
 import { Observable } from 'rxjs';
 import { Tile } from '@shared/models/tile/tile';
 import { NewTile } from '@shared/models/tile/new-tile';
@@ -11,7 +11,7 @@ import { UpdateTile } from '@shared/models/tile/update-tile';
 export class TileService {
     public readonly routePrefix = '/tiles';
 
-    constructor(private httpService: HttpInternalService) {
+    constructor(private httpService: CoreHttpService) {
     }
 
     public get(id: number): Observable<Tile> {
@@ -24,7 +24,7 @@ export class TileService {
     }
 
     public deleteTile(tileId: number) {
-        return this.httpService.deleteFullRequest<number>(`${this.routePrefix}/${tileId}`);
+        return this.httpService.deleteRequest<number>(`${this.routePrefix}/${tileId}`);
     }
 
     public updateTile(updateTile: UpdateTile): Observable<Tile> {
@@ -32,7 +32,7 @@ export class TileService {
     }
 
     public deleteAllTilesByDashboardId(dashboardId: number) {
-        return this.httpService.deleteFullRequest<number>(`${this.routePrefix}/dashboard/${dashboardId}`);
+        return this.httpService.deleteRequest<number>(`${this.routePrefix}/dashboard/${dashboardId}`);
     }
 
     public getAllTilesByDashboardId(dashboardId: number): Observable<Tile[]> {
