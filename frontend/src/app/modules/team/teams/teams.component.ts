@@ -1,4 +1,4 @@
-import { Organization } from "@shared/models/organization/organization";
+import { Organization } from '@shared/models/organization/organization';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Team } from '@shared/models/teams/team';
 import { TeamService } from '@core/services/team.service';
@@ -8,8 +8,8 @@ import { CreateTeamComponent } from '@modules/team/create-team/create-team.compo
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { AuthenticationService } from '@core/services/authentication.service';
-import { User } from "@shared/models/user/user";
-import { Member } from "@shared/models/member/member";
+import { User } from '@shared/models/user/user';
+import { Member } from '@shared/models/member/member';
 
 @Component({
     selector: 'app-teams',

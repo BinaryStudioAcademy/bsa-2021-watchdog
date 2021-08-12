@@ -1,12 +1,12 @@
-import { MemberService } from "@core/services/member.service";
-import { Member } from "@shared/models/member/member";
+import { MemberService } from '@core/services/member.service';
+import { Member } from '@shared/models/member/member';
 import { Injectable } from '@angular/core';
 import firebase from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { filter, mergeMap, switchMap, tap, map } from 'rxjs/operators';
-import { from, of, Observable } from "rxjs";
+import { from, of, Observable } from 'rxjs';
 import { User } from '@shared/models/user/user';
 import { NewUser } from '@shared/models/user/newUser';
 import { FullRegistrationDto } from '@modules/registration/DTO/fullRegistrationDto';
@@ -59,7 +59,7 @@ export class AuthenticationService {
             return this.organizationService.getOrganizationsByUserId(this.getUser().id)
                 .pipe(
                     map(organizations => {
-                        this.organization = organizations[0];
+                        [this.organization] = organizations;
                         return this.organization;
                     })
                 );
@@ -70,13 +70,13 @@ export class AuthenticationService {
     getMember(): Observable<Member> {
         if (!this.member) {
             const userId = this.getUser().id;
-            return this.getOrganization().pipe(switchMap(org => {
-                return this.memberService.getMemberByUserAndOgranization(org.id, userId)
+            return this.getOrganization()
+                .pipe(switchMap(org => this.memberService.getMemberByUserAndOgranization(org.id, userId)
                     .pipe(map(member => {
                         this.member = member;
                         return this.member;
-                    }));
-            }));
+                    }))
+                ));
         }
         return of(this.member);
     }

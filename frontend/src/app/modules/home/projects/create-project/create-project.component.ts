@@ -212,7 +212,6 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
 
     createProject(): void {
         if (this.formGroup.valid && this.newProject.platformId) {
-            debugger;
             this.newProject.organizationId = this.organization.id;
             this.newProject.createdBy = this.user.id;
             this.newProject.alertSettings = {
