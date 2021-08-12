@@ -214,6 +214,7 @@ export class AuthenticationService {
         this.rememberUser = localStorage.getItem('rememberUser') === 'true';
         return this.angularFireAuth.authState
             .pipe(
+                filter(firebaseUser => Boolean(firebaseUser)),
                 switchMap(firebaseUser => from(firebaseUser.getIdToken())),
                 tap(token => {
                     this.setJwToken(token);
@@ -223,12 +224,12 @@ export class AuthenticationService {
     }
 
     logout() {
-        this.removeJwToken();
-        this.removeUser();
         this.angularFireAuth.signOut()
             .catch(error => {
                 console.warn(error);
             });
+        this.removeJwToken();
+        this.removeUser();
     }
 
     updatePassword(newPassword: string) {
