@@ -4,6 +4,8 @@
     {
         public int RoleId { get; set; }
 
+        public int CreatedBy { get; set; }
+
         public int OrganizationId { get; set; }
 
         public string Email { get; set; }

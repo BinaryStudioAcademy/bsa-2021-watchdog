@@ -35,10 +35,11 @@ namespace Watchdog.Core.BLL.Services
         public async Task<MemberDto> AddMemberAsync(NewMemberDto memberDto)
         {
             var user = (await _context.Users.FirstOrDefaultAsync(u => u.Email == memberDto.Email)) ?? throw new KeyNotFoundException("User doesn't exist");
+            var organization = (await _context.Organizations.FirstOrDefaultAsync(o => o.Id == memberDto.OrganizationId) ?? throw new KeyNotFoundException("Such organization doesn't exist"));
 
-            if (await _context.Members.FirstOrDefaultAsync(m => m.OrganizationId == memberDto.OrganizationId && m.TeamId == memberDto.TeamId) is not null)
+            if (organization.Members.Any(m=> m.UserId == user.Id))
             {
-                throw new InvalidOperationException("Such member already in the team");
+                throw new ArgumentException("This user already in organization");
             }
 
             var member = _mapper.Map<Member>(memberDto);
@@ -88,18 +89,10 @@ namespace Watchdog.Core.BLL.Services
                 .ToListAsync();
             return _mapper.Map<IEnumerable<MemberDto>>(members);
         }
+
+        public async Task<IEnumerable<MemberDto>> GetInvitedMembers()
+        {
+            return _mapper.Map<IEnumerable<MemberDto>>(await _context.Members.Where(m => m.IsAccepted == false).ToListAsync());
+        }
     }
 }
-        //    var member = await _context.Members.SingleOrDefaultAsync(m => m.Id == id);
-        //    return _mapper.Map<MemberDto>(member);
-        //}
-
-        //public async Task<MemberDto> CreateMemberAsync(MemberDto memberDto)
-        //{
-        //    var member = _mapper.Map<Member>(memberDto);
-
-        //    var createdMember = _context.Members.Add(member);
-        //    await _context.SaveChangesAsync();
-
-        //    return _mapper.Map<MemberDto>(createdMember.Entity);
-        //}

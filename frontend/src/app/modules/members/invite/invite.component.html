@@ -54,6 +54,50 @@
                         </ng-template>
                     </p-overlayPanel>
             </form>
+            <!-- --------------------------------------------------------------->
+            <form [formGroup]="reInvitation.groupForm" *ngFor="let reInvitation of reInvitations">
+                <div class="invite-form">
+                    <div class="p-field p-col-12 p-md-4">
+                        <input id="disabled-input" type="text" pInputText [disabled]="disabled"  placeholder="{{currentUser.firstName}} {{currentUser.lastName}}"/>
+                        <!-- <p-autoComplete [appendTo] = "'body'" 
+                        field="user.email" formControlName="name" 
+                        dropdownMode="current"  [forceSelection]="true"
+                        [suggestions]="members" (completeMethod)="search($event)"> -->
+                            <!-- <ng-template let-member pTemplate="item">
+                                <span> {{member.user.firstName}} {{member.user.lastName}}</span>
+                                <span> {{member.user.email}} </span> 
+                            </ng-template> -->
+                        <!-- </p-autoComplete> -->
+                    </div>
+                    <!-- role -->
+                    <p-dropdown class="role-dropdown" [appendTo] = "'body'" [(ngModel)]="reInvitation.member.roleId" [options]="roles" optionValue="id"  optionLabel="name"  name="roles-dropdown"
+                        placeholder="Select Role"  [filter]="false" formControlName="role">
+
+                    </p-dropdown>
+                    <!-- team -->
+                    <p-dropdown class="radiobutton-settings-alert-type" [appendTo]="'body'" [options]="teams"  optionLabel="name"
+                        placeholder="Select team" aria-describedby="team"  optionValue="id" [(ngModel)] = "reInvitation.member.teamId" formControlName="team">
+                        <ng-template let-team pTemplate="item">{{team.name}}</ng-template>
+                        <ng-template let-team pTemplate="selectedItem">{{team.name}}</ng-template>
+                    </p-dropdown>
+                    <button pButton pRipple
+                    class="p-button-success"
+                    type="submit"
+                    label="Invite"
+                    [disabled]="!reInvitation.groupForm.valid">
+                    </button>
+                </div>
+                <p-overlayPanel #op [appendTo]="'body'">
+                    <ng-template pTemplate>
+                        <div class="availiable-members" *ngFor="let member of members">
+                            <button> 
+                                <span> {{member.user.firstName}} {{member.user.lastName}}</span>
+                                <span> {{member.user.email}} </span> 
+                            </button>
+                        </div>
+                    </ng-template>
+                </p-overlayPanel>
+        </form>
             <button pButton pRipple type="button" (click)="addNew()" class="p-button-outlined" icon="pi pi-plus" label="Add more"></button>
     </p-panel> 
        

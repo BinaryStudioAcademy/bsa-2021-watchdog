@@ -36,7 +36,7 @@ namespace Watchdog.Core.API.Controllers
             return Ok(member);
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<ActionResult> AddMember(NewMemberDto newMemberDto)
         {
             MemberDto member;
@@ -49,10 +49,10 @@ namespace Watchdog.Core.API.Controllers
                 return Conflict(new { ex.Message });
             }
             var response = await _memberService.InviteMember(member);
-            return Ok(new { Member = member, SendMailStatusCode = response.StatusCode });
+            return Ok(new { Member = member, SendMailResponse = response });
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<ActionResult<MemberDto>> UpdateMember(UpdateMemberDto updateMember)
         {
             return Ok(await _memberService.UpdateMemberAsync(updateMember));       
