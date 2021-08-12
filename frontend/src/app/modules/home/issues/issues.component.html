@@ -55,9 +55,9 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-issue>
-                    <tr *ngIf="issue.issueDetails.className !== null &&
-                               issue.issueDetails.errorMessage !== null &&
-                               issue.occurredOn !== null">
+                    <tr *ngIf="issue.issueDetails.className &&
+                               issue.issueDetails.errorMessage &&
+                               issue.occurredOn">
                         <td>
                             <div class="issue-block">
                                 <p-checkbox name="selectedIssues" [value]="issue" [(ngModel)]="selectedIssues">
