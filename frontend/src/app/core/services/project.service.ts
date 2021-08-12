@@ -4,7 +4,7 @@ import { Project } from '@shared/models/projects/project';
 import { Observable } from 'rxjs';
 import { ProjectTeam } from '@shared/models/projects/project-team';
 import { NewProjectTeam } from '@shared/models/projects/new-project-team';
-import { HttpInternalService } from './http-internal.service';
+import { CoreHttpService } from './core-http.service';
 
 @Injectable({
     providedIn: 'root',
@@ -13,7 +13,7 @@ export class ProjectService {
     private apiPrefix = '/applications';
 
     constructor(
-        private httpService: HttpInternalService
+        private httpService: CoreHttpService
     ) { }
 
     getProjectsByOrganizationId(id: number): Observable<Project[]> {

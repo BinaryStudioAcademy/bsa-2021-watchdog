@@ -51,7 +51,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         this.issueService.getIssues()
             .pipe(this.untilThis)
             .subscribe(response => {
-                this.issues = response.body;
+                this.issues = response;
             }, errorResponse => {
                 this.toastNotification.error(errorResponse, 'Error', 1500);
             });

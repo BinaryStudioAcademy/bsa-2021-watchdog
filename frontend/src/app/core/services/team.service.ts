@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpInternalService } from '@core/services/http-internal.service';
+import { CoreHttpService } from './core-http.service';
 import { Observable } from 'rxjs';
 import { Team } from '@shared/models/teams/team';
 import { HttpResponse } from '@angular/common/http';
@@ -12,13 +12,13 @@ import { UpdateTeam } from '@shared/models/teams/update-team';
 export class TeamService {
     public readonly routePrefix = '/teams';
 
-    constructor(private httpService: HttpInternalService) { }
+    constructor(private httpService: CoreHttpService) { }
 
     public getTeamOptionsByOrganizationId(organizationId: number): Observable<TeamOption[]> {
         return this.httpService.getRequest(`${this.routePrefix}/organization/${organizationId}/options`);
     }
 
-    public getTeam(id: number): Observable<Team> {
+    public getTeam(id: number | string): Observable<Team> {
         return this.httpService.getRequest<Team>(`${this.routePrefix}/${id}`);
     }
 
@@ -27,24 +27,24 @@ export class TeamService {
     }
 
     public getMemberTeams(organizationId: number, memberId: number): Observable<HttpResponse<Team[]>> {
-        return this.httpService.getFullRequest(`${this.routePrefix}/organization/${organizationId}/member/${memberId}`);
+        return this.httpService.getRequest(`${this.routePrefix}/organization/${organizationId}/member/${memberId}`);
     }
 
     public getNotMemberTeams(organizationId: number, memberId: number): Observable<HttpResponse<Team[]>> {
-        return this.httpService.getFullRequest(`${this.routePrefix}/organization/${organizationId}/notMember/${memberId}`);
+        return this.httpService.getRequest(`${this.routePrefix}/organization/${organizationId}/notMember/${memberId}`);
     }
 
     public createTeam(newTeam: NewTeam): Observable<HttpResponse<Team>> {
-        return this.httpService.postFullRequest(`${this.routePrefix}`, newTeam);
+        return this.httpService.postRequest(`${this.routePrefix}`, newTeam);
     }
 
     public joinTeam(teamId: number, memberId: number): Observable<HttpResponse<Team>> {
         const teamMember: TeamMember = { teamId, memberId };
-        return this.httpService.postFullRequest(`${this.routePrefix}/joinTeam`, teamMember);
+        return this.httpService.postRequest(`${this.routePrefix}/joinTeam`, teamMember);
     }
 
     public leaveTeam(teamId: number, memberId: number): Observable<HttpResponse<Team>> {
-        return this.httpService.deleteFullRequest(`${this.routePrefix}/leaveTeam/${teamId}/member/${memberId}`);
+        return this.httpService.deleteRequest(`${this.routePrefix}/leaveTeam/${teamId}/member/${memberId}`);
     }
 
     public isNameUnique(teamName: string): Observable<boolean> {

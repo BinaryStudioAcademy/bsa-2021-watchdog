@@ -34,7 +34,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         super();
     }
 
-    async ngOnInit() {
+    ngOnInit() {
         this.user = this.authService.getUser();
 
         this.authService.getOrganization()
@@ -42,11 +42,14 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
                 this.organization = organization;
                 this.getAllDashboards();
             });
+        this.runBroadcastHub();
+    }
 
-        await this.broadcastHub.start();
-        this.broadcastHub.listenMessages((msg) => {
-            console.log(`The next broadcast message was received: ${msg}`);
-        });
+    runBroadcastHub() {
+        this.broadcastHub.start()
+            .then(() => this.broadcastHub.listenMessages(msg =>
+                this.toastNotificationService.info(`The next broadcast message was received: ${msg}`)))
+            .catch(() => this.toastNotificationService.error('BroadcastHub failed to start.'));
     }
 
     addDashboard(newDashboard: NewDashboard) {
