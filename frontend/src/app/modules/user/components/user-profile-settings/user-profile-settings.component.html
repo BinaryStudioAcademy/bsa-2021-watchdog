@@ -1,10 +1,13 @@
 <p-panel header="Profile settings" class="container-group">
     <div class="user-info">
         <div class="user-avatar">
-            <img src="https://www.gravatar.com/avatar/213dd2d1498b722e98be7fdee00c2769?d=mp&r=pg&s=128"
+            <img src={{user.avatarUrl}}
                 alt="avatar">
         </div>
     </div>
+    <form class="item" [formGroup]="editForm">
+        <input hidden="true" pInputText formControlName="avatarUrl" class="item-form-field">
+    </form>
     <form class="item" [formGroup]="editForm">
         <label class="item-definition">
             <div>Email</div>

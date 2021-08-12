@@ -8,7 +8,7 @@
             <button pButton pRipple type="button" label="Sign in" class="p-button-outlined sign-in-button"></button>
         </div>
         <div *ngIf="user" class="user-info">
-            <img class="user-avatar" src="https://www.gravatar.com/avatar/213dd2d1498b722e98be7fdee00c2769?d=mp&r=pg&s=128" alt="Avatar">
+            <img class="user-avatar" src={{user.avatarUrl}} alt="Avatar">
             <div routerLink="users" [routerLinkActive]="['active']" class="user-name">{{user.firstName}}</div>
         </div>
     </div>

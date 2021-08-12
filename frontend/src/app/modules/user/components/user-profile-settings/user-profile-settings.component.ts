@@ -6,6 +6,7 @@ import { User } from '@shared/models/user/user';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { UserService } from '@core/services/user.service';
 import { regexs } from '@shared/constants/regexs';
+import { UserUpdateDto } from '@core/models/userUpdate';
 
 @Component({
     selector: 'app-user-profile-settings',
@@ -45,6 +46,7 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
             Validators.email,
             Validators.pattern(regexs.email),
         ]));
+        this.editForm.addControl('avatarUrl', new FormControl(this.user.avatarUrl));
     }
 
     get firstName() { return this.editForm.controls.firstName; }
@@ -52,6 +54,8 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
     get lastName() { return this.editForm.controls.lastName; }
 
     get email() { return this.editForm.controls.email; }
+
+    get avatarUrl() { return this.editForm.controls.avatarUrl; }
 
 
 }

@@ -21,7 +21,6 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
 
     isSignByEmailAndPassword: boolean;
     user: User;
-    users: UserUpdateDto;
 
     editForm: FormGroup = new FormGroup({});
 
@@ -41,6 +40,9 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
         this.user = this.authService.getUser();
         this.editForm.statusChanges.pipe(this.untilThis);
 
+        const users = {...this.editForm.value};
+
+
         // this.editForm.statusChanges.pipe(this.untilThis)
         // .subscribe(()=>{this.checkSaveStatus();});
 
@@ -49,6 +51,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
 
     updateUser() {
         const user = {...this.editForm.value};
+
         if (user.firstName == this.user.firstName &&
             user.lastName == this.user.lastName &&
             user.email == this.user.email) {
