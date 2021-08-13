@@ -89,8 +89,19 @@ namespace Watchdog.Core.BLL.Services
         public async Task<ApplicationDto> CreateAppAsync(NewApplicationDto dto)
         {
             var application = _mapper.Map<Application>(dto);
-            await _context.AddAsync(application);
+            var team = await _context.Teams.FirstOrDefaultAsync(t => t.Id == dto.TeamId) ??
+                throw new KeyNotFoundException("No team with this id!");
+
+            var addedApplication = await _context.AddAsync(application);
             await _context.SaveChangesAsync();
+
+            addedApplication.Entity.ApplicationTeams.Add(new ApplicationTeam
+            {
+                TeamId = dto.TeamId,
+                ApplicationId = addedApplication.Entity.Id
+            });
+            await _context.SaveChangesAsync();
+
             return _mapper.Map<ApplicationDto>(application);
         }
     }
