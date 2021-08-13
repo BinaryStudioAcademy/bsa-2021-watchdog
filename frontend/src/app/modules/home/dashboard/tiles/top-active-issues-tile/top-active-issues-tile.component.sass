@@ -1,3 +1,7 @@
+@import src/styles/variables
+@import src/styles/mixins
+
+
 .container
     display: flex
     flex-direction: column
@@ -15,6 +19,10 @@
         .header-title
             width: 90%
             white-space: nowrap
+            height: $input-height
+            display: flex
+            align-items: center
+
 
             span
                 font-weight: 500
@@ -26,8 +34,8 @@
                 margin-left: 8px
 
             input
-                width: 78%
-                height: 19px
+                width: 70%
+                height: $input-height
 
 
         .header-right-buttons
