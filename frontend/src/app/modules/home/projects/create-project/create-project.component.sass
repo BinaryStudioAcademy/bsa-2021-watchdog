@@ -92,7 +92,7 @@
         flex-wrap: wrap
         align-items: center
         margin: 10px 0
-        min-height: 40px
+        min-height: $input-height
         grid-gap: 10px
     .special-settings
         display: flex
@@ -144,7 +144,7 @@
             flex-direction: row
 
             ::ng-deep .p-dropdown
-                height: 39px
+                height: $input-height
                 width: 300px
                 font-weight: 500
     .add-team-block
@@ -155,7 +155,7 @@
         left: -10px
         .button-add-team
             font-weight: 600
-            height: 40px
+            height: $input-height
             color: black
 
 
@@ -169,9 +169,14 @@
         align-items: flex-end
         display: flex
         .button-create-project
-            height: 40px
+            height: $input-height
             font-weight: 600
 :host ::ng-deep
+    .p-inputnumber,
+    .p-dropdown,
+    .p-inputtext
+        height: $input-height
+
     .p-dropdown
         display: flex
         align-items: center
