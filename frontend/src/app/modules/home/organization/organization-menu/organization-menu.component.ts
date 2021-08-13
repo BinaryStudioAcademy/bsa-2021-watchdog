@@ -16,7 +16,6 @@ import { Router } from '@angular/router';
 export class OrganizationMenuComponent extends BaseComponent implements OnInit {
     isLoading: boolean = false;
     organization: Organization;
-    selectedOrg: Organization;
     organizations: Organization[];
     menuItems: MenuItem[] = [];
 
@@ -34,7 +33,6 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis)
             .subscribe(organization => {
                 this.organization = organization;
-                this.selectedOrg = organization;
                 this.checkUpdates();
                 this.isLoading = false;
 
@@ -42,16 +40,6 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
                     .pipe(this.untilThis)
                     .subscribe(organizations => {
                         this.organizations = organizations;
-                        this.organizations = this.organizations.concat({
-                            id: 1,
-                            name: 'Bsa 2012',
-                            organizationSlug: 'slug',
-                            openMembership: true,
-                            defaultRoleId: 1,
-                            avatarUrl: '',
-                            createdBy: 1,
-                            createdAt: new Date()
-                        });
                     });
             }, error => { this.toastService.error(error); this.isLoading = false; });
     }
@@ -74,7 +62,7 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
         this.disableParentEvent(event);
     }
 
-    disableParentEvent(event: Event) { // to disable sorting
+    disableParentEvent(event: Event) {
         event.stopPropagation();
     }
 }
