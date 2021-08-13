@@ -6,7 +6,6 @@ import { User } from '@shared/models/user/user';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { UserService } from '@core/services/user.service';
 import { regexs } from '@shared/constants/regexs';
-import { UserUpdateDto } from '@core/models/userUpdate';
 
 @Component({
     selector: 'app-user-profile-settings',
@@ -15,7 +14,6 @@ import { UserUpdateDto } from '@core/models/userUpdate';
 })
 export class UserProfileSettingsComponent extends BaseComponent implements OnInit {
     @Input() user: User;
-
     @Input() editForm: FormGroup;
 
     constructor(
@@ -56,6 +54,4 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
     get email() { return this.editForm.controls.email; }
 
     get avatarUrl() { return this.editForm.controls.avatarUrl; }
-
-
 }
