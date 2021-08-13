@@ -1,23 +1,49 @@
 @import src/styles/variables
 
-.org-label
-    color: $text-color
-    padding: .4em
-    border-radius: 7px
-    background: radial-gradient($background-color, $background-hover-color)
-    display: flex
-    width: 100%
-    gap: .2em
-    cursor: pointer
-    transition: background-color .2s ease-in-out
-    &:hover
-        background-color: $background-hover-color
+:host ::ng-deep
+    .org-label
+        color: $text-color
+        border-radius: 7px
+        align-items: center
+        background: radial-gradient($background-color, $background-hover-color)
+        display: flex
+        width: 100%
+        cursor: pointer
+        transition: background-color .2s ease-in-out
+        &:hover
+            background-color: $background-hover-color
+        .p-dropdown-label
+            display: flex
+            align-items: center
+            gap: .2em
+            padding-right: 0
+        .p-dropdown
+            padding: 0
+            &:focus
+                border: none
+        .p-dropdown-item
+            display: flex
+            align-items: center
+            gap: .2em
+        .p-dropdown-trigger
+            width: 1.7em
+            display: none
+        .p-dropdown-trigger-icon
+            font-size: 1.2em
+        .p-input-wrapper-focus
 
+
+
+.dropdown-wrapper
+    width: 100%
 .icon
     display: block
     margin-left: auto
+    margin-right: .3em
     font-size: 1.2rem
     align-self: center
+    &:hover
+        color: $primary-color-darkest
 
 .org-title
     font-size: 1.1em
@@ -26,7 +52,7 @@
     text-overflow: ellipsis
 
 .org-name
-    height: 1em
+    height: 1.2em
     overflow: inherit
     text-overflow: inherit
 
