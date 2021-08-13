@@ -1,36 +1,47 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { BaseComponent } from '@core/components/base/base.component';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
-import firebase from 'firebase/app';
+import { regexs } from '@shared/constants/regexs';
+import { User } from '@shared/models/user/user';
 
 @Component({
     selector: 'app-user-password-settings',
     templateUrl: './user-password-settings.component.html',
-    styleUrls: ['./user-password-settings.component.sass']
+    styleUrls: ['../user-profile/user-profile.component.sass']
 })
 
-export class UserPasswordSettingsComponent {
-    public oldPassword: string;
-    public newPassword: string;
+export class UserPasswordSettingsComponent extends BaseComponent implements OnInit {
+    @Input() user: User;
+    @Input() pass: FormGroup;
 
     constructor(
         private authService: AuthenticationService,
         private toastNotificationService: ToastNotificationService
-    ) { }
-
-    onSubmit() {
-        const { currentUser } = firebase.auth();
-        const credentials = firebase.auth.EmailAuthProvider
-            .credential(currentUser.email, this.oldPassword);
-
-        currentUser.reauthenticateWithCredential(credentials)
-            .then(() => {
-                this.authService.updatePassword(this.newPassword);
-                this.toastNotificationService.success('Password has been updated');
-            })
-            .catch(error => {
-                console.warn(error);
-                this.toastNotificationService.error('Current password is incorrect');
-            });
+    ) {
+        super();
     }
+
+    ngOnInit(): void {
+        this.pass.addControl('oldPassword', new FormControl(null, [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(50),
+            Validators.pattern(regexs.password),
+        ]));
+        this.pass.addControl('newPassword', new FormControl(null, [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(50),
+            Validators.pattern(regexs.password),
+        ]));
+        this.pass.addControl('confirmPassword', new FormControl(null));
+    }
+
+    get oldPassword() { return this.pass.controls.oldPassword; }
+
+    get newPassword() { return this.pass.controls.newPassword; }
+
+    get confirmPassword() { return this.pass.controls.confirmPassword; }
 }

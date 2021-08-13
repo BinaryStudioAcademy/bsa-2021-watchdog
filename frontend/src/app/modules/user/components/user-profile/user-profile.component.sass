@@ -1,21 +1,132 @@
-@import ../../styles/user.styles
-    
-html
-    scroll-behavior: smooth
-    
-.profile-header
-    box-sizing: border-box
-    position: fixed
-    width: 100%
-    padding: 8px 24px
-    background-color: $white
-    @include border-gray
-    padding-bottom: 0
+@import src/styles/variables
+@import src/styles/mixins
 
-.center
+$fieldPercentageWidth: 90%
+
+.content-title
+    display: flex
+    justify-content: space-between
+    @include background-gray
+    @include title
+
+.header-buttons
+    display: flex
+    gap: .2em
+
+.settings-container
+    color: $text-color
+    margin: $half-indent
+    display: flex
+    flex-direction: column
+    gap: $half-indent
+
+.item
+    display: flex
+    padding-bottom: $indent
+    &-definition
+        width: 40%
+        font-size: 1.2em
+        margin-right: 1em
+        margin-top: 0.5em
+    &-field
+        width: 58%
+        height: 3em
+        position: relative
+        align-items: center
+    &-sub-text
+        font-size: .7em
+        margin-top: .2em
+        color: $text-color-secondary
+
+.container-group
+    .item:last-child
+        padding-bottom: $half-indent
+
+.item-form-input
+    width: 100%
+    align-items: center
+    grid-gap: .2em
+    & input
+        width: 100%
+    & .pi
+        height: 1em
+
+.p-float-label
+    width: 100%
+
+.item-form-complex
+    width: 100%
+    display: flex
+    align-items: center
+    grid-gap: .5em
+    & .pi
+        height: 1em
+
+.p-error
+    color: $validation-color
+    font-size: .75em
+    margin-top: .1em
+    flex-wrap: wrap
+    position: absolute
+
+.buttons-block
+    grid-gap: 5px
+    display: flex
+
+input[readonly]
+    background-color: $penging-color
+    &:focus
+        box-shadow: none
+p-dropdown
+    width: 100%
+
+::ng-deep
+    .item-form-field.p-dropdown
+        width: 100%
+
+.user-info
+    display: flex
     margin-left: auto
     margin-right: auto
-    max-width: $max-width
+    width: 6em
+    margin-bottom: 30px
+    color: $shadow-color
+
+.user-avatar
+    @include disable-select
+    margin-top: 0.8em
+    height: 200px
+    margin-right: 1em
+    background-color: $shadow-color
+    border-radius: 100px
+
+.user-info-body li
+    padding-top: 7px
+    padding-bottom: 7px
+    padding-left: 7px
+
+#user-name, h3, h4
+    font-weight: bold
+    padding-left: 7px
+
+#user-email
+    padding-left: 7px
+
+:host ::ng-deep
+    .p-password input,
+    .p-password
+        width: 100%
+
+.header
+    height: 44px
+    display: flex
+    align-items: center
+    grid-gap: 5px
+
+.position
+    margin-left: auto
+    margin-right: auto
+    max-width: fit-content
 
 .profile-header-title
     margin: 4px
@@ -30,7 +141,7 @@ html
 .navigation-item
     display: inline-block
     margin-right: 10px
-    
+
 h1, .navigation-item-link
     white-space: nowrap
 
@@ -39,21 +150,21 @@ h1, .navigation-item-link
     display: block
     margin: 4px
     text-decoration: none
-    color: $black
+    color: $text-color
     margin-bottom: 0
 
 .navigation-item-link:hover
-    border-bottom: 3px solid $light-gray
+    border-bottom: 3px solid gray
 
 #profile-settings
-    background: $white
-    color: $black
-    border-bottom: 3px solid  $blue
+    background: white
+    color: $primary-color
+    border-bottom: 2px solid  $primary-color
 
 .pi
     display: inline-block
-    margin-right: 5px 
+    margin-right: 5px
 
 .content-container
     padding: 24px
-    padding-top: 130px
+    padding-top: 30px

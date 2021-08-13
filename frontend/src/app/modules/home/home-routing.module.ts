@@ -5,6 +5,7 @@ import { NotFoundComponent } from '@shared/components/not-found/not-found.compon
 import { ProjectsComponent } from '@modules/home/projects/projects/projects.component';
 import { IssuesComponent } from '@modules/home/issues/issues.component';
 import { CreateProjectComponent } from '@modules/home/projects/create-project/create-project.component';
+import { UserProfileComponent } from '@modules/user/components/user-profile/user-profile.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home-page/home-page.component';
 
@@ -25,6 +26,9 @@ const routes: Routes = [{
     {
         path: 'issues',
         component: IssuesComponent,
+    }, {
+        path: 'users',
+        component: UserProfileComponent,
     }, {
         path: 'teams',
         loadChildren: () => import('../team/team.module')

@@ -13,8 +13,9 @@ services:
     networks:
         - back
     environment:
-        ASPNETCORE_ENVIRONMENT: 'Production'
+        ASPNETCORE_ENVIRONMENT: 'Development'
         ConnectionStrings__WatchdogCoreDBConnection: 'Server=sql_server;Database=WatchdogCoreDB;User ID=SA;Password=MySecretPassword!'
+        ElasticConfiguration__Uri: 'http://elasticsearch:9200'
 
   watchdog_collector:
       build:
@@ -29,7 +30,8 @@ services:
       networks:
           - back
       environment:
-          ASPNETCORE_ENVIRONMENT: 'Production'
+          ASPNETCORE_ENVIRONMENT: 'Development'
+          ElasticConfiguration__Uri: 'http://elasticsearch:9200'
 
   watchdog_notifier:
       build:
@@ -44,7 +46,7 @@ services:
       networks:
           - back
       environment:
-          ASPNETCORE_ENVIRONMENT: 'Production'
+          ASPNETCORE_ENVIRONMENT: 'Development'
 
   watchdog_client:
     depends_on:
@@ -53,7 +55,7 @@ services:
         - watchdog_notifier
     build:
         context: ./frontend
-        dockerfile: Dockerfile
+        dockerfile: Dockerfile.dev
     container_name: 'watchdog_frontend'
     restart: on-failure
     ports:

@@ -1,3 +1,5 @@
+@import src/styles/mixins
+@import src/styles/variables
 .login-inp
     display: grid
     grid-gap: 30px
@@ -11,7 +13,10 @@
     .p-password input,
     .p-password
         width: 100%
-        height: 40px
+        height: $input-height
+    .p-inputtext
+        height: $input-height
+
 
 .email-inp
     display: grid
