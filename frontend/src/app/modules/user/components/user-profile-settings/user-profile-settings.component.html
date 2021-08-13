@@ -1,6 +1,7 @@
 <p-panel header="Profile settings" class="container-group">
     <div class="user-info">
-        <img class="user-avatar" src={{user.avatarUrl}} alt="avatar">
+        <img class="user-avatar" [src]="user.avatarUrl ?? 'assets\\avatar.png'" alt="avatar">
+
     </div>
     <form class="item" [formGroup]="editForm">
         <input hidden="true" pInputText formControlName="avatarUrl" class="item-form-field">
