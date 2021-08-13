@@ -18,6 +18,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
     formGroup: FormGroup;
     user = {} as User;
     organization = {} as NewOrganization;
+    organizationSlug: string;
 
     password: string;
     confirmPassword: string;
@@ -42,8 +43,9 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
             firstName: new FormControl(
                 { value: '', disabled: this.isNotFinishedRegistration },
                 [
+                    Validators.required,
                     Validators.minLength(2),
-                    Validators.maxLength(20),
+                    Validators.maxLength(30),
                     Validators.pattern(regexs.firstName)
                 ]
             ),
@@ -51,8 +53,16 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                 { value: '', disabled: this.isNotFinishedRegistration },
                 [
                     Validators.minLength(2),
-                    Validators.maxLength(20),
+                    Validators.maxLength(30),
                     Validators.pattern(regexs.lastName)
+                ]
+            ),
+            email: new FormControl(
+                { value: '', disabled: this.isNotFinishedRegistration },
+                [
+                    Validators.required,
+                    Validators.minLength(6),
+                    Validators.pattern(regexs.email)
                 ]
             ),
             organizationName: new FormControl(
@@ -64,46 +74,51 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                     Validators.pattern(regexs.organizationName),
                 ]
             ),
-            email: new FormControl(
-                { value: '', disabled: this.isNotFinishedRegistration },
+            organizationSlug: new FormControl(
+                '',
                 [
                     Validators.required,
-                    Validators.minLength(5),
-                    Validators.pattern(regexs.email)
+                    Validators.minLength(3),
+                    Validators.maxLength(50),
+                    Validators.pattern(regexs.organizationSlag),
                 ]
             ),
             password: new FormControl(
                 { value: '', disabled: this.isNotFinishedRegistration },
-                [
-                    Validators.required,
-                    Validators.minLength(8),
-                    Validators.maxLength(30),
-                    Validators.pattern(regexs.password)
-                ]
             ),
             confirmPassword: new FormControl(
-                { value: '', disabled: this.isNotFinishedRegistration },
-                [
-                    Validators.required,
-                    Validators.minLength(8),
-                    Validators.maxLength(30),
-                    Validators.pattern(regexs.password),
-                    this.equals
-                ]
-            )
+                { value: '', disabled: this.isNotFinishedRegistration }
+            ),
         });
+
+        this.formGroup.controls.confirmPassword.setValidators([
+            this.equals(this.formGroup.controls.password),
+            Validators.required
+        ]);
+        this.formGroup.controls.password.setValidators([
+            Validators.required,
+            Validators.minLength(8),
+            Validators.maxLength(30),
+            Validators.pattern(regexs.password),
+            this.validateAnother(this.formGroup.controls.confirmPassword)
+        ]);
     }
 
-    equals = (control: AbstractControl) => {
-        if (control.value !== this.password) {
+    validateAnother = (another: AbstractControl) => () => {
+        another.updateValueAndValidity();
+        return null;
+    };
+
+    equals = (passwordControl: AbstractControl) => (control: AbstractControl) => {
+        if (control.value !== passwordControl.value) {
             return { notEqual: true };
         }
         return null;
     };
 
     onSubmit() {
-        const organizationDto = {
-            organizationSlug: `${this.organization.name.toLowerCase()}-${Date.now()}`, //TEMP
+        const organizationDto: RegOrganizationDto = {
+            organizationSlug: this.organizationSlug,
             name: this.organization.name,
             openMembership: true, //TEMP
             defaultRoleId: 1, //TEMP

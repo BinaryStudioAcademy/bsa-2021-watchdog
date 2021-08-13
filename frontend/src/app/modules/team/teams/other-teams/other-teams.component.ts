@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Team } from '@shared/models/team/team';
+import { Team } from '@shared/models/teams/team';
 import { TeamService } from '@core/services/team.service';
 import { Observable } from 'rxjs';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
@@ -8,14 +8,14 @@ import { BaseComponent } from '@core/components/base/base.component';
 @Component({
     selector: 'app-other-teams',
     templateUrl: './other-teams.component.html',
-    styleUrls: ['../teams.component.sass']
+    styleUrls: ['../teams.component.sass', '../../team.style.sass']
 })
 export class OtherTeamsComponent extends BaseComponent implements OnInit {
     @Input() leavedTeam: Observable<Team> = new Observable<Team>();
     @Output() joinTeamEvent: EventEmitter<Team> = new EventEmitter<Team>();
 
     @Input() currentOrganizationId: number;
-    @Input() currentUserId: number;
+    @Input() currentMemberId: number;
 
     teams: Team[];
     isLoading: boolean = false;
@@ -37,10 +37,10 @@ export class OtherTeamsComponent extends BaseComponent implements OnInit {
 
     joinTeam(teamId: number) {
         this.teamService
-            .joinTeam({ teamId, memberId: this.currentUserId })
+            .joinTeam(teamId, this.currentMemberId)
             .pipe(this.untilThis)
-            .subscribe(response => {
-                this.joinTeamEvent.emit(response.body);
+            .subscribe(team => {
+                this.joinTeamEvent.emit(team);
                 this.loadTeams();
             }, error => {
                 this.toastService.error(`${error}`, 'Error', 2000);
@@ -51,11 +51,11 @@ export class OtherTeamsComponent extends BaseComponent implements OnInit {
         this.isLoading = true;
 
         this.teamService
-            .getNotMemberTeams(this.currentOrganizationId, this.currentUserId)
+            .getNotMemberTeams(this.currentOrganizationId, this.currentMemberId)
             .pipe(this.untilThis)
             .subscribe(teams => {
                 this.isLoading = false;
-                this.teams = teams.body;
+                this.teams = teams;
             }, error => {
                 this.toastService.error(`${error}`, 'Error', 2000);
             });

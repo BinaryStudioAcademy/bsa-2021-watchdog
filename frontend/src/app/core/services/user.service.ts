@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '@shared/models/user/user';
 import { NewUser } from '@shared/models/user/newUser';
-import { HttpInternalService } from './http-internal.service';
+import { CoreHttpService } from './core-http.service';
 import { clear } from './registration.utils';
 
 @Injectable({
@@ -12,7 +12,7 @@ export class UserService {
     private apiPrefix = '/users';
 
     constructor(
-        private httpService: HttpInternalService
+        private httpService: CoreHttpService
     ) { }
 
     public getUserById(id: number): Observable<User> {

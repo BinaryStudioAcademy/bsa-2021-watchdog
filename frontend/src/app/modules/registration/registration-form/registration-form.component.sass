@@ -1,3 +1,5 @@
+@import src/styles/variables
+
 .reg-form
     display: flex
     flex-direction: column
@@ -9,7 +11,11 @@
     justify-content: center
     align-items: center
     flex-wrap: wrap
-    grid-gap: 30px
+    grid-gap: 30px    
+
+.border
+    border-top: 1px solid $border-color
+    margin: 0 55px
 
 .submit-block
     display: flex
@@ -49,3 +55,5 @@
 @media screen and ( max-width: 900px)
     .submit-button
         width: 300px
+    .blank-block
+        display: none

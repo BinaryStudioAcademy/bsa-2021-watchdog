@@ -10,6 +10,9 @@ namespace Watchdog.Core.BLL.MappingProfiles
         {
             CreateMap<Tile, TileDto>();
             CreateMap<TileDto, Tile>();
+            CreateMap<NewTileDto, Tile>();
+            CreateMap<UpdateTileDto, Tile>();
+
         }
     }
 }

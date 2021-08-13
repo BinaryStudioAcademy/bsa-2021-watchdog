@@ -1,22 +1,28 @@
+import { MemberService } from '@core/services/member.service';
+import { Member } from '@shared/models/member/member';
 import { Injectable } from '@angular/core';
 import firebase from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { filter, mergeMap, switchMap, tap, map } from 'rxjs/operators';
-import { from, of } from 'rxjs';
+import { from, of, Observable } from 'rxjs';
 import { User } from '@shared/models/user/user';
 import { NewUser } from '@shared/models/user/newUser';
 import { FullRegistrationDto } from '@modules/registration/DTO/fullRegistrationDto';
 import { PartialRegistrationDto } from '@modules/registration/DTO/partialRegistrationDto';
+import { Organization } from '@shared/models/organization/organization';
 import { UserService } from './user.service';
 import { RegistrationService } from './registration.service';
+import { OrganizationService } from './organization.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthenticationService {
     private user: User;
+    private organization: Organization;
+    private member: Member;
     private readonly tokenHelper: JwtHelperService;
 
     private token: string | null;
@@ -26,6 +32,8 @@ export class AuthenticationService {
         private angularFireAuth: AngularFireAuth,
         private userService: UserService,
         private registrationService: RegistrationService,
+        private organizationService: OrganizationService,
+        private memberService: MemberService,
         private router: Router
     ) {
         this.tokenHelper = new JwtHelperService();
@@ -46,6 +54,32 @@ export class AuthenticationService {
         return this.user;
     }
 
+    getOrganization(): Observable<Organization> {
+        if (!this.organization) {
+            return this.organizationService.getOrganizationsByUserId(this.getUser().id)
+                .pipe(
+                    map(organizations => {
+                        [this.organization] = organizations;
+                        return this.organization;
+                    })
+                );
+        }
+        return of(this.organization);
+    }
+
+    getMember(): Observable<Member> {
+        if (!this.member) {
+            const userId = this.getUser().id;
+            return this.getOrganization()
+                .pipe(switchMap(org => this.memberService.getMemberByUserAndOgranization(org.id, userId)
+                    .pipe(map(member => {
+                        this.member = member;
+                        return this.member;
+                    }))));
+        }
+        return of(this.member);
+    }
+
     setUser(user: User) {
         this.user = user;
         localStorage.setItem('user', JSON.stringify(this.user));
@@ -56,14 +90,23 @@ export class AuthenticationService {
         localStorage.removeItem('user');
     }
 
+    removeOrganization() {
+        this.organization = null;
+        localStorage.removeItem('organization');
+    }
+
+    removeIsSignByEmailAndPassword() {
+        localStorage.removeItem('isSignByEmailAndPassword');
+    }
+
     getJwToken() {
-        let currentToken = this.token;
-        if (!currentToken && this.rememberUser) {
-            currentToken = localStorage.getItem('jwt');
+        if (!this.token) {
+            this.token = localStorage.getItem('jwt');
         }
-        return !currentToken || this.tokenHelper.isTokenExpired(currentToken)
-            ? this.refreshJwToken()
-            : of(currentToken);
+        if (this.token && !this.tokenHelper.isTokenExpired(this.token)) {
+            return of(this.token);
+        }
+        return this.refreshJwToken();
     }
 
     setJwToken(token: string) {
@@ -78,12 +121,15 @@ export class AuthenticationService {
         localStorage.removeItem('jwt');
     }
 
-    refreshJwToken() {
+    refreshJwToken(forceRefresh = false) {
         return this.angularFireAuth.authState
             .pipe(
                 filter(firebaseUser => Boolean(firebaseUser)),
-                mergeMap(firebaseUser => from(firebaseUser.getIdToken(true))),
-                tap(token => localStorage.setItem('jwt', token))
+                mergeMap(firebaseUser => from(firebaseUser.getIdToken(forceRefresh))),
+                tap(token => {
+                    localStorage.setItem('jwt', token);
+                    this.token = token;
+                })
             );
     }
 
@@ -117,6 +163,7 @@ export class AuthenticationService {
     }
 
     signInWithEmailAndPassword(email: string, password: string, route: string[]) {
+        this.logout();
         return from(this.angularFireAuth
             .signInWithEmailAndPassword(email, password))
             .pipe(
@@ -130,6 +177,7 @@ export class AuthenticationService {
     }
 
     signInWithGitHub(route: string[]) {
+        this.logout();
         const provider = new firebase.auth.GithubAuthProvider();
         provider.addScope('user');
 
@@ -152,6 +200,7 @@ export class AuthenticationService {
     }
 
     signInWithGoogle(route: string[]) {
+        this.logout();
         const provider = new firebase.auth.GoogleAuthProvider();
         provider.addScope('https://www.googleapis.com/auth/userinfo.email');
 
@@ -174,6 +223,7 @@ export class AuthenticationService {
     }
 
     signInWithFacebook(route: string[]) {
+        this.logout();
         const provider = new firebase.auth.FacebookAuthProvider();
 
         return from(this.angularFireAuth
@@ -194,7 +244,6 @@ export class AuthenticationService {
         if (name != null) {
             [user.firstName, user.lastName = ''] = name.split(' ');
         }
-
         return user;
     }
 
@@ -212,8 +261,9 @@ export class AuthenticationService {
 
     login(route?: string[]) {
         this.rememberUser = localStorage.getItem('rememberUser') === 'true';
-        return this.angularFireAuth.authState
+        return from(this.angularFireAuth.currentUser)
             .pipe(
+                filter(firebaseUser => Boolean(firebaseUser)),
                 switchMap(firebaseUser => from(firebaseUser.getIdToken())),
                 tap(token => {
                     this.setJwToken(token);
@@ -225,6 +275,8 @@ export class AuthenticationService {
     logout() {
         this.removeJwToken();
         this.removeUser();
+        this.removeOrganization();
+        this.removeIsSignByEmailAndPassword();
         this.angularFireAuth.signOut()
             .catch(error => {
                 console.warn(error);

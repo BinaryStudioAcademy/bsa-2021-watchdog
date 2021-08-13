@@ -1,19 +1,21 @@
 @import src/styles/variables
 
 .org-label
-    color: white
+    color: $text-color
+    padding: .4em
+    border-radius: 7px
+    background: radial-gradient($background-color, $background-hover-color)
+    display: flex
     width: 100%
-    display: grid
-    grid-template-columns: auto 1fr
+    gap: .2em
     cursor: pointer
-    font-family: var(--font-family)
-    &:hover .org-user
-        color: white
+    transition: background-color .2s ease-in-out
+    &:hover
+        background-color: $background-hover-color
+
 
 .org-title
-    font-size: 1.4em
-    margin-left: .2em
-    height: 100%
+    font-size: 1.1em
     overflow: hidden
     white-space: nowrap
     text-overflow: ellipsis
@@ -24,8 +26,8 @@
     text-overflow: inherit
 
 .org-user
-    color: rgb(255,255,255, 0.5)
-    font-size: .6em
+    font-size: .8em
+    height: 1.2em
     transition: color .3s ease-in-out
     overflow: inherit
     white-space: inherit
@@ -36,4 +38,4 @@
         background-color: $primary-color-darkest
     .org-avatar-item .p-avatar-text
         font-family: "DM Sans", serif
-        color: #FFFFFF
+        color: $primary-color-text

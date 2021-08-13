@@ -1,0 +1,36 @@
+@import src/styles/variables
+
+.panel-list
+    position: relative
+    &-item
+        border-bottom: 1px solid $border-color
+        padding: $half-indent
+        display: flex
+        flex-direction: row
+        align-items: center
+        gap: $half-indent
+        justify-content: space-between
+    &-item:last-child
+        border-bottom: none
+
+.header-button
+    margin-left: auto
+
+::ng-deep
+    .team-panel .p-panel-content
+        padding: 0
+    .team-panel.p-panel
+        position: relative
+
+.panel-custom
+    position: relative
+
+.p-button-outlined
+    margin-left: auto
+    font-size: .8rem
+
+.star
+    & .pi-star
+        color: rgb(245, 207, 35)
+    & .pi
+        cursor: pointer

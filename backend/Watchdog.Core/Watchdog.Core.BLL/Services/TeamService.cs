@@ -15,12 +15,17 @@ namespace Watchdog.Core.BLL.Services
     {
         public TeamService(WatchdogCoreContext context, IMapper mapper) : base(context, mapper) { }
 
+        public async Task<TeamDto> GetTeamAsync(int teamId)
+        {
+            var teamEntity = await GetTeamsWithMembersAsQueryable()
+                .FirstOrDefaultAsync(team => team.Id == teamId);
+
+            return _mapper.Map<TeamDto>(teamEntity);
+        }
+
         public async Task<ICollection<TeamDto>> GetAllTeamsAsync(int organizationId)
         {
-            var teams = await _context.Teams
-                .Include(team => team.TeamMembers)
-                    .ThenInclude(teamMember => teamMember.Member)
-                    .ThenInclude(teamMember => teamMember.User)
+            var teams = await GetTeamsWithMembersAsQueryable()
                 .Where(t => t.OrganizationId == organizationId)
                 .ToListAsync();
 
@@ -29,10 +34,7 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<ICollection<TeamDto>> GetMemberTeamsAsync(int organizationId, int memberId, bool isForMemberInTeam)
         {
-            var memberTeams = await _context.Teams
-                .Include(team => team.TeamMembers)
-                    .ThenInclude(teamMember => teamMember.Member)
-                    .ThenInclude(teamMember => teamMember.User)
+            var memberTeams = await GetTeamsWithMembersAsQueryable()
                 .Where(t => t.OrganizationId == organizationId)
                 .Where(t => isForMemberInTeam ?
                         t.TeamMembers.Any(tm => tm.MemberId == memberId) :
@@ -49,22 +51,24 @@ namespace Watchdog.Core.BLL.Services
                 dst.CreatedAt = DateTime.Now;
             }));
 
-            var createdTeam = _context.Teams.Add(team).Entity;
+            var member = await _context.Members.Include(m => m.User).FirstOrDefaultAsync(m => m.User.Id == team.CreatedBy);
 
+            var createdTeam = _context.Teams.Add(team);
             await _context.SaveChangesAsync();
 
-            var createdTeamDto = await AddMemberToTeamAsync(new TeamMemberDto()
+            await AddMemberToTeamAsync(new TeamMemberDto
             {
-                TeamId = createdTeam.Id,
-                MemberId = newTeam.CreatedBy
+                MemberId = member.Id,
+                TeamId = createdTeam.Entity.Id
             });
 
-            return createdTeamDto;
+
+            return _mapper.Map<TeamDto>(createdTeam.Entity);
         }
 
         public async Task<TeamDto> UpdateTeamAsync(int teamId, UpdateTeamDto updateTeam)
         {
-            var existedTeam = await _context.Teams.FirstAsync(t => t.Id == teamId);
+            var existedTeam = await _context.Teams.FirstOrDefaultAsync(t => t.Id == teamId);
 
             var mergedTeam = _mapper.Map(updateTeam, existedTeam);
 
@@ -77,6 +81,9 @@ namespace Watchdog.Core.BLL.Services
         public async Task<TeamDto> AddMemberToTeamAsync(TeamMemberDto teamMemberDto)
         {
             var teamMember = _mapper.Map<TeamMember>(teamMemberDto);
+
+            if (await _context.TeamMembers.AnyAsync(t => t.MemberId == teamMember.MemberId && t.TeamId == teamMember.TeamId))
+                throw new InvalidOperationException("This member is already in team!");
 
             var created = _context.TeamMembers.Add(teamMember).Entity;
             await _context.SaveChangesAsync();
@@ -98,21 +105,32 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task DeleteTeamAsync(int teamId)
         {
-            var team = await _context.Teams.FirstAsync(t => t.Id == teamId);
+            var team = await _context.Teams.Include(t => t.ApplicationTeams).Include(t => t.TeamMembers).FirstOrDefaultAsync(t => t.Id == teamId);
             _context.Remove(team);
 
             await _context.SaveChangesAsync();
         }
 
-        private async Task<TeamDto> GetTeamAsync(int teamId)
+        private IQueryable<Team> GetTeamsWithMembersAsQueryable()
         {
-            var teamEntity = await _context.Teams
+            return _context.Teams
                 .Include(team => team.TeamMembers)
                     .ThenInclude(teamMember => teamMember.Member)
-                    .ThenInclude(teamMember => teamMember.User)
-                .FirstOrDefaultAsync(team => team.Id == teamId);
+                    .ThenInclude(teamMember => teamMember.User);
+        }
 
-            return _mapper.Map<TeamDto>(teamEntity);
+        public async Task<bool> IsTeamNameUniqueAsync(string teamName)
+        {
+            return !await _context.Teams.AnyAsync(t => t.Name == teamName);
+        }
+
+        public async Task<ICollection<TeamOptionDto>> GetTeamsOptionsByOrganizationIdAsync(int organizationId)
+        {
+            var teams = await _context.Teams
+                .Where(t => t.OrganizationId == organizationId)
+                .ToListAsync();
+
+            return _mapper.Map<ICollection<TeamOptionDto>>(teams);
         }
     }
 }

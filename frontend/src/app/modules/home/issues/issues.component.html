@@ -2,82 +2,95 @@
 <div class="issues-content">
     <p-tabView styleClass="tabview-custom">
 
-        <div class="search-block">
-            <div class="p-inputgroup">
+        <div class="functional-bar">
+            <div class="search-block p-inputgroup">
                 <span class="p-inputgroup-addon search-button"><i class="pi pi-search"></i></span>
                 <input type="text" pInputText placeholder="Search" name="search">
-                <span class="p-inputgroup-addon search-button search-additional"><i class="pi pi-paperclip"></i></span>
-                <span class="p-inputgroup-addon search-button search-additional"><i class="pi pi-plus"></i></span>
-                <span class="p-inputgroup-addon search-button search-additional"><i class="pi pi-ellipsis-v"></i></span>
+            </div>
+            <div class="action-block">
+                <span class="p-inputgroup-addon search-button"><i class="pi pi-paperclip"></i></span>
+                <span class="p-inputgroup-addon search-button"><i class="pi pi-plus"></i></span>
+                <span class="p-inputgroup-addon search-button"><i class="pi pi-ellipsis-v"></i></span>
                 <span class="p-inputgroup-addon search-button"><i class="pi pi-times"></i></span>
             </div>
-
-            <p-dropdown [options]="sortedOptions" [(ngModel)]="sortedBy" optionLabel="name" inputName="sortedBy" [autoDisplayFirst]="true"> 
-                <ng-template pTemplate="selectedItem">
-                    <p>Sorted by: <span class="bold">{{sortedBy.name}}</span></p>
-                </ng-template>
-            </p-dropdown>
         </div>
 
-
-
         <p-tabPanel>
-            <ng-template pTemplate = "header">
+            <ng-template pTemplate="header">
                 <div class="header">
                     <span>All Unresolved</span>
                     <p-badge *ngIf="countNew.all > 0" [value]="countNew.all.toString()"></p-badge>
                 </div>
             </ng-template>
 
-            <p-table [value]="issues" [paginator]="true" [rows]="10">
+            <p-table [value]="issues" [paginator]="true" [rows]="10" [resizableColumns]="true" [autoLayout]="true">
                 <ng-template pTemplate="colgroup">
                     <colgroup>
-                        <col id = "issue-col">
-                        <col id = "events-col">
-                        <col id = "users-col">
-                        <col id = "assignee-col">
+                        <col id="issue-col">
+                        <col id="events-col">
+                        <col id="users-col">
+                        <col id="assignee-col">
                     </colgroup>
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
-                        <th class="name" pSortableColumn="name"> 
+                        <th class="name" pSortableColumn="name">
                             <div class="issue">
-                                <p-checkbox name="allIssues" (onChange) = "selectAll($event)"></p-checkbox>
-                                <span>Issue <p-sortIcon field="name"></p-sortIcon></span>
+                                <p-checkbox name="allIssues" (onChange)="selectAll($event)"></p-checkbox>
+                                <span>Issue <p-sortIcon field="name"></p-sortIcon>
+                                </span>
                             </div>
-                            <p-selectButton [options]="timeOptions" [(ngModel)]="selectedTime" (onChange) = "disableParentEvent($event)" (onOptionClick) = "disableParentEvent($event)"></p-selectButton>
                         </th>
-                        <th class="center" pSortableColumn="events"><span>Events <p-sortIcon field="events"></p-sortIcon></span></th>
-                        <th class="center" pSortableColumn="users"><span>Users <p-sortIcon field="users"></p-sortIcon></span></th>
+                        <th class="center" pSortableColumn="events">
+                            <span>Events <p-sortIcon field="events">
+                                </p-sortIcon>
+                            </span>
+                        </th>
+                        <th class="center" pSortableColumn="users">
+                            <span>Users <p-sortIcon field="users">
+                                </p-sortIcon>
+                            </span>
+                        </th>
                         <th class="center"><span>Assignee</span></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-issue>
-                    <tr>
+                    <tr *ngIf="issue.issueDetails.className &&
+                               issue.issueDetails.errorMessage &&
+                               issue.occurredOn">
                         <td>
                             <div class="issue-block">
-                                <p-checkbox name="selectedIssues" [value]="issue" [(ngModel)]="selectedIssues"></p-checkbox>
+                                <p-checkbox name="selectedIssues" [value]="issue" [(ngModel)]="selectedIssues">
+                                </p-checkbox>
                                 <div class="content">
-                                    <span class="name">{{issue.name}}</span> 
-                                    <span class="description">{{issue.description}}</span>
+                                    <span class="name">{{issue.issueDetails.className}}</span>
+                                    <span class="description">{{issue.issueDetails.errorMessage}}</span>
                                     <div class="additional-info">
-                                        <p-tag class="new-issue" *ngIf="issue.isNew" styleClass="p-mr-2" value="New issue" [rounded]="true"></p-tag>
+                                        <p-tag class="new-issue" *ngIf="issue.isNew" styleClass="p-mr-2"
+                                            value="New issue" [rounded]="true"></p-tag>
                                         <span>{{issue.projectTag}}</span>
-                                        <span><i class="pi pi-clock time-icon"></i>{{issue.createdAt | timeAgo}}</span>
+                                        <div class="tooltip">
+                                            <span><i class="pi pi-clock time-icon"></i>{{issue.occurredOn |
+                                                timeAgo}}</span>
+                                            <span class="tooltiptext">{{issue.occurredOn | date:'MMMM d, y h:mm
+                                                a'}}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </td>
-                        <td>{{issue.events}}</td>
-                        <td>{{issue.users}}</td>
-                        <td><div class="assignee"><i class="pi pi-user"></i><i class="pi pi-chevron-down"></i></div></td>
+                        <td>{{issue?.events}}</td>
+                        <td>{{issue?.users}}</td>
+                        <td>
+                            <div class="assignee"><i class="pi pi-user"></i><i class="pi pi-chevron-down"></i></div>
+                        </td>
                     </tr>
                 </ng-template>
             </p-table>
 
-        </p-tabPanel >
+        </p-tabPanel>
         <p-tabPanel [disabled]="true">
-            <ng-template pTemplate = "header">
+            <ng-template pTemplate="header">
                 <div class="header">
                     <span>Second Type</span>
                     <p-badge *ngIf="countNew.secondtype > 0" [value]="countNew.secondtype.toString()"></p-badge>
@@ -85,12 +98,12 @@
             </ng-template>
         </p-tabPanel>
         <p-tabPanel [disabled]="true">
-            <ng-template pTemplate = "header">
+            <ng-template pTemplate="header">
                 <div class="header">
                     <span>Third Type</span>
                     <p-badge *ngIf="countNew.thirdtype > 0" [value]="countNew.thirdtype.toString()"></p-badge>
                 </div>
-            </ng-template> 
+            </ng-template>
         </p-tabPanel>
     </p-tabView>
 </div>

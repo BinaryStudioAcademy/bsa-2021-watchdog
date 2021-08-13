@@ -1,12 +1,9 @@
-import { Platform } from '@shared/models/projects/platform';
-import { AlertSettings } from '@shared/models/projects/alert-settings';
-import { Team } from '@shared/models/projects/team';
-// edit this when you need
+import { Platform } from '../platforms/platform';
+
 export interface Project {
     id: number,
     name: string,
-    description?: string,
+    description: string,
+    securityToken: string,
     platform: Platform,
-    team: Team,
-    alertSettings?: AlertSettings
 }

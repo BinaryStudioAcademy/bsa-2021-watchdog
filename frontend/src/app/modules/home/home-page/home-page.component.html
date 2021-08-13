@@ -1,22 +1,23 @@
 <div class="layout-wrapper">
 
     <div class="layout-topbar">
-        <div class="logo">
+        <div class="logo" [routerLink]="['']">
             <img src="assets\logo-white.svg" alt="logo">
+
         </div>
         <div *ngIf="!user" class="user-info">
             <button pButton pRipple type="button" label="Sign in" class="p-button-outlined sign-in-button"></button>
         </div>
         <div *ngIf="user" class="user-info">
-            <img class="user-avatar" src={{user.avatarUrl}} alt="Avatar">
-            <div routerLink="users" [routerLinkActive]="['active']" class="user-name">{{user.firstName}}</div>
+            <img class="user-avatar" [src]="user.avatarUrl ?? 'assets\\avatar.png'" alt="Avatar">
+            <div (click)="menu.toggle($event)" class="user-name">{{user.firstName}} {{user.lastName}}</div>
+            <p-menu #menu [popup]="true" [model]="userItems"></p-menu>
         </div>
     </div>
 
     <div class="sidebar">
-        <div class="sidebar-avatar">
-            <app-organization-menu></app-organization-menu>
-        </div>
+        <app-organization-menu class="sidebar-avatar"></app-organization-menu>
+
         <div class="sidebar-top">
             <div>
                 <button class="button" routerLink="projects" [routerLinkActive]="['active']">
@@ -41,19 +42,21 @@
                 </button>
             </div>
 
-            <div [class.dashboards-none]="!dashboardsShown" [class.dashboards]="dashboardsShown"
-                *ngFor="let dashboard of dashboards">
-                <button class="button" [routerLink]="['dashboard', dashboard.id]" [routerLinkActive]="['active']">
-                    <i class="pi {{dashboard.icon}}"></i>
-                    <span>{{dashboard.name}}</span>
+            <div [class.dashboards-none]="!dashboardsShown" [class.dashboards]="dashboardsShown">
+                <div *ngFor="let dashboard of dashboards">
+                    <button class="button dashboard" [routerLink]="['dashboard', dashboard.id]" [routerLinkActive]="['active']"
+                        appTooltipFullName>
+                        <i class="pi {{dashboard.icon}}"></i>
+                        <span>{{dashboard.name}}</span>
+                    </button>
+                </div>
+                <button class="button dashboard add" (click)="displayModal=true">
+                    <i class="pi pi-plus"></i>
+                    <span>Add</span>
                 </button>
             </div>
         </div>
         <div class="sidebar-bottom">
-            <button class="button" (click)="displayModal=true">
-                <i class="pi pi-plus"></i>
-                <span>Add dashboard</span>
-            </button>
             <button class="button">
                 <i class="pi pi-angle-left"></i>
                 <span>Collapse</span>
@@ -65,7 +68,8 @@
     </app-add-dashboard>
 
     <div class="home-content-wrp">
-        <router-outlet></router-outlet>
+        <div class="content">
+            <router-outlet></router-outlet>
+        </div>
     </div>
-
 </div>

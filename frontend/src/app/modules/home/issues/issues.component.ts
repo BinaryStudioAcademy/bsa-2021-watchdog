@@ -1,27 +1,32 @@
 import { Component, OnInit } from '@angular/core';
-import { Option } from '@core/models/Option';
 import { Issue } from '@shared/models/issue/issue';
+import { IssueService } from '@core/services/issue.service';
+import { IssueMessage } from '@shared/models/issues/issue-message';
+import { BaseComponent } from '@core/components/base/base.component';
+import { ToastNotificationService } from '@core/services/toast-notification.service';
 
 @Component({
     selector: 'app-issues',
     templateUrl: './issues.component.html',
     styleUrls: ['./issues.component.sass']
 })
-export class IssuesComponent implements OnInit {
-    public countNew: { [type: string]: number };
+export class IssuesComponent extends BaseComponent implements OnInit {
+    issues: IssueMessage[];
 
-    public sortedBy: Option;
-    public sortedOptions: Option[];
+    countNew: { [type: string]: number };
 
-    public issues: Issue[];
+    selectedIssues: Issue[] = [];
 
-    public selectedIssues: Issue[] = [];
+    timeOptions: string[];
 
-    public timeOptions: string[];
+    selectedTime: string;
 
-    public selectedTime: string;
+    constructor(private issueService: IssueService, private toastNotification: ToastNotificationService) {
+        super();
+    }
 
     ngOnInit(): void {
+        this.loadIssues();
         this.setAllFieldsTemp();
     }
 
@@ -38,43 +43,21 @@ export class IssuesComponent implements OnInit {
         event.originalEvent.stopPropagation();
     }
 
+    private loadIssues() {
+        this.issueService.getIssues()
+            .pipe(this.untilThis)
+            .subscribe(response => {
+                this.issues = response;
+            }, errorResponse => {
+                this.toastNotification.error(errorResponse, 'Error', 1500);
+            });
+    }
+
     private setAllFieldsTemp() {
         this.countNew = {
             all: 3,
             secondtype: 1,
             thirdtype: 0
         };
-
-        this.sortedOptions = [
-            {
-                name: 'Last Seen',
-                code: 'last-seen'
-            },
-            {
-                name: 'Newest',
-                code: 'newest'
-            }
-        ];
-
-        [this.sortedBy] = this.sortedOptions;
-
-        this.issues = [];
-
-        for (let i = 1; i <= 25; i += 1) {
-            const issue = {
-                name: `TypeError${i}`,
-                description: "Object [object object] has no method 'updateForm'",
-                isNew: i % 3 === 0,
-                projectTag: 'BSA-2021-1',
-                createdAt: new Date(Date.now() - (i <= 14 ? ((i - 1) * 30 * 60 * 1000) : (i * 30 * 60 * 1000 * 10))), //2 min
-                events: i,
-                users: i
-            };
-            this.issues.push(issue);
-        }
-
-        this.timeOptions = ['24h', '14d'];
-
-        [this.selectedTime] = this.timeOptions;
     }
 }

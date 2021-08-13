@@ -16,11 +16,7 @@ namespace Watchdog.Core.BLL.MappingProfiles
             CreateMap<RegOrganizationDto, Organization>();
             CreateMap<Organization, RegOrganizationDto>();
 
-            CreateMap<SettingsOrganizationDto, Organization>()
-                .ForMember(m => m.OpenMembership, o => o.Condition(s => s.OpenMembership != null))
-                .ForMember(m => m.DefaultRoleId, o => o.Condition(s => s.DefaultRoleId != null))
-                .ForMember(m => m.OrganizationSlug, o => o.Condition(s => s.OrganizationSlug != null))
-                .ForMember(m => m.Name, o => o.Condition(s => s.Name != null));
+            CreateMap<SettingsOrganizationDto, Organization>();
         }
     }
 }

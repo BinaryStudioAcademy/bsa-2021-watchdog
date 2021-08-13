@@ -37,5 +37,25 @@ namespace Watchdog.Core.API.Controllers
             var member = await _memberService.CreateMemberAsync(memberDto);
             return Ok(member);
         }
+
+        [HttpGet("organization/{organizationId}")]
+        public async Task<ActionResult<ICollection<MemberDto>>> GetAllMembersByTeam(int organizationId)
+        {
+            var members = await _memberService.GetMembersByOrganizationIdAsync(organizationId);
+            return Ok(members);
+        }
+
+        [HttpGet("team/{teamId}/exceptTeam/")]
+        public async Task<ActionResult<ICollection<MemberDto>>> GetMembersExceptTeam(int teamId, string memberEmail = "")
+        {
+            var members = await _memberService.SearchMembersNotInTeamAsync(teamId, memberEmail);
+            return Ok(members);
+        }
+
+        [HttpGet("organization/{orgId}/user/{userId}")]
+        public async Task<ActionResult<MemberDto>> GetMemberByUserAndOrganization(int userId, int orgId)
+        {
+            return Ok(await _memberService.GetMemberByUserIdAndOrganizationIdAsync(userId, orgId));
+        }
     }
 }
