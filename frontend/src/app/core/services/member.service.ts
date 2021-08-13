@@ -19,7 +19,11 @@ export class MemberService {
     }
 
     getMembersByOrganizationId(organizationId: number): Observable<Member[]> {
-        return this.httpService.getRequest(`${this.routePrefix}/organization/${organizationId}`);
+        return this.httpService.getRequest<Member[]>(`${this.routePrefix}/organization/${organizationId}`);
+    }
+
+    getMemberByUserAndOgranization(organizationId: number, userId: number): Observable<Member> {
+        return this.httpService.getRequest<Member>(`${this.routePrefix}/organization/${organizationId}/user/${userId}`);
     }
 
     searchMembersNotInTeam(teamId: number, memberEmail: string): Observable<Member[]> {

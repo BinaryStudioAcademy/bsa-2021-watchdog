@@ -48,11 +48,6 @@ namespace Watchdog.Core.API.Controllers
             return Ok(new { Member = member, SendMailResponse = response });
         }
 
-        [HttpPut]
-        public async Task<ActionResult<MemberDto>> UpdateMember(UpdateMemberDto updateMember)
-        {
-            return Ok(await _memberService.UpdateMemberAsync(updateMember));
-        }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteMember(int id)
@@ -74,6 +69,12 @@ namespace Watchdog.Core.API.Controllers
         {
             var members = await _memberService.SearchMembersNotInTeamAsync(teamId, memberEmail);
             return Ok(members);
+        }
+
+        [HttpGet("organization/{orgId}/user/{userId}")]
+        public async Task<ActionResult<MemberDto>> GetMemberByUserAndOrganization(int userId, int orgId)
+        {
+            return Ok(await _memberService.GetMemberByUserIdAndOrganizationIdAsync(userId, orgId));
         }
     }
 }

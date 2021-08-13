@@ -10,6 +10,7 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
 import { AuthenticationService } from '@core/services/authentication.service';
 import { MenuItem } from 'primeng/api/menuitem';
 import { Organization } from '@shared/models/organization/organization';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-home',
@@ -31,12 +32,13 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         private updateDataService: ShareDataService<Dashboard>,
         private deleteDataService: ShareDataService<number>,
         private authService: AuthenticationService,
-        private toastNotificationService: ToastNotificationService
+        private toastNotificationService: ToastNotificationService,
+        private router: Router
     ) {
         super();
         this.user = authService.getUser();
         this.userItems = [
-            { label: 'My profile', routerLink: '/user' },
+            { label: 'My profile', routerLink: 'users' },
             { label: 'Logout', routerLink: '/', command: () => this.authService.logout() }
         ];
     }
@@ -63,9 +65,10 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         this.displayModal = false;
         this.dashboardService.addDashboard(newDashboard)
             .pipe(this.untilThis)
-            .subscribe(() => {
+            .subscribe(dashboard => {
                 this.getAllDashboards();
                 this.toastNotificationService.success('Dashboard has been added');
+                this.router.navigate([`/home/dashboard/${dashboard.id}`]);
             }, error => {
                 this.toastNotificationService.error(`${error}`, 'Error', 2000);
             });

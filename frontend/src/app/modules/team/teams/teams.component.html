@@ -3,7 +3,7 @@
     <h1>Teams</h1>
     <div class="header-actions">
         <div>
-            <button pButton pRipple type="button" label="Create team" class="p-button-info" icon="pi pi-plus-circle"
+            <button pButton pRipple type="button" label="Create team" class="p-button-primary p-button-outlined" icon="pi pi-plus-circle"
                 (click)="openDialog()">
             </button>
         </div>
@@ -11,13 +11,14 @@
 </div>
 
 <div class="panel">
-    <app-user-teams [currentUserId]="currentUserId" [currentOrganizationId]="currentOrganizationId"
-        [newTeamCreated]="teamCreated$.asObservable()" [joinNewTeam]="notifyMemberTeams$.asObservable()"
-        (leaveTeamEvent)="notifyOtherTeams$.next($event)">
+    <app-user-teams *ngIf="member && organization" [currentMemberId]="member.id"
+        [currentOrganizationId]="organization.id" [newTeamCreated]="teamCreated$.asObservable()"
+        [joinNewTeam]="notifyMemberTeams$.asObservable()" (leaveTeamEvent)="notifyOtherTeams$.next($event)">
     </app-user-teams>
 </div>
 <div class="panel">
-    <app-other-teams [currentUserId]="currentUserId" [currentOrganizationId]="currentOrganizationId"
-        [leavedTeam]="notifyOtherTeams$.asObservable()" (joinTeamEvent)="notifyMemberTeams$.next($event)">
+    <app-other-teams *ngIf="member && organization" [currentMemberId]="member.id"
+        [currentOrganizationId]="organization.id" [leavedTeam]="notifyOtherTeams$.asObservable()"
+        (joinTeamEvent)="notifyMemberTeams$.next($event)">
     </app-other-teams>
 </div>

@@ -19,8 +19,8 @@ export class UserService {
         return this.httpService.getRequest<User>(`${this.apiPrefix}/${id}`);
     }
 
-    updateUsersById(id: number, user: User): Observable<User> {
-        return this.httpService.putRequest<User>(`${this.apiPrefix}/${user.id}`, user);
+    public updateUsersById(id: number, user: User): Observable<User> {
+        return this.httpService.putRequest<User>(`${this.apiPrefix}/${id}`, user);
     }
 
     getUser(uid: string) {

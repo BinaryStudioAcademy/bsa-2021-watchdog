@@ -1,19 +1,24 @@
-<header class="profile-header">
-    <div class="center">
+<h1 class="content-title">
+    User Settings
+    <div class="header-buttons">
+        <button #saveBut pButton pRipple class="p-button-primary p-button-outlined" label="Save" (click)="updateAll()"></button>
+        <button pButton pRipple class="p-button-secondary p-button-outlined" label="Reset" (click)="reset()"></button>
+    </div>
+</h1>
+
+<header class="header">
+    <div class="postion">
         <div class="profile-header-container">
-            <div class="profile-header-title">
-                <h1>My Settings</h1>
-            </div>
             <div class="profile-header-navigation-container">
                 <ul class="navigation-list">
                     <li class="navigation-item">
-                        <a id="profile-settings" class="navigation-item-link" href="/user#">
+                        <a id="profile-settings" class="navigation-item-link" href="/home/users#">
                             <i class="pi pi-cog"></i>
                             <span class="header-navigation-text">Profile Settings</span>
                         </a>
                     </li>
                     <li class="navigation-item" *ngIf="isSignByEmailAndPassword">
-                        <a class="navigation-item-link" href="/user#user-password-settings">
+                        <a class="navigation-item-link" href="/home/users#user-password-settings">
                             <i class="pi pi-key"></i>
                             <span class="header-navigation-text">Change Password</span>
                         </a>
@@ -23,9 +28,10 @@
         </div>
     </div>
 </header>
-<div class="content-container">
-    <div class="center">
-        <app-user-profile-settings></app-user-profile-settings>
-        <app-user-password-settings id="user-password-settings" *ngIf="isSignByEmailAndPassword"></app-user-password-settings>
-    </div>
+
+<div class="settings-container">
+    <app-user-profile-settings *ngIf="user" [user]="user" [editForm]="editForm">
+    </app-user-profile-settings>
+    <app-user-password-settings *ngIf="isSignByEmailAndPassword" [user]="user" [pass]="pass" id="user-password-settings">
+    </app-user-password-settings>
 </div>

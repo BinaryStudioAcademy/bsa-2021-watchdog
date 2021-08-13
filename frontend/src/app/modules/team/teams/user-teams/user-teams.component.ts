@@ -17,7 +17,7 @@ export class UserTeamsComponent extends BaseComponent implements OnInit {
     @Output() leaveTeamEvent: EventEmitter<Team> = new EventEmitter<Team>();
 
     @Input() currentOrganizationId: number;
-    @Input() currentUserId: number;
+    @Input() currentMemberId: number;
 
     teams: Team[];
     isLoading: boolean = false;
@@ -46,10 +46,10 @@ export class UserTeamsComponent extends BaseComponent implements OnInit {
 
     public leaveTeam(teamId: number) {
         this.teamService
-            .leaveTeam(teamId, this.currentUserId)
+            .leaveTeam(teamId, this.currentMemberId)
             .pipe(this.untilThis)
-            .subscribe(response => {
-                this.leaveTeamEvent.emit(response);
+            .subscribe(team => {
+                this.leaveTeamEvent.emit(team);
                 this.loadMemberTeams();
             }, error => {
                 this.toastService.error(`${error}`, 'Error', 2000);
@@ -60,7 +60,7 @@ export class UserTeamsComponent extends BaseComponent implements OnInit {
         this.isLoading = true;
 
         this.teamService
-            .getMemberTeams(this.currentOrganizationId, this.currentUserId)
+            .getMemberTeams(this.currentOrganizationId, this.currentMemberId)
             .pipe(this.untilThis)
             .subscribe(teams => {
                 this.isLoading = false;
