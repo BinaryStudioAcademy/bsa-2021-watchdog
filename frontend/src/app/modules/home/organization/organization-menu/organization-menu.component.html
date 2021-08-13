@@ -1,7 +1,7 @@
 <app-loading-spinner *ngIf="isLoading" [overlay]="true"></app-loading-spinner>
 
 <div class="dropdown-wrapper" (click)="click()">
-    <p-dropdown [readonly]="organizations?.length<=1" [styleClass]="'org-label'" [options]="organizations"
+    <p-dropdown [readonly]="organizations?.length <= 1" [styleClass]="'org-label'" [options]="organizations"
         [(ngModel)]="organization" optionLabel="name">
         <ng-template class="org-label" pTemplate="selectedItem">
             <div class="org-avatar">
