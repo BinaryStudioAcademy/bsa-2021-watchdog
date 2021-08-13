@@ -11,10 +11,14 @@ export class ToastNotificationService {
     constructor(private messageService: MessageService) {
     }
 
+    private static isEmpty(str: string) {
+        return !str || str === '';
+    }
+
     info(message: string, title: string = 'Info', durationMs: number = 3000): void {
         this.message({
             severity: 'info',
-            summary: title === '' ? 'Info' : title,
+            summary: ToastNotificationService.isEmpty(title) ? 'Info' : title,
             detail: message,
             closable: true,
             life: durationMs
@@ -25,7 +29,7 @@ export class ToastNotificationService {
         console.log(message);
         this.message({
             severity: 'success',
-            summary: title === '' ? 'Success' : title,
+            summary: ToastNotificationService.isEmpty(title) ? 'Success' : title,
             detail: message,
             closable: true,
             life: durationMs
@@ -35,33 +39,11 @@ export class ToastNotificationService {
     warning(message: string, title: string = 'Warn', durationMs: number = 3000): void {
         this.message({
             severity: 'warn',
-            summary: title === '' ? 'Warn' : title,
+            summary: ToastNotificationService.isEmpty(title) ? 'Warn' : title,
             detail: message,
             closable: true,
             life: durationMs,
             sticky: true
-        });
-    }
-
-    error(message: string, title: string = 'Error', durationMs: number = 3000): void {
-        let errorMessage = message;
-        let errorTitle = title;
-
-        //get error message from error.interceptor
-        if (this.isInterceptorErrorCodeWithMessage(message)) {
-            const indexOfMessage = errorMessage.indexOf(this.errorCodeWithMessageStrings.messageString);
-            errorTitle = message.substr(0, indexOfMessage);
-            errorMessage = message.substr(indexOfMessage + this.errorCodeWithMessageStrings.messageString.length);
-        } else if (this.isInterceptorError(message)) {
-            errorMessage = message.substr(this.errorString.length);
-        }
-
-        this.message({
-            severity: 'error',
-            summary: errorTitle === '' ? 'Error' : errorTitle,
-            detail: errorMessage,
-            closable: true,
-            life: durationMs,
         });
     }
 
@@ -91,5 +73,27 @@ export class ToastNotificationService {
 
     private isInterceptorError(str: string): boolean {
         return str.includes(this.errorString);
+    }
+
+    error(message: string, title: string = 'Error', durationMs: number = 3000): void {
+        let errorMessage = message;
+        let errorTitle = title;
+
+        //get error message from error.interceptor
+        if (this.isInterceptorErrorCodeWithMessage(message)) {
+            const indexOfMessage = errorMessage.indexOf(this.errorCodeWithMessageStrings.messageString);
+            errorTitle = message.substr(0, indexOfMessage);
+            errorMessage = message.substr(indexOfMessage + this.errorCodeWithMessageStrings.messageString.length);
+        } else if (this.isInterceptorError(message)) {
+            errorMessage = message.substr(this.errorString.length);
+        }
+
+        this.message({
+            severity: 'error',
+            summary: ToastNotificationService.isEmpty(errorTitle) ? 'Error' : errorTitle,
+            detail: errorMessage,
+            closable: true,
+            life: durationMs,
+        });
     }
 }
