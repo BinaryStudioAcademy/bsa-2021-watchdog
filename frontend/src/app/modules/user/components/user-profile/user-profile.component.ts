@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { BaseComponent } from '@core/components/base/base.component';
 import { AuthenticationService } from '@core/services/authentication.service';
@@ -18,6 +18,8 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
     editForm: FormGroup = new FormGroup({});
     pass: FormGroup = new FormGroup({});
 
+    @ViewChild('saveBut') saveButton: ElementRef<HTMLButtonElement>;
+
     constructor(
         private authService: AuthenticationService,
         private userService: UserService,
@@ -30,7 +32,26 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
         this.user = this.authService.getUser();
         this.editForm.statusChanges.pipe(this.untilThis);
         this.isSignByEmailAndPassword = this.authService.isUserSignByEmailAndPassword();
+        //this.editForm.statusChanges.subscribe(() => { this.checkSaveStatus(); });
     }
+
+    // checkSaveStatus() {
+    //     if (this.editForm.untouched || this.editForm.pristine || this.editForm.invalid) {
+    //         this.setButtonStateDisabled(true);
+    //     }
+    //     if (this.editForm.valid && (this.editForm.touched || this.editForm.dirty)) {
+    //         const unsavedChangesProps = Object.keys(this.editForm.controls)
+    //             .filter(key =>
+    //                 this.editForm.controls[key].value !== this.user[key]);
+
+    //         if (unsavedChangesProps.length > 0) this.setButtonStateDisabled(false);
+    //         else this.setButtonStateDisabled(true);
+    //     }
+    // }
+
+    // setButtonStateDisabled(state: boolean) {
+    //     if (this.saveButton) this.saveButton.nativeElement.disabled = state;
+    // }
 
     updateUser() {
         const user = { ...this.editForm.value };
@@ -67,6 +88,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
                 .then(() => {
                     this.authService.updatePassword(pass.confirmPassword);
                     this.toastNotificationService.success('Password has been updated');
+                    this.pass.reset();
                 })
                 .catch(error => {
                     console.warn(error);
