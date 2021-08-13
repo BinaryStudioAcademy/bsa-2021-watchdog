@@ -2,37 +2,48 @@
     <!--    Left Buttons    -->
     <div class="left-buttons">
         <button (click)="clearDashboardTiles()" class="p-button-danger p-button-outlined" label="Clear" pButton
-                pRipple pTooltip="Clear dashboard" tooltipPosition="bottom"></button>
+                pRipple pTooltip="Clear dashboard" tooltipPosition="bottom" tooltipStyleClass="tooltip-text">
+        </button>
     </div>
     <!--    Center Buttons    -->
     <div class="center-buttons">
         <!--    Text Button    -->
         <button (click)="textMenu.toggle($event)" [disabled]="!menuTextItems.length"
-                class="dropdown-button p-button-outlined"
-                icon="pi pi-bars" pButton pTooltip="Text" tooltipPosition="bottom" type="button"></button>
-        <p-tieredMenu appendTo="body" #textMenu [model]="menuTextItems" [popup]="true"></p-tieredMenu>
+                class="dropdown-button p-button-outlined" icon="pi pi-bars" pButton pTooltip="Text"
+                tooltipPosition="bottom" tooltipStyleClass="tooltip-text" type="button">
+        </button>
+        <p-tieredMenu #textMenu [model]="menuTextItems" [popup]="true" appendTo="body" styleClass="tiered-menu">
+        </p-tieredMenu>
         <!--    List Button    -->
         <button (click)="listMenu.toggle($event)" [disabled]="!menuListItems.length"
-                class="dropdown-button p-button-outlined"
-                icon="pi pi-list" pButton pTooltip="List" tooltipPosition="bottom" type="button"></button>
-        <p-tieredMenu appendTo="body" #listMenu [model]="menuListItems" [popup]="true"></p-tieredMenu>
+                class="dropdown-button p-button-outlined" icon="pi pi-list"
+                pButton pTooltip="List" tooltipPosition="bottom" tooltipStyleClass="tooltip-text" type="button">
+        </button>
+        <p-tieredMenu #listMenu [model]="menuListItems" [popup]="true" appendTo="body" styleClass="tiered-menu">
+        </p-tieredMenu>
         <!--    Number Button    -->
         <div class="number-button">
             <button (click)="valueMenu.toggle($event)" [disabled]="!menuValueItems.length" class="p-button-outlined"
-                    label="1.2" pButton pTooltip="Value" tooltipPosition="bottom" type="button"></button>
-            <p-tieredMenu appendTo="body"  #valueMenu [model]="menuValueItems" [popup]="true"></p-tieredMenu>
+                    label="1.2" pButton pTooltip="Value" tooltipPosition="bottom" tooltipStyleClass="tooltip-text"
+                    type="button"></button>
+            <p-tieredMenu #valueMenu [model]="menuValueItems" [popup]="true" appendTo="body" styleClass="tiered-menu">
+            </p-tieredMenu>
         </div>
         <!--    Chart Button    -->
         <button (click)="chartMenu.toggle($event)" [disabled]="!menuChartItems.length"
                 class="dropdown-button p-button-outlined"
-                icon="pi pi-chart-line" pButton pTooltip="Chart" tooltipPosition="bottom" type="button"></button>
-        <p-tieredMenu appendTo="body" #chartMenu [model]="menuChartItems" [popup]="true"></p-tieredMenu>
+                icon="pi pi-chart-line" pButton pTooltip="Chart" tooltipPosition="bottom"
+                tooltipStyleClass="tooltip-text" type="button"></button>
+        <p-tieredMenu #chartMenu [model]="menuChartItems" [popup]="true" appendTo="body" styleClass="tiered-menu">
+        </p-tieredMenu>
     </div>
     <!--    Right Buttons    -->
     <div class="right-buttons">
         <!--    Close Button    -->
         <button (click)="close()" class="p-button-raised p-button-text p-button-plain" icon="pi pi-times"
-                pButton pTooltip="Close Menu" tooltipPosition="bottom" type="button"></button>
+                pButton pTooltip="Close Menu" tooltipPosition="bottom" tooltipStyleClass="tooltip-text"
+                type="button">
+        </button>
     </div>
 
 </div>

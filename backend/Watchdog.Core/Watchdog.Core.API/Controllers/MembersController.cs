@@ -51,5 +51,11 @@ namespace Watchdog.Core.API.Controllers
             var members = await _memberService.SearchMembersNotInTeamAsync(teamId, memberEmail);
             return Ok(members);
         }
+
+        [HttpGet("organization/{orgId}/user/{userId}")]
+        public async Task<ActionResult<MemberDto>> GetMemberByUserAndOrganization(int userId, int orgId)
+        {
+            return Ok(await _memberService.GetMemberByUserIdAndOrganizationIdAsync(userId, orgId));
+        }
     }
 }
