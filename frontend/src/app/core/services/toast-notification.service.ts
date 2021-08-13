@@ -26,7 +26,6 @@ export class ToastNotificationService {
     }
 
     success(message: string, title: string = 'Success', durationMs: number = 3000): void {
-        console.log(message);
         this.message({
             severity: 'success',
             summary: ToastNotificationService.isEmpty(title) ? 'Success' : title,
@@ -68,7 +67,7 @@ export class ToastNotificationService {
             }
         });
 
-        return count === 2;
+        return count === searchStrings.length;
     }
 
     private isInterceptorError(str: string): boolean {
