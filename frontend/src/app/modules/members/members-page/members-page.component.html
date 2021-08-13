@@ -1,7 +1,7 @@
 <app-loading-spinner *ngIf="loadingNumber > 0" [overlay]="true"></app-loading-spinner> 
     <div class="invite-wrapper">
         <div class="title">Members</div>
-        <button pButton class="inviteMembers" (click)="isInviting=true" pRipple type="button" label="Invite"></button>
+        <button pButton class="inviteMembers p-button-outlined" (click)="isInviting=true" pRipple type="button" label="Invite"></button>
     </div>
 <div class="members-container">
     <div class="p-inputgroup filter-input">
@@ -60,7 +60,10 @@
                 <td>{{member.user.email}}</td>
                 <td>{{member.team.name}}</td>
                 <td>{{member.role.name}}</td>
-                <td>{{member.isAccepted}}</td>
+                <td>
+                    <button pButton pRipple type="button" label="Re-invite" *ngIf="!member.isAccepted" class="p-button-outlined p-button-secondary" (click)="reinvite(member)"></button>
+                    <button pButton pRipple type="button" label="Accepted" *ngIf="member.isAccepted" [disabled]='true' class="p-button-outlined p-button-secondary"></button>
+                </td>
             </tr>
         </ng-template>
     </p-table>

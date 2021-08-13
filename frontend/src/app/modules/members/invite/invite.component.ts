@@ -126,9 +126,10 @@ export class InviteComponent extends BaseComponent implements OnInit {
         this.newMember.organizationId = this.organization.id;
         this.newMember.createdBy = this.currentUser.id;
         this.memberService.addMemberToOrganization(this.newMember)
-            .subscribe(invatedMember => {
-                alert(JSON.stringify(invatedMember));
-            });
+            .subscribe(x => this.toastNotifications.success("Member invited"),
+                error => {
+                    this.toastNotifications.error(`${error}`, 'Error');
+                });
     }
 
     addNew() {

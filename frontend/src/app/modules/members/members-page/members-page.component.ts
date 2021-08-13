@@ -40,6 +40,9 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
                         this.loadingNumber -= 1;
                     });
             })
+    }
 
+    reinvite(member: Member) {
+        this.toastNotifications.success("Member re-invited");
     }
 }
