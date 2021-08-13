@@ -1,4 +1,4 @@
-<app-loading-spinner *ngIf="loadingNumber > 0" [size]="'10px'"></app-loading-spinner>
+<app-loading-spinner *ngIf="loadingNumber > 0" [overlay]="true"></app-loading-spinner> 
     <div class="invite-wrapper">
         <div class="title">Members</div>
         <button pButton class="inviteMembers" (click)="isInviting=true" pRipple type="button" label="Invite"></button>
@@ -28,14 +28,6 @@
                         <p-columnFilter type="text" field="user.email" display="menu"></p-columnFilter>
                     </div>
                 </th>
-                <th pSortableColumn="teamId">
-                    <div class="table-header-cell" id="teamId-col">
-                        <span>
-                            Team Id <p-sortIcon field="teamId"></p-sortIcon>
-                        </span>
-                        <p-columnFilter type="text" field="teamId" display="menu"></p-columnFilter>
-                    </div>
-                </th>
                 <th pSortableColumn="team.name" id="team-name-col">
                     <div class="table-header-cell">
                         <span>
@@ -52,15 +44,23 @@
                         <p-columnFilter type="text" field="role.name" display="menu"></p-columnFilter>
                     </div>
                 </th>
+                <th pSortableColumn="isAccepted">
+                    <div class="table-header-cell" id="isAccepted-col">
+                        <span>
+                            Is accepted <p-sortIcon field="isAccepted"></p-sortIcon>
+                        </span>
+                        <p-columnFilter type="text" field="isAccepted" display="menu"></p-columnFilter>
+                    </div>
+                </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-member>
             <tr>
                 <td>{{member.user.firstName}} {{member.user.lastName}}</td>
                 <td>{{member.user.email}}</td>
-                <td>{{member.teamId}}</td>
                 <td>{{member.team.name}}</td>
                 <td>{{member.role.name}}</td>
+                <td>{{member.isAccepted}}</td>
             </tr>
         </ng-template>
     </p-table>

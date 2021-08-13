@@ -10,6 +10,9 @@ namespace Watchdog.Core.BLL.MappingProfiles
         {
             CreateMap<Team, TeamDto>();
             CreateMap<TeamDto, Team>();
+
+            CreateMap<Team, TeamOptionDto>();
+
             CreateMap<NewTeamDto, Team>();
             CreateMap<UpdateTeamDto, Team>();
         }

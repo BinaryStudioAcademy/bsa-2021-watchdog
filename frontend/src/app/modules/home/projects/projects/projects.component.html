@@ -1,8 +1,9 @@
 <!--    Header    -->
+<app-loading-spinner *ngIf="loadingNumber > 0" [overlay]="true"></app-loading-spinner> 
 <div class="header">
     <h1 class="header-title">Projects</h1>
     <div class="action-buttons">
-        <button (click)="onClickCreateProject()" class="p-button-info"
+        <button [routerLink]="['create']" class="p-button-info"
                 icon="pi pi-plus-circle" label="Create Project" pButton type="button"></button>
     </div>
 </div>
@@ -12,7 +13,7 @@
         <div *ngFor="let project of projects">
             <div class="card">
                 <div class="card-title">
-                    <img alt="{{project.platform.name}}" src="{{project.platform.avatarUrl}}">
+                    <img alt="{{project.platform.name}}" [src]="project.platform.avatarUrl | save">
                     <span>{{project.platform.name}}</span>
                 </div>
                 <div class="card-body">

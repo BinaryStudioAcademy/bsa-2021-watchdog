@@ -8,16 +8,12 @@ namespace Watchdog.Core.BLL.Services.Abstract
     public interface IMemberService
     {
         Task<MemberDto> GetMemberByIdAsync(int id);
-
-        Task<IEnumerable<MemberDto>> GetMembersByOrganizationIdAsync(int id);
-
+        Task<ICollection<MemberDto>> GetMembersByOrganizationIdAsync(int id);
+        Task<ICollection<MemberDto>> SearchMembersNotInTeamAsync(int teamId, string memberEmail);
+        Task<ICollection<MemberDto>> GetAllMembersAsync();
         Task<MemberDto> AddMemberAsync(NewMemberDto member);
-
         Task<MemberDto> UpdateMemberAsync(UpdateMemberDto member);
-
         Task DeleteMemberAsync(int id);
         Task<Response> InviteMember(MemberDto memberDto);
-        Task<IEnumerable<MemberDto>> SearchMembersNotInOrganizationAsync(int orgId, string memberEmail);
-
     }
 }

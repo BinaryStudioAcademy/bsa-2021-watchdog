@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Team } from '@shared/models/team/team';
+import { Team } from '@shared/models/teams/team';
 import { TeamService } from '@core/services/team.service';
 import { Observable } from 'rxjs';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
@@ -8,7 +8,7 @@ import { BaseComponent } from '@core/components/base/base.component';
 @Component({
     selector: 'app-user-teams',
     templateUrl: './user-teams.component.html',
-    styleUrls: ['../teams.component.sass']
+    styleUrls: ['../teams.component.sass', '../../team.style.sass']
 })
 export class UserTeamsComponent extends BaseComponent implements OnInit {
     @Input() newTeamCreated: Observable<Team> = new Observable<Team>();
@@ -49,7 +49,7 @@ export class UserTeamsComponent extends BaseComponent implements OnInit {
             .leaveTeam(teamId, this.currentUserId)
             .pipe(this.untilThis)
             .subscribe(response => {
-                this.leaveTeamEvent.emit(response.body);
+                this.leaveTeamEvent.emit(response);
                 this.loadMemberTeams();
             }, error => {
                 this.toastService.error(`${error}`, 'Error', 2000);
@@ -64,9 +64,10 @@ export class UserTeamsComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis)
             .subscribe(teams => {
                 this.isLoading = false;
-                this.teams = teams.body;
+                this.teams = teams;
             }, error => {
                 this.toastService.error(`${error}`, 'Error', 2000);
+                this.isLoading = false;
             });
     }
 }

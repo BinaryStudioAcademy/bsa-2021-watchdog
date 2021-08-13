@@ -1,6 +1,6 @@
 import { User } from '@shared/models/user/user';
 import { Role } from '../role/role';
-import { Team } from '../team/team';
+import { Team } from '../teams/team';
 
 export interface Member {
     id: number,
@@ -9,5 +9,6 @@ export interface Member {
     user: User,
     team: Team,
     role: Role,
-    organizationId: number
+    organizationId: number,
+    isAccepted: boolean,
 }

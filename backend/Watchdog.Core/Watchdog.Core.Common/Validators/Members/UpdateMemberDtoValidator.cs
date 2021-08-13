@@ -16,8 +16,6 @@ namespace Watchdog.Core.Common.Validators.Members
                         .NotNull();
             RuleFor(m => m.RoleId)
                         .NotNull();
-            RuleFor(m => m.TeamId)
-                        .NotNull();
         }
     }
 }

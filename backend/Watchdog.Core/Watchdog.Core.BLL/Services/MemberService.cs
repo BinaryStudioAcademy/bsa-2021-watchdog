@@ -60,9 +60,14 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<MemberDto>> GetMembersByOrganizationIdAsync(int id)
+        public async Task<ICollection<MemberDto>> GetMembersByOrganizationIdAsync(int id)
         {
-            return _mapper.Map<IEnumerable<MemberDto>>(await _context.Members.Where(m => m.OrganizationId == id).Include(m => m.User).Include(m => m.Team).Include(m => m.Role).ToListAsync());
+            var members = await _context.Members.Where(m => m.OrganizationId == id)
+                .Include(m => m.User)
+                .Include(m => m.Team)
+                .Include(m => m.Role)
+                .ToListAsync();
+            return _mapper.Map<ICollection<MemberDto>>(members);
 
         }
 
@@ -72,7 +77,18 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<MemberDto>(member);
         }
 
-        public async Task<MemberDto> UpdateMemberAsync(UpdateMemberDto member)
+        public async Task<ICollection<MemberDto>> SearchMembersNotInTeamAsync(int teamId, string memberEmail)
+        {
+            var team = await _context.Teams.FirstOrDefaultAsync(t => t.Id == teamId);
+
+            var members = await _context.Members
+                .Include(m => m.User)
+                .Where(m => m.User.Email.Contains(memberEmail) && !(m.TeamId == teamId) && m.OrganizationId == team.OrganizationId)
+                .ToListAsync();
+            return _mapper.Map<ICollection<MemberDto>>(members);
+        }
+        
+        public async Task<MemberDto> UpdateMemberAsync(UpdateMemberDto member)        
         {
             var result = await _context.Members.Include(m => m.User).FirstOrDefaultAsync(m => m.Id == member.Id) ?? throw new KeyNotFoundException("Member doesn't exist");
             _context.Entry(result).CurrentValues.SetValues(member);
@@ -81,18 +97,19 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<MemberDto>(result);
         }
 
-        public async Task<IEnumerable<MemberDto>> SearchMembersNotInOrganizationAsync(int orgId, string memberEmail)
-        {
-            var members = await _context.Members
-                .Include(m => m.User)
-                .Where(m => m.User.Email.Contains(memberEmail) && m.OrganizationId != orgId)
-                .ToListAsync();
-            return _mapper.Map<IEnumerable<MemberDto>>(members);
-        }
-
         public async Task<IEnumerable<MemberDto>> GetInvitedMembers()
         {
             return _mapper.Map<IEnumerable<MemberDto>>(await _context.Members.Where(m => m.IsAccepted == false).ToListAsync());
+        }
+
+        public async Task<ICollection<MemberDto>> GetAllMembersAsync()
+        {
+            var members = await _context.Members
+                .Include(m => m.User)
+                .Include(m => m.Team)
+                .Include(m => m.Role)
+                .ToListAsync();
+            return _mapper.Map<ICollection<MemberDto>>(members);
         }
     }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@core/components/base/base.component';
+import { AuthenticationService } from '@core/services/authentication.service';
 import { MemberService } from '@core/services/member.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { Member } from '@shared/models/member/member';
@@ -18,6 +19,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
     constructor(
         private memberService: MemberService,
         private toastNotifications: ToastNotificationService,
+        private authService: AuthenticationService
     ) {
         super();
     }
@@ -25,14 +27,19 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
     ngOnInit(): void {
         this.isInviting = false;
         this.loadingNumber += 1;
-        this.memberService.getMembersByOrganizationId(2) //2 - organization id ?? from current user
+        this.authService.getOrganization()
             .pipe(this.untilThis)
-            .subscribe(members => {
-                this.members = members;
-                this.loadingNumber -= 1;
-            }, error => {
-                this.toastNotifications.error(error.toString());
-                this.loadingNumber -= 1;
-            });
+            .subscribe(organization => {
+                this.memberService.getMembersByOrganizationId(organization.id)
+                    .pipe(this.untilThis)
+                    .subscribe(members => {
+                        this.members = members;
+                        this.loadingNumber -= 1;
+                    }, error => {
+                        this.toastNotifications.error(error.toString());
+                        this.loadingNumber -= 1;
+                    });
+            })
+
     }
 }

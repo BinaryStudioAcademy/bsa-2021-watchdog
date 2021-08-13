@@ -13,5 +13,6 @@ namespace Watchdog.Core.Common.DTO.Members
         public UserDto User { get; set; }
         public TeamDto Team { get; set; }
         public int TeamId { get; set; }
+        public bool IsAccepted { get; set; }
     }
 }

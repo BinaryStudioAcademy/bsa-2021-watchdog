@@ -34,6 +34,11 @@ import { StyleClassModule } from 'primeng/styleclass';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DialogService } from 'primeng/dynamicdialog';
+import { RatingModule } from 'primeng/rating';
+
 // import and export here all required modules from primeng
 @NgModule({
     imports: [
@@ -69,8 +74,11 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
         TooltipModule,
         StyleClassModule,
         TieredMenuModule,
+        AutoCompleteModule,
+        InputTextareaModule,
+        MultiSelectModule,
         OverlayPanelModule,
-        AutoCompleteModule
+        RatingModule,
     ],
     exports: [
         ButtonModule,
@@ -104,14 +112,18 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
         TooltipModule,
         StyleClassModule,
         TieredMenuModule,
+        AutoCompleteModule,
+        InputTextareaModule,
         OverlayPanelModule,
-        AutoCompleteModule
+        RatingModule,
+        MultiSelectModule,
     ],
     declarations: [],
     providers: [
         MessageService,
         ConfirmationService,
         PrimeNGConfig,
+        DialogService,
     ]
 })
 export class PrimeComponentsModule {

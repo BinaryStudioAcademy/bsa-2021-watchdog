@@ -6,11 +6,15 @@ import { Subject } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { RoleService } from '@core/services/role.service';
 import { Role } from '@shared/models/role/role';
-import { Team } from '@shared/models/projects/team';
+import { TeamOption } from '@shared/models/teams/team-option';
 import { NewMember } from '@shared/models/member/new-member';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { User } from '@shared/models/user/user';
+import { Organization } from '@shared/models/organization/organization';
+import { ToastNotificationService } from '@core/services/toast-notification.service';
+import { TeamService } from '@core/services/team.service';
+import { UserService } from '@core/services/user.service';
 
 @Component({
     selector: 'app-invite',
@@ -19,50 +23,34 @@ import { User } from '@shared/models/user/user';
 })
 export class InviteComponent extends BaseComponent implements OnInit {
     @Output() closeModal = new EventEmitter<void>();
-    members: Member[];
+    notMembers: User[];
     memberGroup: FormGroup;
     searchTerm: Subject<string> = new Subject<string>();
     roles: Role[];
     role: Role = {} as Role;
-    teams: Team[];
+    teams: TeamOption[];
     newMember = {} as NewMember;
     currentUser: User;
-    ORGANIZATIONid = 2;
-    disabled: boolean = true;
+
+    organization: Organization;
+
 
 
 
     invations: { member: NewMember, groupForm: FormGroup }[] = [{ member: {} as NewMember, groupForm: this.generateGroupForm() }];
-    reInvitations: { member: NewMember, groupForm: FormGroup }[] = [{ member: {} as NewMember, groupForm: this.generateGroupForm() }];
-    constructor(private memberService: MemberService, private roleService: RoleService, private authService: AuthenticationService) {
+    constructor(
+        private memberService: MemberService,
+        private roleService: RoleService,
+        private authService: AuthenticationService,
+        private toastNotifications: ToastNotificationService,
+        private teamService: TeamService,
+        private userService: UserService) {
         super();
     }
 
     ngOnInit(): void {
         this.loadData();
         this.currentUser = this.authService.getUser();
-        this.teams = [
-            {
-                id: 1,
-                name: 'team1'
-            },
-            {
-                id: 2,
-                name: 'team2'
-            }
-        ];
-    }
-    enableButton(id: string) {
-        let element = document.getElementById(id);
-        if (element.hasAttribute('disabled')) {
-            element.setAttribute('disabled', 'false')
-        }
-    }
-    disableButton(id: string) {
-        let element = document.getElementById(id);
-        if (element.hasAttribute('disabled')) {
-            element.setAttribute('disabled', 'true')
-        }
     }
 
     generateGroupForm() {
@@ -93,27 +81,49 @@ export class InviteComponent extends BaseComponent implements OnInit {
             this.untilThis,
             debounceTime(300),
             switchMap((term: string) =>
-                this.memberService.searchMembersNotInOrganization(this.ORGANIZATIONid, term)
+                this.userService.searchMembersNotInOrganization(this.organization.id, term)
                     .pipe(this.untilThis))
-        ).subscribe(members => {
-            this.members = members;
+        ).subscribe(users => {
+            this.notMembers = users;
+        }, error => {
+            this.toastNotifications.error(`${error}`, 'Error');
         });
 
         this.roleService.getRoles()
             .pipe(this.untilThis)
-            .subscribe(roles => this.roles = roles);
+            .subscribe(roles => {
+                this.roles = roles;
+            }, error => {
+                this.toastNotifications.error(`${error}`, 'Error');
+            });
+
+        this.authService.getOrganization()
+            .pipe(this.untilThis)
+            .subscribe(organization => {
+                this.organization = organization;
+
+                this.teamService.getTeamOptionsByOrganizationId(organization.id)
+                    .pipe(this.untilThis)
+                    .subscribe(teams => {
+                        this.teams = teams;
+                    })
+            }, error => {
+                this.toastNotifications.error(`${error}`, 'Error');
+            });
+
+
     }
 
-    search(event: any) {
+    search(event: { query: string }) {
         const value = event.query;
         this.searchTerm.next(value);
     }
 
     invate(formGroup: FormGroup) {
-        this.newMember.email = formGroup.value.name.user.email
+        this.newMember.email = formGroup.value.name.email
         this.newMember.roleId = formGroup.value.role;
         this.newMember.teamId = formGroup.value.team;
-        this.newMember.organizationId = this.ORGANIZATIONid;
+        this.newMember.organizationId = this.organization.id;
         this.newMember.createdBy = this.currentUser.id;
         this.memberService.addMemberToOrganization(this.newMember)
             .subscribe(invatedMember => {
@@ -123,8 +133,5 @@ export class InviteComponent extends BaseComponent implements OnInit {
 
     addNew() {
         this.invations = this.invations.concat({ member: {} as NewMember, groupForm: this.generateGroupForm() });
-    }
-    func() {
-        alert('blured!');
     }
 }

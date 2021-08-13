@@ -2,58 +2,74 @@ import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
-import { Platform } from '@shared/models/projects/platform';
-import { FakeData } from '@modules/home/projects/fake-data';
-import { Team } from '@shared/models/projects/team';
-import { Project } from '@shared/models/projects/project';
+import { Data } from '@modules/home/projects/data';
+import { PlatformService } from '@core/services/platform.service';
+import { BaseComponent } from '@core/components/base/base.component';
+import { Platform } from '@shared/models/platforms/platform';
+import { NewProject } from '@shared/models/projects/new-project';
+import { TeamService } from '@core/services/team.service';
+import { TeamOption } from '@shared/models/teams/team-option';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { CreateTeamComponent } from '@modules/team/create-team/create-team.component';
+import { AuthenticationService } from '@core/services/authentication.service';
+import { User } from '@shared/models/user/user';
+import { Organization } from '@shared/models/organization/organization';
+import { AlertSettings } from '@shared/models/alert-settings/alert-settings';
 import { regexs } from '@shared/constants/regexs';
+import { ProjectService } from '@core/services/project.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-create-project',
     templateUrl: './create-project.component.html',
     styleUrls: ['./create-project.component.sass'],
-    providers: [FakeData]
+    providers: [Data, DialogService]
 })
-export class CreateProjectComponent implements OnInit {
-    public platformTabItems: MenuItem[];
-    public viewPlatformCards: Platform[];
-    public userTeams: Team[];
-    public alertCategories: string[];
-    public alertTypes: string[];
-    public alertTimeIntervals: string[];
-
-    public alertsCount: number;
-    public selectedAlertCategory?: string;
-    public selectedAlertType?: string;
-    public selectedAlertTimeInterval?: string;
-    public selectedPlatformId?: number;
-    public activePlatformTabItem: MenuItem;
-    public formGroup: FormGroup;
-    public SPECIAL_ALERT_CATEGORY: string = 'When there are more than';
-    private platformCards: Platform[];
+export class CreateProjectComponent extends BaseComponent implements OnInit {
+    user: User;
+    organization: Organization;
+    loadingNumber: number = 0;
+    newProject = {} as NewProject;
+    platforms = {
+        platformTabItems: [] as MenuItem[],
+        activePlatformTabItem: {} as MenuItem,
+        viewPlatformCards: [] as Platform[],
+        platformCards: [] as Platform[]
+    };
+    teams: TeamOption[];
+    alertSetting = {} as AlertSettings;
+    formGroup = {} as FormGroup;
+    createTeamDialog: DynamicDialogRef;
 
     constructor(
         private toastNotifications: ToastNotificationService,
-        private fakeData: FakeData
+        private platformService: PlatformService,
+        private teamService: TeamService,
+        private dialogService: DialogService,
+        private authService: AuthenticationService,
+        private projectService: ProjectService,
+        public alertData: Data,
+        private router: Router
     ) {
+        super();
     }
 
     ngOnInit() {
-        this.initFakeData();
-        this.platformTabItems = [
-            { label: 'All', command: (event) => this.onTabChange(event) },
-            { label: 'Browser', command: (event) => this.onTabChange(event) },
-            { label: 'Server', command: (event) => this.onTabChange(event) },
-            { label: 'Mobile', command: (event) => this.onTabChange(event) },
-            { label: 'Desktop', command: (event) => this.onTabChange(event) }
-        ];
-        this.activePlatformTabItem = Object.assign(this.platformTabItems[0]);
-        this.selectedAlertType = String(this.alertTypes[0]);
-        this.selectedAlertTimeInterval = String(this.alertTimeIntervals[0]);
-        this.alertsCount = 10;
+        this.user = this.authService.getUser();
+        this.authService.getOrganization()
+            .subscribe(organization => {
+                this.organization = organization;
+                this.loadTeams();
+            });
+        this.initPlatforms();
+        this.initAlertData();
+        this.addValidation();
+    }
+
+    private addValidation() {
         this.formGroup = new FormGroup({
             alertCategory: new FormControl(
-                this.alertCategories[0],
+                this.alertData.alertCategories[0].value,
                 [
                     Validators.required
                 ]
@@ -67,71 +83,156 @@ export class CreateProjectComponent implements OnInit {
                     Validators.pattern(regexs.projectName)
                 ]
             ),
+            projectDescription: new FormControl(
+                '',
+                [
+                    Validators.maxLength(1000),
+                    Validators.pattern(regexs.projectDescription)
+                ]
+            ),
             team: new FormControl(
-                this.userTeams[0],
+                '',
                 [
                     Validators.required
                 ],
             ),
         });
-        this.onTabChange();
     }
 
-    initFakeData() {
-        this.platformCards = this.fakeData.fakePlatforms;
-        this.alertTypes = this.fakeData.fakeAlertTypes;
-        this.alertTimeIntervals = this.fakeData.fakeAlertTimeIntervals;
-        this.alertCategories = this.fakeData.fakeAlertCategories;
-        this.userTeams = this.fakeData.fakeTeams;
+    private initPlatforms() {
+        this.loadPlatforms();
+        this.platforms.platformTabItems = [
+            { label: 'All', command: (event) => this.onTabChange(event?.item.label) },
+            { label: 'Browser', command: (event) => this.onTabChange(event?.item.label) },
+            { label: 'Server', command: (event) => this.onTabChange(event?.item.label) },
+            { label: 'Mobile', command: (event) => this.onTabChange(event?.item.label) },
+            { label: 'Desktop', command: (event) => this.onTabChange(event?.item.label) }
+        ];
+        this.platforms.activePlatformTabItem = Object.assign(this.platforms.platformTabItems[0]);
     }
 
-    onTabChange(event?: any): void {
-        this.selectedPlatformId = undefined;
-        switch (event?.item.label ?? '') {
-            case 'Browser': {
-                this.viewPlatformCards = [...this.platformCards.filter(value => value.isBrowser === true)];
-                break;
-            }
-            case 'Server': {
-                this.viewPlatformCards = [...this.platformCards.filter(value => value.isServer === true)];
-                break;
-            }
-            case 'Mobile': {
-                this.viewPlatformCards = [...this.platformCards.filter(value => value.isMobile === true)];
-                break;
-            }
-            case 'Desktop': {
-                this.viewPlatformCards = [...this.platformCards.filter(value => value.isDesktop === true)];
-                break;
-            }
-            default: {
-                this.viewPlatformCards = [...this.platformCards];
-                break;
+    private loadPlatforms() {
+        this.loadingNumber += 1;
+        this.platformService
+            .getPlatforms()
+            .pipe(this.untilThis)
+            .subscribe(platforms => {
+                this.platforms.platformCards = platforms;
+                this.onTabChange();
+                this.loadingNumber -= 1;
+            }, error => {
+                this.toastNotifications.error(`${error}`);
+                this.loadingNumber -= 1;
+            });
+    }
+
+    private loadTeams() {
+        this.loadingNumber += 1;
+        this.teamService
+            .getTeamOptionsByOrganizationId(this.organization.id)
+            .pipe(this.untilThis)
+            .subscribe(teamOptions => {
+                this.teams = teamOptions;
+                this.loadingNumber -= 1;
+            }, error => {
+                this.toastNotifications.error(`${error}`);
+                this.loadingNumber -= 1;
+            });
+    }
+
+    private initAlertData() {
+        this.alertSetting.alertCategory = this.alertData.initAlertCategory;
+        this.alertSetting.specialAlertSetting = {
+            alertsCount: this.alertData.initAlertsCount,
+            specialAlertType: this.alertData.initSpecialAlertType,
+            alertTimeInterval: this.alertData.initAlertTimeInterval
+        };
+    }
+
+    private onTabChange(label: string = ''): void {
+        this.newProject.platformId = undefined;
+        if (this.platforms.platformCards) {
+            switch (label) {
+                case 'Browser': {
+                    this.platforms.viewPlatformCards = this.platforms.platformCards.filter(value => value.platformTypes.isBrowser);
+                    break;
+                }
+                case 'Server': {
+                    this.platforms.viewPlatformCards = this.platforms.platformCards.filter(value => value.platformTypes.isServer);
+                    break;
+                }
+                case 'Mobile': {
+                    this.platforms.viewPlatformCards = this.platforms.platformCards.filter(value => value.platformTypes.isMobile);
+                    break;
+                }
+                case 'Desktop': {
+                    this.platforms.viewPlatformCards = this.platforms.platformCards.filter(value => value.platformTypes.isDesktop);
+                    break;
+                }
+                default: {
+                    this.platforms.viewPlatformCards = this.platforms.platformCards.concat();
+                    break;
+                }
             }
         }
     }
 
-    onPlatformSelected(platformId: number): void {
-        this.selectedPlatformId = platformId === this.selectedPlatformId ? undefined : platformId;
+    openDialog() {
+        this.createTeamDialog = this.dialogService.open(CreateTeamComponent, {
+            header: 'Creating team',
+            width: '35%',
+            showHeader: true,
+            baseZIndex: 10000
+        });
+
+        this.createTeamDialog.onClose
+            .pipe(this.untilThis)
+            .subscribe((name: string) => {
+                if (name) {
+                    this.loadingNumber += 1;
+                    this.teamService
+                        .createTeam({
+                            createdBy: this.user.id,
+                            organizationId: this.organization.id,
+                            name
+                        })
+                        .pipe(this.untilThis)
+                        .subscribe(response => {
+                            this.toastNotifications.success(`Team #${name} created!`, '', 2000);
+                            this.teams = this.teams.concat({ name, id: response.id });
+                            this.newProject.teamId = response.id;
+                            this.loadingNumber -= 1;
+                        }, error => {
+                            this.toastNotifications.error(`${error}`, 'Error');
+                            this.loadingNumber -= 1;
+                        });
+                }
+            });
     }
 
     createProject(): void {
-        if (this.formGroup.valid && this.selectedPlatformId) {
-            const project: Project = {
-                id: 5,
-                name: this.formGroup.controls.projectName.value,
-                team: this.formGroup.controls.team.value,
-                platform: this.platformCards.find(value => value.id === this.selectedPlatformId),
-                alertSettings:
-                    {
-                        alertCategory: this.selectedAlertCategory,
-                        alertsCount: this.alertsCount,
-                        alertType: this.selectedAlertType,
-                        alertTimeInterval: this.selectedAlertTimeInterval
-                    }
+        if (this.formGroup.valid && this.newProject.platformId) {
+            this.newProject.organizationId = this.organization.id;
+            this.newProject.createdBy = this.user.id;
+            this.newProject.alertSettings = {
+                alertCategory: this.alertSetting.alertCategory,
+                specialAlertSetting: this.alertSetting.alertCategory === 3 ? this.alertSetting.specialAlertSetting : null
             };
-            console.log(project);
-            this.toastNotifications.success(`${project.name} created!`);
+            this.loadingNumber += 1;
+            this.projectService.createProject(this.newProject)
+                .subscribe(
+                    project => {
+                        this.toastNotifications.success(`${project.name} created!`);
+                        this.router.navigate(['home', 'projects']);
+                        this.loadingNumber -= 1;
+                    },
+                    error => {
+                        this.toastNotifications.error(`${error}`, 'Error');
+                        this.loadingNumber -= 1;
+                    }
+                );
+        } else {
+            this.toastNotifications.error('Form is not valid', 'Error');
         }
     }
 }

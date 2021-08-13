@@ -14,7 +14,7 @@ export class SocialsLoginComponent {
     ) { }
 
     signInWithGitHub() {
-        this.authService.signInWithGitHub(['signon'])
+        this.authService.signInWithGitHub(['home'])
             .subscribe(() => { },
                 error => {
                     this.toastService.error(`${error}`, 'Error');
@@ -22,7 +22,7 @@ export class SocialsLoginComponent {
     }
 
     signInWithGoogle() {
-        this.authService.signInWithGoogle(['signon'])
+        this.authService.signInWithGoogle(['home'])
             .subscribe(() => { },
                 error => {
                     this.toastService.error(`${error}`, 'Error');
@@ -30,7 +30,7 @@ export class SocialsLoginComponent {
     }
 
     signInWithFacebook() {
-        this.authService.signInWithFacebook(['signon'])
+        this.authService.signInWithFacebook(['home'])
             .subscribe(() => { },
                 error => {
                     this.toastService.error(`${error}`, 'Error');

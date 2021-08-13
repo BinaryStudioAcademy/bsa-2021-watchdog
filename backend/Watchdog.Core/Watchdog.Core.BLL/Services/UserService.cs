@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.User;
@@ -15,6 +16,14 @@ namespace Watchdog.Core.BLL.Services
         {
         }
 
+        public async Task<IEnumerable<UserDto>> SearchMembersNotInOrganizationAsync(int orgId, string memberEmail)
+        {
+            var members = await _context.Users
+                .Include(u => u.Members)
+                .Where(u => u.Email.Contains(memberEmail) && !u.Members.Any(m => m.OrganizationId == orgId))
+                .ToListAsync();
+            return _mapper.Map<IEnumerable<UserDto>>(members);
+        }
         public async Task<UserDto> UpdateUserAsync(int userId, UpdateUserDto updateUserDto)
         {
             var existedUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);

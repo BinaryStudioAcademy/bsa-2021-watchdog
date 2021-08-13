@@ -1,11 +1,10 @@
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { ShareDataService } from '@core/services/share-data.service';
-import { OrganizationService } from '@core/services/organization.service';
 import { Component, OnInit } from '@angular/core';
 import { Organization } from '@shared/models/organization/organization';
 import { BaseComponent } from '@core/components/base/base.component';
 import { MenuItem } from 'primeng/api';
-import { User } from '@shared/models/user/user';
+import { AuthenticationService } from '@core/services/authentication.service';
 
 @Component({
     selector: 'app-organization-menu',
@@ -13,23 +12,25 @@ import { User } from '@shared/models/user/user';
     styleUrls: ['./organization-menu.style.sass'],
 })
 export class OrganizationMenuComponent extends BaseComponent implements OnInit {
+    isLoading: boolean = false;
     organization: Organization;
     menuItems: MenuItem[];
-    currentUser: User;
 
     constructor(
-        private organizationService: OrganizationService,
         private dataService: ShareDataService<Organization>,
+        private authSerice: AuthenticationService,
         private toastService: ToastNotificationService
     ) { super(); }
 
     ngOnInit(): void {
-        this.organizationService.getOrganization(1)
+        this.isLoading = true;
+        this.authSerice.getOrganization()
             .pipe(this.untilThis)
             .subscribe(organization => {
                 this.organization = organization;
                 this.checkUpdates();
-            }, error => { this.toastService.error(error); });
+                this.isLoading = false;
+            }, error => { this.toastService.error(error); this.isLoading = false; });
 
         this.menuItems = [
             { label: 'Organization settings', routerLink: './organization/settings' },
