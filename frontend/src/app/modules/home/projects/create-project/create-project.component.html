@@ -43,7 +43,9 @@
                                [disabled]="formGroup.controls.alertCategory.value !== 3"
                                [min]="0" [showButtons]="true" [size]="2" [step]="1"
                                class="radiobutton-settings-alerts-count"
-                               mode="decimal">
+                               mode="decimal"
+                               incrementButtonClass="p-button-outlined"
+                               decrementButtonClass="p-button-outlined">
                 </p-inputNumber>
                 <p-dropdown [(ngModel)]="alertSetting.specialAlertSetting.specialAlertType"
                             [disabled]="formGroup.controls.alertCategory.value !== 3"
@@ -145,7 +147,7 @@
             <div class="button-block">
                 <button (click)="createProject()"
                 [disabled]="!formGroup.valid || !newProject.platformId"
-                class="p-button-secondary button-create-project" label="Create Project"
+                class="p-button-primary p-button-outlined" label="Create Project"
                 pButton></button>
             </div>
 
