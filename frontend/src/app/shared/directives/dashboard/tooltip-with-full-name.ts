@@ -10,6 +10,8 @@ export class TooltipWithFullNameDirective {
         const element: HTMLElement = this.elementRef.nativeElement;
         if (element.offsetWidth < element.scrollWidth) {
             element.title = element.textContent;
+        } else {
+            element.title = '';
         }
     }
 }

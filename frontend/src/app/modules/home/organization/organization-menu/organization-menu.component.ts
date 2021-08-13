@@ -1,3 +1,4 @@
+import { OrganizationService } from '@core/services/organization.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { ShareDataService } from '@core/services/share-data.service';
 import { Component, OnInit } from '@angular/core';
@@ -5,6 +6,7 @@ import { Organization } from '@shared/models/organization/organization';
 import { BaseComponent } from '@core/components/base/base.component';
 import { MenuItem } from 'primeng/api';
 import { AuthenticationService } from '@core/services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-organization-menu',
@@ -14,12 +16,15 @@ import { AuthenticationService } from '@core/services/authentication.service';
 export class OrganizationMenuComponent extends BaseComponent implements OnInit {
     isLoading: boolean = false;
     organization: Organization;
-    menuItems: MenuItem[];
+    organizations: Organization[];
+    menuItems: MenuItem[] = [];
 
     constructor(
         private dataService: ShareDataService<Organization>,
         private authSerice: AuthenticationService,
-        private toastService: ToastNotificationService
+        private toastService: ToastNotificationService,
+        private organizationService: OrganizationService,
+        public router: Router,
     ) { super(); }
 
     ngOnInit(): void {
@@ -30,13 +35,13 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
                 this.organization = organization;
                 this.checkUpdates();
                 this.isLoading = false;
-            }, error => { this.toastService.error(error); this.isLoading = false; });
 
-        this.menuItems = [
-            { label: 'Organization settings', routerLink: './organization/settings' },
-            { label: 'Teams', routerLink: './teams/' },
-            { label: 'Members', routerLink: './members/' }
-        ];
+                this.organizationService.getOrganizationsByUserId(this.authSerice.getUser().id)
+                    .pipe(this.untilThis)
+                    .subscribe(organizations => {
+                        this.organizations = organizations;
+                    });
+            }, error => { this.toastService.error(error); this.isLoading = false; });
     }
 
     private checkUpdates() {
@@ -47,5 +52,17 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
                     this.organization = organization;
                 }
             });
+    }
+
+    click() {
+        if (this.organizations?.length <= 1) this.router.navigate(['home', 'organization', 'settings']);
+    }
+
+    clickIcon(event: Event) {
+        this.disableParentEvent(event);
+    }
+
+    disableParentEvent(event: Event) {
+        event.stopPropagation();
     }
 }
