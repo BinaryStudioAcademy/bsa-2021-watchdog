@@ -1,22 +1,40 @@
 <app-loading-spinner *ngIf="isLoading" [overlay]="true"></app-loading-spinner>
-<div pRipple class="org-label" (click)="menu.toggle($event)">
-    <div class="org-avatar">
-        <p-avatar styleClass="org-avatar-item" size="large" *ngIf="organization?.avatarUrl"
-            [image]="organization.avatarUrl"></p-avatar>
-        <p-avatar styleClass="org-avatar-item" size="large" *ngIf="!organization?.avatarUrl"
-            [label]="organization?.name.substr(0,2)"></p-avatar>
-    </div>
-    <div class="org-title">
-        <div class="org-name text-ellipsis">
-            {{organization?.name}}
-        </div>
-        <div class="org-user text-ellipsis">
-            {{organization?.organizationSlug}}
-        </div>
-    </div>
-    <div>
-        <i class="pi pi-angle-down"></i>
-    </div>
+
+<div class="dropdown-wrapper" (click)="click()">
+    <p-dropdown [readonly]="organizations?.length <= 1" [styleClass]="'org-label'" [options]="organizations"
+        [(ngModel)]="organization" optionLabel="name">
+        <ng-template class="org-label" pTemplate="selectedItem">
+            <div class="org-avatar">
+                <p-avatar styleClass="org-avatar-item" *ngIf="organization?.avatarUrl" [image]="organization.avatarUrl">
+                </p-avatar>
+                <p-avatar styleClass="org-avatar-item" *ngIf="!organization?.avatarUrl"
+                    [label]="organization?.name.substr(0,2)"></p-avatar>
+            </div>
+            <div class="org-title">
+                <div appTooltipFullName class="org-name text-ellipsis">
+                    {{organization?.name}}
+                </div>
+                <div appTooltipFullName class="org-user text-ellipsis">
+                    {{organization?.organizationSlug}}
+                </div>
+            </div>
+            <i (click)="clickIcon($event)" class="icon pi pi-cog" routerLink="./organization/settings"></i>
+        </ng-template>
+        <ng-template class="org-label" let-org pTemplate="item">
+            <div class="org-avatar">
+                <p-avatar styleClass="org-avatar-item" *ngIf="org?.avatarUrl" [image]="org.avatarUrl">
+                </p-avatar>
+                <p-avatar styleClass="org-avatar-item" *ngIf="!org?.avatarUrl" [label]="org?.name.substr(0,2)">
+                </p-avatar>
+            </div>
+            <div class="org-title">
+                <div appTooltipFullName class="org-name text-ellipsis">
+                    {{org?.name}}
+                </div>
+                <div appTooltipFullName class="org-user text-ellipsis">
+                    {{org?.organizationSlug}}
+                </div>
+            </div>
+        </ng-template>
+    </p-dropdown>
 </div>
-<p-menu #menu [popup]="true" [model]="menuItems">
-</p-menu>

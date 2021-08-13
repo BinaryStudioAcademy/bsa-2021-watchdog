@@ -18,6 +18,21 @@
         <app-organization-menu class="sidebar-avatar"></app-organization-menu>
 
         <div class="sidebar-top">
+
+            <div>
+                <button class="button" routerLink="teams" [routerLinkActive]="['active']">
+                    <i class="pi pi-users"></i>
+                    <span>Teams</span>
+                </button>
+            </div>
+
+            <div>
+                <button class="button" routerLink="members" [routerLinkActive]="['active']">
+                    <i class="pi pi-user"></i>
+                    <span>Members</span>
+                </button>
+            </div>
+
             <div>
                 <button class="button" routerLink="projects" [routerLinkActive]="['active']">
                     <i class="pi pi-file"></i>
@@ -43,8 +58,8 @@
 
             <div [class.dashboards-none]="!dashboardsShown" [class.dashboards]="dashboardsShown">
                 <div *ngFor="let dashboard of dashboards">
-                    <button class="button dashboard" [routerLink]="['dashboard', dashboard.id]" [routerLinkActive]="['active']"
-                        appTooltipFullName>
+                    <button class="button dashboard" [routerLink]="['dashboard', dashboard.id]"
+                        [routerLinkActive]="['active']" appTooltipFullName>
                         <i class="pi {{dashboard.icon}}"></i>
                         <span>{{dashboard.name}}</span>
                     </button>
