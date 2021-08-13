@@ -19,7 +19,7 @@ export class ErrorsService {
     log(error: any) {
         const issueMessage = this.addContextInfo(error);
 
-        if (error instanceof HttpErrorResponse && error.url === this.issuesEndpoint) {
+        if (error instanceof HttpErrorResponse && error.url.includes('/issues')) {
             return;
         }
 

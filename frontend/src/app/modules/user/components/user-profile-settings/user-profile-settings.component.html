@@ -1,64 +1,68 @@
-<div class="user-container last-section">
-    <header class="section-header border">
-        <h1>Profile settings</h1>
-    </header>
-    <div class="user-settings">
-        <h3>Profile info</h3>
-        <div class="user-info">
-            <div class="user-avatar">
-                <img src="https://www.gravatar.com/avatar/213dd2d1498b722e98be7fdee00c2769?d=mp&r=pg&s=128"
-                    alt="avatar">
-            </div>
-            <div class="user-info-body">
-                <ul>
-                    <li>
-                        <span id="user-name">{{user.firstName}} {{user.lastName}}</span>
-                    </li>
-                    <li>
-                        <span id="user-email">{{user.email}}</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="info-settings">
-            <form #editProfileForm="ngForm" (ngSubmit)="submit(editProfileForm)">
-                <h4>Edit profile</h4>
-                <div class="input-container">
-                    <div class="input-section">
-                        <div class="items-container">
-                            <label class="form-label" for="email">Email</label>
-                            <input pInputText name="email" type="text" [(ngModel)]="user.email" #email="ngModel"
-                                required=""
-                                pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$">
-                            <div class="alert-incorrect" [hidden]="email.valid || email.untouched">
-                                Incorrect email
-                            </div>
-                        </div>
-                        <div class="items-container">
-                            <label class="form-label" for="firstName">First Name</label>
-                            <input pInputText name="firstName" type="text" [(ngModel)]="user.firstName"
-                                #firstName="ngModel" required="">
-                            <div class="alert-incorrect" [hidden]="firstName.valid || firstName.untouched">
-                                First name is needed
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-section">
-                        <div class="items-container">
-                            <label class="form-label" for="lastName">Last Name</label>
-                            <input pInputText name="lastName" type="text" [(ngModel)]="user.lastName"
-                                #lastName="ngModel" required="">
-                            <div class="alert-incorrect" [hidden]="lastName.valid || lastName.untouched">
-                                Last name is needed
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-footer">
-                    <button type="submit" class="save-changes" [disabled]="editProfileForm.invalid">Save
-                        changes</button>
-                </div>
-            </form>
-        </div>
+<p-panel header="Profile settings" class="container-group">
+    <div class="user-info">
+        <img class="user-avatar" [src]="user.avatarUrl ?? 'assets\\avatar.png'" alt="avatar">
+
     </div>
-</div>
+    <form class="item" [formGroup]="editForm">
+        <input hidden="true" pInputText formControlName="avatarUrl" class="item-form-field">
+    </form>
+    <form class="item" [formGroup]="editForm">
+        <label class="item-definition">
+            <div>Email</div>
+        </label>
+        <div class="item-field">
+            <div class="item-form-input p-input-icon-right">
+                <i *ngIf="email?.pending" class="pi pi-spin pi-spinner"></i>
+                <input pInputText formControlName="email" class="item-form-field">
+                <div *ngIf="email.invalid && (email.dirty || email.touched)"
+                    class="p-error">
+                    <small *ngIf="email.errors?.required">This field is required.</small>
+                    <small *ngIf="email.errors?.minlength || email.errors?.maxlength">
+                        Length must be between 3 and 50 characters.
+                    </small>
+                    <small *ngIf="email.errors?.serverError">Server error.</small>
+                    <small *ngIf="email.errors?.pattern">You are using invalid characters for email</small>
+                </div>
+            </div>
+        </div>
+    </form>
+    <form class="item" [formGroup]="editForm">
+        <label class="item-definition">
+            <div>First name</div>
+        </label>
+        <div class="item-field">
+            <div class="item-form-input p-input-icon-right">
+                <input pInputText formControlName="firstName" class="item-form-field">
+                <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
+                    class="p-error">
+                    <small *ngIf="firstName.errors?.required">This field is required.</small>
+                    <small *ngIf="firstName.errors?.minlength || firstName.errors?.maxlength">
+                        Length must be between 3 and 50 characters.
+                    </small>
+                    <small *ngIf="firstName.errors?.serverError">Server error.</small>
+                    <small *ngIf="firstName.errors?.pattern">You are using invalid characters</small>
+                </div>
+            </div>
+        </div>
+    </form>
+    <form class="item" [formGroup]="editForm">
+        <label class="item-definition">
+            <div>Last name</div>
+        </label>
+        <div class="item-field">
+            <div class="item-form-input p-input-icon-right">
+                <input pInputText formControlName="lastName" class="item-form-field"
+                     required="">
+                <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)"
+                    class="p-error">
+                    <small *ngIf="lastName.errors?.required">This field is required.</small>
+                    <small *ngIf="lastName.errors?.minlength || lastName.errors?.maxlength">
+                        Length must be between 3 and 50 characters.
+                    </small>
+                    <small *ngIf="lastName.errors?.serverError">Server error.</small>
+                    <small *ngIf="lastName.errors?.pattern">You are using invalid characters</small>
+                </div>
+            </div>
+        </div>
+    </form>
+</p-panel>

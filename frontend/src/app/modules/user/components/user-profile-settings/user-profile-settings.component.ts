@@ -1,20 +1,20 @@
 import { AuthenticationService } from '@core/services/authentication.service';
-import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@core/components/base/base.component';
 import { User } from '@shared/models/user/user';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { UserService } from '@core/services/user.service';
+import { regexs } from '@shared/constants/regexs';
 
 @Component({
     selector: 'app-user-profile-settings',
     templateUrl: './user-profile-settings.component.html',
-    styleUrls: ['./user-profile-settings.component.sass']
+    styleUrls: ['../user-profile/user-profile.component.sass']
 })
 export class UserProfileSettingsComponent extends BaseComponent implements OnInit {
-    public user: User;
-
-    editProfileForm: FormGroup;
+    @Input() user: User;
+    @Input() editForm: FormGroup;
 
     constructor(
         private authService: AuthenticationService,
@@ -22,34 +22,36 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
         private toastNotificationService: ToastNotificationService
     ) {
         super();
-        this.user = authService.getUser();
     }
 
     ngOnInit(): void {
-        this.loadUser();
+        this.editForm.addControl('firstName', new FormControl(this.user.firstName, [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(50),
+            Validators.pattern(regexs.firstName),
+        ]));
+        this.editForm.addControl('lastName', new FormControl(this.user.lastName, [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(50),
+            Validators.pattern(regexs.lastName),
+        ]));
+        this.editForm.addControl('email', new FormControl(this.user.email, [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(50),
+            Validators.email,
+            Validators.pattern(regexs.email),
+        ]));
+        this.editForm.addControl('avatarUrl', new FormControl(this.user.avatarUrl));
     }
 
-    submit(editForm) {
-        this.updateUser(editForm);
-    }
+    get firstName() { return this.editForm.controls.firstName; }
 
-    loadUser() {
-        this.userService.getUserById(this.user.id).subscribe((data: User) => {
-            this.user = data;
-        });
-    }
+    get lastName() { return this.editForm.controls.lastName; }
 
-    updateUser(editForm) {
-        this.user = { ...this.user,
-            firstName: editForm.value.firstName,
-            lastName: editForm.value.lastName,
-            email: editForm.value.email };
+    get email() { return this.editForm.controls.email; }
 
-        this.userService.updateUsersById(this.user.id, this.user)
-            .pipe(this.untilThis)
-            .subscribe(resp => {
-                this.toastNotificationService.success('Profile has been updated');
-                console.info(resp);
-            });
-    }
+    get avatarUrl() { return this.editForm.controls.avatarUrl; }
 }

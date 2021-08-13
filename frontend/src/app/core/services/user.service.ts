@@ -20,7 +20,7 @@ export class UserService {
     }
 
     public updateUsersById(id: number, user: User): Observable<User> {
-        return this.httpService.putRequest<User>(`${this.apiPrefix}/${user.id}`, user);
+        return this.httpService.putRequest<User>(`${this.apiPrefix}/${id}`, user);
     }
 
     public getUser(uid: string) {
