@@ -52,9 +52,13 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
 
     updatePassword() {
         const pass = { ...this.pass.value };
-        if (pass.confirmPassword !== pass.newPassword) {
+        if (pass.confirmPassword !== pass.newPassword && pass.newPassword !== pass.oldPassword) {
             this.toastNotificationService.error('Сheck if confrim and new password match');
-        } else {
+        }
+        if (pass.newPassword === pass.oldPassword) {
+            this.toastNotificationService.error('The old password is equal to the new one. Enter another new password');
+        }
+        if (pass.confirmPassword === pass.newPassword && pass.newPassword !== pass.oldPassword) {
             const { currentUser } = firebase.auth();
             const credentials = firebase.auth.EmailAuthProvider
                 .credential(currentUser.email, pass.oldPassword);
@@ -77,7 +81,6 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
         }
         if (this.pass.dirty && this.pass.valid && this.editForm.pristine) {
             this.updatePassword();
-            this.pass.reset();
         }
         if (this.editForm.dirty && this.pass.dirty && this.editForm.valid && this.pass.valid) {
             const checkPassFields = { ...this.pass.value };
@@ -89,13 +92,11 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
             if (checkUserFields.email === this.user.email && checkUserFields.firstName === this.user.firstName
                 && checkUserFields.lastName === this.user.lastName) {
                 this.updatePassword();
-                this.pass.reset();
             }
             if (checkUserFields.email !== this.user.email || checkUserFields.firstName !== this.user.firstName
                 || checkUserFields.lastName !== this.user.lastName) {
                 this.updateUser();
                 this.updatePassword();
-                this.pass.reset();
             }
         }
         if (this.editForm.pristine && this.pass.pristine) {
