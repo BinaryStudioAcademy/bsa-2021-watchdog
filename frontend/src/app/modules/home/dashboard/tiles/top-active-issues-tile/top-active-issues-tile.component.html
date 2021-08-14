@@ -37,8 +37,8 @@
     </div>
     <!--    Issues Table    -->
     <div class="table">
-        <p-table [alwaysShowPaginator]="displayedIssues.length > 5" [pageLinks]="1" [paginator]="true" [rows]="5"
-                 [showJumpToPageDropdown]="true" [showPageLinks]="false" [value]="displayedIssues"
+        <p-table [alwaysShowPaginator]="issuesInfo.length > 5" [pageLinks]="1" [paginator]="true" [rows]="5"
+                 [showJumpToPageDropdown]="true" [showPageLinks]="false" [value]="issuesInfo"
                  selectionMode="single">
             <!--    Columns Define    -->
             <ng-template pTemplate="header">
@@ -55,7 +55,7 @@
             <ng-template let-issue pTemplate="body">
                 <tr>
                     <td>
-                        <span (click)="onIssueSelect(issue)" class="issue-name">{{issue.name}}</span>
+                        <span (click)="onIssueSelect(issue)" class="issue-name">{{issue.className}}</span>
                     </td>
                     <td>{{issue.events}}</td>
                 </tr>

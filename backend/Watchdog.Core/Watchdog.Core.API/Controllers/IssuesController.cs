@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Watchdog.Core.BLL.Services.Abstract;
+using Watchdog.Core.Common.DTO.Issue;
 using Watchdog.Core.Common.Models.Issue;
 
 namespace Watchdog.Core.API.Controllers
@@ -22,6 +23,13 @@ namespace Watchdog.Core.API.Controllers
         {
             var issues  = await _issueService.GetIssuesAsync();
             return Ok(issues);
+        }
+
+        [HttpGet("issues_info")]
+        public async Task<ActionResult<ICollection<IssueInfo>>> GetIssuesInfoAsync()
+        {
+            var issuesInfo = await _issueService.GetIssuesInfoAsync();
+            return Ok(issuesInfo);
         }
     }
 }

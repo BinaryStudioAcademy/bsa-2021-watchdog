@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Project } from '@shared/models/projects/project';
-import { Issue } from '@shared/models/issue/issue';
 import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
 import { TileService } from '@core/services/tile.service';
 import { TileType } from '@shared/models/tile/enums/tile-type';
@@ -12,6 +11,9 @@ import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
 import { regexs } from '@shared/constants/regexs';
 import { BaseComponent } from '@core/components/base/base.component';
 import { UpdateTile } from '@shared/models/tile/update-tile';
+import { IssueMessage } from '@shared/models/issues/issue-message';
+import { IssueInfo } from '@shared/models/issues/issue.info';
+import { IssueService } from '@core/services/issue.service';
 
 @Component({
     selector: 'app-top-active-issues-tile[tile][isShownMenu]',
@@ -19,12 +21,11 @@ import { UpdateTile } from '@shared/models/tile/update-tile';
     styleUrls: ['./top-active-issues-tile.component.sass']
 })
 export class TopActiveIssuesTileComponent extends BaseComponent implements OnInit {
-    @Input() issues: Issue[] = [];
     @Input() userProjects: Project[] = [];
     @Input() tile: Tile;
     @Output() isDeleting: EventEmitter<Tile> = new EventEmitter<Tile>();
 
-    displayedIssues: Issue[];
+    issuesInfo: IssueInfo[] = [];
     displayedProjects: Project[];
     formGroup: FormGroup;
     isShownTileMenu: boolean;
@@ -35,7 +36,8 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
         private tileService: TileService,
         private toastNotificationService: ToastNotificationService,
         private confirmWindowService: ConfirmWindowService,
-        private tileDialogService: TileDialogService
+        private tileDialogService: TileDialogService,
+        private issuesService: IssueService
     ) {
         super();
     }
@@ -50,6 +52,7 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
 
     ngOnInit(): void {
         this.applySettings();
+
         this.formGroup = new FormGroup({
             name: new FormControl(
                 this.tile.name,
@@ -63,7 +66,7 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
         });
     }
 
-    onIssueSelect(issue: Issue) {
+    onIssueSelect(issue: IssueMessage) {
         console.log(issue);
         //TODO: redirect here to a page of selected Issue
     }
@@ -117,11 +120,16 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
             }
             return false;
         })];
-        this.displayedIssues = [...this.issues];
-        //TODO: filter issues by required projects and display them on the table
-        //TODO: filter real issues(createdAt) with settings DateRange
-        this.displayedIssues.sort((a, b) => b.events - a.events);
-        this.displayedIssues.splice(this.tileSettings.issuesCount);
+
+        this.issuesService
+            .getIssuesInfo()
+            .pipe(this.untilThis)
+            .subscribe(issuesInfo => {
+                this.issuesInfo = issuesInfo;
+                this.issuesInfo.splice(this.tileSettings.issuesCount);
+            }, error => {
+                this.toastNotificationService.error(error, '', 1500);
+            });
     }
 
     private resetFormGroup() {
