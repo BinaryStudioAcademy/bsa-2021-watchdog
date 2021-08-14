@@ -111,7 +111,7 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<IEnumerable<MemberDto>> GetInvitedMembers()
         {
-            return _mapper.Map<IEnumerable<MemberDto>>(await _context.Members.Where(m => m.IsAccepted == false).ToListAsync());
+            return _mapper.Map<IEnumerable<MemberDto>>(await _context.Members.Where(m => !m.IsAccepted).ToListAsync());
         }
 
         public async Task<ICollection<MemberDto>> GetAllMembersAsync()

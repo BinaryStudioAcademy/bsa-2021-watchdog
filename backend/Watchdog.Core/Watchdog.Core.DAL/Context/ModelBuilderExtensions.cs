@@ -20,7 +20,6 @@ namespace Watchdog.Core.DAL.Context
         private const int _numberOfOrganizations = 5;
         private const int _numberOfPlatforms = 18;
         private const int _numberOfTeams = 5;
-        private const int _numberOfTeamMembers = 25;
         private const int _numberOfTiles = 35;
         private const int _numberOfUsers = 20;
         private static readonly List<string> _icons = new List<string>() { "pi-chart-line", "pi-chart-bar" };
@@ -97,7 +96,7 @@ namespace Watchdog.Core.DAL.Context
                 .Generate(count);
         }
 
-        private static IList<Member> GenerateMembers(string[] emails, int count = _numberOfMembers)
+        private static IList<Member> GenerateMembers(int count = _numberOfMembers)
         {
             return new Faker<Member>()
                 .UseSeed(1125)

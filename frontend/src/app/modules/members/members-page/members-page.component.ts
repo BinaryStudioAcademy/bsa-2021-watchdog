@@ -21,7 +21,7 @@ import { TreeNode } from 'primeng/api';
 
 export class MembersPageComponent extends BaseComponent implements OnInit {
     loadingNumber = 0;
-    memberItems: MemberItem[]
+    memberItems: MemberItem[];
     isInviting: Boolean;
     user: User;
     roles: Role[];
@@ -49,85 +49,86 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
                 this.memberService.getMembersByOrganizationId(organization.id)
                     .pipe(this.untilThis)
                     .subscribe(members => {
-                        this.memberItems = members.map(member => ({ member: member, treeTeams: this.fromTeams(member.teams) }));
+                        this.memberItems = members.map(member => ({ member, treeTeams: this.fromTeams(member.teams) }));
                         this.loadingNumber -= 1;
                         this.updateDataService.currentMessage
                             .pipe(this.untilThis)
                             .subscribe(member => {
-                                this.memberItems = this.memberItems.concat({ member: member, treeTeams: this.fromTeams(member.teams) });
+                                this.memberItems = this.memberItems.concat({ member, treeTeams: this.fromTeams(member.teams) });
                             });
                     }, error => {
                         this.toastNotifications.error(error.toString());
                         this.loadingNumber -= 1;
                     });
-            })
+            });
 
         this.roleService.getRoles()
             .pipe(this.untilThis)
             .subscribe(roles => {
                 this.roles = roles;
-            })
+            });
     }
-
 
     fromTeams(teams: TeamOption[]): TreeNode[] {
         return [{
-            label: "Teams",
+            label: 'Teams',
             children: teams.map(team => ({
                 label: team.name
             }))
         }];
     }
 
-    startEdit(memberItem: MemberItem) {
+    startEdit(memberItemInput: MemberItem) {
+        const memberItem = memberItemInput;
         memberItem.isEdit = true;
         memberItem.saveRole = memberItem.member.role;
     }
 
-    finishEdit(memberItem: MemberItem) {
+    finishEdit(memberItemInput: MemberItem) {
+        const memberItem = memberItemInput;
         memberItem.isEdit = false;
-        if (memberItem.saveRole)
-            memberItem.member.role = memberItem.saveRole
-
+        if (memberItem.saveRole) memberItem.member.role = memberItem.saveRole;
     }
 
-    toggleEditor(memberItem: { isEdit: boolean }) {
+    toggleEditor(memberItemInput: MemberItem) {
+        const memberItem = memberItemInput;
         memberItem.isEdit = !memberItem.isEdit;
     }
 
     toggleAllEditors() {
         this.isEdit = !this.isEdit;
-        if (this.isEdit === false)
-            this.memberItems.forEach(m => this.finishEdit(m));
+        if (this.isEdit === false) this.memberItems.forEach(m => this.finishEdit(m));
     }
 
-    saveRoleChanges(memberItem: MemberItem) {
+    saveRoleChanges(memberItemInput: MemberItem) {
+        const memberItem = memberItemInput;
         memberItem.isEdit = false;
         memberItem.saveRole = memberItem.member.role;
         this.memberService.updateMember(memberItem.member.id, memberItem.member.role.id)
             .pipe(this.untilThis)
             .subscribe(() => {
-                this.toastNotifications.success('Role updated')
+                this.toastNotifications.success('Role updated');
             }, error => {
                 this.toastNotifications.error(`${error}`);
-            })
+            });
     }
 
     deleteMember(memberItem: MemberItem) {
         this.confirmWindowService.confirm({
             title: 'Delete member?',
-            message: `Are you sure you wish to delete the <strong>${memberItem.member.user.firstName} ${memberItem.member.user.lastName} </strong>from the organization?`,
+            message: `Are you sure you wish to delete the <strong>${memberItem.member.user.firstName}`
+                + ` ${memberItem.member.user.lastName} </strong>from the organization?`,
             acceptButton: { class: 'p-button-primary p-button-outlined' },
             cancelButton: { class: 'p-button-secondary p-button-outlined' },
             accept: () => {
                 this.memberService.deleteMember(memberItem.member.id)
                     .pipe(this.untilThis)
                     .subscribe(() => {
-                        this.toastNotifications.success('Member deleted')
+                        this.toastNotifications.success('Member deleted');
                         this.memberItems = this.memberItems.filter(m => m.member.id !== memberItem.member.id);
                     }, error => {
-                        this.toastNotifications.error(`${error}`)
-                    })
+                        this.toastNotifications.error(`${error}`);
+                    });
             },
         });
     }
@@ -138,8 +139,6 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
                 this.toastNotifications.success('Member reinvited');
             }, error => {
                 this.toastNotifications.error(`${error}`);
-            })
+            });
     }
 }
-
-

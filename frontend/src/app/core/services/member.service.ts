@@ -9,7 +9,6 @@ import { CoreHttpService } from './core-http.service';
     providedIn: 'root'
 })
 export class MemberService {
-
     readonly routePrefix = '/members';
 
     constructor(private httpService: CoreHttpService) { }
@@ -32,7 +31,7 @@ export class MemberService {
     }
 
     updateMember(id: number, roleId: number) {
-        return this.httpService.putRequest<Member>(`${this.routePrefix}`, { id: id, roleId: roleId });
+        return this.httpService.putRequest<Member>(`${this.routePrefix}`, { id, roleId });
     }
 
     deleteMember(id: number) {
@@ -40,7 +39,7 @@ export class MemberService {
     }
 
     reinviteMember(id: number) {
-        return this.httpService.postRequest(`${this.routePrefix}/reinvite`, { id: id });
+        return this.httpService.postRequest(`${this.routePrefix}/reinvite`, { id });
     }
 
     getInitials(member: Member) {

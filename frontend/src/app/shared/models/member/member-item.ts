@@ -1,6 +1,6 @@
-import { TreeNode } from "primeng/api";
-import { Role } from "../role/role";
-import { Member } from "./member";
+import { TreeNode } from 'primeng/api';
+import { Role } from '../role/role';
+import { Member } from './member';
 
 export interface MemberItem {
     member: Member,

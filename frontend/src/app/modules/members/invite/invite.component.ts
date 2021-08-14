@@ -16,7 +16,7 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
 import { TeamService } from '@core/services/team.service';
 import { UserService } from '@core/services/user.service';
 import { ShareDataService } from '@core/services/share-data.service';
-import { Invation } from '@shared/models/member/invation';
+import { Invition } from '@shared/models/member/invition';
 
 @Component({
     selector: 'app-invite',
@@ -35,10 +35,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
     user: User;
     organization: Organization;
 
-
-
-
-    invations: Invation[] = [{ member: {} as NewMember, groupForm: this.generateGroupForm() }];
+    invations: Invition[] = [{ member: {} as NewMember, groupForm: this.generateGroupForm() }];
     constructor(
         private memberService: MemberService,
         private roleService: RoleService,
@@ -46,7 +43,8 @@ export class InviteComponent extends BaseComponent implements OnInit {
         private toastNotifications: ToastNotificationService,
         private teamService: TeamService,
         private userService: UserService,
-        private updateDataService: ShareDataService<Member>) {
+        private updateDataService: ShareDataService<Member>
+    ) {
         super();
     }
 
@@ -117,13 +115,11 @@ export class InviteComponent extends BaseComponent implements OnInit {
                     .subscribe(teams => {
                         this.teams = teams;
                         this.loadingNumber -= 1;
-                    })
+                    });
             }, error => {
                 this.toastNotifications.error(`${error}`, 'Error');
                 this.loadingNumber -= 1;
             });
-
-
     }
 
     search(event: { query: string }) {
@@ -131,26 +127,27 @@ export class InviteComponent extends BaseComponent implements OnInit {
         this.searchTerm.next(value);
     }
 
-    invate(invavation: Invation) {
+    invate(invitionInput: Invition) {
+        const invition = invitionInput;
         this.loadingNumber += 1;
         const newMember = {
-            userId: invavation.groupForm.value.name.id,
-            roleId: invavation.groupForm.value.role,
-            teamIds: invavation.groupForm.value.team,
+            userId: invition.groupForm.value.name.id,
+            roleId: invition.groupForm.value.role,
+            teamIds: invition.groupForm.value.team,
             organizationId: this.organization.id,
             createdBy: this.user.id
-        }
+        };
         this.memberService.addMemberToOrganization(newMember)
             .subscribe((invatedMember) => {
-                this.toastNotifications.success("Member invited");
-                invavation.isInvited = true;
+                this.toastNotifications.success('Member invited');
+                invition.isInvited = true;
                 this.updateDataService.changeMessage(invatedMember.member);
                 this.loadingNumber -= 1;
             },
-                error => {
-                    this.toastNotifications.error(`${error}`, 'Error');
-                    this.loadingNumber -= 1;
-                });
+            error => {
+                this.toastNotifications.error(`${error}`, 'Error');
+                this.loadingNumber -= 1;
+            });
     }
 
     addNew() {
