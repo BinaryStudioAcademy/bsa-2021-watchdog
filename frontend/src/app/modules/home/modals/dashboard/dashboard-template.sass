@@ -11,11 +11,26 @@ button
 .input-section
     padding: 8px 0
 
-:host ::ng-deep
-    .p-dropdown
-        height: 40px
-        width: 100%
-        margin: 5px auto
+ul
+    list-style: none
+    display: flex
+    flex-direction: row
+    width: fit-content
+    margin: 5px 0 0
+    padding: 5px 0 0
+
+li
+    display: block
+    padding: 10px
+    width: 40px
+    height: 40px
+    border-radius: 5px
+    margin-right: 5px
+    &:hover
+        background-color: $hover-color
+
+.selected
+    background-color: lightgray
 
 :host ::ng-deep
     .p-inputtext
