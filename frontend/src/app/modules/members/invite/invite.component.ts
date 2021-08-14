@@ -85,7 +85,10 @@ export class InviteComponent extends BaseComponent implements OnInit {
                     .pipe(this.untilThis);
             })
         ).subscribe(users => {
-            this.notMembers = users.sort((a, b) => a.email.localeCompare(b.email)).slice(0, 5);
+            this.notMembers = users
+                .filter(u => !this.invations.some(i => i.groupForm.value.name.id === u.id))
+                .sort((a, b) => a.email.localeCompare(b.email))
+                .slice(0, 5);
             this.loadingNumber -= 1;
         }, error => {
             this.toastNotifications.error(`${error}`, 'Error');
