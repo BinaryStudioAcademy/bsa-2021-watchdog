@@ -38,9 +38,8 @@ namespace Watchdog.Core.DAL.Context
             modelBuilder.Entity<ApplicationTeam>().HasData(GenerateApplicationTeams());
             modelBuilder.Entity<Dashboard>().HasData(GenerateDashboards());
             modelBuilder.Entity<Entities.Environment>().HasData(GenerateEnvironments());
-            IList<User> users = GenerateUsers();
-            modelBuilder.Entity<User>().HasData(users);
-            modelBuilder.Entity<Member>().HasData(GenerateMembers(users.Select(u => u.Email).ToArray()));
+            modelBuilder.Entity<User>().HasData(GenerateUsers());
+            modelBuilder.Entity<Member>().HasData(GenerateMembers());
             modelBuilder.Entity<Organization>().HasData(GenerateOrganizations());
             modelBuilder.Entity<Platform>().HasData(GeneratePlatforms());
             modelBuilder.Entity<Role>().HasData(GenerateRoles());
