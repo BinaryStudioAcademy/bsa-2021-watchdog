@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { User } from '@shared/models/user/user';
 import { NewUser } from '@shared/models/user/newUser';
 import { CoreHttpService } from './core-http.service';
 import { clear } from './registration.utils';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -24,7 +25,14 @@ export class UserService {
     }
 
     public getUser(uid: string) {
-        return this.httpService.getRequest<User>(`${this.apiPrefix}/${uid}`);
+        return this.httpService.getRequest<User>(`${this.apiPrefix}/${uid}`)
+            .pipe(
+                catchError((error: string) => {
+                    if (error.includes("Error Code: 404")) {
+                        return of(null as User);
+                    }
+                })
+            );
     }
 
     public createUser(newUser: NewUser) {

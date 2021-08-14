@@ -28,7 +28,7 @@ namespace Watchdog.Core.API.Controllers
         public async Task<ActionResult<UserDto>> GetUser(string uid)
         {
             var user = await _userService.GetUserByUidAsync(uid);
-            return Ok(user);
+            return user is null ? NotFound() : Ok(user);
         }
 
         [HttpPost]
