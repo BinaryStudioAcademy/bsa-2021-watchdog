@@ -15,10 +15,15 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
             builder.HasIndex(t => t.Name)
                    .IsUnique();
 
-            builder.HasMany(t => t.Members)
-                   .WithOne(m => m.Team)
-                   .HasForeignKey(m => m.TeamId)
-                   .OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(t => t.TeamMembers)
+                   .WithOne(tm => tm.Team)
+                   .HasForeignKey(tm => tm.TeamId)
+                   .OnDelete(DeleteBehavior.ClientCascade);
+
+            builder.HasMany(t => t.ApplicationTeams)
+                   .WithOne(at => at.Team)
+                   .HasForeignKey(at => at.TeamId)
+                   .OnDelete(DeleteBehavior.ClientCascade);
         }
     }
 }

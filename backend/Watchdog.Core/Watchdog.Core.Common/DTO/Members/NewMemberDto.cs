@@ -1,4 +1,6 @@
-﻿namespace Watchdog.Core.Common.DTO.Members
+﻿using System.Collections.Generic;
+
+namespace Watchdog.Core.Common.DTO.Members
 {
     public class NewMemberDto
     {
@@ -8,8 +10,8 @@
 
         public int OrganizationId { get; set; }
 
-        public string Email { get; set; }
+        public int UserId { get; set; }
 
-        public int TeamId { get; set; }
+        public IEnumerable<int> TeamIds { get; set; }
     }
 }

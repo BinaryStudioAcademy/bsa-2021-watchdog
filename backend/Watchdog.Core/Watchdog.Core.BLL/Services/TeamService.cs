@@ -37,8 +37,8 @@ namespace Watchdog.Core.BLL.Services
             var memberTeams = await GetTeamsWithMembersAsQueryable()
                 .Where(t => t.OrganizationId == organizationId)
                 .Where(t => isForMemberInTeam ? 
-                        t.Members.Any(tm => tm.Id == memberId) : 
-                        t.Members.All(tm => tm.Id != memberId))
+                        t.TeamMembers.Any(tm => tm.MemberId == memberId) : 
+                        t.TeamMembers.All(tm => tm.MemberId != memberId))
                 .ToListAsync();
 
             return _mapper.Map<ICollection<TeamDto>>(memberTeams);
@@ -79,22 +79,29 @@ namespace Watchdog.Core.BLL.Services
         }
 
         public async Task<TeamDto> AddMemberToTeamAsync(TeamMemberDto teamMemberDto)
-        {  
-            var member = await _context.Members.FindAsync(teamMemberDto.MemberId) 
-                ?? throw new KeyNotFoundException("Member was not found");
-            member.TeamId = teamMemberDto.TeamId;
+        {
+            var teamMember = _mapper.Map<TeamMember>(teamMemberDto);
+
+            if (await _context.TeamMembers.AnyAsync(t => t.MemberId == teamMember.MemberId && t.TeamId == teamMember.TeamId))
+                throw new KeyNotFoundException("Member was not found");
+
+            var created = _context.TeamMembers.Add(teamMember).Entity;
             await _context.SaveChangesAsync();
-            return await GetTeamAsync(member.TeamId);
+
+            return await GetTeamAsync(created.TeamId);
         }
 
         public async Task<TeamDto> LeaveTeamAsync(int teamId, int memberId)
         {
-            var member = await _context.Members.FirstOrDefaultAsync(m => m.Id == memberId && m.TeamId == teamId) ?? throw new KeyNotFoundException("Team or member was not found");
-            _context.Members.Remove(member);
+            var teamMember = await _context.TeamMembers
+                .FirstOrDefaultAsync(tm => tm.MemberId == memberId && tm.TeamId == teamId)
+                    ?? throw new KeyNotFoundException("Team or member was not found");
+            
+            _context.Remove(teamMember);
             
             await _context.SaveChangesAsync();
             
-            return await GetTeamAsync(teamId);
+            return await GetTeamAsync(teamMember.TeamId);
         }
 
         public async Task DeleteTeamAsync(int teamId)
@@ -109,8 +116,9 @@ namespace Watchdog.Core.BLL.Services
         private IQueryable<Team> GetTeamsWithMembersAsQueryable()
         {
             return _context.Teams
-                .Include(team => team.Members)
-                    .ThenInclude(member => member.User);
+                .Include(team => team.TeamMembers)
+                    .ThenInclude(tm => tm.Member)
+                        .ThenInclude(m => m.User);
         }
 
         public async Task<bool> IsTeamNameUniqueAsync(string teamName)

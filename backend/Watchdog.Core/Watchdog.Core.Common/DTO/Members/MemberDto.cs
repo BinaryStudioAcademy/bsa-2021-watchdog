@@ -1,4 +1,5 @@
-﻿using Watchdog.Core.Common.DTO.Role;
+﻿using System.Collections.Generic;
+using Watchdog.Core.Common.DTO.Role;
 using Watchdog.Core.Common.DTO.Team;
 using Watchdog.Core.Common.DTO.User;
 
@@ -11,8 +12,7 @@ namespace Watchdog.Core.Common.DTO.Members
         public RoleDto Role { get; set; }
         public  int OrganizationId { get; set; }
         public UserDto User { get; set; }
-        public TeamDto Team { get; set; }
-        public int TeamId { get; set; }
+        public IEnumerable<TeamOptionDto> Teams { get; set; }
         public bool IsAccepted { get; set; }
     }
 }

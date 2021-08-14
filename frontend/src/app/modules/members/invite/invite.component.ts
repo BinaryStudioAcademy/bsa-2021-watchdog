@@ -15,6 +15,8 @@ import { Organization } from '@shared/models/organization/organization';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { TeamService } from '@core/services/team.service';
 import { UserService } from '@core/services/user.service';
+import { ShareDataService } from '@core/services/share-data.service';
+import { Invation } from '@shared/models/member/invation';
 
 @Component({
     selector: 'app-invite',
@@ -24,33 +26,33 @@ import { UserService } from '@core/services/user.service';
 export class InviteComponent extends BaseComponent implements OnInit {
     @Output() closeModal = new EventEmitter<void>();
     notMembers: User[];
-    memberGroup: FormGroup;
     searchTerm: Subject<string> = new Subject<string>();
     roles: Role[];
-    role: Role = {} as Role;
     teams: TeamOption[];
-    newMember = {} as NewMember;
-    currentUser: User;
 
+    loadingNumber: number = 0;
+
+    user: User;
     organization: Organization;
 
 
 
 
-    invations: { member: NewMember, groupForm: FormGroup }[] = [{ member: {} as NewMember, groupForm: this.generateGroupForm() }];
+    invations: Invation[] = [{ member: {} as NewMember, groupForm: this.generateGroupForm() }];
     constructor(
         private memberService: MemberService,
         private roleService: RoleService,
         private authService: AuthenticationService,
         private toastNotifications: ToastNotificationService,
         private teamService: TeamService,
-        private userService: UserService) {
+        private userService: UserService,
+        private updateDataService: ShareDataService<Member>) {
         super();
     }
 
     ngOnInit(): void {
         this.loadData();
-        this.currentUser = this.authService.getUser();
+        this.user = this.authService.getUser();
     }
 
     generateGroupForm() {
@@ -62,10 +64,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
                 ]
             ),
             team: new FormControl(
-                '',
-                [
-                    Validators.required,
-                ]
+                []
             ),
             role: new FormControl(
                 '',
@@ -80,23 +79,31 @@ export class InviteComponent extends BaseComponent implements OnInit {
         this.searchTerm.pipe(
             this.untilThis,
             debounceTime(300),
-            switchMap((term: string) =>
-                this.userService.searchMembersNotInOrganization(this.organization.id, term)
-                    .pipe(this.untilThis))
+            switchMap((term: string) => {
+                this.loadingNumber += 1;
+                return this.userService.searchMembersNotInOrganization(this.organization.id, term)
+                    .pipe(this.untilThis);
+            })
         ).subscribe(users => {
-            this.notMembers = users;
+            this.notMembers = users.sort((a, b) => a.email.localeCompare(b.email)).slice(0, 5);
+            this.loadingNumber -= 1;
         }, error => {
             this.toastNotifications.error(`${error}`, 'Error');
+            this.loadingNumber -= 1;
         });
 
+        this.loadingNumber += 1;
         this.roleService.getRoles()
             .pipe(this.untilThis)
             .subscribe(roles => {
                 this.roles = roles;
+                this.loadingNumber -= 1;
             }, error => {
                 this.toastNotifications.error(`${error}`, 'Error');
+                this.loadingNumber -= 1;
             });
 
+        this.loadingNumber += 1;
         this.authService.getOrganization()
             .pipe(this.untilThis)
             .subscribe(organization => {
@@ -106,9 +113,11 @@ export class InviteComponent extends BaseComponent implements OnInit {
                     .pipe(this.untilThis)
                     .subscribe(teams => {
                         this.teams = teams;
+                        this.loadingNumber -= 1;
                     })
             }, error => {
                 this.toastNotifications.error(`${error}`, 'Error');
+                this.loadingNumber -= 1;
             });
 
 
@@ -119,16 +128,25 @@ export class InviteComponent extends BaseComponent implements OnInit {
         this.searchTerm.next(value);
     }
 
-    invate(formGroup: FormGroup) {
-        this.newMember.email = formGroup.value.name.email
-        this.newMember.roleId = formGroup.value.role;
-        this.newMember.teamId = formGroup.value.team;
-        this.newMember.organizationId = this.organization.id;
-        this.newMember.createdBy = this.currentUser.id;
-        this.memberService.addMemberToOrganization(this.newMember)
-            .subscribe(x => this.toastNotifications.success("Member invited"),
+    invate(invavation: Invation) {
+        this.loadingNumber += 1;
+        const newMember = {
+            userId: invavation.groupForm.value.name.id,
+            roleId: invavation.groupForm.value.role,
+            teamIds: invavation.groupForm.value.team,
+            organizationId: this.organization.id,
+            createdBy: this.user.id
+        }
+        this.memberService.addMemberToOrganization(newMember)
+            .subscribe((invatedMember) => {
+                this.toastNotifications.success("Member invited");
+                invavation.isInvited = true;
+                this.updateDataService.changeMessage(invatedMember.member);
+                this.loadingNumber -= 1;
+            },
                 error => {
                     this.toastNotifications.error(`${error}`, 'Error');
+                    this.loadingNumber -= 1;
                 });
     }
 

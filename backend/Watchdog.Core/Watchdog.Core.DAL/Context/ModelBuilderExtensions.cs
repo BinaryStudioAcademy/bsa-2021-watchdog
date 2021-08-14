@@ -106,7 +106,6 @@ namespace Watchdog.Core.DAL.Context
                 .RuleFor(m => m.OrganizationId, f => f.Random.Number(1, _numberOfOrganizations))
                 .RuleFor(m => m.CreatedBy, f => f.Random.Number(1, _numberOfUsers))
                 .RuleFor(m => m.CreatedAt, f => f.Date.Past(2, new DateTime(2021, 7, 20)))
-                .RuleFor(m => m.TeamId, f=> f.Random.Number(1, _numberOfTeams))
                 .RuleFor(m => m.UserId, f=> f.Random.Number(1, _numberOfUsers))
                 .RuleFor(m=> m.IsAccepted, f=> f.Random.Bool())
                 .Generate(count);

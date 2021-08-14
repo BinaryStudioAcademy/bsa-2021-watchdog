@@ -52,13 +52,7 @@ namespace Watchdog.Core.BLL.Services
                 CreatedAt = DateTime.Now,
                 OrganizationId = organization.Id,
                 RoleId = 1,
-                IsAccepted = true,
-                Team = new Team
-                {
-                    CreatedBy = user.Id,
-                    Name = $"{organization.OrganizationSlug}-team",
-                    OrganizationId = organization.Id,
-                }
+                IsAccepted = true
             };
             _context.Members.Add(member);
             await _context.SaveChangesAsync();

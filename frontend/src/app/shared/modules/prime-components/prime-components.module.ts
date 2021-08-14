@@ -38,6 +38,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DialogService } from 'primeng/dynamicdialog';
 import { RatingModule } from 'primeng/rating';
+import { TreeModule } from 'primeng/tree';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -79,6 +80,7 @@ import { RatingModule } from 'primeng/rating';
         MultiSelectModule,
         OverlayPanelModule,
         RatingModule,
+        TreeModule,
     ],
     exports: [
         ButtonModule,
@@ -117,6 +119,7 @@ import { RatingModule } from 'primeng/rating';
         OverlayPanelModule,
         RatingModule,
         MultiSelectModule,
+        TreeModule,
     ],
     declarations: [],
     providers: [

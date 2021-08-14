@@ -13,15 +13,11 @@ namespace Watchdog.Core.Common.Validators.Members
         public NewMemberDtoValidator()
         {
             RuleFor(m => m.OrganizationId)
-                        .NotNull();
+                        .NotEmpty();
             RuleFor(m => m.RoleId)
-                        .NotNull();
-            RuleFor(m => m.Email)
-                        .EmailAddress()
-                        .MinimumLength(5)
-                        .MaximumLength(30);
-            RuleFor(m => m.TeamId)
-                        .NotNull();
+                        .NotEmpty();
+            RuleFor(m => m.UserId)
+                        .NotEmpty();
         }
     }
 }

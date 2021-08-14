@@ -23,7 +23,16 @@ namespace Watchdog.Core.BLL.Services
             _emailSendService = emailSendService;
         }
 
-        public Task<Response> InviteMember(MemberDto memberDto)
+        public async Task<Response> InviteMemberAsync(int id)
+        {
+            var member = await _context.Members
+                .Include(m => m.User)
+                .FirstOrDefaultAsync(m => m.Id == id) ?? throw new KeyNotFoundException("Member doesn't exist");
+
+            return await InviteMemberAsync(_mapper.Map<MemberDto>(member));
+        }
+
+        public Task<Response> InviteMemberAsync(MemberDto memberDto)
         {
             ExampleTemplateData data = new()
             {
@@ -35,21 +44,30 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<MemberDto> AddMemberAsync(NewMemberDto memberDto)
         {
-            var user = (await _context.Users.FirstOrDefaultAsync(u => u.Email == memberDto.Email)) ?? throw new KeyNotFoundException("User doesn't exist");
+            var user = (await _context.Users.FirstOrDefaultAsync(u => u.Id == memberDto.UserId)) ?? throw new KeyNotFoundException("User doesn't exist");
             var organization = (await _context.Organizations.FirstOrDefaultAsync(o => o.Id == memberDto.OrganizationId) ?? throw new KeyNotFoundException("Such organization doesn't exist"));
 
-            if (organization.Members.Any(m=> m.UserId == user.Id))
+            await _context.Entry(organization).Collection(o => o.Members).LoadAsync();
+
+
+            if (organization.Members.Any(m => m.UserId == user.Id))
             {
                 throw new ArgumentException("This user already in organization");
             }
 
             var member = _mapper.Map<Member>(memberDto);
 
-            member.User = user;
+            foreach (int teamId in memberDto.TeamIds)
+            {
+                member.TeamMembers.Add(new TeamMember { TeamId = teamId});
+            }
 
             await _context.Members.AddAsync(member);
 
             await _context.SaveChangesAsync();
+
+            await _context.Entry(member).Reference(m => m.Role).LoadAsync();
+            await _context.Entry(member).Collection(m => m.TeamMembers).Query().Include(tm => tm.Team).LoadAsync();
 
             return _mapper.Map<MemberDto>(member);
         }
@@ -65,7 +83,8 @@ namespace Watchdog.Core.BLL.Services
         {
             var members = await _context.Members.Where(m => m.OrganizationId == id)
                 .Include(m => m.User)
-                .Include(m => m.Team)
+                .Include(m => m.TeamMembers)
+                    .ThenInclude(tm => tm.Team)
                 .Include(m => m.Role)
                 .ToListAsync();
             return _mapper.Map<ICollection<MemberDto>>(members);
@@ -83,19 +102,11 @@ namespace Watchdog.Core.BLL.Services
             var team = await _context.Teams.FirstOrDefaultAsync(t => t.Id == teamId);
 
             var members = await _context.Members
+                .Include(m => m.TeamMembers)
                 .Include(m => m.User)
-                .Where(m => m.User.Email.Contains(memberEmail) && !(m.TeamId == teamId) && m.OrganizationId == team.OrganizationId)
+                .Where(m => m.User.Email.Contains(memberEmail) && !m.TeamMembers.Any(t => t.TeamId == teamId) && m.OrganizationId == team.OrganizationId)
                 .ToListAsync();
             return _mapper.Map<ICollection<MemberDto>>(members);
-        }
-
-        public async Task<MemberDto> CreateMemberAsync(MemberDto memberDto)
-        {
-            var result = await _context.Members.Include(m => m.User).FirstOrDefaultAsync(m => m.Id == memberDto.Id) ?? throw new KeyNotFoundException("Member doesn't exist");
-            _context.Entry(result).CurrentValues.SetValues(memberDto);
-
-            await _context.SaveChangesAsync();
-            return _mapper.Map<MemberDto>(result);
         }
 
         public async Task<IEnumerable<MemberDto>> GetInvitedMembers()
@@ -107,7 +118,8 @@ namespace Watchdog.Core.BLL.Services
         {
             var members = await _context.Members
                 .Include(m => m.User)
-                .Include(m => m.Team)
+                .Include(m => m.TeamMembers)
+                    .ThenInclude(tm => tm.Team)
                 .Include(m => m.Role)
                 .ToListAsync();
             return _mapper.Map<ICollection<MemberDto>>(members);
@@ -127,6 +139,22 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<MemberDto>(member);
         }
 
- 
+        public async Task<MemberDto> UpdateAsync(UpdateMemberDto dto)
+        {
+            var member = await _context.Members.FirstOrDefaultAsync(m => m.Id == dto.Id)
+                ?? throw new KeyNotFoundException("Member doesn't exists");
+            member.RoleId = dto.RoleId;
+            await _context.SaveChangesAsync();
+            return _mapper.Map<MemberDto>(member);  
+        }
+
+        public async Task AcceptInviteAsync(int id)
+        {
+            var member = await _context.Members.FirstOrDefaultAsync(m => m.Id == id) ?? throw new KeyNotFoundException("Member doesn't exists");
+
+            member.IsAccepted = true;
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

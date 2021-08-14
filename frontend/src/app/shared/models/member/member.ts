@@ -1,13 +1,12 @@
 import { User } from '@shared/models/user/user';
 import { Role } from '../role/role';
-import { Team } from '../teams/team';
+import { TeamOption } from '../teams/team-option';
 
 export interface Member {
     id: number,
     roleId: number,
-    teamId: number,
     user: User,
-    team: Team,
+    teams: TeamOption[],
     role: Role,
     organizationId: number,
     isAccepted: boolean,

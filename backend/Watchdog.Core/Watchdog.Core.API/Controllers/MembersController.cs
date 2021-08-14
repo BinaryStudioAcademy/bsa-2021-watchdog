@@ -32,6 +32,13 @@ namespace Watchdog.Core.API.Controllers
             return Ok(member);
         }
 
+        [HttpPut]
+        public async Task<ActionResult<MemberDto>> Update(UpdateMemberDto dto)
+        {
+            var member = await _memberService.UpdateAsync(dto);
+            return Ok(member);
+        }
+
         [HttpPost]
         public async Task<ActionResult> AddMember(NewMemberDto newMemberDto)
         {
@@ -40,12 +47,12 @@ namespace Watchdog.Core.API.Controllers
             {
                 member = await _memberService.AddMemberAsync(newMemberDto);
             }
-            catch (InvalidOperationException ex)
+            catch (ArgumentException ex)
             {
-                return Conflict(new { ex.Message });
+                return Conflict(ex.Message);
             }
-            var response = await _memberService.InviteMember(member);
-            return Ok(new { Member = member, SendMailResponse = response });
+            var response = await _memberService.InviteMemberAsync(member);
+            return Ok(new { Member = member, SendMailResponse = response.StatusCode });
         }
 
 
@@ -63,6 +70,19 @@ namespace Watchdog.Core.API.Controllers
             return Ok(members);
         }
 
+        [HttpPost("reinvite")]
+        public async Task<ActionResult<int>> Reinvite(InviteDto dto)
+        {
+            var response = await _memberService.InviteMemberAsync(dto.Id);
+            return Ok(response.StatusCode);
+        }
+
+        [HttpPost("acceptinvite")]
+        public async Task<ActionResult<int>> AcceptInvite(InviteDto dto)
+        {
+            await _memberService.AcceptInviteAsync(dto.Id);
+            return Ok();
+        }
 
         [HttpGet("team/{teamId}/exceptTeam/")]
         public async Task<ActionResult<ICollection<MemberDto>>> GetMembersExceptTeam(int teamId, string memberEmail = "")

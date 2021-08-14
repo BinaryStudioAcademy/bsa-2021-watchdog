@@ -6,6 +6,11 @@ namespace Watchdog.Core.DAL.Entities
 {
     public class Member : AuditEntity<int>
     {
+
+        public Member()
+        {
+            TeamMembers = new List<TeamMember>();
+        }
         public User User { get; set; }
 
         public int UserId { get; set; }
@@ -18,9 +23,7 @@ namespace Watchdog.Core.DAL.Entities
 
         public Organization Organization { get; set; }
 
-        public Team Team { get; set; }
-
-        public int TeamId { get; set; }
+        public ICollection<TeamMember> TeamMembers { get; set; }
 
         public bool IsAccepted { get; set; } 
 
