@@ -5,83 +5,100 @@
             <img alt="logo" src="assets/logo-white.svg">
         </div>
         <div *ngIf="!user" class="user-info">
-            <button pButton pRipple type="button" label="Sign in" class="p-button-outlined sign-in-button"></button>
+            <button class="p-button-outlined sign-in-button" label="Sign in" pButton pRipple type="button"></button>
         </div>
         <div *ngIf="user" class="user-info">
-            <img class="user-avatar" [src]="user.avatarUrl ?? 'assets\\avatar.png'" alt="Avatar">
+            <img [src]="user.avatarUrl ?? 'assets\\avatar.png'" alt="Avatar" class="user-avatar">
             <div (click)="menu.toggle($event)" class="user-name">{{user.firstName}} {{user.lastName}}</div>
-            <p-menu #menu [popup]="true" [model]="userItems"></p-menu>
+            <p-menu #menu [model]="userItems" [popup]="true"></p-menu>
         </div>
     </div>
 
-    <div class="sidebar">
-        <app-organization-menu class="sidebar-avatar"></app-organization-menu>
+    <div [ngStyle]="{'width': !collapsed ? '230px' : '68px'}" class="sidebar">
+        <app-organization-menu [collapsed]="collapsed" class="sidebar-avatar"></app-organization-menu>
 
         <div class="sidebar-top">
-
             <div>
-                <button class="button" routerLink="teams" [routerLinkActive]="['active']">
+                <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Teams' : undefined}}"
+                        routerLink="teams">
                     <i class="pi pi-users"></i>
-                    <span>Teams</span>
+                    <span *ngIf="!collapsed">Teams</span>
                 </button>
             </div>
 
             <div>
-                <button class="button" routerLink="members" [routerLinkActive]="['active']">
+                <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Members' : undefined}}"
+                        routerLink="members">
                     <i class="pi pi-user"></i>
-                    <span>Members</span>
+                    <span *ngIf="!collapsed">Members</span>
                 </button>
             </div>
 
             <div>
-                <button class="button" routerLink="projects" [routerLinkActive]="['active']">
+                <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Projects' : undefined}}"
+                        routerLink="projects">
                     <i class="pi pi-file"></i>
-                    <span>Projects</span>
+                    <span *ngIf="!collapsed">Projects</span>
                 </button>
             </div>
 
             <div>
-                <button class="button" routerLink="issues" [routerLinkActive]="['active']">
+                <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Issues' : undefined}}"
+                        routerLink="issues">
                     <i class="pi pi-exclamation-circle"></i>
-                    <span>Issues</span>
+                    <span *ngIf="!collapsed">Issues</span>
                 </button>
             </div>
 
             <div>
-                <button class="button" (click)="dashboardsShown = !dashboardsShown">
-                    <i class="pi pi-chart-line"></i>
-                    <span>Dashboards</span>
-                    <i class="pi pi-angle-down" *ngIf="!dashboardsShown"></i>
-                    <i class="pi pi-angle-up" *ngIf="dashboardsShown"></i>
+                <button (click)="dashboardsShown = !dashboardsShown" class="button"
+                        pTooltip="{{collapsed ? 'Dashboards' : undefined}}">
+                    <ng-template [ngIf]="!collapsed">
+                        <i class="pi pi-chart-line"></i>
+                        <span>Dashboards</span>
+                    </ng-template>
+                    <i [ngClass]="{
+                    'pi-angle-up': dashboardsShown,
+                    'pi-angle-down': !dashboardsShown
+                    }" class="pi"></i>
                 </button>
             </div>
 
-            <div [class.dashboards-none]="!dashboardsShown" [class.dashboards]="dashboardsShown">
+            <div [ngClass]="{
+            'dashboards-none' : !dashboardsShown,
+            'dashboards': dashboardsShown && !collapsed,
+            'dashboards-collapsed': dashboardsShown && collapsed
+            }">
                 <div *ngFor="let dashboard of dashboards">
-                    <button class="button dashboard" [routerLink]="['dashboard', dashboard.id]"
-                        [routerLinkActive]="['active']" appTooltipFullName>
+                    <button [routerLinkActive]="['active']" [routerLink]="['dashboard', dashboard.id]"
+                            class="button dashboard" pTooltip="{{collapsed ? dashboard.name : undefined}}">
                         <i class="pi {{dashboard.icon}}"></i>
-                        <span>{{dashboard.name}}</span>
+                        <span *ngIf="!collapsed" appTooltipFullName>{{dashboard.name}}</span>
                     </button>
                 </div>
-                <button class="button dashboard add" (click)="displayModal=true">
+                <button (click)="displayModal=true" class="button dashboard add-button"
+                        pTooltip="{{collapsed ? 'Add dashboard' : undefined}}">
                     <i class="pi pi-plus"></i>
-                    <span>Add</span>
+                    <span *ngIf="!collapsed">Add</span>
                 </button>
             </div>
         </div>
         <div class="sidebar-bottom">
-            <button class="button">
-                <i class="pi pi-angle-left"></i>
-                <span>Collapse</span>
+            <button (click)="collapsed = !collapsed" class="button collapse-button">
+                <ng-template [ngIfElse]="angleRight" [ngIf]="!collapsed">
+                    <i class="pi pi-angle-left"></i>
+                    <span>Collapse</span>
+                </ng-template>
+                <ng-template #angleRight>
+                    <i class="pi pi-angle-right" pTooltip="{{collapsed ? 'Expand' : undefined}}"></i>
+                </ng-template>
             </button>
         </div>
     </div>
 
-    <app-add-dashboard *ngIf="displayModal" (save)="addDashboard($event)" (closeModal)="displayModal = !displayModal">
+    <app-add-dashboard (closeModal)="displayModal = !displayModal" (save)="addDashboard($event)" *ngIf="displayModal">
     </app-add-dashboard>
-
-    <div class="home-content-wrp">
+    <div [ngStyle]="{'margin-left': !collapsed ? '230px' : '68px'}" class="home-content-wrp">
         <div class="content">
             <router-outlet></router-outlet>
         </div>

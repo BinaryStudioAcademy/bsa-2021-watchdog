@@ -22,7 +22,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     userItems: MenuItem[];
     dashboardsShown: boolean = false;
     displayModal: boolean = false;
-
+    collapsed: boolean = false;
     user: User;
     organization: Organization;
 
@@ -39,7 +39,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         this.user = authService.getUser();
         this.userItems = [
             { label: 'My profile', routerLink: 'users' },
-            { label: 'Logout', routerLink: '/', command: () => this.authService.logout() }
+            { label: 'Logout', routerLink: '../landing', command: () => this.authService.logout() }
         ];
     }
 
