@@ -17,41 +17,103 @@ namespace Watchdog.Core.BLL.Services
             _client = client;
         }
         
-        public async Task<ICollection<Issue>> GetIssuesAsync()
+        public async Task<ICollection<IssueInfoDto>> GetIssuesInfoAsync()
         {
-            var issueMessages = await SearchIssueMessagesAsync();
+            var totalHits = await GetTotalHits();
             
-            //it will be refactored letter : )
+            var searchResponse = await _client.SearchAsync<IssueMessage>(s => s
+                .Source(sf => sf
+                    .Includes(i => i 
+                        .Fields(
+                            f => f.ClassName,
+                            f => f.ErrorMessage,
+                            f => f.OccurredOn
+                        )
+                    )
+                )
+                .From(0)
+                .Size(totalHits)
+            );
+
+            var issueMessages = searchResponse.Documents.OrderByDescending(i => i.OccurredOn);
+
             var issues = issueMessages
                 .GroupBy(i => new { i.ClassName, i.ErrorMessage })
-                .Select(group => new Issue()
+                .Select(group => new IssueInfoDto()
                 {
                     ErrorMessage = group.Key.ErrorMessage,
                     ErrorClass = group.Key.ClassName,
-                    Events = issueMessages.Where(i => i.ErrorMessage == group.Key.ErrorMessage).ToList(),
-                    EventsCount = issueMessages.Count(i => i.ErrorMessage == group.Key.ErrorMessage),
+                    EventsCount = issueMessages
+                        .Count(i => i.ErrorMessage == group.Key.ErrorMessage),
                     Newest = issueMessages
-                        .Where(i => i.ErrorMessage == group.Key.ErrorMessage)
-                        .OrderBy(i => i.OccurredOn)
-                        .LastOrDefault().OccurredOn,
+                        .FirstOrDefault(i => i.ErrorMessage == group.Key.ErrorMessage).OccurredOn,
                     Oldest = issueMessages
-                        .Where(i => i.ErrorMessage == group.Key.ErrorMessage)
-                        .OrderBy(i => i.OccurredOn)
-                        .FirstOrDefault().OccurredOn,
+                        .LastOrDefault(i => i.ErrorMessage == group.Key.ErrorMessage).OccurredOn
                 })
-                .OrderByDescending(issue => issue.EventsCount)
+                .OrderByDescending(issue => issue.Newest)
                 .ToList();
             
             return issues;
         }
-        
-        public async Task<ICollection<TileIssueInfo>> GetIssuesInfoAsync()
+
+        public async Task<IssueDto> GetIssueAsync(string errorMessage)
         {
-            var issueMessages = await SearchIssueMessagesAsync();
+            var totalHits = await GetTotalHits();
+
+            var searchResponse = await _client.SearchAsync<IssueMessage>(s => s
+                .Query(q => q
+                    .Match(m =>
+                        m.Field(f => f.ErrorMessage)
+                            .Query(errorMessage)))
+                .From(0)
+                .Size(totalHits)
+            );
             
+            var issueMessages = searchResponse.Documents;
+            
+            var issue = issueMessages
+                .GroupBy(i => new { i.ClassName, i.ErrorMessage })
+                .Select(group => new IssueDto()
+                {
+                    ErrorMessage = group.Key.ErrorMessage,
+                    ErrorClass = group.Key.ClassName,
+                    Events = issueMessages
+                        .Where(i => i.ErrorMessage == group.Key.ErrorMessage)
+                        .ToList(),
+                    EventsCount = issueMessages
+                        .Count(i => i.ErrorMessage == group.Key.ErrorMessage),
+                    Newest = issueMessages
+                        .FirstOrDefault(i => i.ErrorMessage == group.Key.ErrorMessage).OccurredOn,
+                    Oldest = issueMessages
+                        .LastOrDefault(i => i.ErrorMessage == group.Key.ErrorMessage).OccurredOn
+                })
+                .FirstOrDefault();
+
+            return issue;
+        }
+        
+        public async Task<ICollection<TileIssueInfoDto>> GetTileIssuesInfoAsync()
+        {
+            var totalHits = await GetTotalHits();
+            
+            var searchResponse = await _client.SearchAsync<IssueMessage>(s => s
+                .Source(sf => sf
+                    .Includes(i => i 
+                        .Fields(
+                            f => f.ClassName,
+                            f => f.ErrorMessage
+                        )
+                    )
+                )
+                .From(0)
+                .Size(totalHits)
+            );
+
+            var issueMessages = searchResponse.Documents;
+
             var issuesInfo = issueMessages
                 .GroupBy(issue => new { issue.ClassName, issue.ErrorMessage })
-                .Select(group => new TileIssueInfo()
+                .Select(group => new TileIssueInfoDto()
                 {
                     ErrorClass = group.Key.ClassName,
                     ErrorMessage = group.Key.ErrorMessage,
@@ -63,16 +125,10 @@ namespace Watchdog.Core.BLL.Services
             return issuesInfo;
         }
 
-        private async Task<ICollection<IssueMessage>> SearchIssueMessagesAsync()
+        private async Task<int> GetTotalHits()
         {
-            var searchResponse = await _client.SearchAsync<IssueMessage>(s => s
-                .From(0)
-                .Size(300)
-                .MatchAll()
-                .Sort(sorter => sorter.Descending(issue => issue.OccurredOn))
-            );
-
-            return searchResponse.Documents.ToList();
+            var totalHits = await _client.CountAsync<IssueMessage>();
+            return (int)totalHits.Count;
         }
     }
 }

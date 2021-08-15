@@ -7,6 +7,7 @@ import { IssueEnvironment } from '@shared/models/issue/issue-environment';
 import { HttpResponseErrorMessage } from '@shared/models/issue/http-response.message';
 import * as stackTraceParser from 'stacktrace-parser';
 import { ToastNotificationService } from './toast-notification.service';
+import { environment } from '@env/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -19,7 +20,7 @@ export class ErrorsService {
     log(error: any) {
         const issueMessage = this.addContextInfo(error);
 
-        if (error instanceof HttpErrorResponse && error.url.includes('/issues')) {
+        if (error instanceof HttpErrorResponse && error.url.includes(`${environment.collectorUrl}/issues`)) {
             return;
         }
 

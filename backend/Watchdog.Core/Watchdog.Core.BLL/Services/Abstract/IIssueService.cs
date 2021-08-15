@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Watchdog.Core.Common.DTO.Issue;
-using Watchdog.Core.Common.Models.Issue;
 
 namespace Watchdog.Core.BLL.Services.Abstract
 {
     public interface IIssueService
     {
-        Task<ICollection<Issue>> GetIssuesAsync();
-        Task<ICollection<TileIssueInfo>> GetIssuesInfoAsync();
+        Task<IssueDto> GetIssueAsync(string errorMessage);
+        Task<ICollection<IssueInfoDto>> GetIssuesInfoAsync();
+        Task<ICollection<TileIssueInfoDto>> GetTileIssuesInfoAsync();
     }
 }

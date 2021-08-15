@@ -11,8 +11,7 @@ import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
 import { regexs } from '@shared/constants/regexs';
 import { BaseComponent } from '@core/components/base/base.component';
 import { UpdateTile } from '@shared/models/tile/update-tile';
-import { IssueMessage } from '@shared/models/issue/issue-message';
-import { TopIssuesInfo } from '@shared/models/issue/top-issues.info';
+import { TileIssuesInfo } from '@shared/models/issue/tile-issues.info';
 import { IssueService } from '@core/services/issue.service';
 
 @Component({
@@ -25,7 +24,7 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
     @Input() tile: Tile;
     @Output() isDeleting: EventEmitter<Tile> = new EventEmitter<Tile>();
 
-    issuesInfo: TopIssuesInfo[] = [];
+    issuesInfo: TileIssuesInfo[] = [];
     displayedProjects: Project[];
     formGroup: FormGroup;
     isShownTileMenu: boolean;
@@ -66,8 +65,16 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
         });
     }
 
-    onIssueSelect(issue: IssueMessage) {
-        console.log(issue);
+    onIssueSelect(errorMessage: string) {
+        console.log(errorMessage);
+        this.issuesService
+            .getIssue(errorMessage)
+            .pipe(this.untilThis)
+            .subscribe(issue => {
+                console.log(issue);
+            }, error => {
+                this.toastNotificationService.error(error, '', 1700);
+            });
         //TODO: redirect here to a page of selected Issue
     }
 
@@ -122,7 +129,7 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
         })];
 
         this.issuesService
-            .getTopIssues()
+            .getTileIssuesInfo()
             .pipe(this.untilThis)
             .subscribe(issuesInfo => {
                 this.issuesInfo = issuesInfo;
