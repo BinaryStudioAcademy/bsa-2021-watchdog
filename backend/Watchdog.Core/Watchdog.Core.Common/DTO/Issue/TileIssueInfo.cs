@@ -1,6 +1,6 @@
 namespace Watchdog.Core.Common.DTO.Issue
 {
-    public class IssueInfo
+    public class TileIssueInfo
     {
         public string ClassName { get; set; }
         public int Events { get; set; }

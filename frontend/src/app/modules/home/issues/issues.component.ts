@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Issue } from '@shared/models/issue/issue';
 import { IssueService } from '@core/services/issue.service';
-import { IssueMessage } from '@shared/models/issues/issue-message';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 
@@ -11,7 +10,7 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
     styleUrls: ['./issues.component.sass']
 })
 export class IssuesComponent extends BaseComponent implements OnInit {
-    issues: IssueMessage[];
+    issues: Issue[] = [];
 
     countNew: { [type: string]: number };
 
@@ -46,8 +45,9 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     private loadIssues() {
         this.issueService.getIssues()
             .pipe(this.untilThis)
-            .subscribe(response => {
-                this.issues = response;
+            .subscribe(issues => {
+                this.issues = issues;
+                console.log(this.issues);
             }, errorResponse => {
                 this.toastNotification.error(errorResponse, 'Error', 1500);
             });

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { IssueMessage } from '@shared/models/issues/issue-message';
+import { IssueMessage } from '@shared/models/issue/issue-message';
 import { CollectorHttpService } from '@core/services/collector-http.service';
-import { StackTrace } from '@shared/models/issues/stack-trace';
-import { IssueEnvironment } from '@shared/models/issues/issue-environment';
-import { HttpResponseErrorMessage } from '@shared/models/issues/http-response.message';
+import { StackFrame } from '@shared/models/issue/stack-frame';
+import { IssueEnvironment } from '@shared/models/issue/issue-environment';
+import { HttpResponseErrorMessage } from '@shared/models/issue/http-response.message';
 import * as stackTraceParser from 'stacktrace-parser';
 import { ToastNotificationService } from './toast-notification.service';
 
@@ -34,18 +34,16 @@ export class ErrorsService {
     private addContextInfo(error: any): IssueMessage {
         return {
             occurredOn: new Date(),
-            issueDetails: {
-                url: window.location.href,
-                errorMessage: error.message === '' ? 'Script error' : error.message,
-                className: error.name,
-                stackTrace: error instanceof Error ? this.getStackTrace(error) : null,
-                responseErrorMessage: error instanceof HttpErrorResponse ? this.getResponseErrorMessage(error) : null,
-                environmentMessage: this.getEnvironment()
-            }
+            url: window.location.href,
+            errorMessage: error.message === '' ? 'Script error' : error.message,
+            className: error.name,
+            stackTrace: error instanceof Error ? this.getStackTrace(error) : null,
+            responseErrorMessage: error instanceof HttpErrorResponse ? this.getResponseErrorMessage(error) : null,
+            environmentMessage: this.getEnvironment()
         };
     }
 
-    private getStackTrace(error: Error): StackTrace[] {
+    private getStackTrace(error: Error): StackFrame[] {
         const parsedStackTrace = stackTraceParser.parse(error.stack);
 
         return parsedStackTrace.map(item => ({ ...item }));

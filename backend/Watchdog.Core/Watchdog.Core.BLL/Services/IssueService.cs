@@ -17,33 +17,60 @@ namespace Watchdog.Core.BLL.Services
             _client = client;
         }
         
-        public async Task<ICollection<IssueMessage>> GetIssuesAsync()
+        public async Task<ICollection<Issue>> GetIssuesAsync()
         {
-            var result = await _client.SearchAsync<IssueMessage>(s => s
-                    .From(0)
-                    .Size(200)
-                    .MatchAll()
-                    .Sort(sorter => sorter.Descending(issue => issue.OccurredOn))
-            );
+            var issueMessages = await SearchIssueMessagesAsync();
             
-            return result.Documents.ToList();
+            //it will be refactored letter : )
+            var issues = issueMessages
+                .GroupBy(i => new { i.ClassName, i.ErrorMessage })
+                .Select(group => new Issue()
+                {
+                    ErrorMessage = group.Key.ErrorMessage,
+                    ErrorClass = group.Key.ClassName,
+                    Events = issueMessages.Where(i => i.ErrorMessage == group.Key.ErrorMessage).ToList(),
+                    EventsCount = issueMessages.Count(i => i.ErrorMessage == group.Key.ErrorMessage),
+                    Newest = issueMessages
+                        .Where(i => i.ErrorMessage == group.Key.ErrorMessage)
+                        .OrderBy(i => i.OccurredOn)
+                        .LastOrDefault().OccurredOn,
+                    Oldest = issueMessages
+                        .Where(i => i.ErrorMessage == group.Key.ErrorMessage)
+                        .OrderBy(i => i.OccurredOn)
+                        .FirstOrDefault().OccurredOn,
+                })
+                .ToList();
+            
+            return issues;
         }
-
-        public async Task<ICollection<IssueInfo>> GetIssuesInfoAsync()
+        
+        public async Task<ICollection<TileIssueInfo>> GetIssuesInfoAsync()
         {
-            var issues = await GetIssuesAsync();
-
-            var issuesInfo = issues
-                .GroupBy(issue => issue.IssueDetails.ClassName)
-                .Select((grouped) => new IssueInfo()
+            var issueMessages = await SearchIssueMessagesAsync();
+            
+            var issuesInfo = issueMessages
+                .GroupBy(issue => issue.ClassName)
+                .Select((grouped) => new TileIssueInfo()
                 {
                     ClassName = grouped.Key,
-                    Events = issues.Count(i => i.IssueDetails.ClassName == grouped.Key)
+                    Events = issueMessages.Count(i => i.ClassName == grouped.Key)
                 })
                 .OrderByDescending(i => i.Events)
                 .ToList();
             
             return issuesInfo;
+        }
+
+        private async Task<ICollection<IssueMessage>> SearchIssueMessagesAsync()
+        {
+            var searchResponse = await _client.SearchAsync<IssueMessage>(s => s
+                .From(0)
+                .Size(300)
+                .MatchAll()
+                .Sort(sorter => sorter.Descending(issue => issue.OccurredOn))
+            );
+
+            return searchResponse.Documents.ToList();
         }
     }
 }

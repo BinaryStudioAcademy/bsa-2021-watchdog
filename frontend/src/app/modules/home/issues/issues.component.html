@@ -55,31 +55,30 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-issue>
-                    <tr *ngIf="issue.issueDetails.className &&
-                               issue.issueDetails.errorMessage &&
-                               issue.occurredOn">
+                    <tr *ngIf="issue.errorMessage &&
+                               issue.errorClass &&
+                               issue.newest">
                         <td>
                             <div class="issue-block">
                                 <p-checkbox name="selectedIssues" [value]="issue" [(ngModel)]="selectedIssues">
                                 </p-checkbox>
                                 <div class="content">
-                                    <span class="name">{{issue.issueDetails.className}}</span>
-                                    <span class="description">{{issue.issueDetails.errorMessage}}</span>
+                                    <span class="name">{{issue.errorClass}}</span>
+                                    <span class="description">{{issue.errorMessage}}</span>
                                     <div class="additional-info">
                                         <p-tag class="new-issue" *ngIf="issue.isNew" styleClass="p-mr-2"
                                             value="New issue" [rounded]="true"></p-tag>
                                         <span>{{issue.projectTag}}</span>
                                         <div class="tooltip">
-                                            <span><i class="pi pi-clock time-icon"></i>{{issue.occurredOn |
+                                            <span><i class="pi pi-clock time-icon"></i>{{issue.newest |
                                                 timeAgo}}</span>
-                                            <span class="tooltiptext">{{issue.occurredOn | date:'MMMM d, y h:mm
-                                                a'}}</span>
+                                            <span class="tooltiptext">{{issue.newest | date:'MMMM d, y h:mma'}}</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </td>
-                        <td>{{issue?.events}}</td>
+                        <td>{{issue.eventsCount}}</td>
                         <td>{{issue?.users}}</td>
                         <td>
                             <div class="assignee"><i class="pi pi-user"></i><i class="pi pi-chevron-down"></i></div>

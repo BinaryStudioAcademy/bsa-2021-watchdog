@@ -1,9 +1,10 @@
+import { IssueMessage } from '@shared/models/issue/issue-message';
+
 export interface Issue {
-    name: string,
-    description: string,
-    isNew: boolean,
-    projectTag: string,
-    createdAt: Date,
-    events: number,
-    users: number
+    errorMessage: string,
+    errorClass: string,
+    eventsCount: number,
+    events: IssueMessage[],
+    newest: Date,
+    oldest: Date
 }

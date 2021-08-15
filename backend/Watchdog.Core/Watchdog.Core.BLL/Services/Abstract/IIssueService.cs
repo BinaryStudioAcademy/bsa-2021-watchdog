@@ -7,7 +7,7 @@ namespace Watchdog.Core.BLL.Services.Abstract
 {
     public interface IIssueService
     {
-        Task<ICollection<IssueMessage>> GetIssuesAsync();
-        Task<ICollection<IssueInfo>> GetIssuesInfoAsync();
+        Task<ICollection<Issue>> GetIssuesAsync();
+        Task<ICollection<TileIssueInfo>> GetIssuesInfoAsync();
     }
 }

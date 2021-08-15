@@ -25,8 +25,8 @@ namespace Watchdog.Core.API.Controllers
             return Ok(issues);
         }
 
-        [HttpGet("issues_info")]
-        public async Task<ActionResult<ICollection<IssueInfo>>> GetIssuesInfoAsync()
+        [HttpGet("topIssues")]
+        public async Task<ActionResult<ICollection<TileIssueInfo>>> GetIssuesInfoAsync()
         {
             var issuesInfo = await _issueService.GetIssuesInfoAsync();
             return Ok(issuesInfo);

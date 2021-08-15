@@ -11,8 +11,8 @@ import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
 import { regexs } from '@shared/constants/regexs';
 import { BaseComponent } from '@core/components/base/base.component';
 import { UpdateTile } from '@shared/models/tile/update-tile';
-import { IssueMessage } from '@shared/models/issues/issue-message';
-import { IssueInfo } from '@shared/models/issues/issue.info';
+import { IssueMessage } from '@shared/models/issue/issue-message';
+import { TopIssuesInfo } from '@shared/models/issue/top-issues.info';
 import { IssueService } from '@core/services/issue.service';
 
 @Component({
@@ -25,7 +25,7 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
     @Input() tile: Tile;
     @Output() isDeleting: EventEmitter<Tile> = new EventEmitter<Tile>();
 
-    issuesInfo: IssueInfo[] = [];
+    issuesInfo: TopIssuesInfo[] = [];
     displayedProjects: Project[];
     formGroup: FormGroup;
     isShownTileMenu: boolean;
@@ -122,7 +122,7 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
         })];
 
         this.issuesService
-            .getIssuesInfo()
+            .getTopIssues()
             .pipe(this.untilThis)
             .subscribe(issuesInfo => {
                 this.issuesInfo = issuesInfo;
