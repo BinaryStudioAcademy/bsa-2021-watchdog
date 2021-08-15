@@ -41,6 +41,7 @@ namespace Watchdog.Core.API.Middlewares
             context.Response.StatusCode = exception switch
             {
                 ArgumentNullException => 400,
+                AggregateException => 409,
                 KeyNotFoundException => 404,
                 DbUpdateException ex => (ex.InnerException as SqlException).Number == SqlServerViolationOfUniqueIndex ? 409 : 500,
                 _ => 500

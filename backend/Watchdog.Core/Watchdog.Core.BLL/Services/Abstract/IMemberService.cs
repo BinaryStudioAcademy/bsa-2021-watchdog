@@ -13,6 +13,9 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<ICollection<MemberDto>> GetAllMembersAsync();
 
         Task<MemberDto> AddMemberAsync(NewMemberDto memberDto);
+
+        Task<InvitedMemberDto> AddAndInviteMember(NewMemberDto memberDto);
+
         Task DeleteMemberAsync(int id);
         Task<Response> InviteMemberAsync(MemberDto memberDto);
         Task<Response> InviteMemberAsync(int id);

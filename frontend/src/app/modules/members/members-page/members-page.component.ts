@@ -8,6 +8,7 @@ import { ShareDataService } from '@core/services/share-data.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { Member } from '@shared/models/member/member';
 import { MemberItem } from '@shared/models/member/member-item';
+import { Organization } from '@shared/models/organization/organization';
 import { Role } from '@shared/models/role/role';
 import { TeamOption } from '@shared/models/teams/team-option';
 import { User } from '@shared/models/user/user';
@@ -41,31 +42,49 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
 
     ngOnInit(): void {
         this.user = this.authService.getUser();
+        this.setUpSharedDate();
         this.isInviting = false;
         this.loadingNumber += 1;
         this.authService.getOrganization()
             .pipe(this.untilThis)
             .subscribe(organization => {
-                this.memberService.getMembersByOrganizationId(organization.id)
-                    .pipe(this.untilThis)
-                    .subscribe(members => {
-                        this.memberItems = members.map(member => ({ member, treeTeams: this.fromTeams(member.teams) }));
-                        this.loadingNumber -= 1;
-                        this.updateDataService.currentMessage
-                            .pipe(this.untilThis)
-                            .subscribe(member => {
-                                this.memberItems = this.memberItems.concat({ member, treeTeams: this.fromTeams(member.teams) });
-                            });
-                    }, error => {
-                        this.toastNotifications.error(error.toString());
-                        this.loadingNumber -= 1;
-                    });
+                this.loadMembers(organization);
+                this.loadingNumber -= 1;
+            }, error => {
+                this.toastNotifications.error(error.toString());
+                this.loadingNumber -= 1;
             });
 
+        this.loadingNumber += 1;
         this.roleService.getRoles()
             .pipe(this.untilThis)
             .subscribe(roles => {
                 this.roles = roles;
+                this.loadingNumber -= 1;
+            }, error => {
+                this.toastNotifications.error(error.toString());
+                this.loadingNumber -= 1;
+            });
+    }
+
+    private loadMembers(organization: Organization) {
+        this.loadingNumber += 1;
+        this.memberService.getMembersByOrganizationId(organization.id)
+            .pipe(this.untilThis)
+            .subscribe(members => {
+                this.memberItems = members.map(member => ({ member, treeTeams: this.fromTeams(member.teams) }));
+                this.loadingNumber -= 1;
+            }, error => {
+                this.toastNotifications.error(error.toString());
+                this.loadingNumber -= 1;
+            });
+    }
+
+    private setUpSharedDate() {
+        this.updateDataService.currentMessage
+            .pipe(this.untilThis)
+            .subscribe(member => {
+                this.memberItems = this.memberItems.concat({ member, treeTeams: this.fromTeams(member.teams) });
             });
     }
 

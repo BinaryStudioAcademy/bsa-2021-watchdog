@@ -40,19 +40,10 @@ namespace Watchdog.Core.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddMember(NewMemberDto newMemberDto)
+        public async Task<ActionResult<InvitedMemberDto>> AddMember(NewMemberDto newMemberDto)
         {
-            MemberDto member;
-            try
-            {
-                member = await _memberService.AddMemberAsync(newMemberDto);
-            }
-            catch (ArgumentException ex)
-            {
-                return Conflict(ex.Message);
-            }
-            var response = await _memberService.InviteMemberAsync(member);
-            return Ok(new { Member = member, SendMailResponse = response.StatusCode });
+            var invitedMember = await _memberService.AddAndInviteMember(newMemberDto);
+            return Ok(invitedMember);
         }
 
 
@@ -77,7 +68,7 @@ namespace Watchdog.Core.API.Controllers
             return Ok(response.StatusCode);
         }
 
-        [HttpPost("acceptinvite")]
+        [HttpPost("acceptInvite")]
         public async Task<ActionResult<int>> AcceptInvite(InviteDto dto)
         {
             await _memberService.AcceptInviteAsync(dto.Id);
