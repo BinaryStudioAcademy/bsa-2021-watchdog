@@ -1,9 +1,11 @@
 <div class="layout-wrapper">
-
+    <!--    Header    -->
     <div class="layout-topbar">
+        <!--    Logo    -->
         <div [routerLink]="['../home']" class="logo">
             <img alt="logo" src="assets/logo-white.svg">
         </div>
+        <!--    User menu button    -->
         <div *ngIf="!user" class="user-info">
             <button class="p-button-outlined sign-in-button" label="Sign in" pButton pRipple type="button"></button>
         </div>
@@ -13,11 +15,12 @@
             <p-menu #menu [model]="userItems" [popup]="true"></p-menu>
         </div>
     </div>
-
-    <div [ngStyle]="{'width': !collapsed ? '230px' : '68px'}" class="sidebar">
+    <!--    Sidebar    -->
+    <div [class.collapsed-sidebar]="collapsed" class="sidebar">
         <app-organization-menu [collapsed]="collapsed" class="sidebar-avatar"></app-organization-menu>
-
+        <!--    Sidebar buttons    -->
         <div class="sidebar-top">
+            <!--    Teams button    -->
             <div>
                 <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Teams' : undefined}}"
                         routerLink="teams">
@@ -25,7 +28,7 @@
                     <span *ngIf="!collapsed">Teams</span>
                 </button>
             </div>
-
+            <!--    Members button    -->
             <div>
                 <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Members' : undefined}}"
                         routerLink="members">
@@ -33,7 +36,7 @@
                     <span *ngIf="!collapsed">Members</span>
                 </button>
             </div>
-
+            <!--    Projects button    -->
             <div>
                 <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Projects' : undefined}}"
                         routerLink="projects">
@@ -42,6 +45,7 @@
                 </button>
             </div>
 
+            <!--    Issues button    -->
             <div>
                 <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Issues' : undefined}}"
                         routerLink="issues">
@@ -49,7 +53,7 @@
                     <span *ngIf="!collapsed">Issues</span>
                 </button>
             </div>
-
+            <!--    Dashboards button    -->
             <div>
                 <button (click)="dashboardsShown = !dashboardsShown" class="button"
                         pTooltip="{{collapsed ? 'Dashboards' : undefined}}">
@@ -63,7 +67,7 @@
                     }" class="pi"></i>
                 </button>
             </div>
-
+            <!--    Dashboard buttons    -->
             <div [ngClass]="{
             'dashboards-none' : !dashboardsShown,
             'dashboards': dashboardsShown && !collapsed,
@@ -76,6 +80,7 @@
                         <span *ngIf="!collapsed" appTooltipFullName>{{dashboard.name}}</span>
                     </button>
                 </div>
+                <!--    Add dashboard button    -->
                 <button (click)="displayModal=true" class="button dashboard add-button"
                         pTooltip="{{collapsed ? 'Add dashboard' : undefined}}">
                     <i class="pi pi-plus"></i>
@@ -83,6 +88,7 @@
                 </button>
             </div>
         </div>
+        <!--    Collapse button    -->
         <div class="sidebar-bottom">
             <button (click)="collapsed = !collapsed" class="button collapse-button">
                 <ng-template [ngIfElse]="angleRight" [ngIf]="!collapsed">
@@ -96,11 +102,13 @@
         </div>
     </div>
 
-    <app-add-dashboard (closeModal)="displayModal = !displayModal" (save)="addDashboard($event)" *ngIf="displayModal">
-    </app-add-dashboard>
-    <div [ngStyle]="{'margin-left': !collapsed ? '230px' : '68px'}" class="home-content-wrp">
+    <!--    Main content    -->
+    <div [class.collapsed-home-content-wrp]="collapsed" class="home-content-wrp">
         <div class="content">
             <router-outlet></router-outlet>
         </div>
     </div>
 </div>
+
+<app-add-dashboard (closeModal)="displayModal = !displayModal" (save)="addDashboard($event)" *ngIf="displayModal">
+</app-add-dashboard>

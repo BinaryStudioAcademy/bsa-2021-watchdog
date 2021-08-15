@@ -19,7 +19,9 @@
                 <ul>
                     <li *ngFor="let icon of icons" (click)="onSelect(icon)"
                         [ngClass]="{ 'selected': icon.label === this.selectedIcon.label}">
-                        <i [ngClass]="icon.label"></i>
+                        <div class="icon-container">
+                            <i [ngClass]="icon.label"></i>
+                        </div>
                     </li>
                 </ul>
             </div>

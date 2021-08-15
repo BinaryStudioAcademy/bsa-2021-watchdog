@@ -1,6 +1,9 @@
 @import src/styles/variables
 @import src/styles/mixins
 
+$side-panel-width: 230px
+$collapsed-side-panel-width: 68px
+
 @mixin custom-scroll
     &::-webkit-scrollbar-thumb
         border-radius: 6px
@@ -119,6 +122,7 @@
     flex-direction: column
     position: fixed
     height: 100%
+    width: $side-panel-width
     background-color: $primary-color-darker
     &-avatar
         margin-top: 64px
@@ -147,6 +151,9 @@
         border-top: 2.5px solid $primary-color-darkest
         width: 100%
         bottom: 0
+
+.collapsed-sidebar
+    width: $collapsed-side-panel-width
 
 .button
     width: 100%
@@ -211,9 +218,12 @@
 .home-content-wrp
     padding: 0
     margin-top: 64px
-    margin-left: 230px
+    margin-left: $side-panel-width
     overflow-y: auto
     height: calc(100vh - 64px)
+
+.collapsed-home-content-wrp
+    margin-left: $collapsed-side-panel-width
 
 .content
     position: relative
