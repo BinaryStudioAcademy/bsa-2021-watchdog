@@ -20,6 +20,7 @@ namespace Watchdog.Core.DAL.Context
         private const int _numberOfOrganizations = 5;
         private const int _numberOfPlatforms = 18;
         private const int _numberOfTeams = 5;
+        private const int _numberOfTeamMembers = 25;
         private const int _numberOfTiles = 35;
         private const int _numberOfUsers = 20;
         private static readonly List<string> _icons = new List<string>() { "pi-chart-line", "pi-chart-bar" };
@@ -38,13 +39,14 @@ namespace Watchdog.Core.DAL.Context
             modelBuilder.Entity<ApplicationTeam>().HasData(GenerateApplicationTeams());
             modelBuilder.Entity<Dashboard>().HasData(GenerateDashboards());
             modelBuilder.Entity<Entities.Environment>().HasData(GenerateEnvironments());
-            modelBuilder.Entity<User>().HasData(GenerateUsers());
             modelBuilder.Entity<Member>().HasData(GenerateMembers());
             modelBuilder.Entity<Organization>().HasData(GenerateOrganizations());
             modelBuilder.Entity<Platform>().HasData(GeneratePlatforms());
             modelBuilder.Entity<Role>().HasData(GenerateRoles());
             modelBuilder.Entity<Team>().HasData(GenerateTeams());
+            modelBuilder.Entity<TeamMember>().HasData(GenerateTeamMembers());
             modelBuilder.Entity<Tile>().HasData(GenerateTiles());
+            modelBuilder.Entity<User>().HasData(GenerateUsers());
 
         }
 
@@ -104,10 +106,7 @@ namespace Watchdog.Core.DAL.Context
                 .RuleFor(m => m.OrganizationId, f => f.Random.Number(1, _numberOfOrganizations))
                 .RuleFor(m => m.CreatedBy, f => f.Random.Number(1, _numberOfUsers))
                 .RuleFor(m => m.CreatedAt, f => f.Date.Past(2, new DateTime(2021, 7, 20)))
-                .RuleFor(m => m.UserId, f=> f.Random.Number(1, _numberOfUsers))
-                .RuleFor(m=> m.IsAccepted, f=> f.Random.Bool())
                 .Generate(count);
-                
         }
 
         private static IList<Organization> GenerateOrganizations(int count = _numberOfOrganizations)
@@ -269,6 +268,16 @@ namespace Watchdog.Core.DAL.Context
                 .Generate(count);
         }
 
+        private static IList<TeamMember> GenerateTeamMembers(int count = _numberOfTeamMembers)
+        {
+            return new Faker<TeamMember>()
+                .UseSeed(4197)
+                .RuleFor(tm => tm.Id, f => ++f.IndexVariable)
+                .RuleFor(tm => tm.TeamId, f => f.Random.Number(1, _numberOfTeams))
+                .RuleFor(tm => tm.MemberId, f => f.Random.Number(1, _numberOfMembers))
+                .Generate(count);
+        }
+
         private static IList<Tile> GenerateTiles(int count = _numberOfTiles)
         {
             return new Faker<Tile>()
@@ -282,7 +291,7 @@ namespace Watchdog.Core.DAL.Context
                         ? TileCategory.List
                         : f.PickRandom<TileCategory>())
                 .RuleFor(t => t.CreatedBy, f => f.Random.Number(1, _numberOfUsers))
-                .RuleFor(t => t.CreatedAt, f => f.Date.Past(2, DateTime.Now))
+                .RuleFor(t => t.CreatedAt, f => f.Date.Past(2, new DateTime(2021, 7, 20)))
                 .RuleFor(t => t.Settings, f =>
                     "{" +
                     $"\"sourceProjects\": [{f.Random.Number(1, _numberOfApplications)}]," +

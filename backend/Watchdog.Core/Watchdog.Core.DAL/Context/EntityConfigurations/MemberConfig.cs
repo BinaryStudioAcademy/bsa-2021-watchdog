@@ -12,7 +12,7 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
             builder.HasMany(m => m.TeamMembers)
                    .WithOne(tm => tm.Member)
                    .HasForeignKey(tm => tm.MemberId)
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .OnDelete(DeleteBehavior.ClientCascade);
         }
     }
 }

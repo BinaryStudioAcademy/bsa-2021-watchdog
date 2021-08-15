@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Organization;
@@ -20,6 +21,8 @@ namespace Watchdog.Core.BLL.Services
         public async Task<UserDto> FullRegistrationAsync(FullRegistrationDto fullRegistrationDto)
         {
             var user = _mapper.Map<User>(fullRegistrationDto.User);
+            if (await _context.Users.AnyAsync(u => u.Email == fullRegistrationDto.User.Email))
+                throw new InvalidOperationException("Such email alreaby exists");
             user.RegisteredAt = DateTime.Now;
             _context.Users.Add(user);
             await _context.SaveChangesAsync();

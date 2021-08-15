@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
+using Watchdog.Core.Common.DTO.Registration;
 using Watchdog.Core.Common.DTO.User;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
@@ -26,6 +28,9 @@ namespace Watchdog.Core.BLL.Services
         }
         public async Task<UserDto> UpdateUserAsync(int userId, UpdateUserDto updateUserDto)
         {
+
+            if (await _context.Users.AnyAsync(u => u.Email == updateUserDto.Email))
+                throw new InvalidOperationException("Such email alreaby exists");
             var existedUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             var mergedUser = _mapper.Map(updateUserDto, existedUser);
@@ -51,6 +56,8 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<UserDto> CreateUserAsync(NewUserDto userDto)
         {
+            if (await _context.Users.AnyAsync(u => u.Email == userDto.Email))
+                throw new InvalidOperationException("Such email alreaby exists");
             var user = _mapper.Map<User>(userDto);
 
             var createdUser = _context.Users.Add(user);

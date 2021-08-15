@@ -83,7 +83,7 @@ namespace Watchdog.Core.BLL.Services
             var teamMember = _mapper.Map<TeamMember>(teamMemberDto);
 
             if (await _context.TeamMembers.AnyAsync(t => t.MemberId == teamMember.MemberId && t.TeamId == teamMember.TeamId))
-                throw new KeyNotFoundException("Member was not found");
+                throw new InvalidOperationException("This member is already in team!");
 
             var created = _context.TeamMembers.Add(teamMember).Entity;
             await _context.SaveChangesAsync();
@@ -107,7 +107,10 @@ namespace Watchdog.Core.BLL.Services
         public async Task DeleteTeamAsync(int teamId)
         {
             var team = await _context.Teams
-                .FirstOrDefaultAsync(t => t.Id == teamId) ?? throw new KeyNotFoundException("Team was not found");
+                .Include(t => t.ApplicationTeams)
+                .Include(t => t.TeamMembers)
+                .FirstOrDefaultAsync(t => t.Id == teamId) 
+                    ?? throw new KeyNotFoundException("Team was not found");
             _context.Remove(team);
 
             await _context.SaveChangesAsync();
