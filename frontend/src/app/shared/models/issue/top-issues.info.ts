@@ -1,4 +1,5 @@
 export interface TopIssuesInfo {
-    className: string,
+    errorClass: string,
+    errorMessage: string,
     events: number
 }

@@ -39,6 +39,7 @@ namespace Watchdog.Core.BLL.Services
                         .OrderBy(i => i.OccurredOn)
                         .FirstOrDefault().OccurredOn,
                 })
+                .OrderByDescending(issue => issue.EventsCount)
                 .ToList();
             
             return issues;
@@ -49,11 +50,12 @@ namespace Watchdog.Core.BLL.Services
             var issueMessages = await SearchIssueMessagesAsync();
             
             var issuesInfo = issueMessages
-                .GroupBy(issue => issue.ClassName)
-                .Select((grouped) => new TileIssueInfo()
+                .GroupBy(issue => new { issue.ClassName, issue.ErrorMessage })
+                .Select(group => new TileIssueInfo()
                 {
-                    ClassName = grouped.Key,
-                    Events = issueMessages.Count(i => i.ClassName == grouped.Key)
+                    ErrorClass = group.Key.ClassName,
+                    ErrorMessage = group.Key.ErrorMessage,
+                    Events = issueMessages.Count(issueMsg => issueMsg.ErrorMessage == group.Key.ErrorMessage)
                 })
                 .OrderByDescending(i => i.Events)
                 .ToList();

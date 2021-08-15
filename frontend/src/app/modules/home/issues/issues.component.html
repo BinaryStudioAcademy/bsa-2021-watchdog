@@ -55,9 +55,7 @@
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-issue>
-                    <tr *ngIf="issue.errorMessage &&
-                               issue.errorClass &&
-                               issue.newest">
+                    <tr>
                         <td>
                             <div class="issue-block">
                                 <p-checkbox name="selectedIssues" [value]="issue" [(ngModel)]="selectedIssues">
@@ -70,8 +68,7 @@
                                             value="New issue" [rounded]="true"></p-tag>
                                         <span>{{issue.projectTag}}</span>
                                         <div class="tooltip">
-                                            <span><i class="pi pi-clock time-icon"></i>{{issue.newest |
-                                                timeAgo}}</span>
+                                            <span><i class="pi pi-clock time-icon"></i>{{issue.newest | timeAgo}}</span>
                                             <span class="tooltiptext">{{issue.newest | date:'MMMM d, y h:mma'}}</span>
                                         </div>
                                     </div>
