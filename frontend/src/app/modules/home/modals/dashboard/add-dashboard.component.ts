@@ -15,6 +15,7 @@ import { SelectItem } from 'primeng/api/selectitem';
 export class AddDashboardComponent implements OnInit {
     title: string = 'Add dashboard';
     public formGroup: FormGroup = {} as FormGroup;
+    selectedIcon: SelectItem;
     icons: SelectItem[];
     @Output() closeModal = new EventEmitter<void>();
     @Output() save = new EventEmitter<NewDashboard>();
@@ -46,18 +47,18 @@ export class AddDashboardComponent implements OnInit {
                     Validators.maxLength(50),
                     Validators.pattern(regexs.dashboardName)
                 ]
-            ),
-            icon: new FormControl(
-                '',
-                [
-                    Validators.required
-                ]
-            ),
+            )
         });
+        this.selectedIcon = { label: 'pi pi-chart-bar', value: 'pi-chart-bar' };
+    }
+
+    onSelect(icon: SelectItem): void {
+        this.selectedIcon = icon;
     }
 
     saveHandle(): void {
         const dashboard: NewDashboard = <NewDashboard> this.formGroup.value;
+        dashboard.icon = this.selectedIcon.value;
         dashboard.createdBy = this.user.id;
         dashboard.organizationId = this.organization.id;
         this.save.emit(dashboard);

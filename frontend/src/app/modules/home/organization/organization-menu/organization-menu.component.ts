@@ -1,7 +1,7 @@
 import { OrganizationService } from '@core/services/organization.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { ShareDataService } from '@core/services/share-data.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Organization } from '@shared/models/organization/organization';
 import { BaseComponent } from '@core/components/base/base.component';
 import { MenuItem } from 'primeng/api';
@@ -18,6 +18,7 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
     organization: Organization;
     organizations: Organization[];
     menuItems: MenuItem[] = [];
+    @Input() collapsed: boolean = false;
 
     constructor(
         private dataService: ShareDataService<Organization>,
