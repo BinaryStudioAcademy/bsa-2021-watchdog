@@ -127,7 +127,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
         this.searchTerm.next(value);
     }
 
-    invate(invitionInput: Invition) {
+    invite(invitionInput: Invition) {
         const invition = invitionInput;
         this.loadingNumber += 1;
         const newMember = {
