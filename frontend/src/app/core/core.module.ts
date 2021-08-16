@@ -10,6 +10,7 @@ import { ToastNotificationComponent } from './components/toast-notification/toas
 import { ConfirmWindowComponent } from './components/confirm-window/confirm-window.component';
 import { JwtInterceptorService } from './interceptors/jwt-interceptor.service';
 import { AuthGuard } from './guards/auth.guard';
+import { WatchdogService } from './breadcrumbs/services/watchdog.service';
 
 @NgModule({
     imports: [
@@ -33,4 +34,6 @@ import { AuthGuard } from './guards/auth.guard';
         ConfirmWindowComponent,
     ]
 })
-export class CoreModule { }
+export class CoreModule {
+    constructor(private wathchdog: WatchdogService) { }
+}
