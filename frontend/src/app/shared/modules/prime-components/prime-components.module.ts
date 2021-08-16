@@ -32,11 +32,13 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { TooltipModule } from 'primeng/tooltip';
 import { StyleClassModule } from 'primeng/styleclass';
 import { TieredMenuModule } from 'primeng/tieredmenu';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { DialogService } from 'primeng/dynamicdialog';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { RatingModule } from 'primeng/rating';
+import { TreeModule } from 'primeng/tree';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -73,10 +75,12 @@ import { RatingModule } from 'primeng/rating';
         TooltipModule,
         StyleClassModule,
         TieredMenuModule,
+        AutoCompleteModule,
         InputTextareaModule,
         MultiSelectModule,
         OverlayPanelModule,
         RatingModule,
+        TreeModule,
     ],
     exports: [
         ButtonModule,
@@ -110,10 +114,12 @@ import { RatingModule } from 'primeng/rating';
         TooltipModule,
         StyleClassModule,
         TieredMenuModule,
+        AutoCompleteModule,
         InputTextareaModule,
         OverlayPanelModule,
         RatingModule,
         MultiSelectModule,
+        TreeModule,
     ],
     declarations: [],
     providers: [

@@ -13,5 +13,7 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<UserDto> GetUserByUidAsync(string uid);
 
         Task<UserDto> CreateUserAsync(NewUserDto userDto);
+
+        Task<IEnumerable<UserDto>> SearchMembersNotInOrganizationAsync(int orgId, string memberEmail);
     }
 }
