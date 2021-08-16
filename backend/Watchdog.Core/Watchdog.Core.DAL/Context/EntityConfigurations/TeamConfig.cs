@@ -11,18 +11,19 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
             builder.Property(t => t.Name)
                    .HasMaxLength(128)
                    .IsRequired();
+
             builder.HasIndex(t => t.Name)
-                .IsUnique();
+                   .IsUnique();
 
             builder.HasMany(t => t.TeamMembers)
-                .WithOne(tm => tm.Team)
-                .HasForeignKey(tm => tm.TeamId)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                   .WithOne(tm => tm.Team)
+                   .HasForeignKey(tm => tm.TeamId)
+                   .OnDelete(DeleteBehavior.ClientCascade);
 
             builder.HasMany(t => t.ApplicationTeams)
-                .WithOne(at => at.Team)
-                .HasForeignKey(at => at.TeamId)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                   .WithOne(at => at.Team)
+                   .HasForeignKey(at => at.TeamId)
+                   .OnDelete(DeleteBehavior.ClientCascade);
         }
     }
 }

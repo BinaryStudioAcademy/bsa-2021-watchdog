@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
-using Watchdog.Core.Common.DTO.Member;
+using Watchdog.Core.Common.DTO.Members;
 
 namespace Watchdog.Core.API.Controllers
 {
@@ -17,6 +18,42 @@ namespace Watchdog.Core.API.Controllers
             _memberService = memberService;
         }
 
+        [HttpGet("organization/{organizationId}")]
+        public async Task<ActionResult<ICollection<MemberDto>>> GetAllMembers(int organizationId)
+        {
+            var members = await _memberService.GetMembersByOrganizationIdAsync(organizationId);
+            return Ok(members);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<MemberDto>> GetMemberById(int id)
+        {
+            var member = await _memberService.GetMemberByIdAsync(id);
+            return Ok(member);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<MemberDto>> Update(UpdateMemberDto dto)
+        {
+            var member = await _memberService.UpdateAsync(dto);
+            return Ok(member);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<InvitedMemberDto>> AddMember(NewMemberDto newMemberDto)
+        {
+            var invitedMember = await _memberService.AddAndInviteMember(newMemberDto);
+            return Ok(invitedMember);
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteMember(int id)
+        {
+            await _memberService.DeleteMemberAsync(id);
+            return NoContent();
+        }
+
         [HttpGet]
         public async Task<ActionResult<ICollection<MemberDto>>> GetAllAsync()
         {
@@ -24,25 +61,18 @@ namespace Watchdog.Core.API.Controllers
             return Ok(members);
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<MemberDto>> GetByIdAsync(int id)
+        [HttpPost("reinvite")]
+        public async Task<ActionResult<int>> Reinvite(InviteDto dto)
         {
-            var member = await _memberService.GetMemberByIdAsync(id);
-            return Ok(member);
+            var response = await _memberService.InviteMemberAsync(dto.Id);
+            return Ok(response.StatusCode);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<MemberDto>> CreateMemberAsync(MemberDto memberDto)
+        [HttpPost("acceptInvite")]
+        public async Task<ActionResult<int>> AcceptInvite(InviteDto dto)
         {
-            var member = await _memberService.CreateMemberAsync(memberDto);
-            return Ok(member);
-        }
-
-        [HttpGet("organization/{organizationId}")]
-        public async Task<ActionResult<ICollection<MemberDto>>> GetAllMembersByTeam(int organizationId)
-        {
-            var members = await _memberService.GetMembersByOrganizationIdAsync(organizationId);
-            return Ok(members);
+            await _memberService.AcceptInviteAsync(dto.Id);
+            return Ok();
         }
 
         [HttpGet("team/{teamId}/exceptTeam/")]

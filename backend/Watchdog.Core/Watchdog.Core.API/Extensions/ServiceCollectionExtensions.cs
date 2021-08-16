@@ -22,9 +22,8 @@ namespace Watchdog.Core.API.Extensions
                 .AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-            services.AddTransient<IApplicationService, ApplicationService>();
-            services.AddTransient<IPlatformService, PlatformService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IPlatformService, PlatformService>();
             services.AddTransient<IMemberService, MemberService>();
             services.AddTransient<IDashboardService, DashboardService>();
             services.AddTransient<IOrganizationService, OrganizationService>();
@@ -34,7 +33,6 @@ namespace Watchdog.Core.API.Extensions
             services.AddTransient<IIssueService, IssueService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ITileService, TileService>();
-            services.AddTransient<ITeamService, TeamService>();
             services.AddTransient<IRegistrationService, RegistrationService>();
             services.AddEmailSendService(configuration);
         }
@@ -52,6 +50,7 @@ namespace Watchdog.Core.API.Extensions
 
         public static void AddAutoMapper(this IServiceCollection services)
         {
+
             services.AddAutoMapper(Assembly.GetAssembly(typeof(OrganizationProfile)));
         }
 
