@@ -44,8 +44,8 @@
             <ng-template pTemplate="header">
                 <tr>
                     <th>Issue</th>
-                    <th pSortableColumn="events">Count
-                        <p-sortIcon field="events"></p-sortIcon>
+                    <th pSortableColumn="eventsCount">Count
+                        <p-sortIcon field="eventsCount"></p-sortIcon>
                     </th>
                 </tr>
             </ng-template>
@@ -56,7 +56,7 @@
                         <span (click)="onIssueSelect(issue.errorMessage)" class="issue-name">{{issue.errorClass}}</span>
                         <small class="issue-message">{{issue.errorMessage}}</small>
                     </td>
-                    <td>{{issue.events}}</td>
+                    <td>{{issue.eventsCount}}</td>
                 </tr>
             </ng-template>
         </p-table>

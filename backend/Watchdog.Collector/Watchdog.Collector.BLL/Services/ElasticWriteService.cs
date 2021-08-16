@@ -17,7 +17,7 @@ namespace Watchdog.Collector.BLL.Services
             
         public async Task AddIssueMessageAsync(IssueMessage message)
         {
-            if (string.IsNullOrEmpty(message.ErrorMessage))
+            if (string.IsNullOrEmpty(message.IssueDetails.ErrorMessage))
             {
                 throw new ArgumentException("Error message can't be empty.");
             }

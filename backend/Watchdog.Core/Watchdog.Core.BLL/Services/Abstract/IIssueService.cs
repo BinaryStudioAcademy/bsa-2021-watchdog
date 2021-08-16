@@ -8,6 +8,5 @@ namespace Watchdog.Core.BLL.Services.Abstract
     {
         Task<IssueDto> GetIssueAsync(string errorMessage);
         Task<ICollection<IssueInfoDto>> GetIssuesInfoAsync();
-        Task<ICollection<TileIssueInfoDto>> GetTileIssuesInfoAsync();
     }
 }

@@ -1,4 +1,4 @@
-export interface TileIssuesInfo {
+export interface TileIssueInfo {
     errorClass: string,
     errorMessage: string,
     events: number

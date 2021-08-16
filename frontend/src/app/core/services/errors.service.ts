@@ -35,12 +35,14 @@ export class ErrorsService {
     private addContextInfo(error: any): IssueMessage {
         return {
             occurredOn: new Date(),
-            url: window.location.href,
-            errorMessage: error.message === '' ? 'Script error' : error.message,
-            className: error.name,
-            stackTrace: error instanceof Error ? this.getStackTrace(error) : null,
-            responseErrorMessage: error instanceof HttpErrorResponse ? this.getResponseErrorMessage(error) : null,
-            environmentMessage: this.getEnvironment()
+            issueDetails: {
+                url: window.location.href,
+                errorMessage: error.message === '' ? 'Script error' : error.message,
+                className: error.name,
+                stackTrace: error instanceof Error ? this.getStackTrace(error) : null,
+                responseErrorMessage: error instanceof HttpErrorResponse ? this.getResponseErrorMessage(error) : null,
+                environmentMessage: this.getEnvironment()
+            }
         };
     }
 

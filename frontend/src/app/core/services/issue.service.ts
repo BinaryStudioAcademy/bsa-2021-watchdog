@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { CoreHttpService } from './core-http.service';
-import { TileIssuesInfo } from '@shared/models/issue/tile-issues.info';
 import { Issue } from '@shared/models/issue/issue';
 import { IssueInfo } from '@shared/models/issue/issue-info';
 
@@ -16,9 +15,5 @@ export class IssueService {
 
     public getIssuesInfo() {
         return this.httpService.getRequest<IssueInfo[]>(`${this.routePrefix}/info`);
-    }
-
-    public getTileIssuesInfo() {
-        return this.httpService.getRequest<TileIssuesInfo[]>(`${this.routePrefix}/tileIssues`);
     }
 }
