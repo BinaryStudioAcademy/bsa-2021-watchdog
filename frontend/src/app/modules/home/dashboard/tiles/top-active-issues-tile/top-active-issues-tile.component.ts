@@ -66,16 +66,7 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
         });
     }
 
-    onIssueSelect(errorMessage: string) {
-        console.log(errorMessage);
-        this.issuesService
-            .getIssue(errorMessage)
-            .pipe(this.untilThis)
-            .subscribe(issue => {
-                console.log(issue);
-            }, error => {
-                this.toastNotificationService.error(error, '', 1700);
-            });
+    onIssueSelect(issue: IssueInfo) {
         //TODO: redirect here to a page of selected Issue
     }
 

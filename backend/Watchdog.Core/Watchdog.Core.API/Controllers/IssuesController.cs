@@ -16,14 +16,7 @@ namespace Watchdog.Core.API.Controllers
         {
             _issueService = issueService;
         }
-        
-        [HttpGet]
-        public async Task<ActionResult<IssueDto>> GetIssueAsync(string errorMessage)
-        {
-            var issue  = await _issueService.GetIssueAsync(errorMessage);
-            return Ok(issue);
-        }
-        
+
         [HttpGet("info")]
         public async Task<ActionResult<ICollection<IssueInfoDto>>> GetIssuesInfoAsync()
         {

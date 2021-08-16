@@ -1,4 +1,4 @@
-<div class="title">Issues</div>
+<div class="title">Issues <button (click)="error()">error</button></div>
 <div class="issues-content">
     <p-tabView styleClass="tabview-custom">
 
@@ -34,10 +34,10 @@
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
-                        <th class="name" pSortableColumn="newest">
+                        <th class="name" pSortableColumn="newest.occurredOn">
                             <div class="issue">
                                 <p-checkbox name="allIssues" (onChange)="selectAll($event)"></p-checkbox>
-                                <span>Issue <p-sortIcon field="newest"></p-sortIcon>
+                                <span>Issue <p-sortIcon field="newest.occurredOn"></p-sortIcon>
                                 </span>
                             </div>
                         </th>
@@ -68,8 +68,8 @@
                                             value="New issue" [rounded]="true"></p-tag>
                                         <span>{{issue.projectTag}}</span>
                                         <div class="tooltip">
-                                            <span><i class="pi pi-clock time-icon"></i>{{issue.newest | timeAgo}}</span>
-                                            <span class="tooltiptext">{{issue.newest | date:'MMMM d, y h:mma'}}</span>
+                                            <span><i class="pi pi-clock time-icon"></i>{{issue.newest.occurredOn | timeAgo}}</span>
+                                            <span class="tooltiptext">{{issue.newest.occurredOn | date:'MMMM d, y h:mma'}}</span>
                                         </div>
                                     </div>
                                 </div>

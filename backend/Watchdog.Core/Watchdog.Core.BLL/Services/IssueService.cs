@@ -23,13 +23,7 @@ namespace Watchdog.Core.BLL.Services
             
             var searchResponse = await _client.SearchAsync<IssueMessage>(s => s
                 .Source(sf => sf
-                    .Includes(i => i 
-                        .Fields(
-                            f => f.IssueDetails.ClassName,
-                            f => f.IssueDetails.ErrorMessage,
-                            f => f.OccurredOn
-                        )
-                    )
+                    .IncludeAll()
                 )
                 .From(0)
                 .Size(totalHits)
@@ -41,8 +35,7 @@ namespace Watchdog.Core.BLL.Services
                 {
                     h.Source.Id = h.Id;
                     return h.Source;
-                })
-                .OrderByDescending(i => i.OccurredOn);
+                });
 
             var issues = issueMessages
                 .GroupBy(i => new { i.IssueDetails.ClassName, i.IssueDetails.ErrorMessage })
@@ -53,57 +46,14 @@ namespace Watchdog.Core.BLL.Services
                     EventsCount = issueMessages
                         .Count(i => i.IssueDetails.ErrorMessage == group.Key.ErrorMessage),
                     Newest = issueMessages
-                        .FirstOrDefault(i => i.IssueDetails.ErrorMessage == group.Key.ErrorMessage).OccurredOn,
-                    Oldest = issueMessages
-                        .LastOrDefault(i => i.IssueDetails.ErrorMessage == group.Key.ErrorMessage).OccurredOn
+                        .Where(i => i.IssueDetails.ErrorMessage == group.Key.ErrorMessage)
+                        .OrderByDescending(i => i.OccurredOn)
+                        .FirstOrDefault(i => i.IssueDetails.ErrorMessage == group.Key.ErrorMessage)
                 })
-                .OrderByDescending(issue => issue.Newest)
+                .OrderByDescending(issue => issue.Newest.OccurredOn)
                 .ToList();
             
             return issues;
-        }
-
-        public async Task<IssueDto> GetIssueAsync(string errorMessage)
-        {
-            var totalHits = await GetTotalHits();
-
-            var searchResponse = await _client.SearchAsync<IssueMessage>(s => s
-                .Query(q => q
-                    .Match(m =>
-                        m.Field(f => f.IssueDetails.ErrorMessage)
-                            .Query(errorMessage)))
-                .From(0)
-                .Size(totalHits)
-            );
-            
-            var issueMessages = searchResponse
-                .Hits
-                .Select(h =>
-                {
-                    h.Source.Id = h.Id;
-                    return h.Source;
-                })
-                .OrderByDescending(i => i.OccurredOn);
-            
-            var issue = issueMessages
-                .GroupBy(i => new { i.IssueDetails.ClassName, i.IssueDetails.ErrorMessage })
-                .Select(group => new IssueDto()
-                {
-                    ErrorMessage = group.Key.ErrorMessage,
-                    ErrorClass = group.Key.ClassName,
-                    Events = issueMessages
-                        .Where(i => i.IssueDetails.ErrorMessage == group.Key.ErrorMessage)
-                        .ToList(),
-                    EventsCount = issueMessages
-                        .Count(i => i.IssueDetails.ErrorMessage == group.Key.ErrorMessage),
-                    Newest = issueMessages
-                        .FirstOrDefault(i => i.IssueDetails.ErrorMessage == group.Key.ErrorMessage).OccurredOn,
-                    Oldest = issueMessages
-                        .LastOrDefault(i => i.IssueDetails.ErrorMessage == group.Key.ErrorMessage).OccurredOn
-                })
-                .FirstOrDefault();
-
-            return issue;
         }
 
         private async Task<int> GetTotalHits()

@@ -53,7 +53,7 @@
             <ng-template let-issue pTemplate="body">
                 <tr>
                     <td>
-                        <span (click)="onIssueSelect(issue.errorMessage)" class="issue-name">{{issue.errorClass}}</span>
+                        <span (click)="onIssueSelect(issue)" class="issue-name">{{issue.errorClass}}</span>
                         <small class="issue-message">{{issue.errorMessage}}</small>
                     </td>
                     <td>{{issue.eventsCount}}</td>

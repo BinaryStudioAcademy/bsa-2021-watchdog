@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Issue } from '@shared/models/issue/issue';
 import { IssueService } from '@core/services/issue.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
@@ -15,7 +14,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     countNew: { [type: string]: number };
 
-    selectedIssues: Issue[] = [];
+    selectedIssues: IssueInfo[] = [];
 
     timeOptions: string[];
 
@@ -48,6 +47,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis)
             .subscribe(issues => {
                 this.issues = issues;
+                console.log(this.issues);
             }, errorResponse => {
                 this.toastNotification.error(errorResponse, 'Error', 1500);
             });
@@ -59,5 +59,9 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             secondtype: 1,
             thirdtype: 0
         };
+    }
+
+    error() {
+        throw Error('NEW ERROR');
     }
 }
