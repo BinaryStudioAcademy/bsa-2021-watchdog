@@ -66,10 +66,7 @@ namespace Watchdog.Core.BLL.Services
 
             await _context.SaveChangesAsync();
 
-            await _context.Entry(member).Reference(m => m.Role).LoadAsync();
-            await _context.Entry(member).Collection(m => m.TeamMembers).Query().Include(tm => tm.Team).LoadAsync();
-
-            return _mapper.Map<MemberDto>(member);
+            return await GetMemberByIdAsync(member.Id);
         }
 
         public async Task DeleteMemberAsync(int id)
@@ -93,7 +90,12 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<MemberDto> GetMemberByIdAsync(int id)
         {
-            var member = await _context.Members.Include(m => m.User).FirstOrDefaultAsync(m => m.Id == id) ?? throw new KeyNotFoundException("Member doesn't exist");
+            var member = await _context.Members
+                .Include(m => m.User)
+                .Include(m => m.TeamMembers)
+                    .ThenInclude(tm => tm.Team)
+                .Include(m => m.Role)
+                .FirstOrDefaultAsync(m => m.Id == id) ?? throw new KeyNotFoundException("Member doesn't exist");
             return _mapper.Map<MemberDto>(member);
         }
 

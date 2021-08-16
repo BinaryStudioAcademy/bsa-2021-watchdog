@@ -74,8 +74,6 @@
             <tr>
                 <td><span class="content">{{memberItem.member.user.firstName}} {{memberItem.member.user.lastName}}</span></td>
                 <td class="email-col"><div class="content"><div appTooltipFullName class="email">{{memberItem.member.user.email}}</div></div></td>
-
-                    
                 <td class="edit-cell">
                     <span class="content" *ngIf="!memberItem.isEdit">{{memberItem.member.role.name}}
                         <button (click)="startEdit(memberItem)" *ngIf="isEdit"
@@ -97,13 +95,17 @@
                                 class="p-button-raised p-button-text p-button-plain small-button" icon="pi pi-times" pButton>
                         </button>
                     </div>
-                
                 </td>
                 <td class="team-col"><span class="content" *ngIf="memberItem.member.teams.length > 1">
-                    <p-tree  [value]="memberItem.treeTeams"></p-tree>
+                    <p-dropdown class="teams-dropdown"[options]="memberItem.member.teams" 
+                    styleClass="team-col-dropdown" appendTo="body"
+                    panelStyleClass="team-col-panel"
+                    optionLabel="name" name="teams-dropdown" optionDisabled="name" [autoDisplayFirst]="false"
+                    placeholder="Teams">
+                </p-dropdown>
                 </span>
-                    <span class="content" *ngIf="memberItem.member.teams.length  === 1">{{memberItem.member.teams[0].name}}</span>
-                    <span class="content" *ngIf="memberItem.member.teams.length  === 0">No teams yet</span></td>
+                    <span class="content one-team" *ngIf="memberItem.member.teams.length  === 1">{{memberItem.member.teams[0].name}}</span>
+                    <span class="content no-team" *ngIf="memberItem.member.teams.length  === 0">No teams yet</span></td>
                 <td>
                     <div class="content delete-col">
                         <button pButton pRipple type="button" label="Re-invite" *ngIf="!memberItem.member.isAccepted" class="p-button-outlined p-button-secondary" (click)="reinvite(memberItem.member)"></button>

@@ -63,6 +63,10 @@ td
     height: 20px
     width: 20px
 
+.team-col
+    .one-team,
+    .no-team
+        padding: 8px
 :host ::ng-deep
     .p-tree
         border: none
@@ -78,6 +82,16 @@ td
     .p-dropdown-label
         display: flex
         align-items: center
+
+    .team-col-dropdown
+        border: none
+        .p-dropdown-label.p-placeholder
+            color: $text-color
+::ng-deep
+    .team-col-panel
+        .p-disabled,
+        .p-component:disabled
+            opacity: 1 !important
 
 @media screen and ( max-width:1150px  )
     .team-col
