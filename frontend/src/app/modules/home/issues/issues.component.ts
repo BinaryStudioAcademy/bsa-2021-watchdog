@@ -21,12 +21,17 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     selectedTime: string;
 
+    paginators = false;
+
+    length = 0;
+
     constructor(private issueService: IssueService, private toastNotification: ToastNotificationService) {
         super();
     }
 
     ngOnInit(): void {
         this.loadIssues();
+        this.showPaginator();
         this.setAllFieldsTemp();
     }
 
@@ -43,11 +48,18 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         event.originalEvent.stopPropagation();
     }
 
+    private showPaginator() {
+        if (this.length > 10) {
+            this.paginators = (this.paginators === false);
+        }
+    }
+
     private loadIssues() {
         this.issueService.getIssues()
             .pipe(this.untilThis)
             .subscribe(response => {
                 this.issues = response;
+                this.length = this.issues.length;
             }, errorResponse => {
                 this.toastNotification.error(errorResponse, 'Error', 1500);
             });
