@@ -47,7 +47,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis)
             .subscribe(issues => {
                 this.issues = issues;
-                console.log(this.issues);
             }, errorResponse => {
                 this.toastNotification.error(errorResponse, 'Error', 1500);
             });
@@ -59,9 +58,5 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             secondtype: 1,
             thirdtype: 0
         };
-    }
-
-    error() {
-        throw Error('NEW ERROR');
     }
 }
