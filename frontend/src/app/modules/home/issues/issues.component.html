@@ -82,7 +82,7 @@
                         <td>{{issue?.events}}</td>
                         <td>{{issue?.users}}</td>
                         <td>
-                            <div class="assignee"><i class="pi pi-user"></i><i class="pi pi-chevron-down"></i></div>
+                            <div class="assignee" (click)="IsAssign=true"><i class="pi pi-user"></i><i class="pi pi-chevron-down"></i></div>
                         </td>
                     </tr>
                 </ng-template>
@@ -107,3 +107,8 @@
         </p-tabPanel>
     </p-tabView>
 </div>
+
+<app-assignee 
+    (closeModal)="IsAssign = !IsAssign"
+    *ngIf="IsAssign">
+</app-assignee>

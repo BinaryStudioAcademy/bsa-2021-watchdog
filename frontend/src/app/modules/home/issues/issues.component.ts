@@ -20,12 +20,14 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     timeOptions: string[];
 
     selectedTime: string;
+    IsAssign: boolean;
 
     constructor(private issueService: IssueService, private toastNotification: ToastNotificationService) {
         super();
     }
 
     ngOnInit(): void {
+        this.IsAssign = false;
         this.loadIssues();
         this.setAllFieldsTemp();
     }
