@@ -1,4 +1,5 @@
 @import src/styles/variables
+@import src/styles/mixins
 
 :host ::ng-deep
     .org-label
@@ -66,3 +67,8 @@
     .org-avatar-item .p-avatar-text
         font-family: "DM Sans", serif
         color: $primary-color-text
+
+.collapsed-org-avatar
+    cursor: pointer
+    padding-left: 3px
+    @include disable-select
