@@ -45,10 +45,10 @@ namespace Watchdog.Core.BLL.Services
         public async Task<MemberDto> AddMemberAsync(NewMemberDto memberDto)
         {
             var user = (await _context.Users.FirstOrDefaultAsync(u => u.Id == memberDto.UserId)) ?? throw new KeyNotFoundException("User doesn't exist");
-            var organization = (await _context.Organizations.FirstOrDefaultAsync(o => o.Id == memberDto.OrganizationId) ?? throw new KeyNotFoundException("Such organization doesn't exist"));
-
-            await _context.Entry(organization).Collection(o => o.Members).LoadAsync();
-
+            var organization = await _context.Organizations
+                .Include(o => o.Members)
+                .FirstOrDefaultAsync(o => o.Id == memberDto.OrganizationId) 
+                    ?? throw new KeyNotFoundException("Such organization doesn't exist");
 
             if (organization.Members.Any(m => m.UserId == user.Id))
             {
