@@ -9,6 +9,7 @@ namespace Watchdog.Core.DAL.Entities
         public User()
         {
             Members = new List<Member>();
+            CreatedMembers = new List<Member>();
             Organizations = new List<Organization>();
             Teams = new List<Team>();
             Applications = new List<Application>();
@@ -29,6 +30,8 @@ namespace Watchdog.Core.DAL.Entities
         public DateTime? RegisteredAt { get; set; }
 
         public ICollection<Member> Members { get; set; }
+
+        public ICollection<Member> CreatedMembers { get; set; }
 
         public ICollection<Organization> Organizations { get; set; }
 
