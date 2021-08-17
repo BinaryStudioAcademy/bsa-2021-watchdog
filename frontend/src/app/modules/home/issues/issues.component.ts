@@ -4,6 +4,8 @@ import { IssueService } from '@core/services/issue.service';
 import { IssueMessage } from '@shared/models/issues/issue-message';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
+import { catchError, tap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
     selector: 'app-issues',
@@ -32,9 +34,16 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.loadIssues();
-        this.showPaginator();
+        // this.loadIssues();
+        // this.showPaginator();
+        // this.setAllFieldsTemp();
+
         this.setAllFieldsTemp();
+        this.loadIssues()
+            .pipe(this.untilThis)
+            .subscribe(() => {
+                this.showPaginator();
+            });
     }
 
     selectAll(event: { checked: boolean, originalEvent: Event }) {
@@ -54,15 +63,26 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         this.paginators = this.numberOfIssues > this.itemsPerPage;
     }
 
+    // private loadIssues() {
+    //     this.issueService.getIssues()
+    //         .pipe(this.untilThis)
+    //         .subscribe(response => {
+    //             this.issues = response;
+    //             this.itemsPerPage = this.issues.length;
+    //         }, errorResponse => {
+    //             this.toastNotification.error(errorResponse, 'Error', 1500);
+    //         });
+    // }
+
     private loadIssues() {
-        this.issueService.getIssues()
-            .pipe(this.untilThis)
-            .subscribe(response => {
-                this.issues = response;
-                this.itemsPerPage = this.issues.length;
-            }, errorResponse => {
-                this.toastNotification.error(errorResponse, 'Error', 1500);
-            });
+        return this.issueService.getIssues()
+            .pipe(
+                tap(issues => {
+                    this.issues = issues;
+                    this.numberOfIssues = issues.length;
+                }),
+                catchError(error => of(this.toastNotification.error(error, 'Error', 1500)))
+            )
     }
 
     private setAllFieldsTemp() {
