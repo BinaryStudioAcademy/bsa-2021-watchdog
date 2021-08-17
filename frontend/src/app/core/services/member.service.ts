@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import { InvitedMember } from '@shared/models/member/invited-member';
 import { Member } from '@shared/models/member/member';
+import { NewMember } from '@shared/models/member/new-member';
 import { Observable } from 'rxjs';
 import { CoreHttpService } from './core-http.service';
 
@@ -10,6 +12,10 @@ export class MemberService {
     readonly routePrefix = '/members';
 
     constructor(private httpService: CoreHttpService) { }
+
+    addMemberToOrganization(newMember: NewMember): Observable<InvitedMember> {
+        return this.httpService.postRequest(`${this.routePrefix}`, newMember);
+    }
 
     getMembersByOrganizationId(organizationId: number): Observable<Member[]> {
         return this.httpService.getRequest<Member[]>(`${this.routePrefix}/organization/${organizationId}`);
@@ -22,6 +28,18 @@ export class MemberService {
     searchMembersNotInTeam(teamId: number, memberEmail: string): Observable<Member[]> {
         const url = `team/${teamId}/exceptTeam/${memberEmail !== '' ? `?memberEmail=${memberEmail}` : ''}`;
         return this.httpService.getRequest<Member[]>(`${this.routePrefix}/${url}`);
+    }
+
+    updateMember(id: number, roleId: number) {
+        return this.httpService.putRequest<Member>(`${this.routePrefix}`, { id, roleId });
+    }
+
+    deleteMember(id: number) {
+        return this.httpService.deleteRequest(`${this.routePrefix}/${id}`);
+    }
+
+    reinviteMember(id: number) {
+        return this.httpService.postRequest(`${this.routePrefix}/reinvite`, { id });
     }
 
     getInitials(member: Member) {

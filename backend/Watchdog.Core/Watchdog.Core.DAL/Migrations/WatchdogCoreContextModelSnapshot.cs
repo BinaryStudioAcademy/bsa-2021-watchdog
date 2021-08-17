@@ -32,7 +32,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatedBy")
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -391,7 +391,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatedBy")
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
                     b.Property<string>("Icon")
@@ -615,13 +615,19 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatedBy")
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsAccepted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("OrganizationId")
                         .HasColumnType("int");
 
                     b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -632,6 +638,8 @@ namespace Watchdog.Core.DAL.Migrations
 
                     b.HasIndex("RoleId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Members");
 
                     b.HasData(
@@ -640,240 +648,300 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 1,
                             CreatedAt = new DateTime(2020, 3, 8, 20, 29, 56, 733, DateTimeKind.Unspecified).AddTicks(99),
                             CreatedBy = 3,
+                            IsAccepted = false,
                             OrganizationId = 5,
-                            RoleId = 2
+                            RoleId = 2,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 2,
                             CreatedAt = new DateTime(2019, 11, 16, 1, 22, 22, 917, DateTimeKind.Unspecified).AddTicks(2673),
                             CreatedBy = 20,
+                            IsAccepted = false,
                             OrganizationId = 4,
-                            RoleId = 1
+                            RoleId = 1,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 3,
                             CreatedAt = new DateTime(2020, 1, 3, 8, 25, 34, 990, DateTimeKind.Unspecified).AddTicks(521),
                             CreatedBy = 3,
+                            IsAccepted = false,
                             OrganizationId = 1,
-                            RoleId = 1
+                            RoleId = 1,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 4,
                             CreatedAt = new DateTime(2020, 4, 25, 10, 18, 40, 933, DateTimeKind.Unspecified).AddTicks(8555),
                             CreatedBy = 10,
+                            IsAccepted = false,
                             OrganizationId = 4,
-                            RoleId = 1
+                            RoleId = 1,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 5,
                             CreatedAt = new DateTime(2019, 9, 16, 10, 2, 15, 309, DateTimeKind.Unspecified).AddTicks(5491),
                             CreatedBy = 3,
+                            IsAccepted = false,
                             OrganizationId = 3,
-                            RoleId = 3
+                            RoleId = 3,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 6,
                             CreatedAt = new DateTime(2021, 6, 15, 20, 0, 11, 725, DateTimeKind.Unspecified).AddTicks(3505),
                             CreatedBy = 3,
+                            IsAccepted = false,
                             OrganizationId = 5,
-                            RoleId = 1
+                            RoleId = 1,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 7,
                             CreatedAt = new DateTime(2020, 1, 21, 6, 5, 21, 218, DateTimeKind.Unspecified).AddTicks(6260),
                             CreatedBy = 4,
+                            IsAccepted = false,
                             OrganizationId = 1,
-                            RoleId = 3
+                            RoleId = 3,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 8,
                             CreatedAt = new DateTime(2019, 12, 23, 10, 22, 47, 210, DateTimeKind.Unspecified).AddTicks(1299),
                             CreatedBy = 11,
+                            IsAccepted = false,
                             OrganizationId = 1,
-                            RoleId = 1
+                            RoleId = 1,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 9,
                             CreatedAt = new DateTime(2020, 7, 6, 4, 7, 57, 503, DateTimeKind.Unspecified).AddTicks(5793),
                             CreatedBy = 10,
+                            IsAccepted = false,
                             OrganizationId = 1,
-                            RoleId = 3
+                            RoleId = 3,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 10,
                             CreatedAt = new DateTime(2020, 1, 29, 1, 2, 39, 606, DateTimeKind.Unspecified).AddTicks(1635),
                             CreatedBy = 1,
+                            IsAccepted = false,
                             OrganizationId = 1,
-                            RoleId = 3
+                            RoleId = 3,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 11,
                             CreatedAt = new DateTime(2020, 5, 19, 20, 41, 5, 50, DateTimeKind.Unspecified).AddTicks(7290),
                             CreatedBy = 16,
+                            IsAccepted = false,
                             OrganizationId = 2,
-                            RoleId = 1
+                            RoleId = 1,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 12,
                             CreatedAt = new DateTime(2021, 5, 21, 12, 57, 44, 740, DateTimeKind.Unspecified).AddTicks(9150),
                             CreatedBy = 2,
+                            IsAccepted = false,
                             OrganizationId = 3,
-                            RoleId = 1
+                            RoleId = 1,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 13,
                             CreatedAt = new DateTime(2020, 1, 13, 19, 47, 33, 819, DateTimeKind.Unspecified).AddTicks(6240),
                             CreatedBy = 3,
+                            IsAccepted = false,
                             OrganizationId = 5,
-                            RoleId = 1
+                            RoleId = 1,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 14,
                             CreatedAt = new DateTime(2020, 5, 5, 6, 58, 55, 90, DateTimeKind.Unspecified).AddTicks(7547),
                             CreatedBy = 10,
+                            IsAccepted = false,
                             OrganizationId = 4,
-                            RoleId = 1
+                            RoleId = 1,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 15,
                             CreatedAt = new DateTime(2021, 7, 5, 3, 30, 54, 448, DateTimeKind.Unspecified).AddTicks(9294),
                             CreatedBy = 15,
+                            IsAccepted = false,
                             OrganizationId = 1,
-                            RoleId = 3
+                            RoleId = 3,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 16,
                             CreatedAt = new DateTime(2021, 6, 14, 18, 35, 8, 962, DateTimeKind.Unspecified).AddTicks(783),
                             CreatedBy = 12,
+                            IsAccepted = false,
                             OrganizationId = 2,
-                            RoleId = 2
+                            RoleId = 2,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 17,
                             CreatedAt = new DateTime(2019, 11, 27, 0, 59, 19, 851, DateTimeKind.Unspecified).AddTicks(207),
                             CreatedBy = 2,
+                            IsAccepted = false,
                             OrganizationId = 2,
-                            RoleId = 2
+                            RoleId = 2,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 18,
                             CreatedAt = new DateTime(2020, 2, 24, 22, 7, 24, 896, DateTimeKind.Unspecified).AddTicks(9869),
                             CreatedBy = 14,
+                            IsAccepted = false,
                             OrganizationId = 5,
-                            RoleId = 1
+                            RoleId = 1,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 19,
                             CreatedAt = new DateTime(2021, 6, 29, 4, 27, 33, 463, DateTimeKind.Unspecified).AddTicks(2445),
                             CreatedBy = 16,
+                            IsAccepted = false,
                             OrganizationId = 2,
-                            RoleId = 2
+                            RoleId = 2,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 20,
                             CreatedAt = new DateTime(2020, 8, 31, 3, 14, 25, 440, DateTimeKind.Unspecified).AddTicks(6945),
                             CreatedBy = 20,
+                            IsAccepted = false,
                             OrganizationId = 3,
-                            RoleId = 1
+                            RoleId = 1,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 21,
                             CreatedAt = new DateTime(2020, 10, 19, 4, 23, 25, 774, DateTimeKind.Unspecified).AddTicks(1835),
                             CreatedBy = 14,
+                            IsAccepted = false,
                             OrganizationId = 1,
-                            RoleId = 1
+                            RoleId = 1,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 22,
                             CreatedAt = new DateTime(2021, 7, 15, 16, 39, 54, 102, DateTimeKind.Unspecified).AddTicks(9813),
                             CreatedBy = 12,
+                            IsAccepted = false,
                             OrganizationId = 4,
-                            RoleId = 3
+                            RoleId = 3,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 23,
                             CreatedAt = new DateTime(2019, 11, 13, 12, 40, 5, 13, DateTimeKind.Unspecified).AddTicks(878),
                             CreatedBy = 15,
+                            IsAccepted = false,
                             OrganizationId = 5,
-                            RoleId = 3
+                            RoleId = 3,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 24,
                             CreatedAt = new DateTime(2019, 9, 1, 23, 36, 12, 841, DateTimeKind.Unspecified).AddTicks(6973),
                             CreatedBy = 5,
+                            IsAccepted = false,
                             OrganizationId = 5,
-                            RoleId = 2
+                            RoleId = 2,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 25,
                             CreatedAt = new DateTime(2020, 2, 9, 19, 23, 50, 460, DateTimeKind.Unspecified).AddTicks(534),
                             CreatedBy = 20,
+                            IsAccepted = false,
                             OrganizationId = 4,
-                            RoleId = 3
+                            RoleId = 3,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 26,
                             CreatedAt = new DateTime(2021, 4, 23, 7, 4, 13, 49, DateTimeKind.Unspecified).AddTicks(4808),
                             CreatedBy = 16,
+                            IsAccepted = false,
                             OrganizationId = 2,
-                            RoleId = 2
+                            RoleId = 2,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 27,
                             CreatedAt = new DateTime(2019, 11, 23, 18, 4, 52, 732, DateTimeKind.Unspecified).AddTicks(9426),
                             CreatedBy = 6,
+                            IsAccepted = false,
                             OrganizationId = 3,
-                            RoleId = 1
+                            RoleId = 1,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 28,
                             CreatedAt = new DateTime(2021, 1, 17, 9, 54, 56, 29, DateTimeKind.Unspecified).AddTicks(2520),
                             CreatedBy = 11,
+                            IsAccepted = false,
                             OrganizationId = 3,
-                            RoleId = 3
+                            RoleId = 3,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 29,
                             CreatedAt = new DateTime(2020, 9, 4, 5, 54, 15, 840, DateTimeKind.Unspecified).AddTicks(7823),
                             CreatedBy = 20,
+                            IsAccepted = false,
                             OrganizationId = 2,
-                            RoleId = 1
+                            RoleId = 1,
+                            UserId = 0
                         },
                         new
                         {
                             Id = 30,
                             CreatedAt = new DateTime(2019, 11, 5, 17, 30, 28, 659, DateTimeKind.Unspecified).AddTicks(2449),
                             CreatedBy = 1,
+                            IsAccepted = false,
                             OrganizationId = 1,
-                            RoleId = 2
+                            RoleId = 2,
+                            UserId = 0
                         });
                 });
 
@@ -891,7 +959,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatedBy")
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
                     b.Property<int>("DefaultRoleId")
@@ -1180,7 +1248,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatedBy")
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -1432,7 +1500,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatedBy")
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
                     b.Property<int>("DashboardId")
@@ -1462,7 +1530,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 1,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 2, 17, 3, 12, 8, 478, DateTimeKind.Local).AddTicks(2495),
+                            CreatedAt = new DateTime(2021, 1, 24, 13, 24, 26, 487, DateTimeKind.Unspecified).AddTicks(9308),
                             CreatedBy = 7,
                             DashboardId = 15,
                             Name = "Ergonomic Fresh Chicken",
@@ -1473,7 +1541,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 2,
                             Category = 1,
-                            CreatedAt = new DateTime(2019, 8, 20, 17, 33, 22, 701, DateTimeKind.Local).AddTicks(7613),
+                            CreatedAt = new DateTime(2019, 7, 28, 3, 45, 40, 704, DateTimeKind.Unspecified).AddTicks(7543),
                             CreatedBy = 15,
                             DashboardId = 15,
                             Name = "Tasty Frozen Tuna",
@@ -1484,7 +1552,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 3,
                             Category = 1,
-                            CreatedAt = new DateTime(2019, 9, 6, 8, 3, 25, 729, DateTimeKind.Local).AddTicks(273),
+                            CreatedAt = new DateTime(2019, 8, 13, 18, 15, 43, 731, DateTimeKind.Unspecified).AddTicks(9466),
                             CreatedBy = 3,
                             DashboardId = 10,
                             Name = "Gorgeous Fresh Towels",
@@ -1495,7 +1563,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 4,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 8, 9, 22, 17, 12, 301, DateTimeKind.Local).AddTicks(8247),
+                            CreatedAt = new DateTime(2020, 7, 17, 8, 29, 30, 304, DateTimeKind.Unspecified).AddTicks(7284),
                             CreatedBy = 3,
                             DashboardId = 5,
                             Name = "Fantastic Steel Shoes",
@@ -1506,7 +1574,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 5,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 8, 30, 21, 4, 19, 128, DateTimeKind.Local).AddTicks(8308),
+                            CreatedAt = new DateTime(2020, 8, 7, 7, 16, 37, 131, DateTimeKind.Unspecified).AddTicks(7056),
                             CreatedBy = 15,
                             DashboardId = 7,
                             Name = "Handmade Metal Keyboard",
@@ -1517,7 +1585,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 6,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 2, 4, 16, 41, 16, 758, DateTimeKind.Local).AddTicks(2352),
+                            CreatedAt = new DateTime(2021, 1, 12, 2, 53, 34, 761, DateTimeKind.Unspecified).AddTicks(966),
                             CreatedBy = 5,
                             DashboardId = 1,
                             Name = "Incredible Frozen Sausages",
@@ -1528,7 +1596,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 7,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 8, 23, 12, 13, 0, 610, DateTimeKind.Local).AddTicks(5836),
+                            CreatedAt = new DateTime(2020, 7, 30, 22, 25, 18, 613, DateTimeKind.Unspecified).AddTicks(4327),
                             CreatedBy = 19,
                             DashboardId = 14,
                             Name = "Fantastic Frozen Gloves",
@@ -1539,7 +1607,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 8,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 3, 8, 18, 19, 58, 792, DateTimeKind.Local).AddTicks(7240),
+                            CreatedAt = new DateTime(2020, 2, 14, 4, 32, 16, 795, DateTimeKind.Unspecified).AddTicks(5642),
                             CreatedBy = 11,
                             DashboardId = 4,
                             Name = "Intelligent Frozen Hat",
@@ -1550,7 +1618,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 9,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 4, 26, 12, 36, 50, 124, DateTimeKind.Local).AddTicks(8362),
+                            CreatedAt = new DateTime(2021, 4, 2, 22, 49, 8, 127, DateTimeKind.Unspecified).AddTicks(6671),
                             CreatedBy = 8,
                             DashboardId = 13,
                             Name = "Generic Plastic Cheese",
@@ -1561,7 +1629,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 10,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 10, 21, 3, 2, 35, 133, DateTimeKind.Local).AddTicks(389),
+                            CreatedAt = new DateTime(2020, 9, 27, 13, 14, 53, 135, DateTimeKind.Unspecified).AddTicks(8604),
                             CreatedBy = 17,
                             DashboardId = 13,
                             Name = "Refined Granite Salad",
@@ -1572,7 +1640,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 11,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 9, 15, 9, 39, 3, 446, DateTimeKind.Local).AddTicks(3407),
+                            CreatedAt = new DateTime(2020, 8, 22, 19, 51, 21, 449, DateTimeKind.Unspecified).AddTicks(1277),
                             CreatedBy = 8,
                             DashboardId = 9,
                             Name = "Intelligent Wooden Towels",
@@ -1583,7 +1651,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 12,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 4, 21, 22, 47, 7, 618, DateTimeKind.Local).AddTicks(7519),
+                            CreatedAt = new DateTime(2021, 3, 29, 8, 59, 25, 621, DateTimeKind.Unspecified).AddTicks(5252),
                             CreatedBy = 1,
                             DashboardId = 1,
                             Name = "Sleek Wooden Table",
@@ -1594,7 +1662,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 13,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 6, 26, 12, 48, 57, 981, DateTimeKind.Local).AddTicks(655),
+                            CreatedAt = new DateTime(2021, 6, 2, 23, 1, 15, 983, DateTimeKind.Unspecified).AddTicks(8282),
                             CreatedBy = 15,
                             DashboardId = 6,
                             Name = "Licensed Steel Chips",
@@ -1605,7 +1673,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 14,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 2, 14, 15, 15, 23, 972, DateTimeKind.Local).AddTicks(7722),
+                            CreatedAt = new DateTime(2020, 1, 22, 1, 27, 41, 975, DateTimeKind.Unspecified).AddTicks(5248),
                             CreatedBy = 11,
                             DashboardId = 7,
                             Name = "Rustic Granite Bacon",
@@ -1616,7 +1684,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 15,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 7, 25, 22, 12, 32, 652, DateTimeKind.Local).AddTicks(1648),
+                            CreatedAt = new DateTime(2021, 7, 2, 8, 24, 50, 654, DateTimeKind.Unspecified).AddTicks(9073),
                             CreatedBy = 15,
                             DashboardId = 1,
                             Name = "Unbranded Granite Towels",
@@ -1627,7 +1695,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 16,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 4, 17, 22, 29, 41, 828, DateTimeKind.Local).AddTicks(5684),
+                            CreatedAt = new DateTime(2021, 3, 25, 8, 41, 59, 831, DateTimeKind.Unspecified).AddTicks(3010),
                             CreatedBy = 4,
                             DashboardId = 9,
                             Name = "Handcrafted Frozen Salad",
@@ -1638,7 +1706,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 17,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 1, 8, 20, 4, 5, 303, DateTimeKind.Local).AddTicks(8051),
+                            CreatedAt = new DateTime(2020, 12, 16, 6, 16, 23, 306, DateTimeKind.Unspecified).AddTicks(5257),
                             CreatedBy = 1,
                             DashboardId = 7,
                             Name = "Incredible Soft Gloves",
@@ -1649,7 +1717,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 18,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 8, 13, 4, 49, 4, 746, DateTimeKind.Local).AddTicks(6605),
+                            CreatedAt = new DateTime(2020, 7, 20, 15, 1, 22, 749, DateTimeKind.Unspecified).AddTicks(3651),
                             CreatedBy = 7,
                             DashboardId = 3,
                             Name = "Incredible Frozen Shoes",
@@ -1660,7 +1728,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 19,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 5, 29, 0, 53, 33, 735, DateTimeKind.Local).AddTicks(780),
+                            CreatedAt = new DateTime(2020, 5, 5, 11, 5, 51, 737, DateTimeKind.Unspecified).AddTicks(7741),
                             CreatedBy = 4,
                             DashboardId = 8,
                             Name = "Handcrafted Concrete Gloves",
@@ -1671,7 +1739,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 20,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 5, 2, 11, 4, 7, 650, DateTimeKind.Local).AddTicks(6242),
+                            CreatedAt = new DateTime(2021, 4, 8, 21, 16, 25, 653, DateTimeKind.Unspecified).AddTicks(3094),
                             CreatedBy = 4,
                             DashboardId = 13,
                             Name = "Fantastic Rubber Pizza",
@@ -1682,7 +1750,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 21,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 9, 5, 22, 44, 37, 772, DateTimeKind.Local).AddTicks(9524),
+                            CreatedAt = new DateTime(2020, 8, 13, 8, 56, 55, 775, DateTimeKind.Unspecified).AddTicks(6270),
                             CreatedBy = 15,
                             DashboardId = 6,
                             Name = "Practical Steel Fish",
@@ -1693,7 +1761,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 22,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 10, 1, 23, 45, 56, 272, DateTimeKind.Local).AddTicks(4255),
+                            CreatedAt = new DateTime(2020, 9, 8, 9, 58, 14, 275, DateTimeKind.Unspecified).AddTicks(889),
                             CreatedBy = 3,
                             DashboardId = 14,
                             Name = "Handcrafted Concrete Chips",
@@ -1704,7 +1772,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 23,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 5, 30, 20, 10, 20, 814, DateTimeKind.Local).AddTicks(2083),
+                            CreatedAt = new DateTime(2021, 5, 7, 6, 22, 38, 816, DateTimeKind.Unspecified).AddTicks(8609),
                             CreatedBy = 15,
                             DashboardId = 7,
                             Name = "Practical Steel Chips",
@@ -1715,7 +1783,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 24,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 9, 15, 0, 40, 15, 246, DateTimeKind.Local).AddTicks(876),
+                            CreatedAt = new DateTime(2020, 8, 22, 10, 52, 33, 248, DateTimeKind.Unspecified).AddTicks(7232),
                             CreatedBy = 15,
                             DashboardId = 1,
                             Name = "Rustic Plastic Mouse",
@@ -1726,7 +1794,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 25,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 6, 17, 22, 55, 15, 954, DateTimeKind.Local).AddTicks(9771),
+                            CreatedAt = new DateTime(2020, 5, 25, 9, 7, 33, 957, DateTimeKind.Unspecified).AddTicks(6013),
                             CreatedBy = 4,
                             DashboardId = 15,
                             Name = "Handmade Fresh Towels",
@@ -1737,7 +1805,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 26,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 7, 16, 17, 49, 39, 347, DateTimeKind.Local).AddTicks(3365),
+                            CreatedAt = new DateTime(2021, 6, 23, 4, 1, 57, 349, DateTimeKind.Unspecified).AddTicks(9503),
                             CreatedBy = 9,
                             DashboardId = 11,
                             Name = "Handmade Plastic Shirt",
@@ -1748,7 +1816,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 27,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 7, 27, 2, 0, 44, 493, DateTimeKind.Local).AddTicks(9978),
+                            CreatedAt = new DateTime(2021, 7, 3, 12, 13, 2, 496, DateTimeKind.Unspecified).AddTicks(6010),
                             CreatedBy = 6,
                             DashboardId = 1,
                             Name = "Generic Soft Shirt",
@@ -1759,7 +1827,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 28,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 9, 15, 6, 2, 29, 186, DateTimeKind.Local).AddTicks(8987),
+                            CreatedAt = new DateTime(2020, 8, 22, 16, 14, 47, 189, DateTimeKind.Unspecified).AddTicks(4885),
                             CreatedBy = 11,
                             DashboardId = 12,
                             Name = "Handcrafted Granite Bacon",
@@ -1770,7 +1838,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 29,
                             Category = 1,
-                            CreatedAt = new DateTime(2019, 9, 10, 12, 13, 35, 264, DateTimeKind.Local).AddTicks(3769),
+                            CreatedAt = new DateTime(2019, 8, 17, 22, 25, 53, 266, DateTimeKind.Unspecified).AddTicks(9563),
                             CreatedBy = 17,
                             DashboardId = 9,
                             Name = "Rustic Wooden Ball",
@@ -1781,7 +1849,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 30,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 8, 3, 11, 1, 53, 468, DateTimeKind.Local).AddTicks(7741),
+                            CreatedAt = new DateTime(2020, 7, 10, 21, 14, 11, 471, DateTimeKind.Unspecified).AddTicks(3375),
                             CreatedBy = 19,
                             DashboardId = 4,
                             Name = "Handcrafted Wooden Keyboard",
@@ -1792,7 +1860,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 31,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 7, 17, 19, 36, 55, 974, DateTimeKind.Local).AddTicks(3670),
+                            CreatedAt = new DateTime(2020, 6, 24, 5, 49, 13, 976, DateTimeKind.Unspecified).AddTicks(9196),
                             CreatedBy = 5,
                             DashboardId = 10,
                             Name = "Rustic Metal Car",
@@ -1803,7 +1871,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 32,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 6, 25, 18, 4, 0, 458, DateTimeKind.Local).AddTicks(3430),
+                            CreatedAt = new DateTime(2020, 6, 2, 4, 16, 18, 460, DateTimeKind.Unspecified).AddTicks(8704),
                             CreatedBy = 10,
                             DashboardId = 5,
                             Name = "Tasty Steel Chips",
@@ -1814,7 +1882,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 33,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 12, 13, 18, 44, 23, 266, DateTimeKind.Local).AddTicks(7117),
+                            CreatedAt = new DateTime(2020, 11, 20, 4, 56, 41, 269, DateTimeKind.Unspecified).AddTicks(2147),
                             CreatedBy = 12,
                             DashboardId = 4,
                             Name = "Incredible Rubber Towels",
@@ -1825,7 +1893,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 34,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 5, 7, 23, 5, 20, 450, DateTimeKind.Local).AddTicks(4621),
+                            CreatedAt = new DateTime(2021, 4, 14, 9, 17, 38, 452, DateTimeKind.Unspecified).AddTicks(9347),
                             CreatedBy = 11,
                             DashboardId = 9,
                             Name = "Small Fresh Salad",
@@ -1836,7 +1904,7 @@ namespace Watchdog.Core.DAL.Migrations
                         {
                             Id = 35,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 4, 29, 9, 22, 2, 206, DateTimeKind.Local).AddTicks(4647),
+                            CreatedAt = new DateTime(2021, 4, 5, 19, 34, 20, 208, DateTimeKind.Unspecified).AddTicks(9212),
                             CreatedBy = 13,
                             DashboardId = 3,
                             Name = "Incredible Plastic Computer",
@@ -2089,8 +2157,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Applications")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Organization", "Organization")
                         .WithMany("Applications")
@@ -2135,8 +2202,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Dashboards")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Organization", "Organization")
                         .WithMany("Dashboards")
@@ -2162,16 +2228,15 @@ namespace Watchdog.Core.DAL.Migrations
 
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Member", b =>
                 {
-                    b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
-                        .WithMany("Members")
+                    b.HasOne("Watchdog.Core.DAL.Entities.User", "CreatedByUser")
+                        .WithMany("CreatedMembers")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Organization", "Organization")
                         .WithMany("Members")
                         .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Role", "Role")
@@ -2179,6 +2244,14 @@ namespace Watchdog.Core.DAL.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
+                        .WithMany("Members")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
 
                     b.Navigation("Organization");
 
@@ -2192,8 +2265,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Organizations")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("User");
                 });
@@ -2203,8 +2275,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Teams")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Organization", "Organization")
                         .WithMany("Teams")
@@ -2222,7 +2293,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.Member", "Member")
                         .WithMany("TeamMembers")
                         .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Team", "Team")
@@ -2241,8 +2312,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
                         .WithMany("Tiles")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Watchdog.Core.DAL.Entities.Dashboard", "Dashboard")
                         .WithMany("Tiles")
@@ -2303,6 +2373,8 @@ namespace Watchdog.Core.DAL.Migrations
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.User", b =>
                 {
                     b.Navigation("Applications");
+
+                    b.Navigation("CreatedMembers");
 
                     b.Navigation("Dashboards");
 

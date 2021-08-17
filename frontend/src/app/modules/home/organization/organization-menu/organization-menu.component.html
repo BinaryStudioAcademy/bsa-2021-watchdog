@@ -1,5 +1,3 @@
-<app-loading-spinner *ngIf="isLoading" [overlay]="true"></app-loading-spinner>
-
 <div (click)="click()" *ngIf="!collapsed" class="dropdown-wrapper">
     <p-dropdown [(ngModel)]="organization" [options]="organizations" [readonly]="organizations?.length <= 1"
                 [styleClass]="'org-label'" optionLabel="name">

@@ -145,6 +145,7 @@ export class AuthenticationService {
     }
 
     signOnWithEmailAndPassword(regDto: FullRegistrationDto, password: string, route: string[]) {
+        this.logout();
         return from(this.angularFireAuth
             .createUserWithEmailAndPassword(regDto.user.email, password))
             .pipe(

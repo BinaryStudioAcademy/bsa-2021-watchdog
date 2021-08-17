@@ -16,15 +16,15 @@ export class UserService {
         private httpService: CoreHttpService
     ) { }
 
-    public getUserById(id: number): Observable<User> {
+    getUserById(id: number): Observable<User> {
         return this.httpService.getRequest<User>(`${this.apiPrefix}/${id}`);
     }
 
-    public updateUsersById(id: number, user: User): Observable<User> {
+    updateUsersById(id: number, user: User): Observable<User> {
         return this.httpService.putRequest<User>(`${this.apiPrefix}/${id}`, user);
     }
 
-    public getUser(uid: string) {
+    getUser(uid: string) {
         return this.httpService.getRequest<User>(`${this.apiPrefix}/${uid}`)
             .pipe(
                 catchError((error: string) => {
@@ -35,12 +35,17 @@ export class UserService {
             );
     }
 
-    public createUser(newUser: NewUser) {
+    createUser(newUser: NewUser) {
         const user = clear(newUser);
         return this.httpService.postRequest<User>(`${this.apiPrefix}`, user);
     }
 
-    public updateUser(user: NewUser) {
+    updateUser(user: NewUser) {
         return this.httpService.putRequest<User>(`${this.apiPrefix}`, user);
+    }
+
+    searchMembersNotInOrganization(orgId: number, memberEmail: string): Observable<User[]> {
+        const url = `organization/${orgId}/notInOrg/${memberEmail !== '' ? `?memberEmail=${memberEmail}` : ''}`;
+        return this.httpService.getRequest<User[]>(`${this.apiPrefix}/${url}`);
     }
 }
