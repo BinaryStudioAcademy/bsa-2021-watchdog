@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { User } from '@shared/models/user/user';
 import { NewUser } from '@shared/models/user/newUser';
 import { CoreHttpService } from './core-http.service';
@@ -32,6 +32,7 @@ export class UserService {
                     if (error.status === 404) {
                         return of(null as User);
                     }
+                    return throwError(error);
                 })
             );
     }

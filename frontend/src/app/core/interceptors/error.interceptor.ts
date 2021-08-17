@@ -4,9 +4,8 @@ import {
     HttpInterceptor,
     HttpErrorResponse,
     HttpRequest,
-    HttpEvent,
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { ErrorsService } from '@core/services/errors.service';
 

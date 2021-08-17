@@ -188,18 +188,15 @@ export class AuthenticationService {
                 switchMap(userCredential =>
                     this.userService.getUser(userCredential.user.uid)
                         .pipe(
-                            switchMap(user => {
-                                return user ? of(user) :
-                                    this.userService.createUser(this.pullNewUserFromGitHub(userCredential));
-                            })
-                        )
-                ),
+                            switchMap(user => (user ? of(user)
+                                : this.userService.createUser(this.pullNewUserFromGitHub(userCredential))))
+                        )),
                 tap(user => {
                     localStorage.setItem('isSignByEmailAndPassword', 'false');
                     this.setUser(user);
                 }),
                 switchMap(() => this.login(route))
-            )
+            );
     }
 
     signInWithGoogle(route: string[]) {
@@ -213,12 +210,9 @@ export class AuthenticationService {
                 switchMap(userCredential =>
                     this.userService.getUser(userCredential.user.uid)
                         .pipe(
-                            switchMap(user => {
-                                return user ? of(user) :
-                                    this.userService.createUser(this.pullNewUserFromGoogle(userCredential));
-                            })
-                        )
-                ),
+                            switchMap(user => (user ? of(user)
+                                : this.userService.createUser(this.pullNewUserFromGoogle(userCredential))))
+                        )),
                 tap(user => {
                     localStorage.setItem('isSignByEmailAndPassword', 'false');
                     return this.setUser(user);
@@ -237,12 +231,9 @@ export class AuthenticationService {
                 switchMap(userCredential =>
                     this.userService.getUser(userCredential.user.uid)
                         .pipe(
-                            switchMap(user => {
-                                return user ? of(user) :
-                                    this.userService.createUser(this.pullNewUserFromFacebook(userCredential));
-                            })
-                        )
-                ),
+                            switchMap(user => (user ? of(user)
+                                : this.userService.createUser(this.pullNewUserFromFacebook(userCredential))))
+                        )),
                 tap(user => {
                     localStorage.setItem('isSignByEmailAndPassword', 'false');
                     return this.setUser(user);
