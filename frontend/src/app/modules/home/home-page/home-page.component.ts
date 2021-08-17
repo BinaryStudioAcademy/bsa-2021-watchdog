@@ -1,3 +1,4 @@
+import { IssuesHubService } from '@core/hubs/issues-hub.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BroadcastHubService } from '@core/hubs/broadcast-hub.service';
 import { Dashboard } from '@shared/models/dashboard/dashboard';
@@ -28,6 +29,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
 
     constructor(
         private broadcastHub: BroadcastHubService,
+        private issuesHub: IssuesHubService,
         public dashboardService: DashboardService,
         private updateDataService: ShareDataService<Dashboard>,
         private deleteDataService: ShareDataService<number>,
@@ -51,7 +53,12 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
                 this.organization = organization;
                 this.getAllDashboards();
             });
+        this.runHubs();
+    }
+
+    runHubs() {
         this.runBroadcastHub();
+        this.runIssuesHub();
     }
 
     runBroadcastHub() {
@@ -59,6 +66,16 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
             .then(() => this.broadcastHub.listenMessages(msg =>
                 this.toastNotificationService.info(`The next broadcast message was received: ${msg}`)))
             .catch(() => this.toastNotificationService.error('BroadcastHub failed to start.'));
+    }
+
+    runIssuesHub() {
+        this.issuesHub.start()
+            .then(() => {
+                this.issuesHub.listenMessages(issue => {
+                    this.toastNotificationService.info(`Received issue: ${issue.issueDetails.errorMessage}`);
+                });
+            })
+            .catch(() => this.toastNotificationService.error('Issues Hub failed to start.'));
     }
 
     addDashboard(newDashboard: NewDashboard) {

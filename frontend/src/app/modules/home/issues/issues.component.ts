@@ -1,3 +1,4 @@
+import { IssuesHubService } from '@core/hubs/issues-hub.service';
 import { Component, OnInit } from '@angular/core';
 import { Issue } from '@shared/models/issue/issue';
 import { IssueService } from '@core/services/issue.service';
@@ -21,13 +22,28 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     selectedTime: string;
 
-    constructor(private issueService: IssueService, private toastNotification: ToastNotificationService) {
-        super();
-    }
+    //TODO Fix when use real projects
+    projectsIdsArray: number[] = [1, 2];
+
+    constructor(
+        private issuesHub: IssuesHubService,
+        private issueService: IssueService,
+        private toastNotification: ToastNotificationService
+    ) { super(); }
 
     ngOnInit(): void {
         this.loadIssues();
         this.setAllFieldsTemp();
+
+        this.subscribeToIssuesHub();
+    }
+
+    subscribeToIssuesHub() {
+        this.issuesHub.messages.pipe(this.untilThis)
+            .subscribe(issue => {
+                this.issues.unshift(issue);
+            });
+        this.issuesHub.projects.next(this.projectsIdsArray);
     }
 
     selectAll(event: { checked: boolean, originalEvent: Event }) {
@@ -59,5 +75,11 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             secondtype: 1,
             thirdtype: 0
         };
+    }
+    error() {
+        throw Error('OSIIBKA');
+    }
+    error2() {
+        throw Error('OSIIBKA222');
     }
 }
