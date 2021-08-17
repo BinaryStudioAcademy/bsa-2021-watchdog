@@ -23,7 +23,9 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     paginators = false;
 
-    length = 0;
+    numberOfIssues = 0;
+
+    itemsPerPage = 10;
 
     constructor(private issueService: IssueService, private toastNotification: ToastNotificationService) {
         super();
@@ -49,8 +51,10 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     }
 
     private showPaginator() {
-        if (this.length > 10) {
-            this.paginators = (this.paginators === false);
+        if (this.numberOfIssues > this.itemsPerPage) {
+            this.paginators = true;
+        } else {
+            this.paginators = false;
         }
     }
 
@@ -59,7 +63,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis)
             .subscribe(response => {
                 this.issues = response;
-                this.length = this.issues.length;
+                this.itemsPerPage = this.issues.length;
             }, errorResponse => {
                 this.toastNotification.error(errorResponse, 'Error', 1500);
             });
