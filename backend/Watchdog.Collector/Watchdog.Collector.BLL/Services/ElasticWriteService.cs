@@ -22,12 +22,19 @@ namespace Watchdog.Collector.BLL.Services
             _issueProducer = issueProducer;
         }
 
-        public async Task AddIssueAsync(IssueMessage message)
+        public async Task AddIssueMessageAsync(IssueMessage message)
         {
+            if (string.IsNullOrEmpty(message.IssueDetails.ErrorMessage))
+            {
+                throw new ArgumentException("Error message can't be empty.");
+            }
+            
             var indexResponse = await _client.IndexAsync(message, t => t.Refresh(Refresh.WaitFor));
 
             if (!indexResponse.IsValid)
+            {
                 throw new InvalidOperationException("Invalid index response");
+            }
 
             _issueProducer.ProduceMessage(message);
         }

@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '@shared/models/user/user';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { BaseComponent } from '@core/components/base/base.component';
-import { NewOrganization } from '@shared/models/organization/newOrganization';
+import { NewOrganizationsWithSlug } from '@shared/models/organization/newOrganizationsWithSlug';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { regexs } from '@shared/constants/regexs';
 import { RegOrganizationDto } from '../DTO/regOrganizationDto';
 import { NewUserDto } from '../DTO/newUserDto';
+import { uniqueSlugValidatorInRegistration } from '@shared/validators/unique-slug-in-registration.validator';
+import { OrganizationService } from '@core/services/organization.service';
 
 @Component({
     selector: 'app-registration-form',
@@ -17,7 +19,7 @@ import { NewUserDto } from '../DTO/newUserDto';
 export class RegistrationFormComponent extends BaseComponent implements OnInit {
     formGroup: FormGroup;
     user = {} as User;
-    organization = {} as NewOrganization;
+    organization = {} as NewOrganizationsWithSlug;
     organizationSlug: string;
 
     password: string;
@@ -27,7 +29,8 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
 
     constructor(
         private authService: AuthenticationService,
-        private toastService: ToastNotificationService
+        private toastService: ToastNotificationService,
+        private organizationService: OrganizationService
     ) {
         super();
     }
@@ -75,13 +78,17 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                 ]
             ),
             organizationSlug: new FormControl(
-                '',
-                [
-                    Validators.required,
-                    Validators.minLength(3),
-                    Validators.maxLength(50),
-                    Validators.pattern(regexs.organizationSlag),
-                ]
+                '', {
+                    validators: [
+                        Validators.required,
+                        Validators.minLength(3),
+                        Validators.maxLength(50),
+                        Validators.pattern(regexs.organizationSlag),
+                    ],
+                    asyncValidators: [
+                        uniqueSlugValidatorInRegistration(this.organization, this.organizationService)
+                    ]
+                }
             ),
             password: new FormControl(
                 { value: '', disabled: this.isNotFinishedRegistration },
