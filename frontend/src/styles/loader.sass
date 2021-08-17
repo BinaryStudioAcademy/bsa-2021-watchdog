@@ -1,7 +1,8 @@
 @import ./variables
+$side: 50px
 
 .default-loader
-  size: 50px
+  size: $side
   top: 25vh
   left: calc(49% - 25px)
   position: absolute
@@ -19,17 +20,17 @@
   justify-content: center
   align-items: center
 
-.spinner 
+.spinner
+  top: calc(50vh - 25px)
+  left: calc(50% - 25px)
   display: inline-block
-  position: relative
+  position: absolute
 
 .spinner div
-  $side:  1em
   position: absolute
   z-index: 1
   width: $side
   height: $side
-  margin: 8px
   border: 4px solid
   border-radius: 50%
   animation: spin 1.2s infinite
@@ -43,7 +44,7 @@
     animation-delay: -0.463s
     z-index: 2
   .third-segment
-    animation-delay: -0.325s
+    animation-delay: -0.327s
     z-index: 1
 
 @keyframes spin
