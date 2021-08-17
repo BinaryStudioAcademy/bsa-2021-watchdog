@@ -4,9 +4,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using Watchdog.Notifier.Hubs;
+using Watchdog.Notifier.API.Extensions;
+using Watchdog.Notifier.BLL.Hubs;
 
-namespace Watchdog.Notifier
+namespace Watchdog.Notifier.API
 {
     public class Startup
     {
@@ -44,6 +45,7 @@ namespace Watchdog.Notifier
             services.AddHealthChecks();
 
             services.AddSignalR();
+            services.AddRabbitMQIssueConsumer(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -58,6 +60,7 @@ namespace Watchdog.Notifier
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<BroadcastHub>("/broadcastHub");
+                endpoints.MapHub<IssuesHub>("/issuesHub");
                 endpoints.MapHealthChecks("/health");
             });
         }

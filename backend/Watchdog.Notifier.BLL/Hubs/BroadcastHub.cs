@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Watchdog.Notifier.Hubs.Interfaces;
+using Watchdog.Notifier.BLL.Hubs.Interfaces;
 
-namespace Watchdog.Notifier.Hubs
+namespace Watchdog.Notifier.BLL.Hubs
 {
     public class BroadcastHub : Hub<IBroadcastHubClient>
     {

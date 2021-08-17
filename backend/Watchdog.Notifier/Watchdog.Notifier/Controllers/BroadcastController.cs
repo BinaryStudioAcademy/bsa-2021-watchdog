@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
-using Watchdog.Notifier.Hubs;
-using Watchdog.Notifier.Hubs.Interfaces;
+using Watchdog.Notifier.BLL.Hubs;
+using Watchdog.Notifier.BLL.Hubs.Interfaces;
 
-namespace Watchdog.Notifier.Controllers
+namespace Watchdog.Notifier.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
