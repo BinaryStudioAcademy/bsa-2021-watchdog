@@ -4,12 +4,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from '@core/core.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PageNotFoundComponent } from './modules/page-not-found/page-not-found.component';
 
 @NgModule({
     declarations: [
-        AppComponent,
-        PageNotFoundComponent
+        AppComponent
     ],
     imports: [
         BrowserModule,

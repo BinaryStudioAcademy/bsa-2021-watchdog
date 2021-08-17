@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@core/guards/auth.guard';
 import { UnauthorizedGuard } from '@core/guards/unauthorized.guard';
-import { PageNotFoundComponent } from './modules/page-not-found/page-not-found.component';
+import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 
 const routes: Routes = [
     {
@@ -36,7 +36,8 @@ const routes: Routes = [
             .then(m => m.UserModule)
     },
     { path: '**',
-        component: PageNotFoundComponent
+        component: NotFoundComponent,
+        pathMatch: 'full'
     },
 ];
 
