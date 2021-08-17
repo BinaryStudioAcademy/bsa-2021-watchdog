@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CoreHttpService } from './core-http.service';
-import { IssueInfo } from '@shared/models/issue/issue-info';
+import { IssueMessage } from '@shared/models/issues/issue-message';
 
 @Injectable({ providedIn: 'root' })
 export class IssueService {
@@ -8,7 +8,7 @@ export class IssueService {
 
     constructor(private httpService: CoreHttpService) { }
 
-    public getIssuesInfo() {
-        return this.httpService.getRequest<IssueInfo[]>(`${this.routePrefix}/info`);
+    public getIssues() {
+        return this.httpService.getRequest<IssueMessage[]>(`${this.routePrefix}`);
     }
 }

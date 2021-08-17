@@ -31,7 +31,7 @@
     <div *ngIf="tiles.length" class="tiles-container">
         <ng-container *ngFor="let tile of tiles" [ngSwitch]="tile.type">
             <app-top-active-issues-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.TopActiveIssues"
-                                        [isShownMenu]="showTileMenu" [tile]="tile"
+                                        [isShownMenu]="showTileMenu" [issues]="issues" [tile]="tile"
                                         [userProjects]="projects"
                                         class="top-active-issue">
             </app-top-active-issues-tile>

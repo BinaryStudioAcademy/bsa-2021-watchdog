@@ -1,6 +1,6 @@
-namespace Watchdog.Collector.Common.Models
+﻿namespace Watchdog.Core.Common.Models.Issue
 {
-    public class StackFrame
+    public class StackTrace
     {
         public string File { get; set; }
         public string MethodName { get; set; }

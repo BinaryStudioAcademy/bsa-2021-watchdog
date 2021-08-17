@@ -5,6 +5,6 @@ namespace Watchdog.Collector.BLL.Services.Abstract
 {
     public interface IElasticWriteService
     {
-        Task AddIssueMessageAsync(IssueMessage message);
+        Task AddIssueAsync(IssueMessage message);
     }
 }

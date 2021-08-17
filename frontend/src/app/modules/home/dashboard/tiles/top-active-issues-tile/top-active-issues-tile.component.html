@@ -37,15 +37,17 @@
     </div>
     <!--    Issues Table    -->
     <div class="table">
-        <p-table [alwaysShowPaginator]="issuesInfo.length > 5" [pageLinks]="1" [paginator]="true" [rows]="5"
-                 [showJumpToPageDropdown]="true" [showPageLinks]="false" [value]="issuesInfo"
+        <p-table [alwaysShowPaginator]="displayedIssues.length > 5" [pageLinks]="1" [paginator]="true" [rows]="5"
+                 [showJumpToPageDropdown]="true" [showPageLinks]="false" [value]="displayedIssues"
                  selectionMode="single">
             <!--    Columns Define    -->
             <ng-template pTemplate="header">
                 <tr>
-                    <th>Issue</th>
-                    <th pSortableColumn="eventsCount">Count
-                        <p-sortIcon field="eventsCount"></p-sortIcon>
+                    <th pSortableColumn="name">Issue
+                        <p-sortIcon field="name"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="events">Count
+                        <p-sortIcon field="events"></p-sortIcon>
                     </th>
                 </tr>
             </ng-template>
@@ -53,10 +55,9 @@
             <ng-template let-issue pTemplate="body">
                 <tr>
                     <td>
-                        <span (click)="onIssueSelect(issue)" class="issue-name">{{issue.errorClass}}</span>
-                        <small class="issue-message">{{issue.errorMessage}}</small>
+                        <span (click)="onIssueSelect(issue)" class="issue-name">{{issue.name}}</span>
                     </td>
-                    <td>{{issue.eventsCount}}</td>
+                    <td>{{issue.events}}</td>
                 </tr>
             </ng-template>
         </p-table>
