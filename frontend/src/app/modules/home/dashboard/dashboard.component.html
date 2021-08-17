@@ -1,4 +1,5 @@
 <!--    Header    -->
+<app-loading-spinner *ngIf="isLoading" [overlay]="true"></app-loading-spinner>
 <div *ngIf="dashboard" [ngClass]="{'remove-margin-box-shadow': showTileMenu}" class="dashboard-header">
     <div class="dashboard-name">
         <h2 appTooltipFullName>{{dashboard?.name}}</h2>
