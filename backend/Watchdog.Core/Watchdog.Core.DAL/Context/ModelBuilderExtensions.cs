@@ -47,6 +47,7 @@ namespace Watchdog.Core.DAL.Context
             modelBuilder.Entity<TeamMember>().HasData(GenerateTeamMembers());
             modelBuilder.Entity<Tile>().HasData(GenerateTiles());
             modelBuilder.Entity<User>().HasData(GenerateUsers());
+
         }
 
         private static IList<Application> GenerateApplications(int count = _numberOfApplications)
@@ -290,7 +291,7 @@ namespace Watchdog.Core.DAL.Context
                         ? TileCategory.List
                         : f.PickRandom<TileCategory>())
                 .RuleFor(t => t.CreatedBy, f => f.Random.Number(1, _numberOfUsers))
-                .RuleFor(t => t.CreatedAt, f => f.Date.Past(2, DateTime.Now))
+                .RuleFor(t => t.CreatedAt, f => f.Date.Past(2, new DateTime(2021, 7, 20)))
                 .RuleFor(t => t.Settings, f =>
                     "{" +
                     $"\"sourceProjects\": [{f.Random.Number(1, _numberOfApplications)}]," +
@@ -313,5 +314,6 @@ namespace Watchdog.Core.DAL.Context
                 .RuleFor(u => u.AvatarUrl, f => f.Internet.Avatar())
                 .Generate(count);
         }
+  
     }
 }

@@ -9,7 +9,6 @@ import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { Tile } from '@shared/models/tile/tile';
 import { TileType } from '@shared/models/tile/enums/tile-type';
-import { Issue } from '@shared/models/issue/issue';
 import { ConfirmOptions } from '@shared/models/confirm-window/confirm-options';
 import { ConfirmWindowService } from '@core/services/confirm-window.service';
 import { Project } from '@shared/models/projects/project';
@@ -19,6 +18,7 @@ import { Organization } from '@shared/models/organization/organization';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { ProjectService } from '@core/services/project.service';
 import { map } from 'rxjs/operators';
+import { IssueService } from '@core/services/issue.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -32,7 +32,6 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     updateSubscription$: Subscription;
     tiles: Tile[] = [];
     tileTypes = TileType;
-    issues: Issue[] = [];
     projects: Project[] = [];
     user: User;
     organization: Organization;
@@ -48,7 +47,9 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         private confirmWindowService: ConfirmWindowService,
         private tileService: TileService,
         private authService: AuthenticationService,
-        private projectService: ProjectService
+        private projectService: ProjectService,
+        private issueService: IssueService,
+        private toastNotification: ToastNotificationService
     ) {
         super();
     }
@@ -113,9 +114,6 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
 
         this.initProjects()
             .subscribe(() => {
-                //TODO: Get issues of all currentUser projects
-                this.initFakeIssues();
-
                 this.getDashboard(id);
                 this.getDashboardTiles(+id);
             });
@@ -192,69 +190,5 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
             }, error => {
                 this.toastNotificationService.error(`${error}`, 'Error', 2000);
             });
-    }
-
-    private initFakeIssues() {
-        this.issues = [{
-            name: 'Issue 1',
-            events: 5,
-            description: 'info',
-            isNew: true,
-            users: undefined,
-            projectTag: 'info',
-            createdAt: undefined
-        },
-        {
-            name: 'Issue 2',
-            events: 1,
-            description: 'info',
-            isNew: true,
-            users: undefined,
-            projectTag: 'info',
-            createdAt: undefined
-        }, {
-            name: 'Issue 3',
-            events: 3,
-            description: 'info',
-            isNew: true,
-            users: undefined,
-            projectTag: 'info',
-            createdAt: undefined
-        },
-        {
-            name: 'Issue 4',
-            events: 2,
-            description: 'info',
-            isNew: true,
-            users: undefined,
-            projectTag: 'info',
-            createdAt: undefined
-        }, {
-            name: 'Issue 5',
-            events: 8,
-            description: 'info',
-            isNew: true,
-            users: undefined,
-            projectTag: 'info',
-            createdAt: undefined
-        },
-        {
-            name: 'Issue 6',
-            events: 66,
-            description: 'info',
-            isNew: true,
-            users: undefined,
-            projectTag: 'info',
-            createdAt: undefined
-        },
-        {
-            name: 'Issue 7',
-            events: 11,
-            description: 'info',
-            isNew: true,
-            users: undefined,
-            projectTag: 'info',
-            createdAt: undefined
-        }];
     }
 }

@@ -1,0 +1,54 @@
+<p-dialog [visible]="true"
+          [modal]="true"
+          [closable]="false"
+          [showHeader] ="false">
+    <p-panel 
+        header="Invite members" 
+        class="invite-block">
+            <div class="p-dialog-header">
+                <button class="close-button" (click)="closeModal.emit()"><i class="pi pi-times"></i></button>
+            </div>
+                <!-- email -->
+                <form [formGroup]="invation.groupForm" *ngFor="let invation of invations">
+                    <div class="invite-form">
+                        <div class="p-field p-col-12 p-md-4">
+                            <p-autoComplete appendTo = "body" 
+                            field="email" formControlName="name" [forceSelection]="true" 
+                            [suggestions]="notMembers" (completeMethod)="search($event)"
+                            dropdownMode="current"
+                            [completeOnFocus]="true"
+                            placeholder="Enter email">
+                                <ng-template let-user pTemplate="item">
+                                    <span> {{user.firstName}} {{user.lastName}}</span>
+                                    <span> {{user.email}} </span> 
+                                </ng-template>                       
+                            </p-autoComplete>
+                            <div *ngIf="invation.groupForm.controls.name.touched && invation.groupForm.controls.name.invalid"
+                            class="validation" id="name">
+                            <small *ngIf="invation.groupForm.controls.name.errors.required" class="p-error">
+                                Сan not be empty
+                            </small>
+                        </div>
+                        </div>
+                        <!-- role -->
+                        <p-dropdown class="role-dropdown"  [appendTo] = "'body'" [options]="roles" optionValue="id"  optionLabel="name"  name="roles-dropdown"
+                            placeholder="Select Role"  [filter]="false" formControlName="role">
+                        </p-dropdown>
+                        <!-- team -->
+                        <p-multiSelect [options]="teams" appendTo="body" defaultLabel="Select teams"
+                            display="chip" formControlName="team" optionLabel="name"
+                            optionValue="id"
+                            [showHeader]="false">
+                        </p-multiSelect>
+                        <button pButton pRipple
+                            class="p-button-success p-button-outlined"
+                            type="submit"
+                            [label]="!invation.isInvited ? 'Invite' : 'Invited'"
+                            [disabled]="!invation.groupForm.valid || invation.isInvited || loadingNumber > 0"
+                            (click)="invate(invation)">
+                        </button>
+                    </div>
+            </form>
+            <button pButton pRipple type="button" (click)="addNew()" class="p-button-outlined" icon="pi pi-plus" label="Add more"></button>
+    </p-panel> 
+</p-dialog>

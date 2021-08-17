@@ -36,8 +36,8 @@ namespace Watchdog.Core.BLL.Services
         {
             var memberTeams = await GetTeamsWithMembersAsQueryable()
                 .Where(t => t.OrganizationId == organizationId)
-                .Where(t => isForMemberInTeam ?
-                        t.TeamMembers.Any(tm => tm.MemberId == memberId) :
+                .Where(t => isForMemberInTeam ? 
+                        t.TeamMembers.Any(tm => tm.MemberId == memberId) : 
                         t.TeamMembers.All(tm => tm.MemberId != memberId))
                 .ToListAsync();
 
@@ -94,18 +94,23 @@ namespace Watchdog.Core.BLL.Services
         public async Task<TeamDto> LeaveTeamAsync(int teamId, int memberId)
         {
             var teamMember = await _context.TeamMembers
-                .FirstOrDefaultAsync(tm => tm.MemberId == memberId && tm.TeamId == teamId);
-
+                .FirstOrDefaultAsync(tm => tm.MemberId == memberId && tm.TeamId == teamId)
+                    ?? throw new KeyNotFoundException("Team or member was not found");
+            
             _context.Remove(teamMember);
-
+            
             await _context.SaveChangesAsync();
-
+            
             return await GetTeamAsync(teamMember.TeamId);
         }
 
         public async Task DeleteTeamAsync(int teamId)
         {
-            var team = await _context.Teams.Include(t => t.ApplicationTeams).Include(t => t.TeamMembers).FirstOrDefaultAsync(t => t.Id == teamId);
+            var team = await _context.Teams
+                .Include(t => t.ApplicationTeams)
+                .Include(t => t.TeamMembers)
+                .FirstOrDefaultAsync(t => t.Id == teamId) 
+                    ?? throw new KeyNotFoundException("Team was not found");
             _context.Remove(team);
 
             await _context.SaveChangesAsync();
@@ -115,8 +120,8 @@ namespace Watchdog.Core.BLL.Services
         {
             return _context.Teams
                 .Include(team => team.TeamMembers)
-                    .ThenInclude(teamMember => teamMember.Member)
-                    .ThenInclude(teamMember => teamMember.User);
+                    .ThenInclude(tm => tm.Member)
+                        .ThenInclude(m => m.User);
         }
 
         public async Task<bool> IsTeamNameUniqueAsync(string teamName)

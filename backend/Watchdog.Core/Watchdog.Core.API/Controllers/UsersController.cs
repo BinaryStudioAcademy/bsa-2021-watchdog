@@ -44,5 +44,12 @@ namespace Watchdog.Core.API.Controllers
             var user = await _userService.UpdateUserAsync(userId, updateUserDto);
             return Ok(user);
         }
+
+        [HttpGet("organization/{orgId}/notInOrg/")]
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetMembersNotInOrganization(int orgId, string memberEmail = "")
+        {
+            var members = await _userService.SearchMembersNotInOrganizationAsync(orgId, memberEmail);
+            return Ok(members);
+        }
     }
 }

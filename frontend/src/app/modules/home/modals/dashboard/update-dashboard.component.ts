@@ -13,6 +13,7 @@ import { SelectItem } from 'primeng/api/selectitem';
 export class UpdateDashboardComponent implements OnInit {
     title: string = 'Edit dashboard';
     public formGroup: FormGroup = {} as FormGroup;
+    selectedIcon: SelectItem;
     icons: SelectItem[];
     @Input() dashboard: Dashboard;
     @Output() closeModal = new EventEmitter<void>();
@@ -41,18 +42,18 @@ export class UpdateDashboardComponent implements OnInit {
                     Validators.maxLength(50),
                     Validators.pattern(regexs.dashboardName)
                 ]
-            ),
-            icon: new FormControl(
-                this.dashboard.icon,
-                [
-                    Validators.required
-                ]
-            ),
+            )
         });
+        this.selectedIcon = { label: `pi ${this.dashboard.icon}`, value: `${this.dashboard.icon}` };
+    }
+
+    onSelect(icon: SelectItem): void {
+        this.selectedIcon = icon;
     }
 
     saveHandle(): void {
         const dashboard: UpdateDashboard = <UpdateDashboard> this.formGroup.value;
+        dashboard.icon = this.selectedIcon.value;
         this.save.emit(dashboard);
     }
 }
