@@ -6,9 +6,9 @@ import { Component, Input } from '@angular/core';
 })
 export class LoadingSpinnerComponent {
     @Input() overlay: boolean;
-    @Input() size = '20px';
-    @Input() top = '30%';
-    @Input() left = '49%';
+    @Input() size = '50px';
+    @Input() top = '25vh';
+    @Input() left = 'calc(49% - 25px)';
     @Input() position = 'absolute';
     @Input() margin = '100px auto';
 }

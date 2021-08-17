@@ -1,3 +1,7 @@
 <div [ngClass]="{'loader-overlay': overlay}">
-    <div [ngStyle]="{'font-size': size, 'margin': margin, 'top': top, 'left': left, 'position': position}" class="loader"></div>
+    <div [ngStyle]="{'font-size': size, 'margin': margin, 'top': top, 'left': left, 'position': position}" class="spinner">
+        <div class="first-segment"></div>
+        <div class="second-segment"></div>
+        <div class="third-segment"></div>
+    </div>
 </div>
