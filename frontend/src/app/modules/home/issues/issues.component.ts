@@ -34,10 +34,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // this.loadIssues();
-        // this.showPaginator();
-        // this.setAllFieldsTemp();
-
         this.setAllFieldsTemp();
         this.loadIssues()
             .pipe(this.untilThis)
@@ -63,17 +59,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         this.paginators = this.numberOfIssues > this.itemsPerPage;
     }
 
-    // private loadIssues() {
-    //     this.issueService.getIssues()
-    //         .pipe(this.untilThis)
-    //         .subscribe(response => {
-    //             this.issues = response;
-    //             this.itemsPerPage = this.issues.length;
-    //         }, errorResponse => {
-    //             this.toastNotification.error(errorResponse, 'Error', 1500);
-    //         });
-    // }
-
     private loadIssues() {
         return this.issueService.getIssues()
             .pipe(
@@ -82,7 +67,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                     this.numberOfIssues = issues.length;
                 }),
                 catchError(error => of(this.toastNotification.error(error, 'Error', 1500)))
-            )
+            );
     }
 
     private setAllFieldsTemp() {
