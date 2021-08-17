@@ -3,6 +3,7 @@ import { IssueService } from '@core/services/issue.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { IssueInfo } from '@shared/models/issue/issue-info';
+import {map} from "rxjs/operators";
 
 @Component({
     selector: 'app-issues',
@@ -44,7 +45,10 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     private loadIssues() {
         this.issueService.getIssuesInfo()
-            .pipe(this.untilThis)
+            .pipe(
+                this.untilThis,
+                map(issues => issues.sort((a, b) => b.newest.occurredOn.getTime() - a.newest.occurredOn.getTime()))
+            )
             .subscribe(issues => {
                 this.issues = issues;
             }, errorResponse => {
@@ -58,5 +62,17 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             secondtype: 1,
             thirdtype: 0
         };
+    }
+
+    error1() {
+        throw TypeError('invalid type1');
+    }
+
+    error2() {
+        throw Error('super error');
+    }
+
+    error3() {
+        throw Error('super1 error');
     }
 }

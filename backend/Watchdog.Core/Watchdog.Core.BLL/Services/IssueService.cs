@@ -19,46 +19,82 @@ namespace Watchdog.Core.BLL.Services
         
         public async Task<ICollection<IssueInfoDto>> GetIssuesInfoAsync()
         {
-            var totalHits = await GetTotalHits();
+            var issues = await GetIssues();
+            var issueMessages = await GetIssueMessages();
+            
+            var issuesInfo = issues
+                .Select(i => new IssueInfoDto()
+                {
+                    IssueId = i.Id,
+                    ErrorClass = i.ErrorClass,
+                    ErrorMessage = i.ErrorMessage,
+                    EventsCount = issueMessages.Count(issueMessage => issueMessage.IssueDetails.ErrorMessage == i.ErrorMessage),
+                    Newest = new IssueMessageDto()
+                    {
+                        Id = issueMessages
+                            .FirstOrDefault(issueMessage => issueMessage.IssueId == i.Id).Id,
+                        OccurredOn = issueMessages
+                            .Where(issueMessage => issueMessage.IssueId == i.Id)
+                            .OrderByDescending(issueMessage => issueMessage.OccurredOn)
+                            .FirstOrDefault().OccurredOn
+                    }
+                })
+                .ToList();
+
+            return issuesInfo;
+        }
+
+        private async Task<ICollection<Issue>> GetIssues()
+        {
+            var issuesCount = await GetTotalHits<Issue>();
+            
+            var issuesSearchResponse = await _client.SearchAsync<Issue>(s => s
+                .From(0)
+                .Size(issuesCount)
+            );
+            
+            var issues = issuesSearchResponse
+                .Hits
+                .Select(h =>
+                {
+                    h.Source.Id = h.Id;
+                    return h.Source;
+                })
+                .ToList();
+
+            return issues;
+        }
+
+        private async Task<ICollection<IssueMessage>> GetIssueMessages()
+        {
+            var issueMessagesCount = await GetTotalHits<IssueMessage>();
             
             var searchResponse = await _client.SearchAsync<IssueMessage>(s => s
                 .Source(sf => sf
-                    .IncludeAll()
+                    .Includes(fd => fd
+                        .Field(f => f.IssueId)
+                        .Field(f => f.IssueDetails.ErrorMessage)
+                        .Field(f => f.OccurredOn))
                 )
                 .From(0)
-                .Size(totalHits)
+                .Size(issueMessagesCount)
             );
-
+            
             var issueMessages = searchResponse
                 .Hits
                 .Select(h =>
                 {
                     h.Source.Id = h.Id;
                     return h.Source;
-                });
-
-            var issues = issueMessages
-                .GroupBy(i => new { i.IssueDetails.ClassName, i.IssueDetails.ErrorMessage })
-                .Select(group => new IssueInfoDto()
-                {
-                    ErrorMessage = group.Key.ErrorMessage,
-                    ErrorClass = group.Key.ClassName,
-                    EventsCount = issueMessages
-                        .Count(i => i.IssueDetails.ErrorMessage == group.Key.ErrorMessage),
-                    Newest = issueMessages
-                        .Where(i => i.IssueDetails.ErrorMessage == group.Key.ErrorMessage)
-                        .OrderByDescending(i => i.OccurredOn)
-                        .FirstOrDefault(i => i.IssueDetails.ErrorMessage == group.Key.ErrorMessage)
                 })
-                .OrderByDescending(issue => issue.Newest.OccurredOn)
                 .ToList();
-            
-            return issues;
+
+            return issueMessages;
         }
 
-        private async Task<int> GetTotalHits()
+        private async Task<int> GetTotalHits<T>() where T: class
         {
-            var totalHits = await _client.CountAsync<IssueMessage>();
+            var totalHits = await _client.CountAsync<T>();
             return (int)totalHits.Count;
         }
     }
