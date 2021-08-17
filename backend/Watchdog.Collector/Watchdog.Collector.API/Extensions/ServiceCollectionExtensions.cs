@@ -33,6 +33,8 @@ namespace Watchdog.Collector.API.Extensions
         {
             ConnectionFactory factory = new ConnectionFactory();
             factory.HostName = configuration["RabbitMQConfiguration:Hostname"];
+            factory.UserName = configuration["RabbitMQConfiguration:User"];
+            factory.Password = configuration["RabbitMQConfiguration:Password"];
 
             IConnection conn = factory.CreateConnection();
 

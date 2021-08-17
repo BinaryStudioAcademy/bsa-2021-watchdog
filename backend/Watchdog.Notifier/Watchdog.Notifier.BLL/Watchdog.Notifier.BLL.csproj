@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
+		<PackageReference Include="RabbitMQ.Client" Version="6.2.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Watchdog.RabbitMQ.Shared\Watchdog.RabbitMQ.Shared.csproj" />
+		<ProjectReference Include="..\Watchdog.Notifier.Common\Watchdog.Notifier.Common.csproj" />
+	</ItemGroup>
+
+</Project>

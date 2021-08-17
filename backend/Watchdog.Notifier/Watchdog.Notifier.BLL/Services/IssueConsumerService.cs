@@ -1,13 +1,8 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 using Watchdog.Notifier.Common.Models.Issue;
-using Watchdog.Notifier.BLL.Hubs;
-using Watchdog.Notifier.BLL.Hubs.Interfaces;
 using Watchdog.Notifier.BLL.Services.Abstract;
 using Watchdog.RabbitMQ.Shared.Services;
 using Watchdog.RabbitMQ.Shared.Models;

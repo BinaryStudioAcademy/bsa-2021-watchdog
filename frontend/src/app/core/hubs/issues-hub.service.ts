@@ -1,4 +1,4 @@
-import { IssueMessage } from '@shared/models/issues/issue-message';
+import { IssueMessage } from '@shared/models/issue/issue-message';
 import { Injectable } from '@angular/core';
 import { HubConnection } from '@microsoft/signalr';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
@@ -31,16 +31,17 @@ export class IssuesHubService {
     async stop() {
         await this.hubConnection.stop();
         this.subscriptions.forEach(s => s.unsubscribe());
-        this.projects.unsubscribe();
     }
 
     private async init() {
         await this.hubConnection.start()
             .then(() => {
                 console.info(`"${this.hubFactory}" successfully started.`);
-                this.projects.subscribe(ids => {
-                    this.hubConnection.send('SetProjects', ids);
-                });
+                this.subscriptions = [
+                    this.projects.subscribe(ids => {
+                        this.hubConnection.send('SetProjects', ids);
+                    }), ...this.subscriptions
+                ];
             })
             .catch(() => console.info(`"${this.hubFactory}" failed.`));
 

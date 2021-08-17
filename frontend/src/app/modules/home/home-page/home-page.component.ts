@@ -1,6 +1,5 @@
 import { IssuesHubService } from '@core/hubs/issues-hub.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BroadcastHubService } from '@core/hubs/broadcast-hub.service';
 import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { DashboardService } from '@core/services/dashboard.service';
 import { ShareDataService } from '@core/services/share-data.service';
@@ -28,7 +27,6 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     organization: Organization;
 
     constructor(
-        private broadcastHub: BroadcastHubService,
         private issuesHub: IssuesHubService,
         public dashboardService: DashboardService,
         private updateDataService: ShareDataService<Dashboard>,
@@ -57,15 +55,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     }
 
     runHubs() {
-        this.runBroadcastHub();
         this.runIssuesHub();
-    }
-
-    runBroadcastHub() {
-        this.broadcastHub.start()
-            .then(() => this.broadcastHub.listenMessages(msg =>
-                this.toastNotificationService.info(`The next broadcast message was received: ${msg}`)))
-            .catch(() => this.toastNotificationService.error('BroadcastHub failed to start.'));
     }
 
     runIssuesHub() {
@@ -114,7 +104,6 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.broadcastHub.stop();
         super.ngOnDestroy();
     }
 }

@@ -1,3 +1,4 @@
+import { IssueMessage } from "@shared/models/issue/issue-message";
 import { IssuesHubService } from '@core/hubs/issues-hub.service';
 import { Component, OnInit } from '@angular/core';
 import { IssueService } from '@core/services/issue.service';
@@ -33,16 +34,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     ngOnInit(): void {
         this.loadIssues();
         this.setAllFieldsTemp();
-
-        this.subscribeToIssuesHub();
-    }
-
-    subscribeToIssuesHub() {
-        this.issuesHub.messages.pipe(this.untilThis)
-            .subscribe(issue => {
-                this.issues.unshift(issue);
-            });
-        this.issuesHub.projects.next(this.projectsIdsArray);
     }
 
     selectAll(event: { checked: boolean, originalEvent: Event }) {
@@ -63,9 +54,16 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis)
             .subscribe(issues => {
                 this.issues = issues;
+                this.subscribeToIssuesHub();
             }, errorResponse => {
                 this.toastNotification.error(errorResponse, 'Error', 1500);
             });
+    }
+
+    private subscribeToIssuesHub() {
+        this.issuesHub.messages.pipe(this.untilThis)
+            .subscribe(issue => { this.addIssue(issue); });
+        this.issuesHub.projects.next(this.projectsIdsArray);
     }
 
     private setAllFieldsTemp() {
@@ -75,10 +73,31 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             thirdtype: 0
         };
     }
-    error() {
-        throw Error('OSIIBKA');
+
+    private addIssue(issue: IssueMessage) {
+        const existingIssue = this.issues.find(i =>
+            i.errorClass === issue.issueDetails.className &&
+            i.errorMessage == issue.issueDetails.errorMessage);
+        this.issues = existingIssue ? this.addExistingIssue(issue, existingIssue) : this.addNewIssue(issue);
     }
-    error2() {
-        throw Error('OSIIBKA222');
+
+    private addNewIssue(issue: IssueMessage) {
+        return [{
+            errorClass: issue.issueDetails.className,
+            errorMessage: issue.issueDetails.errorMessage,
+            eventsCount: 1,
+            newest: issue,
+        }, ...this.issues];
+    }
+
+    private addExistingIssue(issue: IssueMessage, existingIssue: IssueInfo) {
+        return [{
+            ...existingIssue,
+            eventsCount: ++existingIssue.eventsCount,
+            newest: issue
+        }, ...this.issues.filter(t =>
+            t.errorMessage !== existingIssue.errorMessage
+            && t.errorClass !== existingIssue.errorClass
+        )];
     }
 }
