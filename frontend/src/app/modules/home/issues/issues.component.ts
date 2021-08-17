@@ -51,11 +51,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     }
 
     private showPaginator() {
-        if (this.numberOfIssues > this.itemsPerPage) {
-            this.paginators = true;
-        } else {
-            this.paginators = false;
-        }
+        this.paginators = this.numberOfIssues > this.itemsPerPage;
     }
 
     private loadIssues() {
