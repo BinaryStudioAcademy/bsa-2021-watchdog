@@ -1,4 +1,4 @@
-import { IssueMessage } from "@shared/models/issue/issue-message";
+import { IssueMessage } from '@shared/models/issue/issue-message';
 import { IssuesHubService } from '@core/hubs/issues-hub.service';
 import { Component, OnInit } from '@angular/core';
 import { IssueService } from '@core/services/issue.service';
@@ -76,8 +76,8 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     private addIssue(issue: IssueMessage) {
         const existingIssue = this.issues.find(i =>
-            i.errorClass === issue.issueDetails.className &&
-            i.errorMessage == issue.issueDetails.errorMessage);
+            i.errorClass === issue.issueDetails.className
+            && i.errorMessage === issue.issueDetails.errorMessage);
         this.issues = existingIssue ? this.addExistingIssue(issue, existingIssue) : this.addNewIssue(issue);
     }
 
@@ -93,11 +93,10 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     private addExistingIssue(issue: IssueMessage, existingIssue: IssueInfo) {
         return [{
             ...existingIssue,
-            eventsCount: ++existingIssue.eventsCount,
+            eventsCount: existingIssue.eventsCount + 1,
             newest: issue
         }, ...this.issues.filter(t =>
             t.errorMessage !== existingIssue.errorMessage
-            && t.errorClass !== existingIssue.errorClass
-        )];
+            && t.errorClass !== existingIssue.errorClass)];
     }
 }
