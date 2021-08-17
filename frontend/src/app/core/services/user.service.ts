@@ -5,6 +5,7 @@ import { NewUser } from '@shared/models/user/newUser';
 import { CoreHttpService } from './core-http.service';
 import { clear } from './registration.utils';
 import { catchError } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
@@ -27,8 +28,8 @@ export class UserService {
     getUser(uid: string) {
         return this.httpService.getRequest<User>(`${this.apiPrefix}/${uid}`)
             .pipe(
-                catchError((error: string) => {
-                    if (error.includes("Error Code: 404")) {
+                catchError((error: HttpErrorResponse) => {
+                    if (error.status === 404) {
                         return of(null as User);
                     }
                 })
