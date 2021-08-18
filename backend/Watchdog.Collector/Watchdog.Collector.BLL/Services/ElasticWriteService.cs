@@ -20,9 +20,9 @@ namespace Watchdog.Collector.BLL.Services
             _mapper = mapper;
         }
             
-        public async Task AddIssueMessageAsync(IssueMessageDto issueMessageDto)
+        public async Task AddIssueMessageAsync(IssueMessageDto message)
         {
-            var issueMessage = _mapper.Map<IssueMessage>(issueMessageDto);
+            var issueMessage = _mapper.Map<IssueMessage>(message);
             
             if (string.IsNullOrEmpty(issueMessage.IssueDetails.ErrorMessage))
             {
@@ -48,7 +48,7 @@ namespace Watchdog.Collector.BLL.Services
                 : GetExistingIssueId(searchResponse);
         }
 
-        private string GetExistingIssueId(ISearchResponse<Issue> searchResponse)
+        private static string GetExistingIssueId(ISearchResponse<Issue> searchResponse)
         {
             return searchResponse.Hits.Select(h => h.Id).FirstOrDefault();
         }
