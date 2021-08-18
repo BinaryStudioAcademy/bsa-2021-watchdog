@@ -32,6 +32,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
         this.user = this.authService.getUser();
         this.editForm.statusChanges.pipe(this.untilThis);
         this.isSignByEmailAndPassword = this.authService.isUserSignByEmailAndPassword();
+        debugger;
         //this.editForm.statusChanges.subscribe(() => { this.checkSaveStatus(); });
     }
 
@@ -55,6 +56,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
 
     updateUser() {
         const user = { ...this.editForm.value };
+        debugger;
         if (user.firstName === this.user.firstName
             && user.lastName === this.user.lastName
             && user.email === this.user.email) {
@@ -65,6 +67,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
                 .subscribe(resp => {
                     this.toastNotificationService.success('Profile has been updated');
                     Object.assign(this.user, resp);
+                    debugger;
                 }, error => {
                     this.toastNotificationService.error(error);
                 });

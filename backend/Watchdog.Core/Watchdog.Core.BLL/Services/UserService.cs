@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Registration;
@@ -28,9 +29,6 @@ namespace Watchdog.Core.BLL.Services
         }
         public async Task<UserDto> UpdateUserAsync(int userId, UpdateUserDto updateUserDto)
         {
-
-            if (await _context.Users.AnyAsync(u => u.Email == updateUserDto.Email))
-                throw new InvalidOperationException("Such email alreaby exists");
             var existedUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             var mergedUser = _mapper.Map(updateUserDto, existedUser);
@@ -64,6 +62,17 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
 
             return _mapper.Map<UserDto>(createdUser.Entity);
+        }
+
+        public async Task<bool> IsUserEmailValid(string email)
+        {
+            var reg = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+            if (email.Length < 6 || !reg.IsMatch(email))
+            {
+                return false;
+            }
+
+            return !(await _context.Users.ToListAsync()).Any(u => u.Email == email);
         }
     }
 }
