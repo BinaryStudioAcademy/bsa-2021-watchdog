@@ -19,7 +19,7 @@ namespace Watchdog.Collector.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddNewIssue(IssueMessage message)
         {
-            await _elasticService.AddIssueAsync(message);
+            await _elasticService.AddIssueMessageAsync(message);
             return Ok();
         }
     }
