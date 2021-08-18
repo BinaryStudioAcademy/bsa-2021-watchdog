@@ -20,7 +20,7 @@ namespace Watchdog.Collector.BLL.Services
             _mapper = mapper;
         }
             
-        public async Task AddIssueMessageAsync(IssueMessageDto message)
+        public Task AddIssueMessageAsync(IssueMessageDto message)
         {
             var issueMessage = _mapper.Map<IssueMessage>(message);
             
@@ -29,9 +29,7 @@ namespace Watchdog.Collector.BLL.Services
                 throw new ArgumentException("Error message can't be empty.");
             }
 
-            await SetIssueIdAsync(issueMessage);
-
-            await IndexNewIssueMessageAsync(issueMessage);
+            return SetIssueIdAsync(issueMessage);
         }
 
         private async Task IndexNewIssueMessageAsync(IssueMessage issueMessage)
@@ -51,6 +49,8 @@ namespace Watchdog.Collector.BLL.Services
             issueMessage.IssueId = searchResponse.Documents.Count == 0
                 ? await CreateNewIssueAsync(issueMessage)
                 : GetExistingIssueId(searchResponse);
+            
+            await IndexNewIssueMessageAsync(issueMessage);
         }
 
         private static string GetExistingIssueId(ISearchResponse<Issue> searchResponse)
