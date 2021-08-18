@@ -110,7 +110,7 @@ namespace Watchdog.Core.BLL.Services
             var issue = issueResponse.Source;
 
             issue.Assignee = assigneeDto.Assignee;
-            var updateResponse = await _client.UpdateAsync<Issue, Issue>(assigneeDto.IssueId, descriptor => descriptor
+            await _client.UpdateAsync<Issue, Issue>(assigneeDto.IssueId, descriptor => descriptor
                         .Doc(issue));
         }
     }
