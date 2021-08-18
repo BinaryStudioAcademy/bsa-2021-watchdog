@@ -26,7 +26,7 @@
                 </div>
             </ng-template>
 
-            <p-table [value]="issues" [paginator]="true" [rows]="10" [resizableColumns]="true" [autoLayout]="true">
+            <p-table class="issues-table" [value]="issues" [paginator]="issues?.length > itemsPerPage" [rows]="itemsPerPage" [resizableColumns]="true" [autoLayout]="true">
                 <ng-template pTemplate="colgroup">
                     <colgroup>
                         <col id="issue-col">

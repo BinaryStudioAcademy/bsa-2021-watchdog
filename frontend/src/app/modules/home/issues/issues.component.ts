@@ -21,6 +21,8 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     selectedTime: string;
 
+    itemsPerPage = 10;
+
     constructor(private issueService: IssueService, private toastNotification: ToastNotificationService) {
         super();
     }
