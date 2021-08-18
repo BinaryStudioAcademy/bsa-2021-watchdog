@@ -133,46 +133,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     }
 
     private loadIssues() {
-        return of([{
-            errorMessage: 'test',
-            errorClass: 'test',
-            eventsCount: 1,
-            newest: {
-                occurredOn: new Date(),
-                issueDetails: {
-                    url: 'test',
-                    errorMessage: 'test',
-                    className: 'test',
-                    environmentMessage: {
-                        browser: 'string',
-                        browserName: 'string',
-                        browserVersion: 'string',
-                        platform: 'string'
-                    }
-                }
-            },
-            assignee: { teamIds: [], memberIds: [] } as Assignee
-        } as IssueInfo,
-        {
-            errorMessage: 'test2',
-            errorClass: 'test2',
-            eventsCount: 1,
-            newest: {
-                occurredOn: new Date(),
-                issueDetails: {
-                    url: 'test2',
-                    errorMessage: 'test2',
-                    className: 'test2',
-                    environmentMessage: {
-                        browser: 'string',
-                        browserName: 'string',
-                        browserVersion: 'string',
-                        platform: 'string'
-                    }
-                }
-            },
-            assignee: { teamIds: [6], memberIds: [31] } as Assignee
-        } as IssueInfo]);
         return this.issueService.getIssuesInfo()
             .pipe(this.untilThis,
                 map(issues => issues.map(issue => {

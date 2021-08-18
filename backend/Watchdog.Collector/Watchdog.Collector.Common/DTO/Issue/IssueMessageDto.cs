@@ -1,10 +1,10 @@
 using System;
+using Watchdog.Collector.Common.Models;
 
-namespace Watchdog.Collector.Common.Models
+namespace Watchdog.Collector.Common.DTO.Issue
 {
-    public class IssueMessage
+    public class IssueMessageDto
     {
-        public string IssueId { get; set; }
         public DateTime OccurredOn { get; set; }
         public IssueMessageDetails IssueDetails { get; set; }
     }
