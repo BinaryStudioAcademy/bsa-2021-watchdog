@@ -35,11 +35,11 @@ const routes: Routes = [
         loadChildren: () => import('./modules/user/user.module')
             .then(m => m.UserModule)
     },
-    {   path: '',
+    { path: '',
         redirectTo: 'landing',
         pathMatch: 'full'
     },
-    {   path: '**',
+    { path: '**',
         component: NotFoundComponent,
         pathMatch: 'full'
     },
