@@ -35,7 +35,14 @@ const routes: Routes = [
         loadChildren: () => import('./modules/user/user.module')
             .then(m => m.UserModule)
     },
-    { path: '**', redirectTo: 'landing', pathMatch: 'full' },
+    {   path: '',
+        redirectTo: 'landing',
+        pathMatch: 'full'
+    },
+    {   path: '**',
+        component: NotFoundComponent,
+        pathMatch: 'full'
+    },
 ];
 
 @NgModule({
