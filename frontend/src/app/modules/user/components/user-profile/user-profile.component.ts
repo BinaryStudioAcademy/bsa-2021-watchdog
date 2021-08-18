@@ -32,31 +32,10 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
         this.user = this.authService.getUser();
         this.editForm.statusChanges.pipe(this.untilThis);
         this.isSignByEmailAndPassword = this.authService.isUserSignByEmailAndPassword();
-        debugger;
-        //this.editForm.statusChanges.subscribe(() => { this.checkSaveStatus(); });
     }
-
-    // checkSaveStatus() {
-    //     if (this.editForm.untouched || this.editForm.pristine || this.editForm.invalid) {
-    //         this.setButtonStateDisabled(true);
-    //     }
-    //     if (this.editForm.valid && (this.editForm.touched || this.editForm.dirty)) {
-    //         const unsavedChangesProps = Object.keys(this.editForm.controls)
-    //             .filter(key =>
-    //                 this.editForm.controls[key].value !== this.user[key]);
-
-    //         if (unsavedChangesProps.length > 0) this.setButtonStateDisabled(false);
-    //         else this.setButtonStateDisabled(true);
-    //     }
-    // }
-
-    // setButtonStateDisabled(state: boolean) {
-    //     if (this.saveButton) this.saveButton.nativeElement.disabled = state;
-    // }
 
     updateUser() {
         const user = { ...this.editForm.value };
-        debugger;
         if (user.firstName === this.user.firstName
             && user.lastName === this.user.lastName
             && user.email === this.user.email) {
@@ -67,7 +46,6 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
                 .subscribe(resp => {
                     this.toastNotificationService.success('Profile has been updated');
                     Object.assign(this.user, resp);
-                    debugger;
                 }, error => {
                     this.toastNotificationService.error(error);
                 });
