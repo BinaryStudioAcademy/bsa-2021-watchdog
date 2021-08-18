@@ -24,8 +24,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     paginators = false;
 
-    numberOfIssues = 0;
-
     itemsPerPage = 10;
 
     constructor(private issueService: IssueService, private toastNotification: ToastNotificationService) {
@@ -55,7 +53,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     }
 
     private showPaginator() {
-        this.paginators = this.numberOfIssues > this.itemsPerPage;
+        this.paginators = this.issues.length > this.itemsPerPage;
     }
 
     private loadIssues() {
@@ -63,7 +61,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             .pipe(
                 tap(issues => {
                     this.issues = issues;
-                    this.numberOfIssues = issues.length;
                 }),
                 catchError(error => of(this.toastNotification.error(error, 'Error', 1500)))
             );
