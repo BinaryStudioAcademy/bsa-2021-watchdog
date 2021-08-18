@@ -5,7 +5,7 @@ import { BaseComponent } from '@core/components/base/base.component';
 import { User } from '@shared/models/user/user';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { UserService } from '@core/services/user.service';
-import { changeEmailValidator } from '@shared/validators/change-email-Validator.validator';
+import { changeEmailValidator } from '@shared/validators/change-email-validator.validator';
 import { regexs } from '@shared/constants/regexs';
 
 @Component({
