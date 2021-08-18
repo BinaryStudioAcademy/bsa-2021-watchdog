@@ -49,7 +49,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         this.issueService.getIssuesInfo()
             .pipe(
                 this.untilThis,
-                map(issues => issues.sort((a, b) => b.newest.occurredOn.getTime() - a.newest.occurredOn.getTime()))
             )
             .subscribe(issues => {
                 this.issues = issues;
@@ -64,17 +63,5 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             secondtype: 1,
             thirdtype: 0
         };
-    }
-
-    error1() {
-        throw TypeError('invalid type1');
-    }
-
-    error2() {
-        throw Error('super error');
-    }
-
-    error3() {
-        throw Error('super1 error');
     }
 }
