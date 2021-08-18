@@ -7,7 +7,6 @@ import { Subscription } from 'rxjs';
 import { BaseComponent } from '@core/components/base/base.component';
 import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
-import { SpinnerService } from '@core/services/spinner.service';
 import { Tile } from '@shared/models/tile/tile';
 import { TileType } from '@shared/models/tile/enums/tile-type';
 import { ConfirmOptions } from '@shared/models/confirm-window/confirm-options';
@@ -36,6 +35,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     projects: Project[] = [];
     user: User;
     organization: Organization;
+    isLoading: boolean = false;
 
     constructor(
         private route: ActivatedRoute,
@@ -44,7 +44,6 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         private updateDataService: ShareDataService<Dashboard>,
         private deleteDataService: ShareDataService<number>,
         private toastNotificationService: ToastNotificationService,
-        private spinnerService: SpinnerService,
         private confirmWindowService: ConfirmWindowService,
         private tileService: TileService,
         private authService: AuthenticationService,
@@ -82,17 +81,17 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     }
 
     deleteDashboard() {
-        this.spinnerService.show();
+        this.isLoading = true;
         this.dashboardService.deleteDashboard(this.dashboard.id)
             .pipe(this.untilThis)
             .subscribe(() => {
                 this.router.navigate(['/home/projects']).then(r => r);
                 this.toastNotificationService.success('Dashboard has been deleted');
                 this.deleteDataService.changeMessage(this.dashboard.id);
-                this.spinnerService.hide();
+                this.isLoading = false;
             }, error => {
                 this.toastNotificationService.error(`${error}`, 'Error', 2000);
-                this.spinnerService.hide();
+                this.isLoading = false;
             });
     }
 
@@ -129,7 +128,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     }
 
     getDashboard(dashboardId: string) {
-        this.spinnerService.show();
+        this.isLoading = true;
         this.dashboardService.get(dashboardId)
             .pipe(this.untilThis)
             .subscribe(dashboardById => {
@@ -140,22 +139,22 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                     }, error => {
                         this.toastNotificationService.error(`${error}`, '', 2000);
                     });
-                this.spinnerService.hide();
+                this.isLoading = false;
             }, error => {
                 this.toastNotificationService.error(`${error}`, '', 2000);
             });
     }
 
     getDashboardTiles(dashboardId: number) {
-        this.spinnerService.show();
+        this.isLoading = true;
         this.tileService.getAllTilesByDashboardId(dashboardId)
             .pipe(this.untilThis)
             .subscribe(response => {
                 this.tiles = response;
-                this.spinnerService.hide();
+                this.isLoading = false;
             }, error => {
                 this.toastNotificationService.error(`${error}`, 'Error', 2000);
-                this.spinnerService.hide();
+                this.isLoading = false;
             });
     }
 
@@ -169,15 +168,15 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     }
 
     deleteTile(tile: Tile) {
-        this.spinnerService.show();
+        this.isLoading = true;
         this.tileService.deleteTile(tile.id)
             .pipe(this.untilThis)
             .subscribe(() => {
-                this.spinnerService.hide();
+                this.isLoading = false;
                 this.tiles.splice(this.tiles.findIndex(value => value.id === tile.id), 1);
                 this.toastNotificationService.success('Tile Deleted');
             }, error => {
-                this.spinnerService.hide();
+                this.isLoading = false;
                 this.toastNotificationService.error(`${error}`, 'Error', 2000);
             });
     }

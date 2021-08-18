@@ -33,6 +33,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     sharedOptions = { members: [] as Member[], teams: [] as TeamOption[] };
     organization: Organization;
 
+
     constructor(
         private issueService: IssueService,
         private toastNotification: ToastNotificationService,
@@ -40,6 +41,12 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         private memberService: MemberService,
         private teamService: TeamService
     ) { super(); }
+
+    itemsPerPage = 10;
+
+    constructor(private issueService: IssueService, private toastNotification: ToastNotificationService) {
+        super();
+    }
 
     ngOnInit(): void {
         this.isAssign = false;
