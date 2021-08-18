@@ -14,12 +14,6 @@ import { TraceService } from './trace.service';
 export class WatchdogService {
     private subscribeFunc:  (breadcrumb: Breadcrumb) => void = breadcrumb => {
         this.breadcrumbService.addBreadcrumb(breadcrumb);
-        const breadcrumbs = this.breadcrumbService.getBreadcrumbs();
-        if (breadcrumbs.length >= 10)
-        {
-            this.breadcrumbService.clear()
-            console.table(breadcrumbs); 
-        }
             
     }
     constructor(

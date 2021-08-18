@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Breadcrumb } from '../models/breadcrumb';
+import { BreadcrumbModel } from '../models/breadcrumb-model';
 
 @Injectable({
     providedIn: 'root'
@@ -12,14 +13,14 @@ export class BreadcrumbService {
         BreadcrumbService.breadcrumbs = BreadcrumbService.breadcrumbs.concat(item);
     }
 
-    getBreadcrumbs() {
-        return BreadcrumbService.breadcrumbs.concat();
+    getBreadcrumbs(): BreadcrumbModel[] {
+        return BreadcrumbService.breadcrumbs.map(b => b.toModel());
     }
 
-    getBreadcrumbsAndClear() {
+    getBreadcrumbsAndClear(): BreadcrumbModel[] {
         const breadcrumbs = BreadcrumbService.breadcrumbs;
         BreadcrumbService.breadcrumbs = [];
-        return breadcrumbs;
+        return breadcrumbs.map(b => b.toModel());
     }
 
     clear() {
