@@ -64,15 +64,15 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<UserDto>(createdUser.Entity);
         }
 
-        public async Task<bool> IsUserEmailValid(string email)
+        public async Task<bool> IsUserEmailValid(string userEmail)
         {
             var reg = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-            if (email.Length < 6 || !reg.IsMatch(email))
+            if (userEmail.Length < 6 || !reg.IsMatch(userEmail))
             {
                 return false;
             }
 
-            return !(await _context.Users.ToListAsync()).Any(u => u.Email == email);
+            return !(await _context.Users.ToListAsync()).Any(u => u.Email == userEmail);
         }
     }
 }
