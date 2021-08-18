@@ -3,8 +3,6 @@ import { IssueService } from '@core/services/issue.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { IssueInfo } from '@shared/models/issue/issue-info';
-import { catchError, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 @Component({
     selector: 'app-issues',
@@ -22,8 +20,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     selectedTime: string;
 
-    paginators = false;
-
     itemsPerPage = 10;
 
     constructor(private issueService: IssueService, private toastNotification: ToastNotificationService) {
@@ -31,12 +27,8 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.loadIssues();
         this.setAllFieldsTemp();
-        this.loadIssues()
-            .pipe(this.untilThis)
-            .subscribe(() => {
-                this.showPaginator();
-            });
     }
 
     selectAll(event: { checked: boolean, originalEvent: Event }) {
@@ -52,18 +44,14 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         event.originalEvent.stopPropagation();
     }
 
-    private showPaginator() {
-        this.paginators = this.issues.length > this.itemsPerPage;
-    }
-
     private loadIssues() {
-        return this.issueService.getIssuesInfo()
-            .pipe(
-                tap(issues => {
-                    this.issues = issues;
-                }),
-                catchError(error => of(this.toastNotification.error(error, 'Error', 1500)))
-            );
+        this.issueService.getIssuesInfo()
+            .pipe(this.untilThis)
+            .subscribe(issues => {
+                this.issues = issues;
+            }, errorResponse => {
+                this.toastNotification.error(errorResponse, 'Error', 1500);
+            });
     }
 
     private setAllFieldsTemp() {
