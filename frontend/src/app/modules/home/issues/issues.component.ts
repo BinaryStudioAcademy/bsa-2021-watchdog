@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Issue } from '@shared/models/issue/issue';
 import { IssueService } from '@core/services/issue.service';
-import { IssueMessage } from '@shared/models/issues/issue-message';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
+import { IssueInfo } from '@shared/models/issue/issue-info';
 
 @Component({
     selector: 'app-issues',
@@ -11,15 +10,17 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
     styleUrls: ['./issues.component.sass']
 })
 export class IssuesComponent extends BaseComponent implements OnInit {
-    issues: IssueMessage[];
+    issues: IssueInfo[] = [];
 
     countNew: { [type: string]: number };
 
-    selectedIssues: Issue[] = [];
+    selectedIssues: IssueInfo[] = [];
 
     timeOptions: string[];
 
     selectedTime: string;
+
+    itemsPerPage = 10;
 
     constructor(private issueService: IssueService, private toastNotification: ToastNotificationService) {
         super();
@@ -44,10 +45,10 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     }
 
     private loadIssues() {
-        this.issueService.getIssues()
+        this.issueService.getIssuesInfo()
             .pipe(this.untilThis)
-            .subscribe(response => {
-                this.issues = response;
+            .subscribe(issues => {
+                this.issues = issues;
             }, errorResponse => {
                 this.toastNotification.error(errorResponse, 'Error', 1500);
             });

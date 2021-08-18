@@ -4,10 +4,9 @@ import {
     HttpInterceptor,
     HttpErrorResponse,
     HttpRequest,
-    HttpEvent,
     HttpResponse,
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { catchError, retry, tap } from 'rxjs/operators';
 import { ErrorsService } from '@core/collecting-errors/services/errors.service';
 import { BaseService } from '../services/base.service';
@@ -25,7 +24,7 @@ export class ErrorInterceptor extends BaseService implements HttpInterceptor {
         return throwError(error);
     }
 
-    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    intercept(req: HttpRequest<any>, next: HttpHandler) {
         return next.handle(req).pipe(
             retry(1),
             tap(event => {
@@ -36,13 +35,7 @@ export class ErrorInterceptor extends BaseService implements HttpInterceptor {
             }),
             catchError((error: HttpErrorResponse) => {
                 this.errorsService.log(error);
-                let errorMessage: string;
-                if (error.error instanceof ErrorEvent) {
-                    errorMessage = `Error: ${error.error.message}`;
-                } else {
-                    errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-                }
-                return throwError(errorMessage);
+                return throwError(error);
             })
         );
     }

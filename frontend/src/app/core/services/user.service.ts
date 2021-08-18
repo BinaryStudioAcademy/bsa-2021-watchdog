@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { User } from '@shared/models/user/user';
 import { NewUser } from '@shared/models/user/newUser';
 import { CoreHttpService } from './core-http.service';
 import { clear } from './registration.utils';
+import { catchError } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
@@ -19,12 +21,20 @@ export class UserService {
         return this.httpService.getRequest<User>(`${this.apiPrefix}/${id}`);
     }
 
-    public updateUsersById(id: number, user: User): Observable<User> {
+    updateUsersById(id: number, user: User): Observable<User> {
         return this.httpService.putRequest<User>(`${this.apiPrefix}/${id}`, user);
     }
 
     getUser(uid: string) {
-        return this.httpService.getRequest<User>(`${this.apiPrefix}/${uid}`);
+        return this.httpService.getRequest<User>(`${this.apiPrefix}/${uid}`)
+            .pipe(
+                catchError((error: HttpErrorResponse) => {
+                    if (error.status === 404) {
+                        return of(null as User);
+                    }
+                    return throwError(error);
+                })
+            );
     }
 
     createUser(newUser: NewUser) {

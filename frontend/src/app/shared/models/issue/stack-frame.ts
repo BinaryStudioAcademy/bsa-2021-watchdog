@@ -1,4 +1,4 @@
-export interface StackTrace {
+export interface StackFrame {
     file: string,
     methodName: string,
     arguments: string[],
