@@ -16,10 +16,10 @@
                 class="p-error">
                 <small *ngIf="email.errors?.required">This field is required.</small>
                 <small *ngIf="email.errors?.minlength || email.errors?.maxlength">
-                    Length must be between 6 and 50 characters.
+                    Length must be between 3 and 50 characters.
                 </small>
                 <small *ngIf="email.errors?.serverError">Server error.</small>
-                <small *ngIf="email.errors?.pattern">Invalid Email</small>
+                <small *ngIf="email.errors?.pattern">You are using invalid characters for email</small>
             </div>
         </div>
     </div>
@@ -35,10 +35,10 @@
                 class="p-error">
                 <small *ngIf="firstName.errors?.required">This field is required.</small>
                 <small *ngIf="firstName.errors?.minlength || firstName.errors?.maxlength">
-                    Length must be between 2 and 30 characters.
+                    Length must be between 3 and 50 characters.
                 </small>
                 <small *ngIf="firstName.errors?.serverError">Server error.</small>
-                <small *ngIf="firstName.errors?.pattern">May contain letters, dashes and space</small>
+                <small *ngIf="firstName.errors?.pattern">You are using invalid characters</small>
             </div>
         </div>
     </div>
@@ -55,10 +55,10 @@
                 class="p-error">
                 <small *ngIf="lastName.errors?.required">This field is required.</small>
                 <small *ngIf="lastName.errors?.minlength || lastName.errors?.maxlength">
-                    Length must be between 2 and 30 characters.
+                    Length must be between 3 and 50 characters.
                 </small>
                 <small *ngIf="lastName.errors?.serverError">Server error.</small>
-                <small *ngIf="lastName.errors?.pattern">May contain letters, dashes and space</small>
+                <small *ngIf="lastName.errors?.pattern">You are using invalid characters</small>
             </div>
         </div>
     </div>

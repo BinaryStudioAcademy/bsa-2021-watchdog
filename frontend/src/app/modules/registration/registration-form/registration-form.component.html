@@ -99,6 +99,7 @@
                 <small *ngIf="formGroup.controls.organizationSlug.errors.required">Сan not be empty</small>
                 <small *ngIf="formGroup.controls.organizationSlug.value?.length < 3">Min length 3</small>
                 <small *ngIf="formGroup.controls.organizationSlug.value?.length > 50">Max length 50</small>
+                <small *ngIf="formGroup.controls.organizationSlug.errors?.notUnique">Slug is not unique</small>
                 <small *ngIf="formGroup.controls.organizationSlug.hasError('pattern')">May contain letters, numbers,
                     space, dashes and underscores</small>
             </div>
@@ -106,7 +107,7 @@
     </div>
     <div class="submit-block">
         <span>
-            <button pButton class="submit-button" label="Submit" (click)="onSubmit()"
+            <button pButton class="submit-button p-button-outlined" label="Submit" (click)="onSubmit()"
                 [disabled]="!formGroup.valid"></button>
         </span>
     </div>

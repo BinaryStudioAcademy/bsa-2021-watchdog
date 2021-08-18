@@ -145,6 +145,7 @@ export class AuthenticationService {
     }
 
     signOnWithEmailAndPassword(regDto: FullRegistrationDto, password: string, route: string[]) {
+        this.logout();
         return from(this.angularFireAuth
             .createUserWithEmailAndPassword(regDto.user.email, password))
             .pipe(
@@ -184,16 +185,15 @@ export class AuthenticationService {
         return from(this.angularFireAuth
             .signInWithPopup(provider))
             .pipe(
-                switchMap(userCredential => {
-                    if (userCredential.additionalUserInfo.isNewUser) {
-                        const newUser = this.pullNewUserFromGitHub(userCredential);
-                        return this.userService.createUser(newUser);
-                    }
-                    return this.userService.getUser(userCredential.user.uid);
-                }),
+                switchMap(userCredential =>
+                    this.userService.getUser(userCredential.user.uid)
+                        .pipe(
+                            switchMap(user => (user ? of(user)
+                                : this.userService.createUser(this.pullNewUserFromGitHub(userCredential))))
+                        )),
                 tap(user => {
                     localStorage.setItem('isSignByEmailAndPassword', 'false');
-                    return this.setUser(user);
+                    this.setUser(user);
                 }),
                 switchMap(() => this.login(route))
             );
@@ -207,13 +207,12 @@ export class AuthenticationService {
         return from(this.angularFireAuth
             .signInWithPopup(provider))
             .pipe(
-                switchMap(userCredential => {
-                    if (userCredential.additionalUserInfo.isNewUser) {
-                        const newUser = this.pullNewUserFromGoogle(userCredential);
-                        return this.userService.createUser(newUser);
-                    }
-                    return this.userService.getUser(userCredential.user.uid);
-                }),
+                switchMap(userCredential =>
+                    this.userService.getUser(userCredential.user.uid)
+                        .pipe(
+                            switchMap(user => (user ? of(user)
+                                : this.userService.createUser(this.pullNewUserFromGoogle(userCredential))))
+                        )),
                 tap(user => {
                     localStorage.setItem('isSignByEmailAndPassword', 'false');
                     return this.setUser(user);
@@ -229,6 +228,16 @@ export class AuthenticationService {
         return from(this.angularFireAuth
             .signInWithPopup(provider))
             .pipe(
+                switchMap(userCredential =>
+                    this.userService.getUser(userCredential.user.uid)
+                        .pipe(
+                            switchMap(user => (user ? of(user)
+                                : this.userService.createUser(this.pullNewUserFromFacebook(userCredential))))
+                        )),
+                tap(user => {
+                    localStorage.setItem('isSignByEmailAndPassword', 'false');
+                    return this.setUser(user);
+                }),
                 switchMap(() => this.login(route))
             );
     }
@@ -253,6 +262,18 @@ export class AuthenticationService {
             email: credential.user.email,
             firstName: (credential.additionalUserInfo.profile as { given_name: string }).given_name,
             lastName: (credential.additionalUserInfo.profile as { family_name: string }).family_name,
+            avatarUrl: credential.user.photoURL
+        } as NewUser;
+
+        return user;
+    }
+
+    pullNewUserFromFacebook(credential: firebase.auth.UserCredential) {
+        const user = {
+            uid: credential.user.uid,
+            email: credential.user.email,
+            firstName: (credential.additionalUserInfo.profile as { first_name: string }).first_name,
+            lastName: (credential.additionalUserInfo.profile as { last_name: string }).last_name,
             avatarUrl: credential.user.photoURL
         } as NewUser;
 

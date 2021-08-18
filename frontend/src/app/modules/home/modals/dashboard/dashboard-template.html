@@ -15,23 +15,22 @@
                 </div>
             </div>
             <div class="input-section">
-                <label for="float-dropdown-dashboard-icon">Icon</label>
-                <p-dropdown id="float-dropdown-dashboard-icon" [options]="icons" appendTo="body" formControlName="icon"
-                    tyleClass="dropdown" [autoDisplayFirst]="false" placeholder="Select icon">
-                    <ng-template let-item pTemplate="selectedItem">
-                        <i class="{{item.label}}"></i>
-                    </ng-template>
-                    <ng-template let-object pTemplate="item">
-                        <i class="{{object.label}}"></i>
-                    </ng-template>
-                </p-dropdown>
+                <label>Icon</label>
+                <ul>
+                    <li *ngFor="let icon of icons" (click)="onSelect(icon)"
+                        [ngClass]="{ 'selected': icon.label === this.selectedIcon.label}">
+                        <div class="icon-container">
+                            <i [ngClass]="icon.label"></i>
+                        </div>
+                    </li>
+                </ul>
             </div>
             <div class="buttons-container">
                 <button pButton pRipple type="button" label="Cancel" class="p-button-secondary p-button-outlined"
                     (click)="closeModal.emit()">
                 </button>
                 <button pButton pRipple type="submit" label="Save" class="p-button-primary p-button-outlined"
-                    [disabled]="!formGroup.valid">
+                    [disabled]="!formGroup.valid || !this.selectedIcon">
                 </button>
             </div>
         </p-panel>

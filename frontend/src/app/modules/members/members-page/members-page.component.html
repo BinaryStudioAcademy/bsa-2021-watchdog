@@ -1,0 +1,125 @@
+<app-loading-spinner *ngIf="loadingNumber > 0" [overlay]="true"></app-loading-spinner> 
+    <div class="invite-wrapper">
+        <div class="title">Members</div>
+        <div class="buttons">
+            <button (click)="toggleAllEditors()" class="p-button-secondary p-button-outlined" label="Edit" pButton pRipple></button>
+            <button pButton class="inviteMembers p-button-outlined" (click)="isInviting=true" pRipple type="button" label="Invite"></button>
+        </div>
+    </div>
+<div class="members-container">
+    <div class="p-inputgroup filter-input">
+        <span class="p-inputgroup-addon search-button"><i class="pi pi-search"></i></span>
+        <input type="text" pInputText placeholder="Search" name="search" (input)="table.filterGlobal($event.target.value, 'contains')">
+    </div>
+    <p-table #table [value]="memberItems" class="members-table" [rows]="10" 
+    [paginator]="memberItems?.length > 10"  
+    [globalFilterFields]="['member.user.firstName','member.user.email','member.role.name']">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="member.user.firstName">
+                    <div class="table-header-cell" id="name-col">
+                        <span>
+                            Full Name
+                            <p-sortIcon field="member.user.firstName"></p-sortIcon>
+                        </span>
+                        <p-columnFilter [showAddButton]="false" type="text" field="member.user.firstName" display="menu"></p-columnFilter>
+                    </div>
+                </th>
+                <th class="email-col" pSortableColumn="member.user.email">
+                    <div class="table-header-cell" id="email-col">
+                        <span>
+                            Email <p-sortIcon field="member.user.email"></p-sortIcon>
+                        </span>
+                        <p-columnFilter [showAddButton]="false" type="text" field="member.user.email" display="menu"></p-columnFilter>
+                    </div>
+                </th>
+                <th pSortableColumn="member.role.name">
+                    <div class="table-header-cell" id="role-col">
+                        <span>
+                            Role <p-sortIcon field="member.role.name"></p-sortIcon>
+                        </span>
+                        <p-columnFilter matchMode="in" display="menu" 
+                        [showMatchModes]="false" [showOperator]="false" 
+                        [showAddButton]="false" field="member.role.name" 
+                        display="menu">
+                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                            <p-multiSelect [ngModel]="value"
+                            [options]="roles"
+                            optionValue="name"  
+                            optionLabel="name"
+                            placeholder="Select roles"
+                            (onChange)="filter($event.value)"
+                            [showHeader]="false">
+                            </p-multiSelect>
+                        </ng-template></p-columnFilter>
+                    </div>
+                </th>
+                <th class="team-col">
+                    <div class="table-header-cell">
+                        <span>
+                            Teams
+                        </span>
+                    </div>
+                </th>
+                <th pSortableColumn="member.isAccepted">
+                    <div class="table-header-cell" id="isAccepted-col">
+                        <span>
+                            Is accepted <p-sortIcon field="member.isAccepted"></p-sortIcon>
+                        </span>
+                    </div>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-memberItem>
+            <tr>
+                <td><span class="content">{{memberItem.member.user.firstName}} {{memberItem.member.user.lastName}}</span></td>
+                <td class="email-col"><div class="content"><div appTooltipFullName class="email">{{memberItem.member.user.email}}</div></div></td>
+                <td class="edit-cell">
+                    <span class="content" *ngIf="!memberItem.isEdit">{{memberItem.member.role.name}}
+                        <button (click)="startEdit(memberItem)" *ngIf="isEdit"
+                        class="p-button-raised p-button-text p-button-plain small-button"
+                        icon="pi pi-pencil" pButton></button>
+                    </span>
+
+                    <div class="content" *ngIf="memberItem.isEdit">
+                        <p-dropdown
+                            [(ngModel)]="memberItem.member.role" 
+                            [options]="roles"
+                            appendTo="body"
+                            optionLabel="name" name="roles-dropdown"
+                            placeholder="Select Role" [filter]="false"></p-dropdown>
+                        <button (click)="saveRoleChanges(memberItem)"
+                                class="p-button-raised p-button-text p-button-plain small-button" icon="pi pi-save" pButton>
+                        </button>
+                        <button (click)="finishEdit(memberItem)"
+                                class="p-button-raised p-button-text p-button-plain small-button" icon="pi pi-times" pButton>
+                        </button>
+                    </div>
+                </td>
+                <td class="team-col"><span class="content" *ngIf="memberItem.member.teams.length > 1">
+                    <p-dropdown class="teams-dropdown"[options]="memberItem.member.teams" 
+                    styleClass="team-col-dropdown" appendTo="body"
+                    panelStyleClass="team-col-panel"
+                    optionLabel="name" name="teams-dropdown" optionDisabled="name" [autoDisplayFirst]="false"
+                    placeholder="Teams">
+                </p-dropdown>
+                </span>
+                    <span class="content one-team" *ngIf="memberItem.member.teams.length  === 1">{{memberItem.member.teams[0].name}}</span>
+                    <span class="content no-team" *ngIf="memberItem.member.teams.length  === 0">No teams yet</span></td>
+                <td>
+                    <div class="content delete-col">
+                        <button pButton pRipple type="button" label="Re-invite" *ngIf="!memberItem.member.isAccepted" class="p-button-outlined p-button-secondary" (click)="reinvite(memberItem.member)"></button>
+                        <button pButton pRipple type="button" label="Accepted" *ngIf="memberItem.member.isAccepted" [disabled]="true" class="p-button-outlined p-button-secondary"></button>
+                        <button *ngIf="isEdit" (click)="deleteMember(memberItem)" class="p-button-raised p-button-text p-button-plain small-button" icon="pi pi-trash" pButton></button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<app-invite
+    (closeModal)="isInviting = !isInviting"
+    *ngIf="isInviting">
+    
+</app-invite>
