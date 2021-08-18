@@ -3,7 +3,6 @@ import { IssueService } from '@core/services/issue.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { IssueInfo } from '@shared/models/issue/issue-info';
-import {map} from "rxjs/operators";
 
 @Component({
     selector: 'app-issues',
