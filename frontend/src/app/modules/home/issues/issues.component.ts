@@ -46,9 +46,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     private loadIssues() {
         this.issueService.getIssuesInfo()
-            .pipe(
-                this.untilThis,
-            )
+            .pipe(this.untilThis)
             .subscribe(issues => {
                 this.issues = issues;
             }, errorResponse => {
