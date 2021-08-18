@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Issue } from '@shared/models/issue/issue';
 import { IssueService } from '@core/services/issue.service';
-import { IssueMessage } from '@shared/models/issues/issue-message';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { Member } from '@shared/models/member/member';
@@ -11,8 +9,10 @@ import { AuthenticationService } from '@core/services/authentication.service';
 import { MemberService } from '@core/services/member.service';
 import { forkJoin, of } from 'rxjs';
 import { TeamService } from '@core/services/team.service';
-import { Assignee } from '@shared/models/assignee/assignee';
+import { Assignee } from '@shared/models/issue/assignee';
 import { count, toImages } from '@core/services/issues.utils';
+import { IssueInfo } from '@shared/models/issue/issue-info';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-issues',
@@ -20,11 +20,11 @@ import { count, toImages } from '@core/services/issues.utils';
     styleUrls: ['./issues.component.sass']
 })
 export class IssuesComponent extends BaseComponent implements OnInit {
-    issues: IssueMessage[];
+    issues: IssueInfo[] = [];
 
     countNew: { [type: string]: number };
 
-    selectedIssues: Issue[] = [];
+    selectedIssues: IssueInfo[] = [];
 
     timeOptions: string[];
 
@@ -33,10 +33,13 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     sharedOptions = { members: [] as Member[], teams: [] as TeamOption[] };
     organization: Organization;
 
-    constructor(private issueService: IssueService, private toastNotification: ToastNotificationService,
-        private authService: AuthenticationService, private memberService: MemberService, private teamService: TeamService) {
-        super();
-    }
+    constructor(
+        private issueService: IssueService,
+        private toastNotification: ToastNotificationService,
+        private authService: AuthenticationService,
+        private memberService: MemberService,
+        private teamService: TeamService
+    ) { super(); }
 
     ngOnInit(): void {
         this.isAssign = false;
@@ -81,7 +84,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     toAssing: Assignee;
     private saveAssing: Assignee;
-    openAssign(issue: IssueMessage) {
+    openAssign(issue: IssueInfo) {
         this.toAssing = issue.assignee;
         this.saveAssing = { memberIds: this.toAssing.memberIds.concat(), teamIds: this.toAssing.teamIds.concat() };
         this.isAssign = true;
@@ -118,23 +121,57 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     private loadIssues() {
         return of([{
-            occurredOn: new Date(),
-            issueDetails: {
-                url: 'test',
-                errorMessage: 'test',
-                className: 'test',
-                environmentMessage: {
-                    browser: 'string',
-                    browserName: 'string',
-                    browserVersion: 'string',
-                    platform: 'string'
+            errorMessage: 'test',
+            errorClass: 'test',
+            eventsCount: 1,
+            newest: {
+                occurredOn: new Date(),
+                issueDetails: {
+                    url: 'test',
+                    errorMessage: 'test',
+                    className: 'test',
+                    environmentMessage: {
+                        browser: 'string',
+                        browserName: 'string',
+                        browserVersion: 'string',
+                        platform: 'string'
+                    }
                 }
             },
-            assignee: { teamIds: [6], memberIds: [31] }
-        }]);
-        return this.issueService.getIssues()
-            .pipe(this.untilThis);
+            assignee: { teamIds: [], memberIds: [] } as Assignee
+        } as IssueInfo,
+        {
+            errorMessage: 'test2',
+            errorClass: 'test2',
+            eventsCount: 1,
+            newest: {
+                occurredOn: new Date(),
+                issueDetails: {
+                    url: 'test2',
+                    errorMessage: 'test2',
+                    className: 'test2',
+                    environmentMessage: {
+                        browser: 'string',
+                        browserName: 'string',
+                        browserVersion: 'string',
+                        platform: 'string'
+                    }
+                }
+            },
+            assignee: { teamIds: [6], memberIds: [31] } as Assignee
+        } as IssueInfo]);
+        return this.issueService.getIssuesInfo()
+            .pipe(this.untilThis,
+                map(issues => issues.map(issue => {
+                    if (issue.assignee) {
+                        return issue;
+                    } else {
+                        return { ...issue, assignee: { teamIds: [], memberIds: [] } as Assignee }
+                    }
+                }))
+            );
     }
+
 
     private setAllFieldsTemp() {
         this.countNew = {

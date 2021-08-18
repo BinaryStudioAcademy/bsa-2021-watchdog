@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Watchdog.Core.Common.Models.Issue
 {
@@ -7,7 +7,7 @@ namespace Watchdog.Core.Common.Models.Issue
         public string Url { get; set; }
         public string ErrorMessage { get; set; }
         public string ClassName { get; set; }
-        public ICollection<StackTrace> StackTrace { get; set; }
+        public ICollection<StackFrame> StackTrace { get; set; }
         public HttpResponseErrorMessage ResponseErrorMessage { get; set; }
         public IssueEnvironment EnvironmentMessage { get; set; }
     }

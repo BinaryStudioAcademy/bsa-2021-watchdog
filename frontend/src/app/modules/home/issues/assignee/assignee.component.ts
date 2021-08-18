@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BaseComponent } from '@core/components/base/base.component';
 import { TeamService } from '@core/services/team.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
-import { Assignee } from '@shared/models/assignee/assignee';
+import { Assignee } from '@shared/models/issue/assignee';
 import { Member } from '@shared/models/member/member';
 import { TeamOption } from '@shared/models/teams/team-option';
 

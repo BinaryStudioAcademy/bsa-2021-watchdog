@@ -1,4 +1,4 @@
-import { Assignee } from '@shared/models/assignee/assignee';
+import { Assignee } from '@shared/models/issue/assignee';
 import { Member } from '@shared/models/member/member';
 
 export const toImages = (memberIds: number[], members: Member[]): string[] =>
