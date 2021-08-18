@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Breadcrumb, BreadcrumbLevel } from '../models/breadcrumb';
+import { BreadcrumbLevel } from '../models/breadcrumb';
 import { ConsoleBreadcrumb } from '../models/console-breadcrumb';
 import { BaseService } from './base.service';
 
@@ -15,6 +15,7 @@ export class ConsoleService extends BaseService{
 
     constructor() {
         super();
+
         this.copyFunctions();
         this.rewriteFunctions();
     }

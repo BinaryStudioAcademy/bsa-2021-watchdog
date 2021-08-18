@@ -22,7 +22,7 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
 
     constructor(
         private dataService: ShareDataService<Organization>,
-        private authSerice: AuthenticationService,
+        private authService: AuthenticationService,
         private toastService: ToastNotificationService,
         private organizationService: OrganizationService,
         public router: Router,
@@ -30,19 +30,18 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
 
     ngOnInit(): void {
         this.isLoading = true;
-        this.authSerice.getOrganization()
-            .pipe(this.untilThis)
-            .subscribe(organization => {
-                this.organization = organization;
-                this.checkUpdates();
-                this.isLoading = false;
-
-                this.organizationService.getOrganizationsByUserId(this.authSerice.getUser().id)
+        this.organizationService.getOrganizationsByUserId(this.authService.getUser().id)
                     .pipe(this.untilThis)
                     .subscribe(organizations => {
                         this.organizations = organizations;
-                    });
-            }, error => { this.toastService.error(error); this.isLoading = false; });
+                        this.authService.getOrganization()
+                        .pipe(this.untilThis)
+                        .subscribe(organization => {
+                            this.organization = organization;
+                            this.checkUpdates();
+                            this.isLoading = false;
+                        });
+                    }, error => { this.toastService.error(error); this.isLoading = false; });          
     }
 
     private checkUpdates() {

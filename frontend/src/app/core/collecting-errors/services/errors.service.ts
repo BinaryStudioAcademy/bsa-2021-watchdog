@@ -6,7 +6,7 @@ import { StackTrace } from '@shared/models/issues/stack-trace';
 import { IssueEnvironment } from '@shared/models/issues/issue-environment';
 import { HttpResponseErrorMessage } from '@shared/models/issues/http-response.message';
 import * as stackTraceParser from 'stacktrace-parser';
-import { ToastNotificationService } from './toast-notification.service';
+import { ToastNotificationService } from '../../services/toast-notification.service';
 
 @Injectable({
     providedIn: 'root'
