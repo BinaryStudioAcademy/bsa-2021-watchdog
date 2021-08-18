@@ -19,8 +19,8 @@ namespace Watchdog.Core.BLL.Services
         
         public async Task<ICollection<IssueInfoDto>> GetIssuesInfoAsync()
         {
-            var issues = await GetIssues();
-            var issueMessages = await GetIssueMessages();
+            var issues = await GetIssuesAsync();
+            var issueMessages = await GetIssueMessagesAsync();
             
             var issuesInfo = issues
                 .Select(i => new IssueInfoDto()
@@ -44,9 +44,9 @@ namespace Watchdog.Core.BLL.Services
             return issuesInfo;
         }
 
-        private async Task<ICollection<Issue>> GetIssues()
+        private async Task<ICollection<Issue>> GetIssuesAsync()
         {
-            var issuesCount = await GetTotalHits<Issue>();
+            var issuesCount = await GetTotalHitsAsync<Issue>();
             
             var issuesSearchResponse = await _client.SearchAsync<Issue>(s => s
                 .From(0)
@@ -65,9 +65,9 @@ namespace Watchdog.Core.BLL.Services
             return issues;
         }
 
-        private async Task<ICollection<IssueMessage>> GetIssueMessages()
+        private async Task<ICollection<IssueMessage>> GetIssueMessagesAsync()
         {
-            var issueMessagesCount = await GetTotalHits<IssueMessage>();
+            var issueMessagesCount = await GetTotalHitsAsync<IssueMessage>();
             
             var searchResponse = await _client.SearchAsync<IssueMessage>(s => s
                 .Source(sf => sf
@@ -92,7 +92,7 @@ namespace Watchdog.Core.BLL.Services
             return issueMessages;
         }
 
-        private async Task<int> GetTotalHits<T>() where T: class
+        private async Task<int> GetTotalHitsAsync<T>() where T: class
         {
             var totalHits = await _client.CountAsync<T>();
             return (int)totalHits.Count;

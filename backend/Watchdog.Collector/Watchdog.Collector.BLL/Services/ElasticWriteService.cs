@@ -29,7 +29,7 @@ namespace Watchdog.Collector.BLL.Services
                 throw new ArgumentException("Error message can't be empty.");
             }
 
-            await SetIssueId(issueMessage);
+            await SetIssueIdAsync(issueMessage);
 
             var indexResponse = await _client.IndexDocumentAsync<IssueMessage>(issueMessage);
                 
@@ -39,12 +39,12 @@ namespace Watchdog.Collector.BLL.Services
             }
         }
 
-        private async Task SetIssueId(IssueMessage issueMessage)
+        private async Task SetIssueIdAsync(IssueMessage issueMessage)
         {
-            var searchResponse = await GetExistingIssues(issueMessage);
+            var searchResponse = await GetExistingIssuesAsync(issueMessage);
 
             issueMessage.IssueId = searchResponse.Documents.Count == 0
-                ? await CreateNewIssue(issueMessage)
+                ? await CreateNewIssueAsync(issueMessage)
                 : GetExistingIssueId(searchResponse);
         }
 
@@ -53,9 +53,9 @@ namespace Watchdog.Collector.BLL.Services
             return searchResponse.Hits.Select(h => h.Id).FirstOrDefault();
         }
         
-        private async Task<ISearchResponse<Issue>> GetExistingIssues(IssueMessage issueMessage)
+        private async Task<ISearchResponse<Issue>> GetExistingIssuesAsync(IssueMessage issueMessage)
         {
-            var totalHits = await GetTotalHits<Issue>();
+            var totalHits = await GetTotalHitsAsync<Issue>();
             
             var searchResponse = await _client.SearchAsync<Issue>(s => s
                 .Size(totalHits)
@@ -75,7 +75,7 @@ namespace Watchdog.Collector.BLL.Services
             return searchResponse;
         }
 
-        private async Task<string> CreateNewIssue(IssueMessage issueMessage)
+        private async Task<string> CreateNewIssueAsync(IssueMessage issueMessage)
         {
             var createdIssueResponse = await _client.IndexDocumentAsync<Issue>(new Issue()
             {
@@ -86,7 +86,7 @@ namespace Watchdog.Collector.BLL.Services
             return createdIssueResponse.Id;
         }
         
-        private async Task<int> GetTotalHits<T>() where T: class
+        private async Task<int> GetTotalHitsAsync<T>() where T: class
         {
             var totalHits = await _client.CountAsync<T>();
             return (int)totalHits.Count;
