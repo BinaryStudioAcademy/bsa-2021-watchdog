@@ -31,6 +31,11 @@ namespace Watchdog.Collector.BLL.Services
 
             await SetIssueIdAsync(issueMessage);
 
+            await IndexNewIssueMessageAsync(issueMessage);
+        }
+
+        private async Task IndexNewIssueMessageAsync(IssueMessage issueMessage)
+        {
             var indexResponse = await _client.IndexDocumentAsync<IssueMessage>(issueMessage);
                 
             if (!indexResponse.IsValid)
