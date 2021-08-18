@@ -23,5 +23,12 @@ namespace Watchdog.Core.API.Controllers
             var issues  = await _issueService.GetIssuesInfoAsync();
             return Ok(issues);
         }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateAssignee(UpdateAssigneeDto assigneeDto)
+        {
+            await _issueService.UpdateAssignee(assigneeDto);
+            return Ok();
+        }
     }
 }

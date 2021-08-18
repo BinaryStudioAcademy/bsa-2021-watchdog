@@ -13,6 +13,7 @@ import { Assignee } from '@shared/models/issue/assignee';
 import { count, toImages } from '@core/services/issues.utils';
 import { IssueInfo } from '@shared/models/issue/issue-info';
 import { map } from 'rxjs/operators';
+import { UpdateAssignee } from '@shared/models/issue/updateAssignee';
 
 @Component({
     selector: 'app-issues',
@@ -33,7 +34,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     sharedOptions = { members: [] as Member[], teams: [] as TeamOption[] };
     organization: Organization;
 
-
     constructor(
         private issueService: IssueService,
         private toastNotification: ToastNotificationService,
@@ -43,10 +43,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     ) { super(); }
 
     itemsPerPage = 10;
-
-    constructor(private issueService: IssueService, private toastNotification: ToastNotificationService) {
-        super();
-    }
 
     ngOnInit(): void {
         this.isAssign = false;
@@ -99,7 +95,17 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     closeAssing() {
         if (!this.compareAssigns()) {
-            // запрос в базу
+            const updateAssignee = {
+                assignee: this.toAssing,
+                issueId: "test"
+            };
+            this.issueService.updateAssignee(updateAssignee)
+                .pipe(this.untilThis)
+                .subscribe(() => {
+                    this.toastNotification.error("Asignee apdated");
+                }, errorResponse => {
+                    this.toastNotification.error(errorResponse);
+                });
         }
         this.isAssign = false;
     }

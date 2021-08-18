@@ -61,5 +61,9 @@ namespace Watchdog.Core.BLL.Services
             var totalHits = await _client.CountAsync<IssueMessage>();
             return (int)totalHits.Count;
         }
+
+        public async Task UpdateAssignee(UpdateAssigneeDto assigneeDto)
+        {
+        }
     }
 }
