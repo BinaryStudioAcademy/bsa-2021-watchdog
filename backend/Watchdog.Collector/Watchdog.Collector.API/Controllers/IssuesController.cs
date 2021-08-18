@@ -22,5 +22,11 @@ namespace Watchdog.Collector.API.Controllers
             await _elasticService.AddIssueMessageAsync(message);
             return Ok();
         }
+
+        //[HttpPut]
+        //public async Task<IActionResult> UpdateAssignee()
+        //{
+
+        //}
     }
 }

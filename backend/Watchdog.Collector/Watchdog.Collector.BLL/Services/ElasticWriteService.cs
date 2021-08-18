@@ -1,8 +1,8 @@
+using AutoMapper;
+using Nest;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using Nest;
 using Watchdog.Collector.BLL.Services.Abstract;
 using Watchdog.Collector.Common.DTO.Issue;
 using Watchdog.Collector.Common.Models;
@@ -19,11 +19,11 @@ namespace Watchdog.Collector.BLL.Services
             _client = client;
             _mapper = mapper;
         }
-            
+
         public Task AddIssueMessageAsync(IssueMessageDto message)
         {
             var issueMessage = _mapper.Map<IssueMessage>(message);
-            
+
             if (string.IsNullOrEmpty(issueMessage.IssueDetails.ErrorMessage))
             {
                 throw new ArgumentException("Error message can't be empty.");
@@ -35,7 +35,7 @@ namespace Watchdog.Collector.BLL.Services
         private async Task IndexNewIssueMessageAsync(IssueMessage issueMessage)
         {
             var indexResponse = await _client.IndexDocumentAsync<IssueMessage>(issueMessage);
-                
+
             if (!indexResponse.IsValid)
             {
                 throw new InvalidOperationException("Invalid index response");
@@ -49,7 +49,7 @@ namespace Watchdog.Collector.BLL.Services
             issueMessage.IssueId = searchResponse.Documents.Count == 0
                 ? await CreateNewIssueAsync(issueMessage)
                 : GetExistingIssueId(searchResponse);
-            
+
             await IndexNewIssueMessageAsync(issueMessage);
         }
 
@@ -57,11 +57,11 @@ namespace Watchdog.Collector.BLL.Services
         {
             return searchResponse.Hits.Select(h => h.Id).FirstOrDefault();
         }
-        
+
         private async Task<ISearchResponse<Issue>> GetExistingIssuesAsync(IssueMessage issueMessage)
         {
             var totalHits = await GetTotalHitsAsync<Issue>();
-            
+
             var searchResponse = await _client.SearchAsync<Issue>(s => s
                 .Size(totalHits)
                 .Query(q => q
@@ -90,8 +90,8 @@ namespace Watchdog.Collector.BLL.Services
 
             return createdIssueResponse.Id;
         }
-        
-        private async Task<int> GetTotalHitsAsync<T>() where T: class
+
+        private async Task<int> GetTotalHitsAsync<T>() where T : class
         {
             var totalHits = await _client.CountAsync<T>();
             return (int)totalHits.Count;

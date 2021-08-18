@@ -1,4 +1,6 @@
-﻿namespace Watchdog.Core.Common.DTO.Issue
+﻿using Watchdog.Core.Common.Models.Issue;
+
+namespace Watchdog.Core.Common.DTO.Issue
 {
     public class UpdateAssigneeDto
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Watchdog.Core.Common.DTO.Issue
+namespace Watchdog.Core.Common.Models.Issue
 {
     public class Assignee
     {

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Nest;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Nest;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Issue;
 using Watchdog.Core.Common.Models.Issue;
@@ -11,17 +11,17 @@ namespace Watchdog.Core.BLL.Services
     public class IssueService : IIssueService
     {
         private readonly IElasticClient _client;
-        
+
         public IssueService(IElasticClient client)
         {
             _client = client;
         }
-        
+
         public async Task<ICollection<IssueInfoDto>> GetIssuesInfoAsync()
         {
             var issues = await GetIssuesAsync();
             var issueMessages = await GetIssueMessagesAsync();
-            
+
             var issuesInfo = issues
                 .Select(i => new IssueInfoDto()
                 {
@@ -37,7 +37,8 @@ namespace Watchdog.Core.BLL.Services
                             .Where(issueMessage => issueMessage.IssueId == i.Id)
                             .OrderByDescending(issueMessage => issueMessage.OccurredOn)
                             .FirstOrDefault().OccurredOn
-                    }
+                    },
+                    Assignee = i.Assignee
                 })
                 .ToList();
 
@@ -47,12 +48,12 @@ namespace Watchdog.Core.BLL.Services
         private async Task<ICollection<Issue>> GetIssuesAsync()
         {
             var issuesCount = await GetTotalHitsAsync<Issue>();
-            
+
             var issuesSearchResponse = await _client.SearchAsync<Issue>(s => s
                 .From(0)
                 .Size(issuesCount)
             );
-            
+
             var issues = issuesSearchResponse
                 .Hits
                 .Select(h =>
@@ -68,7 +69,7 @@ namespace Watchdog.Core.BLL.Services
         private async Task<ICollection<IssueMessage>> GetIssueMessagesAsync()
         {
             var issueMessagesCount = await GetTotalHitsAsync<IssueMessage>();
-            
+
             var searchResponse = await _client.SearchAsync<IssueMessage>(s => s
                 .Source(sf => sf
                     .Includes(fd => fd
@@ -79,7 +80,7 @@ namespace Watchdog.Core.BLL.Services
                 .From(0)
                 .Size(issueMessagesCount)
             );
-            
+
             var issueMessages = searchResponse
                 .Hits
                 .Select(h =>
@@ -92,7 +93,7 @@ namespace Watchdog.Core.BLL.Services
             return issueMessages;
         }
 
-        private async Task<int> GetTotalHitsAsync<T>() where T: class
+        private async Task<int> GetTotalHitsAsync<T>() where T : class
         {
             var totalHits = await _client.CountAsync<T>();
             return (int)totalHits.Count;
@@ -100,6 +101,17 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task UpdateAssignee(UpdateAssigneeDto assigneeDto)
         {
+            var issueResponse = await _client.GetAsync<Issue>(assigneeDto.IssueId);
+            if (!issueResponse.IsValid)
+            {
+                throw new KeyNotFoundException("Issue doesn't exist");
+            }
+
+            var issue = issueResponse.Source;
+
+            issue.Assignee = assigneeDto.Assignee;
+            var updateResponse = await _client.UpdateAsync<Issue, Issue>(assigneeDto.IssueId, descriptor => descriptor
+                        .Doc(issue));
         }
     }
 }

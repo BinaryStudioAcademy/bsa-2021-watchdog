@@ -7,13 +7,12 @@ import { TeamOption } from '@shared/models/teams/team-option';
 import { Organization } from '@shared/models/organization/organization';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { MemberService } from '@core/services/member.service';
-import { forkJoin, of } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { TeamService } from '@core/services/team.service';
 import { Assignee } from '@shared/models/issue/assignee';
 import { count, toImages } from '@core/services/issues.utils';
 import { IssueInfo } from '@shared/models/issue/issue-info';
 import { map } from 'rxjs/operators';
-import { UpdateAssignee } from '@shared/models/issue/updateAssignee';
 
 @Component({
     selector: 'app-issues',
@@ -86,9 +85,11 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     }
 
     toAssing: Assignee;
+    issueId: string;
     private saveAssing: Assignee;
     openAssign(issue: IssueInfo) {
         this.toAssing = issue.assignee;
+        this.issueId = issue.issueId;
         this.saveAssing = { memberIds: this.toAssing.memberIds.concat(), teamIds: this.toAssing.teamIds.concat() };
         this.isAssign = true;
     }
@@ -97,12 +98,12 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         if (!this.compareAssigns()) {
             const updateAssignee = {
                 assignee: this.toAssing,
-                issueId: "test"
+                issueId: this.issueId,
             };
             this.issueService.updateAssignee(updateAssignee)
                 .pipe(this.untilThis)
                 .subscribe(() => {
-                    this.toastNotification.error("Asignee apdated");
+                    this.toastNotification.success('Asignee apdated');
                 }, errorResponse => {
                     this.toastNotification.error(errorResponse);
                 });
@@ -138,13 +139,10 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                 map(issues => issues.map(issue => {
                     if (issue.assignee) {
                         return issue;
-                    } else {
-                        return { ...issue, assignee: { teamIds: [], memberIds: [] } as Assignee }
                     }
-                }))
-            );
+                    return { ...issue, assignee: { teamIds: [], memberIds: [] } as Assignee };
+                })));
     }
-
 
     private setAllFieldsTemp() {
         this.countNew = {
