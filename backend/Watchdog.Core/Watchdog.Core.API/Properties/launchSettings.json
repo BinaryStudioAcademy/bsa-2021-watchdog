@@ -14,17 +14,14 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "SENDGRID_API_KEY": "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"
-      }
+        "ASPNETCORE_ENVIRONMENT": "Development"
     },
     "Watchdog.API": {
       "commandName": "Project",
       "launchBrowser": false,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "SENDGRID_API_KEY": "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"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": "true",
       "applicationUrl": "http://localhost:5050"
