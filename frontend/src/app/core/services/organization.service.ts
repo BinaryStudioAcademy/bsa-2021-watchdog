@@ -1,9 +1,9 @@
 import { CoreHttpService } from '@core/services/core-http.service';
 import { OrganizationSettings } from '@shared/models/organization/organization-settings';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Organization } from '@shared/models/organization/organization';
-import { map, tap } from 'rxjs/operators';
+import { map, share, tap } from 'rxjs/operators';
 import { ShareDataService } from './share-data.service';
 
 @Injectable({
@@ -17,8 +17,39 @@ export class OrganizationService {
         private dataService: ShareDataService<Organization>
     ) { }
 
+    private static organization: Organization;
+
+    clearOrganization() {
+        OrganizationService.organization = null;
+    }
+
+    getCurrentOrganization(id: number) {
+        if (!OrganizationService.organization) {
+            return this.getOrganizationsByUserId(id)
+                .pipe(
+                    tap(orgs => {
+                        [OrganizationService.organization] = orgs;
+                    }),
+                    map(() => OrganizationService.organization)
+                );
+        }
+        return of(OrganizationService.organization);
+    }
+
+    private orgRequest$: Observable<Organization[]>;
+
     getOrganizationsByUserId(userId: number): Observable<Organization[]> {
-        return this.httpService.getRequest<Organization[]>(`${this.apiPrefix}/user/${userId}`);
+        if (this.orgRequest$) {
+            return this.orgRequest$;
+        }
+        this.orgRequest$ = this.httpService.getRequest<Organization[]>(`${this.apiPrefix}/user/${userId}`)
+            .pipe(
+                tap(() => {
+                    this.orgRequest$ = null;
+                }),
+                share()
+            );
+        return this.orgRequest$;
     }
 
     getOrganization(id: number): Observable<Organization> {

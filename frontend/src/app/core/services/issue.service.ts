@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CoreHttpService } from './core-http.service';
 import { IssueInfo } from '@shared/models/issue/issue-info';
 import { Observable } from 'rxjs';
-import { UpdateAssignee } from '@shared/models/issue/updateAssignee';
+import { UpdateAssignee } from '@shared/models/issue/update-assignee';
 import { IssueMessage } from '@shared/models/issue/issue-message';
 
 @Injectable({ providedIn: 'root' })

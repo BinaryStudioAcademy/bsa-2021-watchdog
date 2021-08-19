@@ -122,7 +122,7 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                 this.onTabChange();
                 this.spinnerService.hide();
             }, error => {
-                this.toastNotifications.error(`${error}`);
+                this.toastNotifications.error(error);
                 this.spinnerService.hide();
             });
     }
@@ -136,7 +136,7 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                 this.teams = teamOptions;
                 this.spinnerService.hide();
             }, error => {
-                this.toastNotifications.error(`${error}`);
+                this.toastNotifications.error(error);
                 this.spinnerService.hide();
             });
     }
@@ -199,12 +199,12 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                         })
                         .pipe(this.untilThis)
                         .subscribe(team => {
-                            this.toastNotifications.success(`Team #${name} created!`, '', 2000);
+                            this.toastNotifications.success(`Team #${name} created!`);
                             this.teams = this.teams.concat({ name, id: team.id });
                             this.newProject.teamId = team.id;
                             this.spinnerService.hide();
                         }, error => {
-                            this.toastNotifications.error(`${error}`, 'Error');
+                            this.toastNotifications.error(error);
                             this.spinnerService.hide();
                         });
                 }
@@ -228,7 +228,7 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                         this.spinnerService.hide();
                     },
                     error => {
-                        this.toastNotifications.error(`${error}`, 'Error');
+                        this.toastNotifications.error(error);
                         this.spinnerService.hide();
                     }
                 );

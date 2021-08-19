@@ -38,7 +38,7 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
             this.id = data;
             if (!this.isValidId(this.id)) {
                 this.spinnerService.hide();
-                this.toastNotification.error('Issue id is not valid', '', 1500);
+                this.toastNotification.error('Issue id is not valid');
                 this.issueMessage = undefined;
                 return;
             }
@@ -55,7 +55,7 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
                 this.issueMessage = response;
             }, errorResponse => {
                 this.spinnerService.hide();
-                this.toastNotification.error(errorResponse, '', 1500);
+                this.toastNotification.error(errorResponse);
             });
     }
 

@@ -72,9 +72,9 @@ export class TeamsComponent extends BaseComponent implements OnInit, OnDestroy {
                         .subscribe(team => {
                             this.teamCreated$.next(team);
                             this.spinnerService.hide();
-                            this.toastService.success('Team successfully created!', '', 2000);
+                            this.toastService.success('Team successfully created!');
                         }, error => {
-                            this.toastService.error(`${error}`, 'Error', 2000);
+                            this.toastService.error(error);
                             this.spinnerService.hide();
                         });
                 }

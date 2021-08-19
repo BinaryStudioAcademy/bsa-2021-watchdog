@@ -20,9 +20,8 @@ import { OrganizationService } from './organization.service';
     providedIn: 'root'
 })
 export class AuthenticationService {
-    private user: User;
-    private organization: Organization;
-    private member: Member;
+    private static user: User;
+    private static member: Member;
     private readonly tokenHelper: JwtHelperService;
 
     private token: string | null;
@@ -48,51 +47,37 @@ export class AuthenticationService {
     }
 
     getUser() {
-        if (!this.user) {
-            this.user = JSON.parse(localStorage.getItem('user'));
+        if (!AuthenticationService.user) {
+            AuthenticationService.user = JSON.parse(localStorage.getItem('user'));
         }
-        return this.user;
+        return AuthenticationService.user;
     }
 
     getOrganization(): Observable<Organization> {
-        if (!this.organization) {
-            return this.organizationService.getOrganizationsByUserId(this.getUser().id)
-                .pipe(
-                    map(organizations => {
-                        [this.organization] = organizations;
-                        return this.organization;
-                    })
-                );
-        }
-        return of(this.organization);
+        return this.organizationService.getCurrentOrganization(this.getUser().id);
     }
 
     getMember(): Observable<Member> {
-        if (!this.member) {
+        if (!AuthenticationService.member) {
             const userId = this.getUser().id;
             return this.getOrganization()
                 .pipe(switchMap(org => this.memberService.getMemberByUserAndOgranization(org.id, userId)
                     .pipe(map(member => {
-                        this.member = member;
-                        return this.member;
+                        AuthenticationService.member = member;
+                        return AuthenticationService.member;
                     }))));
         }
-        return of(this.member);
+        return of(AuthenticationService.member);
     }
 
     setUser(user: User) {
-        this.user = user;
-        localStorage.setItem('user', JSON.stringify(this.user));
+        AuthenticationService.user = user;
+        localStorage.setItem('user', JSON.stringify(AuthenticationService.user));
     }
 
     removeUser() {
-        this.user = null;
+        AuthenticationService.user = null;
         localStorage.removeItem('user');
-    }
-
-    removeOrganization() {
-        this.organization = null;
-        localStorage.removeItem('organization');
     }
 
     removeIsSignByEmailAndPassword() {
@@ -296,7 +281,7 @@ export class AuthenticationService {
     logout() {
         this.removeJwToken();
         this.removeUser();
-        this.removeOrganization();
+        this.organizationService.clearOrganization();
         this.removeIsSignByEmailAndPassword();
         this.angularFireAuth.signOut()
             .catch(error => {

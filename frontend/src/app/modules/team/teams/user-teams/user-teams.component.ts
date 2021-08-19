@@ -56,7 +56,7 @@ export class UserTeamsComponent extends BaseComponent implements OnInit {
                 this.leaveTeamEvent.emit(team);
                 this.loadMemberTeams();
             }, error => {
-                this.toastService.error(`${error}`, 'Error', 2000);
+                this.toastService.error(error);
             });
     }
 
@@ -69,7 +69,7 @@ export class UserTeamsComponent extends BaseComponent implements OnInit {
                 this.spinnerService.hide();
                 this.teams = teams;
             }, error => {
-                this.toastService.error(`${error}`, 'Error', 2000);
+                this.toastService.error(error);
                 this.spinnerService.hide();
             });
     }

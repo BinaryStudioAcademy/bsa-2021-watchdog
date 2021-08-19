@@ -10,7 +10,7 @@ import { Assignee } from '@shared/models/issue/assignee';
 import { count, toImages } from '@core/services/issues.utils';
 import { IssueInfo } from '@shared/models/issue/issue-info';
 import { map } from 'rxjs/operators';
-import { AssigneeOptions } from '@shared/models/issue/assigneeOptions';
+import { AssigneeOptions } from '@shared/models/issue/assignee-options';
 import { IssueService } from '@core/services/issue.service';
 
 @Component({

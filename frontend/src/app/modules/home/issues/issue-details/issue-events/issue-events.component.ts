@@ -37,7 +37,7 @@ export class IssueEventsComponent extends BaseComponent implements OnInit, OnDes
                 this.issues = response;
                 this.spinnerService.hide();
             }, errorResponse => {
-                this.toastNotificationService.error(errorResponse, '', 1500);
+                this.toastNotificationService.error(errorResponse);
                 this.spinnerService.hide();
             });
     }

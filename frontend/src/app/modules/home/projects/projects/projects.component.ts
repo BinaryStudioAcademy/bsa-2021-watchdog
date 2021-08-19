@@ -43,7 +43,7 @@ export class ProjectsComponent extends BaseComponent implements OnInit {
                         this.projects = projects;
                         this.spinnerService.hide();
                     }, error => {
-                        this.toastNotifications.error(`${error}`);
+                        this.toastNotifications.error(error);
                         this.spinnerService.hide();
                     });
             });

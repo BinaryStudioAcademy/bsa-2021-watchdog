@@ -29,6 +29,11 @@
                         [issueHttpResponse]="issueMessage.issueDetails.responseErrorMessage"></app-issue-http>
                 </ng-template>
             </p-tabPanel>
+            <p-tabPanel header="Breadcrumbs">
+                <ng-template pTemplate="content">
+                    <app-breadcrumbs [issueMessage]="issueMessage"></app-breadcrumbs>
+                </ng-template>
+            </p-tabPanel>
             <p-tabPanel header="Events">
                 <ng-template pTemplate="content">
                     <app-issue-events [issueMessage]="issueMessage"></app-issue-events>
