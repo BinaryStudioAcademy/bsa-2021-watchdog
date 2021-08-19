@@ -1,4 +1,5 @@
-﻿using Nest;
+﻿using System;
+using Nest;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -60,15 +61,13 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<ICollection<IssueMessage>> GetIssuesMessagesByParentIdAsync(string parentIssueId)
         {
-            var parentIssue = await GetIssueByIdAsync(parentIssueId);
             var issueMessagesCount = await GetTotalHitsAsync<IssueMessage>();
-
             var issueMessagesResponse = await _client
                 .SearchAsync<IssueMessage>(descriptor => descriptor
                     .Query(q => q
                         .Match(m => m
                             .Field(f => f.IssueId)
-                            .Query(parentIssue.Id)
+                            .Query(parentIssueId)
                         )
                     )
                     .From(0)
@@ -86,15 +85,6 @@ namespace Watchdog.Core.BLL.Services
                 .ToList();
 
             return issueMessages;
-        }
-
-        private async Task<Issue> GetIssueByIdAsync(string id)
-        {
-            var issueResponse = await _client
-                .GetAsync<Issue>(id);
-            if (!issueResponse.IsValid)
-                throw new KeyNotFoundException("Issue not found");
-            return issueResponse.Source;
         }
 
         private async Task<ICollection<Issue>> GetIssuesAsync()
