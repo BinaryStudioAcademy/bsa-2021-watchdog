@@ -163,19 +163,18 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     }
 
     private addIssue(issue: IssueMessage) {
-        const existingIssue = this.issues.find(i =>
-            i.errorClass === issue.issueDetails.className
-            && i.errorMessage === issue.issueDetails.errorMessage);
+        const existingIssue = this.issues.find(i => i.issueId === issue.issueId);
         this.issues = existingIssue ? this.addExistingIssue(issue, existingIssue) : this.addNewIssue(issue);
     }
 
     private addNewIssue(issue: IssueMessage) {
-        const issueInfo = {
+        const issueInfo: IssueInfo = {
             issueId: issue.issueId,
             errorClass: issue.issueDetails.className,
             errorMessage: issue.issueDetails.errorMessage,
             eventsCount: 1,
             newest: { id: issue.id, occurredOn: issue.occurredOn },
+            assignee: { teamIds: [], memberIds: [] },
         };
         return [issueInfo, ...this.issues];
     }
@@ -189,8 +188,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         return [
             changedIssue,
             ...this.issues.filter(i =>
-                i.errorMessage !== existingIssue.errorMessage
-                && i.errorClass !== existingIssue.errorClass)
+                i.issueId !== changedIssue.issueId)
         ];
     }
 

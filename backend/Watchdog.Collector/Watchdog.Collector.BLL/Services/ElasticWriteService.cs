@@ -31,7 +31,7 @@ namespace Watchdog.Collector.BLL.Services
                 throw new ArgumentException("Error message can't be empty.");
             }
 
-            _issueProducer.ProduceMessage(issueMessage);
+
 
             return SetIssueIdAsync(issueMessage);
         }
@@ -55,6 +55,8 @@ namespace Watchdog.Collector.BLL.Services
                 : GetExistingIssueId(searchResponse);
 
             await IndexNewIssueMessageAsync(issueMessage);
+
+            _issueProducer.ProduceMessage(issueMessage);
         }
 
         private static string GetExistingIssueId(ISearchResponse<Issue> searchResponse)
