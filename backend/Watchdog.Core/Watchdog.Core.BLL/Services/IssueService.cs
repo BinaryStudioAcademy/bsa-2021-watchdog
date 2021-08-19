@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Nest;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Nest;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Issue;
 using Watchdog.Core.Common.Models.Issue;
@@ -38,7 +38,8 @@ namespace Watchdog.Core.BLL.Services
                             .Where(issueMessage => issueMessage.IssueId == i.Id)
                             .OrderByDescending(issueMessage => issueMessage.OccurredOn)
                             .FirstOrDefault().OccurredOn
-                    }
+                    },
+                    Assignee = i.Assignee
                 })
                 .ToList();
 
@@ -148,6 +149,21 @@ namespace Watchdog.Core.BLL.Services
         {
             var totalHits = await _client.CountAsync<T>();
             return (int) totalHits.Count;
+        }
+
+        public async Task UpdateAssignee(UpdateAssigneeDto assigneeDto)
+        {
+            var issueResponse = await _client.GetAsync<Issue>(assigneeDto.IssueId);
+            if (!issueResponse.IsValid)
+            {
+                throw new KeyNotFoundException("Issue doesn't exist");
+            }
+
+            var issue = issueResponse.Source;
+
+            issue.Assignee = assigneeDto.Assignee;
+            await _client.UpdateAsync<Issue, Issue>(assigneeDto.IssueId, descriptor => descriptor
+                        .Doc(issue));
         }
     }
 }

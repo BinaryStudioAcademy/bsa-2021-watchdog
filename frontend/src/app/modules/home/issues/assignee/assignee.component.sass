@@ -1,0 +1,38 @@
+@import src/styles/variables
+@import src/styles/mixins
+
+$grid-gap: 20px
+:host ::ng-deep
+    .p-dialog-content
+        padding: 0
+    .p-panel
+        width: 60vw
+    .p-dialog-header
+        padding: 0
+    .p-multiselect
+        width: 100%
+        min-height: $input-height
+    .p-multiselect.p-multiselect-chip .p-multiselect-token
+        margin-top: 0.25rem
+        margin-bottom: 0.25rem
+    .p-multiselect-label
+        white-space: initial
+        overflow: initial
+        text-overflow: initian
+
+.close-button
+    border: none
+    background: none
+    position: absolute
+    top: 15px
+    right: 10px
+    cursor: pointer
+
+.member-name
+    padding: 5px
+
+.assignee-form
+    display: grid
+    grid-auto-flow: column
+    grid-gap: $grid-gap
+    grid-template-columns: calc( 50% - #{$grid-gap / 2})

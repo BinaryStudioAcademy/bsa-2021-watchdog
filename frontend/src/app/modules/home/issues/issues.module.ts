@@ -7,6 +7,7 @@ import { IssueEnvironmentComponent } from '@modules/home/issues/issue-details/is
 import { IssuesComponent } from '@modules/home/issues/issues.component';
 import { IssueDetailsComponent } from '@modules/home/issues/issue-details/issue-details/issue-details.component';
 import { IssueHttpComponent } from '@modules/home/issues/issue-details/issue-http/issue-http.component';
+import { AssigneeComponent } from '@modules/home/issues/assignee/assignee.component';
 
 @NgModule({
     imports: [
@@ -21,7 +22,7 @@ import { IssueHttpComponent } from '@modules/home/issues/issue-details/issue-htt
         IssueEventsComponent,
         IssueHttpComponent,
         IssueEnvironmentComponent,
-
+        AssigneeComponent,
     ]
 })
 export class IssuesModule {

@@ -1,8 +1,8 @@
-using System;
-using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nest;
+using System;
+using System.Reflection;
 using Watchdog.Collector.BLL.MappingProfiles;
 using Watchdog.Collector.BLL.Services;
 using Watchdog.Collector.BLL.Services.Abstract;
@@ -16,7 +16,7 @@ namespace Watchdog.Collector.API.Extensions
         {
             services.AddScoped<IElasticWriteService, ElasticWriteService>();
         }
-                
+
         public static void AddElasticSearch(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration["ElasticConfiguration:Uri"];
@@ -30,7 +30,7 @@ namespace Watchdog.Collector.API.Extensions
 
             services.AddSingleton<IElasticClient>(new ElasticClient(settings));
         }
-        
+
         public static void AddAutoMapper(this IServiceCollection services)
         {
             services.AddAutoMapper(Assembly.GetAssembly(typeof(IssueMessageProfile)));

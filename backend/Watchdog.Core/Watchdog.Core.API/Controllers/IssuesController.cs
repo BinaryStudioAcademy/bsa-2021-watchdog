@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Issue;
 using Watchdog.Core.Common.Models.Issue;
@@ -23,6 +23,13 @@ namespace Watchdog.Core.API.Controllers
         {
             var issues = await _issueService.GetIssuesInfoAsync();
             return Ok(issues);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateAssignee(UpdateAssigneeDto assigneeDto)
+        {
+            await _issueService.UpdateAssignee(assigneeDto);
+            return Ok(); 
         }
 
         [HttpGet("message/{id}")]
