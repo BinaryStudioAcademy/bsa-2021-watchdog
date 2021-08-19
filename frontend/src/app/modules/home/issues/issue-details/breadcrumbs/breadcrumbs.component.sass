@@ -1,0 +1,63 @@
+@import src/styles/variables
+@import src/styles/mixins
+.custom-marker
+    display: flex
+    width: 2rem
+    height: 2rem
+    align-items: center
+    justify-content: center
+    border-radius: 50%
+    z-index: 1
+    border: solid 1px
+
+.content
+    display: flex
+    justify-content: space-between
+.category
+    font-weight: bold
+    font-family: monospace
+
+:host ::ng-deep
+    .customized-timeline
+        .p-timeline-event-opposite
+            flex: 0
+            margin-top: 8px
+    .p-timeline-event-content
+        margin-top: 8px
+        padding-bottom: 1rem !important
+        overflow: hidden
+
+    .toggler
+        margin-top: 0px !important
+        &::after
+            font-family: 'DM Sans'
+            font-size: smaller
+
+    .segment-main
+        overflow: hidden
+        text-overflow: ellipsis
+
+    .custom-chip
+        font-size: .8rem
+        font-weight: bold
+        font-family: 'DM Sans'
+    .info
+        background-color: $info-color
+    .warning
+        background-color: $warning-color
+    .error
+        background-color: $error-color
+    .debug
+        background-color: $debug-color
+
+    .description
+        font-family: monospace
+        margin-right: 65px
+    .ngx-json-viewer
+        width: auto !important
+        margin-right: 65px
+    .ngx-json-viewer .segment-type-null > .segment-main > .segment-value,
+    .ngx-json-viewer .segment-type-undefined > .segment-main > .segment-value
+        color: grey !important
+    .ngx-json-viewer .segment-type-null > .segment-main > .segment-value
+        background: none !important

@@ -15,6 +15,7 @@ import { TileMenuComponent } from './dashboard/tile-menu/tile-menu.component';
 import { TopActiveIssuesTileComponent } from './dashboard/tiles/top-active-issues-tile/top-active-issues-tile.component';
 import { AddEditTopActiveIssuesTileComponent }
     from './modals/tiles/top-active-issues/add-edit-top-active-issues-tile/add-edit-top-active-issues-tile.component';
+import { BreadcrumbsComponent } from './issues/issue-details/breadcrumbs/breadcrumbs.component';
 
 @NgModule({
     declarations: [
@@ -28,6 +29,7 @@ import { AddEditTopActiveIssuesTileComponent }
         TileMenuComponent,
         TopActiveIssuesTileComponent,
         AddEditTopActiveIssuesTileComponent,
+        BreadcrumbsComponent,
     ],
     imports: [
         SharedModule,

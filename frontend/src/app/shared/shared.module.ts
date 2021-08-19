@@ -11,6 +11,7 @@ import { TooltipWithFullNameDirective } from './directives/dashboard/tooltip-wit
 import { PrimeComponentsModule } from './modules/prime-components/prime-components.module';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { SavePipe } from './pipes/save.pipe';
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
 
 @NgModule({
     imports: [
@@ -19,6 +20,7 @@ import { SavePipe } from './pipes/save.pipe';
         FormsModule,
         ReactiveFormsModule,
         PrimeComponentsModule,
+        NgxJsonViewerModule,
     ],
     declarations: [
         LoadingSpinnerComponent,
@@ -42,6 +44,7 @@ import { SavePipe } from './pipes/save.pipe';
         UserInitialsPipe,
         NgxChartsModule,
         TooltipWithFullNameDirective,
+        NgxJsonViewerModule,
     ]
 })
 export class SharedModule { }

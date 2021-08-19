@@ -10,7 +10,7 @@ export class TraceBreadcrumb extends Breadcrumb {
     constructor (from: string, to: string) {
         super();
         this.type = 'navigation';
-        this.category = 'react-router';
+        this.category = 'router';
         this.level = 'info';
         this.body = {from: from, to: to};
     }

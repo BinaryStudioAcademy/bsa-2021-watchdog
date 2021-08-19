@@ -17,7 +17,7 @@ export class AjaxBreadcrumb<T = any, K = any> extends Breadcrumb {
     constructor (url: string, method: string, requestBody: T, status: number, responseBody: K) {
         super();
         this.type = 'http-request';
-        this.category = 'ajax';
+        this.category = 'http';
         this.level = 'info';
         this.body = {
             request: {

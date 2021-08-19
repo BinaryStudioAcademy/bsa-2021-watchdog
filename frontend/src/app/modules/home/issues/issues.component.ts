@@ -10,6 +10,10 @@ import { IssueInfo } from '@shared/models/issue/issue-info';
     styleUrls: ['./issues.component.sass']
 })
 export class IssuesComponent extends BaseComponent implements OnInit {
+
+    error(){
+        throw new Error('Test Error')
+    }
     issues: IssueInfo[] = [];
 
     countNew: { [type: string]: number };
