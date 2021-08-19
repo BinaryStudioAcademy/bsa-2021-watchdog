@@ -3,7 +3,6 @@ import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { IssueInfo } from '@shared/models/issue/issue-info';
 import { IssueService } from '@core/services/issue.service';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-issues',
@@ -26,7 +25,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     constructor(
         private issueService: IssueService,
         private toastNotification: ToastNotificationService,
-        private router: Router,
     ) {
         super();
     }
@@ -47,10 +45,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     disableParentEvent(event: { originalEvent: Event }) { // to disable sorting
         event.originalEvent.stopPropagation();
-    }
-
-    onIssueNameSelect(issue: IssueInfo) {
-        this.router.navigate([`home/issues/${issue.newest.id}`]).then(r => r);
     }
 
     private loadIssues() {

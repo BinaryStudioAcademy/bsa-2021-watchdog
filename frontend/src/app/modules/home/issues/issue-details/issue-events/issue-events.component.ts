@@ -14,6 +14,7 @@ export class IssueEventsComponent extends BaseComponent implements OnInit, OnDes
     isLoading: boolean = true;
     @Input() issueMessage: IssueMessage;
     issues: IssueMessage[] = [];
+    paginatorRows: number = 9;
 
     constructor(
         private issueService: IssueService,
@@ -37,14 +38,6 @@ export class IssueEventsComponent extends BaseComponent implements OnInit, OnDes
                 this.toastNotificationService.error(errorResponse, '', 1500);
                 this.isLoading = false;
             });
-    }
-
-    onIssueSelect(issue: IssueMessage) {
-        if (issue.id === this.issueMessage.id) {
-            this.toastNotificationService.info('You are already on the current issue page');
-            return;
-        }
-        this.router.navigate([`home/issues/${issue.id}`]).then(r => r);
     }
 
     ngOnDestroy() {

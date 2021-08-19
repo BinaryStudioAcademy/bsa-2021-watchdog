@@ -53,7 +53,7 @@
             <ng-template let-issue pTemplate="body">
                 <tr>
                     <td>
-                        <span (click)="onIssueSelect(issue)" class="issue-name">{{issue.errorClass}}</span>
+                        <span class="issue-name"  routerLink="/home/issues/{{issue.newest.id}}">{{issue.errorClass}}</span>
                         <small appTooltipFullName class="issue-message">{{issue.errorMessage}}</small>
                     </td>
                     <td>{{issue.eventsCount}}</td>
