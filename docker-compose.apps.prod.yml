@@ -26,10 +26,6 @@ services:
             - "5090:5090"
         environment:
             - ASPNETCORE_ENVIRONMENT=Production
-            - RabbitMQConfiguration__Hostname=rabbitmq
-            - RabbitMQConfiguration__User=guest
-            - RabbitMQConfiguration__Password=guest
-
         env_file:
             - /etc/environment
 
@@ -43,9 +39,6 @@ services:
             - "5070:5070"
         environment:
             ASPNETCORE_ENVIRONMENT: 'Production'
-            - RabbitMQConfiguration__Hostname=rabbitmq
-            - RabbitMQConfiguration__User=guest
-            - RabbitMQConfiguration__Password=guest
         env_file:
             - /etc/environment
 

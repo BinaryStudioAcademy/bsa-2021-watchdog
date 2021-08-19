@@ -11,6 +11,11 @@ using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.Models.Issue;
 using Watchdog.Core.Common.Validators.Organization;
 using Watchdog.Core.DAL.Context;
+using RabbitMQ.Client;
+using Watchdog.RabbitMQ.Shared.Models;
+using Watchdog.RabbitMQ.Shared.Services;
+using Watchdog.Core.BLL.Services.Queue;
+using Microsoft.Extensions.Logging;
 
 namespace Watchdog.Core.API.Extensions
 {
@@ -36,7 +41,7 @@ namespace Watchdog.Core.API.Extensions
             services.AddTransient<IRegistrationService, RegistrationService>();
             services.AddEmailSendService(configuration);
         }
-        
+
         public static void AddElasticSearch(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration["ElasticConfiguration:Uri"];
@@ -44,7 +49,7 @@ namespace Watchdog.Core.API.Extensions
             var settings = new ConnectionSettings(new Uri(connectionString))
                 .DefaultMappingFor<IssueMessage>(
                     m => m.IndexName(configuration["ElasticConfiguration:IssueMessageIndex"]));
-            
+
             services.AddSingleton<IElasticClient>(new ElasticClient(settings));
         }
 
@@ -81,6 +86,35 @@ namespace Watchdog.Core.API.Extensions
                 TemplateId = configuration["SendGridConfiguration:TemplateId"],  // templates you can create on sendgrid site
                                                                                  // for this template automatically sended in the promotions.
             }));
+        }
+
+        public static void AddRabbitMQIssueQueues(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddSingleton(x =>
+            {
+                var amqpConnection = new Uri(configuration.GetSection("RabbitMQConfiguration:Uri").Value);
+                var connectionFactory = new ConnectionFactory { Uri = amqpConnection };
+                return connectionFactory.CreateConnection();
+            });
+
+            var producerSettings = new ProducerSettings();
+            var consumerSettings = new ConsumerSettings();
+            configuration.GetSection("RabbitMQConfiguration:Queues:NotifyIssuesQueueProducer").Bind(producerSettings);
+            configuration.GetSection("RabbitMQConfiguration:Queues:ReceivedIssuesQueueConsumer").Bind(consumerSettings);
+
+            services.AddScoped<INotifyQueueProducerService>(provider =>
+                new NotifyQueueProducerService(
+                    new Producer(
+                        provider.GetRequiredService<IConnection>(),
+                        producerSettings)));
+
+            services.AddHostedService(provider =>
+                new CollectorQueueConsumerService(
+                    provider,
+                    new Consumer(
+                        provider.GetRequiredService<IConnection>()),
+                        consumerSettings,
+                        provider.GetRequiredService<ILogger<CollectorQueueConsumerService>>()));
         }
     }
 }

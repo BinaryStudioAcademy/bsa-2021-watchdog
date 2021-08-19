@@ -2,21 +2,17 @@ using System;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 using Nest;
-using Newtonsoft.Json;
-using RabbitMQ.Client;
 using Watchdog.Collector.BLL.Services.Abstract;
 using Watchdog.Collector.Common.Models;
-using Watchdog.RabbitMQ.Shared.Services;
-using IConnection = RabbitMQ.Client.IConnection;
 
 namespace Watchdog.Collector.BLL.Services
 {
     public class ElasticWriteService : IElasticWriteService
     {
         private readonly IElasticClient _client;
-        private readonly IIssueProducerService _issueProducer;
+        private readonly IIssueQueueProducerService _issueProducer;
 
-        public ElasticWriteService(IElasticClient client, IIssueProducerService issueProducer)
+        public ElasticWriteService(IElasticClient client, IIssueQueueProducerService issueProducer)
         {
             _client = client;
             _issueProducer = issueProducer;
@@ -28,8 +24,8 @@ namespace Watchdog.Collector.BLL.Services
             {
                 throw new ArgumentException("Error message can't be empty.");
             }
-            
-            var indexResponse = await _client.IndexAsync(message, t => t.Refresh(Refresh.WaitFor));
+
+            var indexResponse = await _client.IndexDocumentAsync(message);
 
             if (!indexResponse.IsValid)
             {

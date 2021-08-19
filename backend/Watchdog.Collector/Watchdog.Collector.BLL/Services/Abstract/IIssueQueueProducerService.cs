@@ -7,7 +7,7 @@ using Watchdog.Collector.Common.Models;
 
 namespace Watchdog.Collector.BLL.Services.Abstract
 {
-    public interface IIssueProducerService
+    public interface IIssueQueueProducerService
     {
         void ProduceMessage(IssueMessage message);
     }

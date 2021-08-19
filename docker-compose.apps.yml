@@ -32,9 +32,6 @@ services:
       environment:
           ASPNETCORE_ENVIRONMENT: 'Development'
           ElasticConfiguration__Uri: 'http://elasticsearch:9200'
-          RabbitMQConfiguration__Hostname: 'rabbitmq'
-          RabbitMQConfiguration__User: 'guest'
-          RabbitMQConfiguration__Password: 'guest'
 
   watchdog_notifier:
       build:
@@ -50,9 +47,6 @@ services:
           - back
       environment:
           ASPNETCORE_ENVIRONMENT: 'Development'
-          RabbitMQConfiguration__Hostname: 'rabbitmq'
-          RabbitMQConfiguration__User: 'guest'
-          RabbitMQConfiguration__Password: 'guest'
 
   watchdog_client:
     depends_on:

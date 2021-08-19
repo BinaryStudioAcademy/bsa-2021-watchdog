@@ -6,6 +6,7 @@ using RabbitMQ.Client;
 using Watchdog.Collector.BLL.Services;
 using Watchdog.Collector.BLL.Services.Abstract;
 using Watchdog.Collector.Common.Models;
+using Watchdog.RabbitMQ.Shared.Models;
 using Watchdog.RabbitMQ.Shared.Services;
 
 namespace Watchdog.Collector.API.Extensions
@@ -31,22 +32,17 @@ namespace Watchdog.Collector.API.Extensions
 
         public static void AddRabbitMQIssueProducer(this IServiceCollection services, IConfiguration configuration)
         {
-            ConnectionFactory factory = new ConnectionFactory();
-            factory.HostName = configuration["RabbitMQConfiguration:Hostname"];
-            factory.UserName = configuration["RabbitMQConfiguration:User"];
-            factory.Password = configuration["RabbitMQConfiguration:Password"];
-
-            IConnection conn = factory.CreateConnection();
-
-            var producerSettings = new RabbitMQ.Shared.Models.ProducerSettings
+            services.AddSingleton(x =>
             {
-                ExchangeName = "IssueExchange",
-                ExchangeType = ExchangeType.Direct,
-                QueueName = "IssueNotifyQueue",
-                RoutingKey = "Issue"
-            };
+                var amqpConnection = new Uri(configuration.GetSection("RabbitMQConfiguration:Uri").Value);
+                var connectionFactory = new ConnectionFactory { Uri = amqpConnection };
+                return connectionFactory.CreateConnection();
+            });
+            var producerSettings = new ProducerSettings();
+            configuration.GetSection("RabbitMQConfiguration:Queues:ReceivedIssuesQueueProducer").Bind(producerSettings);
 
-            services.AddSingleton<IIssueProducerService>(new IssueProducerService(conn, producerSettings));
+            services.AddScoped<IIssueQueueProducerService>(provider =>
+                new IssueQueueProducerService(new Producer(provider.GetRequiredService<IConnection>(), producerSettings)));
         }
     }
 }

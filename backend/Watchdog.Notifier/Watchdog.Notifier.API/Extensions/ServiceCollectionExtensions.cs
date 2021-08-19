@@ -1,8 +1,12 @@
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
+using System;
+using Watchdog.Notifier.BLL.Hubs;
+using Watchdog.Notifier.BLL.Hubs.Interfaces;
 using Watchdog.Notifier.BLL.Services;
-using Watchdog.Notifier.BLL.Services.Abstract;
 
 namespace Watchdog.Notifier.API.Extensions
 {
@@ -10,22 +14,20 @@ namespace Watchdog.Notifier.API.Extensions
     {
         public static void AddRabbitMQIssueConsumer(this IServiceCollection services, IConfiguration configuration)
         {
-            ConnectionFactory factory = new ConnectionFactory();
-            factory.HostName = configuration["RabbitMQConfiguration:Hostname"];
-            factory.UserName = configuration["RabbitMQConfiguration:User"];
-            factory.Password = configuration["RabbitMQConfiguration:Password"];
-
-            IConnection conn = factory.CreateConnection();
-
-            var consumerSettings = new RabbitMQ.Shared.Models.ConsumerSettings
+            services.AddSingleton(x =>
             {
-                ExchangeName = "IssueExchange",
-                ExchangeType = ExchangeType.Direct,
-                QueueName = "IssueNotifyQueue",
-                RoutingKey = "Issue"
-            };
+                var amqpConnection = new Uri(configuration.GetSection("RabbitMQConfiguration:Uri").Value);
+                var connectionFactory = new ConnectionFactory { Uri = amqpConnection };
+                return connectionFactory.CreateConnection();
+            });
+            var consumerSettings = new RabbitMQ.Shared.Models.ConsumerSettings();
+            configuration.GetSection("RabbitMQConfiguration:Queues:NotifyIssuesQueueConsumer").Bind(consumerSettings);
 
-            services.AddSingleton<IIssueConsumerService>(new IssueConsumerService(conn, consumerSettings));
+            services.AddHostedService(provider => new CoreIssuesQueueConsumerService(
+                provider.GetRequiredService<IConnection>(),
+                consumerSettings,
+                provider.GetRequiredService<IHubContext<IssuesHub, IIssuesHubClient>>(),
+                provider.GetRequiredService<ILogger<CoreIssuesQueueConsumerService>>()));
         }
     }
 }

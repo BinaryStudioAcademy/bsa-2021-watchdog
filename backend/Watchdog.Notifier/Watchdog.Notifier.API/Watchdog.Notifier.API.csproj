@@ -7,6 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.8" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.14" />
 		<PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
 		<PackageReference Include="Serilog.Enrichers.Environment" Version="2.1.3" />
@@ -14,7 +15,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Watchdog.Notifier.BLL\Watchdog.Notifier.BLL.csproj" />
 		<ProjectReference Include="..\Watchdog.Notifier.BLL\Watchdog.Notifier.BLL.csproj" />
 	</ItemGroup>
 
