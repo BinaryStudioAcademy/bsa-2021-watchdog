@@ -77,7 +77,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
                 this.toastNotificationService.success('Dashboard has been added');
                 await this.router.navigate([`/home/dashboard/${dashboard.id}`]);
             }, error => {
-                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.toastNotificationService.error(error);
             });
     }
 
@@ -98,7 +98,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
                     .subscribe(id => {
                         this.dashboards = this.dashboards.filter(d => d.id !== id);
                     }, error => {
-                        this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                        this.toastNotificationService.error(error);
                     });
             });
     }

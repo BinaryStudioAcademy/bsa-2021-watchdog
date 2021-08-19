@@ -6,8 +6,9 @@ import { StackFrame } from '@shared/models/issue/stack-frame';
 import { IssueEnvironment } from '@shared/models/issue/issue-environment';
 import { HttpResponseErrorMessage } from '@shared/models/issue/http-response.message';
 import * as stackTraceParser from 'stacktrace-parser';
-import { ToastNotificationService } from './toast-notification.service';
+import { ToastNotificationService } from '../../services/toast-notification.service';
 import { environment } from '@env/environment';
+import { BreadcrumbService } from './breadcrumb.service';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +16,11 @@ import { environment } from '@env/environment';
 export class ErrorsService {
     private issuesEndpoint: string = '/issues';
 
-    constructor(private httpService: CollectorHttpService, private toastNotification: ToastNotificationService) { }
+    constructor(
+        private httpService: CollectorHttpService,
+        private toastNotification: ToastNotificationService,
+        private breadcrumbService: BreadcrumbService,
+    ) { }
 
     log(error: any) {
         const issueMessage = this.addContextInfo(error);
@@ -41,7 +46,8 @@ export class ErrorsService {
                 className: error.name,
                 stackTrace: error instanceof Error ? this.getStackTrace(error) : null,
                 responseErrorMessage: error instanceof HttpErrorResponse ? this.getResponseErrorMessage(error) : null,
-                environmentMessage: this.getEnvironment()
+                environmentMessage: this.getEnvironment(),
+                breadcrumbs: this.breadcrumbService.getBreadcrumbsAndClear()
             }
         };
     }

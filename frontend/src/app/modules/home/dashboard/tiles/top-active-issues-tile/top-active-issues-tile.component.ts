@@ -84,7 +84,7 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
                 }
             }, error => {
                 this.resetFormGroup();
-                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.toastNotificationService.error(error);
             });
     }
 
@@ -126,7 +126,7 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
                 this.issuesInfo = issuesInfo;
                 this.issuesInfo.splice(this.tileSettings.issuesCount);
             }, error => {
-                this.toastNotificationService.error(error, '', 1500);
+                this.toastNotificationService.error(error);
             });
     }
 
