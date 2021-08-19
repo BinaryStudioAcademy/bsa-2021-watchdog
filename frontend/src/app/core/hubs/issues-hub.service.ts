@@ -33,14 +33,15 @@ export class IssuesHubService {
     }
 
     private async init() {
-        await this.hubConnection.start()
-            .then(() => {
-                console.info('IssuesHub successfully started.');
-            })
-            .catch(() => console.info('IssuesHub start failed.'));
+        try {
+            await this.hubConnection.start();
+            console.info('IssuesHub successfully started.');
 
-        this.hubConnection.on('SendIssue', (message: IssueMessage) => {
-            this.messages.next(message);
-        });
+            this.hubConnection.on('SendIssue', (message: IssueMessage) => {
+                this.messages.next(message);
+            });
+        } catch {
+            console.info('IssuesHub start failed.');
+        }
     }
 }

@@ -44,7 +44,7 @@ namespace Watchdog.Notifier.BLL.Services
 
             _logger.LogInformation("Processing issue from core: {0}, {1}", issueMessage.Issue.IssueDetails.ClassName, issueMessage.Issue.IssueDetails.ErrorMessage);
 
-            await _hub.Clients.Users(issueMessage.UserIds).SendIssue(issueMessage.Issue);
+            await _hub.Clients.Users(issueMessage.UserUids).SendIssue(issueMessage.Issue);
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)

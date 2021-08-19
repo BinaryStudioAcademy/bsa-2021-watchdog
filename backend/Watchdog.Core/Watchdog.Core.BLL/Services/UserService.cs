@@ -70,14 +70,17 @@ namespace Watchdog.Core.BLL.Services
         {
             var teams = _context.Teams
                .Include(t => t.ApplicationTeams)
-               .Include(t => t.TeamMembers).ThenInclude(tm => tm.Member)
+               .Include(t => t.TeamMembers)
+               .ThenInclude(tm => tm.Member)
                .ThenInclude(m => m.User);
 
             var members = teams.Where(t => t.ApplicationTeams.Any(at => at.ApplicationId == applicationId))
                 .SelectMany(t => t.TeamMembers)
                 .Select(tm => tm.Member);
 
-            var usersIds = await members.Select(m => m.User).Select(u => u.Uid).Distinct().ToListAsync();
+            var usersIds = await members.Select(m => m.User.Uid)
+                .Distinct()
+                .ToListAsync();
             return usersIds;
         }
     }

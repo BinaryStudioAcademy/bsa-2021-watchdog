@@ -33,7 +33,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     isAssign: boolean;
     sharedOptions = {} as AssigneeOptions;
     organization: Organization;
-    projectsIdsArray: number[] = [1, 2];
 
     constructor(
         private issuesHub: IssuesHubService,

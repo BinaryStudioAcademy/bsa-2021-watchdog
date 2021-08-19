@@ -43,7 +43,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         ];
     }
 
-    ngOnInit() {
+    async ngOnInit() {
         this.user = this.authService.getUser();
 
         this.authService.getOrganization()
@@ -51,21 +51,22 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
                 this.organization = organization;
                 this.getAllDashboards();
             });
-        this.runHubs();
+        await this.runHubs();
     }
 
-    runHubs() {
-        this.runIssuesHub();
+    async runHubs() {
+        await this.runIssuesHub();
     }
 
-    runIssuesHub() {
-        this.issuesHub.start()
-            .then(() => {
-                this.issuesHub.messages.pipe(this.untilThis).subscribe(issue => {
-                    this.toastNotificationService.info(`Received issue: ${issue.issueDetails.errorMessage}`);
-                });
-            })
-            .catch(() => this.toastNotificationService.error('Issues Hub failed to start.'));
+    async runIssuesHub() {
+        try {
+            await this.issuesHub.start();
+            this.issuesHub.messages.pipe(this.untilThis).subscribe(issue => {
+                this.toastNotificationService.info(`Received issue: ${issue.issueDetails.errorMessage}`);
+            });
+        } catch {
+            this.toastNotificationService.error('Issues Hub failed to start.');
+        }
     }
 
     addDashboard(newDashboard: NewDashboard) {
