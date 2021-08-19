@@ -91,7 +91,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                 this.deleteDataService.changeMessage(this.dashboard.id);
                 this.spinnerService.hide();
             }, error => {
-                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.toastNotificationService.error(error);
                 this.spinnerService.hide();
             });
     }
@@ -154,7 +154,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                 this.tiles = response;
                 this.spinnerService.hide();
             }, error => {
-                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.toastNotificationService.error(error);
                 this.spinnerService.hide();
             });
     }
@@ -178,7 +178,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                 this.toastNotificationService.success('Tile Deleted');
             }, error => {
                 this.spinnerService.hide();
-                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.toastNotificationService.error(error);
             });
     }
 
