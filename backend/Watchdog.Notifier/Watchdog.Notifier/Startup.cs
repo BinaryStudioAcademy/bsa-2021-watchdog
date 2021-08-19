@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Watchdog.AspNetCore;
 using Watchdog.Notifier.Hubs;
 
 namespace Watchdog.Notifier
@@ -44,11 +45,18 @@ namespace Watchdog.Notifier
             services.AddHealthChecks();
 
             services.AddSignalR();
+
+            services.AddWatchdog(Configuration, new WatchdogMiddlewareSettings()
+            {
+                ClientProvider = new DefaultWatchdogAspNetCoreClientProvider()
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseDeveloperExceptionPage();
+
+            app.UseWatchdog();
 
             app.UseSerilogRequestLogging();
 
