@@ -1,7 +1,7 @@
 import { IssueMessage } from '@shared/models/issue/issue-message';
 import { Injectable } from '@angular/core';
 import { HubConnection } from '@microsoft/signalr';
-import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { SignalRHubFactoryService } from './signalr-hub-factory.service';
 
 @Injectable({
@@ -12,7 +12,6 @@ export class IssuesHubService {
     private hubConnection: HubConnection;
 
     readonly messages = new Subject<IssueMessage>();
-    readonly projects = new BehaviorSubject<number[]>([]);
     private subscriptions: Subscription[] = [];
 
     constructor(
@@ -36,14 +35,9 @@ export class IssuesHubService {
     private async init() {
         await this.hubConnection.start()
             .then(() => {
-                console.info(`"${this.hubFactory}" successfully started.`);
-                this.subscriptions = [
-                    this.projects.subscribe(ids => {
-                        this.hubConnection.send('SetProjects', ids);
-                    }), ...this.subscriptions
-                ];
+                console.info('IssuesHub successfully started.');
             })
-            .catch(() => console.info(`"${this.hubFactory}" failed.`));
+            .catch(() => console.info('IssuesHub start failed.'));
 
         this.hubConnection.on('SendIssue', (message: IssueMessage) => {
             this.messages.next(message);

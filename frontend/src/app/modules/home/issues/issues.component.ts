@@ -63,7 +63,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     private subscribeToIssuesHub() {
         this.issuesHub.messages.pipe(this.untilThis)
             .subscribe(issue => { this.addIssue(issue); });
-        this.issuesHub.projects.next(this.projectsIdsArray);
     }
 
     private setAllFieldsTemp() {

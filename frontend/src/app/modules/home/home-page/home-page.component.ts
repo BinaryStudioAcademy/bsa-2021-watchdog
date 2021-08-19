@@ -61,7 +61,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     runIssuesHub() {
         this.issuesHub.start()
             .then(() => {
-                this.issuesHub.listenMessages(issue => {
+                this.issuesHub.messages.pipe(this.untilThis).subscribe(issue => {
                     this.toastNotificationService.info(`Received issue: ${issue.issueDetails.errorMessage}`);
                 });
             })
