@@ -10,6 +10,7 @@ import { BaseComponent } from '@core/components/base/base.component';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { User } from '@shared/models/user/user';
 import { Member } from '@shared/models/member/member';
+import { SpinnerService } from '@core/services/spinner.service';
 
 @Component({
     selector: 'app-teams',
@@ -23,7 +24,6 @@ export class TeamsComponent extends BaseComponent implements OnInit, OnDestroy {
     public notifyMemberTeams$: Subject<Team> = new Subject<Team>();
 
     createTeamDialog: DynamicDialogRef;
-    isLoading: boolean = false;
     user: User;
     member: Member;
     organization: Organization;
@@ -32,18 +32,19 @@ export class TeamsComponent extends BaseComponent implements OnInit, OnDestroy {
         private teamService: TeamService,
         public authService: AuthenticationService,
         public dialogService: DialogService,
-        private toastService: ToastNotificationService
+        private toastService: ToastNotificationService,
+        private spinnerService: SpinnerService
     ) { super(); }
 
     ngOnInit() {
-        this.isLoading = true;
+        this.spinnerService.show(true);
         this.user = this.authService.getUser();
         this.authService.getOrganization().pipe(this.untilThis).subscribe(org => {
             this.organization = org;
             this.authService.getMember().pipe(this.untilThis)
                 .subscribe(member => {
                     this.member = member;
-                    this.isLoading = false;
+                    this.spinnerService.hide();
                 });
         });
     }
@@ -60,7 +61,7 @@ export class TeamsComponent extends BaseComponent implements OnInit, OnDestroy {
             .pipe(this.untilThis)
             .subscribe((name: string) => {
                 if (name) {
-                    this.isLoading = true;
+                    this.spinnerService.show(true);
                     this.teamService
                         .createTeam({
                             createdBy: this.user.id,
@@ -70,11 +71,11 @@ export class TeamsComponent extends BaseComponent implements OnInit, OnDestroy {
                         .pipe(this.untilThis)
                         .subscribe(team => {
                             this.teamCreated$.next(team);
-                            this.isLoading = false;
+                            this.spinnerService.hide();
                             this.toastService.success('Team successfully created!');
                         }, error => {
                             this.toastService.error(error);
-                            this.isLoading = false;
+                            this.spinnerService.hide();
                         });
                 }
             });

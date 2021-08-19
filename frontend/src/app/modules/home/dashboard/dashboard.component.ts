@@ -19,6 +19,7 @@ import { AuthenticationService } from '@core/services/authentication.service';
 import { ProjectService } from '@core/services/project.service';
 import { map } from 'rxjs/operators';
 import { IssueService } from '@core/services/issue.service';
+import { SpinnerService } from '@core/services/spinner.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -35,7 +36,6 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     projects: Project[] = [];
     user: User;
     organization: Organization;
-    isLoading: boolean = false;
 
     constructor(
         private route: ActivatedRoute,
@@ -49,7 +49,8 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         private authService: AuthenticationService,
         private projectService: ProjectService,
         private issueService: IssueService,
-        private toastNotification: ToastNotificationService
+        private toastNotification: ToastNotificationService,
+        private spinnerService: SpinnerService
     ) {
         super();
     }
@@ -81,17 +82,17 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     }
 
     deleteDashboard() {
-        this.isLoading = true;
+        this.spinnerService.show(true);
         this.dashboardService.deleteDashboard(this.dashboard.id)
             .pipe(this.untilThis)
             .subscribe(() => {
                 this.router.navigate(['/home/projects']).then(r => r);
                 this.toastNotificationService.success('Dashboard has been deleted');
                 this.deleteDataService.changeMessage(this.dashboard.id);
-                this.isLoading = false;
+                this.spinnerService.hide();
             }, error => {
                 this.toastNotificationService.error(error);
-                this.isLoading = false;
+                this.spinnerService.hide();
             });
     }
 
@@ -128,7 +129,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     }
 
     getDashboard(dashboardId: string) {
-        this.isLoading = true;
+        this.spinnerService.show(true);
         this.dashboardService.get(dashboardId)
             .pipe(this.untilThis)
             .subscribe(dashboardById => {
@@ -139,22 +140,22 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                     }, error => {
                         this.toastNotificationService.error(error);
                     });
-                this.isLoading = false;
+                this.spinnerService.hide();
             }, error => {
                 this.toastNotificationService.error(error);
             });
     }
 
     getDashboardTiles(dashboardId: number) {
-        this.isLoading = true;
+        this.spinnerService.show(true);
         this.tileService.getAllTilesByDashboardId(dashboardId)
             .pipe(this.untilThis)
             .subscribe(response => {
                 this.tiles = response;
-                this.isLoading = false;
+                this.spinnerService.hide();
             }, error => {
                 this.toastNotificationService.error(error);
-                this.isLoading = false;
+                this.spinnerService.hide();
             });
     }
 
@@ -168,15 +169,15 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     }
 
     deleteTile(tile: Tile) {
-        this.isLoading = true;
+        this.spinnerService.show(true);
         this.tileService.deleteTile(tile.id)
             .pipe(this.untilThis)
             .subscribe(() => {
-                this.isLoading = false;
+                this.spinnerService.hide();
                 this.tiles.splice(this.tiles.findIndex(value => value.id === tile.id), 1);
                 this.toastNotificationService.success('Tile Deleted');
             }, error => {
-                this.isLoading = false;
+                this.spinnerService.hide();
                 this.toastNotificationService.error(error);
             });
     }

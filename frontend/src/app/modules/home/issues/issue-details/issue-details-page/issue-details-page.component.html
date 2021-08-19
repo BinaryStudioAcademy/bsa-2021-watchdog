@@ -1,4 +1,3 @@
-<app-loading-spinner *ngIf="isLoading" [overlay]="true"></app-loading-spinner>
 <!--    Header    -->
 <div class="issue-details-header">
     <div>
@@ -6,10 +5,10 @@
     </div>
 </div>
 <!--    NotFound    -->
-<div *ngIf="!issueMessage && !isLoading">
+<div *ngIf="!issueMessage">
     <app-not-found></app-not-found>
 </div>
-<ng-template [ngIf]="issueMessage && !isLoading">
+<ng-template [ngIf]="issueMessage">
     <!--    Content    -->
     <div class="issue-details-content">
         <p-tabView [(activeIndex)]="activeTabIndex" styleClass="tabview">

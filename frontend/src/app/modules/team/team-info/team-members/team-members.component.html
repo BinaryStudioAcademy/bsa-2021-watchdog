@@ -3,7 +3,6 @@
         <app-team-add-member class="header-button" (addedMember)="addMember($event)" [team]="team">
         </app-team-add-member>
     </ng-template>
-    <app-loading-spinner *ngIf="isLoading" margin="0" size="10px" [overlay]="true"></app-loading-spinner>
     <div class="panel-list">
         <div class="panel-list-item" *ngFor="let member of team?.members">
             <p-avatar size="large" shape="circle" [label]="member?.user | userInitials">
