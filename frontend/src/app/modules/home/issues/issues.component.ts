@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { IssueService } from '@core/services/issue.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
-import { Member } from '@shared/models/member/member';
-import { TeamOption } from '@shared/models/teams/team-option';
 import { Organization } from '@shared/models/organization/organization';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { MemberService } from '@core/services/member.service';
@@ -13,6 +11,7 @@ import { Assignee } from '@shared/models/issue/assignee';
 import { count, toImages } from '@core/services/issues.utils';
 import { IssueInfo } from '@shared/models/issue/issue-info';
 import { map } from 'rxjs/operators';
+import { AssigneeOptions } from '@shared/models/issue/assigneeOptions';
 
 @Component({
     selector: 'app-issues',
@@ -30,7 +29,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     selectedTime: string;
     isAssign: boolean;
-    sharedOptions = { members: [] as Member[], teams: [] as TeamOption[] };
+    sharedOptions = {} as AssigneeOptions;
     organization: Organization;
 
     constructor(
