@@ -74,6 +74,5 @@ export class ToastNotificationService {
                 life: durationMs,
             });
         }
-
-    }   
+    }
 }
