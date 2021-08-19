@@ -14,7 +14,7 @@ using Watchdog.RabbitMQ.Shared.Models;
 
 namespace Watchdog.Core.BLL.Services.Queue
 {
-    public class CollectorQueueConsumerService : BackgroundService, IDisposable
+    public class CollectorQueueConsumerService : BackgroundService
     {
         private readonly IConsumer _consumer;
         private readonly ConsumerSettings _settings;
@@ -66,6 +66,7 @@ namespace Watchdog.Core.BLL.Services.Queue
         {
             base.Dispose();
             _consumer.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }
