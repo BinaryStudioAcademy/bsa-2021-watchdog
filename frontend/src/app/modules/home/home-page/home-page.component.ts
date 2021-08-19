@@ -1,5 +1,5 @@
+import { IssuesHubService } from '@core/hubs/issues-hub.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BroadcastHubService } from '@core/hubs/broadcast-hub.service';
 import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { DashboardService } from '@core/services/dashboard.service';
 import { ShareDataService } from '@core/services/share-data.service';
@@ -27,7 +27,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     organization: Organization;
 
     constructor(
-        private broadcastHub: BroadcastHubService,
+        private issuesHub: IssuesHubService,
         public dashboardService: DashboardService,
         private updateDataService: ShareDataService<Dashboard>,
         private deleteDataService: ShareDataService<number>,
@@ -43,7 +43,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         ];
     }
 
-    ngOnInit() {
+    async ngOnInit() {
         this.user = this.authService.getUser();
 
         this.authService.getOrganization()
@@ -51,14 +51,22 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
                 this.organization = organization;
                 this.getAllDashboards();
             });
-        this.runBroadcastHub();
+        await this.runHubs();
     }
 
-    runBroadcastHub() {
-        this.broadcastHub.start()
-            .then(() => this.broadcastHub.listenMessages(msg =>
-                this.toastNotificationService.info(`The next broadcast message was received: ${msg}`)))
-            .catch(() => this.toastNotificationService.error('BroadcastHub failed to start.'));
+    async runHubs() {
+        await this.runIssuesHub();
+    }
+
+    async runIssuesHub() {
+        try {
+            await this.issuesHub.start();
+            this.issuesHub.messages.pipe(this.untilThis).subscribe(issue => {
+                this.toastNotificationService.info(`Received issue: ${issue.issueDetails.errorMessage}`);
+            });
+        } catch {
+            this.toastNotificationService.error('Issues Hub failed to start.');
+        }
     }
 
     addDashboard(newDashboard: NewDashboard) {
@@ -97,7 +105,6 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.broadcastHub.stop();
         super.ngOnDestroy();
     }
 }

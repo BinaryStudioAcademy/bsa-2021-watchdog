@@ -5,7 +5,7 @@ using Serilog;
 using Serilog.Sinks.Elasticsearch;
 using System;
 
-namespace Watchdog.Notifier
+namespace Watchdog.Notifier.API
 {
     public static class Program
     {

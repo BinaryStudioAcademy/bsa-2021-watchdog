@@ -13,11 +13,13 @@ namespace Watchdog.Collector.BLL.Services
     {
         private readonly IMapper _mapper;
         private readonly IElasticClient _client;
+        private readonly IIssueQueueProducerService _issueProducer;
 
-        public ElasticWriteService(IElasticClient client, IMapper mapper)
+        public ElasticWriteService(IElasticClient client, IMapper mapper, IIssueQueueProducerService issueProducer)
         {
             _client = client;
             _mapper = mapper;
+            _issueProducer = issueProducer;
         }
 
         public Task AddIssueMessageAsync(IssueMessageDto message)
@@ -28,6 +30,8 @@ namespace Watchdog.Collector.BLL.Services
             {
                 throw new ArgumentException("Error message can't be empty.");
             }
+
+
 
             return SetIssueIdAsync(issueMessage);
         }
@@ -51,6 +55,8 @@ namespace Watchdog.Collector.BLL.Services
                 : GetExistingIssueId(searchResponse);
 
             await IndexNewIssueMessageAsync(issueMessage);
+
+            _issueProducer.ProduceMessage(issueMessage);
         }
 
         private static string GetExistingIssueId(ISearchResponse<Issue> searchResponse)

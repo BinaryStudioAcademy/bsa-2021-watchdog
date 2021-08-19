@@ -1,3 +1,5 @@
+import { IssueMessage } from '@shared/models/issue/issue-message';
+import { IssuesHubService } from '@core/hubs/issues-hub.service';
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
@@ -33,6 +35,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     organization: Organization;
 
     constructor(
+        private issuesHub: IssuesHubService,
         private issueService: IssueService,
         private toastNotification: ToastNotificationService,
         private authService: AuthenticationService,
@@ -55,11 +58,13 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                         this.sharedOptions.members = members;
                         this.sharedOptions.teams = teams;
                         this.issues = issues;
+                        this.subscribeToIssuesHub();
                     });
             }, errorResponse => {
                 this.toastNotification.error(errorResponse);
             });
     }
+
     loadMember() {
         return this.memberService.getMembersByOrganizationId(this.organization.id)
             .pipe(this.untilThis);
@@ -143,6 +148,11 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                 })));
     }
 
+    private subscribeToIssuesHub() {
+        this.issuesHub.messages.pipe(this.untilThis)
+            .subscribe(issue => { this.addIssue(issue); });
+    }
+
     private setAllFieldsTemp() {
         this.countNew = {
             all: 3,
@@ -151,7 +161,38 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         };
     }
 
+    private addIssue(issue: IssueMessage) {
+        const existingIssue = this.issues.find(i => i.issueId === issue.issueId);
+        this.issues = existingIssue ? this.addExistingIssue(issue, existingIssue) : this.addNewIssue(issue);
+    }
+
+    private addNewIssue(issue: IssueMessage) {
+        const issueInfo: IssueInfo = {
+            issueId: issue.issueId,
+            errorClass: issue.issueDetails.className,
+            errorMessage: issue.issueDetails.errorMessage,
+            eventsCount: 1,
+            newest: { id: issue.id, occurredOn: issue.occurredOn },
+            assignee: { teamIds: [], memberIds: [] },
+        };
+        return [issueInfo, ...this.issues];
+    }
+
+    private addExistingIssue(issue: IssueMessage, existingIssue: IssueInfo) {
+        const changedIssue = {
+            ...existingIssue,
+            eventsCount: existingIssue.eventsCount + 1,
+            newest: { id: issue.id, occurredOn: issue.occurredOn },
+        };
+        return [
+            changedIssue,
+            ...this.issues.filter(i =>
+                i.issueId !== changedIssue.issueId)
+        ];
+    }
+
     private viewedAssignee = 3;
+
     getNumberAssignee(assignee: Assignee) {
         return count(assignee);
     }

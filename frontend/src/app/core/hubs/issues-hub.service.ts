@@ -1,3 +1,4 @@
+import { IssueMessage } from '@shared/models/issue/issue-message';
 import { Injectable } from '@angular/core';
 import { HubConnection } from '@microsoft/signalr';
 import { Subject, Subscription } from 'rxjs';
@@ -6,11 +7,11 @@ import { SignalRHubFactoryService } from './signalr-hub-factory.service';
 @Injectable({
     providedIn: 'root'
 })
-export class BroadcastHubService {
-    readonly hubUrl = 'broadcastHub';
+export class IssuesHubService {
+    readonly hubUrl = 'issuesHub';
     private hubConnection: HubConnection;
 
-    readonly messages = new Subject<string>();
+    readonly messages = new Subject<IssueMessage>();
     private subscriptions: Subscription[] = [];
 
     constructor(
@@ -22,7 +23,7 @@ export class BroadcastHubService {
         await this.init();
     }
 
-    listenMessages(action: (msg: string) => void) {
+    listenMessages(action: (msg: IssueMessage) => void) {
         this.subscriptions.push(this.messages.subscribe({ next: action }));
     }
 
@@ -32,12 +33,15 @@ export class BroadcastHubService {
     }
 
     private async init() {
-        await this.hubConnection.start()
-            .then(() => console.info(`"${this.hubFactory}" successfully started.`))
-            .catch(() => console.info(`"${this.hubFactory}" failed.`));
+        try {
+            await this.hubConnection.start();
+            console.info('IssuesHub successfully started.');
 
-        this.hubConnection.on('BroadcastMessage', (msg: string) => {
-            this.messages.next(msg);
-        });
+            this.hubConnection.on('SendIssue', (message: IssueMessage) => {
+                this.messages.next(message);
+            });
+        } catch {
+            console.info('IssuesHub start failed.');
+        }
     }
 }

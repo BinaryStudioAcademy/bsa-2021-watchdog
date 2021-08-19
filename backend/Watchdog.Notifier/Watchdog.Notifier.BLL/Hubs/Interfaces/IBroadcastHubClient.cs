@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Watchdog.Notifier.Hubs.Interfaces
+namespace Watchdog.Notifier.BLL.Hubs.Interfaces
 {
     public interface IBroadcastHubClient
     {
