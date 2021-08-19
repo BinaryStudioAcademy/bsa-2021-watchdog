@@ -61,7 +61,7 @@
                                 <p-checkbox name="selectedIssues" [value]="issue" [(ngModel)]="selectedIssues">
                                 </p-checkbox>
                                 <div class="content">
-                                    <span class="name">{{issue.errorClass}}</span>
+                                    <span (click)="onIssueNameSelect(issue)" class="name">{{issue.errorClass}}</span>
                                     <span class="description">{{issue.errorMessage}}</span>
                                     <div class="additional-info">
                                         <p-tag class="new-issue" *ngIf="issue.isNew" styleClass="p-mr-2"

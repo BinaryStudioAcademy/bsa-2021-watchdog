@@ -54,7 +54,7 @@
                 <tr>
                     <td>
                         <span (click)="onIssueSelect(issue)" class="issue-name">{{issue.errorClass}}</span>
-                        <small class="issue-message">{{issue.errorMessage}}</small>
+                        <small appTooltipFullName class="issue-message">{{issue.errorMessage}}</small>
                     </td>
                     <td>{{issue.eventsCount}}</td>
                 </tr>

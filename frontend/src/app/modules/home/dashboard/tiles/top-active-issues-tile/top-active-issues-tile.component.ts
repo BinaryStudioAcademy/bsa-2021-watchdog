@@ -11,6 +11,7 @@ import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
 import { regexs } from '@shared/constants/regexs';
 import { BaseComponent } from '@core/components/base/base.component';
 import { UpdateTile } from '@shared/models/tile/update-tile';
+import { Router } from '@angular/router';
 import { IssueService } from '@core/services/issue.service';
 import { IssueInfo } from '@shared/models/issue/issue-info';
 import { map } from 'rxjs/operators';
@@ -37,7 +38,8 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
         private toastNotificationService: ToastNotificationService,
         private confirmWindowService: ConfirmWindowService,
         private tileDialogService: TileDialogService,
-        private issuesService: IssueService
+        private issuesService: IssueService,
+        private router: Router
     ) {
         super();
     }
@@ -67,8 +69,7 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
     }
 
     onIssueSelect(issue: IssueInfo) {
-        console.log(issue);
-        //TODO: redirect here to a page of selected Issue
+        this.router.navigate([`home/issues/${issue.newest.id}`]).then(r => r);
     }
 
     toggleNameEditor() {
