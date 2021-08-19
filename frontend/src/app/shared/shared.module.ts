@@ -12,6 +12,7 @@ import { PrimeComponentsModule } from './modules/prime-components/prime-componen
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { SavePipe } from './pipes/save.pipe';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
+import { ChartsComponent } from './components/charts/charts.component';
 
 @NgModule({
     imports: [
@@ -21,6 +22,7 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
         ReactiveFormsModule,
         PrimeComponentsModule,
         NgxJsonViewerModule,
+        NgxChartsModule
     ],
     declarations: [
         LoadingSpinnerComponent,
@@ -29,6 +31,7 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
         SavePipe,
         UserInitialsPipe,
         TooltipWithFullNameDirective,
+        ChartsComponent,
     ],
     exports: [
         CommonModule,
@@ -42,9 +45,9 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
         SavePipe,
         NgxChartsModule,
         UserInitialsPipe,
-        NgxChartsModule,
         TooltipWithFullNameDirective,
         NgxJsonViewerModule,
+        ChartsComponent
     ]
 })
 export class SharedModule { }
