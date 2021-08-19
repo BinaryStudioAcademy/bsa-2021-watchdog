@@ -41,6 +41,7 @@ import { RatingModule } from 'primeng/rating';
 import { TreeModule } from 'primeng/tree';
 import { TimelineModule } from 'primeng/timeline';
 import { CardModule } from 'primeng/card';
+import { AvatarGroupModule } from 'primeng/avatargroup';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -85,6 +86,7 @@ import { CardModule } from 'primeng/card';
         TreeModule,
         TimelineModule,
         CardModule,
+        AvatarGroupModule,
     ],
     exports: [
         ButtonModule,
@@ -126,6 +128,7 @@ import { CardModule } from 'primeng/card';
         TreeModule,
         TimelineModule,
         CardModule,
+        AvatarGroupModule,
     ],
     declarations: [],
     providers: [

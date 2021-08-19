@@ -30,18 +30,19 @@
     cursor: pointer
 
 #issue-col
-    width: 60%
+    width: 65%
 #events-col
-    width: 15%
-#users-col
-    width: 15%
-#assignee-col
     width: 10%
+#users-col
+    width: 10%
+#assignee-col
+    width: 15%
 
 .assignee
     display: flex
     align-items: center
     grid-gap: 5px
+    cursor: pointer
 
 td,
 .center
@@ -75,6 +76,10 @@ td,
     .name
         color: $primary-color
         font-weight: bold
+        cursor: pointer
+
+    .name:hover
+        color: #026799
 
 .additional-info
     font-size: 0.8rem

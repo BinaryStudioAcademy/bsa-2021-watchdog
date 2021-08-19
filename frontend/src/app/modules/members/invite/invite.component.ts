@@ -29,9 +29,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
     searchTerm: Subject<string> = new Subject<string>();
     roles: Role[];
     teams: TeamOption[];
-
     loadingNumber: number = 0;
-
     user: User;
     organization: Organization;
 
