@@ -8,6 +8,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Team } from '@shared/models/teams/team';
 import { PrimeIcons } from 'primeng/api';
 import { UpdateTeam } from '@shared/models/teams/update-team';
+import { SpinnerService } from '@core/services/spinner.service';
 
 @Component({
     selector: 'app-team-info',
@@ -17,7 +18,6 @@ import { UpdateTeam } from '@shared/models/teams/update-team';
 export class TeamInfoComponent extends BaseComponent implements OnInit {
     team: Team;
     isSettings: boolean = false;
-    isLoading: boolean = false;
 
     parentForm: FormGroup = new FormGroup({});
 
@@ -28,11 +28,12 @@ export class TeamInfoComponent extends BaseComponent implements OnInit {
         private teamService: TeamService,
         private router: Router,
         private toastService: ToastNotificationService,
-        private confirmService: ConfirmWindowService
+        private confirmService: ConfirmWindowService,
+        private spinnerService: SpinnerService
     ) { super(); }
 
     ngOnInit() {
-        this.isLoading = true;
+        this.spinnerService.show(true);
         this.activatedRoute.paramMap
             .pipe(this.untilThis)
             .subscribe(param => {
@@ -40,10 +41,10 @@ export class TeamInfoComponent extends BaseComponent implements OnInit {
                     .pipe(this.untilThis)
                     .subscribe(team => {
                         this.team = team;
-                        this.isLoading = false;
+                        this.spinnerService.hide();
                     }, error => {
                         this.toastService.error(error);
-                        this.isLoading = false;
+                        this.spinnerService.hide();
                     });
             });
 
@@ -59,17 +60,17 @@ export class TeamInfoComponent extends BaseComponent implements OnInit {
     }
 
     saveTeam() {
-        this.isLoading = true;
+        this.spinnerService.show(true);
         const teamValues: UpdateTeam = { ...this.parentForm.value };
         this.teamService.updateTeam(this.team.id, teamValues)
             .pipe(this.untilThis)
             .subscribe(updatedTeam => {
                 Object.assign(this.team, updatedTeam);
-                this.isLoading = false;
+                this.spinnerService.hide();
                 this.saveButton.nativeElement.disabled = true;
                 this.toastService.success('Team was saved!');
             }, error => {
-                this.isLoading = false;
+                this.spinnerService.hide();
                 this.toastService.error(error);
             });
     }
@@ -82,11 +83,11 @@ export class TeamInfoComponent extends BaseComponent implements OnInit {
             acceptButton: { label: 'Yes', class: 'p-button-outlined p-button-danger' },
             cancelButton: { label: 'No', class: 'p-button-outlined p-button-secondary' },
             accept: () => {
-                this.isLoading = true;
+                this.spinnerService.show(true);
                 this.teamService.removeTeam(this.team.id)
                     .pipe(this.untilThis)
                     .subscribe(() => {
-                        this.isLoading = false;
+                        this.spinnerService.hide();
                         this.router.navigate(['home/teams']).then(() => {
                             this.toastService.success('Team was removed!');
                         });

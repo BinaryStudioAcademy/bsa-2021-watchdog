@@ -18,6 +18,7 @@ import { AlertSettings } from '@shared/models/alert-settings/alert-settings';
 import { regexs } from '@shared/constants/regexs';
 import { ProjectService } from '@core/services/project.service';
 import { Router } from '@angular/router';
+import { SpinnerService } from '@core/services/spinner.service';
 
 @Component({
     selector: 'app-create-project',
@@ -28,7 +29,6 @@ import { Router } from '@angular/router';
 export class CreateProjectComponent extends BaseComponent implements OnInit {
     user: User;
     organization: Organization;
-    loadingNumber: number = 0;
     newProject = {} as NewProject;
     platforms = {
         platformTabItems: [] as MenuItem[],
@@ -49,7 +49,8 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
         private authService: AuthenticationService,
         private projectService: ProjectService,
         public alertData: Data,
-        private router: Router
+        private router: Router,
+        private spinnerService: SpinnerService
     ) {
         super();
     }
@@ -112,31 +113,31 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
     }
 
     private loadPlatforms() {
-        this.loadingNumber += 1;
+        this.spinnerService.show(true);
         this.platformService
             .getPlatforms()
             .pipe(this.untilThis)
             .subscribe(platforms => {
                 this.platforms.platformCards = platforms;
                 this.onTabChange();
-                this.loadingNumber -= 1;
+                this.spinnerService.hide();
             }, error => {
                 this.toastNotifications.error(`${error}`);
-                this.loadingNumber -= 1;
+                this.spinnerService.hide();
             });
     }
 
     private loadTeams() {
-        this.loadingNumber += 1;
+        this.spinnerService.show(true);
         this.teamService
             .getTeamOptionsByOrganizationId(this.organization.id)
             .pipe(this.untilThis)
             .subscribe(teamOptions => {
                 this.teams = teamOptions;
-                this.loadingNumber -= 1;
+                this.spinnerService.hide();
             }, error => {
                 this.toastNotifications.error(`${error}`);
-                this.loadingNumber -= 1;
+                this.spinnerService.hide();
             });
     }
 
@@ -189,7 +190,7 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis)
             .subscribe((name: string) => {
                 if (name) {
-                    this.loadingNumber += 1;
+                    this.spinnerService.show(true);
                     this.teamService
                         .createTeam({
                             createdBy: this.user.id,
@@ -201,10 +202,10 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                             this.toastNotifications.success(`Team #${name} created!`, '', 2000);
                             this.teams = this.teams.concat({ name, id: team.id });
                             this.newProject.teamId = team.id;
-                            this.loadingNumber -= 1;
+                            this.spinnerService.hide();
                         }, error => {
                             this.toastNotifications.error(`${error}`, 'Error');
-                            this.loadingNumber -= 1;
+                            this.spinnerService.hide();
                         });
                 }
             });
@@ -218,17 +219,17 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                 alertCategory: this.alertSetting.alertCategory,
                 specialAlertSetting: this.alertSetting.alertCategory === 3 ? this.alertSetting.specialAlertSetting : null
             };
-            this.loadingNumber += 1;
+            this.spinnerService.show(true);
             this.projectService.createProject(this.newProject)
                 .subscribe(
                     project => {
                         this.toastNotifications.success(`${project.name} created!`);
                         this.router.navigate(['home', 'projects']);
-                        this.loadingNumber -= 1;
+                        this.spinnerService.hide();
                     },
                     error => {
                         this.toastNotifications.error(`${error}`, 'Error');
-                        this.loadingNumber -= 1;
+                        this.spinnerService.hide();
                     }
                 );
         } else {

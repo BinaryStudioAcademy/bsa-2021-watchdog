@@ -17,7 +17,6 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
     issueMessage: IssueMessage = undefined;
     id: string;
     requiredIdLength = 20;
-    isLoading: boolean = true;
     activeTabIndex: number = 0;
 
     constructor(
@@ -27,6 +26,7 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
         private toastNotification: ToastNotificationService,
     ) {
         super();
+        this.spinnerService.show(true);
     }
 
     ngOnInit() {
@@ -37,7 +37,7 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
             this.activeTabIndex = 0;
             this.id = data;
             if (!this.isValidId(this.id)) {
-                this.isLoading = false;
+                this.spinnerService.hide();
                 this.toastNotification.error('Issue id is not valid', '', 1500);
                 this.issueMessage = undefined;
                 return;
@@ -47,14 +47,14 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
     }
 
     getIssueMessage(id: string) {
-        this.isLoading = true;
+        this.spinnerService.show(true);
         this.issueService.getIssueMessage(id)
             .pipe(this.untilThis)
             .subscribe(response => {
-                this.isLoading = false;
+                this.spinnerService.hide();
                 this.issueMessage = response;
             }, errorResponse => {
-                this.isLoading = false;
+                this.spinnerService.hide();
                 this.toastNotification.error(errorResponse, '', 1500);
             });
     }

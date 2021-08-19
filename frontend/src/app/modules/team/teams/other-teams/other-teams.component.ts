@@ -4,6 +4,7 @@ import { TeamService } from '@core/services/team.service';
 import { Observable } from 'rxjs';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { BaseComponent } from '@core/components/base/base.component';
+import { SpinnerService } from '@core/services/spinner.service';
 
 @Component({
     selector: 'app-other-teams',
@@ -18,9 +19,12 @@ export class OtherTeamsComponent extends BaseComponent implements OnInit {
     @Input() currentMemberId: number;
 
     teams: Team[];
-    isLoading: boolean = false;
 
-    constructor(public teamService: TeamService, private toastService: ToastNotificationService) {
+    constructor(
+        public teamService: TeamService,
+        private toastService: ToastNotificationService,
+        private spinnerService: SpinnerService
+    ) {
         super();
     }
 
@@ -48,13 +52,13 @@ export class OtherTeamsComponent extends BaseComponent implements OnInit {
     }
 
     private loadTeams() {
-        this.isLoading = true;
+        this.spinnerService.show(true);
 
         this.teamService
             .getNotMemberTeams(this.currentOrganizationId, this.currentMemberId)
             .pipe(this.untilThis)
             .subscribe(teams => {
-                this.isLoading = false;
+                this.spinnerService.hide();
                 this.teams = teams;
             }, error => {
                 this.toastService.error(`${error}`, 'Error', 2000);

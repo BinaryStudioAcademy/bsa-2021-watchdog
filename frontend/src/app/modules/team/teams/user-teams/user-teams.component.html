@@ -1,5 +1,4 @@
 <p-panel header="Your Teams">
-    <app-loading-spinner *ngIf="isLoading" [overlay]="true"></app-loading-spinner>
     <div class="teams">
         <div *ngIf="teams?.length === 0">You are not member of any team.</div>
         <div class="team" *ngFor="let team of teams">
