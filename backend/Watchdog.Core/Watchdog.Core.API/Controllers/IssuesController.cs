@@ -29,8 +29,9 @@ namespace Watchdog.Core.API.Controllers
         public async Task<ActionResult> UpdateAssignee(UpdateAssigneeDto assigneeDto)
         {
             await _issueService.UpdateAssignee(assigneeDto);
-            return Ok();
+            return Ok(); 
         }
+
         [HttpGet("message/{id}")]
         public async Task<ActionResult<IssueMessage>> GetIssueMessageByIdAsync(string id)
         {
@@ -43,7 +44,6 @@ namespace Watchdog.Core.API.Controllers
         {
             var issueMessages = await _issueService.GetIssuesMessagesByParentIdAsync(id);
             return Ok(issueMessages);
-
         }
     }
 }

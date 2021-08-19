@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CoreHttpService } from './core-http.service';
 import { IssueInfo } from '@shared/models/issue/issue-info';
+import { Observable } from 'rxjs';
 import { UpdateAssignee } from '@shared/models/issue/updateAssignee';
 import { IssueMessage } from '@shared/models/issue/issue-message';
-import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class IssueService {
@@ -24,6 +24,5 @@ export class IssueService {
 
     public getIssueMessagesByParent(parentIssueId: string): Observable<IssueMessage[]> {
         return this.httpService.getRequest<IssueMessage[]>(`${this.routePrefix}/messagesbyparent/${parentIssueId}`);
-
     }
 }

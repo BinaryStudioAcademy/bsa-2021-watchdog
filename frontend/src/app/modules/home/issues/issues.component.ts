@@ -42,7 +42,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     itemsPerPage = 10;
 
-
     ngOnInit(): void {
         this.isAssign = false;
         this.setAllFieldsTemp();
