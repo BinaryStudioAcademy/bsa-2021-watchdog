@@ -1,0 +1,23 @@
+@import src/styles/variables
+
+.issue-details-http
+    padding: 12px 0
+    display: flex
+    flex-direction: column
+
+    &-column
+        background: $background-color
+        display: flex
+        flex-wrap: wrap
+        border: 1px solid $issue-info-border-color
+        min-width: 140px
+
+        .title
+            width: 175px
+            font-weight: 600
+            padding: 8px 12px
+        .value
+            padding: 8px 12px
+            width: fit-content
+            overflow: hidden
+            overflow-wrap: break-word

@@ -29,9 +29,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
     searchTerm: Subject<string> = new Subject<string>();
     roles: Role[];
     teams: TeamOption[];
-
     loadingNumber: number = 0;
-
     user: User;
     organization: Organization;
 
@@ -89,7 +87,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
                 .slice(0, 5);
             this.loadingNumber -= 1;
         }, error => {
-            this.toastNotifications.error(`${error}`, 'Error');
+            this.toastNotifications.error(error);
             this.loadingNumber -= 1;
         });
 
@@ -100,7 +98,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
                 this.roles = roles;
                 this.loadingNumber -= 1;
             }, error => {
-                this.toastNotifications.error(`${error}`, 'Error');
+                this.toastNotifications.error(error);
                 this.loadingNumber -= 1;
             });
 
@@ -117,7 +115,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
                         this.loadingNumber -= 1;
                     });
             }, error => {
-                this.toastNotifications.error(`${error}`, 'Error');
+                this.toastNotifications.error(error);
                 this.loadingNumber -= 1;
             });
     }
@@ -127,7 +125,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
         this.searchTerm.next(value);
     }
 
-    invate(invitionInput: Invition) {
+    invite(invitionInput: Invition) {
         const invition = invitionInput;
         this.loadingNumber += 1;
         const newMember = {
@@ -145,7 +143,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
                 this.loadingNumber -= 1;
             },
             error => {
-                this.toastNotifications.error(`${error}`, 'Error');
+                this.toastNotifications.error(error);
                 this.loadingNumber -= 1;
             });
     }

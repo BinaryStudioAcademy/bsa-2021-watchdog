@@ -140,13 +140,13 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
             this.authService.signOnWithEmailAndPassword({ organization: organizationDto, user: userDto }, this.password, ['home'])
                 .subscribe(() => { },
                     error => {
-                        this.toastService.error(`${error}`, 'Error');
+                        this.toastService.error(error);
                     });
         } else {
             this.authService.finishPartialRegistration({ organization: organizationDto, userId: this.user.id }, ['home'])
                 .subscribe(() => { },
                     error => {
-                        this.toastService.error(`${error}`, 'Error');
+                        this.toastService.error(error);
                     });
         }
     }

@@ -2,6 +2,8 @@
 @import src/styles/variables
 @import src/styles/mixins
 
+$top-active-issues-tile-height: 494px
+
 .remove-margin-box-shadow
     box-shadow: unset !important
     margin-bottom: 0 !important
@@ -60,7 +62,7 @@
 
     .top-active-issue
         @extend %card
-        height: $tile-height
+        height: $top-active-issues-tile-height
         flex-grow: 1
         flex-shrink: 0
         flex-basis: 350px

@@ -5,6 +5,7 @@ import { ProjectService } from '@core/services/project.service';
 import { Project } from '@shared/models/projects/project';
 import { Team } from '@shared/models/teams/team';
 import { ProjectTeam } from '@shared/models/projects/project-team';
+import { SpinnerService } from '@core/services/spinner.service';
 
 @Component({
     selector: 'app-team-projects',
@@ -12,65 +13,70 @@ import { ProjectTeam } from '@shared/models/projects/project-team';
     styleUrls: ['../../team.style.sass']
 })
 export class TeamProjectsComponent extends BaseComponent implements OnInit {
-    isLoading: boolean = false;
     @Input() team: Team;
     projectTeams: ProjectTeam[];
-    constructor(private projectService: ProjectService, private toastService: ToastNotificationService) { super(); }
+    constructor(
+        private projectService: ProjectService,
+        private toastService: ToastNotificationService,
+        private spinnerService: SpinnerService
+    ) {
+        super();
+    }
 
     ngOnInit() {
-        this.isLoading = true;
+        this.spinnerService.show(true);
         this.projectService.getProjectsByTeam(this.team.id)
             .pipe(this.untilThis)
             .subscribe(projects => {
                 this.projectTeams = projects;
                 this.projectTeams.sort(this.sortProjectTeams);
-                this.isLoading = false;
+                this.spinnerService.hide();
             }, error => {
                 this.toastService.error(error);
-                this.isLoading = false;
+                this.spinnerService.hide();
             });
     }
 
     removeFromTeam(projectTeamId: number) {
-        this.isLoading = true;
+        this.spinnerService.show(true);
         this.projectService.removeProjectFromTeam(projectTeamId)
             .pipe(this.untilThis)
             .subscribe(() => {
                 this.projectTeams = this.projectTeams.filter(p => p.id !== projectTeamId);
                 this.projectTeams.sort(this.sortProjectTeams);
-                this.isLoading = false;
+                this.spinnerService.hide();
                 this.toastService.success('Project was removed!');
             }, error => {
-                this.isLoading = false;
+                this.spinnerService.hide();
                 this.toastService.error(error);
             });
     }
 
     addProject(project: Project) {
-        this.isLoading = true;
+        this.spinnerService.show(true);
         this.projectService.addProjectToTeam(project.id, this.team.id)
             .pipe(this.untilThis)
             .subscribe(projectTeam => {
                 this.projectTeams = this.projectTeams.concat(projectTeam);
                 this.projectTeams.sort(this.sortProjectTeams);
-                this.isLoading = false;
+                this.spinnerService.hide();
                 this.toastService.success('Project was added!');
             }, error => {
-                this.isLoading = false;
+                this.spinnerService.hide();
                 this.toastService.error(error);
             });
     }
 
     toggleStar(projectTeamId: number) {
         const projectTeam = this.projectTeams.find(project => project.id === projectTeamId);
-        this.isLoading = true;
+        this.spinnerService.show(true);
         this.projectService.setProjectForTeamAsFavorite(projectTeamId, !projectTeam.isFavorite)
             .pipe(this.untilThis)
             .subscribe(state => {
                 projectTeam.isFavorite = state;
-                this.isLoading = false;
+                this.spinnerService.hide();
             }, error => {
-                this.isLoading = false;
+                this.spinnerService.hide();
                 this.toastService.error(error);
             });
     }

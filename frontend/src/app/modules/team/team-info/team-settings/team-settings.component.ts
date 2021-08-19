@@ -13,7 +13,6 @@ import { Team } from '@shared/models/teams/team';
 export class TeamSettingsComponent implements OnInit {
     @Input() team: Team;
     @Input() parentForm: FormGroup;
-    isLoading: boolean = false;
 
     constructor(private teamService: TeamService) { }
 

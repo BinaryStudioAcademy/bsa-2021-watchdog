@@ -46,10 +46,11 @@ namespace Watchdog.Core.API
             services.AddRouting(options => options.LowercaseUrls = true);
 
             services.AddWatchdogCoreContext(Configuration);
-            
+
             services.AddElasticSearch(Configuration);
 
             services.RegisterCustomServices(Configuration);
+            services.AddRabbitMQIssueQueues(Configuration);
 
             services.AddValidation();
 
@@ -112,18 +113,6 @@ namespace Watchdog.Core.API
                         };
                     });
 
-            // test rabbitmq
-            services.AddSingleton(x =>
-            {
-                var amqpConnection = new Uri(Configuration.GetSection("RabbitMQConfiguration").GetSection("Uri").Value);
-                var connectionFactory = new ConnectionFactory { Uri = amqpConnection };
-                return connectionFactory.CreateConnection();
-            });
-            var producerSettings = new ProducerSettings();
-            Configuration.GetSection("RabbitMQConfiguration:Queues:Test").Bind(producerSettings);
-            services.AddScoped(provider =>
-                new QueueService(new Producer(provider.GetRequiredService<IConnection>(), producerSettings)));
-            // test rabbitmq
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
