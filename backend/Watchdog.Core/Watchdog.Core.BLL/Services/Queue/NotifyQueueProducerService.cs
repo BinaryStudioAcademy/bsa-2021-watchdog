@@ -16,12 +16,12 @@ namespace Watchdog.Core.BLL.Services.Queue
             _producer = producer;
         }
 
-        public void NotifyUsers(ICollection<string> userIds, IssueMessage message)
+        public void NotifyUsers(ICollection<string> userUids, IssueMessage message)
         {
             var body = JsonConvert.SerializeObject(new IssueQueueMessageDto
             {
                 Issue = message,
-                UserIds = userIds
+                UserUids = userUids
             });
 
             _producer.Send(body, "JSON");
