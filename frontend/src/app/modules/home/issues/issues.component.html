@@ -85,9 +85,8 @@
                                     <p-avatar *ngFor="let label of getTeamsLabels(issue?.assignee)" [label]="label" shape="circle"></p-avatar>
                                     <p-avatar *ngIf="getNumberAssignee(issue?.assignee) > 3" [label]="getNumberExtraAssignee(issue?.assignee)" shape="circle" ></p-avatar>
                                 </p-avatarGroup>
-                                <i class="pi pi-chevron-down"></i></div>
-                           <div class="assinged">
-                           </div>
+                                <i class="pi pi-chevron-down"></i>
+                            </div>
                         </td>
                     </tr>
                 </ng-template>
