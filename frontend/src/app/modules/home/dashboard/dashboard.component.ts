@@ -76,7 +76,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                 this.updateDataService.changeMessage(this.dashboard);
                 this.toastNotificationService.success('Dashboard has been updated');
             }, error => {
-                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.toastNotificationService.error(error);
             });
     }
 
@@ -90,7 +90,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                 this.deleteDataService.changeMessage(this.dashboard.id);
                 this.isLoading = false;
             }, error => {
-                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.toastNotificationService.error(error);
                 this.isLoading = false;
             });
     }
@@ -137,11 +137,11 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                     .subscribe((dashboard) => {
                         this.dashboard = dashboard;
                     }, error => {
-                        this.toastNotificationService.error(`${error}`, '', 2000);
+                        this.toastNotificationService.error(error);
                     });
                 this.isLoading = false;
             }, error => {
-                this.toastNotificationService.error(`${error}`, '', 2000);
+                this.toastNotificationService.error(error);
             });
     }
 
@@ -153,7 +153,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                 this.tiles = response;
                 this.isLoading = false;
             }, error => {
-                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.toastNotificationService.error(error);
                 this.isLoading = false;
             });
     }
@@ -177,7 +177,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                 this.toastNotificationService.success('Tile Deleted');
             }, error => {
                 this.isLoading = false;
-                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.toastNotificationService.error(error);
             });
     }
 
@@ -188,7 +188,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                 this.tiles = [];
                 this.toastNotificationService.success('Tile Cleared');
             }, error => {
-                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.toastNotificationService.error(error);
             });
     }
 }

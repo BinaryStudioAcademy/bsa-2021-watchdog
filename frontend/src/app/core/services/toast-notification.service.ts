@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Message, MessageService } from 'primeng/api';
 
@@ -5,9 +6,6 @@ import { Message, MessageService } from 'primeng/api';
     providedIn: 'root'
 })
 export class ToastNotificationService {
-    private errorCodeWithMessageStrings = { codeString: 'Error Code: ', messageString: '\nMessage: ' };
-    private errorString = 'Error: ';
-
     constructor(private messageService: MessageService) {
     }
 
@@ -58,41 +56,24 @@ export class ToastNotificationService {
         this.messageService.add(message);
     }
 
-    private isInterceptorErrorCodeWithMessage(str: string): boolean {
-        let count = 0;
-        const searchStrings = [this.errorCodeWithMessageStrings.codeString, this.errorCodeWithMessageStrings.messageString];
-        searchStrings.forEach(val => {
-            if (str.includes(val)) {
-                count += 1;
-            }
-        });
-
-        return count === searchStrings.length;
-    }
-
-    private isInterceptorError(str: string): boolean {
-        return str.includes(this.errorString);
-    }
-
-    error(message: string, title: string = 'Error', durationMs: number = 3000): void {
-        let errorMessage = message;
-        let errorTitle = title;
-
-        //get error message from error.interceptor
-        if (this.isInterceptorErrorCodeWithMessage(message)) {
-            const indexOfMessage = errorMessage.indexOf(this.errorCodeWithMessageStrings.messageString);
-            errorTitle = message.substr(0, indexOfMessage);
-            errorMessage = message.substr(indexOfMessage + this.errorCodeWithMessageStrings.messageString.length);
-        } else if (this.isInterceptorError(message)) {
-            errorMessage = message.substr(this.errorString.length);
+    error(error: string | HttpErrorResponse, title: string = '', durationMs: number = 3000): void {
+        if (typeof error === 'string') {
+            this.message({
+                severity: 'error',
+                summary: ToastNotificationService.isEmpty(title) ? 'Error' : title,
+                detail: error,
+                closable: true,
+                life: durationMs,
+            });
+        } else {
+            this.message({
+                severity: 'error',
+                summary: ToastNotificationService.isEmpty(title) ? error.name : title,
+                detail: error.message,
+                closable: true,
+                life: durationMs,
+            });
         }
 
-        this.message({
-            severity: 'error',
-            summary: ToastNotificationService.isEmpty(errorTitle) ? 'Error' : errorTitle,
-            detail: errorMessage,
-            closable: true,
-            life: durationMs,
-        });
-    }
+    }   
 }

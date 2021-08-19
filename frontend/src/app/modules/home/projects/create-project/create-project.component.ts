@@ -121,7 +121,7 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                 this.onTabChange();
                 this.loadingNumber -= 1;
             }, error => {
-                this.toastNotifications.error(`${error}`);
+                this.toastNotifications.error(error);
                 this.loadingNumber -= 1;
             });
     }
@@ -135,7 +135,7 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                 this.teams = teamOptions;
                 this.loadingNumber -= 1;
             }, error => {
-                this.toastNotifications.error(`${error}`);
+                this.toastNotifications.error(error);
                 this.loadingNumber -= 1;
             });
     }
@@ -198,12 +198,12 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                         })
                         .pipe(this.untilThis)
                         .subscribe(team => {
-                            this.toastNotifications.success(`Team #${name} created!`, '', 2000);
+                            this.toastNotifications.success(`Team #${name} created!`);
                             this.teams = this.teams.concat({ name, id: team.id });
                             this.newProject.teamId = team.id;
                             this.loadingNumber -= 1;
                         }, error => {
-                            this.toastNotifications.error(`${error}`, 'Error');
+                            this.toastNotifications.error(error);
                             this.loadingNumber -= 1;
                         });
                 }
@@ -227,7 +227,7 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                         this.loadingNumber -= 1;
                     },
                     error => {
-                        this.toastNotifications.error(`${error}`, 'Error');
+                        this.toastNotifications.error(error);
                         this.loadingNumber -= 1;
                     }
                 );

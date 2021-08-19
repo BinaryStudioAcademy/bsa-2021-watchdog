@@ -43,7 +43,7 @@ export class OtherTeamsComponent extends BaseComponent implements OnInit {
                 this.joinTeamEvent.emit(team);
                 this.loadTeams();
             }, error => {
-                this.toastService.error(`${error}`, 'Error', 2000);
+                this.toastService.error(error);
             });
     }
 
@@ -57,7 +57,7 @@ export class OtherTeamsComponent extends BaseComponent implements OnInit {
                 this.isLoading = false;
                 this.teams = teams;
             }, error => {
-                this.toastService.error(`${error}`, 'Error', 2000);
+                this.toastService.error(error);
             });
     }
 }

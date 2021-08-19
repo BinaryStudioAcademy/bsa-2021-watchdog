@@ -90,7 +90,9 @@ export class TeamInfoComponent extends BaseComponent implements OnInit {
                         this.router.navigate(['home/teams']).then(() => {
                             this.toastService.success('Team was removed!');
                         });
-                    }, error => { this.toastService.error(error); });
+                    }, error => { 
+                        this.toastService.error(error); 
+                    });
             }
         });
     }

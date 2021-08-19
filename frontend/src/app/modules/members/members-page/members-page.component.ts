@@ -51,7 +51,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
                 this.loadMembers(organization);
                 this.loadingNumber -= 1;
             }, error => {
-                this.toastNotifications.error(error.toString());
+                this.toastNotifications.error(error);
                 this.loadingNumber -= 1;
             });
 
@@ -62,7 +62,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
                 this.roles = roles;
                 this.loadingNumber -= 1;
             }, error => {
-                this.toastNotifications.error(error.toString());
+                this.toastNotifications.error(error);
                 this.loadingNumber -= 1;
             });
     }
@@ -75,7 +75,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
                 this.memberItems = members.map(member => ({ member, treeTeams: this.fromTeams(member.teams) }));
                 this.loadingNumber -= 1;
             }, error => {
-                this.toastNotifications.error(error.toString());
+                this.toastNotifications.error(error);
                 this.loadingNumber -= 1;
             });
     }
@@ -128,7 +128,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
             .subscribe(() => {
                 this.toastNotifications.success('Role updated');
             }, error => {
-                this.toastNotifications.error(`${error}`);
+                this.toastNotifications.error(error);
             });
     }
 
@@ -146,7 +146,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
                         this.toastNotifications.success('Member deleted');
                         this.memberItems = this.memberItems.filter(m => m.member.id !== memberItem.member.id);
                     }, error => {
-                        this.toastNotifications.error(`${error}`);
+                        this.toastNotifications.error(error);
                     });
             },
         });
@@ -157,7 +157,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
             .subscribe(() => {
                 this.toastNotifications.success('Member reinvited');
             }, error => {
-                this.toastNotifications.error(`${error}`);
+                this.toastNotifications.error(error);
             });
     }
 }

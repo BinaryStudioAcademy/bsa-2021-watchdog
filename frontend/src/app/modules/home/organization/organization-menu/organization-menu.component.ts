@@ -41,7 +41,10 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
                         this.checkUpdates();
                         this.isLoading = false;
                     });
-            }, error => { this.toastService.error(error); this.isLoading = false; });
+            }, error => { 
+                this.toastService.error(error); 
+                this.isLoading = false; 
+            });
     }
 
     private checkUpdates() {
