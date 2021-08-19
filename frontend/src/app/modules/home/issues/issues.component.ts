@@ -19,9 +19,6 @@ import { IssueService } from '@core/services/issue.service';
     styleUrls: ['./issues.component.sass']
 })
 export class IssuesComponent extends BaseComponent implements OnInit {
-    error() {
-        throw new Error('Test Error');
-    }
     issues: IssueInfo[] = [];
 
     countNew: { [type: string]: number };
