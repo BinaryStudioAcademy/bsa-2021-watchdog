@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { IssueService } from '@core/services/issue.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { IssueInfo } from '@shared/models/issue/issue-info';
+import { IssueService } from '@core/services/issue.service';
 
 @Component({
     selector: 'app-issues',
@@ -22,7 +22,10 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     itemsPerPage = 10;
 
-    constructor(private issueService: IssueService, private toastNotification: ToastNotificationService) {
+    constructor(
+        private issueService: IssueService,
+        private toastNotification: ToastNotificationService,
+    ) {
         super();
     }
 

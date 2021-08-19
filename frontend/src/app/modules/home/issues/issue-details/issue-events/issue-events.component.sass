@@ -1,0 +1,47 @@
+@import src/styles/variables
+@import src/styles/mixins
+
+
+.table
+    padding-top: 12px
+    height: 100%
+
+    .issue-time
+        cursor: pointer
+        @include disable-select
+
+    .issue-time:hover
+        color: $primary-color
+
+    .issue-id
+        font-size: 12px
+        margin-top: 3px
+        color: $table-secondary-color
+        display: block
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
+
+    .table-override
+        ::ng-deep p-table
+            height: 100%
+
+            ::ng-deep .p-datatable
+                height: 100%
+                display: flex
+                flex-direction: column
+                align-content: center
+                justify-content: space-between
+                align-items: center
+
+                ::ng-deep td
+                    vertical-align: middle
+
+                ::ng-deep p-paginator
+                    width: 100%
+        //override paginator dropdown text
+        ::ng-deep .p-dropdown-label
+            display: flex
+            align-items: center
+
+

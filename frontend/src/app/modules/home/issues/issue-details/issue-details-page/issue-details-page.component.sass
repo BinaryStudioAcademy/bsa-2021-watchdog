@@ -1,0 +1,29 @@
+@import src/styles/variables
+@import src/styles/mixins
+
+.issue-details-header
+    @include background-gray
+    @include title
+    display: flex
+    align-items: center
+    justify-content: space-between
+    white-space: nowrap
+
+    h2
+        padding-bottom: 6px
+        max-width: 450px
+        overflow: hidden
+        white-space: nowrap
+        text-overflow: ellipsis
+        cursor: default
+
+.issue-details-content
+    padding: $half-indent
+
+    ::ng-deep .tabview
+        .p-tabview-panels
+            padding-bottom: 0
+
+        .p-tabview-nav
+            flex-wrap: nowrap
+            white-space: nowrap
