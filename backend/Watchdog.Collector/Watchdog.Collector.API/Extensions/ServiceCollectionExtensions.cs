@@ -1,7 +1,9 @@
 using System;
+using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nest;
+using Watchdog.Collector.BLL.MappingProfiles;
 using Watchdog.Collector.BLL.Services;
 using Watchdog.Collector.BLL.Services.Abstract;
 using Watchdog.Collector.Common.Models;
@@ -25,6 +27,11 @@ namespace Watchdog.Collector.API.Extensions
                     m.IndexName(configuration["ElasticConfiguration:IssueMessageIndex"]));
             
             services.AddSingleton<IElasticClient>(new ElasticClient(settings));
+        }
+        
+        public static void AddAutoMapper(this IServiceCollection services)
+        {
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(IssueProfile)));
         }
     }
 }

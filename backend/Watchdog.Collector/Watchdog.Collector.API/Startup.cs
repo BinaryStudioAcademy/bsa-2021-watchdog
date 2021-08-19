@@ -40,6 +40,8 @@ namespace Watchdog.Collector.API
             
             services.AddElasticSearch(Configuration);
             services.RegisterCustomServices();
+
+            services.AddAutoMapper();
             
             services.AddCors(options =>
             {
