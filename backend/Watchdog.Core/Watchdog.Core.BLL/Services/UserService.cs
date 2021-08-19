@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
+using Watchdog.Core.Common.DTO.Registration;
 using Watchdog.Core.Common.DTO.User;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
@@ -15,8 +18,19 @@ namespace Watchdog.Core.BLL.Services
         {
         }
 
+        public async Task<IEnumerable<UserDto>> SearchMembersNotInOrganizationAsync(int orgId, string memberEmail)
+        {
+            var members = await _context.Users
+                .Include(u => u.Members)
+                .Where(u => u.Email.Contains(memberEmail) && !u.Members.Any(m => m.OrganizationId == orgId))
+                .ToListAsync();
+            return _mapper.Map<IEnumerable<UserDto>>(members);
+        }
         public async Task<UserDto> UpdateUserAsync(int userId, UpdateUserDto updateUserDto)
         {
+
+            if (await _context.Users.AnyAsync(u => u.Email == updateUserDto.Email))
+                throw new InvalidOperationException("Such email alreaby exists");
             var existedUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             var mergedUser = _mapper.Map(updateUserDto, existedUser);
@@ -37,11 +51,13 @@ namespace Watchdog.Core.BLL.Services
         {
             var user = await _context.Users
                 .SingleOrDefaultAsync(u => u.Uid == uid);
-            return _mapper.Map<UserDto>(user);
+            return user is null ? default : _mapper.Map<UserDto>(user);
         }
 
         public async Task<UserDto> CreateUserAsync(NewUserDto userDto)
         {
+            if (await _context.Users.AnyAsync(u => u.Email == userDto.Email))
+                throw new InvalidOperationException("Such email alreaby exists");
             var user = _mapper.Map<User>(userDto);
 
             var createdUser = _context.Users.Add(user);

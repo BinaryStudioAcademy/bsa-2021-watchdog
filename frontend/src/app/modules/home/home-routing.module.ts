@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { ProjectsComponent } from '@modules/home/projects/projects/projects.component';
-import { IssuesComponent } from '@modules/home/issues/issues.component';
 import { CreateProjectComponent } from '@modules/home/projects/create-project/create-project.component';
 import { UserProfileComponent } from '@modules/user/components/user-profile/user-profile.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -22,10 +21,10 @@ const routes: Routes = [{
     }, {
         path: 'projects/create',
         component: CreateProjectComponent,
-    },
-    {
+    }, {
         path: 'issues',
-        component: IssuesComponent,
+        loadChildren: () => import('./issues/issues.module')
+            .then(m => m.IssuesModule),
     }, {
         path: 'users',
         component: UserProfileComponent,
@@ -36,6 +35,10 @@ const routes: Routes = [{
     }, {
         path: 'dashboard/:id',
         component: DashboardComponent,
+    }, {
+        path: 'members',
+        loadChildren: () => import('../members/members.module')
+            .then(m => m.MembersModule),
     }, {
         path: 'organization',
         loadChildren: () => import('./organization/organization.module')

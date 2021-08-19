@@ -11,13 +11,14 @@ namespace Watchdog.Core.BLL.MappingProfiles
         {
             CreateMap<Team, TeamDto>()
                 .ForMember(t => t.Members,
-                    opt => opt.MapFrom(t => t.TeamMembers.Select(teamMember => teamMember.Member)));
+                    opt => opt.MapFrom(t => t.TeamMembers.Select(tm => tm.Member)));
             CreateMap<TeamDto, Team>();
 
             CreateMap<Team, TeamOptionDto>();
 
             CreateMap<NewTeamDto, Team>();
             CreateMap<UpdateTeamDto, Team>();
+
             CreateMap<TeamMember, TeamMemberDto>();
             CreateMap<TeamMemberDto, TeamMember>();
         }

@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Watchdog.Collector.BLL.Services.Abstract;
-using Watchdog.Collector.Common.Models;
+using Watchdog.Collector.Common.DTO.Issue;
 
 namespace Watchdog.Collector.API.Controllers
 {
@@ -17,9 +17,9 @@ namespace Watchdog.Collector.API.Controllers
         }
             
         [HttpPost]
-        public async Task<IActionResult> AddNewIssue(IssueMessage message)
+        public async Task<IActionResult> AddNewIssue(IssueMessageDto message)
         {
-            await _elasticService.AddIssueAsync(message);
+            await _elasticService.AddIssueMessageAsync(message);
             return Ok();
         }
     }

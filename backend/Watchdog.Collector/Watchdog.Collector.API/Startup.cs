@@ -37,7 +37,8 @@ namespace Watchdog.Collector.API
         {
             services.AddControllers();
             services.AddHealthChecks();
-            
+
+            services.AddAutoMapper();
             services.AddElasticSearch(Configuration);
             services.RegisterCustomServices();
             

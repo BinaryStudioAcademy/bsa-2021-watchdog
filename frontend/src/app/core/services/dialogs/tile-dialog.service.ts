@@ -80,7 +80,7 @@ export class TileDialogService extends BaseComponent implements OnDestroy {
     }
 
     private addTile(newTile: NewTile, dashboardTiles: Tile[]) {
-        this.spinnerService.show();
+        this.spinnerService.show(true);
         this.tileService.addTile(newTile)
             .pipe(this.untilThis)
             .subscribe((response) => {
@@ -96,7 +96,7 @@ export class TileDialogService extends BaseComponent implements OnDestroy {
     }
 
     private updateTile(updatedTile: UpdateTile, tileToUpdate: Tile, applySettings: () => void) {
-        this.spinnerService.show();
+        this.spinnerService.show(true);
         this.tileService.updateTile(updatedTile)
             .pipe(this.untilThis)
             .subscribe((response) => {
