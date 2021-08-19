@@ -23,14 +23,14 @@
         <div class="functional-bar">
             <div class="search-block p-inputgroup">
                 <span class="p-inputgroup-addon search-button"><i class="pi pi-search"></i></span>
-                <input name="search" pInputText placeholder="Search" type="text">
+                <input name="search" pInputText placeholder="Search" type="text" (input)="table.filterGlobal($event.target.value, 'contains')">
             </div>
-            <div class="action-block">
-                <span class="p-inputgroup-addon search-button"><i class="pi pi-paperclip"></i></span>
-                <span class="p-inputgroup-addon search-button"><i class="pi pi-plus"></i></span>
-                <span class="p-inputgroup-addon search-button"><i class="pi pi-ellipsis-v"></i></span>
-                <span class="p-inputgroup-addon search-button"><i class="pi pi-times"></i></span>
-            </div>
+<!--            <div class="action-block">-->
+<!--                <span class="p-inputgroup-addon search-button"><i class="pi pi-paperclip"></i></span>-->
+<!--                <span class="p-inputgroup-addon search-button"><i class="pi pi-plus"></i></span>-->
+<!--                <span class="p-inputgroup-addon search-button"><i class="pi pi-ellipsis-v"></i></span>-->
+<!--                <span class="p-inputgroup-addon search-button"><i class="pi pi-times"></i></span>-->
+<!--            </div>-->
         </div>
 
         <p-tabPanel>
@@ -41,8 +41,9 @@
                 </div>
             </ng-template>
 
-            <p-table [autoLayout]="true" [paginator]="issues?.length > itemsPerPage" [resizableColumns]="true"
-                     [rows]="itemsPerPage" [value]="issues" class="issues-table">
+            <p-table #table [autoLayout]="true" [paginator]="issues?.length > itemsPerPage" [resizableColumns]="true"
+                     [rows]="itemsPerPage" [value]="issues" class="issues-table"
+                     [globalFilterFields]="['errorClass']">
                 <ng-template pTemplate="colgroup">
                     <colgroup>
                         <col id="issue-col">
@@ -58,6 +59,7 @@
                                 <p-checkbox name="allIssues" (onChange)="selectAll($event)"></p-checkbox>
                                 <span>Issue <p-sortIcon field="newest.occurredOn"></p-sortIcon>
                                 </span>
+                                <p-columnFilter [showAddButton]="false" type="text" field="errorClass" display="menu"></p-columnFilter>
                             </div>
                         </th>
                         <th class="center" pSortableColumn="eventsCount">
