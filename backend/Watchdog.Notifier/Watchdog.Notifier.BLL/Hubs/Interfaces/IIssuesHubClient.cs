@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Watchdog.Notifier.Common.Models.Issue;
+using Watchdog.Notifier.Common.Models;
 
 namespace Watchdog.Notifier.BLL.Hubs.Interfaces
 {

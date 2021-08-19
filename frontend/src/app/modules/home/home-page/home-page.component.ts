@@ -72,10 +72,10 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         this.displayModal = false;
         this.dashboardService.addDashboard(newDashboard)
             .pipe(this.untilThis)
-            .subscribe(dashboard => {
-                this.getAllDashboards();
+            .subscribe(async dashboard => {
+                await this.getAllDashboards();
                 this.toastNotificationService.success('Dashboard has been added');
-                this.router.navigate([`/home/dashboard/${dashboard.id}`]);
+                await this.router.navigate([`/home/dashboard/${dashboard.id}`]);
             }, error => {
                 this.toastNotificationService.error(`${error}`, 'Error', 2000);
             });

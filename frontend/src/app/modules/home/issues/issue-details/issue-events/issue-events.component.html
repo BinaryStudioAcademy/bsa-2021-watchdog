@@ -1,0 +1,35 @@
+<app-loading-spinner *ngIf="isLoading" [overlay]="true"></app-loading-spinner>
+<div *ngIf="!isLoading" class="table">
+    <p-table [alwaysShowPaginator]="issues.length > paginatorRows" [autoLayout]="true" [pageLinks]="1" [paginator]="true"
+             [resizableColumns]="true" [rows]="paginatorRows" [value]="issues" selectionMode="single"
+             styleClass="table-override">
+        <!--    Columns Define    -->
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="occurredOn">
+                    ID
+                    <p-sortIcon field="occurredOn"></p-sortIcon>
+                </th>
+                <th pSortableColumn="issueDetails.environmentMessage.platform">
+                    Platform
+                    <p-sortIcon field="issueDetails.environmentMessage.platform"></p-sortIcon>
+                </th>
+                <th pSortableColumn="issueDetails.environmentMessage.browser">
+                    Browser
+                    <p-sortIcon field="issueDetails.environmentMessage.browser"></p-sortIcon>
+                </th>
+            </tr>
+        </ng-template>
+        <!--    Rows Data   -->
+        <ng-template let-issue pTemplate="body">
+            <tr>
+                <td>
+                    <span class="issue-time" routerLink="/home/issues/{{issue.id}}">{{issue.occurredOn | date:'MMMM d, y h:mma'}}</span>
+                    <small class="issue-id">{{issue.id}}</small>
+                </td>
+                <td>{{issue.issueDetails.environmentMessage.platform}}</td>
+                <td>{{issue.issueDetails.environmentMessage.browser}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

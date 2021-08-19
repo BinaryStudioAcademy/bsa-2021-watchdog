@@ -1,4 +1,4 @@
-﻿namespace Watchdog.Notifier.Common.Models.Issue
+namespace Watchdog.Notifier.Common.Models
 {
     public class HttpResponseErrorMessage
     {

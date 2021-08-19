@@ -1,4 +1,4 @@
-﻿using Watchdog.Notifier.Common.Models.Issue;
+﻿using Watchdog.Notifier.Common.Models;
 
 namespace Watchdog.Notifier.Common.DTO
 {

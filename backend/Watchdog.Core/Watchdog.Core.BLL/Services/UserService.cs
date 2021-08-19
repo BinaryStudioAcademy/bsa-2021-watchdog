@@ -51,7 +51,7 @@ namespace Watchdog.Core.BLL.Services
         {
             var user = await _context.Users
                 .SingleOrDefaultAsync(u => u.Uid == uid);
-            return _mapper.Map<UserDto>(user);
+            return user is null ? default : _mapper.Map<UserDto>(user);
         }
 
         public async Task<UserDto> CreateUserAsync(NewUserDto userDto)
