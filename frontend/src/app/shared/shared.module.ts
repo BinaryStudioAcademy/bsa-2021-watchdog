@@ -11,6 +11,7 @@ import { TooltipWithFullNameDirective } from './directives/dashboard/tooltip-wit
 import { PrimeComponentsModule } from './modules/prime-components/prime-components.module';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { SavePipe } from './pipes/save.pipe';
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { ChartsComponent } from './components/charts/charts.component';
 
 @NgModule({
@@ -20,6 +21,7 @@ import { ChartsComponent } from './components/charts/charts.component';
         FormsModule,
         ReactiveFormsModule,
         PrimeComponentsModule,
+        NgxJsonViewerModule,
         NgxChartsModule
     ],
     declarations: [
@@ -44,6 +46,7 @@ import { ChartsComponent } from './components/charts/charts.component';
         NgxChartsModule,
         UserInitialsPipe,
         TooltipWithFullNameDirective,
+        NgxJsonViewerModule,
         ChartsComponent
     ]
 })

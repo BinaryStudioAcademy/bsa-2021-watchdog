@@ -42,7 +42,7 @@ export class ProjectsComponent extends BaseComponent implements OnInit {
                         this.projects = projects;
                         this.loadingNumber -= 1;
                     }, error => {
-                        this.toastNotifications.error(`${error}`);
+                        this.toastNotifications.error(error);
                         this.loadingNumber -= 1;
                     });
             });

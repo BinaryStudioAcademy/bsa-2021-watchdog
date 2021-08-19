@@ -17,7 +17,7 @@ export class JwtInterceptorService implements HttpInterceptor {
     intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
         if (!this.authService.isAuthenticated()
       || request.url.includes('/signin')
-      || request.url.includes('/signon')
+      || request.url.includes('/signup')
         ) {
             return next.handle(request);
         }

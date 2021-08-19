@@ -47,7 +47,7 @@ export class LoginFormComponent implements OnInit {
         this.authService.signInWithEmailAndPassword(this.email, this.password, ['home'])
             .subscribe(() => { },
                 error => {
-                    this.toastService.error(`${error}`, 'Error');
+                    this.toastService.error(error);
                 });
     }
 }
