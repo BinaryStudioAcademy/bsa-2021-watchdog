@@ -6,6 +6,6 @@ namespace Watchdog.Core.Common.DTO.Issue
     public class IssueQueueMessageDto
     {
         public IssueMessage Issue { get; set; }
-        public ICollection<string> UserIds { get; set; }
+        public ICollection<string> UserUids { get; set; }
     }
 }
