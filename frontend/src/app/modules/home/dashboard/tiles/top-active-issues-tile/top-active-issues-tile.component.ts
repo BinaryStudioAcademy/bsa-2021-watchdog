@@ -37,7 +37,7 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
         private toastNotificationService: ToastNotificationService,
         private confirmWindowService: ConfirmWindowService,
         private tileDialogService: TileDialogService,
-        private issuesService: IssueService
+        private issuesService: IssueService,
     ) {
         super();
     }
@@ -64,11 +64,6 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
                 ]
             )
         });
-    }
-
-    onIssueSelect(issue: IssueInfo) {
-        console.log(issue);
-        //TODO: redirect here to a page of selected Issue
     }
 
     toggleNameEditor() {

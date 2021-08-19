@@ -5,7 +5,7 @@
         <div class="functional-bar">
             <div class="search-block p-inputgroup">
                 <span class="p-inputgroup-addon search-button"><i class="pi pi-search"></i></span>
-                <input type="text" pInputText placeholder="Search" name="search">
+                <input name="search" pInputText placeholder="Search" type="text">
             </div>
             <div class="action-block">
                 <span class="p-inputgroup-addon search-button"><i class="pi pi-paperclip"></i></span>
@@ -23,7 +23,8 @@
                 </div>
             </ng-template>
 
-            <p-table class="issues-table" [value]="issues" [paginator]="issues?.length > itemsPerPage" [rows]="itemsPerPage"  [resizableColumns]="true" [autoLayout]="true">
+            <p-table [autoLayout]="true" [paginator]="issues?.length > itemsPerPage" [resizableColumns]="true"
+                     [rows]="itemsPerPage" [value]="issues" class="issues-table">
                 <ng-template pTemplate="colgroup">
                     <colgroup>
                         <col id="issue-col">
@@ -54,22 +55,25 @@
                         <th class="center"><span>Assignee</span></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-issue>
+                <ng-template let-issue pTemplate="body">
                     <tr>
                         <td>
                             <div class="issue-block">
-                                <p-checkbox name="selectedIssues" [value]="issue" [(ngModel)]="selectedIssues">
+                                <p-checkbox [(ngModel)]="selectedIssues" [value]="issue" name="selectedIssues">
                                 </p-checkbox>
                                 <div class="content">
-                                    <span class="name">{{issue.errorClass}}</span>
+                                    <span class="name"
+                                          routerLink="/home/issues/{{issue.newest.id}}">{{issue.errorClass}}</span>
                                     <span class="description">{{issue.errorMessage}}</span>
                                     <div class="additional-info">
-                                        <p-tag class="new-issue" *ngIf="issue.isNew" styleClass="p-mr-2"
-                                            value="New issue" [rounded]="true"></p-tag>
+                                        <p-tag *ngIf="issue.isNew" [rounded]="true" class="new-issue"
+                                               styleClass="p-mr-2" value="New issue"></p-tag>
                                         <span>{{issue.projectTag}}</span>
                                         <div class="tooltip">
-                                            <span><i class="pi pi-clock time-icon"></i>{{issue.newest.occurredOn | timeAgo}}</span>
-                                            <span class="tooltiptext">{{issue.newest.occurredOn | date:'MMMM d, y h:mma'}}</span>
+                                            <span><i
+                                                class="pi pi-clock time-icon"></i>{{issue.newest.occurredOn | timeAgo}}</span>
+                                            <span
+                                                class="tooltiptext">{{issue.newest.occurredOn | date:'MMMM d, y h:mma'}}</span>
                                         </div>
                                     </div>
                                 </div>
