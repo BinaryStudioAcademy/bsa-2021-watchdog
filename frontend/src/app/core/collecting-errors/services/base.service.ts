@@ -1,8 +1,7 @@
-import { Observable, Subject } from "rxjs";
-import { Breadcrumb } from "../models/breadcrumb";
+import { Observable, Subject } from 'rxjs';
+import { Breadcrumb } from '../models/breadcrumb';
 
 export class BaseService {
-
     private static eventSource = new Subject<Breadcrumb>();
 
     protected get eventSource() {

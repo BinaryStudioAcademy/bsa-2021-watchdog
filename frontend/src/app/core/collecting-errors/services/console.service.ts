@@ -6,7 +6,7 @@ import { BaseService } from './base.service';
 @Injectable({
     providedIn: 'root'
 })
-export class ConsoleService extends BaseService{
+export class ConsoleService extends BaseService {
     private log: (...data: any[]) => void;
     private debug: (...data: any[]) => void;
     private info: (...data: any[]) => void;
@@ -53,6 +53,6 @@ export class ConsoleService extends BaseService{
     }
 
     private send(level: BreadcrumbLevel, data: any[]) {
-        this.eventSource.next(new ConsoleBreadcrumb(level, data))
+        this.eventSource.next(new ConsoleBreadcrumb(level, data));
     }
 }

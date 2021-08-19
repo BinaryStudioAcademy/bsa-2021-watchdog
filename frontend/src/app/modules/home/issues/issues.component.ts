@@ -10,7 +10,7 @@ import { Assignee } from '@shared/models/issue/assignee';
 import { count, toImages } from '@core/services/issues.utils';
 import { IssueInfo } from '@shared/models/issue/issue-info';
 import { map } from 'rxjs/operators';
-import { AssigneeOptions } from '@shared/models/issue/assigneeOptions';
+import { AssigneeOptions } from '@shared/models/issue/assignee-options';
 import { IssueService } from '@core/services/issue.service';
 
 @Component({
@@ -19,9 +19,8 @@ import { IssueService } from '@core/services/issue.service';
     styleUrls: ['./issues.component.sass']
 })
 export class IssuesComponent extends BaseComponent implements OnInit {
-
-    error(){
-        throw new Error('Test Error')
+    error() {
+        throw new Error('Test Error');
     }
     issues: IssueInfo[] = [];
 

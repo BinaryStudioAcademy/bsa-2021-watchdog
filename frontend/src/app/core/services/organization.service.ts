@@ -25,27 +25,26 @@ export class OrganizationService {
 
     getCurrentOrganization(id: number) {
         if (!OrganizationService.organization) {
-           return this.getOrganizationsByUserId(id)
-            .pipe(
-                tap(orgs => {
-                    [OrganizationService.organization] = orgs;
-                }),
-                map(orgs => {
-                    return OrganizationService.organization;
-            }))
+            return this.getOrganizationsByUserId(id)
+                .pipe(
+                    tap(orgs => {
+                        [OrganizationService.organization] = orgs;
+                    }),
+                    map(() => OrganizationService.organization)
+                );
         }
         return of(OrganizationService.organization);
     }
 
     private orgRequest$: Observable<Organization[]>;
-    
+
     getOrganizationsByUserId(userId: number): Observable<Organization[]> {
         if (this.orgRequest$) {
             return this.orgRequest$;
         }
         this.orgRequest$ = this.httpService.getRequest<Organization[]>(`${this.apiPrefix}/user/${userId}`)
             .pipe(
-                tap(()=> {
+                tap(() => {
                     this.orgRequest$ = null;
                 }),
                 share()

@@ -1,11 +1,17 @@
-import { BreadcrumbModel } from "./breadcrumb-model";
-
-export type BreadcrumbType = 'navigation' | 'debug' | 'error' | 'http-request' | 'user-action'; 
+export type BreadcrumbType = 'navigation' | 'debug' | 'error' | 'http-request' | 'user-action';
 export type BreadcrumbCategory = 'router' | 'console' | 'http' | 'click' | 'exception';
 export type BreadcrumbLevel = 'info' | 'warning' | 'error' | 'debug';
 
-export class BreadcrumbBody {
+export interface BreadcrumbBody {
 
+}
+
+export interface BreadcrumbModel {
+    type: BreadcrumbType,
+    category: BreadcrumbCategory,
+    level: BreadcrumbLevel,
+    time: Date,
+    body: string,
 }
 
 export class Breadcrumb {
@@ -28,6 +34,6 @@ export class Breadcrumb {
     }
 
     toModel(): BreadcrumbModel {
-        return {...this, body: JSON.stringify(this.body)};
+        return { ...this, body: JSON.stringify(this.body) };
     }
 }

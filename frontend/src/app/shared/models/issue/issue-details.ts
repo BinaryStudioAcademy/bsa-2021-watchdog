@@ -1,7 +1,7 @@
 import { StackFrame } from '@shared/models/issue/stack-frame';
 import { HttpResponseErrorMessage } from '@shared/models/issue/http-response.message';
 import { IssueEnvironment } from '@shared/models/issue/issue-environment';
-import { BreadcrumbModel } from '@core/collecting-errors/models/breadcrumb-model';
+import { BreadcrumbModel } from '@core/collecting-errors/models/breadcrumb';
 
 export interface IssueDetails {
     url: string,

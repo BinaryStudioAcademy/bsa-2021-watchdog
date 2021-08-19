@@ -18,7 +18,7 @@ import { AjaxBreadcrumb } from '../models/ajax-breadcrumb';
 export class ErrorInterceptor extends BaseService implements HttpInterceptor {
     constructor(private errorsService: ErrorsService) {
         super();
-     }
+    }
 
     handleError(error: HttpErrorResponse) {
         return throwError(error);

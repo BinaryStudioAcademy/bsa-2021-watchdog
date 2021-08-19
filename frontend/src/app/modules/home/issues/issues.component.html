@@ -97,17 +97,13 @@
             </p-table>
 
         </p-tabPanel>
-        <p-tabPanel [cache]="false">
+        <p-tabPanel [cache]="false" [disabled]="true">
             <ng-template pTemplate="header">
                 <div class="header">
                     <span>Second Type</span>
                     <p-badge *ngIf="countNew.secondtype > 0" [value]="countNew.secondtype.toString()"></p-badge>
                 </div>
-            </ng-template>
-            <ng-template pTemplate="content">
-                <app-breadcrumbs [issueMessage]="selectedIssues[0]?.newest"></app-breadcrumbs>
-            </ng-template>
-            
+            </ng-template>           
         </p-tabPanel>
         <p-tabPanel [disabled]="true">
             <ng-template pTemplate="header">

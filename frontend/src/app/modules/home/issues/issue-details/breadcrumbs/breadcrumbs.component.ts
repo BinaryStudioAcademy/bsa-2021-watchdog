@@ -22,9 +22,7 @@ export class BreadcrumbsComponent implements OnInit {
             category: 'exception',
             level: 'error',
             time: this.issueMessage?.occurredOn,
-            body: JSON.stringify(this.issueMessage?.issueDetails), 
-        }))?.map(b => ({...b, ...getIconAndColor(b)}))
-
+            body: JSON.stringify(this.issueMessage?.issueDetails),
+        }))?.map(b => ({ ...b, ...getIconAndColor(b) }));
     }
-    
 }

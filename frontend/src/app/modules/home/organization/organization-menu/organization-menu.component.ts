@@ -31,17 +31,17 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
     ngOnInit(): void {
         this.isLoading = true;
         this.organizationService.getOrganizationsByUserId(this.authService.getUser().id)
+            .pipe(this.untilThis)
+            .subscribe(organizations => {
+                this.organizations = organizations;
+                this.authService.getOrganization()
                     .pipe(this.untilThis)
-                    .subscribe(organizations => {
-                        this.organizations = organizations;
-                        this.authService.getOrganization()
-                        .pipe(this.untilThis)
-                        .subscribe(organization => {
-                            this.organization = organization;
-                            this.checkUpdates();
-                            this.isLoading = false;
-                        });
-                    }, error => { this.toastService.error(error); this.isLoading = false; });          
+                    .subscribe(organization => {
+                        this.organization = organization;
+                        this.checkUpdates();
+                        this.isLoading = false;
+                    });
+            }, error => { this.toastService.error(error); this.isLoading = false; });
     }
 
     private checkUpdates() {

@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Breadcrumb } from '../models/breadcrumb';
-import { BreadcrumbModel } from '../models/breadcrumb-model';
+import { Breadcrumb, BreadcrumbModel } from '../models/breadcrumb';
 
 @Injectable({
     providedIn: 'root'
 })
 export class BreadcrumbService {
-
     private static breadcrumbs = [] as Breadcrumb[];
 
     addBreadcrumb(item: Breadcrumb) {
@@ -18,7 +16,7 @@ export class BreadcrumbService {
     }
 
     getBreadcrumbsAndClear(): BreadcrumbModel[] {
-        const breadcrumbs = BreadcrumbService.breadcrumbs;
+        const { breadcrumbs } = BreadcrumbService;
         BreadcrumbService.breadcrumbs = [];
         return breadcrumbs.map(b => b.toModel());
     }

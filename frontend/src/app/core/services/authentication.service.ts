@@ -5,7 +5,7 @@ import firebase from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { filter, mergeMap, switchMap, tap, map, share } from 'rxjs/operators';
+import { filter, mergeMap, switchMap, tap, map } from 'rxjs/operators';
 import { from, of, Observable } from 'rxjs';
 import { User } from '@shared/models/user/user';
 import { NewUser } from '@shared/models/user/newUser';
@@ -52,7 +52,6 @@ export class AuthenticationService {
         }
         return AuthenticationService.user;
     }
-
 
     getOrganization(): Observable<Organization> {
         return this.organizationService.getCurrentOrganization(this.getUser().id);

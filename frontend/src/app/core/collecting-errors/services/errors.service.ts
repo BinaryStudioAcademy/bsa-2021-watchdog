@@ -17,7 +17,7 @@ export class ErrorsService {
     private issuesEndpoint: string = '/issues';
 
     constructor(
-        private httpService: CollectorHttpService, 
+        private httpService: CollectorHttpService,
         private toastNotification: ToastNotificationService,
         private breadcrumbService: BreadcrumbService,
     ) { }

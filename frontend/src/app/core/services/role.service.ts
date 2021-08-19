@@ -12,14 +12,14 @@ export class RoleService {
 
     constructor(private httpService: CoreHttpService) { }
 
-    private static roles: Role[]; 
+    private static roles: Role[];
 
     getRoles(): Observable<Role[]> {
         if (!RoleService.roles) {
             return this.httpService.getRequest<Role[]>(`${this.apiPrefix}`)
                 .pipe(tap(roles => {
                     RoleService.roles = roles;
-                }))
+                }));
         }
         return of(RoleService.roles);
     }

@@ -1,5 +1,8 @@
 @import src/styles/variables
 @import src/styles/mixins
+
+$space-right: 65px
+
 .custom-marker
     display: flex
     width: 2rem
@@ -52,10 +55,10 @@
 
     .description
         font-family: monospace
-        margin-right: 65px
+        margin-right: $space-right
     .ngx-json-viewer
         width: auto !important
-        margin-right: 65px
+        margin-right: $space-right
     .ngx-json-viewer .segment-type-null > .segment-main > .segment-value,
     .ngx-json-viewer .segment-type-undefined > .segment-main > .segment-value
         color: grey !important
