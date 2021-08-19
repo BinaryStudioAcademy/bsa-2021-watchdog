@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.Notifier.BLL", "Wa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.Notifier.Common", "Watchdog.Notifier\Watchdog.Notifier.Common\Watchdog.Notifier.Common.csproj", "{E92310D0-1511-4D63-8AEA-AB46B9B28006}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.RabbitMQ.Shared", "Watchdog.RabbitMQ.Shared\Watchdog.RabbitMQ.Shared.csproj", "{D782EB3B-0FD8-448D-8AE3-F609EB125DBF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{E92310D0-1511-4D63-8AEA-AB46B9B28006}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E92310D0-1511-4D63-8AEA-AB46B9B28006}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E92310D0-1511-4D63-8AEA-AB46B9B28006}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D782EB3B-0FD8-448D-8AE3-F609EB125DBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D782EB3B-0FD8-448D-8AE3-F609EB125DBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D782EB3B-0FD8-448D-8AE3-F609EB125DBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D782EB3B-0FD8-448D-8AE3-F609EB125DBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
