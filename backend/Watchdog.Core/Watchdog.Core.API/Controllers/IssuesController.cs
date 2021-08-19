@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Issue;
+using Watchdog.Core.Common.Models.Issue;
 
 namespace Watchdog.Core.API.Controllers
 {
@@ -29,6 +30,20 @@ namespace Watchdog.Core.API.Controllers
         {
             await _issueService.UpdateAssignee(assigneeDto);
             return Ok();
+        }
+        [HttpGet("message/{id}")]
+        public async Task<ActionResult<IssueMessage>> GetIssueMessageByIdAsync(string id)
+        {
+            var issueMessage = await _issueService.GetIssueMessageByIdAsync(id);
+            return Ok(issueMessage);
+        }        
+        
+        [HttpGet("messagesByParent/{id}")]
+        public async Task<ActionResult<IssueMessage>> GetIssueMessagesByParentIdAsync(string id)
+        {
+            var issueMessages = await _issueService.GetIssuesMessagesByParentIdAsync(id);
+            return Ok(issueMessages);
+
         }
     }
 }
