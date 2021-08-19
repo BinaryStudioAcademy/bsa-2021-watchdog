@@ -1,0 +1,62 @@
+<div class="container">
+    <div *ngIf="single?.length > 0 && options" class="single-container">
+        <p-tabMenu [activeItem]="chartSingleTabItems[0]" [model]="chartSingleTabItems"></p-tabMenu>
+        <div class="chart-container" *ngIf="currentSingleTabLable==='Bars'">
+            <ngx-charts-bar-vertical [scheme]="options.colorScheme" [results]="single"
+                [gradient]="options.gradient" [xAxis]="options.showXAxis" [yAxis]="options.showYAxis"
+                [legend]="options.showLegend" [showXAxisLabel]="options.showXAxisLabel"
+                [showYAxisLabel]="options.showYAxisLabel">
+            </ngx-charts-bar-vertical>
+        </div>
+        <div class="chart-container" *ngIf="currentSingleTabLable==='Pie'">
+            <ngx-charts-advanced-pie-chart [scheme]="options.colorScheme" [results]="single"
+                [gradient]="options.gradient" [view]="options.view">
+            </ngx-charts-advanced-pie-chart>
+        </div>
+        <div class="chart-container" *ngIf="currentSingleTabLable==='Guage'">
+            <ngx-charts-gauge [view]="options.view" [scheme]="options.colorScheme" [results]="single"
+                [legend]="options.showLegend">
+            </ngx-charts-gauge>
+        </div>
+        <div class="chart-container" *ngIf="currentSingleTabLable==='Tree'">
+            <ngx-charts-tree-map [view]="options.view" [scheme]="options.colorScheme" [results]="single"
+                [gradient]="options.gradient" [animations]="options.animations">
+            </ngx-charts-tree-map>
+        </div>
+    </div>
+    <div *ngIf="multi?.length > 0 && options" class="single-container">
+        <p-tabMenu [activeItem]="chartMultiTabItems[0]" [model]="chartMultiTabItems"></p-tabMenu>
+        <div class="chart-container" *ngIf="currentMultiTabLable==='Line'">
+            <ngx-charts-line-chart [view]="options.view" [scheme]="options.colorScheme"
+                [legend]="options.showLegend" [showXAxisLabel]="options.showXAxisLabel"
+                [showYAxisLabel]="options.showYAxisLabel" [xAxis]="options.showXAxis"
+                [yAxis]="options.showYAxis" [xAxisLabel]="options.xAxisLabel"
+                [yAxisLabel]="options.yAxisLabel" [timeline]="options.timeline" [results]="multi">
+            </ngx-charts-line-chart>
+        </div>
+        <div class="chart-container" *ngIf="currentMultiTabLable==='Polar'">
+            <ngx-charts-polar-chart [view]="options.view" [scheme]="options.colorScheme"
+                [legend]="options.showLegend" [showXAxisLabel]="options.showXAxisLabel"
+                [showYAxisLabel]="options.showYAxisLabel" [xAxis]="options.showXAxis"
+                [yAxis]="options.showYAxis" [xAxisLabel]="options.xAxisLabel"
+                [yAxisLabel]="options.yAxisLabel" [results]="multi">
+            </ngx-charts-polar-chart>
+        </div>
+        <div class="chart-container" *ngIf="currentMultiTabLable==='Area'">
+            <ngx-charts-area-chart [view]="options.view" [scheme]="options.colorScheme"
+                [legend]="options.showLegend" [showXAxisLabel]="options.showXAxisLabel"
+                [showYAxisLabel]="options.showYAxisLabel" [xAxis]="options.showXAxis"
+                [yAxis]="options.showYAxis" [xAxisLabel]="options.xAxisLabel"
+                [yAxisLabel]="options.yAxisLabel" [timeline]="options.timeline" [results]="multi">
+            </ngx-charts-area-chart>
+        </div>
+        <div class="chart-container" *ngIf="currentMultiTabLable==='Grouped'">
+            <ngx-charts-bar-vertical-2d [view]="options.view" [scheme]="options.colorScheme"
+                [legend]="options.showLegend" [showXAxisLabel]="options.showXAxisLabel"
+                [showYAxisLabel]="options.showYAxisLabel" [xAxis]="options.showXAxis"
+                [yAxis]="options.showYAxis" [xAxisLabel]="options.xAxisLabel"
+                [yAxisLabel]="options.yAxisLabel" [results]="multi">
+            </ngx-charts-bar-vertical-2d>
+        </div>
+    </div>
+</div>
