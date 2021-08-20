@@ -62,7 +62,6 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
                 this.organization = organization;
                 this.loadTeams();
             });
-        //this.initPlatforms();
         this.initAlertData();
         this.addValidation();
     }
@@ -98,33 +97,6 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
                 ],
             ),
         });
-    }
-
-    private initPlatforms() {
-        this.loadPlatforms();
-        this.platforms.platformTabItems = [
-            { label: 'All', command: (event) => this.onTabChange(event?.item.label) },
-            { label: 'Browser', command: (event) => this.onTabChange(event?.item.label) },
-            { label: 'Server', command: (event) => this.onTabChange(event?.item.label) },
-            { label: 'Mobile', command: (event) => this.onTabChange(event?.item.label) },
-            { label: 'Desktop', command: (event) => this.onTabChange(event?.item.label) }
-        ];
-        this.platforms.activePlatformTabItem = Object.assign(this.platforms.platformTabItems[0]);
-    }
-
-    private loadPlatforms() {
-        this.spinnerService.show(true);
-        this.platformService
-            .getPlatforms()
-            .pipe(this.untilThis)
-            .subscribe(platforms => {
-                this.platforms.platformCards = platforms;
-                this.onTabChange();
-                this.spinnerService.hide();
-            }, error => {
-                this.toastNotifications.error(error);
-                this.spinnerService.hide();
-            });
     }
 
     private loadTeams() {
