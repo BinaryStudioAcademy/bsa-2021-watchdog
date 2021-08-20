@@ -123,18 +123,14 @@ namespace Watchdog.NetCore.Common
                         }
                     }
                 }
-                else
+
+                foreach (Exception e in StripWrapperExceptions(exception.InnerException))
                 {
-                    foreach (Exception e in StripWrapperExceptions(exception.InnerException))
-                    {
-                        yield return e;
-                    }
+                    yield return e;
                 }
             }
-            else
-            {
-                yield return exception;
-            }
+
+            yield return exception;
         }
 
         protected virtual WatchdogMessage BuildMessage(Exception exception)
