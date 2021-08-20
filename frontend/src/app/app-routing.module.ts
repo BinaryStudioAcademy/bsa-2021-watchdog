@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@core/guards/auth.guard';
 import { UnauthorizedGuard } from '@core/guards/unauthorized.guard';
-import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 
 const routes: Routes = [
     {
@@ -35,14 +34,7 @@ const routes: Routes = [
         loadChildren: () => import('./modules/user/user.module')
             .then(m => m.UserModule)
     },
-    { path: '',
-        redirectTo: 'landing',
-        pathMatch: 'full'
-    },
-    { path: '**',
-        component: NotFoundComponent,
-        pathMatch: 'full'
-    },
+    { path: '**', redirectTo: 'landing', pathMatch: 'full' },
 ];
 
 @NgModule({
