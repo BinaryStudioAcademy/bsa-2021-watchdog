@@ -6,6 +6,10 @@ namespace Watchdog.AspNetCore.Builders
 {
     public class WatchdogAspNetCoreResponseMessageBuilder
     {
+        protected WatchdogAspNetCoreResponseMessageBuilder()
+        {
+        }
+
         public static WatchdogResponseMessage Build(HttpContext context)
         {
             var httpResponseFeature = context.Features.Get<IHttpResponseFeature>();

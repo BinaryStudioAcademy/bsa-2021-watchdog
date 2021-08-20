@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Watchdog.NetCore.Common.Messages;
@@ -9,6 +10,10 @@ namespace Watchdog.AspNetCore.Builders
 {
     public class WatchdogAspNetCoreRequestMessageBuilder
     {
+        protected WatchdogAspNetCoreRequestMessageBuilder()
+        {
+        }
+
         public static WatchdogRequestMessage Build(HttpContext context)
         {
             var request = context.Request;
@@ -66,7 +71,7 @@ namespace Watchdog.AspNetCore.Builders
             {
                 foreach (var header in request.Headers)
                 {
-                    headers[header.Key] = string.Join(",", header.Value);
+                    headers[header.Key] = string.Join(",", header.Value.AsEnumerable());
                 }
             }
             catch (Exception e)
@@ -83,7 +88,7 @@ namespace Watchdog.AspNetCore.Builders
 
             foreach (var value in query)
             {
-                dict[value.Key] = string.Join(",", value.Value);
+                dict[value.Key] = string.Join(",", value.Value.AsEnumerable());
             }
 
             return dict;

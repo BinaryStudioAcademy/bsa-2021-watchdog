@@ -4,7 +4,7 @@
     {
         internal const string _defaultApiEndPoint = "https://bsa-watchdog.westeurope.cloudapp.azure.com/collector/issues/client";
         
-        public WatchdogSettingsBase()
+        protected WatchdogSettingsBase()
         {
             ApiEndpoint = _defaultApiEndPoint;
         }

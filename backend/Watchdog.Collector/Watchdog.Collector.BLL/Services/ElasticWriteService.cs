@@ -1,7 +1,6 @@
 using AutoMapper;
 using Nest;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Watchdog.Collector.BLL.Services.Abstract;
@@ -33,15 +32,12 @@ namespace Watchdog.Collector.BLL.Services
                 throw new ArgumentException("Error message can't be empty.");
             }
 
-
-
             return SetIssueIdAsync(issueMessage);
         }
 
         public Task AddIssueAsync(WatchdogMessage message)
         {
             var issueMessage = _mapper.Map<IssueMessage>(message);
-            issueMessage.IssueDetails.Breadcrumbs = new List<Breadcrumb>();
 
             if (string.IsNullOrEmpty(issueMessage.IssueDetails.ErrorMessage))
             {

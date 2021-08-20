@@ -6,6 +6,10 @@ namespace Watchdog.NetCore.Common.Builders
 {
     public class WatchdogEnvironmentBuilder
     {
+        protected WatchdogEnvironmentBuilder()
+        {
+        }
+
         public static WatchdogEnvironmentMessage Build(WatchdogSettingsBase settings)
         {
             var message = new WatchdogEnvironmentMessage();

@@ -9,6 +9,10 @@ namespace Watchdog.NetCore.Common.Builders
 {
     public class WatchdogErrorMessageBuilder
     {
+        protected WatchdogErrorMessageBuilder()
+        {
+        }
+
         protected static string FormatTypeName(Type type, bool fullName)
         {
             string name = fullName ? type.FullName : type.Name;
@@ -19,13 +23,13 @@ namespace Watchdog.NetCore.Common.Builders
 
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append(name.Substring(0, name.IndexOf("`")));
-            stringBuilder.Append("<");
+            stringBuilder.Append('<');
             foreach (Type t in type.GenericTypeArguments)
             {
-                stringBuilder.Append(FormatTypeName(t, false)).Append(",");
+                stringBuilder.Append(FormatTypeName(t, false)).Append(',');
             }
             stringBuilder.Remove(stringBuilder.Length - 1, 1);
-            stringBuilder.Append(">");
+            stringBuilder.Append('>');
 
             return stringBuilder.ToString();
         }
@@ -98,13 +102,13 @@ namespace Watchdog.NetCore.Common.Builders
             if (method is MethodInfo && method.IsGenericMethod)
             {
                 Type[] genericArguments = method.GetGenericArguments();
-                stringBuilder.Append("[");
+                stringBuilder.Append('[');
 
                 for (int i = 0; i < genericArguments.Length; i++)
                 {
                     if (!first)
                     {
-                        stringBuilder.Append(",");
+                        stringBuilder.Append(',');
                     }
                     else
                     {
@@ -114,10 +118,10 @@ namespace Watchdog.NetCore.Common.Builders
                     stringBuilder.Append(genericArguments[i].Name);
                 }
 
-                stringBuilder.Append("]");
+                stringBuilder.Append(']');
             }
 
-            stringBuilder.Append("(");
+            stringBuilder.Append('(');
 
             ParameterInfo[] parameters = method.GetParameters();
 
@@ -144,7 +148,7 @@ namespace Watchdog.NetCore.Common.Builders
                 stringBuilder.Append(type + " " + parameters[i].Name);
             }
 
-            stringBuilder.Append(")");
+            stringBuilder.Append(')');
 
             return stringBuilder.ToString();
         }

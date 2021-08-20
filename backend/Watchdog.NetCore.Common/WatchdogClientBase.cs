@@ -19,7 +19,7 @@ namespace Watchdog.NetCore.Common
         
         protected readonly WatchdogSettingsBase _settings;
 
-        public WatchdogClientBase(WatchdogSettingsBase settings)
+        protected WatchdogClientBase(WatchdogSettingsBase settings)
         {
             _settings = settings;
 
@@ -47,12 +47,29 @@ namespace Watchdog.NetCore.Common
 
         protected virtual bool CanSend(Exception exception)
         {
-            return exception != null || exception.Data != null;
+            return exception != null;
         }
 
         protected virtual bool CanSend(WatchdogMessage message)
         {
             return true;
+        }
+
+        public async Task Send(WatchdogMessage watchdogMessage)
+        {
+            bool canSend = CanSend(watchdogMessage);
+
+            if (!canSend)
+            {
+                return;
+            }
+
+            var requestMessage = new HttpRequestMessage(HttpMethod.Post, _settings.ApiEndpoint);
+
+            var message = JsonConvert.SerializeObject(watchdogMessage, Formatting.Indented);
+            requestMessage.Content = new StringContent(message, Encoding.UTF8, "application/json");
+
+            await _client.SendAsync(requestMessage);
         }
 
         public async Task Send(Exception exception)
@@ -128,23 +145,6 @@ namespace Watchdog.NetCore.Common
                 .SetEnvironmentDetails()
                 .SetExceptionDetails(exception)
                 .Build();
-        }
-
-        public async Task Send(WatchdogMessage watchdogMessage)
-        {
-            bool canSend = CanSend(watchdogMessage);
-
-            if (!canSend)
-            {
-                return;
-            }
-
-            var requestMessage = new HttpRequestMessage(HttpMethod.Post, _settings.ApiEndpoint);
-
-            var message = JsonConvert.SerializeObject(watchdogMessage, Formatting.Indented);
-            requestMessage.Content = new StringContent(message, Encoding.UTF8, "application/json");
-
-            await _client.SendAsync(requestMessage);
         }
     }
 }
