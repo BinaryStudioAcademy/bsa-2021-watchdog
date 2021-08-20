@@ -38,7 +38,7 @@ namespace Watchdog.Collector.BLL.Services
 
         private async Task IndexNewIssueMessageAsync(IssueMessage issueMessage)
         {
-            var indexResponse = await _client.IndexDocumentAsync<IssueMessage>(issueMessage);
+            var indexResponse = await _client.IndexAsync(issueMessage, f => f.Refresh(Elasticsearch.Net.Refresh.WaitFor));
 
             if (!indexResponse.IsValid)
             {
