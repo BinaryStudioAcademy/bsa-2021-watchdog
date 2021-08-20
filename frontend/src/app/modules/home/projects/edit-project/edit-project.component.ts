@@ -68,75 +68,32 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
         this.authService.getOrganization()
             .subscribe(organization => {
                 this.organization = organization;
-                this.loadTeams();
             });
+
+        this.projectService.getProjectById(18).pipe(this.untilThis)
+            .subscribe(project => {
+                this.project = project;
+                this.validationsInit();
+            })
         //this.initAlertData();
         //this.addValidation();
-        this.validationsInit();
+
     }
 
     validationsInit() {
-        this.editForm.addControl('projectName', new FormControl('this.project.name', [
+        this.editForm.addControl('projectName', new FormControl(this.project.name, [
             Validators.required,
             Validators.minLength(3),
             Validators.maxLength(50),
             Validators.pattern(regexs.projectName),
         ]));
-        this.editForm.addControl('projectDescription', new FormControl('this.project.description', [
+        this.editForm.addControl('projectDescription', new FormControl(this.project.description, [
             Validators.maxLength(1000),
             Validators.pattern(regexs.projectDescription),
         ]));
-        this.editForm.addControl('team', new FormControl('', [
-            Validators.required,
-        ]));
     }
 
-    private addValidation() {
-        this.editForm = new FormGroup({
-            alertCategory: new FormControl(
-                this.alertData.alertCategories[0].value,
-                [
-                    Validators.required
-                ]
-            ),
-            projectName: new FormControl(
-                this.project.name,
-                [
-                    Validators.required,
-                    Validators.minLength(3),
-                    Validators.maxLength(50),
-                    Validators.pattern(regexs.projectName)
-                ]
-            ),
-            projectDescription: new FormControl(
-                this.project.description,
-                [
-                    Validators.maxLength(1000),
-                    Validators.pattern(regexs.projectDescription)
-                ]
-            ),
-            team: new FormControl(
-                '',
-                [
-                    Validators.required
-                ],
-            ),
-        });
-    }
 
-    private loadTeams() {
-        this.spinnerService.show(true);
-        this.teamService
-            .getTeamOptionsByOrganizationId(this.organization.id)
-            .pipe(this.untilThis)
-            .subscribe(teamOptions => {
-                this.teams = teamOptions;
-                this.spinnerService.hide();
-            }, error => {
-                this.toastNotifications.error(error);
-                this.spinnerService.hide();
-            });
-    }
 
     private initAlertData() {
         this.alertSetting.alertCategory = this.alertData.initAlertCategory;
@@ -213,7 +170,5 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
     get projectName() { return this.editForm.controls.projectName; }
 
     get projectDescription() { return this.editForm.controls.projectDescription; }
-
-    get team() { return this.editForm.controls.team; }
 
 }
