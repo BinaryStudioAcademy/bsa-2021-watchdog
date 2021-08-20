@@ -9,7 +9,8 @@
             </p-avatar>
             <div class="member">{{member?.user.email}}</div>
         </div>
-        <div class="overlay-item state" *ngIf="!isLoading && members?.length === 0">Members not found</div>
-        <div class="overlay-item state" *ngIf="isLoading">Searching...</div>
+        <div class="overlay-item state placeholder-empty" *ngIf="!isLoading && members?.length === 0">Members not found
+        </div>
+        <div class="overlay-item state placeholder-empty" *ngIf="isLoading">Searching...</div>
     </ng-template>
 </p-overlayPanel>

@@ -1,6 +1,6 @@
 <p-panel header="Your Teams">
     <div class="teams">
-        <div *ngIf="teams?.length === 0">You are not member of any team.</div>
+        <div class="placeholder-empty" *ngIf="teams?.length === 0">You are not member of any team.</div>
         <div class="team" *ngFor="let team of teams">
             <div class="team-info">
                 <a class="team-avatar" [routerLink]="'./'+team.id">

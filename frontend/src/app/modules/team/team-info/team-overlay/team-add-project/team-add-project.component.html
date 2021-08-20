@@ -7,7 +7,8 @@
             (click)="addProject(project, op)">
             <div>{{project.name}}</div>
         </div>
-        <div class="overlay-item state" *ngIf="!isLoading && projects?.length === 0">No projects found.</div>
-        <div class="overlay-item state" *ngIf="isLoading">Searching...</div>
+        <div class="overlay-item state placeholder-empty" *ngIf="!isLoading && projects?.length === 0">No projects
+            found.</div>
+        <div class="overlay-item state placeholder-empty" *ngIf="isLoading">Searching...</div>
     </ng-template>
 </p-overlayPanel>
