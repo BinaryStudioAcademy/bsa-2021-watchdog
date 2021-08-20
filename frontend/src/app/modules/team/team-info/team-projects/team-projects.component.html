@@ -3,7 +3,6 @@
         <app-team-add-project class="header-button" (addedProject)="addProject($event)" [team]="team">
         </app-team-add-project>
     </ng-template>
-    <app-loading-spinner *ngIf="isLoading" margin="0" size="10px" [overlay]="true"></app-loading-spinner>
     <div class="panel-list">
         <div class="panel-list-item" *ngFor="let projectTeam of projectTeams">
             <div class="star" (click)="toggleStar(projectTeam.id)" *ngIf="projectTeam.isFavorite"><i

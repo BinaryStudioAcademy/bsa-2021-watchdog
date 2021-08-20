@@ -20,9 +20,8 @@ import { OrganizationService } from './organization.service';
     providedIn: 'root'
 })
 export class AuthenticationService {
-    private user: User;
-    private organization: Organization;
-    private member: Member;
+    private static user: User;
+    private static member: Member;
     private readonly tokenHelper: JwtHelperService;
 
     private token: string | null;
@@ -48,51 +47,37 @@ export class AuthenticationService {
     }
 
     getUser() {
-        if (!this.user) {
-            this.user = JSON.parse(localStorage.getItem('user'));
+        if (!AuthenticationService.user) {
+            AuthenticationService.user = JSON.parse(localStorage.getItem('user'));
         }
-        return this.user;
+        return AuthenticationService.user;
     }
 
     getOrganization(): Observable<Organization> {
-        if (!this.organization) {
-            return this.organizationService.getOrganizationsByUserId(this.getUser().id)
-                .pipe(
-                    map(organizations => {
-                        [this.organization] = organizations;
-                        return this.organization;
-                    })
-                );
-        }
-        return of(this.organization);
+        return this.organizationService.getCurrentOrganization(this.getUser().id);
     }
 
     getMember(): Observable<Member> {
-        if (!this.member) {
+        if (!AuthenticationService.member) {
             const userId = this.getUser().id;
             return this.getOrganization()
                 .pipe(switchMap(org => this.memberService.getMemberByUserAndOgranization(org.id, userId)
                     .pipe(map(member => {
-                        this.member = member;
-                        return this.member;
+                        AuthenticationService.member = member;
+                        return AuthenticationService.member;
                     }))));
         }
-        return of(this.member);
+        return of(AuthenticationService.member);
     }
 
     setUser(user: User) {
-        this.user = user;
-        localStorage.setItem('user', JSON.stringify(this.user));
+        AuthenticationService.user = user;
+        localStorage.setItem('user', JSON.stringify(AuthenticationService.user));
     }
 
     removeUser() {
-        this.user = null;
+        AuthenticationService.user = null;
         localStorage.removeItem('user');
-    }
-
-    removeOrganization() {
-        this.organization = null;
-        localStorage.removeItem('organization');
     }
 
     removeIsSignByEmailAndPassword() {
@@ -185,16 +170,15 @@ export class AuthenticationService {
         return from(this.angularFireAuth
             .signInWithPopup(provider))
             .pipe(
-                switchMap(userCredential => {
-                    if (userCredential.additionalUserInfo.isNewUser) {
-                        const newUser = this.pullNewUserFromGitHub(userCredential);
-                        return this.userService.createUser(newUser);
-                    }
-                    return this.userService.getUser(userCredential.user.uid);
-                }),
+                switchMap(userCredential =>
+                    this.userService.getUser(userCredential.user.uid)
+                        .pipe(
+                            switchMap(user => (user ? of(user)
+                                : this.userService.createUser(this.pullNewUserFromGitHub(userCredential))))
+                        )),
                 tap(user => {
                     localStorage.setItem('isSignByEmailAndPassword', 'false');
-                    return this.setUser(user);
+                    this.setUser(user);
                 }),
                 switchMap(() => this.login(route))
             );
@@ -208,13 +192,12 @@ export class AuthenticationService {
         return from(this.angularFireAuth
             .signInWithPopup(provider))
             .pipe(
-                switchMap(userCredential => {
-                    if (userCredential.additionalUserInfo.isNewUser) {
-                        const newUser = this.pullNewUserFromGoogle(userCredential);
-                        return this.userService.createUser(newUser);
-                    }
-                    return this.userService.getUser(userCredential.user.uid);
-                }),
+                switchMap(userCredential =>
+                    this.userService.getUser(userCredential.user.uid)
+                        .pipe(
+                            switchMap(user => (user ? of(user)
+                                : this.userService.createUser(this.pullNewUserFromGoogle(userCredential))))
+                        )),
                 tap(user => {
                     localStorage.setItem('isSignByEmailAndPassword', 'false');
                     return this.setUser(user);
@@ -230,6 +213,16 @@ export class AuthenticationService {
         return from(this.angularFireAuth
             .signInWithPopup(provider))
             .pipe(
+                switchMap(userCredential =>
+                    this.userService.getUser(userCredential.user.uid)
+                        .pipe(
+                            switchMap(user => (user ? of(user)
+                                : this.userService.createUser(this.pullNewUserFromFacebook(userCredential))))
+                        )),
+                tap(user => {
+                    localStorage.setItem('isSignByEmailAndPassword', 'false');
+                    return this.setUser(user);
+                }),
                 switchMap(() => this.login(route))
             );
     }
@@ -260,6 +253,18 @@ export class AuthenticationService {
         return user;
     }
 
+    pullNewUserFromFacebook(credential: firebase.auth.UserCredential) {
+        const user = {
+            uid: credential.user.uid,
+            email: credential.user.email,
+            firstName: (credential.additionalUserInfo.profile as { first_name: string }).first_name,
+            lastName: (credential.additionalUserInfo.profile as { last_name: string }).last_name,
+            avatarUrl: credential.user.photoURL
+        } as NewUser;
+
+        return user;
+    }
+
     login(route?: string[]) {
         this.rememberUser = localStorage.getItem('rememberUser') === 'true';
         return from(this.angularFireAuth.currentUser)
@@ -276,7 +281,7 @@ export class AuthenticationService {
     logout() {
         this.removeJwToken();
         this.removeUser();
-        this.removeOrganization();
+        this.organizationService.clearOrganization();
         this.removeIsSignByEmailAndPassword();
         this.angularFireAuth.signOut()
             .catch(error => {

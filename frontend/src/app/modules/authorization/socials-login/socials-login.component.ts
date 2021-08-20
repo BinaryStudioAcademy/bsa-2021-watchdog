@@ -17,7 +17,7 @@ export class SocialsLoginComponent {
         this.authService.signInWithGitHub(['home'])
             .subscribe(() => { },
                 error => {
-                    this.toastService.error(`${error}`, 'Error');
+                    this.toastService.error(error);
                 });
     }
 
@@ -25,7 +25,7 @@ export class SocialsLoginComponent {
         this.authService.signInWithGoogle(['home'])
             .subscribe(() => { },
                 error => {
-                    this.toastService.error(`${error}`, 'Error');
+                    this.toastService.error(error);
                 });
     }
 
@@ -33,7 +33,7 @@ export class SocialsLoginComponent {
         this.authService.signInWithFacebook(['home'])
             .subscribe(() => { },
                 error => {
-                    this.toastService.error(`${error}`, 'Error');
+                    this.toastService.error(error);
                 });
     }
 }

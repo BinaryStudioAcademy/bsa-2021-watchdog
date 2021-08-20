@@ -7,10 +7,8 @@ import { Subscription } from 'rxjs';
 import { BaseComponent } from '@core/components/base/base.component';
 import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
-import { SpinnerService } from '@core/services/spinner.service';
 import { Tile } from '@shared/models/tile/tile';
 import { TileType } from '@shared/models/tile/enums/tile-type';
-import { Issue } from '@shared/models/issue/issue';
 import { ConfirmOptions } from '@shared/models/confirm-window/confirm-options';
 import { ConfirmWindowService } from '@core/services/confirm-window.service';
 import { Project } from '@shared/models/projects/project';
@@ -20,6 +18,8 @@ import { Organization } from '@shared/models/organization/organization';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { ProjectService } from '@core/services/project.service';
 import { map } from 'rxjs/operators';
+import { IssueService } from '@core/services/issue.service';
+import { SpinnerService } from '@core/services/spinner.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -33,7 +33,6 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     updateSubscription$: Subscription;
     tiles: Tile[] = [];
     tileTypes = TileType;
-    issues: Issue[] = [];
     projects: Project[] = [];
     user: User;
     organization: Organization;
@@ -45,11 +44,13 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         private updateDataService: ShareDataService<Dashboard>,
         private deleteDataService: ShareDataService<number>,
         private toastNotificationService: ToastNotificationService,
-        private spinnerService: SpinnerService,
         private confirmWindowService: ConfirmWindowService,
         private tileService: TileService,
         private authService: AuthenticationService,
-        private projectService: ProjectService
+        private projectService: ProjectService,
+        private issueService: IssueService,
+        private toastNotification: ToastNotificationService,
+        private spinnerService: SpinnerService
     ) {
         super();
     }
@@ -76,12 +77,12 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                 this.updateDataService.changeMessage(this.dashboard);
                 this.toastNotificationService.success('Dashboard has been updated');
             }, error => {
-                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.toastNotificationService.error(error);
             });
     }
 
     deleteDashboard() {
-        this.spinnerService.show();
+        this.spinnerService.show(true);
         this.dashboardService.deleteDashboard(this.dashboard.id)
             .pipe(this.untilThis)
             .subscribe(() => {
@@ -90,7 +91,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                 this.deleteDataService.changeMessage(this.dashboard.id);
                 this.spinnerService.hide();
             }, error => {
-                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.toastNotificationService.error(error);
                 this.spinnerService.hide();
             });
     }
@@ -114,9 +115,6 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
 
         this.initProjects()
             .subscribe(() => {
-                //TODO: Get issues of all currentUser projects
-                this.initFakeIssues();
-
                 this.getDashboard(id);
                 this.getDashboardTiles(+id);
             });
@@ -131,7 +129,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     }
 
     getDashboard(dashboardId: string) {
-        this.spinnerService.show();
+        this.spinnerService.show(true);
         this.dashboardService.get(dashboardId)
             .pipe(this.untilThis)
             .subscribe(dashboardById => {
@@ -140,23 +138,23 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                     .subscribe((dashboard) => {
                         this.dashboard = dashboard;
                     }, error => {
-                        this.toastNotificationService.error(`${error}`, '', 2000);
+                        this.toastNotificationService.error(error);
                     });
                 this.spinnerService.hide();
             }, error => {
-                this.toastNotificationService.error(`${error}`, '', 2000);
+                this.toastNotificationService.error(error);
             });
     }
 
     getDashboardTiles(dashboardId: number) {
-        this.spinnerService.show();
+        this.spinnerService.show(true);
         this.tileService.getAllTilesByDashboardId(dashboardId)
             .pipe(this.untilThis)
             .subscribe(response => {
                 this.tiles = response;
                 this.spinnerService.hide();
             }, error => {
-                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.toastNotificationService.error(error);
                 this.spinnerService.hide();
             });
     }
@@ -171,7 +169,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     }
 
     deleteTile(tile: Tile) {
-        this.spinnerService.show();
+        this.spinnerService.show(true);
         this.tileService.deleteTile(tile.id)
             .pipe(this.untilThis)
             .subscribe(() => {
@@ -180,7 +178,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                 this.toastNotificationService.success('Tile Deleted');
             }, error => {
                 this.spinnerService.hide();
-                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.toastNotificationService.error(error);
             });
     }
 
@@ -191,71 +189,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                 this.tiles = [];
                 this.toastNotificationService.success('Tile Cleared');
             }, error => {
-                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.toastNotificationService.error(error);
             });
-    }
-
-    private initFakeIssues() {
-        this.issues = [{
-            name: 'Issue 1',
-            events: 5,
-            description: 'info',
-            isNew: true,
-            users: undefined,
-            projectTag: 'info',
-            createdAt: undefined
-        },
-        {
-            name: 'Issue 2',
-            events: 1,
-            description: 'info',
-            isNew: true,
-            users: undefined,
-            projectTag: 'info',
-            createdAt: undefined
-        }, {
-            name: 'Issue 3',
-            events: 3,
-            description: 'info',
-            isNew: true,
-            users: undefined,
-            projectTag: 'info',
-            createdAt: undefined
-        },
-        {
-            name: 'Issue 4',
-            events: 2,
-            description: 'info',
-            isNew: true,
-            users: undefined,
-            projectTag: 'info',
-            createdAt: undefined
-        }, {
-            name: 'Issue 5',
-            events: 8,
-            description: 'info',
-            isNew: true,
-            users: undefined,
-            projectTag: 'info',
-            createdAt: undefined
-        },
-        {
-            name: 'Issue 6',
-            events: 66,
-            description: 'info',
-            isNew: true,
-            users: undefined,
-            projectTag: 'info',
-            createdAt: undefined
-        },
-        {
-            name: 'Issue 7',
-            events: 11,
-            description: 'info',
-            isNew: true,
-            users: undefined,
-            projectTag: 'info',
-            createdAt: undefined
-        }];
     }
 }

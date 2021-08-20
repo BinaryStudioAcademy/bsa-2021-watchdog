@@ -38,7 +38,8 @@ namespace Watchdog.Collector.API
         {
             services.AddControllers();
             services.AddHealthChecks();
-            
+
+            services.AddAutoMapper();
             services.AddElasticSearch(Configuration);
             services.RegisterCustomServices();
 
@@ -48,7 +49,9 @@ namespace Watchdog.Collector.API
             });
 
             services.AddAutoMapper();
-            
+
+            services.AddRabbitMQIssueProducer(Configuration);
+
             services.AddCors(options =>
             {
                 options.AddPolicy("AnyOrigin", x => x

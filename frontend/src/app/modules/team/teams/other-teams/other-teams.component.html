@@ -1,6 +1,5 @@
 <div class="teams-panel">
     <p-panel header="Other Teams">
-        <app-loading-spinner *ngIf="isLoading" [overlay]="true" [size]="'10px'"></app-loading-spinner>
         <div *ngIf="teams?.length === 0">There is no teams you can join.</div>
         <div class="team" *ngFor="let team of teams">
             <div class="team-info">

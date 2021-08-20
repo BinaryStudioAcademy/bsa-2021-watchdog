@@ -80,7 +80,7 @@ export class TileDialogService extends BaseComponent implements OnDestroy {
     }
 
     private addTile(newTile: NewTile, dashboardTiles: Tile[]) {
-        this.spinnerService.show();
+        this.spinnerService.show(true);
         this.tileService.addTile(newTile)
             .pipe(this.untilThis)
             .subscribe((response) => {
@@ -90,13 +90,13 @@ export class TileDialogService extends BaseComponent implements OnDestroy {
                     this.toastNotificationService.success('Tile has been added');
                 }
             }, error => {
-                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.toastNotificationService.error(error);
                 this.spinnerService.hide();
             });
     }
 
     private updateTile(updatedTile: UpdateTile, tileToUpdate: Tile, applySettings: () => void) {
-        this.spinnerService.show();
+        this.spinnerService.show(true);
         this.tileService.updateTile(updatedTile)
             .pipe(this.untilThis)
             .subscribe((response) => {
@@ -107,7 +107,7 @@ export class TileDialogService extends BaseComponent implements OnDestroy {
                     this.toastNotificationService.success('Tile has been updated');
                 }
             }, error => {
-                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.toastNotificationService.error(error);
                 this.spinnerService.hide();
             });
     }
