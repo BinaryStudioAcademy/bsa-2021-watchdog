@@ -19,6 +19,8 @@ import { regexs } from '@shared/constants/regexs';
 import { ProjectService } from '@core/services/project.service';
 import { Router } from '@angular/router';
 import { SpinnerService } from '@core/services/spinner.service';
+import { Project } from '@shared/models/projects/project';
+import { throwIfEmpty } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-project',
@@ -38,8 +40,12 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
     };
     teams: TeamOption[];
     alertSetting = {} as AlertSettings;
-    formGroup = {} as FormGroup;
+
+    editForm: FormGroup = new FormGroup({});
+
     createTeamDialog: DynamicDialogRef;
+
+    project: Project;
 
     constructor(
         private toastNotifications: ToastNotificationService,
@@ -56,18 +62,37 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
+        //this.project.name = "Android";
+        //this.project.description = "Super";
         this.user = this.authService.getUser();
         this.authService.getOrganization()
             .subscribe(organization => {
                 this.organization = organization;
                 this.loadTeams();
             });
-        this.initAlertData();
-        this.addValidation();
+        //this.initAlertData();
+        //this.addValidation();
+        this.validationsInit();
+    }
+
+    validationsInit() {
+        this.editForm.addControl('projectName', new FormControl('this.project.name', [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(50),
+            Validators.pattern(regexs.projectName),
+        ]));
+        this.editForm.addControl('projectDescription', new FormControl('this.project.description', [
+            Validators.maxLength(1000),
+            Validators.pattern(regexs.projectDescription),
+        ]));
+        this.editForm.addControl('team', new FormControl('', [
+            Validators.required,
+        ]));
     }
 
     private addValidation() {
-        this.formGroup = new FormGroup({
+        this.editForm = new FormGroup({
             alertCategory: new FormControl(
                 this.alertData.alertCategories[0].value,
                 [
@@ -75,7 +100,7 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
                 ]
             ),
             projectName: new FormControl(
-                '',
+                this.project.name,
                 [
                     Validators.required,
                     Validators.minLength(3),
@@ -84,7 +109,7 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
                 ]
             ),
             projectDescription: new FormControl(
-                '',
+                this.project.description,
                 [
                     Validators.maxLength(1000),
                     Validators.pattern(regexs.projectDescription)
@@ -122,34 +147,6 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
         };
     }
 
-    private onTabChange(label: string = ''): void {
-        this.newProject.platformId = undefined;
-        if (this.platforms.platformCards) {
-            switch (label) {
-                case 'Browser': {
-                    this.platforms.viewPlatformCards = this.platforms.platformCards.filter(value => value.platformTypes.isBrowser);
-                    break;
-                }
-                case 'Server': {
-                    this.platforms.viewPlatformCards = this.platforms.platformCards.filter(value => value.platformTypes.isServer);
-                    break;
-                }
-                case 'Mobile': {
-                    this.platforms.viewPlatformCards = this.platforms.platformCards.filter(value => value.platformTypes.isMobile);
-                    break;
-                }
-                case 'Desktop': {
-                    this.platforms.viewPlatformCards = this.platforms.platformCards.filter(value => value.platformTypes.isDesktop);
-                    break;
-                }
-                default: {
-                    this.platforms.viewPlatformCards = this.platforms.platformCards.concat();
-                    break;
-                }
-            }
-        }
-    }
-
     openDialog() {
         this.createTeamDialog = this.dialogService.open(CreateTeamComponent, {
             header: 'Creating team',
@@ -184,7 +181,7 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
     }
 
     createProject(): void {
-        if (this.formGroup.valid && this.newProject.platformId) {
+        if (this.editForm.valid && this.newProject.platformId) {
             this.newProject.organizationId = this.organization.id;
             this.newProject.createdBy = this.user.id;
             this.newProject.alertSettings = {
@@ -208,4 +205,15 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
             this.toastNotifications.error('Form is not valid', 'Error');
         }
     }
+
+    reset() {
+        this.editForm.reset();
+    }
+
+    get projectName() { return this.editForm.controls.projectName; }
+
+    get projectDescription() { return this.editForm.controls.projectDescription; }
+
+    get team() { return this.editForm.controls.team; }
+
 }

@@ -2,8 +2,8 @@
     Edit Project
     <div class="header-buttons">
         <button #saveBut pButton pRipple class="p-button-primary p-button-outlined" label="Save" (click)="createProject()"
-        [disabled]="!formGroup.valid || !newProject.platformId"></button>
-        <button pButton pRipple class="p-button-secondary p-button-outlined" label="Reset"></button>
+        [disabled]="!editForm.valid || !newProject.platformId"></button>
+        <button pButton pRipple class="p-button-secondary p-button-outlined" label="Reset" (click)="reset()"></button>
     </div>
 </h1>
 <div class="edit-project-container">
@@ -13,27 +13,24 @@
         <p-divider></p-divider>
         <div class="name-settings">
             <!--    Name input    -->
-            <div [formGroup]="formGroup" class="project-name">
+            <div [formGroup]="editForm" class="project-name">
                 <span class="title">Project name</span>
                 <div class="p-input-icon-left">
                     <i class="pi pi-file"></i>
-                    <input aria-describedby="projectName" formControlName="projectName" pInputText
-                           placeholder="Project name"
-                           type="text"
-                           class="project-name-input">
+                    <input formControlName="projectName" pInputText placeholder="Project name" class="project-name-input">
                 </div>
-                <div *ngIf="formGroup.controls.projectName.touched && formGroup.controls.projectName.invalid"
+                <div *ngIf="projectName.touched && projectName.invalid"
                      class="input-validation-error">
-                    <small *ngIf="formGroup.controls.projectName.errors.required" class="p-error">
+                    <small *ngIf="projectName.errors.required" class="p-error">
                         Сan not be empty
                     </small>
-                    <small *ngIf="formGroup.controls.projectName.errors.minlength" class="p-error">
+                    <small *ngIf="projectName.errors.minlength" class="p-error">
                         At least 3 characters
                     </small>
-                    <small *ngIf="formGroup.controls.projectName.errors.maxlength" class="p-error">
+                    <small *ngIf="projectName.errors.maxlength" class="p-error">
                         No more than 50 characters
                     </small>
-                    <small *ngIf="formGroup.controls.projectName.errors.pattern" class="p-error">
+                    <small *ngIf="projectName.errors.pattern" class="p-error">
                         May contain lowercase (a-z) and uppercase (A-Z) letters, numbers (0-9), dashes,
                         underscores and spaces
                     </small>
@@ -41,7 +38,7 @@
 
             </div>
             <!--    Team DropDown   -->
-            <div [formGroup]="formGroup" class="project-team">
+            <div [formGroup]="editForm" class="project-team">
                 <span class="title">Team</span>
                 <div class="dropdown-with-button">
                     <p-dropdown [options]="teams" aria-describedby="team" class="radiobutton-settings-alert-type"
@@ -51,10 +48,10 @@
                     </p-dropdown>
 
                 </div>
-                <!--    Team not selected Warning   -->
-                <div *ngIf="formGroup.controls.team.dirty && formGroup.controls.team.invalid"
+                    <!-- Team not selected Warning -->
+                <div *ngIf="editForm.controls.team.dirty && editForm.controls.team.invalid"
                      class="input-validation-error">
-                    <small *ngIf="formGroup.controls.team.errors.required" class="p-error">
+                    <small *ngIf="editForm.controls.team.errors.required" class="p-error">
                         Required field
                     </small>
                 </div>
@@ -66,18 +63,18 @@
                 (click) = "openDialog()"></button>
             </div>
             <!-- Description -->
-            <div [formGroup]="formGroup" class="project-description">
-                <span class="title">Project name</span>
+            <div [formGroup]="editForm" class="project-description">
+                <span class="title">Description</span>
                 <textarea [autoResize]="true" formControlName="projectDescription" pInputTextarea
                     placeholder="Description"
                     type="textarea" maxlength="1000">
                 </textarea>
-                <div *ngIf="formGroup.controls.projectDescription.touched && formGroup.controls.projectDescription.invalid"
+                <div *ngIf="projectDescription.touched && projectDescription.invalid"
                      class="validation">
-                     <small *ngIf="formGroup.controls.projectDescription.errors.maxlength" class="p-error">
+                     <small *ngIf="projectDescription.errors.maxlength" class="p-error">
                         No more than 1000 characters
                     </small>
-                    <small *ngIf="formGroup.controls.projectDescription.errors.pattern" class="p-error">
+                    <small *ngIf="projectDescription.errors.pattern" class="p-error">
                         May contain lowercase (a-z) and uppercase (A-Z) letters, numbers (0-9) and symbols<br>-_!#$%&'*+—/=?^`&#123;|&#125;~.,:;`"\№@()<>[]
                     </small>
                 </div>
@@ -86,7 +83,7 @@
         </div>
     </div>
     <!--    Alert RadioButtons    -->
-    <div class="alert-settings">
+    <!-- <div class="alert-settings">
         <h2 class="title">Alert settings</h2>
         <p-divider></p-divider>
 
@@ -96,7 +93,7 @@
                                formControlName="alertCategory" name="alertCategory">
                 </p-radioButton>
             </form>
-            <!--    Specific Alert Settings    -->
+                Specific Alert Settings
             <div class="special-settings" *ngIf="category.value === 3">
                 <p-inputNumber [(ngModel)]="alertSetting.specialAlertSetting.alertsCount"
                                [disabled]="formGroup.controls.alertCategory.value !== 3"
@@ -122,7 +119,7 @@
                 </p-dropdown>
             </div>
         </div>
-    </div>
+    </div> -->
 
 </div>
 
