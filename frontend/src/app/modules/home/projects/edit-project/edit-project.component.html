@@ -20,11 +20,10 @@
                     <input aria-describedby="projectName" formControlName="projectName" pInputText
                            placeholder="Project name"
                            type="text"
-                           class="project-name-input"
-                           [(ngModel)] = "newProject.name">
+                           class="project-name-input">
                 </div>
                 <div *ngIf="formGroup.controls.projectName.touched && formGroup.controls.projectName.invalid"
-                     class="input-validation-error" id="projectName">
+                     class="input-validation-error">
                     <small *ngIf="formGroup.controls.projectName.errors.required" class="p-error">
                         Сan not be empty
                     </small>
@@ -46,8 +45,7 @@
                 <span class="title">Team</span>
                 <div class="dropdown-with-button">
                     <p-dropdown [options]="teams" aria-describedby="team" class="radiobutton-settings-alert-type"
-                                formControlName="team" optionLabel="name" placeholder="Select team" optionValue="id"
-                                [(ngModel)] = "newProject.teamId">
+                                formControlName="team" optionLabel="name" placeholder="Select team" optionValue="id">
                         <ng-template let-team pTemplate="item">#{{team.name}}</ng-template>
                         <ng-template let-team pTemplate="selectedItem">#{{team.name}}</ng-template>
                     </p-dropdown>
@@ -55,7 +53,7 @@
                 </div>
                 <!--    Team not selected Warning   -->
                 <div *ngIf="formGroup.controls.team.dirty && formGroup.controls.team.invalid"
-                     class="input-validation-error" id="team">
+                     class="input-validation-error">
                     <small *ngIf="formGroup.controls.team.errors.required" class="p-error">
                         Required field
                     </small>
@@ -72,11 +70,10 @@
                 <span class="title">Project name</span>
                 <textarea [autoResize]="true" formControlName="projectDescription" pInputTextarea
                     placeholder="Description"
-                    type="textarea" maxlength="1000"
-                    [(ngModel)] = "newProject.description">
+                    type="textarea" maxlength="1000">
                 </textarea>
                 <div *ngIf="formGroup.controls.projectDescription.touched && formGroup.controls.projectDescription.invalid"
-                     class="validation" id="projectDescription">
+                     class="validation">
                      <small *ngIf="formGroup.controls.projectDescription.errors.maxlength" class="p-error">
                         No more than 1000 characters
                     </small>
@@ -90,13 +87,13 @@
     </div>
     <!--    Alert RadioButtons    -->
     <div class="alert-settings">
-        <h2 class="title">Set your default alert settings</h2>
+        <h2 class="title">Alert settings</h2>
         <p-divider></p-divider>
 
         <div *ngFor="let category of alertData.alertCategories" class="alert-form">
             <form [formGroup]="formGroup">
                 <p-radioButton [inputId]="category.value.toString()" [value]="category.value" [label]="category.label"
-                               formControlName="alertCategory" name="alertCategory" [(ngModel)]="alertSetting.alertCategory">
+                               formControlName="alertCategory" name="alertCategory">
                 </p-radioButton>
             </form>
             <!--    Specific Alert Settings    -->
