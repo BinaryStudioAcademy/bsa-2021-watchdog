@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { InvitedMember } from '@shared/models/member/invited-member';
 import { Member } from '@shared/models/member/member';
 import { NewMember } from '@shared/models/member/new-member';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { CoreHttpService } from './core-http.service';
 
 @Injectable({
@@ -21,7 +22,26 @@ export class MemberService {
         return this.httpService.getRequest<Member[]>(`${this.routePrefix}/organization/${organizationId}`);
     }
 
-    getMemberByUserAndOgranization(organizationId: number, userId: number): Observable<Member> {
+    private static member: Member;
+
+    clearMember() {
+        MemberService.member = null;
+    }
+
+    getCurrentMember(organizationId: number, userId: number): Observable<Member> {
+        if (!MemberService.member) {
+            return this.getMemberByUserAndOrganization(organizationId, userId)
+                .pipe(
+                    tap(member => {
+                        MemberService.member = member;
+                    }),
+                    map(() => MemberService.member)
+                );
+        }
+        return of(MemberService.member);
+    }
+
+    getMemberByUserAndOrganization(organizationId: number, userId: number): Observable<Member> {
         return this.httpService.getRequest<Member>(`${this.routePrefix}/organization/${organizationId}/user/${userId}`);
     }
 

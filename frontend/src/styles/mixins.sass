@@ -7,17 +7,15 @@
 @mixin title
     font-size: 2rem
     padding: $half-indent
-    height: 75px
+    height: $title-hight
     display: flex
     align-items: center
     margin-bottom: 5px
-
 
 @mixin disable-select
     -webkit-user-select: none
     -moz-user-select: none
     user-select: none
-
 
 @mixin media-padding($selector) // mixin to formating padding depens on screen width
     #{$selector}
@@ -33,4 +31,3 @@
         #{$selector}
             padding-left: 0
             padding-right: 0
-

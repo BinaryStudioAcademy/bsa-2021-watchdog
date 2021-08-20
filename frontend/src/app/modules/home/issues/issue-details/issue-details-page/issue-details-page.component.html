@@ -5,10 +5,10 @@
     </div>
 </div>
 <!--    NotFound    -->
-<div *ngIf="!issueMessage">
+<div *ngIf="isNotFound">
     <app-not-found></app-not-found>
 </div>
-<ng-template [ngIf]="issueMessage">
+<ng-template [ngIf]="issueMessage && !isNotFound">
     <!--    Content    -->
     <div class="issue-details-content">
         <p-tabView [(activeIndex)]="activeTabIndex" styleClass="tabview">

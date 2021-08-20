@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { BaseComponent } from '@core/components/base/base.component';
 import { AuthenticationService } from '@core/services/authentication.service';
@@ -17,6 +17,8 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
     user: User;
     editForm: FormGroup = new FormGroup({});
     pass: FormGroup = new FormGroup({});
+
+    @ViewChild('saveBut') saveButton: ElementRef<HTMLButtonElement>;
 
     constructor(
         private authService: AuthenticationService,
@@ -67,6 +69,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
                 .then(() => {
                     this.authService.updatePassword(pass.confirmPassword);
                     this.toastNotificationService.success('Password has been updated');
+                    this.pass.reset();
                 })
                 .catch(error => {
                     console.warn(error);
