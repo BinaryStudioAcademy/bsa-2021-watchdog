@@ -1,38 +1,70 @@
 @import src/styles/variables
 @import src/styles/mixins
 
-:host ::ng-deep
-    .org-label
-        color: $text-color
-        border-radius: 7px
-        align-items: center
-        background: radial-gradient($background-color, $background-hover-color)
-        display: flex
-        width: 100%
-        cursor: pointer
-        transition: background-color .2s ease-in-out
-        &:hover
-            background-color: $background-hover-color
-        .p-dropdown-label
-            display: flex
+::ng-deep
+    .org-dropdown
+        .org-label
+            color: $primary-color-text
             align-items: center
-            gap: .2em
-            padding-right: 0
-        .p-dropdown
-            padding: 0
-        .p-dropdown-item
+            background: none
             display: flex
-            padding: 0.5rem .5em
-            align-items: center
-            gap: .2em
-        .p-dropdown-trigger
-            width: 1.7em
-            display: none
-        .p-dropdown-trigger-icon
-            font-size: 1.2em
+            width: 100%
+            cursor: pointer
 
-.dropdown-wrapper
-    width: 100%
+        .org-title
+            margin-left: 7px
+            font-family: "DM Sans"
+            margin-top: 4px
+            display: flex
+            flex-direction: column
+            .org-name
+                font-family: "DM Sans", serif
+                font-weight: 520
+            .org-user
+                font-size: small
+                color: rgb(255,255,255, 0.55)
+
+        .org-label-item
+            color: $text-color
+            align-items: center
+            background: none
+            display: flex
+            width: 100%
+            cursor: pointer
+            .org-title
+                margin-top: 5px
+                .org-name
+                    font-size: smaller
+                    font-weight: 520
+                .org-user
+                    color: #c7c7c7
+
+        .p-dropdown
+            border: none !important
+        .p-dropdown-trigger-icon
+            color: $primary-color-text
+
+        &.collapse-sidebar
+            .p-dropdown-trigger
+                display: none
+        .p-dropdown-label
+            height: 100%
+            padding: 0 !important
+
+        .p-dropdown-item
+            padding: 0.25rem 0.5rem !important
+
+        .org-avatar-item.p-avatar
+            background-color: $primary-color-darkest
+        .org-avatar-item .p-avatar-text
+            color: $primary-color-text
+
+    .dropdown-wrapper
+        width: 100%
+        height: $title-hight
+        display: flex
+        align-items: center
+
 .icon
     display: block
     margin-left: auto
@@ -61,14 +93,10 @@
     white-space: inherit
     text-overflow: inherit
 
-::ng-deep
-    .org-avatar-item.p-avatar
-        background-color: $primary-color-darkest
-    .org-avatar-item .p-avatar-text
-        font-family: "DM Sans", serif
-        color: $primary-color-text
-
 .collapsed-org-avatar
     cursor: pointer
-    padding-left: 3px
+    padding: 0
     @include disable-select
+.content
+    display: block
+    width: 100%

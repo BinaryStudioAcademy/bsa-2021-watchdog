@@ -20,20 +20,20 @@
         <app-organization-menu [collapsed]="collapsed" class="sidebar-avatar"></app-organization-menu>
         <!--    Sidebar buttons    -->
         <div class="sidebar-top">
-            <!--    Teams button    -->
-            <div>
-                <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Teams' : undefined}}"
-                        routerLink="teams">
-                    <i class="pi pi-users"></i>
-                    <span *ngIf="!collapsed">Teams</span>
-                </button>
-            </div>
             <!--    Members button    -->
             <div>
                 <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Members' : undefined}}"
                         routerLink="members">
                     <i class="pi pi-user"></i>
                     <span *ngIf="!collapsed">Members</span>
+                </button>
+            </div>
+            <!--    Teams button    -->
+            <div>
+                <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Teams' : undefined}}"
+                        routerLink="teams">
+                    <i class="pi pi-users"></i>
+                    <span *ngIf="!collapsed">Teams</span>
                 </button>
             </div>
             <!--    Projects button    -->
@@ -69,10 +69,10 @@
             </div>
             <!--    Dashboard buttons    -->
             <div [ngClass]="{
-            'dashboards-none' : !dashboardsShown,
-            'dashboards': dashboardsShown && !collapsed,
-            'dashboards-collapsed': dashboardsShown && collapsed
-            }">
+                'dashboards-none' : !dashboardsShown,
+                'dashboards': dashboardsShown && !collapsed,
+                'dashboards-collapsed': dashboardsShown && collapsed
+                }">
                 <div *ngFor="let dashboard of dashboards">
                     <button [routerLinkActive]="['active']" [routerLink]="['dashboard', dashboard.id]"
                             class="button dashboard" pTooltip="{{collapsed ? dashboard.name : undefined}}">
@@ -81,10 +81,23 @@
                     </button>
                 </div>
                 <!--    Add dashboard button    -->
-                <button (click)="displayModal=true" class="button dashboard add-button"
-                        pTooltip="{{collapsed ? 'Add dashboard' : undefined}}">
+                <button 
+                    (click)="displayModal=true" 
+                    class="button dashboard add-button"
+                    pTooltip="{{collapsed ? 'Add dashboard' : undefined}}">
                     <i class="pi pi-plus"></i>
                     <span *ngIf="!collapsed">Add</span>
+                </button>
+            </div>
+            <!--    Setting button    -->
+            <div>
+                <button 
+                    [routerLinkActive]="['active']" 
+                    class="button" 
+                    pTooltip="{{collapsed ? 'Settings' : undefined}}"
+                    routerLink="organization/settings">
+                    <i class="pi pi-cog"></i>
+                    <span *ngIf="!collapsed">Settings</span>
                 </button>
             </div>
         </div>
