@@ -1,0 +1,45 @@
+<!--    Header    -->
+<div class="issue-details-header">
+    <div>
+        <h2 appTooltipFullName>{{issueMessage?.issueDetails.className}}</h2>
+    </div>
+</div>
+<!--    NotFound    -->
+<div *ngIf="!issueMessage">
+    <app-not-found></app-not-found>
+</div>
+<ng-template [ngIf]="issueMessage">
+    <!--    Content    -->
+    <div class="issue-details-content">
+        <p-tabView [(activeIndex)]="activeTabIndex" styleClass="tabview">
+            <p-tabPanel header="Issue details">
+                <ng-template pTemplate="content">
+                    <app-issue-details [issueMessage]="issueMessage"></app-issue-details>
+                </ng-template>
+            </p-tabPanel>
+            <p-tabPanel header="Environment">
+                <ng-template pTemplate="content">
+                    <app-issue-environment
+                        [issueEnvironment]="issueMessage.issueDetails.environmentMessage"></app-issue-environment>
+                </ng-template>
+            </p-tabPanel>
+            <p-tabPanel *ngIf="issueMessage.issueDetails.responseErrorMessage" header="HTTP">
+                <ng-template pTemplate="content">
+                    <app-issue-http
+                        [issueHttpResponse]="issueMessage.issueDetails.responseErrorMessage"></app-issue-http>
+                </ng-template>
+            </p-tabPanel>
+            <p-tabPanel *ngIf="issueMessage.issueDetails.breadcrumbs?.length" header="Breadcrumbs">
+                <ng-template pTemplate="content">
+                    <app-breadcrumbs [issueMessage]="issueMessage"></app-breadcrumbs>
+                </ng-template>
+            </p-tabPanel>
+            <p-tabPanel header="Events">
+                <ng-template pTemplate="content">
+                    <app-issue-events [issueMessage]="issueMessage"></app-issue-events>
+                </ng-template>
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+
+</ng-template>

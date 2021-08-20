@@ -10,5 +10,6 @@ namespace Watchdog.Core.Common.Models.Issue
         public ICollection<StackFrame> StackTrace { get; set; }
         public HttpResponseErrorMessage ResponseErrorMessage { get; set; }
         public IssueEnvironment EnvironmentMessage { get; set; }
+        public ICollection<Breadcrumb> Breadcrumbs { get; set; }
     }
 }

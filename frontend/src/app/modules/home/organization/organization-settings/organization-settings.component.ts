@@ -6,6 +6,7 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
 import { BaseComponent } from '@core/components/base/base.component';
 import { Organization } from '@shared/models/organization/organization';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { SpinnerService } from '@core/services/spinner.service';
 
 @Component({
     selector: 'app-organization-settings',
@@ -13,7 +14,6 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
     styleUrls: ['./organization-settings.style.sass']
 })
 export class OrganizationSettingsComponent extends BaseComponent implements OnInit {
-    isLoading: boolean = false;
     organization: Organization;
     parentForm: FormGroup = new FormGroup({});
 
@@ -22,21 +22,22 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
     constructor(
         private authService: AuthenticationService,
         private toastService: ToastNotificationService,
-        private organizationService: OrganizationService
+        private organizationService: OrganizationService,
+        private spinnerService: SpinnerService
     ) { super(); }
 
     ngOnInit() {
-        this.isLoading = true;
+        this.spinnerService.show(true);
         this.authService.getOrganization()
             .pipe(this.untilThis)
             .subscribe(
                 organization => {
                     this.organization = organization;
-                    this.isLoading = false;
+                    this.spinnerService.hide();
                 },
                 error => {
                     this.toastService.error(error);
-                    this.isLoading = false;
+                    this.spinnerService.hide();
                 }
             );
 
@@ -62,16 +63,16 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
     }
 
     save() {
-        this.isLoading = true;
+        this.spinnerService.show(true);
         const updateOrg: OrganizationSettings = { ...this.parentForm.value };
         this.organizationService.updateSettings(this.organization.id, updateOrg)
             .pipe(this.untilThis).subscribe(updatedOrg => {
                 Object.assign(this.organization, updatedOrg);
-                this.isLoading = false;
+                this.spinnerService.hide();
                 this.saveButton.nativeElement.disabled = true;
                 this.toastService.success('Organization was updated!');
             }, error => {
-                this.isLoading = false;
+                this.spinnerService.hide();
                 this.toastService.error(error);
             });
     }

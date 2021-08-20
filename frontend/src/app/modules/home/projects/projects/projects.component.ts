@@ -6,6 +6,7 @@ import { ProjectService } from '@core/services/project.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { Organization } from '@shared/models/organization/organization';
 import { AuthenticationService } from '@core/services/authentication.service';
+import { SpinnerService } from '@core/services/spinner.service';
 
 @Component({
     selector: 'app-projects',
@@ -16,11 +17,11 @@ import { AuthenticationService } from '@core/services/authentication.service';
 export class ProjectsComponent extends BaseComponent implements OnInit {
     public projects: Project[];
     organization: Organization;
-    public loadingNumber = 0;
     constructor(
         private projectService: ProjectService,
         private toastNotifications: ToastNotificationService,
-        private authService: AuthenticationService
+        private authService: AuthenticationService,
+        private spinnerService: SpinnerService
     ) {
         super();
     }
@@ -30,7 +31,7 @@ export class ProjectsComponent extends BaseComponent implements OnInit {
     }
 
     initData() {
-        this.loadingNumber += 1;
+        this.spinnerService.show(true);
         this.authService.getOrganization()
             .pipe(this.untilThis)
             .subscribe(organization => {
@@ -40,10 +41,10 @@ export class ProjectsComponent extends BaseComponent implements OnInit {
                     .pipe(this.untilThis)
                     .subscribe(projects => {
                         this.projects = projects;
-                        this.loadingNumber -= 1;
+                        this.spinnerService.hide();
                     }, error => {
-                        this.toastNotifications.error(`${error}`);
-                        this.loadingNumber -= 1;
+                        this.toastNotifications.error(error);
+                        this.spinnerService.hide();
                     });
             });
     }

@@ -15,7 +15,7 @@ namespace Watchdog.Core.BLL.Services
 {
     public class UserService : BaseService, IUserService
     {
-        public UserService(WatchdogCoreContext context, IMapper mapper) : base (context, mapper) 
+        public UserService(WatchdogCoreContext context, IMapper mapper) : base(context, mapper)
         {
         }
 
@@ -73,6 +73,24 @@ namespace Watchdog.Core.BLL.Services
             }
 
             return !(await _context.Users.ToListAsync()).Any(u => u.Email == userEmail);
+        }
+        
+        public async Task<ICollection<string>> GetUserUIdsByApplicationIdAsync(int applicationId)
+        {
+            var teams = _context.Teams
+               .Include(t => t.ApplicationTeams)
+               .Include(t => t.TeamMembers)
+               .ThenInclude(tm => tm.Member)
+               .ThenInclude(m => m.User);
+
+            var members = teams.Where(t => t.ApplicationTeams.Any(at => at.ApplicationId == applicationId))
+                .SelectMany(t => t.TeamMembers)
+                .Select(tm => tm.Member);
+
+            var usersIds = await members.Select(m => m.User.Uid)
+                .Distinct()
+                .ToListAsync();
+            return usersIds;
         }
     }
 }

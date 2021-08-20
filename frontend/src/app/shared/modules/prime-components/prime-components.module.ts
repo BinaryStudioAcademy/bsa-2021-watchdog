@@ -39,6 +39,9 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { DialogService } from 'primeng/dynamicdialog';
 import { RatingModule } from 'primeng/rating';
 import { TreeModule } from 'primeng/tree';
+import { TimelineModule } from 'primeng/timeline';
+import { CardModule } from 'primeng/card';
+import { AvatarGroupModule } from 'primeng/avatargroup';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -81,6 +84,9 @@ import { TreeModule } from 'primeng/tree';
         OverlayPanelModule,
         RatingModule,
         TreeModule,
+        TimelineModule,
+        CardModule,
+        AvatarGroupModule,
     ],
     exports: [
         ButtonModule,
@@ -120,6 +126,9 @@ import { TreeModule } from 'primeng/tree';
         RatingModule,
         MultiSelectModule,
         TreeModule,
+        TimelineModule,
+        CardModule,
+        AvatarGroupModule,
     ],
     declarations: [],
     providers: [

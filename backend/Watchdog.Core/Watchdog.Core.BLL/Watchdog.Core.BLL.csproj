@@ -1,19 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="10.1.1" />
-    <PackageReference Include="NEST" Version="7.14.0" />
-    <PackageReference Include="SendGrid" Version="9.24.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="10.1.1" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
+		<PackageReference Include="NEST" Version="7.14.0" />
+		<PackageReference Include="SendGrid" Version="9.24.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Watchdog.RabbitMQ.Shared\Watchdog.RabbitMQ.Shared.csproj" />
-    <ProjectReference Include="..\Watchdog.Core.Common\Watchdog.Core.Common.csproj" />
-    <ProjectReference Include="..\Watchdog.Core.DAL\Watchdog.Core.DAL.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Watchdog.RabbitMQ.Shared\Watchdog.RabbitMQ.Shared.csproj" />
+		<ProjectReference Include="..\Watchdog.Core.Common\Watchdog.Core.Common.csproj" />
+		<ProjectReference Include="..\Watchdog.Core.DAL\Watchdog.Core.DAL.csproj" />
+	</ItemGroup>
 
 </Project>

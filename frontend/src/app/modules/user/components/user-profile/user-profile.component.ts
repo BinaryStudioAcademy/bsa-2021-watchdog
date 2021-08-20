@@ -39,7 +39,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
         if (user.firstName === this.user.firstName
             && user.lastName === this.user.lastName
             && user.email === this.user.email) {
-            this.toastNotificationService.error('You havent changed anything to make changes');
+            this.toastNotificationService.error("You haven't changed anything to make changes");
         } else {
             this.userService.updateUsersById(this.user.id, user)
                 .pipe(this.untilThis)
@@ -55,7 +55,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
     updatePassword() {
         const pass = { ...this.pass.value };
         if (pass.confirmPassword !== pass.newPassword && pass.newPassword !== pass.oldPassword) {
-            this.toastNotificationService.error('Сheck if confrim and new password match');
+            this.toastNotificationService.error('Check if confirm and new password match');
         }
         if (pass.newPassword === pass.oldPassword) {
             this.toastNotificationService.error('The old password is equal to the new one. Enter another new password');

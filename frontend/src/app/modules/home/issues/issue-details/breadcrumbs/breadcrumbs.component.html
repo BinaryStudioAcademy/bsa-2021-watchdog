@@ -1,0 +1,23 @@
+<p-timeline [value]="breadcrumbs" styleClass="customized-timeline">
+    <ng-template pTemplate="marker" let-event>
+        <span class="custom-marker" [style.color]="event.color" [style.border-color]="event.color" [pTooltip]="event.type" tooltipPosition="top">
+            <i [ngClass]="event.icon"></i>
+        </span>
+    </ng-template>
+    <ng-template pTemplate="opposite" let-event>
+        <small class="p-text-secondary time">{{event.time | date :'hh:mm:ss'}}</small>
+    </ng-template>
+    <ng-template pTemplate="content" let-event>
+        <div class="content">
+            <div class="category">{{event.category}}</div>
+            <div class="level"><p-chip [label]="event.level" [styleClass]="'custom-chip' + ' ' + event.level"></p-chip></div>
+        </div>
+        <ngx-json-viewer *ngIf="event.type === 'http-request'" class="description" [json]="event.body" [expanded]="false"></ngx-json-viewer>
+        <ngx-json-viewer *ngIf="event.type === 'navigation'" class="description" [json]="event.body" [expanded]="false"></ngx-json-viewer>
+        <ngx-json-viewer *ngIf="event.type === 'debug' && event.body.data.length > 1"  class="description" [json]="{output: event.body.data}" [expanded]="false"></ngx-json-viewer>
+        <ngx-json-viewer *ngIf="event.type === 'debug' && event.body.data.length === 1"  class="description" [json]="{output: event.body.data[0]}" [expanded]="false"></ngx-json-viewer>
+        <div *ngIf="event.type === 'debug' && !event.body.data.length" class="description" >Empty output</div>
+        <ngx-json-viewer *ngIf="event.type === 'user-action'"  class="description" [json]="event.body" [expanded]="false"></ngx-json-viewer>
+        <div *ngIf="event.type === 'error'" class="description"><strong>{{event.body.className}}: </strong>{{event.body.errorMessage}}</div>
+    </ng-template>
+</p-timeline>

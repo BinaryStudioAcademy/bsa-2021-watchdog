@@ -1,3 +1,4 @@
+import { AuthenticationService } from '@core/services/authentication.service';
 import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import {
@@ -12,6 +13,8 @@ import {
 })
 export class SignalRHubFactoryService {
     private hubLookup = new Map<string, HubConnection>();
+
+    constructor(private authService: AuthenticationService) { }
 
     createHub(hubUrl: string) {
         if (this.hubLookup.has(hubUrl)) {
@@ -29,6 +32,7 @@ export class SignalRHubFactoryService {
             .withUrl(this.buildUrl(hubUrl), {
                 skipNegotiation: true,
                 transport: HttpTransportType.WebSockets,
+                accessTokenFactory: () => this.authService.getJwToken().toPromise()
             })
             .configureLogging(LogLevel.Information)
             .build();

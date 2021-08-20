@@ -19,8 +19,8 @@ services:
 
   watchdog_collector:
       build:
-        context: ./backend/Watchdog.Collector
-        dockerfile: Dockerfile
+        context: ./backend
+        dockerfile: ./Watchdog.Collector/Dockerfile
         args:
             - PROJECT_PORT=5090
       container_name: 'watchdog_collector'
@@ -35,8 +35,8 @@ services:
 
   watchdog_notifier:
       build:
-        context: ./backend/Watchdog.Notifier
-        dockerfile: Dockerfile
+        context: ./backend
+        dockerfile: ./Watchdog.Notifier/Dockerfile
         args:
           - PROJECT_PORT=5070
       container_name: 'watchdog_notifier'
