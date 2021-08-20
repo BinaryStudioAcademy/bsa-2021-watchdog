@@ -51,7 +51,7 @@ namespace Watchdog.Core.BLL.Services.Queue
             _logger.LogInformation("Processing issue from collector: {0}, {1}", issueMessageReceived.IssueDetails.ClassName, issueMessageReceived.IssueDetails.ErrorMessage);
 
             //TODO: Change to future value from IssueMessage
-            int applicationId = 16;
+            int applicationId = 36;
 
             using (var scope = _provider.CreateScope())
             {
