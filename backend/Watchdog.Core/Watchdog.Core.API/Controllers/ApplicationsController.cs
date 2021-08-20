@@ -65,9 +65,9 @@ namespace Watchdog.Core.API.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<ICollection<ApplicationDto>>> GetApplicationById(int id)
+        public async Task<ActionResult<ApplicationDto>> GetApplicationById(int id)
         {
-            return Ok(await _appService.GetApplicationById(id));
+            return Ok(await _appService.GetApplicationByIdAsync(id));
         }
 
         [HttpPut("appId")]

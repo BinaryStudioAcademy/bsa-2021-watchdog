@@ -105,17 +105,16 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<ApplicationDto>(application);
         }
 
-        public async Task<ICollection<ApplicationDto>> GetApplicationById(int appId)
+        public async Task<ApplicationDto> GetApplicationByIdAsync(int appId)
         {
             var application = await _context.Applications
                 .Include(a => a.Platform)
-                .Where(a => a.Id == appId)
-                .ToListAsync();
+                .FirstOrDefaultAsync(a => a.Id == appId);
 
-            return _mapper.Map<ICollection<ApplicationDto>>(application);
+            return _mapper.Map<ApplicationDto>(application);
         }
 
-        public async Task<ICollection<ApplicationDto>> UpdateApplicationAsync(int appId, UpdateApplicationDto updateAppDto)
+        public async Task<ApplicationDto> UpdateApplicationAsync(int appId, UpdateApplicationDto updateAppDto)
         {
             var existedApplication = await _context.Applications.FirstOrDefaultAsync(a => a.Id == appId);
 
@@ -124,7 +123,7 @@ namespace Watchdog.Core.BLL.Services
             var updateApplication = _context.Update(mergedApplication);
             await _context.SaveChangesAsync();
 
-            return await GetApplicationById(updateApplication.Entity.Id);
+            return await GetApplicationByIdAsync(updateApplication.Entity.Id);
         }
     }
 }
