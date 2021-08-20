@@ -73,13 +73,10 @@ export class AuthenticationService {
 
     getMember(): Observable<Member> {
         return this.getOrganization()
-            .pipe(switchMap(org => {
-                return merge(
-                    this.memberService.getCurrentMember(org.id ,this.getUser().id),
-                    AuthenticationService.memberSource.asObservable()
-                );
-            }))
-
+            .pipe(switchMap(org => merge(
+                this.memberService.getCurrentMember(org.id, this.getUser().id),
+                AuthenticationService.memberSource.asObservable()
+            )));
     }
 
     setUser(user: User) {

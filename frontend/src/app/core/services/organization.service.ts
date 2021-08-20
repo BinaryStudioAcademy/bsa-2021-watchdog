@@ -1,6 +1,6 @@
 import { CoreHttpService } from '@core/services/core-http.service';
 import { OrganizationSettings } from '@shared/models/organization/organization-settings';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Organization } from '@shared/models/organization/organization';
 import { map, share, tap } from 'rxjs/operators';
@@ -16,7 +16,6 @@ export class OrganizationService {
         private httpService: CoreHttpService,
         private dataService: ShareDataService<Organization>
     ) { }
-
 
     private static organization: Organization;
 
@@ -39,7 +38,7 @@ export class OrganizationService {
 
     setCurrentOrganization(organization: Organization) {
         OrganizationService.organization = organization;
-    }  
+    }
 
     private orgRequest$: Observable<Organization[]>;
 
