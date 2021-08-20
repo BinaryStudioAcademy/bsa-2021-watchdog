@@ -62,7 +62,7 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
                 this.organization = organization;
                 this.loadTeams();
             });
-        this.initPlatforms();
+        //this.initPlatforms();
         this.initAlertData();
         this.addValidation();
     }

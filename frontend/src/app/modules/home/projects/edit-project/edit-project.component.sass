@@ -1,8 +1,18 @@
 @import src/styles/mixins
 @import src/styles/variables
 
-.create-project-container
-    padding: 20px 20px 0
+.content-title
+    display: flex
+    justify-content: space-between
+    @include background-gray
+    @include title
+
+.header-buttons
+    display: flex
+    gap: .2em
+
+.edit-project-container
+    padding: 0 20px 0
     display: flex
     flex-grow: 1
     flex-shrink: 1
