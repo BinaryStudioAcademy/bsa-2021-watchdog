@@ -20,12 +20,12 @@ export class ProjectService {
         return this.httpService.getRequest(`${this.apiPrefix}/organization/${id}`);
     }
 
-    public createProject(project: NewProject): Observable<Project> {
-        return this.httpService.postRequest(`${this.apiPrefix}`, project);
+    getProjectById(id: number): Observable<Project> {
+        return this.httpService.getRequest<Project>(`${this.apiPrefix}/${id}`);
     }
 
-    getProject(id: number): Observable<Project> {
-        return this.httpService.getRequest<Project>(`${this.apiPrefix}/${id}`);
+    public createProject(project: NewProject): Observable<Project> {
+        return this.httpService.postRequest(`${this.apiPrefix}`, project);
     }
 
     getProjectsByTeam(id: number): Observable<ProjectTeam[]> {
