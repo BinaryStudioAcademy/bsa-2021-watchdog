@@ -7,6 +7,7 @@ import { CreateProjectComponent } from '@modules/home/projects/create-project/cr
 import { UserProfileComponent } from '@modules/user/components/user-profile/user-profile.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home-page/home-page.component';
+import { EditProjectComponent } from './projects/edit-project/edit-project.component';
 
 const routes: Routes = [{
     path: '',
@@ -21,6 +22,9 @@ const routes: Routes = [{
     }, {
         path: 'projects/create',
         component: CreateProjectComponent,
+    }, {
+        path: 'projects/edit',
+        component: EditProjectComponent,
     }, {
         path: 'issues',
         loadChildren: () => import('./issues/issues.module')
