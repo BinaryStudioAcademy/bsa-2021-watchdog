@@ -20,7 +20,7 @@ namespace Watchdog.Collector.BLL.MappingProfiles
                 .ForMember(dest => dest.EnvironmentMessage, opt => opt.MapFrom(src => src.Environment))
                 .ForPath(dest => dest.ResponseErrorMessage.Url, opt => opt.MapFrom(src => src.Request.Url));
 
-            CreateMap<WatchdogErrorStackTraceLineMessage, StackTrace>()
+            CreateMap<WatchdogErrorStackTraceLineMessage, StackFrame>()
                 .ForMember(dest => dest.File, opt => opt.MapFrom(src => src.FileName))
                 .ForMember(dest => dest.Column, opt => opt.MapFrom(src => src.ColumnNumber));
 

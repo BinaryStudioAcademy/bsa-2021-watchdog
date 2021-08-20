@@ -1,6 +1,7 @@
 using AutoMapper;
 using Nest;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Watchdog.Collector.BLL.Services.Abstract;
@@ -12,8 +13,8 @@ namespace Watchdog.Collector.BLL.Services
 {
     public class ElasticWriteService : IElasticWriteService
     {
-        private readonly IMapper _mapper;
         private readonly IElasticClient _client;
+        private readonly IMapper _mapper;
         private readonly IIssueQueueProducerService _issueProducer;
 
         public ElasticWriteService(IElasticClient client, IMapper mapper, IIssueQueueProducerService issueProducer)
@@ -37,6 +38,19 @@ namespace Watchdog.Collector.BLL.Services
             return SetIssueIdAsync(issueMessage);
         }
 
+        public Task AddIssueAsync(WatchdogMessage message)
+        {
+            var issueMessage = _mapper.Map<IssueMessage>(message);
+            issueMessage.IssueDetails.Breadcrumbs = new List<Breadcrumb>();
+
+            if (string.IsNullOrEmpty(issueMessage.IssueDetails.ErrorMessage))
+            {
+                throw new ArgumentException("Error message can't be empty.");
+            }
+
+            return SetIssueIdAsync(issueMessage);
+        }
+
         private async Task IndexNewIssueMessageAsync(IssueMessage issueMessage)
         {
             var indexResponse = await _client.IndexDocumentAsync<IssueMessage>(issueMessage);
@@ -47,18 +61,7 @@ namespace Watchdog.Collector.BLL.Services
             }
         }
 
-        public async Task AddIssueAsync(WatchdogMessage message)
-        {
-            var issueMessage = _mapper.Map<IssueMessage>(message);
-
-            var indexResponse = await _client.IndexDocumentAsync(issueMessage);
-
-            if (!indexResponse.IsValid)
-                throw new InvalidOperationException("Invalid index response");
-        }
-    }
-
-    private async Task SetIssueIdAsync(IssueMessage issueMessage)
+        private async Task SetIssueIdAsync(IssueMessage issueMessage)
         {
             var searchResponse = await GetExistingIssuesAsync(issueMessage);
 
