@@ -50,4 +50,8 @@ export class UserService {
         const url = `organization/${orgId}/notInOrg/${memberEmail !== '' ? `?memberEmail=${memberEmail}` : ''}`;
         return this.httpService.getRequest<User[]>(`${this.apiPrefix}/${url}`);
     }
+
+    isEmailUnique(email: string): Observable<boolean> {
+        return this.httpService.getRequest<boolean>(`${this.apiPrefix}/email/${email}`);
+    }
 }

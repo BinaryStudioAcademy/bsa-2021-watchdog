@@ -15,10 +15,9 @@
             <div *ngIf="email.invalid && (email.dirty || email.touched)"
                 class="p-error">
                 <small *ngIf="email.errors?.required">This field is required.</small>
-                <small *ngIf="email.errors?.minlength || email.errors?.maxlength">
-                    Length must be between 3 and 50 characters.
-                </small>
+                <small *ngIf="email.errors?.minlength">Min length 6</small>
                 <small *ngIf="email.errors?.serverError">Server error.</small>
+                <small *ngIf="email.errors?.notUnique">Email is not unique</small>
                 <small *ngIf="email.errors?.pattern">You are using invalid characters for email</small>
             </div>
         </div>
