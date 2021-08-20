@@ -5,13 +5,14 @@ EXPOSE $PROJECT_PORT
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-focal AS build
 WORKDIR /src
-COPY ["Watchdog.Collector.API/Watchdog.Collector.API.csproj", "Watchdog.Collector.API/"]
-COPY ["Watchdog.Collector.BLL/Watchdog.Collector.BLL.csproj", "Watchdog.Collector.BLL/"]
-COPY ["Watchdog.Collector.Common/Watchdog.Collector.Common.csproj", "Watchdog.Collector.Common/"]
+COPY ["Watchdog.Collector/Watchdog.Collector.API/Watchdog.Collector.API.csproj", "Watchdog.Collector/Watchdog.Collector.API/"]
+COPY ["Watchdog.Collector/Watchdog.Collector.BLL/Watchdog.Collector.BLL.csproj", "Watchdog.Collector/Watchdog.Collector.BLL/"]
+COPY ["Watchdog.Collector/Watchdog.Collector.Common/Watchdog.Collector.Common.csproj", "Watchdog.Collector/Watchdog.Collector.Common/"]
+COPY ["Watchdog.RabbitMQ.Shared/Watchdog.RabbitMQ.Shared.csproj", "Watchdog.RabbitMQ.Shared/"]
 
-RUN dotnet restore "Watchdog.Collector.API/Watchdog.Collector.API.csproj"
+RUN dotnet restore "Watchdog.Collector/Watchdog.Collector.API/Watchdog.Collector.API.csproj"
 COPY . .
-WORKDIR "/src/Watchdog.Collector.API"
+WORKDIR "/src/Watchdog.Collector/Watchdog.Collector.API"
 RUN dotnet build "Watchdog.Collector.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
