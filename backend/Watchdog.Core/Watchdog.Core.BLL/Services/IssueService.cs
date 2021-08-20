@@ -42,6 +42,7 @@ namespace Watchdog.Core.BLL.Services
                     },
                     Assignee = i.Assignee
                 })
+                .OrderByDescending(i => i.Newest.OccurredOn)
                 .ToList();
 
             return issuesInfo;

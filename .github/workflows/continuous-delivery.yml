@@ -50,7 +50,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           tags: vobilyk/watchdog_notifier:latest
-          context: ./backend/Watchdog.Notifier
+          context: ./backend
+          file: ./backend/Watchdog.Notifier/Dockerfile
           build-args: PROJECT_PORT=5070
           push: true
           
@@ -74,7 +75,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           tags: vobilyk/watchdog_collector:latest
-          context: ./backend/Watchdog.Collector
+          context: ./backend
+          file: ./backend/Watchdog.Collector/Dockerfile
           build-args: PROJECT_PORT=5090
           push: true
           
