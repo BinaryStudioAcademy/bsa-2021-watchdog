@@ -29,7 +29,7 @@
                         [issueHttpResponse]="issueMessage.issueDetails.responseErrorMessage"></app-issue-http>
                 </ng-template>
             </p-tabPanel>
-            <p-tabPanel header="Breadcrumbs">
+            <p-tabPanel *ngIf="issueMessage.issueDetails.breadcrumbs?.length" header="Breadcrumbs">
                 <ng-template pTemplate="content">
                     <app-breadcrumbs [issueMessage]="issueMessage"></app-breadcrumbs>
                 </ng-template>
