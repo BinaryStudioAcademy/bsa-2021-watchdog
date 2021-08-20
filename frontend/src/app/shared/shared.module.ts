@@ -13,6 +13,7 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { SavePipe } from './pipes/save.pipe';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { ChartsComponent } from './components/charts/charts.component';
+import { NoContentPlaceholderComponent } from './components/no-content-placeholder/no-content-placeholder';
 
 @NgModule({
     imports: [
@@ -32,6 +33,7 @@ import { ChartsComponent } from './components/charts/charts.component';
         UserInitialsPipe,
         TooltipWithFullNameDirective,
         ChartsComponent,
+        NoContentPlaceholderComponent
     ],
     exports: [
         CommonModule,
@@ -47,7 +49,8 @@ import { ChartsComponent } from './components/charts/charts.component';
         UserInitialsPipe,
         TooltipWithFullNameDirective,
         NgxJsonViewerModule,
-        ChartsComponent
+        ChartsComponent,
+        NoContentPlaceholderComponent
     ]
 })
 export class SharedModule { }
