@@ -36,20 +36,20 @@
                 <span class="title">Project name</span>
                 <div class="p-input-icon-left">
                     <i class="pi pi-file"></i>
-                    <input formControlName="projectName" pInputText placeholder="Project name" class="project-name-input">
+                    <input formControlName="name" pInputText placeholder="Project name" class="project-name-input">
                 </div>
-                <div *ngIf="projectName.touched && projectName.invalid"
+                <div *ngIf="name.touched && name.invalid"
                      class="input-validation-error">
-                    <small *ngIf="projectName.errors.required" class="p-error">
+                    <small *ngIf="name.errors.required" class="p-error">
                         Сan not be empty
                     </small>
-                    <small *ngIf="projectName.errors.minlength" class="p-error">
+                    <small *ngIf="name.errors.minlength" class="p-error">
                         At least 3 characters
                     </small>
-                    <small *ngIf="projectName.errors.maxlength" class="p-error">
+                    <small *ngIf="name.errors.maxlength" class="p-error">
                         No more than 50 characters
                     </small>
-                    <small *ngIf="projectName.errors.pattern" class="p-error">
+                    <small *ngIf="name.errors.pattern" class="p-error">
                         May contain lowercase (a-z) and uppercase (A-Z) letters, numbers (0-9), dashes,
                         underscores and spaces
                     </small>
@@ -58,16 +58,16 @@
             <!-- Description -->
             <form [formGroup]="editForm" class="project-description">
                 <span class="title">Description</span>
-                <textarea [autoResize]="true" formControlName="projectDescription" pInputTextarea
+                <textarea [autoResize]="true" formControlName="description" pInputTextarea
                     placeholder="Description"
                     type="textarea" maxlength="1000">
                 </textarea>
-                <div *ngIf="projectDescription.touched && projectDescription.invalid"
+                <div *ngIf="description.touched && description.invalid"
                      class="validation">
-                     <small *ngIf="projectDescription.errors.maxlength" class="p-error">
+                     <small *ngIf="description.errors.maxlength" class="p-error">
                         No more than 1000 characters
                     </small>
-                    <small *ngIf="projectDescription.errors.pattern" class="p-error">
+                    <small *ngIf="description.errors.pattern" class="p-error">
                         May contain lowercase (a-z) and uppercase (A-Z) letters, numbers (0-9) and symbols<br>-_!#$%&'*+—/=?^`&#123;|&#125;~.,:;`"\№@()<>[]
                     </small>
                 </div>

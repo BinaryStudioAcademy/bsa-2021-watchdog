@@ -63,30 +63,30 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
             this.id = data;
             debugger;
             this.user = this.authService.getUser();
-        this.authService.getOrganization()
-            .subscribe(organization => {
-                this.organization = organization;
-            });
 
-        this.projectService.getProjectById(this.id).pipe(this.untilThis)
-            .subscribe(project => {
-                this.project = project;
-                this.validationsInit();
-                this.initPlatforms();
-            })
+            this.authService.getOrganization()
+                .subscribe(organization => {
+                    this.organization = organization;
+                });
+
+            this.projectService.getProjectById(this.id).pipe(this.untilThis)
+                .subscribe(project => {
+                    this.project = project;
+                    this.validationsInit();
+                    this.initPlatforms();
+                })
 
         });
-
     }
 
     validationsInit() {
-        this.editForm.addControl('projectName', new FormControl(this.project.name, [
+        this.editForm.addControl('name', new FormControl(this.project.name, [
             Validators.required,
             Validators.minLength(3),
             Validators.maxLength(50),
             Validators.pattern(regexs.projectName),
         ]));
-        this.editForm.addControl('projectDescription', new FormControl(this.project.description, [
+        this.editForm.addControl('description', new FormControl(this.project.description, [
             Validators.maxLength(1000),
             Validators.pattern(regexs.projectDescription),
         ]));
@@ -192,8 +192,8 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
             });
     }
 
-    get projectName() { return this.editForm.controls.projectName; }
+    get name() { return this.editForm.controls.name; }
 
-    get projectDescription() { return this.editForm.controls.projectDescription; }
+    get description() { return this.editForm.controls.description; }
 
 }
