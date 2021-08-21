@@ -61,7 +61,6 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
         ).subscribe(data => {
             this.activeTabIndex = 0;
             this.id = data;
-            debugger;
             this.user = this.authService.getUser();
 
             this.authService.getOrganization()
@@ -149,19 +148,16 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
 
     updateProjectFunction(): void {
         const project: UpdateProject = { ...this.editForm.value, platformId: this.updateProject.platformId };
-        debugger;
         if (this.editForm.valid && this.updateProject.platformId) {
             this.spinnerService.show(true);
             this.projectService.updateProject(this.id, project)
                 .subscribe(
                     project => {
-                        debugger;
                         this.toastNotifications.success(`${project.name} has been updated!`);
                         this.router.navigate(['home', 'projects']);
                         this.spinnerService.hide();
                     },
                     error => {
-                        debugger;
                         this.toastNotifications.error(error);
                         this.spinnerService.hide();
                     }
@@ -172,9 +168,8 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
     }
 
     reset() {
-        this.editForm.reset();
+        this.editForm.reset(this.project);
         this.updateProject.platformId = this.project.platform.id;
-
     }
 
     deleteProject(id: string) {
