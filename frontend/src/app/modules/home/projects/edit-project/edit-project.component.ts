@@ -178,11 +178,18 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
     }
 
     deleteProject(id: string) {
+        this.spinnerService.show(true);
         this.projectService.removeProject(id)
             .pipe(this.untilThis)
             .subscribe(project => {
                 this.toastNotifications.success('Project has been deleted');
-            })
+                this.router.navigate(['home', 'projects']);
+                this.spinnerService.hide();
+            },
+            error => {
+                this.toastNotifications.error(error);
+                        this.spinnerService.hide();
+            });
     }
 
     get projectName() { return this.editForm.controls.projectName; }
