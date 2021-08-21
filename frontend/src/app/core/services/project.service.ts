@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { ProjectTeam } from '@shared/models/projects/project-team';
 import { NewProjectTeam } from '@shared/models/projects/new-project-team';
 import { CoreHttpService } from './core-http.service';
+import { UpdateProject } from '@shared/models/projects/update-project';
 
 @Injectable({
     providedIn: 'root',
@@ -22,6 +23,14 @@ export class ProjectService {
 
     getProjectById(id: number): Observable<Project> {
         return this.httpService.getRequest<Project>(`${this.apiPrefix}/${id}`);
+    }
+
+    updateProject(id: number, updateProject: UpdateProject): Observable<Project> {
+        return this.httpService.putRequest<Project>(`${this.apiPrefix}/${id}`, updateProject);
+    }
+
+    removeProject(id: number) {
+        return this.httpService.deleteRequest(`${this.apiPrefix}/${id}`);
     }
 
     public createProject(project: NewProject): Observable<Project> {
