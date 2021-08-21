@@ -70,7 +70,7 @@ namespace Watchdog.Core.API.Controllers
             return Ok(await _appService.GetApplicationByIdAsync(id));
         }
 
-        [HttpPut("appId")]
+        [HttpPut("{id:int}")]
         public async Task<ActionResult<ApplicationDto>> UpdateApplication(int id, UpdateApplicationDto dto)
         {
             var application = await _appService.UpdateApplicationAsync(id, dto);

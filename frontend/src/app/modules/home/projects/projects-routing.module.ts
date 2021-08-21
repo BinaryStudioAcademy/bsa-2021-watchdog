@@ -8,12 +8,12 @@ const routes: Routes = [{
     path: '',
     component: ProjectsComponent
 }, {
-    path: ':id',
-    component: EditProjectComponent
-}, {
     path: 'create',
     component: CreateProjectComponent
 }, {
+    path: ':id',
+    component: EditProjectComponent
+},  {
     path: '',
     redirectTo: 'projects'
 }];
