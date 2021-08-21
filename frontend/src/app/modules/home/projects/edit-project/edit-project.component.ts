@@ -7,10 +7,10 @@ import { PlatformService } from '@core/services/platform.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { Platform } from '@shared/models/platforms/platform';
 import { NewProject } from '@shared/models/projects/new-project';
+import { UpdateProject } from '@shared/models/projects/update-project';
 import { TeamService } from '@core/services/team.service';
 import { TeamOption } from '@shared/models/teams/team-option';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { CreateTeamComponent } from '@modules/team/create-team/create-team.component';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { User } from '@shared/models/user/user';
 import { Organization } from '@shared/models/organization/organization';
@@ -47,6 +47,8 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
 
     project: Project;
 
+    updateProject = {} as UpdateProject;
+
     constructor(
         private toastNotifications: ToastNotificationService,
         private platformService: PlatformService,
@@ -62,8 +64,6 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        //this.project.name = "Android";
-        //this.project.description = "Super";
         this.user = this.authService.getUser();
         this.authService.getOrganization()
             .subscribe(organization => {
@@ -74,10 +74,10 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
             .subscribe(project => {
                 this.project = project;
                 this.validationsInit();
+                this.initPlatforms();
             })
-        //this.initAlertData();
-        //this.addValidation();
 
+        //this.initAlertData();
     }
 
     validationsInit() {
@@ -93,8 +93,6 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
         ]));
     }
 
-
-
     private initAlertData() {
         this.alertSetting.alertCategory = this.alertData.initAlertCategory;
         this.alertSetting.specialAlertSetting = {
@@ -104,37 +102,59 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
         };
     }
 
-    openDialog() {
-        this.createTeamDialog = this.dialogService.open(CreateTeamComponent, {
-            header: 'Creating team',
-            width: '35%',
-            showHeader: true,
-            baseZIndex: 10000
-        });
+    private initPlatforms() {
+        this.loadPlatforms();
+        this.platforms.platformTabItems = [
+            { label: 'All', command: (event) => this.onTabChange(event?.item.label) },
+            { label: 'Browser', command: (event) => this.onTabChange(event?.item.label) },
+            { label: 'Server', command: (event) => this.onTabChange(event?.item.label) },
+            { label: 'Mobile', command: (event) => this.onTabChange(event?.item.label) },
+            { label: 'Desktop', command: (event) => this.onTabChange(event?.item.label) }
+        ];
+        this.platforms.activePlatformTabItem = Object.assign(this.platforms.platformTabItems[0]);
+    }
 
-        this.createTeamDialog.onClose
+    private loadPlatforms() {
+        this.spinnerService.show(true);
+        this.platformService
+            .getPlatforms()
             .pipe(this.untilThis)
-            .subscribe((name: string) => {
-                if (name) {
-                    this.spinnerService.show(true);
-                    this.teamService
-                        .createTeam({
-                            createdBy: this.user.id,
-                            organizationId: this.organization.id,
-                            name
-                        })
-                        .pipe(this.untilThis)
-                        .subscribe(team => {
-                            this.toastNotifications.success(`Team #${name} created!`);
-                            this.teams = this.teams.concat({ name, id: team.id });
-                            this.newProject.teamId = team.id;
-                            this.spinnerService.hide();
-                        }, error => {
-                            this.toastNotifications.error(error);
-                            this.spinnerService.hide();
-                        });
-                }
+            .subscribe(platforms => {
+                this.platforms.platformCards = platforms;
+                this.onTabChange();
+                this.spinnerService.hide();
+            }, error => {
+                this.toastNotifications.error(error);
+                this.spinnerService.hide();
             });
+    }
+
+    private onTabChange(label: string = ''): void {
+        this.updateProject.platformId = this.project.platform.id;
+        if (this.platforms.platformCards) {
+            switch (label) {
+                case 'Browser': {
+                    this.platforms.viewPlatformCards = this.platforms.platformCards.filter(value => value.platformTypes.isBrowser);
+                    break;
+                }
+                case 'Server': {
+                    this.platforms.viewPlatformCards = this.platforms.platformCards.filter(value => value.platformTypes.isServer);
+                    break;
+                }
+                case 'Mobile': {
+                    this.platforms.viewPlatformCards = this.platforms.platformCards.filter(value => value.platformTypes.isMobile);
+                    break;
+                }
+                case 'Desktop': {
+                    this.platforms.viewPlatformCards = this.platforms.platformCards.filter(value => value.platformTypes.isDesktop);
+                    break;
+                }
+                default: {
+                    this.platforms.viewPlatformCards = this.platforms.platformCards.concat();
+                    break;
+                }
+            }
+        }
     }
 
     createProject(): void {
@@ -165,6 +185,8 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
 
     reset() {
         this.editForm.reset();
+        this.updateProject.platformId = this.project.platform.id;
+
     }
 
     get projectName() { return this.editForm.controls.projectName; }
