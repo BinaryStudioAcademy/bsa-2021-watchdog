@@ -1,0 +1,101 @@
+@import src/styles/variables
+@import src/styles/mixins
+
+.title
+    @include title
+    @include background-gray
+    display: flex
+
+    .back-button
+        margin-right: .2em
+        border: none
+        border-radius: 100%
+
+.header-buttons
+    margin-left: auto
+    & .buttons-container
+        display: flex
+        align-items: center
+        gap: .2em
+
+.edit-project-container
+    padding: 0 20px 0
+    display: flex
+    flex-grow: 1
+    flex-shrink: 1
+    flex-basis: 0
+    flex-direction: column
+
+    .header
+        display: flex
+        flex-direction: column
+        justify-content: space-between
+
+        .header-title
+            font-size: 22px
+            line-height: 22px
+            font-weight: 400
+            margin-bottom: 20px
+            white-space: nowrap
+
+        .header-description
+            color: gray
+            line-height: 22px
+            max-width: 760px
+
+    .choose-platform-section
+        margin-top: 28px
+        margin-bottom: 28px
+
+        .title
+            font-size: 22px
+            line-height: 22px
+            font-weight: 400
+            margin-bottom: 10px
+            white-space: nowrap
+
+        ::ng-deep .p-tabmenu
+            overflow-x: unset !important
+            margin-bottom: 16px
+
+        .platform-cards
+            display: grid
+            gap: 8px
+            grid-template-columns: repeat(auto-fill, 112px)
+            margin-bottom: 16px
+
+            .card
+                position: relative
+                display: flex
+                flex-direction: column
+                align-items: center
+                padding: 0 0 14px
+                border-radius: 4px
+                cursor: pointer
+
+                &:hover
+                    background-color: $hover-color
+
+                img
+                    @include disable-select
+                    width: 56px
+                    aspect-ratio: auto 56 / 56
+                    height: 56px
+                    border-radius: 5px
+                    margin: 16px
+
+                h3
+                    @include disable-select
+                    display: flex
+                    flex-grow: 1
+                    align-items: center
+                    justify-content: center
+                    text-align: center
+                    font-size: 11px
+                    text-transform: uppercase
+                    padding: 0 4px
+                    line-height: 1.2
+                    font-weight: 600
+
+            .selected-card
+                background: lightgray

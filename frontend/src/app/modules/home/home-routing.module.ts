@@ -2,12 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
-import { ProjectsComponent } from '@modules/home/projects/projects/projects.component';
-import { CreateProjectComponent } from '@modules/home/projects/create-project/create-project.component';
 import { UserProfileComponent } from '@modules/user/components/user-profile/user-profile.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home-page/home-page.component';
-import { EditProjectComponent } from './projects/edit-project/edit-project.component';
 
 const routes: Routes = [{
     path: '',

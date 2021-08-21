@@ -7,6 +7,7 @@
         <button pButton pRipple label="Delete" class="p-button-outlined p-button-danger" (click)="deleteProject(this.id)"></button>
     </div>
 </h1>
+<p-dropdown [options]="dropPlatform" [(ngModel)]="selectedPlatform" optionLabel="name"></p-dropdown>
 <div *ngIf="project" class="edit-project-container">
     <!--    Platform Section    -->
     <div class="choose-platform-section">

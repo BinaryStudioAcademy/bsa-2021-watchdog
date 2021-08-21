@@ -1,39 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ToastNotificationService } from '@core/services/toast-notification.service';
-import { Data } from '@modules/home/projects/data';
-import { PlatformService } from '@core/services/platform.service';
-import { BaseComponent } from '@core/components/base/base.component';
-import { Platform } from '@shared/models/platforms/platform';
-import { UpdateProject } from '@shared/models/projects/update-project';
-import { DialogService } from 'primeng/dynamicdialog';
-import { AuthenticationService } from '@core/services/authentication.service';
-import { User } from '@shared/models/user/user';
-import { Organization } from '@shared/models/organization/organization';
-import { AlertSettings } from '@shared/models/alert-settings/alert-settings';
-import { regexs } from '@shared/constants/regexs';
-import { ProjectService } from '@core/services/project.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BaseComponent } from '@core/components/base/base.component';
+import { AuthenticationService } from '@core/services/authentication.service';
+import { PlatformService } from '@core/services/platform.service';
+import { ProjectService } from '@core/services/project.service';
 import { SpinnerService } from '@core/services/spinner.service';
+import { ToastNotificationService } from '@core/services/toast-notification.service';
+import { regexs } from '@shared/constants/regexs';
+import { AlertSettings } from '@shared/models/alert-settings/alert-settings';
+import { Organization } from '@shared/models/organization/organization';
+import { Platform } from '@shared/models/platforms/platform';
 import { Project } from '@shared/models/projects/project';
+import { UpdateProject } from '@shared/models/projects/update-project';
+import { User } from '@shared/models/user/user';
+import { MenuItem } from 'primeng/api';
+import { DialogService } from 'primeng/dynamicdialog';
 import { switchMap } from 'rxjs/operators';
-import {DropdownModule} from 'primeng/dropdown';
+import { Data } from '../data';
 
 @Component({
-  selector: 'app-edit-project',
-  templateUrl: './edit-project.component.html',
-  styleUrls: ['./edit-project.component.sass'],
+  selector: 'app-edit',
+  templateUrl: './edit.component.html',
+  styleUrls: ['./edit.component.sass'],
   providers: [Data, DialogService]
 })
-
-
-export class EditProjectComponent extends BaseComponent implements OnInit {
-
-    dropPlatform: Platform[];
-
-    selectedPlatform: Platform;
-
+export class EditComponent extends BaseComponent implements OnInit {
     user: User;
     organization: Organization;
     platforms = {
@@ -83,27 +75,11 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
                     this.initPlatforms();
                 })
 
-            this.platformService.getPlatforms().pipe(this.untilThis)
-                .subscribe(platform => {
-                    this.dropPlatform = platform;
-                    this.selectedPlatform = this.project.platform;
-                    debugger;
-                })
-
         });
     }
 
     validationsInit() {
-        this.editForm.addControl('name', new FormControl(this.project.name, [
-            Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(50),
-            Validators.pattern(regexs.projectName),
-        ]));
-        this.editForm.addControl('description', new FormControl(this.project.description, [
-            Validators.maxLength(1000),
-            Validators.pattern(regexs.projectDescription),
-        ]));
+
     }
 
     private initPlatforms() {
@@ -201,9 +177,5 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
                         this.spinnerService.hide();
             });
     }
-
-    get name() { return this.editForm.controls.name; }
-
-    get description() { return this.editForm.controls.description; }
 
 }

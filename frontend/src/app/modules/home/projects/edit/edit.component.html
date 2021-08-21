@@ -1,0 +1,48 @@
+<div class="title"><button routerLink="../" tooltipPosition="bottom" pTooltip="Back to Projects" pButton pRipple
+    icon="pi pi-chevron-left " class="p-button-outlined back-button"></button>{{project.name}}
+<div class="header-buttons" >
+    <div class="buttons-container">
+        <button #saveBut disabled pButton pRipple class="p-button-primary p-button-outlined" label="Save" ></button>
+        <button pButton pRipple class="p-button-secondary p-button-outlined" label="Reset" ></button>
+        <button pButton pRipple class="p-button-danger p-button-outlined" label="Remove" ></button>
+    </div>
+</div>
+</div>
+<p-tabView>
+<p-tabPanel>
+    <ng-template pTemplate="header">
+        <div class="header">
+            <span>General settings</span>
+        </div>
+    </ng-template>
+    <app-project-general [editForm]="editForm" *ngIf="project" [project]="project"></app-project-general>
+</p-tabPanel>
+<p-tabPanel>
+    <ng-template pTemplate="header">
+        <div class="header">
+            <span>Alert</span>
+        </div>
+    </ng-template>
+    <app-project-alert ></app-project-alert>
+</p-tabPanel>
+</p-tabView>
+
+<div *ngIf="project" class="edit-project-container">
+    <!--    Platform Section    -->
+    <div class="choose-platform-section">
+        <p-tabMenu [activeItem]="platforms.platformTabItems[0]" [model]="platforms.platformTabItems"></p-tabMenu>
+        <!--    Platform Cards    -->
+        <div class="platform-cards">
+                <div (click)="updateProject.platformId = platform.id"
+                 *ngFor="let platform of platforms.viewPlatformCards"
+                 [ngClass]="{ 'selected-card': platform.id === this.updateProject.platformId}" class="card">
+                <img alt="{{platform.name}}" [src]="platform.avatarUrl | save">
+                <h3>{{platform.name}}</h3>
+            </div>
+        </div>
+    </div>
+    <!--    Platform is not selected Warning    -->
+    <small *ngIf="!updateProject.platformId" class="p-error">
+        Please choose a platform
+    </small>
+</div>
