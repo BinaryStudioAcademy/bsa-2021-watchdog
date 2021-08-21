@@ -157,6 +157,33 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
         }
     }
 
+    updateProjectFunction(): void {
+        const project = { name: this.project.name, description: this.project.description, platformId: this.updateProject.platformId};
+        debugger;
+        this.updateProject.name = "Blalalala";
+        this.updateProject.description = "Lalalalala";
+        this.updateProject.platformId = 2;
+        if (this.editForm.valid && this.updateProject.platformId) {
+            this.spinnerService.show(true);
+            this.projectService.updateProject(18, this.updateProject)
+                .subscribe(
+                    project => {
+                        debugger;
+                        this.toastNotifications.success(`${project.name} has been updated!`);
+                        this.router.navigate(['home', 'projects']);
+                        this.spinnerService.hide();
+                    },
+                    error => {
+                        debugger;
+                        this.toastNotifications.error(error);
+                        this.spinnerService.hide();
+                    }
+                );
+        } else {
+            this.toastNotifications.error('Form is not valid', 'Error');
+        }
+    }
+
     createProject(): void {
         if (this.editForm.valid && this.newProject.platformId) {
             this.newProject.organizationId = this.organization.id;
