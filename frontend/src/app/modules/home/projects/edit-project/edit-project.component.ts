@@ -90,19 +90,7 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
             Validators.maxLength(1000),
             Validators.pattern(regexs.projectDescription),
         ]));
-        // this.editForm.addControl('alertCategory', new FormControl(this.project.alertSettings, [
-        //     Validators.required,
-        // ]));
     }
-
-    // private initAlertData() {
-    //     this.alertSetting.alertCategory = this.alertData.initAlertCategory;
-    //     this.alertSetting.specialAlertSetting = {
-    //         alertsCount: this.alertData.initAlertsCount,
-    //         specialAlertType: this.alertData.initSpecialAlertType,
-    //         alertTimeInterval: this.alertData.initAlertTimeInterval
-    //     };
-    // }
 
     private initPlatforms() {
         this.loadPlatforms();
@@ -160,14 +148,11 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
     }
 
     updateProjectFunction(): void {
-        const project = { name: this.project.name, description: this.project.description, platformId: this.updateProject.platformId};
+        const project: UpdateProject = { ...this.editForm.value, platformId: this.updateProject.platformId };
         debugger;
-        this.updateProject.name = "Blalalala";
-        this.updateProject.description = "Lalalalala";
-        this.updateProject.platformId = 2;
         if (this.editForm.valid && this.updateProject.platformId) {
             this.spinnerService.show(true);
-            this.projectService.updateProject(18, this.updateProject)
+            this.projectService.updateProject(this.id, project)
                 .subscribe(
                     project => {
                         debugger;
@@ -190,6 +175,14 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
         this.editForm.reset();
         this.updateProject.platformId = this.project.platform.id;
 
+    }
+
+    deleteProject(id: string) {
+        this.projectService.removeProject(id)
+            .pipe(this.untilThis)
+            .subscribe(project => {
+                this.toastNotifications.success('Project has been deleted');
+            })
     }
 
     get projectName() { return this.editForm.controls.projectName; }

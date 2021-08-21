@@ -13,6 +13,9 @@ const routes: Routes = [{
 }, {
     path: 'create',
     component: CreateProjectComponent
+}, {
+    path: '',
+    redirectTo: 'projects'
 }];
 
 @NgModule({

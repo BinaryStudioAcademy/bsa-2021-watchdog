@@ -25,11 +25,11 @@ export class ProjectService {
         return this.httpService.getRequest<Project>(`${this.apiPrefix}/${id}`);
     }
 
-    updateProject(id: number, updateProject: UpdateProject): Observable<Project> {
+    updateProject(id: number | string, updateProject: UpdateProject): Observable<Project> {
         return this.httpService.putRequest<Project>(`${this.apiPrefix}/${id}`, updateProject);
     }
 
-    removeProject(id: number) {
+    removeProject(id: number | string) {
         return this.httpService.deleteRequest(`${this.apiPrefix}/${id}`);
     }
 

@@ -4,6 +4,7 @@
         <button #saveBut pButton pRipple class="p-button-primary p-button-outlined" label="Save" (click)="updateProjectFunction()"
         [disabled]="!editForm.valid || !updateProject.platformId"></button>
         <button pButton pRipple class="p-button-secondary p-button-outlined" label="Reset" (click)="reset()"></button>
+        <button pButton pRipple label="Delete" class="p-button-outlined p-button-danger" (click)="deleteProject(this.id)"></button>
     </div>
 </h1>
 <div *ngIf="project" class="edit-project-container">
