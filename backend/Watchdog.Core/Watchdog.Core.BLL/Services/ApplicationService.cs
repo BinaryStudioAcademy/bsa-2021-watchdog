@@ -118,12 +118,13 @@ namespace Watchdog.Core.BLL.Services
         {
             var existedApplication = await _context.Applications.FirstOrDefaultAsync(a => a.Id == appId);
 
-            var mergedApplication = _mapper.Map<Application>(updateAppDto);
+            var mergedApplication = _mapper.Map(updateAppDto, existedApplication);
 
             var updateApplication = _context.Update(mergedApplication);
             await _context.SaveChangesAsync();
 
             return await GetApplicationByIdAsync(updateApplication.Entity.Id);
         }
+
     }
 }

@@ -71,7 +71,7 @@ namespace Watchdog.Core.API.Controllers
         }
 
         [HttpPut("appId")]
-        public async Task<ActionResult<ICollection<ApplicationDto>>> UpdateApplication(int id, UpdateApplicationDto dto)
+        public async Task<ActionResult<ApplicationDto>> UpdateApplication(int id, UpdateApplicationDto dto)
         {
             var application = await _appService.UpdateApplicationAsync(id, dto);
             return Ok(application);

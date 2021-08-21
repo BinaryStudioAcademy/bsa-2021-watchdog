@@ -8,6 +8,6 @@ namespace Watchdog.Core.Common.DTO.Application
 
         public string Description { get; set; }
 
-        public PlatformDto Platform { get; set; }
+        public int PlatformId { get; set; }
     }
 }

@@ -23,6 +23,9 @@ namespace Watchdog.Core.BLL.MappingProfiles
             CreateMap<ApplicationTeam, ApplicationTeamDto>();
             CreateMap<ApplicationTeamDto, ApplicationTeam>();
             CreateMap<NewApplicationTeamDto, ApplicationTeam>();
+
+            CreateMap<Application, UpdateApplicationDto>();
+            CreateMap<UpdateApplicationDto, Application>();
         }
     }
 }
