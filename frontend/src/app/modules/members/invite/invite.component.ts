@@ -79,7 +79,8 @@ export class InviteComponent extends BaseComponent implements OnInit {
             debounceTime(300),
             switchMap((term: string) => {
                 this.loadingNumber += 1;
-                return this.userService.searchMembersNotInOrganization(this.organization.id, this.invitingMembersCount + this.invations.length, term)
+                return this.userService
+                    .searchMembersNotInOrganization(this.organization.id, this.invitingMembersCount + this.invations.length, term)
                     .pipe(this.untilThis);
             })
         ).subscribe(users => {
