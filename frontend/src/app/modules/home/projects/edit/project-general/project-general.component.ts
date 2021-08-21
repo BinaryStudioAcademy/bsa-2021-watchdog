@@ -28,6 +28,14 @@ export class ProjectGeneralComponent extends BaseComponent implements OnInit {
     @Input() updateProject = {} as UpdateProject;
     @Input() id: string;
 
+    @Input() dropPlatform: Platform[];
+
+    @Input() selectedPlatform: Platform;
+
+    @Input() idSelectedPlatform: number;
+
+    @Input() selectedLevel;
+
     constructor(
         private spinnerService: SpinnerService,
         private platformService: PlatformService,
@@ -48,8 +56,16 @@ export class ProjectGeneralComponent extends BaseComponent implements OnInit {
             Validators.maxLength(1000),
             Validators.pattern(regexs.projectDescription),
         ]));
+        this.platformService.getPlatforms().pipe(this.untilThis)
+            .subscribe(platform => {
+                this.dropPlatform = platform;
+                this.selectedPlatform = this.project.platform;
+                this.idSelectedPlatform = this.selectedPlatform.id;
+            })
 
     }
+
+
 
     get name() { return this.editForm.controls.name; }
 

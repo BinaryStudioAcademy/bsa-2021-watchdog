@@ -42,6 +42,16 @@
             </div>
         </div>
     </form>
+    <div class="item">
+        <label class="item-definition">
+            <div>Platform</div>
+        </label>
+        <div class="item-field">
+            <div class="item-form-input p-input-icon-right">
+                <p-dropdown [options]="dropPlatform" [(ngModel)]="selectedPlatform" optionLabel="name"></p-dropdown>
+            </div>
+        </div>
+    </div>
 </p-panel>
 
 

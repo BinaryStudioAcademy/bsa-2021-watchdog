@@ -13,7 +13,7 @@ const routes: Routes = [{
     component: CreateProjectComponent
 }, {
     path: ':id',
-    component: EditProjectComponent
+    component: EditComponent
 },  {
     path: '',
     redirectTo: 'projects'

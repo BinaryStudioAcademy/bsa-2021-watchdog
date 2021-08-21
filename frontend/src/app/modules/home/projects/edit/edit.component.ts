@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@core/components/base/base.component';
@@ -14,6 +14,7 @@ import { Platform } from '@shared/models/platforms/platform';
 import { Project } from '@shared/models/projects/project';
 import { UpdateProject } from '@shared/models/projects/update-project';
 import { User } from '@shared/models/user/user';
+import { debug } from 'console';
 import { MenuItem } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { switchMap } from 'rxjs/operators';
@@ -40,6 +41,14 @@ export class EditComponent extends BaseComponent implements OnInit {
     updateProject = {} as UpdateProject;
     id: string;
     activeTabIndex: number = 0;
+
+    dropPlatform: Platform[];
+
+    selectedPlatform: Platform[];
+
+    idSelectedPlatform: number;
+
+    selectedLevel;
 
     constructor(
         private toastNotifications: ToastNotificationService,
@@ -71,75 +80,15 @@ export class EditComponent extends BaseComponent implements OnInit {
             this.projectService.getProjectById(this.id).pipe(this.untilThis)
                 .subscribe(project => {
                     this.project = project;
-                    this.validationsInit();
-                    this.initPlatforms();
                 })
 
         });
     }
 
-    validationsInit() {
-
-    }
-
-    private initPlatforms() {
-        this.loadPlatforms();
-        this.platforms.platformTabItems = [
-            { label: 'All', command: (event) => this.onTabChange(event?.item.label) },
-            { label: 'Browser', command: (event) => this.onTabChange(event?.item.label) },
-            { label: 'Server', command: (event) => this.onTabChange(event?.item.label) },
-            { label: 'Mobile', command: (event) => this.onTabChange(event?.item.label) },
-            { label: 'Desktop', command: (event) => this.onTabChange(event?.item.label) }
-        ];
-        this.platforms.activePlatformTabItem = Object.assign(this.platforms.platformTabItems[0]);
-    }
-
-    private loadPlatforms() {
-        this.spinnerService.show(true);
-        this.platformService
-            .getPlatforms()
-            .pipe(this.untilThis)
-            .subscribe(platforms => {
-                this.platforms.platformCards = platforms;
-                this.onTabChange();
-                this.spinnerService.hide();
-            }, error => {
-                this.toastNotifications.error(error);
-                this.spinnerService.hide();
-            });
-    }
-
-    private onTabChange(label: string = ''): void {
-        this.updateProject.platformId = this.project.platform.id;
-        if (this.platforms.platformCards) {
-            switch (label) {
-                case 'Browser': {
-                    this.platforms.viewPlatformCards = this.platforms.platformCards.filter(value => value.platformTypes.isBrowser);
-                    break;
-                }
-                case 'Server': {
-                    this.platforms.viewPlatformCards = this.platforms.platformCards.filter(value => value.platformTypes.isServer);
-                    break;
-                }
-                case 'Mobile': {
-                    this.platforms.viewPlatformCards = this.platforms.platformCards.filter(value => value.platformTypes.isMobile);
-                    break;
-                }
-                case 'Desktop': {
-                    this.platforms.viewPlatformCards = this.platforms.platformCards.filter(value => value.platformTypes.isDesktop);
-                    break;
-                }
-                default: {
-                    this.platforms.viewPlatformCards = this.platforms.platformCards.concat();
-                    break;
-                }
-            }
-        }
-    }
-
     updateProjectFunction(): void {
-        const project: UpdateProject = { ...this.editForm.value, platformId: this.updateProject.platformId };
-        if (this.editForm.valid && this.updateProject.platformId) {
+        const project: UpdateProject = { ...this.editForm.value, platformId: this.project.platform.id };
+        debugger;
+        if (this.editForm.valid) {
             this.spinnerService.show(true);
             this.projectService.updateProject(this.id, project)
                 .subscribe(
