@@ -14,7 +14,7 @@ import { switchMap } from 'rxjs/operators';
     styleUrls: ['./issue-details-page.component.sass']
 })
 export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
-    issueMessage: IssueMessage = undefined;
+    issueMessage: IssueMessage;
     id: string;
     requiredIdLength = 20;
     activeTabIndex: number = 0;

@@ -33,16 +33,16 @@ namespace Watchdog.Core.API.Controllers
         }
 
         [HttpGet("message/{id}")]
-        public async Task<ActionResult<IssueMessage>> GetIssueMessageByIdAsync(string id)
+        public async Task<ActionResult<IssueMessage>> GetEventMessageByIdAsync(string id)
         {
-            var issueMessage = await _issueService.GetIssueMessageByIdAsync(id);
+            var issueMessage = await _issueService.GetEventMessageByIdAsync(id);
             return Ok(issueMessage);
         }        
         
         [HttpGet("messagesByParent/{id}")]
-        public async Task<ActionResult<IssueMessage>> GetIssueMessagesByParentIdAsync(string id)
+        public async Task<ActionResult<IssueMessage>> GetEventMessagesByIssueIdAsync(int id)
         {
-            var issueMessages = await _issueService.GetIssuesMessagesByParentIdAsync(id);
+            var issueMessages = await _issueService.GetEventMessagesByIssueIdAsync(id);
             return Ok(issueMessages);
         }
     }

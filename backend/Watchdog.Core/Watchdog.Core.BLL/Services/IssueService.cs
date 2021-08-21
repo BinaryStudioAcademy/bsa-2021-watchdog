@@ -4,47 +4,45 @@ using Nest;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Issue;
 using Watchdog.Core.Common.Models.Issue;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
+using Issue = Watchdog.Core.DAL.Entities.Issue;
 
 namespace Watchdog.Core.BLL.Services
 {
     public class IssueService : BaseService, IIssueService
     {
         private readonly IElasticClient _client;
-        private readonly IMapper _mapper;
-        private readonly WatchdogCoreContext _context;
 
         public IssueService(WatchdogCoreContext context, IMapper mapper, IElasticClient client)
             : base(context, mapper)
         {
-            _context = context;
             _client = client;
-            _mapper = mapper;
         }
 
         public async Task AddIssueEvent(IssueMessage issueMessage)
         {
-            var eventMessage = _mapper.Map<EventMessage>(issueMessage);
-
             var issue = await _context.Issues.FirstOrDefaultAsync(i =>
                 i.ErrorMessage == issueMessage.IssueDetails.ErrorMessage &&
                 i.ErrorClass == issueMessage.IssueDetails.ClassName);
 
-            if (issue == null)
+            if (issue is null)
             {
-                var newIssue = _mapper.Map<Issue>(issueMessage);
-                var createdIssue = _context.Issues.Add(newIssue).Entity;
-                _context.EventMessages.Add(new EventMessage()
+                var createdIssue = _context.Issues.Add(new Issue()
+                {
+                    ErrorClass = issueMessage.IssueDetails.ClassName,
+                    ErrorMessage = issueMessage.IssueDetails.ErrorMessage
+                }).Entity;
+                
+                createdIssue.EventMessages.Add(new EventMessage()
                 {
                     EventId = issueMessage.Id,
-                    IssueId = createdIssue.Id
+                    OccurredOn = issueMessage.OccurredOn
                 });
+                
                 await _context.SaveChangesAsync();
             }
             else
@@ -52,7 +50,8 @@ namespace Watchdog.Core.BLL.Services
                 _context.EventMessages.Add(new EventMessage()
                 {
                     EventId = issueMessage.Id,
-                    IssueId = issue.Id
+                    IssueId = issue.Id,
+                    OccurredOn = issueMessage.OccurredOn
                 });
                 await _context.SaveChangesAsync();
             }
@@ -60,22 +59,20 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<ICollection<IssueInfoDto>> GetIssuesInfoAsync()
         {
-            var issueMessages = await GetIssueMessagesAsync();
-            var issues = await _context.Issues.ToListAsync();
-
-            var issuesInfo = issues
+            var issuesInfo = await _context.Issues
                 .Select(i => new IssueInfoDto()
                 {
+                    IssueId = i.Id,
                     ErrorClass = i.ErrorClass,
                     ErrorMessage = i.ErrorMessage,
                     EventsCount = _context.EventMessages.Count(em => em.IssueId == i.Id),
                     Newest = new IssueMessageDto()
                     {
                         Id = _context.EventMessages
-                            .FirstOrDefault(em => em.IssueId == i.Id)?.EventId,
+                            .FirstOrDefault(em => em.IssueId == i.Id).EventId,
                         OccurredOn = _context.EventMessages
                             .Where(em => em.IssueId == i.Id)
-                            .OrderByDescending(issueMessage => issueMessage.OccurredOn)
+                            .OrderByDescending(em => em.OccurredOn)
                             .FirstOrDefault().OccurredOn
                     },
                     Assignee = new AssigneeDto
@@ -91,99 +88,44 @@ namespace Watchdog.Core.BLL.Services
                     }
                 })
                 .OrderByDescending(i => i.Newest.OccurredOn)
-                .ToList();
+                .ToListAsync();
 
             return issuesInfo;
         }
 
-        public async Task<IssueMessage> GetIssueMessageByIdAsync(string issueId)
+        public async Task<IssueMessage> GetEventMessageByIdAsync(string eventId)
         {
-            var response = await _client
-                .GetAsync<IssueMessage>(issueId);
+            var response = await _client.GetAsync<IssueMessage>(eventId);
+
             if (!response.IsValid)
+            {
+                throw new KeyNotFoundException("Event message not found");
+            }
+
+            var eventMessage = await _context.EventMessages.FirstOrDefaultAsync(i => i.EventId == eventId);
+
+            response.Source.Id = eventId;
+            response.Source.IssueId = eventMessage.IssueId;
+            return response.Source;
+        }
+
+        public async Task<ICollection<IssueMessage>> GetEventMessagesByIssueIdAsync(int issueId)
+        {
+            var issue = await _context.Issues.FirstOrDefaultAsync(i => i.Id == issueId);
+
+            var response = await _client.SearchAsync<IssueMessage>(s => s
+                .Query(q => q
+                    .Ids(c => c
+                        .Values(issue.EventMessages.Select(i => i.EventId)))));
+
+            if (!response.IsValid)
+            {
                 throw new KeyNotFoundException("Issue Message not found");
-
-            var result = response.Source;
-            result.Id = issueId;
-            return result;
+            }
+            
+            return response.Documents.ToList();
         }
-
-        public async Task<ICollection<IssueMessage>> GetIssuesMessagesByParentIdAsync(string parentIssueId)
-        {
-            var issueMessagesCount = await GetTotalHitsAsync<IssueMessage>();
-            var issueMessagesResponse = await _client
-                .SearchAsync<IssueMessage>(descriptor => descriptor
-                    .Query(q => q
-                        .Match(m => m
-                            .Field(f => f.IssueId)
-                            .Query(parentIssueId)
-                        )
-                    )
-                    .From(0)
-                    .Size(issueMessagesCount));
-            if (!issueMessagesResponse.IsValid)
-                throw new KeyNotFoundException("Issue Messages not found");
-
-            var issueMessages = issueMessagesResponse
-                .Hits
-                .Select(h =>
-                {
-                    h.Source.Id = h.Id;
-                    return h.Source;
-                })
-                .ToList();
-
-            return issueMessages;
-        }
-
-        private async Task<ICollection<Issue>> GetIssuesAsync()
-        {
-            var issuesCount = await GetTotalHitsAsync<Issue>();
-
-            var issuesSearchResponse = await _client.SearchAsync<Issue>(s => s
-                .From(0)
-                .Size(issuesCount)
-            );
-
-            var issues = issuesSearchResponse
-                .Hits
-                .Select(h =>
-                {
-                    h.Source.Id = h.Id;
-                    return h.Source;
-                })
-                .ToList();
-
-            return issues;
-        }
-
-        private async Task<ICollection<IssueMessage>> GetIssueMessagesAsync()
-        {
-            var issueMessagesCount = await GetTotalHitsAsync<IssueMessage>();
-
-            var searchResponse = await _client.SearchAsync<IssueMessage>(s => s
-                .Source(sf => sf
-                    .Includes(fd => fd
-                        .Field(f => f.IssueId)
-                        .Field(f => f.IssueDetails.ErrorMessage)
-                        .Field(f => f.OccurredOn))
-                )
-                .From(0)
-                .Size(issueMessagesCount)
-            );
-
-            var issueMessages = searchResponse
-                .Hits
-                .Select(h =>
-                {
-                    h.Source.Id = h.Id;
-                    return h.Source;
-                })
-                .ToList();
-
-            return issueMessages;
-        }
-
+        
         private async Task<int> GetTotalHitsAsync<T>() where T : class
         {
             var totalHits = await _client.CountAsync<T>();
@@ -202,7 +144,7 @@ namespace Watchdog.Core.BLL.Services
 
         private async Task UpdateAssigneeInternalAsync(UpdateAssigneeDto assigneeDto)
         {
-            if (!(await _client.GetAsync<Issue>(assigneeDto.IssueId)).IsValid)
+            if (!await _context.Issues.AnyAsync(i => i.Id == assigneeDto.IssueId))
             {
                 throw new KeyNotFoundException("Issue doesn't exist");
             }

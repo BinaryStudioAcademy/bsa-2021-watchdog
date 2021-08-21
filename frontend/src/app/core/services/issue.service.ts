@@ -22,7 +22,7 @@ export class IssueService {
         return this.httpService.getRequest<IssueMessage>(`${this.routePrefix}/message/${id}`);
     }
 
-    public getIssueMessagesByParent(parentIssueId: string): Observable<IssueMessage[]> {
-        return this.httpService.getRequest<IssueMessage[]>(`${this.routePrefix}/messagesbyparent/${parentIssueId}`);
+    public getEventMessagesByIssueId(issueId: number | string): Observable<IssueMessage[]> {
+        return this.httpService.getRequest<IssueMessage[]>(`${this.routePrefix}/messagesbyparent/${issueId}`);
     }
 }
