@@ -126,5 +126,15 @@ namespace Watchdog.Core.BLL.Services
             return await GetApplicationByIdAsync(updateApplication.Entity.Id);
         }
 
+        public async Task DeleteApplicationAsync(int appId)
+        {
+            var application = await _context.Applications
+                .Include(t => t.ApplicationTeams)
+                .FirstOrDefaultAsync(a => a.Id == appId);
+            _context.Remove(application);
+
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

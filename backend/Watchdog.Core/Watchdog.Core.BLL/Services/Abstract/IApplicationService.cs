@@ -16,5 +16,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task RemoveAppTeam(int appTeamId);
         Task<ApplicationDto> GetApplicationByIdAsync(int appId);
         Task<ApplicationDto> UpdateApplicationAsync(int appId, UpdateApplicationDto updateAppDto);
+        Task DeleteApplicationAsync(int appId);
     }
 }

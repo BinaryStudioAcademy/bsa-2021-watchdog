@@ -76,5 +76,12 @@ namespace Watchdog.Core.API.Controllers
             var application = await _appService.UpdateApplicationAsync(id, dto);
             return Ok(application);
         }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> DeleteAsync(int id)
+        {
+            await _appService.DeleteApplicationAsync(id);
+            return NoContent();
+        }
     }
 }
