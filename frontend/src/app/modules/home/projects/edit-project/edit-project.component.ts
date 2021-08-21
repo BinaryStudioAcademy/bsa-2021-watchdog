@@ -39,6 +39,7 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
         platformCards: [] as Platform[]
     };
     teams: TeamOption[];
+
     alertSetting = {} as AlertSettings;
 
     editForm: FormGroup = new FormGroup({});
@@ -76,8 +77,6 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
                 this.validationsInit();
                 this.initPlatforms();
             })
-
-        //this.initAlertData();
     }
 
     validationsInit() {
@@ -91,16 +90,19 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
             Validators.maxLength(1000),
             Validators.pattern(regexs.projectDescription),
         ]));
+        // this.editForm.addControl('alertCategory', new FormControl(this.project.alertSettings, [
+        //     Validators.required,
+        // ]));
     }
 
-    private initAlertData() {
-        this.alertSetting.alertCategory = this.alertData.initAlertCategory;
-        this.alertSetting.specialAlertSetting = {
-            alertsCount: this.alertData.initAlertsCount,
-            specialAlertType: this.alertData.initSpecialAlertType,
-            alertTimeInterval: this.alertData.initAlertTimeInterval
-        };
-    }
+    // private initAlertData() {
+    //     this.alertSetting.alertCategory = this.alertData.initAlertCategory;
+    //     this.alertSetting.specialAlertSetting = {
+    //         alertsCount: this.alertData.initAlertsCount,
+    //         specialAlertType: this.alertData.initSpecialAlertType,
+    //         alertTimeInterval: this.alertData.initAlertTimeInterval
+    //     };
+    // }
 
     private initPlatforms() {
         this.loadPlatforms();
