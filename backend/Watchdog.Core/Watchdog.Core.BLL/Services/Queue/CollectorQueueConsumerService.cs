@@ -70,18 +70,15 @@ namespace Watchdog.Core.BLL.Services.Queue
             //TODO: Change to future value from IssueMessage
             int applicationId = 16;
 
-            using (var scope = _provider.CreateScope())
-            {
-                var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
-                var userIds = await userService.GetUserUIdsByApplicationIdAsync(applicationId);
+            using var scope = _provider.CreateScope();
+            var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+            var userIds = await userService.GetUserUIdsByApplicationIdAsync(applicationId);
 
-                var issueService = scope.ServiceProvider.GetRequiredService<IIssueService>();
-                var issueMessage = (await issueService.GetIssuesMessagesByParentIdAsync(issueMessageReceived.IssueId)).OrderByDescending(i => i.OccurredOn).FirstOrDefault();
+            var issueService = scope.ServiceProvider.GetRequiredService<IIssueService>();
+            var issueMessage = (await issueService.GetIssuesMessagesByParentIdAsync(issueMessageReceived.IssueId)).OrderByDescending(i => i.OccurredOn).FirstOrDefault();
 
-                var notifyService = scope.ServiceProvider.GetRequiredService<INotifyQueueProducerService>();
-                
-                notifyService.NotifyUsers(userIds, issueMessage);
-            }
+            var notifyService = scope.ServiceProvider.GetRequiredService<INotifyQueueProducerService>();
+            notifyService.NotifyUsers(userIds, issueMessage);
         }
 
         public override void Dispose()

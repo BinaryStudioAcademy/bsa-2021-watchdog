@@ -9,6 +9,7 @@ namespace Watchdog.Core.DAL.Entities
         {
             TeamMembers = new List<TeamMember>();
             ApplicationTeams = new List<ApplicationTeam>();
+            AssigneeTeams = new List<AssigneeTeam>();
         }
 
         public string Name { get; set; }
@@ -22,5 +23,7 @@ namespace Watchdog.Core.DAL.Entities
         public ICollection<TeamMember> TeamMembers { get; set; }
 
         public ICollection<ApplicationTeam> ApplicationTeams { get; set; }
+
+        public ICollection<AssigneeTeam> AssigneeTeams { get; set; }
     }
 }

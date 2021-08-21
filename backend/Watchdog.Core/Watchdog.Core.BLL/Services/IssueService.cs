@@ -1,4 +1,6 @@
-﻿using Nest;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Nest;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,17 +11,17 @@ using Watchdog.Core.Common.DTO.Issue;
 using Watchdog.Core.Common.Models.Issue;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
-using Issue = Watchdog.Core.DAL.Entities.Issue;
 
 namespace Watchdog.Core.BLL.Services
 {
-    public class IssueService : IIssueService
+    public class IssueService : BaseService, IIssueService
     {
         private readonly IElasticClient _client;
         private readonly IMapper _mapper;
         private readonly WatchdogCoreContext _context;
 
-        public IssueService(IElasticClient client, WatchdogCoreContext context, IMapper mapper)
+        public IssueService(WatchdogCoreContext context, IMapper mapper, IElasticClient client)
+            : base(context, mapper)
         {
             _context = context;
             _client = client;
@@ -76,8 +78,20 @@ namespace Watchdog.Core.BLL.Services
                             .OrderByDescending(issueMessage => issueMessage.OccurredOn)
                             .FirstOrDefault().OccurredOn
                     },
-                    Assignee = i.Assignee
-                });
+                    Assignee = new AssigneeDto
+                    {
+                        MemberIds = _context.AssigneeMembers
+                            .Where(a => a.IssueId == i.Id)
+                            .Select(a => a.MemberId)
+                            .ToList(),
+                        TeamIds = _context.AssigneeTeams
+                            .Where(a => a.IssueId == i.Id)
+                            .Select(a => a.TeamId)
+                            .ToList()
+                    }
+                })
+                .OrderByDescending(i => i.Newest.OccurredOn)
+                .ToList();
 
             return issuesInfo;
         }
@@ -173,22 +187,61 @@ namespace Watchdog.Core.BLL.Services
         private async Task<int> GetTotalHitsAsync<T>() where T : class
         {
             var totalHits = await _client.CountAsync<T>();
-            return (int) totalHits.Count;
+            return (int)totalHits.Count;
         }
 
-        public async Task UpdateAssignee(UpdateAssigneeDto assigneeDto)
+        public Task UpdateAssigneeAsync(UpdateAssigneeDto assigneeDto)
         {
-            var issueResponse = await _client.GetAsync<Issue>(assigneeDto.IssueId);
-            if (!issueResponse.IsValid)
+            if (assigneeDto is null)
+            {
+                throw new System.ArgumentNullException(nameof(assigneeDto));
+            }
+
+            return UpdateAssigneeInternalAsync(assigneeDto);
+        }
+
+        private async Task UpdateAssigneeInternalAsync(UpdateAssigneeDto assigneeDto)
+        {
+            if (!(await _client.GetAsync<Issue>(assigneeDto.IssueId)).IsValid)
             {
                 throw new KeyNotFoundException("Issue doesn't exist");
             }
 
-            var issue = issueResponse.Source;
+            var oldMembers = await _context.AssigneeMembers
+                .Where(a => a.IssueId == assigneeDto.IssueId)
+                .ToListAsync(); // assignee members in db
+            var membersToAdd = assigneeDto.Assignee.MemberIds
+                .Except(oldMembers.Select(a => a.MemberId)); // members in db - members in dto
+            var membersToDelete = oldMembers
+                .Where(m => !assigneeDto.Assignee.MemberIds.Any(id => m.MemberId == id)); // members in dto - members in db
 
-            issue.Assignee = assigneeDto.Assignee;
-            await _client.UpdateAsync<Issue, Issue>(assigneeDto.IssueId, descriptor => descriptor
-                        .Doc(issue));
+            await _context.AssigneeMembers.AddRangeAsync(
+                membersToAdd.Select(id => new AssigneeMember
+                {
+                    IssueId = assigneeDto.IssueId,
+                    MemberId = id
+                }));
+
+            _context.AssigneeMembers.RemoveRange(membersToDelete);
+
+            var oldTeams = await _context.AssigneeTeams
+                .Where(a => a.IssueId == assigneeDto.IssueId)
+                .ToListAsync(); // assignee teams in db
+            var teamsToAdd = assigneeDto.Assignee.TeamIds
+                .Except(oldTeams.Select(a => a.TeamId)); // teams in db - teams in dto
+            var teamsToDelete = oldTeams
+                .Where(t => !assigneeDto.Assignee.TeamIds.Any(id => t.TeamId == id)); // teams in db - teams in dto
+
+            await _context.AssigneeTeams.AddRangeAsync(
+                teamsToAdd.Select(id => new AssigneeTeam
+                {
+                    IssueId = assigneeDto.IssueId,
+                    TeamId = id
+                }));
+
+            _context.AssigneeTeams.RemoveRange(teamsToDelete);
+
+            await _context.SaveChangesAsync();
         }
     }
 }
