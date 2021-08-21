@@ -1,49 +1,83 @@
-﻿using System;
-using Nest;
+﻿using Nest;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Issue;
 using Watchdog.Core.Common.Models.Issue;
+using Watchdog.Core.DAL.Context;
+using Watchdog.Core.DAL.Entities;
+using Issue = Watchdog.Core.DAL.Entities.Issue;
 
 namespace Watchdog.Core.BLL.Services
 {
     public class IssueService : IIssueService
     {
         private readonly IElasticClient _client;
+        private readonly IMapper _mapper;
+        private readonly WatchdogCoreContext _context;
 
-        public IssueService(IElasticClient client)
+        public IssueService(IElasticClient client, WatchdogCoreContext context, IMapper mapper)
         {
+            _context = context;
             _client = client;
+            _mapper = mapper;
+        }
+
+        public async Task AddIssueEvent(IssueMessage issueMessage)
+        {
+            var eventMessage = _mapper.Map<EventMessage>(issueMessage);
+
+            var issue = await _context.Issues.FirstOrDefaultAsync(i =>
+                i.ErrorMessage == issueMessage.IssueDetails.ErrorMessage &&
+                i.ErrorClass == issueMessage.IssueDetails.ClassName);
+
+            if (issue == null)
+            {
+                var newIssue = _mapper.Map<Issue>(issueMessage);
+                var createdIssue = _context.Issues.Add(newIssue).Entity;
+                _context.EventMessages.Add(new EventMessage()
+                {
+                    EventId = issueMessage.Id,
+                    IssueId = createdIssue.Id
+                });
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                _context.EventMessages.Add(new EventMessage()
+                {
+                    EventId = issueMessage.Id,
+                    IssueId = issue.Id
+                });
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<ICollection<IssueInfoDto>> GetIssuesInfoAsync()
         {
-            var issues = await GetIssuesAsync();
             var issueMessages = await GetIssueMessagesAsync();
+            var issues = await _context.Issues.ToListAsync();
 
             var issuesInfo = issues
                 .Select(i => new IssueInfoDto()
                 {
-                    IssueId = i.Id,
                     ErrorClass = i.ErrorClass,
                     ErrorMessage = i.ErrorMessage,
-                    EventsCount = issueMessages.Count(issueMessage =>
-                        issueMessage.IssueDetails.ErrorMessage == i.ErrorMessage),
+                    EventsCount = _context.EventMessages.Count(em => em.IssueId == i.Id),
                     Newest = new IssueMessageDto()
                     {
-                        Id = issueMessages
-                            .FirstOrDefault(issueMessage => issueMessage.IssueId == i.Id).Id,
-                        OccurredOn = issueMessages
-                            .Where(issueMessage => issueMessage.IssueId == i.Id)
+                        Id = _context.EventMessages
+                            .FirstOrDefault(em => em.IssueId == i.Id)?.EventId,
+                        OccurredOn = _context.EventMessages
+                            .Where(em => em.IssueId == i.Id)
                             .OrderByDescending(issueMessage => issueMessage.OccurredOn)
                             .FirstOrDefault().OccurredOn
                     },
                     Assignee = i.Assignee
-                })
-                .OrderByDescending(i => i.Newest.OccurredOn)
-                .ToList();
+                });
 
             return issuesInfo;
         }
