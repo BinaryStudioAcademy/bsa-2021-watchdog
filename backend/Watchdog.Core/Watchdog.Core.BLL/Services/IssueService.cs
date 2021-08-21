@@ -164,8 +164,8 @@ namespace Watchdog.Core.BLL.Services
             }
 
             return UpdateAssigneeInternalAsync(assigneeDto);
-
         }
+
         private async Task UpdateAssigneeInternalAsync(UpdateAssigneeDto assigneeDto)
         {
             if (!(await _client.GetAsync<Issue>(assigneeDto.IssueId)).IsValid)
