@@ -6,21 +6,18 @@ import { Data } from '@modules/home/projects/data';
 import { PlatformService } from '@core/services/platform.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { Platform } from '@shared/models/platforms/platform';
-import { NewProject } from '@shared/models/projects/new-project';
 import { UpdateProject } from '@shared/models/projects/update-project';
-import { TeamService } from '@core/services/team.service';
-import { TeamOption } from '@shared/models/teams/team-option';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogService } from 'primeng/dynamicdialog';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { User } from '@shared/models/user/user';
 import { Organization } from '@shared/models/organization/organization';
 import { AlertSettings } from '@shared/models/alert-settings/alert-settings';
 import { regexs } from '@shared/constants/regexs';
 import { ProjectService } from '@core/services/project.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SpinnerService } from '@core/services/spinner.service';
 import { Project } from '@shared/models/projects/project';
-import { throwIfEmpty } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-project',
@@ -31,52 +28,55 @@ import { throwIfEmpty } from 'rxjs/operators';
 export class EditProjectComponent extends BaseComponent implements OnInit {
     user: User;
     organization: Organization;
-    newProject = {} as NewProject;
     platforms = {
         platformTabItems: [] as MenuItem[],
         activePlatformTabItem: {} as MenuItem,
         viewPlatformCards: [] as Platform[],
         platformCards: [] as Platform[]
     };
-    teams: TeamOption[];
-
     alertSetting = {} as AlertSettings;
-
     editForm: FormGroup = new FormGroup({});
-
-    createTeamDialog: DynamicDialogRef;
-
     project: Project;
-
     updateProject = {} as UpdateProject;
+    id: string;
+    activeTabIndex: number = 0;
 
     constructor(
         private toastNotifications: ToastNotificationService,
         private platformService: PlatformService,
-        private teamService: TeamService,
-        private dialogService: DialogService,
         private authService: AuthenticationService,
         private projectService: ProjectService,
         public alertData: Data,
         private router: Router,
-        private spinnerService: SpinnerService
+        private spinnerService: SpinnerService,
+        private activatedRoute: ActivatedRoute
     ) {
         super();
     }
 
     ngOnInit() {
-        this.user = this.authService.getUser();
+        this.id = this.activatedRoute.snapshot.params.id;
+        this.activatedRoute.paramMap.pipe(
+            switchMap(params => params.getAll('id'))
+        ).subscribe(data => {
+            this.activeTabIndex = 0;
+            this.id = data;
+            debugger;
+            this.user = this.authService.getUser();
         this.authService.getOrganization()
             .subscribe(organization => {
                 this.organization = organization;
             });
 
-        this.projectService.getProjectById(18).pipe(this.untilThis)
+        this.projectService.getProjectById(this.id).pipe(this.untilThis)
             .subscribe(project => {
                 this.project = project;
                 this.validationsInit();
                 this.initPlatforms();
             })
+
+        });
+
     }
 
     validationsInit() {
@@ -177,32 +177,6 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
                     },
                     error => {
                         debugger;
-                        this.toastNotifications.error(error);
-                        this.spinnerService.hide();
-                    }
-                );
-        } else {
-            this.toastNotifications.error('Form is not valid', 'Error');
-        }
-    }
-
-    createProject(): void {
-        if (this.editForm.valid && this.newProject.platformId) {
-            this.newProject.organizationId = this.organization.id;
-            this.newProject.createdBy = this.user.id;
-            this.newProject.alertSettings = {
-                alertCategory: this.alertSetting.alertCategory,
-                specialAlertSetting: this.alertSetting.alertCategory === 3 ? this.alertSetting.specialAlertSetting : null
-            };
-            this.spinnerService.show(true);
-            this.projectService.createProject(this.newProject)
-                .subscribe(
-                    project => {
-                        this.toastNotifications.success(`${project.name} created!`);
-                        this.router.navigate(['home', 'projects']);
-                        this.spinnerService.hide();
-                    },
-                    error => {
                         this.toastNotifications.error(error);
                         this.spinnerService.hide();
                     }

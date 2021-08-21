@@ -74,44 +74,5 @@
             </form>
         </div>
     </div>
-    <!--    Alert RadioButtons    -->
-        <!-- <div class="alert-settings">
-            <h2 class="title">Alert settings</h2>
-            <p-divider></p-divider>
-
-            <div *ngFor="let category of alertData.alertCategories" class="alert-form">
-                <form [formGroup]="editForm">
-                    <p-radioButton [inputId]="category.value.toString()" [value]="category.value" [label]="category.label"
-                                formControlName="alertCategory" name="alertCategory">
-                    </p-radioButton>
-                </form>
-                    Specific Alert Settings
-                <div class="special-settings" *ngIf="category.value === 3">
-                    <p-inputNumber [(ngModel)]="alertSetting.specialAlertSetting.alertsCount"
-                                [disabled]="editForm.controls.alertCategory.value !== 3"
-                                [min]="0" [showButtons]="true" [size]="2" [step]="1"
-                                class="radiobutton-settings-alerts-count"
-                                mode="decimal"
-                                incrementButtonClass="p-button-outlined"
-                                decrementButtonClass="p-button-outlined">
-                    </p-inputNumber>
-                    <p-dropdown [(ngModel)]="alertSetting.specialAlertSetting.specialAlertType"
-                                [disabled]="editForm.controls.alertCategory.value !== 3"
-                                [options]="alertData.alertTypes"
-                                optionValue="value" optionLabel="label"
-                                class="radiobutton-settings-alert-type">
-                    </p-dropdown>
-                    <span>a unique error in</span>
-                    <p-dropdown [(ngModel)]="alertSetting.specialAlertSetting.alertTimeInterval"
-                                [disabled]="editForm.controls.alertCategory.value !== 3"
-                                [options]="alertData.alertTimeIntervals"
-                                optionValue="value" optionLabel="label"
-                                class="radiobutton-settings-alert-type"
-                    >
-                    </p-dropdown>
-                </div>
-            </div>
-        </div> -->
-
 </div>
 

@@ -18,13 +18,8 @@ const routes: Routes = [{
         pathMatch: 'full',
     }, {
         path: 'projects',
-        component: ProjectsComponent,
-    }, {
-        path: 'projects/create',
-        component: CreateProjectComponent,
-    }, {
-        path: 'projects/edit',
-        component: EditProjectComponent,
+        loadChildren: () => import('./projects/projects.module')
+            .then(m => m.ProjectsModule),
     }, {
         path: 'issues',
         loadChildren: () => import('./issues/issues.module')

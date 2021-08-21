@@ -22,14 +22,11 @@ import { EditProjectComponent } from './projects/edit-project/edit-project.compo
     declarations: [
         HomeComponent,
         DashboardComponent,
-        ProjectsComponent,
         AddDashboardComponent,
         UpdateDashboardComponent,
-        CreateProjectComponent,
         TileMenuComponent,
         TopActiveIssuesTileComponent,
         AddEditTopActiveIssuesTileComponent,
-        EditProjectComponent,
     ],
     imports: [
         SharedModule,

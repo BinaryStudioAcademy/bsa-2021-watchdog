@@ -21,7 +21,7 @@ export class ProjectService {
         return this.httpService.getRequest(`${this.apiPrefix}/organization/${id}`);
     }
 
-    getProjectById(id: number): Observable<Project> {
+    getProjectById(id: number | string): Observable<Project> {
         return this.httpService.getRequest<Project>(`${this.apiPrefix}/${id}`);
     }
 
