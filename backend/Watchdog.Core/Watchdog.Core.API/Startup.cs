@@ -8,16 +8,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using RabbitMQ.Client;
 using Serilog;
 using System;
 using System.Collections.Generic;
 using Watchdog.AspNetCore;
 using Watchdog.Core.API.Extensions;
 using Watchdog.Core.API.Middlewares;
-using Watchdog.Core.BLL.Services;
-using Watchdog.RabbitMQ.Shared.Models;
-using Watchdog.RabbitMQ.Shared.Services;
 
 namespace Watchdog.Core.API
 {

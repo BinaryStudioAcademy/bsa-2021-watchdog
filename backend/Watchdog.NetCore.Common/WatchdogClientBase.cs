@@ -47,19 +47,17 @@ namespace Watchdog.NetCore.Common
 
         protected virtual bool CanSend(Exception exception)
         {
-            return exception != null;
+            return exception is not null;
         }
 
         protected virtual bool CanSend(WatchdogMessage message)
         {
-            return true;
+            return message is not null;
         }
 
-        public async Task Send(WatchdogMessage watchdogMessage)
+        public async Task SendAsync(WatchdogMessage watchdogMessage)
         {
-            bool canSend = CanSend(watchdogMessage);
-
-            if (!canSend)
+            if (!CanSend(watchdogMessage))
             {
                 return;
             }
@@ -72,48 +70,38 @@ namespace Watchdog.NetCore.Common
             await _client.SendAsync(requestMessage);
         }
 
-        public async Task Send(Exception exception)
-        {
-            await SendAsync(exception);
-        }
-
-        protected virtual async Task SendAsync(Exception exception)
+        public virtual async Task SendAsync(Exception exception)
         {
             if (CanSend(exception))
             {
-                await StripAndSend(exception);
+                await StripAndSendAsync(exception);
             }
-        }
-
-        public Task SendInBackground(Exception exception)
-        {
-            return SendInBackgroundAsync(exception);
         }
 
         public virtual async Task SendInBackgroundAsync(Exception exception)
         {
             if (CanSend(exception))
             {
-                await StripAndSend(exception);
+                await StripAndSendAsync(exception);
             }
         }
 
-        protected async Task StripAndSend(Exception exception)
+        protected async Task StripAndSendAsync(Exception exception)
         {
             foreach (Exception e in StripWrapperExceptions(exception))
             {
-                await Send(BuildMessage(e));
+                await SendAsync(BuildMessage(e));
             }
         }
 
         protected IEnumerable<Exception> StripWrapperExceptions(Exception exception)
         {
-            if (exception != null && _wrapperExceptions.Any(wrapperException =>
-                exception.GetType() == wrapperException && exception.InnerException != null))
+            if (exception is not null && _wrapperExceptions.Any(wrapperException =>
+                exception.GetType() == wrapperException && exception.InnerException is not null))
             {
                 AggregateException aggregate = exception as AggregateException;
 
-                if (aggregate != null)
+                if (aggregate is not null)
                 {
                     foreach (Exception e in aggregate.InnerExceptions)
                     {

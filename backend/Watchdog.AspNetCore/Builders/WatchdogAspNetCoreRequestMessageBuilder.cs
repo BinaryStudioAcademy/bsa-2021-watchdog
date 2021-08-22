@@ -33,7 +33,7 @@ namespace Watchdog.AspNetCore.Builders
         {
             var ip = connection.RemoteIpAddress ?? connection.LocalIpAddress;
 
-            if (ip == null)
+            if (ip is null)
             {
                 return "";
             }
@@ -50,13 +50,16 @@ namespace Watchdog.AspNetCore.Builders
 
         private static IDictionary GetQueryString(HttpRequest request)
         {
-            IDictionary queryString = null;
+            IDictionary queryString = new Dictionary<string, string>();
 
             try
             {
-                queryString = ToDictionary(request.Query);
+                foreach (var value in request.Query)
+                {
+                    queryString[value.Key] = string.Join(",", value.Value.AsEnumerable());
+                }
             }
-            catch (Exception e)
+            catch (Exception e) when (e is ArgumentNullException || e is OutOfMemoryException)
             {
                 queryString = new Dictionary<string, string>() { { "Failed to retrieve", e.Message } };
             }
@@ -74,24 +77,12 @@ namespace Watchdog.AspNetCore.Builders
                     headers[header.Key] = string.Join(",", header.Value.AsEnumerable());
                 }
             }
-            catch (Exception e)
+            catch (Exception e) when (e is ArgumentNullException || e is OutOfMemoryException)
             {
                 headers = new Dictionary<string, string>() { { "Failed to retrieve", e.Message } };
             }
 
             return headers;
-        }
-
-        private static IDictionary ToDictionary(IQueryCollection query)
-        {
-            var dict = new Dictionary<string, string>();
-
-            foreach (var value in query)
-            {
-                dict[value.Key] = string.Join(",", value.Value.AsEnumerable());
-            }
-
-            return dict;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Watchdog.AspNetCore
         public WatchdogClient(WatchdogSettings settings, HttpContext context = null)
             : base (settings)
         {
-            if (context != null)
+            if (context is not null)
             {
                 SetCurrentContext(context);
             }
@@ -37,10 +37,10 @@ namespace Watchdog.AspNetCore
 
         protected override bool CanSend(WatchdogMessage message)
         {
-            return message?.Details?.Response != null;
+            return message?.Details?.Response is not null;
         }
 
-        protected override async Task SendAsync(Exception exception)
+        public override async Task SendAsync(Exception exception)
         {
             if (CanSend(exception))
             {
@@ -52,7 +52,7 @@ namespace Watchdog.AspNetCore
                 _currentRequestMessage.Value = currentRequestMessage;
                 _currentResponseMessage.Value = currentResponseMessage;
 
-                await StripAndSend(exception);
+                await StripAndSendAsync(exception);
             }
         }
 
@@ -68,18 +68,18 @@ namespace Watchdog.AspNetCore
                 _currentRequestMessage.Value = currentRequestMessage;
                 _currentResponseMessage.Value = currentResponseMessage;
 
-                await StripAndSend(exception);
+                await StripAndSendAsync(exception);
             }
         }
 
         private WatchdogRequestMessage BuildRequestMessage()
         {
-            return _currentHttpContext.Value != null ? WatchdogAspNetCoreRequestMessageBuilder.Build(_currentHttpContext.Value) : null;
+            return _currentHttpContext.Value is not null ? WatchdogAspNetCoreRequestMessageBuilder.Build(_currentHttpContext.Value) : null;
         }
 
         private WatchdogResponseMessage BuildResponseMessage()
         {
-            return _currentHttpContext.Value != null ? WatchdogAspNetCoreResponseMessageBuilder.Build(_currentHttpContext.Value) : null;
+            return _currentHttpContext.Value is not null ? WatchdogAspNetCoreResponseMessageBuilder.Build(_currentHttpContext.Value) : null;
         }
 
         protected override WatchdogMessage BuildMessage(Exception exception)

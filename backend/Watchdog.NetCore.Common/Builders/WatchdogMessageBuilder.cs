@@ -26,7 +26,7 @@ namespace Watchdog.NetCore.Common.Builders
 
         public IWatchdogMessageBuilder SetTimeStamp(DateTime? currentTime)
         {
-            if (currentTime != null)
+            if (currentTime is not null)
             {
                 _watchdogMessage.OccurredOn = currentTime.Value;
             }
@@ -47,7 +47,7 @@ namespace Watchdog.NetCore.Common.Builders
 
         public IWatchdogMessageBuilder SetExceptionDetails(Exception exception)
         {
-            if (exception != null)
+            if (exception is not null)
             {
                 _watchdogMessage.Details.Error = WatchdogErrorMessageBuilder.Build(exception);
             }

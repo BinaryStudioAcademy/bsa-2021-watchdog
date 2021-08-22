@@ -47,7 +47,7 @@ namespace Watchdog.NetCore.Common.Builders
 
             var frames = stackTrace.GetFrames();
 
-            if (frames == null || frames.Length == 0)
+            if (frames is null || frames.Length == 0)
             {
                 var line = new WatchdogErrorStackTraceLineMessage { FileName = "none", LineNumber = 0 };
                 lines.Add(line);
@@ -59,7 +59,7 @@ namespace Watchdog.NetCore.Common.Builders
             {
                 MethodBase method = frame.GetMethod();
 
-                if (method != null)
+                if (method is not null)
                 {
                     int lineNumber = frame.GetFileLineNumber();
                     int columnNumber = frame.GetFileColumnNumber();
@@ -73,7 +73,7 @@ namespace Watchdog.NetCore.Common.Builders
 
                     string file = frame.GetFileName();
 
-                    string className = method.DeclaringType != null ? method.DeclaringType.FullName : "(unknown)";
+                    string className = method.DeclaringType is not null ? method.DeclaringType.FullName : "(unknown)";
 
                     var line = new WatchdogErrorStackTraceLineMessage
                     {
@@ -140,7 +140,7 @@ namespace Watchdog.NetCore.Common.Builders
 
                 string type = "<UnknownType>";
 
-                if (parameters[i].ParameterType != null)
+                if (parameters[i].ParameterType is not null)
                 {
                     type = parameters[i].ParameterType.Name;
                 }
@@ -166,7 +166,7 @@ namespace Watchdog.NetCore.Common.Builders
 
             AggregateException ae = exception as AggregateException;
 
-            if (ae != null && ae.InnerExceptions != null)
+            if (ae is not null && ae.InnerExceptions is not null)
             {
                 message.InnerErrors = new WatchdogErrorMessage[ae.InnerExceptions.Count];
                 int index = 0;
@@ -177,7 +177,7 @@ namespace Watchdog.NetCore.Common.Builders
                     index++;
                 }
             }
-            else if (exception.InnerException != null)
+            else if (exception.InnerException is not null)
             {
                 message.InnerError = Build(exception.InnerException);
             }
