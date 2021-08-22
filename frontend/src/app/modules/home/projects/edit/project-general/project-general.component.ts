@@ -7,9 +7,9 @@ import { Platform } from '@shared/models/platforms/platform';
 import { Project } from '@shared/models/projects/project';
 
 @Component({
-  selector: 'app-project-general',
-  templateUrl: './project-general.component.html',
-  styleUrls: ['../edit.component.sass']
+    selector: 'app-project-general',
+    templateUrl: './project-general.component.html',
+    styleUrls: ['../edit.component.sass']
 })
 export class ProjectGeneralComponent extends BaseComponent implements OnInit {
     @Input() project: Project;
@@ -20,18 +20,17 @@ export class ProjectGeneralComponent extends BaseComponent implements OnInit {
         private platformService: PlatformService,
     ) {
         super();
-     }
+    }
 
     ngOnInit() {
         this.initValidators();
         this.platformService.getPlatforms().pipe(this.untilThis)
             .subscribe(platform => {
                 this.dropPlatform = platform;
-            })
-
+            });
     }
 
-    initValidators(): void {
+    initValidators() {
         this.editForm.addControl('name', new FormControl(this.project.name, [
             Validators.required,
             Validators.minLength(3),

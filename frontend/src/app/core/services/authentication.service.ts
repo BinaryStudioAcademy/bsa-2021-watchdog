@@ -15,8 +15,6 @@ import { Organization } from '@shared/models/organization/organization';
 import { UserService } from './user.service';
 import { RegistrationService } from './registration.service';
 import { OrganizationService } from './organization.service';
-import { Project } from '@shared/models/projects/project';
-import { ProjectService } from './project.service';
 
 @Injectable({
     providedIn: 'root'
@@ -35,8 +33,7 @@ export class AuthenticationService {
         private registrationService: RegistrationService,
         private organizationService: OrganizationService,
         private memberService: MemberService,
-        private router: Router,
-        private projectService: ProjectService
+        private router: Router
     ) {
         this.tokenHelper = new JwtHelperService();
     }

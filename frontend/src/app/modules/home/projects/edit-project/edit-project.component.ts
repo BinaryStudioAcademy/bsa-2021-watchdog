@@ -18,18 +18,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SpinnerService } from '@core/services/spinner.service';
 import { Project } from '@shared/models/projects/project';
 import { switchMap } from 'rxjs/operators';
-import {DropdownModule} from 'primeng/dropdown';
 
 @Component({
-  selector: 'app-edit-project',
-  templateUrl: './edit-project.component.html',
-  styleUrls: ['./edit-project.component.sass'],
-  providers: [Data, DialogService]
+    selector: 'app-edit-project',
+    templateUrl: './edit-project.component.html',
+    styleUrls: ['./edit-project.component.sass'],
+    providers: [Data, DialogService]
 })
 
-
 export class EditProjectComponent extends BaseComponent implements OnInit {
-
     dropPlatform: Platform[];
 
     selectedPlatform: Platform;
@@ -81,15 +78,13 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
                     this.project = project;
                     this.validationsInit();
                     this.initPlatforms();
-                })
+                });
 
             this.platformService.getPlatforms().pipe(this.untilThis)
                 .subscribe(platform => {
                     this.dropPlatform = platform;
                     this.selectedPlatform = this.project.platform;
-                    debugger;
-                })
-
+                });
         });
     }
 
@@ -167,10 +162,12 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
             this.spinnerService.show(true);
             this.projectService.updateProject(this.id, project)
                 .subscribe(
-                    project => {
-                        this.toastNotifications.success(`${project.name} has been updated!`);
-                        this.router.navigate(['home', 'projects']);
-                        this.spinnerService.hide();
+                    response => {
+                        if (response) {
+                            this.toastNotifications.success('Project has been updated!');
+                            this.router.navigate(['home', 'projects']);
+                            this.spinnerService.hide();
+                        }
                     },
                     error => {
                         this.toastNotifications.error(error);
@@ -192,18 +189,17 @@ export class EditProjectComponent extends BaseComponent implements OnInit {
         this.projectService.removeProject(id)
             .pipe(this.untilThis)
             .subscribe(project => {
-                this.toastNotifications.success('Project has been deleted');
+                this.toastNotifications.success(`${project} has been deleted`);
                 this.router.navigate(['home', 'projects']);
                 this.spinnerService.hide();
             },
             error => {
                 this.toastNotifications.error(error);
-                        this.spinnerService.hide();
+                this.spinnerService.hide();
             });
     }
 
     get name() { return this.editForm.controls.name; }
 
     get description() { return this.editForm.controls.description; }
-
 }

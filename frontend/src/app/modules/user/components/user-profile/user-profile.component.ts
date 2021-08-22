@@ -39,7 +39,6 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
             && user.email === this.user.email) {
             this.toastNotificationService.error("You haven't changed anything to make changes");
         } else {
-            debugger;
             this.userService.updateUsersById(this.user.id, user)
                 .pipe(this.untilThis)
                 .subscribe(resp => {
