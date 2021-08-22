@@ -108,7 +108,7 @@ namespace Watchdog.Core.BLL.Services
         public async Task<ApplicationDto> GetApplicationByIdAsync(int appId)
         {
             var application = await _context.Applications
-                .Include(a => a.Platform)
+                .Include(p => p.Platform)
                 .FirstOrDefaultAsync(a => a.Id == appId);
 
             return _mapper.Map<ApplicationDto>(application);

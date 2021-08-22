@@ -44,17 +44,8 @@ export class EditComponent extends BaseComponent implements OnInit {
 
     dropPlatform: Platform[];
 
-    selectedPlatform: Platform[];
-
-    idSelectedPlatform: number;
-
-    currentVal: any;
-
-
-
     constructor(
         private toastNotifications: ToastNotificationService,
-        private platformService: PlatformService,
         private authService: AuthenticationService,
         private projectService: ProjectService,
         public alertData: Data,
@@ -87,13 +78,8 @@ export class EditComponent extends BaseComponent implements OnInit {
         });
     }
 
-    tests(): void {
-        const vars = { ...this.editForm.value };
-        debugger;
-    }
-
     updateProjectFunction(): void {
-        const project: UpdateProject = { ...this.editForm.value, platformId: this.idSelectedPlatform };
+        const project: UpdateProject = { ...this.editForm.value };
         debugger;
         if (this.editForm.valid) {
             this.spinnerService.show(true);
@@ -116,7 +102,6 @@ export class EditComponent extends BaseComponent implements OnInit {
 
     reset() {
         this.editForm.reset(this.project);
-        this.updateProject.platformId = this.project.platform.id;
     }
 
     deleteProject(id: string) {

@@ -26,6 +26,7 @@ namespace Watchdog.Core.BLL.MappingProfiles
 
             CreateMap<Application, UpdateApplicationDto>();
             CreateMap<UpdateApplicationDto, Application>();
+
         }
     }
 }
