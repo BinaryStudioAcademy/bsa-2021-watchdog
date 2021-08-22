@@ -96,6 +96,11 @@ export class EditComponent extends BaseComponent implements OnInit {
         }
     }
 
+    tests() {
+        const project = { ...this.editForm.value };
+        debugger;
+    }
+
     reset() {
         this.editForm.reset(this.project);
     }

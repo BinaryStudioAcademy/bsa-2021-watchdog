@@ -1,35 +1,38 @@
 <p-panel header="Alert" class="panel">
     <form class="item">
         <div class="alert-settings">
-            <div *ngFor="let category of alertData.alertCategories" class="alert-form">
-                <form [formGroup]="editForm">
+            <div [formGroup]="editForm" *ngFor="let category of alertData.alertCategories" class="alert-form">
+                <div >
                     <p-radioButton [inputId]="category.value.toString()" [value]="category.value" [label]="category.label"
                                    formControlName="alertCategory" name="alertCategory" >
                     </p-radioButton>
-                </form>
-                <!--    Specific Alert Settings    -->
-                <div [formGroup]="editForm" class="special-settings" *ngIf="category.value === 3">
+                </div>
+                <!-- <div [formGroup]="editForm" class="special-settings" *ngIf="category.value === 3">
                     <p-inputNumber formControlName="alertsCount"
-                                   [min]="0" [showButtons]="true" [size]="2" [step]="1"
-                                   class="radiobutton-settings-alerts-count"
-                                   mode="decimal"
-                                   incrementButtonClass="p-button-outlined"
-                                   decrementButtonClass="p-button-outlined">
+                                    [disabled]="category.value !== 3"
+                                    [min]="0" [showButtons]="true" [size]="2" [step]="1"
+                                    class="radiobutton-settings-alerts-count"
+                                    mode="decimal"
+                                    incrementButtonClass="p-button-outlined"
+                                    decrementButtonClass="p-button-outlined">
                     </p-inputNumber>
                     <p-dropdown formControlName="specialAlertType"
+                                [disabled]="category.value !== 3"
                                 [options]="alertData.alertTypes"
                                 optionValue="value" optionLabel="label"
                                 class="radiobutton-settings-alert-type">
                     </p-dropdown>
                     <span>a unique error in</span>
                     <p-dropdown formControlName="alertTimeInterval"
+                                [disabled]="category.value !== 3"
                                 [options]="alertData.alertTimeIntervals"
                                 optionValue="value" optionLabel="label"
                                 class="radiobutton-settings-alert-type"
                     >
                     </p-dropdown>
-                </div>
+                </div> -->
             </div>
+
         </div>
     </form>
 </p-panel>

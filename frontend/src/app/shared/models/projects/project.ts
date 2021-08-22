@@ -1,3 +1,4 @@
+import { AlertSettings } from '../alert-settings/alert-settings';
 import { Platform } from '../platforms/platform';
 
 export interface Project {
@@ -6,4 +7,5 @@ export interface Project {
     description: string,
     securityToken: string,
     platform: Platform,
+    alertSettings?: AlertSettings,
 }
