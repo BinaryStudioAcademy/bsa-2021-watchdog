@@ -16,7 +16,6 @@ namespace Watchdog.Collector.API.Controllers
             _elasticService = elasticService;
         }
         
-        [DisableRequestSizeLimit] 
         [HttpPost]
         public async Task<IActionResult> AddNewIssue(IssueMessageDto message)
         {
