@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@core/components/base/base.component';
@@ -48,7 +48,9 @@ export class EditComponent extends BaseComponent implements OnInit {
 
     idSelectedPlatform: number;
 
-    selectedLevel;
+    currentVal: any;
+
+
 
     constructor(
         private toastNotifications: ToastNotificationService,
@@ -85,8 +87,9 @@ export class EditComponent extends BaseComponent implements OnInit {
         });
     }
 
+
     updateProjectFunction(): void {
-        const project: UpdateProject = { ...this.editForm.value, platformId: this.project.platform.id };
+        const project: UpdateProject = { ...this.editForm.value, platformId: this.idSelectedPlatform };
         debugger;
         if (this.editForm.valid) {
             this.spinnerService.show(true);

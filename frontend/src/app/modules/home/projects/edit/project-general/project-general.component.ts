@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@core/components/base/base.component';
 import { PlatformService } from '@core/services/platform.service';
@@ -32,15 +32,12 @@ export class ProjectGeneralComponent extends BaseComponent implements OnInit {
 
     @Input() selectedPlatform: Platform;
 
-    @Input() idSelectedPlatform: number;
+    @Input() idSelectedPlatform = 3;
 
-    @Input() selectedLevel;
+    currentVal: any;
 
     constructor(
-        private spinnerService: SpinnerService,
         private platformService: PlatformService,
-        private toastNotifications: ToastNotificationService,
-        private projectService: ProjectService
     ) {
         super();
      }
@@ -60,12 +57,18 @@ export class ProjectGeneralComponent extends BaseComponent implements OnInit {
             .subscribe(platform => {
                 this.dropPlatform = platform;
                 this.selectedPlatform = this.project.platform;
-                this.idSelectedPlatform = this.selectedPlatform.id;
             })
 
     }
 
-
+    onSelectType(event) {
+        if(event) {
+            this.currentVal = event;
+            this.idSelectedPlatform = this.currentVal.id;
+        }
+        console.log('this.currentVal', this.currentVal);
+        console.log('idSelectedPlatform', this.idSelectedPlatform);
+    }
 
     get name() { return this.editForm.controls.name; }
 
