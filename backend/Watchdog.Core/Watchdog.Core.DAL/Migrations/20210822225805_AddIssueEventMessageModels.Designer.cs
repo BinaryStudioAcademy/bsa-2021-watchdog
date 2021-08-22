@@ -10,7 +10,7 @@ using Watchdog.Core.DAL.Context;
 namespace Watchdog.Core.DAL.Migrations
 {
     [DbContext(typeof(WatchdogCoreContext))]
-    [Migration("20210821201037_AddIssueEventMessageModels")]
+    [Migration("20210822225805_AddIssueEventMessageModels")]
     partial class AddIssueEventMessageModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

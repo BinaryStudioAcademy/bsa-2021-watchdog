@@ -10,11 +10,19 @@ namespace Watchdog.Core.BLL.MappingProfiles
         public IssueProfile()
         {
             CreateMap<IssueMessage, Issue>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(
                     dest => dest.ErrorClass,
                     opt => opt.MapFrom(src => src.IssueDetails.ClassName))
                 .ForMember(dest => dest.ErrorMessage,
-                    opt => opt.MapFrom(scr => scr.IssueDetails.ErrorMessage));
+                    opt => opt.MapFrom(scr => scr.IssueDetails.ErrorMessage))
+                .ForMember(dest => dest.EventMessages, opt => opt.Ignore());
+            CreateMap<IssueMessage, EventMessage>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.EventId,
+                    opt => opt.MapFrom(scr => scr.Id))
+                .ForMember(dest => dest.OccurredOn,
+                    opt => opt.MapFrom(scr => scr.OccurredOn));
         }
     }
 }

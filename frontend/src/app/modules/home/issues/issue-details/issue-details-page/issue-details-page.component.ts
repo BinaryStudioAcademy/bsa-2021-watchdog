@@ -16,7 +16,6 @@ import { switchMap } from 'rxjs/operators';
 export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
     issueMessage: IssueMessage;
     id: string;
-    requiredIdLength = 20;
     activeTabIndex: number = 0;
     isNotFound: boolean = false;
 
@@ -37,13 +36,6 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
         ).subscribe(data => {
             this.activeTabIndex = 0;
             this.id = data;
-            if (!this.isValidId(this.id)) {
-                this.spinnerService.hide();
-                this.isNotFound = true;
-                this.toastNotification.error('Issue id is not valid');
-                this.issueMessage = undefined;
-                return;
-            }
             this.getIssueMessage(this.id);
         });
     }
@@ -60,9 +52,5 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
                 this.isNotFound = true;
                 this.toastNotification.error(errorResponse);
             });
-    }
-
-    isValidId(id: string): boolean {
-        return id.length === this.requiredIdLength;
     }
 }

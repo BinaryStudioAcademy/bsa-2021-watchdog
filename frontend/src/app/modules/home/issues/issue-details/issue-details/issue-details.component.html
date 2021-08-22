@@ -9,15 +9,6 @@
             <span>{{issueMessage.occurredOn | date:'MMMM d, y h:mma'}}</span>
         </div>
     </div>
-    <!--    Issue Id    -->
-    <div class="issue-details-column">
-        <div class="title">
-            <span>Issue id</span>
-        </div>
-        <div class="value">
-            <span>{{issueMessage.issueId}}</span>
-        </div>
-    </div>
     <!--    Class name    -->
     <div class="issue-details-column">
         <div class="title">
@@ -47,6 +38,15 @@
             </div>
         </div>
     </ng-template>
+    <!--    Issue Id    -->
+    <div class="issue-details-column">
+        <div class="title">
+            <span>Id</span>
+        </div>
+        <div class="value">
+            <span>{{issueMessage.id}}</span>
+        </div>
+    </div>
 </div>
 <!--    Stacktrace    -->
 <div class="issue-stacktrace">

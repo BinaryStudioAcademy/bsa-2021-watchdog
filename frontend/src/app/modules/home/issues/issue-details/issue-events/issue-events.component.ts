@@ -36,7 +36,6 @@ export class IssueEventsComponent extends BaseComponent implements OnInit, OnDes
             .pipe(this.untilThis)
             .subscribe(response => {
                 this.issues = response;
-                debugger;
                 this.spinnerService.hide();
             }, errorResponse => {
                 this.toastNotificationService.error(errorResponse);

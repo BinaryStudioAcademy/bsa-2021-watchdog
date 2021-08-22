@@ -29,11 +29,11 @@ namespace Watchdog.Collector.BLL.Services
             {
                 throw new ArgumentException("Error message can't be empty.");
             }
+
+            issueMessage.Id = Guid.NewGuid().ToString();
             
-            var indexResponse = await _client.IndexDocumentAsync<IssueMessage>(issueMessage);
-            
-            issueMessage.Id = indexResponse.Id;
-            
+            await _client.IndexDocumentAsync<IssueMessage>(issueMessage);
+
             _issueProducer.ProduceMessage(issueMessage);
         }
     }
