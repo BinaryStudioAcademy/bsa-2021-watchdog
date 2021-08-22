@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { Tile } from '@shared/models/tile/tile';
 import { NewTile } from '@shared/models/tile/new-tile';
 import { UpdateTile } from '@shared/models/tile/update-tile';
+import { TileDateRangeType } from '@shared/models/tile/enums/tile-date-range-type';
 
 @Injectable({ providedIn: 'root' })
 export class TileService {
@@ -50,5 +51,26 @@ export class TileService {
 
     convertTileSettingsToJson(tileSettings: object): string | undefined {
         return tileSettings ? JSON.stringify(tileSettings) : undefined;
+    }
+
+    private static hoursToMs(hours: number): number {
+        return hours * 60 * 60 * 1000;
+    }
+
+    convertTileDateRangeTypeToMs(type: TileDateRangeType): number {
+        switch (type) {
+            case TileDateRangeType.ThePastHour:
+                return TileService.hoursToMs(1);
+            case TileDateRangeType.ThePastDay:
+                return TileService.hoursToMs(24);
+            case TileDateRangeType.ThePast2Days:
+                return TileService.hoursToMs(48);
+            case TileDateRangeType.ThePastWeek:
+                return TileService.hoursToMs(168);
+            case TileDateRangeType.ThePast2Weeks:
+                return TileService.hoursToMs(336);
+            default:
+                return undefined;
+        }
     }
 }

@@ -124,7 +124,7 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
                 ]
             ),
             name: new FormControl(
-                'Top active issue tile',
+                'Top active issues tile',
                 [
                     Validators.required,
                     Validators.minLength(3),
