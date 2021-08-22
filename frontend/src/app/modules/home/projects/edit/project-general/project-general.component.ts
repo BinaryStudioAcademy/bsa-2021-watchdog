@@ -10,6 +10,7 @@ import { Platform } from '@shared/models/platforms/platform';
 import { Project } from '@shared/models/projects/project';
 import { UpdateProject } from '@shared/models/projects/update-project';
 import { MenuItem } from 'primeng/api';
+import { Dropdown } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-project-general',
@@ -30,10 +31,6 @@ export class ProjectGeneralComponent extends BaseComponent implements OnInit {
 
     @Input() dropPlatform: Platform[];
 
-    @Input() selectedPlatform: Platform;
-
-    @Input() idSelectedPlatform = 3;
-
     currentVal: any;
 
     constructor(
@@ -43,6 +40,15 @@ export class ProjectGeneralComponent extends BaseComponent implements OnInit {
      }
 
     ngOnInit() {
+        //this.initValidators();
+        this.platformService.getPlatforms().pipe(this.untilThis)
+            .subscribe(platform => {
+                this.dropPlatform = platform;
+                this.initValidators();
+            })
+    }
+
+    initValidators(): void {
         this.editForm.addControl('name', new FormControl(this.project.name, [
             Validators.required,
             Validators.minLength(3),
@@ -53,24 +59,21 @@ export class ProjectGeneralComponent extends BaseComponent implements OnInit {
             Validators.maxLength(1000),
             Validators.pattern(regexs.projectDescription),
         ]));
-        this.platformService.getPlatforms().pipe(this.untilThis)
-            .subscribe(platform => {
-                this.dropPlatform = platform;
-                this.selectedPlatform = this.project.platform;
-            })
-
+        this.editForm.addControl('platformId', new FormControl(this.project.platform.id, Validators.required));
     }
 
     onSelectType(event) {
         if(event) {
             this.currentVal = event;
-            this.idSelectedPlatform = this.currentVal.id;
+            //this.idSelectedPlatform = this.currentVal.id;
         }
         console.log('this.currentVal', this.currentVal);
-        console.log('idSelectedPlatform', this.idSelectedPlatform);
+        //console.log('idSelectedPlatform', this.idSelectedPlatform);
     }
 
     get name() { return this.editForm.controls.name; }
 
     get description() { return this.editForm.controls.description; }
+
+    get platformId() { return this.editForm.controls.platformId; }
 }

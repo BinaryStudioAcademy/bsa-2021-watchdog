@@ -42,17 +42,17 @@
             </div>
         </div>
     </form>
-    <div class="item">
+    <form [formGroup]="editForm" class="item">
         <label class="item-definition">
             <div>Platform</div>
         </label>
         <div class="item-field">
             <div class="item-form-input p-input-icon-right">
-                <p-dropdown [options]="dropPlatform" [(ngModel)]="selectedPlatform" optionLabel="name"
-                (ngModelChange)="onSelectType($event)"></p-dropdown>
+                <p-dropdown [options]="dropPlatform" optionLabel="name" formControlName="platformId"
+                    optionValue="id"></p-dropdown>
             </div>
         </div>
-    </div>
+    </form>
 </p-panel>
 
 

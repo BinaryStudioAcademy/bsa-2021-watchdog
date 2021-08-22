@@ -87,6 +87,10 @@ export class EditComponent extends BaseComponent implements OnInit {
         });
     }
 
+    tests(): void {
+        const vars = { ...this.editForm.value };
+        debugger;
+    }
 
     updateProjectFunction(): void {
         const project: UpdateProject = { ...this.editForm.value, platformId: this.idSelectedPlatform };
