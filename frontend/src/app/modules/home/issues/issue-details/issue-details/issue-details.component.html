@@ -53,9 +53,6 @@
     <div class="issue-stacktrace-header">
         <span>Stacktrace</span>
     </div>
-    <div class="issue-stacktrace-message">
-        <span>Message: {{issueMessage.issueDetails.errorMessage}}</span>
-    </div>
     <div *ngIf="issueMessage.issueDetails.stackTrace; else none" class="stacktrace">
         <div *ngFor="let st of issueMessage.issueDetails.stackTrace" class="stacktrace-row">
             <div class="stacktrace-row-info">

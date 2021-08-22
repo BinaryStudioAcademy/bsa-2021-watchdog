@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RabbitMQ.Client.Events;
 using System;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,23 +44,24 @@ namespace Watchdog.Core.BLL.Services.Queue
         private async void Received(object sender, BasicDeliverEventArgs args)
         {
             var messageString = Encoding.UTF8.GetString(args.Body.Span);
-            var issueMessage = JsonConvert.DeserializeObject<IssueMessage>(messageString);
+            var issueMessageReceived = JsonConvert.DeserializeObject<IssueMessage>(messageString);
 
             _consumer.SetAcknowledge(args.DeliveryTag, true);
 
-            _logger.LogInformation("Processing issue from collector: {0}, {1}", issueMessage.IssueDetails.ClassName, issueMessage.IssueDetails.ErrorMessage);
+            _logger.LogInformation("Processing issue from collector: {0}, {1}", issueMessageReceived.IssueDetails.ClassName, issueMessageReceived.IssueDetails.ErrorMessage);
 
             //TODO: Change to future value from IssueMessage
-            int applicationId = 16;
+            int applicationId = 36;
 
-            using (var scope = _provider.CreateScope())
-            {
-                var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
-                var userIds = await userService.GetUserUIdsByApplicationIdAsync(applicationId);
+            using var scope = _provider.CreateScope();
+            var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+            var userIds = await userService.GetUserUIdsByApplicationIdAsync(applicationId);
 
-                var notifyService = scope.ServiceProvider.GetRequiredService<INotifyQueueProducerService>();
-                notifyService.NotifyUsers(userIds, issueMessage);
-            }
+            var issueService = scope.ServiceProvider.GetRequiredService<IIssueService>();
+            var issueMessage = (await issueService.GetIssuesMessagesByParentIdAsync(issueMessageReceived.IssueId)).OrderByDescending(i => i.OccurredOn).FirstOrDefault();
+
+            var notifyService = scope.ServiceProvider.GetRequiredService<INotifyQueueProducerService>();
+            notifyService.NotifyUsers(userIds, issueMessage);
         }
 
         public override void Dispose()

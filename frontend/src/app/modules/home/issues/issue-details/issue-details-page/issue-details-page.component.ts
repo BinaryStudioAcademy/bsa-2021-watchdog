@@ -18,6 +18,7 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
     id: string;
     requiredIdLength = 20;
     activeTabIndex: number = 0;
+    isNotFound: boolean = false;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -38,6 +39,7 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
             this.id = data;
             if (!this.isValidId(this.id)) {
                 this.spinnerService.hide();
+                this.isNotFound = true;
                 this.toastNotification.error('Issue id is not valid');
                 this.issueMessage = undefined;
                 return;
@@ -55,6 +57,7 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
                 this.issueMessage = response;
             }, errorResponse => {
                 this.spinnerService.hide();
+                this.isNotFound = true;
                 this.toastNotification.error(errorResponse);
             });
     }
