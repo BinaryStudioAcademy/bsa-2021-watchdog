@@ -99,6 +99,9 @@ export class InviteComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis)
             .subscribe(roles => {
                 this.roles = roles;
+                if (this.roles[0].name === 'Owner') {
+                    this.roles.shift();
+                }
                 this.loadingNumber -= 1;
             }, error => {
                 this.toastNotifications.error(error);
