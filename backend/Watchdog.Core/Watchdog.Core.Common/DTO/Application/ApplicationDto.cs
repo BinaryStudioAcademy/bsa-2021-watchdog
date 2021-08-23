@@ -13,5 +13,7 @@ namespace Watchdog.Core.Common.DTO.Application
 
         public PlatformDto Platform { get; set; }
 
+        //public AlertSettingsDto AlertSettings { get; set; }
+
     }
 }

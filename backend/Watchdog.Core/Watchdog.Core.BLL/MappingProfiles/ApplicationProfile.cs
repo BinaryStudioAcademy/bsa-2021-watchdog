@@ -27,6 +27,18 @@ namespace Watchdog.Core.BLL.MappingProfiles
             CreateMap<Application, UpdateApplicationDto>();
             CreateMap<UpdateApplicationDto, Application>();
 
+            //CreateMap<Application, AlertSetting>();
+            //CreateMap<AlertSetting, Application>();
+
+            //CreateMap<ApplicationDto, AlertSetting>();
+            //CreateMap<AlertSetting, ApplicationDto>();
+
+            //CreateMap<ApplicationDto, AlertSettingsDto>();
+            //CreateMap<AlertSettingsDto, ApplicationDto>();
+
+            //CreateMap<ApplicationDto, AlertSettingsDto>();
+            //CreateMap<AlertSettingsDto, ApplicationDto>();
+
         }
     }
 }

@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@core/components/base/base.component';
 import { AuthenticationService } from '@core/services/authentication.service';
+import { ConfirmWindowService } from '@core/services/confirm-window.service';
 import { ProjectService } from '@core/services/project.service';
 import { SpinnerService } from '@core/services/spinner.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
@@ -12,7 +13,7 @@ import { Platform } from '@shared/models/platforms/platform';
 import { Project } from '@shared/models/projects/project';
 import { UpdateProject } from '@shared/models/projects/update-project';
 import { User } from '@shared/models/user/user';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, PrimeIcons } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { switchMap } from 'rxjs/operators';
 import { Data } from '../data';
@@ -47,7 +48,8 @@ export class EditComponent extends BaseComponent implements OnInit {
         public alertData: Data,
         private router: Router,
         private spinnerService: SpinnerService,
-        private activatedRoute: ActivatedRoute
+        private activatedRoute: ActivatedRoute,
+        private confirmService: ConfirmWindowService
     ) {
         super();
     }
@@ -73,24 +75,22 @@ export class EditComponent extends BaseComponent implements OnInit {
         });
     }
 
-    updateProjectFunction(): void {
+    updateProjectFunction() {
         const project: UpdateProject = { ...this.editForm.value };
         if (this.editForm.valid) {
             this.spinnerService.show(true);
             this.projectService.updateProject(this.id, project)
-                .subscribe(
-                    response => {
-                        if (response) {
-                            this.toastNotifications.success('Project has been updated!');
-                            this.router.navigate(['home', 'projects']);
-                            this.spinnerService.hide();
-                        }
-                    },
-                    error => {
-                        this.toastNotifications.error(error);
-                        this.spinnerService.hide();
-                    }
-                );
+                .pipe(this.untilThis)
+                .subscribe(() => {
+                    this.spinnerService.hide();
+                    this.router.navigate(['home', 'projects']).then(() => {
+                        this.toastNotifications.success('Project has been updated!');
+                    });
+                }, error => {
+                    this.toastNotifications.error(error);
+                    this.spinnerService.hide();
+                });
+
         } else {
             this.toastNotifications.error('Form is not valid', 'Error');
         }
@@ -106,36 +106,27 @@ export class EditComponent extends BaseComponent implements OnInit {
     }
 
     deleteProject(id: string) {
-        this.spinnerService.show(true);
-        this.projectService.removeProject(id)
-            .pipe(this.untilThis)
-            .subscribe(response => {
-                if (response) {
-                    this.toastNotifications.success('Project has been deleted');
-                    this.router.navigate(['home', 'projects']);
-                    this.spinnerService.hide();
-                }
-            },
-            error => {
-                this.toastNotifications.error(error);
-                this.spinnerService.hide();
-            });
+        this.confirmService.confirm({
+            title: `Remove Project ${this.project.name}`,
+            message: 'Are you sure, you want to delete this project?',
+            icon: PrimeIcons.BAN,
+            acceptButton: { label: 'Yes', class: 'p-button-outlined p-button-danger' },
+            cancelButton: { label: 'No', class: 'p-button-outlined p-button-secondary' },
+            accept: () => {
+                this.spinnerService.show(true);
+                this.projectService.removeProject(id)
+                    .pipe(this.untilThis)
+                    .subscribe(() => {
+                        this.spinnerService.hide();
+                        this.router.navigate(['home', 'projects']).then(() => {
+                            this.toastNotifications.success('Project has been deleted');
+                        });
+                    }, error => {
+                        this.toastNotifications.error(error);
+                        this.spinnerService.hide();
+                    });
+            }
+        });
     }
 
-    deleteProjects(id: string) {
-        this.spinnerService.show(true);
-        this.projectService.removeProject(id)
-            .pipe(this.untilThis)
-            .subscribe(response => {
-                if (response) {
-                    this.toastNotifications.success('Project has been deleted');
-                    this.router.navigate(['home', 'projects']);
-                    this.spinnerService.hide();
-                }
-            },
-            error => {
-                this.toastNotifications.error(error);
-                this.spinnerService.hide();
-            });
-    }
 }
