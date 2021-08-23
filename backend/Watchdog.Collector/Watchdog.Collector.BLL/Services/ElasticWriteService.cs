@@ -30,10 +30,10 @@ namespace Watchdog.Collector.BLL.Services
                 throw new ArgumentException("Error message can't be empty.");
             }
 
-            return WriteNewEventMessage(issueMessage);
+            return WriteNewEventMessageAsync(issueMessage);
         }
 
-        private async Task WriteNewEventMessage(IssueMessage issueMessage)
+        private async Task WriteNewEventMessageAsync(IssueMessage issueMessage)
         {
             issueMessage.Id = Guid.NewGuid().ToString();
             
