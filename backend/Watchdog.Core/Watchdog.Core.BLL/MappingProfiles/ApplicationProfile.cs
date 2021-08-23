@@ -20,25 +20,15 @@ namespace Watchdog.Core.BLL.MappingProfiles
                     s => s.AlertCategory == Common.DTO.Application.AlertSettings.AlertCategory.Special 
                     ? s.SpecialAlertSetting 
                     : null));
+            CreateMap<AlertSetting, AlertSettingsDto>();
+            CreateMap<SpecialAlertSetting, SpecialAlertSettingDto>();
+
             CreateMap<ApplicationTeam, ApplicationTeamDto>();
             CreateMap<ApplicationTeamDto, ApplicationTeam>();
             CreateMap<NewApplicationTeamDto, ApplicationTeam>();
 
             CreateMap<Application, UpdateApplicationDto>();
             CreateMap<UpdateApplicationDto, Application>();
-
-            //CreateMap<Application, AlertSetting>();
-            //CreateMap<AlertSetting, Application>();
-
-            //CreateMap<ApplicationDto, AlertSetting>();
-            //CreateMap<AlertSetting, ApplicationDto>();
-
-            //CreateMap<ApplicationDto, AlertSettingsDto>();
-            //CreateMap<AlertSettingsDto, ApplicationDto>();
-
-            //CreateMap<ApplicationDto, AlertSettingsDto>();
-            //CreateMap<AlertSettingsDto, ApplicationDto>();
-
         }
     }
 }
