@@ -158,8 +158,6 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
                 },
             });
         }
-
-
     }
     reinvite(member: Member) {
         this.memberService.reinviteMember(member.id)
