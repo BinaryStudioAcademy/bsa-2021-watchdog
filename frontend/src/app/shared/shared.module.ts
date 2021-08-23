@@ -14,7 +14,7 @@ import { SavePipe } from './pipes/save.pipe';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { ChartsComponent } from './components/charts/charts.component';
 import { NoContentPlaceholderComponent } from './components/no-content-placeholder/no-content-placeholder';
-import { TeamNameAvatarPipe } from './pipes/team-name.pipe';
+import { TeamNameAvatarPipe } from './pipes/team-name-avatar.pipe';
 
 @NgModule({
     imports: [
