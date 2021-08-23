@@ -12,9 +12,6 @@ const routes: Routes = [{
     path: 'create',
     component: CreateProjectComponent
 }, {
-    path: 'edit/:id',
-    component: EditProjectComponent
-}, {
     path: ':id',
     component: EditComponent
 }, {

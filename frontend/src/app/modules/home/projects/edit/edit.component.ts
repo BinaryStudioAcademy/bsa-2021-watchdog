@@ -15,7 +15,7 @@ import { UpdateProject } from '@shared/models/projects/update-project';
 import { User } from '@shared/models/user/user';
 import { MenuItem, PrimeIcons } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, throwIfEmpty } from 'rxjs/operators';
 import { Data } from '../data';
 
 @Component({
@@ -75,8 +75,35 @@ export class EditComponent extends BaseComponent implements OnInit {
         });
     }
 
+    test() {
+
+    }
+
     updateProjectFunction() {
-        const project: UpdateProject = { ...this.editForm.value };
+        const data = { ...this.editForm.value };
+        var project;
+        if ( data.alertCategory !== 3) {
+                project = {
+                name: this.editForm.controls.name.value,
+                description: this.editForm.controls.description.value,
+                platformId: this.editForm.controls.platformId.value,
+                alertSettings: { alertCategory: this.editForm.controls.alertCategory.value,
+                    specialAlertSetting: null
+                }
+            }
+        } else {
+                project = {
+                name: this.editForm.controls.name.value,
+                description: this.editForm.controls.description.value,
+                platformId: this.editForm.controls.platformId.value,
+                alertSettings: { alertCategory: this.editForm.controls.alertCategory.value,
+                    specialAlertSetting: { alertsCount: this.editForm.controls.alertsCount.value,
+                        specialAlertType: this.editForm.controls.specialAlertType.value,
+                        alertTimeInterval: this.editForm.controls.alertTimeInterval.value
+                    }
+                }
+            }
+        }
         if (this.editForm.valid) {
             this.spinnerService.show(true);
             this.projectService.updateProject(this.id, project)
