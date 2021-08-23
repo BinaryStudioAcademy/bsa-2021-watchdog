@@ -69,16 +69,12 @@
 
         .card-body
             .card-body-name
-                display: flex
-                justify-content: center
                 font-size: 24px
                 font-weight: 700
                 margin-bottom: 12px
-
+                @extend %text-overflow
             .card-body-description
-                display: flex
-                justify-content: center
-                font-size: 16px
+                @extend %text-overflow
 
     @media screen and (min-width: 800px)
         .grid
@@ -87,3 +83,8 @@
     @media screen and (min-width: 1440px)
         .grid
             grid-template-columns: repeat(3, minmax(100px, 1fr))
+
+%text-overflow
+    overflow: hidden
+    white-space: nowrap
+    text-overflow: ellipsis
