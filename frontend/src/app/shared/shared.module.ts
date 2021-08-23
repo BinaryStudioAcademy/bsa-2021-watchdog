@@ -14,6 +14,7 @@ import { SavePipe } from './pipes/save.pipe';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { ChartsComponent } from './components/charts/charts.component';
 import { NoContentPlaceholderComponent } from './components/no-content-placeholder/no-content-placeholder';
+import { TeamNameAvatarPipe } from './pipes/team-name.pipe';
 
 @NgModule({
     imports: [
@@ -33,7 +34,8 @@ import { NoContentPlaceholderComponent } from './components/no-content-placehold
         UserInitialsPipe,
         TooltipWithFullNameDirective,
         ChartsComponent,
-        NoContentPlaceholderComponent
+        NoContentPlaceholderComponent,
+        TeamNameAvatarPipe
     ],
     exports: [
         CommonModule,
@@ -45,6 +47,7 @@ import { NoContentPlaceholderComponent } from './components/no-content-placehold
         PrimeComponentsModule,
         TimeAgoPipe,
         SavePipe,
+        TeamNameAvatarPipe,
         NgxChartsModule,
         UserInitialsPipe,
         TooltipWithFullNameDirective,

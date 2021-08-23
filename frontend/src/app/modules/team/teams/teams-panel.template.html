@@ -1,10 +1,10 @@
-<p-panel header="Your Teams">
-    <div class="teams">
-        <div class="placeholder-empty" *ngIf="teams?.length === 0">You are not member of any team.</div>
+<div class="teams-panel">
+    <p-panel [header]="title">
+        <div class="placeholder-empty" *ngIf="teams?.length === 0">{{placeholder}}</div>
         <div class="team" *ngFor="let team of teams">
             <div class="team-info">
                 <a class="team-avatar" [routerLink]="'./'+team.id">
-                    <p-avatar styleClass="team-info-avatar" label="{{teamService.getLabel(team.name)}}"></p-avatar>
+                    <p-avatar styleClass="team-info-avatar" [label]="team.name | teamNameAvatar"></p-avatar>
                 </a>
                 <a class="team-title" [routerLink]="'./'+team.id">
                     <div class="team-name">
@@ -16,9 +16,10 @@
                 </a>
             </div>
             <div>
-                <button pButton pRipple type="button" label="Leave Team" class="p-button-outlined p-button-danger"
-                    icon="pi pi-minus-circle" (click)="leaveTeam(team.id)"></button>
+                <button pButton pRipple type="button" [label]="buttonLabel" class="p-button-outlined"
+                    icon="pi pi-plus-circle" (click)="sendTeam(team.id)">
+                </button>
             </div>
         </div>
-    </div>
-</p-panel>
+    </p-panel>
+</div>

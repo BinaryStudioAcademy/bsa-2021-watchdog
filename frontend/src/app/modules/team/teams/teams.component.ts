@@ -1,8 +1,7 @@
-import { Organization } from '@shared/models/organization/organization';
+import { switchMap } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Team } from '@shared/models/teams/team';
 import { TeamService } from '@core/services/team.service';
-import { Subject } from 'rxjs';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CreateTeamComponent } from '@modules/team/create-team/create-team.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
@@ -11,6 +10,7 @@ import { AuthenticationService } from '@core/services/authentication.service';
 import { User } from '@shared/models/user/user';
 import { Member } from '@shared/models/member/member';
 import { SpinnerService } from '@core/services/spinner.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
     selector: 'app-teams',
@@ -19,34 +19,38 @@ import { SpinnerService } from '@core/services/spinner.service';
     providers: [DialogService]
 })
 export class TeamsComponent extends BaseComponent implements OnInit, OnDestroy {
-    public teamCreated$: Subject<Team> = new Subject<Team>();
-    public notifyOtherTeams$: Subject<Team> = new Subject<Team>();
-    public notifyMemberTeams$: Subject<Team> = new Subject<Team>();
+    memberInTeams: Team[];
+    notMemberInTeams: Team[];
 
     createTeamDialog: DynamicDialogRef;
     user: User;
     member: Member;
-    organization: Organization;
 
     constructor(
         private teamService: TeamService,
-        public authService: AuthenticationService,
-        public dialogService: DialogService,
+        private authService: AuthenticationService,
+        private dialogService: DialogService,
         private toastService: ToastNotificationService,
         private spinnerService: SpinnerService
     ) { super(); }
 
     ngOnInit() {
         this.spinnerService.show(true);
-        this.user = this.authService.getUser();
-        this.authService.getOrganization().pipe(this.untilThis).subscribe(org => {
-            this.organization = org;
-            this.authService.getMember().pipe(this.untilThis)
-                .subscribe(member => {
-                    this.member = member;
-                    this.spinnerService.hide();
-                });
-        });
+        this.authService.getMember()
+            .pipe(this.untilThis, switchMap(member => {
+                this.member = member;
+                return forkJoin([
+                    this.teamService.getMemberTeams(member.organizationId, member.id),
+                    this.teamService.getNotMemberTeams(member.organizationId, member.id)
+                ]);
+            })).subscribe(([memberInTeams, notMemberInTeams]) => {
+                this.memberInTeams = memberInTeams;
+                this.notMemberInTeams = notMemberInTeams;
+                this.spinnerService.hide();
+            }, error => {
+                this.toastService.error(error);
+                this.spinnerService.hide();
+            });
     }
 
     openDialog() {
@@ -54,7 +58,7 @@ export class TeamsComponent extends BaseComponent implements OnInit, OnDestroy {
             header: 'Creating team',
             width: '35%',
             showHeader: true,
-            baseZIndex: 10000
+            baseZIndex: 10000,
         });
 
         this.createTeamDialog.onClose
@@ -64,13 +68,13 @@ export class TeamsComponent extends BaseComponent implements OnInit, OnDestroy {
                     this.spinnerService.show(true);
                     this.teamService
                         .createTeam({
-                            createdBy: this.user.id,
-                            organizationId: this.organization.id,
+                            createdBy: this.member.user.id,
+                            organizationId: this.member.organizationId,
                             name
                         })
                         .pipe(this.untilThis)
                         .subscribe(team => {
-                            this.teamCreated$.next(team);
+                            this.memberInTeams = [team, ...this.memberInTeams];
                             this.spinnerService.hide();
                             this.toastService.success('Team successfully created!');
                         }, error => {
@@ -81,14 +85,31 @@ export class TeamsComponent extends BaseComponent implements OnInit, OnDestroy {
             });
     }
 
-    ngOnDestroy(): void {
-        this.teamCreated$.next();
-        this.teamCreated$.complete();
+    leaveTeam(teamId: number) {
+        this.spinnerService.show(true);
+        this.teamService.leaveTeam(teamId, this.member.id)
+            .pipe(this.untilThis)
+            .subscribe(leavedTeam => {
+                this.memberInTeams = this.memberInTeams.filter(team => team.id !== leavedTeam.id);
+                this.notMemberInTeams = [leavedTeam, ...this.notMemberInTeams];
+                this.spinnerService.hide();
+            }, error => {
+                this.spinnerService.hide();
+                this.toastService.error(error);
+            });
+    }
 
-        this.notifyOtherTeams$.next();
-        this.notifyOtherTeams$.complete();
-
-        this.notifyMemberTeams$.next();
-        this.notifyMemberTeams$.complete();
+    joinTeam(teamId: number) {
+        this.spinnerService.show(true);
+        this.teamService.joinTeam(teamId, this.member.id)
+            .pipe(this.untilThis)
+            .subscribe(joinedTeam => {
+                this.memberInTeams = [joinedTeam, ...this.memberInTeams];
+                this.notMemberInTeams = this.notMemberInTeams.filter(team => team.id !== joinedTeam.id);
+                this.spinnerService.hide();
+            }, error => {
+                this.spinnerService.hide();
+                this.toastService.error(error);
+            });
     }
 }

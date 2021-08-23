@@ -16,7 +16,7 @@
 .header-button
     margin-left: auto
 
-::ng-deep
+:host ::ng-deep
     .team-panel .p-panel-content
         padding: 0
     .team-panel.p-panel
@@ -37,7 +37,10 @@
 
 
 .placeholder-empty
-    font-weight: 100
-    opacity: 70%
+    font-weight: 300
+    color: grey
+    opacity: .8
     justify-content: space-around
     text-align: center
+    &:hover
+        background: none

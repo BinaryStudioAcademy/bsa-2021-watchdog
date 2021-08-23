@@ -70,6 +70,7 @@ namespace Watchdog.Core.BLL.Services
 
             var applications = await _context.Applications
                 .Include(a => a.ApplicationTeams)
+                .Include(a => a.Platform)
                 .Where(a => a.OrganizationId == team.OrganizationId
                         && !a.ApplicationTeams.Any(t => t.TeamId == teamId)
                         && a.Name.Contains(teamName))

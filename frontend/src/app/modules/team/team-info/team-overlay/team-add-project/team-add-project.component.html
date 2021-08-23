@@ -1,14 +1,25 @@
 <button pButton pRipple label="Add project" icon="pi pi-plus-circle" class="p-button-outlined"
     (click)="toggle($event,op)"></button>
-<p-overlayPanel #op [appendTo]="'body'" styleClass="overlaypanel">
+<p-overlayPanel #op [appendTo]="'body'" styleClass="team-overlaypanel">
     <ng-template class="overlay-container" pTemplate>
-        <input pInputText type="search" placeholder="Filter search" #srch (input)="search(srch.value)">
-        <div role="button" role="button" class="overlay-item project" *ngFor="let project of projects"
-            (click)="addProject(project, op)">
-            <div>{{project.name}}</div>
-        </div>
-        <div class="overlay-item state placeholder-empty" *ngIf="!isLoading && projects?.length === 0">No projects
-            found.</div>
-        <div class="overlay-item state placeholder-empty" *ngIf="isLoading">Searching...</div>
+        <p-panel styleClass="panel">
+            <ng-template pTemplate="header">
+                <div class="p-input-icon-right">
+                    <i *ngIf="isLoading" class="pi pi-spin pi-spinner"></i>
+                    <input #srch pInputText placeholder="Filter search" (input)="search(srch.value)">
+                </div>
+            </ng-template>
+            <div class="content-scroll">
+                <div (click)="addProject(project,op)" role="button" class="overlay-item"
+                    *ngFor="let project of projects">
+                    <img alt="{{project.platform.name}}" [src]="project.platform.avatarUrl | save">
+                    <div class="member">{{project.name}}</div>
+                </div>
+                <div class="overlay-item state placeholder-empty" *ngIf="!isLoading && projects?.length === 0">No
+                    projects
+                    found.</div>
+                <div class="overlay-item state placeholder-empty" *ngIf="isLoading">Searching...</div>
+            </div>
+        </p-panel>
     </ng-template>
 </p-overlayPanel>
