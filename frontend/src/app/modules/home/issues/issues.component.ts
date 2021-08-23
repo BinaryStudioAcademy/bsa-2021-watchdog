@@ -25,7 +25,7 @@ import { Member } from '@shared/models/member/member';
 export class IssuesComponent extends BaseComponent implements OnInit {
     issues: IssueInfo[] = [];
 
-    countNew: { [type: string]: number };
+    issuesCount: { [type: string]: number };
 
     selectedIssues: IssueInfo[] = [];
 
@@ -50,7 +50,9 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     ngOnInit(): void {
         this.isAssign = false;
-        this.setAllFieldsTemp();
+
+        this.setTabPanelFields();
+
         this.authService.getOrganization()
             .pipe(this.untilThis)
             .subscribe(organization => {
@@ -61,6 +63,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                         this.sharedOptions.members = members;
                         this.sharedOptions.teams = teams;
                         this.issues = issues;
+                        this.issuesCount.all = this.issues.length;
                         this.subscribeToIssuesHub();
                     });
             }, errorResponse => {
@@ -156,14 +159,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             .subscribe(issue => { this.addIssue(issue); });
     }
 
-    private setAllFieldsTemp() {
-        this.countNew = {
-            all: 3,
-            secondtype: 1,
-            thirdtype: 0
-        };
-    }
-
     private addIssue(issue: IssueMessage) {
         const existingIssue = this.issues.find(i => i.issueId === issue.issueId);
         this.issues = existingIssue ? this.addExistingIssue(issue, existingIssue) : this.addNewIssue(issue);
@@ -178,6 +173,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             newest: { id: issue.id, occurredOn: issue.occurredOn },
             assignee: { teamIds: [], memberIds: [] },
         };
+        this.issuesCount.all += 1;
         return [issueInfo, ...this.issues];
     }
 
@@ -216,6 +212,14 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         return assignee.teamIds.slice(0, diff)
             .map(id => this.teamService
                 .getLabel(this.sharedOptions.teams.find(t => t.id === id).name));
+    }
+
+    private setTabPanelFields() {
+        this.issuesCount = {
+            all: 0,
+            secondtype: 0,
+            thirdtype: 0
+        };
     }
 
     //it's only for demo
