@@ -83,7 +83,7 @@
                                 </p-checkbox>
                                 <div class="content">
                                     <span class="name"
-                                          routerLink="/home/issues/{{issue.newest.id}}">{{issue.errorClass}}</span>
+                                          routerLink="/home/issues/{{issue.issueId}}/{{issue.newest.id}}">{{issue.errorClass}}</span>
                                     <span class="description">{{issue.errorMessage}}</span>
                                     <div class="additional-info">
                                         <p-tag *ngIf="issue.isNew" [rounded]="true" class="new-issue"

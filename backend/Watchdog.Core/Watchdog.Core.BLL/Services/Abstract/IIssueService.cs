@@ -7,10 +7,10 @@ namespace Watchdog.Core.BLL.Services.Abstract
 {
     public interface IIssueService
     {
-        Task<int> AddIssueEvent(IssueMessage issueMessage);
+        Task<int> AddIssueEventAsync(IssueMessage issueMessage);
         Task<ICollection<IssueInfoDto>> GetIssuesInfoAsync();
         Task<ICollection<IssueMessage>> GetEventMessagesByIssueIdAsync(int issueId);
-        Task<IssueMessage> GetEventMessageByIdAsync(string eventId);
+        Task<IssueMessage> GetEventMessageByIdAsync(int issueId, string eventId);
         Task UpdateAssigneeAsync(UpdateAssigneeDto assigneeDto);
     }
 }

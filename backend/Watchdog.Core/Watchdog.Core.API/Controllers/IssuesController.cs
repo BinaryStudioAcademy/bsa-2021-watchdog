@@ -32,10 +32,10 @@ namespace Watchdog.Core.API.Controllers
             return Ok(); 
         }
 
-        [HttpGet("message/{id}")]
-        public async Task<ActionResult<IssueMessage>> GetEventMessageByIdAsync(string id)
+        [HttpGet("issueId/{issueId:int}/eventId/{eventId}")]
+        public async Task<ActionResult<IssueMessage>> GetEventMessageByIdAsync(int issueId, string eventId)
         {
-            var issueMessage = await _issueService.GetEventMessageByIdAsync(id);
+            var issueMessage = await _issueService.GetEventMessageByIdAsync(issueId, eventId);
             return Ok(issueMessage);
         }        
         

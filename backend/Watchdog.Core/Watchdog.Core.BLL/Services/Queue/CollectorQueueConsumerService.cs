@@ -55,7 +55,7 @@ namespace Watchdog.Core.BLL.Services.Queue
             var userIds = await userService.GetUserUIdsByApplicationIdAsync(applicationId);
 
             var issueService = scope.ServiceProvider.GetRequiredService<IIssueService>();
-            issueMessageReceived.IssueId = await issueService.AddIssueEvent(issueMessageReceived);
+            issueMessageReceived.IssueId = await issueService.AddIssueEventAsync(issueMessageReceived);
             
             var notifyService = scope.ServiceProvider.GetRequiredService<INotifyQueueProducerService>();
             notifyService.NotifyUsers(userIds, issueMessageReceived);

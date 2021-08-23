@@ -27,7 +27,6 @@ export class IssueEventsComponent extends BaseComponent implements OnInit, OnDes
     }
 
     ngOnInit(): void {
-        console.log(this.issueMessage.id);
         this.getEventMessages(this.issueMessage.issueId);
     }
 

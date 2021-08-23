@@ -22,7 +22,7 @@ namespace Watchdog.Core.BLL.Services
             _client = client;
         }
 
-        public async Task<int> AddIssueEvent(IssueMessage issueMessage)
+        public async Task<int> AddIssueEventAsync(IssueMessage issueMessage)
         {
             var issue = await _context.Issues.FirstOrDefaultAsync(i =>
                 i.ErrorMessage == issueMessage.IssueDetails.ErrorMessage &&
@@ -88,16 +88,21 @@ namespace Watchdog.Core.BLL.Services
             return issuesInfo;
         }
 
-        public async Task<IssueMessage> GetEventMessageByIdAsync(string eventId)
+        public async Task<IssueMessage> GetEventMessageByIdAsync(int issueId, string eventId)
         {
+            if (!_context.EventMessages.Any(em => em.IssueId == issueId && em.EventId == eventId))
+            {
+                throw new KeyNotFoundException("There is no event ID with such issue ID.");
+            }
+                
             var response = await _client.GetAsync<IssueMessage>(eventId);
 
             if (!response.IsValid)
             {
                 throw new KeyNotFoundException("Event message not found");
             }
-
-            response.Source.IssueId = (await _context.EventMessages.FirstOrDefaultAsync(i => i.EventId == eventId)).IssueId;
+            
+            response.Source.IssueId = issueId;
             
             return response.Source;
         }
