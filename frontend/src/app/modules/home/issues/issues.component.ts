@@ -14,7 +14,6 @@ import { IssueInfo } from '@shared/models/issue/issue-info';
 import { map } from 'rxjs/operators';
 import { AssigneeOptions } from '@shared/models/issue/assignee-options';
 import { IssueService } from '@core/services/issue.service';
-import { CoreHttpService } from '@core/services/core-http.service';
 
 @Component({
     selector: 'app-issues',
