@@ -10,8 +10,8 @@
         <span class="p-inputgroup-addon search-button"><i class="pi pi-search"></i></span>
         <input type="text" pInputText placeholder="Search" name="search" (input)="table.filterGlobal($event.target.value, 'contains')">
     </div>
-    <p-table #table [value]="memberItems" class="members-table" [rows]="10" 
-    [paginator]="memberItems?.length > 10"  
+    <p-table #table [value]="memberItems" class="members-table" [rows]="10"
+    [paginator]="memberItems?.length > 10"
     [globalFilterFields]="['member.user.firstName','member.user.email','member.role.name']">
         <ng-template pTemplate="header">
             <tr>
@@ -37,14 +37,14 @@
                         <span>
                             Role <p-sortIcon field="member.role.name"></p-sortIcon>
                         </span>
-                        <p-columnFilter matchMode="in" display="menu" 
-                        [showMatchModes]="false" [showOperator]="false" 
-                        [showAddButton]="false" field="member.role.name" 
+                        <p-columnFilter matchMode="in" display="menu"
+                        [showMatchModes]="false" [showOperator]="false"
+                        [showAddButton]="false" field="member.role.name"
                         display="menu">
                         <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                             <p-multiSelect [ngModel]="value"
                             [options]="roles"
-                            optionValue="name"  
+                            optionValue="name"
                             optionLabel="name"
                             placeholder="Select roles"
                             (onChange)="filter($event.value)"
@@ -82,12 +82,13 @@
 
                     <div class="content" *ngIf="memberItem.isEdit">
                         <p-dropdown
-                            [(ngModel)]="memberItem.member.role" 
+                            [(ngModel)]="memberItem.member.role"
                             [options]="roles"
                             appendTo="body"
+                            [disabled]="memberItem.saveRole.name === 'Owner'"
                             optionLabel="name" name="roles-dropdown"
                             placeholder="Select Role" [filter]="false"></p-dropdown>
-                        <button (click)="saveRoleChanges(memberItem)"
+                        <button (click)="saveRoleChanges(memberItem)" [disabled]="memberItem.saveRole.name === 'Owner'"
                                 class="p-button-raised p-button-text p-button-plain small-button" icon="pi pi-save" pButton>
                         </button>
                         <button (click)="finishEdit(memberItem)"
@@ -96,7 +97,7 @@
                     </div>
                 </td>
                 <td class="team-col"><span class="content" *ngIf="memberItem.member.teams.length > 1">
-                    <p-dropdown class="teams-dropdown"[options]="memberItem.member.teams" 
+                    <p-dropdown class="teams-dropdown"[options]="memberItem.member.teams"
                     styleClass="team-col-dropdown" appendTo="body"
                     panelStyleClass="team-col-panel"
                     optionLabel="name" name="teams-dropdown" optionDisabled="name" [autoDisplayFirst]="false"
@@ -120,5 +121,5 @@
 <app-invite
     (closeModal)="isInviting = !isInviting"
     *ngIf="isInviting">
-    
+
 </app-invite>

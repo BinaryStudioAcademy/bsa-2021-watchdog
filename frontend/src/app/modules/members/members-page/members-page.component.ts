@@ -61,6 +61,9 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis)
             .subscribe(roles => {
                 this.roles = roles;
+                if (this.roles[0].name === 'Owner') {
+                    this.roles.shift();
+                }
                 this.spinnerService.hide();
             }, error => {
                 this.toastNotifications.error(error);
@@ -134,23 +137,29 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
     }
 
     deleteMember(memberItem: MemberItem) {
-        this.confirmWindowService.confirm({
-            title: 'Delete member?',
-            message: `Are you sure you wish to delete the <strong>${memberItem.member.user.firstName}`
-                + ` ${memberItem.member.user.lastName} </strong>from the organization?`,
-            acceptButton: { class: 'p-button-primary p-button-outlined' },
-            cancelButton: { class: 'p-button-secondary p-button-outlined' },
-            accept: () => {
-                this.memberService.deleteMember(memberItem.member.id)
-                    .pipe(this.untilThis)
-                    .subscribe(() => {
-                        this.toastNotifications.success('Member deleted');
-                        this.memberItems = this.memberItems.filter(m => m.member.id !== memberItem.member.id);
-                    }, error => {
-                        this.toastNotifications.error(error);
-                    });
-            },
-        });
+        if (memberItem.member.roleId === 1) {
+            this.toastNotifications.error('You cannot delete the owner');
+        } else {
+            this.confirmWindowService.confirm({
+                title: 'Delete member?',
+                message: `Are you sure you wish to delete the <strong>${memberItem.member.user.firstName}`
+                    + ` ${memberItem.member.user.lastName} </strong>from the organization?`,
+                acceptButton: { class: 'p-button-primary p-button-outlined' },
+                cancelButton: { class: 'p-button-secondary p-button-outlined' },
+                accept: () => {
+                    this.memberService.deleteMember(memberItem.member.id)
+                        .pipe(this.untilThis)
+                        .subscribe(() => {
+                            this.toastNotifications.success('Member deleted');
+                            this.memberItems = this.memberItems.filter(m => m.member.id !== memberItem.member.id);
+                        }, error => {
+                            this.toastNotifications.error(error);
+                        });
+                },
+            });
+        }
+
+
     }
     reinvite(member: Member) {
         this.memberService.reinviteMember(member.id)
