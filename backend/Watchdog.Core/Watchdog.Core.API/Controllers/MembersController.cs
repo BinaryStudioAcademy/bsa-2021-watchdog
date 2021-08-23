@@ -76,9 +76,9 @@ namespace Watchdog.Core.API.Controllers
         }
 
         [HttpGet("team/{teamId}/exceptTeam/")]
-        public async Task<ActionResult<ICollection<MemberDto>>> GetMembersExceptTeam(int teamId, string memberEmail = "")
+        public async Task<ActionResult<ICollection<MemberDto>>> GetMembersExceptTeam(int teamId, int count, string memberEmail = "")
         {
-            var members = await _memberService.SearchMembersNotInTeamAsync(teamId, memberEmail);
+            var members = await _memberService.SearchMembersNotInTeamAsync(teamId, count, memberEmail);
             return Ok(members);
         }
 

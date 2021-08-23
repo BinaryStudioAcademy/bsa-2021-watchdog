@@ -4,134 +4,92 @@ import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active
 import { TileService } from '@core/services/tile.service';
 import { TileType } from '@shared/models/tile/enums/tile-type';
 import { Tile } from '@shared/models/tile/tile';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmWindowService } from '@core/services/confirm-window.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
-import { regexs } from '@shared/constants/regexs';
 import { BaseComponent } from '@core/components/base/base.component';
-import { UpdateTile } from '@shared/models/tile/update-tile';
-import { IssueService } from '@core/services/issue.service';
 import { IssueInfo } from '@shared/models/issue/issue-info';
-import { map } from 'rxjs/operators';
+import { IssueService } from '@core/services/issue.service';
+import { convertJsonToTileSettings, convertTileDateRangeTypeToMs } from '@core/utils/tile.utils';
 
 @Component({
-    selector: 'app-top-active-issues-tile[tile][isShownMenu]',
+    selector: 'app-top-active-issues-tile[tile][isShownEditTileMenu][userProjects]',
     templateUrl: './top-active-issues-tile.component.html',
     styleUrls: ['./top-active-issues-tile.component.sass']
 })
 export class TopActiveIssuesTileComponent extends BaseComponent implements OnInit {
-    @Input() userProjects: Project[] = [];
     @Input() tile: Tile;
+    @Input() isShownEditTileMenu: boolean = false;
+    @Input() userProjects: Project[] = [];
+    cashedIssuesInfos: IssueInfo[] = [];
     @Output() isDeleting: EventEmitter<Tile> = new EventEmitter<Tile>();
-
-    issuesInfo: IssueInfo[] = [];
-    displayedProjects: Project[];
-    formGroup: FormGroup;
-    isShownTileMenu: boolean;
+    paginatorRows: number = 5;
     tileSettings: TopActiveIssuesSettings;
-    isEditName: boolean = false;
+    requiredProjects: Project[] = [];
+    displayedIssues: IssueInfo[] = [];
 
     constructor(
         private tileService: TileService,
         private toastNotificationService: ToastNotificationService,
         private confirmWindowService: ConfirmWindowService,
         private tileDialogService: TileDialogService,
-        private issuesService: IssueService,
+        private issueService: IssueService,
     ) {
         super();
     }
 
-    @Input() set isShownMenu(val: boolean) {
-        if (val === false && this.isEditName === true) {
-            this.resetFormGroup();
-            this.isEditName = false;
-        }
-        this.isShownTileMenu = val;
-    }
-
-    ngOnInit(): void {
+    ngOnInit() {
         this.applySettings();
-
-        this.formGroup = new FormGroup({
-            name: new FormControl(
-                this.tile.name,
-                [
-                    Validators.required,
-                    Validators.minLength(3),
-                    Validators.maxLength(50),
-                    Validators.pattern(regexs.tileName),
-                ]
-            )
-        });
-    }
-
-    toggleNameEditor() {
-        this.resetFormGroup();
-        this.isEditName = !this.isEditName;
-    }
-
-    saveNameChanges() {
-        this.isEditName = false;
-        this.tile.name = this.formGroup.controls.name.value;
-        this.tileService.updateTile(this.tile as UpdateTile)
-            .pipe(this.untilThis)
-            .subscribe((response) => {
-                if (response) {
-                    this.tile = response as Tile;
-                    this.resetFormGroup();
-                    this.toastNotificationService.success('Name changed');
-                }
-            }, error => {
-                this.resetFormGroup();
-                this.toastNotificationService.error(error);
-            });
-    }
-
-    deleteTile() {
-        this.confirmWindowService.confirm({
-            title: 'Delete tile?',
-            message: `Are you sure you wish to delete the ${this.tile.name} tile?`,
-            acceptButton: { class: 'p-button-primary p-button-outlined' },
-            cancelButton: { class: 'p-button-secondary p-button-outlined' },
-            accept: () => this.isDeleting.emit(this.tile),
-        });
     }
 
     editTile() {
-        this.isEditName = false;
-        this.resetFormGroup();
         this.tileDialogService.showTopActiveIssuesEditDialog(this.userProjects, this.tile, () => this.applySettings());
     }
 
     private applySettings() {
-        this.tileSettings = this.tileService.convertJsonToTileSettings(this.tile.settings, TileType.TopActiveIssues);
-        // get only required projects
-        this.displayedProjects = [...this.userProjects.filter(proj => {
-            for (let i = 0; i < this.tileSettings.sourceProjects.length; i += 1) {
-                if (this.tileSettings.sourceProjects[i] === proj.id) {
-                    return true;
-                }
-            }
-            return false;
-        })];
-
-        this.issuesService
-            .getIssuesInfo()
-            .pipe(
-                this.untilThis,
-                map(issuesInfo => issuesInfo.sort((a, b) => b.eventsCount - a.eventsCount))
-            )
-            .subscribe(issuesInfo => {
-                this.issuesInfo = issuesInfo;
-                this.issuesInfo.splice(this.tileSettings.issuesCount);
-            }, error => {
-                this.toastNotificationService.error(error);
-            });
+        this.getTileSettings();
+        this.applyProjectSettings();
+        if (!this.cashedIssuesInfos.length) {
+            //TODO: Get issues from projects of user organization
+            this.issueService
+                .getIssuesInfo()
+                .pipe(this.untilThis)
+                .subscribe(issuesInfo => {
+                    this.cashedIssuesInfos = issuesInfo;
+                    this.applyIssuesSettings();
+                }, error => {
+                    this.toastNotificationService.error(error);
+                });
+        } else {
+            this.applyIssuesSettings();
+        }
     }
 
-    private resetFormGroup() {
-        this.formGroup.reset();
-        this.formGroup.patchValue({ name: this.tile.name });
+    private getTileSettings() {
+        this.tileSettings = convertJsonToTileSettings(this.tile.settings, TileType.TopActiveIssues);
+    }
+
+    private applyProjectSettings() {
+        if (this.userProjects?.length) {
+            this.requiredProjects = [...this.userProjects.filter(proj => {
+                for (let i = 0; i < this.tileSettings.sourceProjects.length; i += 1) {
+                    if (this.tileSettings.sourceProjects[i] === proj.id) {
+                        return true;
+                    }
+                }
+                return false;
+            })];
+        }
+    }
+
+    private applyIssuesSettings() {
+        //TODO: Filter issues by requiredProjects (future feature)
+        //TODO: Filter issues by 'active' issue type (future feature)
+
+        this.displayedIssues = [...this.cashedIssuesInfos]
+            .filter(info => new Date(info.newest.occurredOn).getTime() >= Date.now()
+                - convertTileDateRangeTypeToMs(this.tileSettings.dateRange)) // date range sort
+            .sort((a, b) => b.eventsCount - a.eventsCount) // top sort
+            .slice(0, this.tileSettings.issuesCount); // issues count
     }
 }
