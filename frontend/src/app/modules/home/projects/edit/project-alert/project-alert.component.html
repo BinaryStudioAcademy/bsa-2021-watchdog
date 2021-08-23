@@ -10,83 +10,46 @@
             </div>
         </div>
     </form>
-    issues?.length > itemsPerPage
-    <form [formGroup]="editForm" [hidden]="editForm?.controls.alertCategory"
+    <form [formGroup]="editForm" *ngIf="this.editForm.controls.alertCategory.value=== 3"
          class="item">
-        <label class="item-definition">
+        <label class="item-definition-special">
             <div>Alert Count</div>
         </label>
         <div class="item-field">
             <div class="item-form-input p-input-icon-right">
                 <input formControlName="alertsCount" pInputText placeholder="Alerts count" class="item-form-field">
-                <!-- <div *ngIf="alertsCount.touched && alertsCount.invalid" class="p-error">
+                <div *ngIf="alertsCount.touched && alertsCount.invalid" class="p-error">
                     <small *ngIf="alertsCount.errors.required">Сan not be empty</small>
-                </div> -->
+                </div>
             </div>
         </div>
     </form>
-    <form [formGroup]="editForm" *ngIf="this.project.alertSettings.alertCategory === 3" class="item">
-        <label class="item-definition">
+    <form [formGroup]="editForm" *ngIf="this.editForm.controls.alertCategory.value=== 3" class="item">
+        <label class="item-definition-special">
             <div>Alert Type</div>
         </label>
         <div class="item-field">
             <div class="item-form-input p-input-icon-right">
                 <p-dropdown [options]="specialAlertTypeValue" optionLabel="label"
                     formControlName="specialAlertType" optionValue="value" [style]="{'width':'100%'}"></p-dropdown>
-                <!-- <div *ngIf="specialAlertType.touched && specialAlertType.invalid" class="p-error">
+                <div *ngIf="specialAlertType.touched && specialAlertType.invalid" class="p-error">
                     <small *ngIf="specialAlertType.errors.required">Сan not be empty</small>
-                </div> -->
+                </div>
             </div>
         </div>
     </form>
-    <form [formGroup]="editForm" *ngIf="this.project.alertSettings.alertCategory === 3" class="item">
-        <label class="item-definition">
+    <form [formGroup]="editForm" *ngIf="this.editForm.controls.alertCategory.value=== 3" class="item">
+        <label class="item-definition-special">
             <div>Alert time interval</div>
         </label>
         <div class="item-field">
             <div class="item-form-input p-input-icon-right">
                 <p-dropdown [options]="alertTimeIntervalValue" optionLabel="label"
                     formControlName="alertTimeInterval" optionValue="value" [style]="{'width':'100%'}"></p-dropdown>
-                <!-- <div *ngIf="alertTimeInterval.touched && alertTimeInterval.invalid" class="p-error">
+                <div *ngIf="alertTimeInterval.touched && alertTimeInterval.invalid" class="p-error">
                     <small *ngIf="alertTimeInterval.errors.required">Сan not be empty</small>
-                </div> -->
+                </div>
             </div>
         </div>
     </form>
-    <!-- <form class="item">
-        <div class="alert-settings">
-            <div [formGroup]="editForm" *ngFor="let category of alertData.alertCategories" class="alert-form">
-                <div >
-                    <p-radioButton [inputId]="category.value.toString()" [value]="category.value" [label]="category.label"
-                                   formControlName="alertCategoryId" name="alertCategory" >
-                    </p-radioButton>
-                </div>
-                <div [formGroup]="editForm" class="special-settings" *ngIf="category.value === 3">
-                    <p-inputNumber formControlName="alertsCount"
-                                    [disabled]="category.value !== 3"
-                                    [min]="0" [showButtons]="true" [size]="2" [step]="1"
-                                    class="radiobutton-settings-alerts-count"
-                                    mode="decimal"
-                                    incrementButtonClass="p-button-outlined"
-                                    decrementButtonClass="p-button-outlined">
-                    </p-inputNumber>
-                    <p-dropdown formControlName="specialAlertType"
-                                [disabled]="category.value !== 3"
-                                [options]="alertData.alertTypes"
-                                optionValue="value" optionLabel="label"
-                                class="radiobutton-settings-alert-type">
-                    </p-dropdown>
-                    <span>a unique error in</span>
-                    <p-dropdown formControlName="alertTimeInterval"
-                                [disabled]="category.value !== 3"
-                                [options]="alertData.alertTimeIntervals"
-                                optionValue="value" optionLabel="label"
-                                class="radiobutton-settings-alert-type"
-                    >
-                    </p-dropdown>
-                </div>
-            </div>
-
-        </div>
-    </form> -->
 </p-panel>
