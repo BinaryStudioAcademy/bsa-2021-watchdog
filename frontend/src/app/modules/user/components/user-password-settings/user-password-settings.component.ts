@@ -26,14 +26,14 @@ export class UserPasswordSettingsComponent extends BaseComponent implements OnIn
     ngOnInit(): void {
         this.pass.addControl('oldPassword', new FormControl(null, [
             Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(50),
+            Validators.minLength(8),
+            Validators.maxLength(30),
             Validators.pattern(regexs.password),
         ]));
         this.pass.addControl('newPassword', new FormControl(null, [
             Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(50),
+            Validators.minLength(8),
+            Validators.maxLength(30),
             Validators.pattern(regexs.password),
         ]));
         this.pass.addControl('confirmPassword', new FormControl(null));

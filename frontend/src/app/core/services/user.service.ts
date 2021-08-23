@@ -46,8 +46,12 @@ export class UserService {
         return this.httpService.putRequest<User>(`${this.apiPrefix}`, user);
     }
 
-    searchMembersNotInOrganization(orgId: number, memberEmail: string): Observable<User[]> {
-        const url = `organization/${orgId}/notInOrg/${memberEmail !== '' ? `?memberEmail=${memberEmail}` : ''}`;
+    searchMembersNotInOrganization(orgId: number, count: number, memberEmail: string): Observable<User[]> {
+        const url = `organization/${orgId}/notInOrg/?count=${count}${memberEmail !== '' ? `&memberEmail=${memberEmail}` : ''}`;
         return this.httpService.getRequest<User[]>(`${this.apiPrefix}/${url}`);
+    }
+
+    isEmailUnique(email: string): Observable<boolean> {
+        return this.httpService.getRequest<boolean>(`${this.apiPrefix}/email/${email}`);
     }
 }

@@ -14,6 +14,7 @@ import { TopActiveIssuesTileComponent } from './dashboard/tiles/top-active-issue
 import { AddEditTopActiveIssuesTileComponent }
     from './modals/tiles/top-active-issues/add-edit-top-active-issues-tile/add-edit-top-active-issues-tile.component';
 import { IssuesModule } from '@modules/home/issues/issues.module';
+import { TileHeaderComponent } from './dashboard/tiles/tile-header/tile-header.component';
 
 @NgModule({
     declarations: [
@@ -24,6 +25,7 @@ import { IssuesModule } from '@modules/home/issues/issues.module';
         TileMenuComponent,
         TopActiveIssuesTileComponent,
         AddEditTopActiveIssuesTileComponent,
+        TileHeaderComponent,
     ],
     imports: [
         SharedModule,

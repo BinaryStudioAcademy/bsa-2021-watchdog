@@ -6,7 +6,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { filter, mergeMap, switchMap, tap, map } from 'rxjs/operators';
-import { from, of, Observable } from 'rxjs';
+import { from, of, Observable, Subject, merge } from 'rxjs';
 import { User } from '@shared/models/user/user';
 import { NewUser } from '@shared/models/user/newUser';
 import { FullRegistrationDto } from '@modules/registration/DTO/fullRegistrationDto';
@@ -53,21 +53,30 @@ export class AuthenticationService {
         return AuthenticationService.user;
     }
 
+    private static organizationSource: Subject<Organization> = new Subject<Organization>();
+
     getOrganization(): Observable<Organization> {
-        return this.organizationService.getCurrentOrganization(this.getUser().id);
+        return merge(
+            this.organizationService.getCurrentOrganization(this.getUser().id),
+            AuthenticationService.organizationSource.asObservable()
+        );
     }
 
+    setOrganization(organization: Organization) {
+        this.organizationService.setCurrentOrganization(organization);
+        this.memberService.clearMember();
+        this.memberService.getCurrentMember(organization.id, this.getUser().id)
+            .subscribe(() => AuthenticationService.organizationSource.next(organization));
+    }
+
+    private static memberSource: Subject<Member> = new Subject<Member>();
+
     getMember(): Observable<Member> {
-        if (!AuthenticationService.member) {
-            const userId = this.getUser().id;
-            return this.getOrganization()
-                .pipe(switchMap(org => this.memberService.getMemberByUserAndOgranization(org.id, userId)
-                    .pipe(map(member => {
-                        AuthenticationService.member = member;
-                        return AuthenticationService.member;
-                    }))));
-        }
-        return of(AuthenticationService.member);
+        return this.getOrganization()
+            .pipe(switchMap(org => merge(
+                this.memberService.getCurrentMember(org.id, this.getUser().id),
+                AuthenticationService.memberSource.asObservable()
+            )));
     }
 
     setUser(user: User) {
@@ -282,6 +291,7 @@ export class AuthenticationService {
         this.removeJwToken();
         this.removeUser();
         this.organizationService.clearOrganization();
+        this.memberService.clearMember();
         this.removeIsSignByEmailAndPassword();
         this.angularFireAuth.signOut()
             .catch(error => {

@@ -1,50 +1,59 @@
-<div (click)="click()" *ngIf="!collapsed" class="dropdown-wrapper">
-    <p-dropdown [(ngModel)]="organization" [options]="organizations" [readonly]="organizations?.length <= 1"
-                [styleClass]="'org-label'" optionLabel="name">
-        <ng-template class="org-label" pTemplate="selectedItem">
-            <div class="org-avatar">
-                <p-avatar *ngIf="organization?.avatarUrl" [image]="organization.avatarUrl" styleClass="org-avatar-item">
-                </p-avatar>
-                <p-avatar *ngIf="!organization?.avatarUrl" [label]="organization?.name.substr(0,2)"
-                          styleClass="org-avatar-item"></p-avatar>
-            </div>
-            <div class="org-title">
-                <div appTooltipFullName class="org-name text-ellipsis">
-                    {{organization?.name}}
+<div class="dropdown-wrapper">
+    <div class="content">
+        <p-dropdown
+            [(ngModel)]="organization"
+            [options]="organizations"
+            [readonly]="organizations?.length <= 1"
+            [styleClass]="'org-label'"
+            optionLabel="name"
+            (onChange)="changeOrganization($event.value)"
+            appendTo="body"
+            [class.collapse-sidebar]="collapsed"
+            class="org-dropdown"
+            panelStyleClass="org-dropdown">
+            <ng-template pTemplate="selectedItem">
+                <div class="org-label">
+                    <div class="org-avatar">
+                        <p-avatar
+                            *ngIf="organization?.avatarUrl"
+                            [image]="organization.avatarUrl"
+                            styleClass="org-avatar-item"
+                            shape="circle">
+                        </p-avatar>
+                        <p-avatar
+                            *ngIf="!organization?.avatarUrl"
+                            [label]="organization?.name.substr(0,2)"
+                            styleClass="org-avatar-item"
+                            shape="circle"></p-avatar>
+                    </div>
+                    <div class="org-title" *ngIf="!collapsed">
+                        <div appTooltipFullName class="org-name text-ellipsis">
+                            {{organization?.name}}
+                        </div>
+                        <div appTooltipFullName class="org-user text-ellipsis">
+                            {{organization?.organizationSlug}}
+                        </div>
+                    </div>
                 </div>
-                <div appTooltipFullName class="org-user text-ellipsis">
-                    {{organization?.organizationSlug}}
+            </ng-template>
+            <ng-template let-org pTemplate="item">
+                <div class="org-label-item">
+                    <div class="org-avatar">
+                        <p-avatar *ngIf="org?.avatarUrl" shape="circle" [image]="org.avatarUrl" styleClass="org-avatar-item">
+                        </p-avatar>
+                        <p-avatar *ngIf="!org?.avatarUrl" shape="circle" [label]="org?.name.substr(0,2)" styleClass="org-avatar-item">
+                        </p-avatar>
+                    </div>
+                    <div class="org-title">
+                        <div appTooltipFullName class="org-name text-ellipsis">
+                            {{org?.name}}
+                        </div>
+                        <div appTooltipFullName class="org-user text-ellipsis">
+                            {{org?.organizationSlug}}
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <i (click)="clickIcon($event)" class="icon pi pi-cog" routerLink="./organization/settings"></i>
-        </ng-template>
-        <ng-template class="org-label" let-org pTemplate="item">
-            <div class="org-avatar">
-                <p-avatar *ngIf="org?.avatarUrl" [image]="org.avatarUrl" styleClass="org-avatar-item">
-                </p-avatar>
-                <p-avatar *ngIf="!org?.avatarUrl" [label]="org?.name.substr(0,2)" styleClass="org-avatar-item">
-                </p-avatar>
-            </div>
-            <div class="org-title">
-                <div appTooltipFullName class="org-name text-ellipsis">
-                    {{org?.name}}
-                </div>
-                <div appTooltipFullName class="org-user text-ellipsis">
-                    {{org?.organizationSlug}}
-                </div>
-            </div>
-        </ng-template>
-    </p-dropdown>
-</div>
-
-<div *ngIf="collapsed">
-    <div class="org-avatar collapsed-org-avatar" pTooltip="Organization settings">
-        <p-avatar (click)="clickIcon($event)" *ngIf="organization?.avatarUrl" [image]="organization.avatarUrl"
-                  routerLink="./organization/settings" styleClass="org-avatar-item">
-        </p-avatar>
-        <p-avatar (click)="clickIcon($event)" *ngIf="!organization?.avatarUrl" [label]="organization?.name.substr(0,2)"
-                  routerLink="./organization/settings"
-                  styleClass="org-avatar-item">
-        </p-avatar>
+            </ng-template>
+        </p-dropdown>
     </div>
 </div>

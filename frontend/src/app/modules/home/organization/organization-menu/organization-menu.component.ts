@@ -57,8 +57,11 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
             });
     }
 
-    click() {
-        if (this.organizations?.length <= 1) this.router.navigate(['home', 'organization', 'settings']);
+    async changeOrganization(organization: Organization) {
+        this.authService.setOrganization(organization);
+        const { url } = this.router;
+        await this.router.navigateByUrl('/', { skipLocationChange: true });
+        await this.router.navigateByUrl(url);
     }
 
     clickIcon(event: Event) {

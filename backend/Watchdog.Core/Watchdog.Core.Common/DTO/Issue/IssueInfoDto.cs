@@ -9,6 +9,6 @@ namespace Watchdog.Core.Common.DTO.Issue
         public string ErrorClass { get; set; }
         public int EventsCount { get; set; }
         public IssueMessageDto Newest { get; set; }
-        public Assignee Assignee { get; set; }
+        public AssigneeDto Assignee { get; set; }
     }
 }

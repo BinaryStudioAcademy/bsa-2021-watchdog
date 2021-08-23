@@ -36,6 +36,10 @@ export class OrganizationService {
         return of(OrganizationService.organization);
     }
 
+    setCurrentOrganization(organization: Organization) {
+        OrganizationService.organization = organization;
+    }
+
     private orgRequest$: Observable<Organization[]>;
 
     getOrganizationsByUserId(userId: number): Observable<Organization[]> {

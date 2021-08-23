@@ -28,7 +28,7 @@ namespace Watchdog.Core.API.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateAssignee(UpdateAssigneeDto assigneeDto)
         {
-            await _issueService.UpdateAssignee(assigneeDto);
+            await _issueService.UpdateAssigneeAsync(assigneeDto);
             return Ok(); 
         }
 

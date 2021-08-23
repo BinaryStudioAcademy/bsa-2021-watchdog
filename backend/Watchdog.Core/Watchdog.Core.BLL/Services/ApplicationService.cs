@@ -92,13 +92,12 @@ namespace Watchdog.Core.BLL.Services
             var team = await _context.Teams.FirstOrDefaultAsync(t => t.Id == dto.TeamId) ??
                 throw new KeyNotFoundException("No team with this id!");
 
-            var addedApplication = await _context.AddAsync(application);
-            await _context.SaveChangesAsync();
+            await _context.AddAsync(application);
 
-            addedApplication.Entity.ApplicationTeams.Add(new ApplicationTeam
+            application.ApplicationTeams.Add(new ApplicationTeam
             {
-                TeamId = dto.TeamId,
-                ApplicationId = addedApplication.Entity.Id
+                Team = team,
+                Application = application
             });
             await _context.SaveChangesAsync();
 
