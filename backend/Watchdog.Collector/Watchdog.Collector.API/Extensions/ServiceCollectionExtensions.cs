@@ -1,8 +1,8 @@
+using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nest;
 using RabbitMQ.Client;
-using System;
 using System.Reflection;
 using Watchdog.Collector.BLL.MappingProfiles;
 using Watchdog.Collector.BLL.Services;

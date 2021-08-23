@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 using Watchdog.Collector.BLL.Services.Abstract;
 using Watchdog.Collector.Common.DTO.Issue;
 using Watchdog.Collector.Common.Models;
+using Watchdog.NetCore.Common.Messages;
 
 namespace Watchdog.Collector.BLL.Services
 {
     public class ElasticWriteService : IElasticWriteService
     {
-        private readonly IMapper _mapper;
         private readonly IElasticClient _client;
+        private readonly IMapper _mapper;
         private readonly IIssueQueueProducerService _issueProducer;
         
         public ElasticWriteService(IElasticClient client, IMapper mapper, IIssueQueueProducerService issueProducer)
@@ -25,6 +26,18 @@ namespace Watchdog.Collector.BLL.Services
         {
             var issueMessage = _mapper.Map<IssueMessage>(message);
                 
+            if (string.IsNullOrEmpty(issueMessage.IssueDetails.ErrorMessage))
+            {
+                throw new ArgumentException("Error message can't be empty.");
+            }
+
+            return WriteNewEventMessageAsync(issueMessage);
+        }
+
+        public Task AddIssueAsync(WatchdogMessage message)
+        {
+            var issueMessage = _mapper.Map<IssueMessage>(message);
+
             if (string.IsNullOrEmpty(issueMessage.IssueDetails.ErrorMessage))
             {
                 throw new ArgumentException("Error message can't be empty.");

@@ -9,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using Watchdog.AspNetCore;
 using Watchdog.Collector.API.Extensions;
 
 namespace Watchdog.Collector.API
@@ -41,6 +42,13 @@ namespace Watchdog.Collector.API
             services.AddAutoMapper();
             services.AddElasticSearch(Configuration);
             services.RegisterCustomServices();
+
+            services.AddWatchdog(Configuration, new WatchdogMiddlewareSettings()
+            {
+                ClientProvider = new DefaultWatchdogAspNetCoreClientProvider()
+            });
+
+            services.AddAutoMapper();
 
             services.AddRabbitMQIssueProducer(Configuration);
 
@@ -89,6 +97,8 @@ namespace Watchdog.Collector.API
             var apiPrefix = env.IsProduction() ? "/collector" : string.Empty;
 
             app.UseDeveloperExceptionPage();
+
+            app.UseWatchdog();
 
             app.UseSerilogRequestLogging();
 
