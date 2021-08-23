@@ -9,11 +9,23 @@
 <div class="members-container">
     <div class="p-inputgroup filter-input">
         <span class="p-inputgroup-addon search-button"><i class="pi pi-search"></i></span>
-        <input type="text" pInputText placeholder="Search" name="search" (input)="table.filterGlobal($event.target.value, 'contains')">
+        <input 
+            type="text" 
+            pInputText 
+            placeholder="Search" 
+            name="search" 
+            (input)="table.filterGlobal({value: $event.target.value, fields: globalFilterFields }, 'contains')">
     </div>
-    <p-table #table [value]="memberItems" class="members-table" [rows]="10" 
-    [paginator]="memberItems?.length > 10"  
-    [globalFilterFields]="['member.user.firstName','member.user.email','member.role.name']">
+    <p-table 
+        #table 
+        [value]="memberItems" 
+        class="members-table"
+        [rows]="10" 
+        [paginator]="totalRecords > 10"
+        [lazy]="true"
+        (onLazyLoad)="loadMembers($event)" 
+        [totalRecords]="totalRecords"
+        [loading]="loading">
         <ng-template pTemplate="header">
             <tr>
                 <th pSortableColumn="member.user.firstName">
@@ -22,7 +34,7 @@
                             Full Name
                             <p-sortIcon field="member.user.firstName"></p-sortIcon>
                         </span>
-                        <p-columnFilter [showAddButton]="false" type="text" field="member.user.firstName" display="menu"></p-columnFilter>
+                        <p-columnFilter [showAddButton]="false" [showOperator]="false"  type="text" field="member.user.firstName" display="menu" [maxConstraints]="1"></p-columnFilter>
                     </div>
                 </th>
                 <th class="email-col" pSortableColumn="member.user.email">
@@ -30,7 +42,7 @@
                         <span>
                             Email <p-sortIcon field="member.user.email"></p-sortIcon>
                         </span>
-                        <p-columnFilter [showAddButton]="false" type="text" field="member.user.email" display="menu"></p-columnFilter>
+                        <p-columnFilter [showAddButton]="false" [showOperator]="false" type="text" field="member.user.email" display="menu"></p-columnFilter>
                     </div>
                 </th>
                 <th pSortableColumn="member.role.name">
@@ -121,5 +133,4 @@
 <app-invite
     (closeModal)="isInviting = !isInviting"
     *ngIf="isInviting">
-    
 </app-invite>

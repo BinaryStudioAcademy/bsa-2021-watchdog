@@ -12,7 +12,9 @@ import { Organization } from '@shared/models/organization/organization';
 import { Role } from '@shared/models/role/role';
 import { TeamOption } from '@shared/models/teams/team-option';
 import { User } from '@shared/models/user/user';
-import { TreeNode } from 'primeng/api';
+import { LazyLoadEvent, TreeNode } from 'primeng/api';
+import { Observable } from 'rxjs';
+import { debounceTime, tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-members-page',
@@ -27,7 +29,14 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
     user: User;
     roles: Role[];
 
+    organization: Organization;
     isEdit: boolean = false;
+
+    loading: boolean;
+    totalRecords: number;
+    globalFilterFields = ['member.user.firstName', 'member.user.email', 'member.role.name'];
+
+    organizationRequest: Observable<Organization>;
 
     constructor(
         private memberService: MemberService,
@@ -45,13 +54,20 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
         this.setUpSharedDate();
         this.isInviting = false;
         this.loadingNumber += 1;
-        this.authService.getOrganization()
-            .pipe(this.untilThis)
-            .subscribe(organization => {
-                this.loadMembers(organization);
+        const request = this.authService.getOrganization()
+            .pipe(
+                this.untilThis,
+                tap(organization => {
+                    this.organization = organization;
+                }));
+
+        this.organizationRequest = request;
+
+        request
+            .subscribe(() => {
                 this.loadingNumber -= 1;
             }, error => {
-                this.toastNotifications.error(error.toString());
+                this.toastNotifications.error(error);
                 this.loadingNumber -= 1;
             });
 
@@ -67,12 +83,20 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
             });
     }
 
-    private loadMembers(organization: Organization) {
+    lastEvent: LazyLoadEvent;
+
+    async loadMembers(event: LazyLoadEvent) {
+        this.lastEvent = event;
+        if (!this.organization) {
+            await this.organizationRequest.toPromise();
+        }
         this.loadingNumber += 1;
-        this.memberService.getMembersByOrganizationId(organization.id)
-            .pipe(this.untilThis)
-            .subscribe(members => {
-                this.memberItems = members.map(member => ({ member, treeTeams: this.fromTeams(member.teams) }));
+        this.memberService.getMembersByOrganizationIdLazy(this.organization.id, event)
+            .pipe(this.untilThis,
+                debounceTime(1000))
+            .subscribe(response => {
+                this.memberItems = response.collection.map(member => ({ member, treeTeams: this.fromTeams(member.teams) }));
+                this.totalRecords = response.totalRecord;
                 this.loadingNumber -= 1;
             }, error => {
                 this.toastNotifications.error(error.toString());
@@ -83,8 +107,8 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
     private setUpSharedDate() {
         this.updateDataService.currentMessage
             .pipe(this.untilThis)
-            .subscribe(member => {
-                this.memberItems = this.memberItems.concat({ member, treeTeams: this.fromTeams(member.teams) });
+            .subscribe(() => {
+                this.loadMembers(this.lastEvent);
             });
     }
 
@@ -145,6 +169,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
                     .subscribe(() => {
                         this.toastNotifications.success('Member deleted');
                         this.memberItems = this.memberItems.filter(m => m.member.id !== memberItem.member.id);
+                        this.loadMembers(this.lastEvent);
                     }, error => {
                         this.toastNotifications.error(`${error}`);
                     });

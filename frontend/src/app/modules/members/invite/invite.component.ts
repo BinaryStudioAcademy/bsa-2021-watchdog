@@ -32,6 +32,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
     loadingNumber: number = 0;
     user: User;
     organization: Organization;
+    defaultRole: Role;
 
     invations: Invition[] = [{ member: {} as NewMember, groupForm: this.generateGroupForm() }];
     constructor(
@@ -63,7 +64,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
                 []
             ),
             role: new FormControl(
-                '',
+                this.organization.defaultRoleId,
                 [
                     Validators.required,
                 ]
@@ -142,10 +143,10 @@ export class InviteComponent extends BaseComponent implements OnInit {
                 this.updateDataService.changeMessage(invatedMember.member);
                 this.loadingNumber -= 1;
             },
-            error => {
-                this.toastNotifications.error(`${error}`, 'Error');
-                this.loadingNumber -= 1;
-            });
+                error => {
+                    this.toastNotifications.error(`${error}`, 'Error');
+                    this.loadingNumber -= 1;
+                });
     }
 
     addNew() {
