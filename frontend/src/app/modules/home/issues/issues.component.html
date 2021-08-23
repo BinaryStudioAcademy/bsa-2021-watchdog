@@ -37,7 +37,7 @@
             <ng-template pTemplate="header">
                 <div class="header">
                     <span>All Unresolved</span>
-                    <p-badge *ngIf="countNew.all > 0" [value]="countNew.all.toString()"></p-badge>
+                    <p-badge *ngIf="issuesCount.all > 0" [value]="issuesCount.all.toString()"></p-badge>
                 </div>
             </ng-template>
 
@@ -121,7 +121,7 @@
             <ng-template pTemplate="header">
                 <div class="header">
                     <span>Second Type</span>
-                    <p-badge *ngIf="countNew.secondtype > 0" [value]="countNew.secondtype.toString()"></p-badge>
+                    <p-badge *ngIf="issuesCount.secondtype > 0" [value]="issuesCount.secondtype.toString()"></p-badge>
                 </div>
             </ng-template>
         </p-tabPanel>
@@ -129,7 +129,7 @@
             <ng-template pTemplate="header">
                 <div class="header">
                     <span>Third Type</span>
-                    <p-badge *ngIf="countNew.thirdtype > 0" [value]="countNew.thirdtype.toString()"></p-badge>
+                    <p-badge *ngIf="issuesCount.thirdtype > 0" [value]="issuesCount.thirdtype.toString()"></p-badge>
                 </div>
             </ng-template>
         </p-tabPanel>
