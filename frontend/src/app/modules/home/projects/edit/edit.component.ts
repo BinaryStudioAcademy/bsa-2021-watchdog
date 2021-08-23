@@ -98,6 +98,8 @@ export class EditComponent extends BaseComponent implements OnInit {
 
     tests() {
         const project = { ...this.editForm.value };
+        const cat = this.project.alertSettings.alertCategory;
+        const cat2 = this.alertData.alertCategories[1].value;
         debugger;
     }
 

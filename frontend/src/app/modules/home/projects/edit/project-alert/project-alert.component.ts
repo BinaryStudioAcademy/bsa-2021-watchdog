@@ -17,6 +17,10 @@ export class ProjectAlertComponent extends BaseComponent implements OnInit {
     @Input() editForm: FormGroup;
     @Input() project: Project;
 
+    alertCategoryValue = this.alertData.alertCategories;
+    specialAlertTypeValue = this.alertData.alertTypes;
+    alertTimeIntervalValue = this.alertData.alertTimeIntervals;
+
     constructor(
         public alertData: Data
     ) {
@@ -24,30 +28,14 @@ export class ProjectAlertComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.initAlertData();
         this.addValidation();
     }
 
-    // initValidatorForAlert() {
-    //     this.editForm.addControl('alertCategory', new FormControl(this.alertData.alertCategories[0].value,
-    //         Validators.required));
-    //     this.editForm.addControl('alertsCount', new FormControl(this.alertSetting.specialAlertSetting.alertsCount,
-    //         Validators.required));
-    //     this.editForm.addControl('specialAlertType', new FormControl(this.alertSetting.specialAlertSetting.specialAlertType,
-    //         Validators.required));
-    //     this.editForm.addControl('alertTimeInterval', new FormControl(this.alertSetting.specialAlertSetting.alertTimeInterval,
-    //         Validators.required));
-    // }
-
-    private addValidation() {
-        this.editForm = new FormGroup({
-            alertCategory: new FormControl(
-                this.alertData.alertCategories[1].value,
-                [
-                    Validators.required
-                ]
-            )
-        });
+    addValidation() {
+        this.editForm.addControl('alertCategory', new FormControl(this.project.alertSettings.alertCategory, Validators.required));
+        this.editForm.addControl('alertsCount', new FormControl(this.project.alertSettings.specialAlertSetting.alertsCount, Validators.required));
+        this.editForm.addControl('specialAlertType', new FormControl(this.project.alertSettings.specialAlertSetting.specialAlertType, Validators.required));
+        this.editForm.addControl('alertTimeInterval', new FormControl(this.project.alertSettings.specialAlertSetting.alertTimeInterval, Validators.required));
     }
 
     private initAlertData() {
@@ -60,4 +48,10 @@ export class ProjectAlertComponent extends BaseComponent implements OnInit {
     }
 
     get alertCategory() { return this.editForm.controls.alertCategory; }
+
+    get alertsCount() { return this.editForm.controls.alertsCount; }
+
+    get specialAlertType() { return this.editForm.controls.specialAlertType; }
+
+    get alertTimeInterval() { return this.editForm.controls.alertTimeInterval; }
 }

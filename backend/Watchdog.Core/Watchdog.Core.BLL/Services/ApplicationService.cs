@@ -109,7 +109,6 @@ namespace Watchdog.Core.BLL.Services
         {
             var application = await _context.Applications
                 .Include(p => p.Platform)
-                .Include(s => s.AlertSettings)
                 .FirstOrDefaultAsync(a => a.Id == appId);
 
             return _mapper.Map<ApplicationDto>(application);
