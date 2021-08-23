@@ -9,7 +9,6 @@ using Watchdog.Core.Common.DTO.Issue;
 using Watchdog.Core.Common.Models.Issue;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
-using Issue = Watchdog.Core.DAL.Entities.Issue;
 
 namespace Watchdog.Core.BLL.Services
 {
@@ -172,7 +171,7 @@ namespace Watchdog.Core.BLL.Services
             var teamsToAdd = assigneeDto.Assignee.TeamIds
                 .Except(oldTeams.Select(a => a.TeamId)); // teams in db - teams in dto
             var teamsToDelete = oldTeams
-                .Where(t => !assigneeDto.Assignee.TeamIds.Any(id => t.TeamId == id)); // teams in db - teams in dto
+                .Where(t => assigneeDto.Assignee.TeamIds.All(id => t.TeamId != id)); // teams in db - teams in dto
 
             await _context.AssigneeTeams.AddRangeAsync(
                 teamsToAdd.Select(id => new AssigneeTeam

@@ -1,7 +1,6 @@
 using AutoMapper;
 using Watchdog.Core.Common.Models.Issue;
 using Watchdog.Core.DAL.Entities;
-using Issue = Watchdog.Core.DAL.Entities.Issue;
 
 namespace Watchdog.Core.BLL.MappingProfiles
 {
@@ -10,13 +9,13 @@ namespace Watchdog.Core.BLL.MappingProfiles
         public IssueProfile()
         {
             CreateMap<IssueMessage, Issue>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore())
-                .ForMember(
-                    dest => dest.ErrorClass,
+                .ForMember(dest => dest.Id, 
+                    opt => opt.Ignore())
+                .ForMember(dest => dest.ErrorClass,
                     opt => opt.MapFrom(src => src.IssueDetails.ClassName))
                 .ForMember(dest => dest.ErrorMessage,
-                    opt => opt.MapFrom(scr => scr.IssueDetails.ErrorMessage))
-                .ForMember(dest => dest.EventMessages, opt => opt.Ignore());
+                    opt => opt.MapFrom(scr => scr.IssueDetails.ErrorMessage));
+            
             CreateMap<IssueMessage, EventMessage>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.EventId,

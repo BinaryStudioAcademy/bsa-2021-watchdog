@@ -21,7 +21,7 @@ namespace Watchdog.Collector.BLL.Services
             _issueProducer = issueProducer;
         }
         
-        public async Task AddIssueMessageAsync(IssueMessageDto message)
+        public Task AddIssueMessageAsync(IssueMessageDto message)
         {
             var issueMessage = _mapper.Map<IssueMessage>(message);
                 
@@ -30,10 +30,15 @@ namespace Watchdog.Collector.BLL.Services
                 throw new ArgumentException("Error message can't be empty.");
             }
 
+            return WriteNewEventMessage(issueMessage);
+        }
+
+        private async Task WriteNewEventMessage(IssueMessage issueMessage)
+        {
             issueMessage.Id = Guid.NewGuid().ToString();
             
             await _client.IndexDocumentAsync<IssueMessage>(issueMessage);
-
+            
             _issueProducer.ProduceMessage(issueMessage);
         }
     }

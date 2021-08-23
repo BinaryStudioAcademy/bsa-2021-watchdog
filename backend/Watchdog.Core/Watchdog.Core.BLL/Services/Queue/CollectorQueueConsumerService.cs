@@ -45,8 +45,6 @@ namespace Watchdog.Core.BLL.Services.Queue
             var messageString = Encoding.UTF8.GetString(args.Body.Span);
             var issueMessageReceived = JsonConvert.DeserializeObject<IssueMessage>(messageString);
 
-            _consumer.SetAcknowledge(args.DeliveryTag, true);
-
             _logger.LogInformation("Processing issue from collector: {0}, {1}", issueMessageReceived.IssueDetails.ClassName, issueMessageReceived.IssueDetails.ErrorMessage);
 
             //TODO: Change to future value from IssueMessage
@@ -61,6 +59,8 @@ namespace Watchdog.Core.BLL.Services.Queue
             
             var notifyService = scope.ServiceProvider.GetRequiredService<INotifyQueueProducerService>();
             notifyService.NotifyUsers(userIds, issueMessageReceived);
+            
+            _consumer.SetAcknowledge(args.DeliveryTag, true);
         }
 
         public override void Dispose()
