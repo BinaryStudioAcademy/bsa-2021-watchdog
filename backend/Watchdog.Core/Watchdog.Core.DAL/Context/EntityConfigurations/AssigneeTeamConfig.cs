@@ -9,8 +9,7 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
         public void Configure(EntityTypeBuilder<AssigneeTeam> builder)
         {
             builder.Property(a => a.IssueId)
-                   .HasMaxLength(128)
-                   .IsRequired();
+                .IsRequired();
 
             builder.HasOne(a => a.Team)
                    .WithMany(t => t.AssigneeTeams)

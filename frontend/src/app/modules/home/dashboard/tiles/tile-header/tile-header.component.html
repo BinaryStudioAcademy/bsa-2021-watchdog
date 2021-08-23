@@ -1,0 +1,36 @@
+<div class="header">
+    <div class="header-title">
+        <!--    Default title    -->
+        <span *ngIf="!isEditName || !isShownTileMenu">{{tile.name}}</span>
+        <button (click)="toggleNameEditor()" *ngIf="!isEditName && isShownTileMenu"
+                class="p-button-raised p-button-text p-button-plain"
+                icon="pi pi-pencil" pButton></button>
+        <!--    Title When Edit    -->
+        <ng-container *ngIf="isEditName && isShownTileMenu" [formGroup]="formGroup">
+            <input [maxLength]="50" [minLength]="3" [tooltipDisabled]="!formGroup.controls.name.errors"
+                   autofocus class="input-text" formControlName="name"
+                   pInputText pTooltip="At least 3 characters but no more than 50. May contain lowercase
+                   (a-z) and uppercase (A-Z) letters, numbers (0-9), space, point, dashes and underscores"
+                   tooltipPosition="top" type="text">
+            <button (click)="saveNameChanges()"
+                    [disabled]="formGroup.controls.name.invalid || !formGroup.controls.name.dirty"
+                    class="p-button-raised p-button-text p-button-plain" icon="pi pi-save" pButton>
+            </button>
+            <button (click)="toggleNameEditor()"
+                    class="p-button-raised p-button-text p-button-plain" icon="pi pi-times" pButton>
+            </button>
+        </ng-container>
+    </div>
+    <!--    Title Right Buttons    -->
+    <div *ngIf="isShownTileMenu" class="header-right-buttons">
+        <div class="button-delete">
+            <button (click)="deleteTile()" class="p-button-raised p-button-text p-button-plain" icon="pi pi-trash"
+                    pButton></button>
+        </div>
+        <div class="button-settings">
+            <button (click)="editTile()" class="p-button-raised p-button-text p-button-plain"
+                    icon="pi pi-cog"
+                    pButton></button>
+        </div>
+    </div>
+</div>

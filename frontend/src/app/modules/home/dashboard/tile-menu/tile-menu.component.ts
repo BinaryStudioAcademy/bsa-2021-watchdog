@@ -70,7 +70,7 @@ export class TileMenuComponent implements OnInit {
         this.menuListItems = [
             {
                 id: TileType.TopActiveIssues.toString(),
-                label: 'Top Active Issue',
+                label: 'Top Active Issues',
                 icon: 'pi pi-fw pi-ban',
                 command: event => this.listItemSelected(event.item)
             }];

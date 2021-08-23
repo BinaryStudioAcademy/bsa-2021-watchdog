@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RabbitMQ.Client.Events;
 using System;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -46,22 +45,22 @@ namespace Watchdog.Core.BLL.Services.Queue
             var messageString = Encoding.UTF8.GetString(args.Body.Span);
             var issueMessageReceived = JsonConvert.DeserializeObject<IssueMessage>(messageString);
 
-            _consumer.SetAcknowledge(args.DeliveryTag, true);
-
             _logger.LogInformation("Processing issue from collector: {0}, {1}", issueMessageReceived.IssueDetails.ClassName, issueMessageReceived.IssueDetails.ErrorMessage);
 
             //TODO: Change to future value from IssueMessage
-            int applicationId = 36;
+            int applicationId = 16;
 
             using var scope = _provider.CreateScope();
             var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
             var userIds = await userService.GetUserUIdsByApplicationIdAsync(applicationId);
 
             var issueService = scope.ServiceProvider.GetRequiredService<IIssueService>();
-            var issueMessage = (await issueService.GetIssuesMessagesByParentIdAsync(issueMessageReceived.IssueId)).OrderByDescending(i => i.OccurredOn).FirstOrDefault();
-
+            issueMessageReceived.IssueId = await issueService.AddIssueEventAsync(issueMessageReceived);
+            
             var notifyService = scope.ServiceProvider.GetRequiredService<INotifyQueueProducerService>();
-            notifyService.NotifyUsers(userIds, issueMessage);
+            notifyService.NotifyUsers(userIds, issueMessageReceived);
+            
+            _consumer.SetAcknowledge(args.DeliveryTag, true);
         }
 
         public override void Dispose()

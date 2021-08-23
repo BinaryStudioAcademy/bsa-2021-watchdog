@@ -15,6 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Watchdog.AspNetCore\Watchdog.AspNetCore.csproj" />
 		<ProjectReference Include="..\Watchdog.Notifier.BLL\Watchdog.Notifier.BLL.csproj" />
 	</ItemGroup>
 
