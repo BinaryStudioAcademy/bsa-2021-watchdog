@@ -20,6 +20,10 @@ namespace Watchdog.Core.DAL.Context
         public DbSet<Platform> Platforms { get; private set; }
 
         public DbSet<Role> Roles { get; private set; }
+        
+        public DbSet<Issue> Issues { get; set; }
+
+        public DbSet<EventMessage> EventMessages { get; set; }
 
         public DbSet<Team> Teams { get; private set; }
 

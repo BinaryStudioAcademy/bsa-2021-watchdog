@@ -92,7 +92,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     }
 
     toAssing: Assignee;
-    issueId: string;
+    issueId: number;
     private saveAssing: Assignee;
     openAssign(issue: IssueInfo) {
         this.toAssing = issue.assignee;

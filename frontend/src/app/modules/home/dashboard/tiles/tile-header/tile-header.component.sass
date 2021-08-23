@@ -1,0 +1,55 @@
+@import src/styles/variables
+@import src/styles/mixins
+
+.header
+    display: flex
+    flex-direction: row
+    align-items: center
+    justify-content: space-between
+    padding: 10px 16px
+    border-bottom: 1px solid $border-color
+    line-height: 21px
+
+    .header-title
+        width: 90%
+        white-space: nowrap
+        height: $input-height
+        display: flex
+        align-items: center
+
+
+        span
+            font-weight: 500
+            text-align: center
+
+
+        button
+            @extend %title-button-special
+            margin-left: 8px
+
+        input
+            width: 70%
+            height: $input-height
+
+
+    .header-right-buttons
+        display: flex
+        flex-direction: row
+        justify-content: center
+        align-items: center
+
+        .button-settings
+            button
+                @extend %title-button-special
+
+        .button-delete
+            margin-right: 8px
+
+            button
+                @extend %title-button-special
+
+%title-button-special
+    box-shadow: none
+    height: 20px
+    width: 20px
+    margin-bottom: 1px

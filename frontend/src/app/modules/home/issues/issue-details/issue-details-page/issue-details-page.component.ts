@@ -6,7 +6,6 @@ import { IssueService } from '@core/services/issue.service';
 
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { IssueMessage } from '@shared/models/issue/issue-message';
-import { switchMap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-issue-details-page',
@@ -14,9 +13,7 @@ import { switchMap } from 'rxjs/operators';
     styleUrls: ['./issue-details-page.component.sass']
 })
 export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
-    issueMessage: IssueMessage = undefined;
-    id: string;
-    requiredIdLength = 20;
+    issueMessage: IssueMessage;
     activeTabIndex: number = 0;
     isNotFound: boolean = false;
 
@@ -31,26 +28,16 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.id = this.activatedRoute.snapshot.params.id;
-        this.activatedRoute.paramMap.pipe(
-            switchMap(params => params.getAll('id'))
-        ).subscribe(data => {
-            this.activeTabIndex = 0;
-            this.id = data;
-            if (!this.isValidId(this.id)) {
-                this.spinnerService.hide();
-                this.isNotFound = true;
-                this.toastNotification.error('Issue id is not valid');
-                this.issueMessage = undefined;
-                return;
-            }
-            this.getIssueMessage(this.id);
-        });
+        this.activatedRoute.paramMap.pipe(this.untilThis)
+            .subscribe(param => {
+                this.activeTabIndex = 0;
+                this.getIssueMessage(+param.get('issueId'), param.get('eventId'));
+            });
     }
 
-    getIssueMessage(id: string) {
+    getIssueMessage(issueId: number, eventId: string) {
         this.spinnerService.show(true);
-        this.issueService.getIssueMessage(id)
+        this.issueService.getIssueMessage(issueId, eventId)
             .pipe(this.untilThis)
             .subscribe(response => {
                 this.spinnerService.hide();
@@ -60,9 +47,5 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
                 this.isNotFound = true;
                 this.toastNotification.error(errorResponse);
             });
-    }
-
-    isValidId(id: string): boolean {
-        return id.length === this.requiredIdLength;
     }
 }
