@@ -23,7 +23,6 @@ export class ProjectGeneralComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-
         this.initValidators();
         this.platformService.getPlatforms().pipe(this.untilThis)
             .subscribe(platform => {

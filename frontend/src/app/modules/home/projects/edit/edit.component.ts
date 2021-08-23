@@ -77,18 +77,18 @@ export class EditComponent extends BaseComponent implements OnInit {
 
     updateProjectFunction() {
         const data = { ...this.editForm.value };
-        var project;
-        if ( data.alertCategory !== 3) {
-                project = {
+        let project;
+        if (data.alertCategory !== 3) {
+            project = {
                 name: this.editForm.controls.name.value,
                 description: this.editForm.controls.description.value,
                 platformId: this.editForm.controls.platformId.value,
                 alertSettings: { alertCategory: this.editForm.controls.alertCategory.value,
                     specialAlertSetting: null
                 }
-            }
+            };
         } else {
-                project = {
+            project = {
                 name: this.editForm.controls.name.value,
                 description: this.editForm.controls.description.value,
                 platformId: this.editForm.controls.platformId.value,
@@ -98,7 +98,7 @@ export class EditComponent extends BaseComponent implements OnInit {
                         alertTimeInterval: this.editForm.controls.alertTimeInterval.value
                     }
                 }
-            }
+            };
         }
         if (this.editForm.valid) {
             this.spinnerService.show(true);
@@ -113,7 +113,6 @@ export class EditComponent extends BaseComponent implements OnInit {
                     this.toastNotifications.error(error);
                     this.spinnerService.hide();
                 });
-
         } else {
             this.toastNotifications.error('Form is not valid', 'Error');
         }
@@ -142,5 +141,4 @@ export class EditComponent extends BaseComponent implements OnInit {
             }
         });
     }
-
 }

@@ -17,7 +17,6 @@ export class ProjectAlertComponent extends BaseComponent implements OnInit {
     @Input() editForm: FormGroup;
     @Input() project: Project;
 
-
     alertCategoryValue = this.alertData.alertCategories;
     specialAlertTypeValue = this.alertData.alertTypes;
     alertTimeIntervalValue = this.alertData.alertTimeIntervals;
@@ -32,24 +31,47 @@ export class ProjectAlertComponent extends BaseComponent implements OnInit {
         if (this.project.alertSettings.alertCategory !== 3) {
             this.initAlertData();
             this.addValidationWithDefaultData();
-
         } else {
             this.addValidation();
         }
     }
 
     addValidation() {
-        this.editForm.addControl('alertCategory', new FormControl(this.project.alertSettings.alertCategory, Validators.required));
-        this.editForm.addControl('alertsCount', new FormControl(this.project.alertSettings.specialAlertSetting.alertsCount, Validators.required));
-        this.editForm.addControl('specialAlertType', new FormControl(this.project.alertSettings.specialAlertSetting.specialAlertType, Validators.required));
-        this.editForm.addControl('alertTimeInterval', new FormControl(this.project.alertSettings.specialAlertSetting.alertTimeInterval, Validators.required));
+        this.editForm.addControl('alertCategory', new FormControl(
+            this.project.alertSettings.alertCategory,
+            Validators.required
+        ));
+        this.editForm.addControl('alertsCount', new FormControl(
+            this.project.alertSettings.specialAlertSetting.alertsCount,
+            Validators.required
+        ));
+        this.editForm.addControl('specialAlertType', new FormControl(
+            this.project.alertSettings.specialAlertSetting.specialAlertType,
+            Validators.required
+        ));
+        this.editForm.addControl('alertTimeInterval', new FormControl(
+            this.project.alertSettings.specialAlertSetting.alertTimeInterval,
+            Validators.required
+        ));
     }
 
     addValidationWithDefaultData() {
-        this.editForm.addControl('alertCategory', new FormControl(this.project.alertSettings.alertCategory, Validators.required));
-        this.editForm.addControl('alertsCount', new FormControl(this.alertSetting.specialAlertSetting.alertsCount, Validators.required));
-        this.editForm.addControl('specialAlertType', new FormControl(this.alertSetting.specialAlertSetting.specialAlertType, Validators.required));
-        this.editForm.addControl('alertTimeInterval', new FormControl(this.alertSetting.specialAlertSetting.alertTimeInterval, Validators.required));
+        this.editForm.addControl('alertCategory', new FormControl(
+            this.project.alertSettings.alertCategory,
+            Validators.required
+        ));
+        this.editForm.addControl('alertsCount', new FormControl(
+            this.alertSetting.specialAlertSetting.alertsCount,
+            Validators.required
+        ));
+        this.editForm.addControl('specialAlertType', new FormControl(
+            this.alertSetting.specialAlertSetting.specialAlertType,
+            Validators.required
+        ));
+        this.editForm.addControl('alertTimeInterval', new FormControl(
+            this.alertSetting.specialAlertSetting.alertTimeInterval,
+            Validators.required
+        ));
     }
 
     private initAlertData() {
