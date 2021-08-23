@@ -41,7 +41,7 @@ export class GeneralSettingsComponent extends BaseComponent implements OnInit {
                 Validators.pattern(regexs.organizationSlag),
             ],
             asyncValidators: [
-                uniqueSlugValidator(this.organization, this.organizationService)
+                uniqueSlugValidator(this.organization.organizationSlug, this.organizationService)
             ]
         }));
     }

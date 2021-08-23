@@ -1,0 +1,58 @@
+<p-dialog [(visible)]="display" appendTo="body" [modal]="true" styleClass="new-org">
+    <ng-template pTemplate="header">
+        <span class="header">Create organization</span>
+    </ng-template>
+    <form [formGroup]="formGroup" method="POST">
+        <div class="reg-block">
+            <div class="input-block">
+                <span class="p-float-label">
+                    <input id="float-input-comp-name" type="text" formControlName="organizationName" name="comp-name"
+                        pInputText>
+                    <label for="float-input-comp-name">Organization name</label>
+                </span>
+                <div *ngIf="formGroup.controls.organizationName.touched && formGroup.controls.organizationName.invalid"
+                    class="validation">
+                    <small *ngIf="formGroup.controls.organizationName.errors.required">Сan not be empty</small>
+                    <small *ngIf="formGroup.controls.organizationName.value?.length < 3">Min length 3</small>
+                    <small *ngIf="formGroup.controls.organizationName.value?.length > 50">Max length 50</small>
+                    <small *ngIf="formGroup.controls.organizationName.hasError('pattern')">May contain letters, numbers,
+                        space, special character: !#$%&‘*+—/=?^_`&#123;|&#125;~</small>
+                </div>
+            </div>
+            <div class="input-block">
+                <span class="p-float-label p-input-icon-right">
+                    <i *ngIf="organizationSlug?.pending" class="pi pi-spin pi-spinner"></i>
+                    <input id="float-input-comp-slug" type="text" formControlName="organizationSlug" name="comp-slug"
+                        pInputText>
+                    <label for="float-input-comp-slug">Organization slug</label>
+                </span>
+                <div *ngIf="formGroup.controls.organizationSlug.touched && formGroup.controls.organizationSlug.invalid"
+                    class="validation">
+                    <small *ngIf="formGroup.controls.organizationSlug.errors.required">Сan not be empty</small>
+                    <small *ngIf="formGroup.controls.organizationSlug.value?.length < 3">Min length 3</small>
+                    <small *ngIf="formGroup.controls.organizationSlug.value?.length > 50">Max length 50</small>
+                    <small *ngIf="formGroup.controls.organizationSlug.errors?.notUnique">Slug is not unique</small>
+                    <small *ngIf="formGroup.controls.organizationSlug.hasError('pattern')">May contain letters, numbers,
+                        space, dashes and underscores</small>
+                </div>
+            </div>
+        </div>
+    </form>
+    <ng-template pTemplate="footer">
+        <button
+            pButton
+            type="button"
+            label="Cancel"
+            class="p-button-secondary p-button-outlined"
+            (click)="display=false">
+        </button>
+        <button
+            pButton
+            type="submit"
+            label="Create"
+            class="p-button-primary p-button-outlined"
+            [disabled]="!formGroup.valid"
+            (click)="createOrganization()">
+        </button>
+    </ng-template>
+</p-dialog>

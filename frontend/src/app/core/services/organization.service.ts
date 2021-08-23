@@ -1,3 +1,4 @@
+import { NewOrganization } from '../../shared/models/organization/new-organization';
 import { CoreHttpService } from '@core/services/core-http.service';
 import { OrganizationSettings } from '@shared/models/organization/organization-settings';
 import { Observable, of } from 'rxjs';
@@ -21,14 +22,17 @@ export class OrganizationService {
 
     clearOrganization() {
         OrganizationService.organization = null;
+        localStorage.removeItem('currentOrganizationId');
     }
 
     getCurrentOrganization(id: number) {
         if (!OrganizationService.organization) {
             return this.getOrganizationsByUserId(id)
                 .pipe(
-                    tap(orgs => {
-                        [OrganizationService.organization] = orgs;
+                    tap(organizations => {
+                        const currentOrganizationId = parseInt(localStorage.getItem('currentOrganizationId'), 10);
+                        const organization = organizations.find(o => o.id === currentOrganizationId) ?? organizations[0];
+                        this.setCurrentOrganization(organization);
                     }),
                     map(() => OrganizationService.organization)
                 );
@@ -37,6 +41,7 @@ export class OrganizationService {
     }
 
     setCurrentOrganization(organization: Organization) {
+        localStorage.setItem('currentOrganizationId', organization.id.toString());
         OrganizationService.organization = organization;
     }
 
@@ -60,7 +65,7 @@ export class OrganizationService {
         return this.httpService.getRequest<Organization>(`${this.apiPrefix}/${id}`);
     }
 
-    createOrganization(organization: Organization) {
+    createOrganization(organization: NewOrganization) {
         return this.httpService.postRequest<Organization>(this.apiPrefix, organization);
     }
 
