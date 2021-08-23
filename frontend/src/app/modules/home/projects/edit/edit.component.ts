@@ -7,13 +7,15 @@ import { ConfirmWindowService } from '@core/services/confirm-window.service';
 import { ProjectService } from '@core/services/project.service';
 import { SpinnerService } from '@core/services/spinner.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
+import { AlertCategory } from '@shared/models/alert-settings/alert-category';
 import { AlertSettings } from '@shared/models/alert-settings/alert-settings';
+import { SpecialAlertSetting } from '@shared/models/alert-settings/special-alert-setting';
 import { Organization } from '@shared/models/organization/organization';
 import { Platform } from '@shared/models/platforms/platform';
 import { Project } from '@shared/models/projects/project';
 import { UpdateProject } from '@shared/models/projects/update-project';
 import { User } from '@shared/models/user/user';
-import { MenuItem, PrimeIcons } from 'primeng/api';
+import { PrimeIcons } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { switchMap } from 'rxjs/operators';
 import { Data } from '../data';
@@ -27,18 +29,11 @@ import { Data } from '../data';
 export class EditComponent extends BaseComponent implements OnInit {
     user: User;
     organization: Organization;
-    platforms = {
-        platformTabItems: [] as MenuItem[],
-        activePlatformTabItem: {} as MenuItem,
-        viewPlatformCards: [] as Platform[],
-        platformCards: [] as Platform[]
-    };
     alertSetting = {} as AlertSettings;
     editForm: FormGroup = new FormGroup({});
+    editFormAlert: FormGroup = new FormGroup({});
     project: Project;
-    updateProject = {} as UpdateProject;
     id: string;
-    activeTabIndex: number = 0;
     dropPlatform: Platform[];
 
     constructor(
@@ -59,15 +54,12 @@ export class EditComponent extends BaseComponent implements OnInit {
         this.activatedRoute.paramMap.pipe(
             switchMap(params => params.getAll('id'))
         ).subscribe(data => {
-            this.activeTabIndex = 0;
             this.id = data;
             this.user = this.authService.getUser();
-
             this.authService.getOrganization()
                 .subscribe(organization => {
                     this.organization = organization;
                 });
-
             this.projectService.getProjectById(this.id).pipe(this.untilThis)
                 .subscribe(project => {
                     this.project = project;
@@ -75,31 +67,19 @@ export class EditComponent extends BaseComponent implements OnInit {
         });
     }
 
+    alertFormatting() {
+        const alert: AlertSettings = { ...this.editFormAlert.value };
+        const specialAlert: SpecialAlertSetting = { ...this.editFormAlert.value };
+        this.alertSetting = {
+            alertCategory: alert.alertCategory,
+            specialAlertSetting: alert.alertCategory === AlertCategory.Special ? specialAlert : null
+        };
+    }
+
     updateProjectFunction() {
-        const data = { ...this.editForm.value };
-        let project;
-        if (data.alertCategory !== 3) {
-            project = {
-                name: this.editForm.controls.name.value,
-                description: this.editForm.controls.description.value,
-                platformId: this.editForm.controls.platformId.value,
-                alertSettings: { alertCategory: this.editForm.controls.alertCategory.value,
-                    specialAlertSetting: null
-                }
-            };
-        } else {
-            project = {
-                name: this.editForm.controls.name.value,
-                description: this.editForm.controls.description.value,
-                platformId: this.editForm.controls.platformId.value,
-                alertSettings: { alertCategory: this.editForm.controls.alertCategory.value,
-                    specialAlertSetting: { alertsCount: this.editForm.controls.alertsCount.value,
-                        specialAlertType: this.editForm.controls.specialAlertType.value,
-                        alertTimeInterval: this.editForm.controls.alertTimeInterval.value
-                    }
-                }
-            };
-        }
+        this.alertFormatting();
+        const project: UpdateProject = { ...this.editForm.value, alertSettings: this.alertSetting };
+
         if (this.editForm.valid) {
             this.spinnerService.show(true);
             this.projectService.updateProject(this.id, project)

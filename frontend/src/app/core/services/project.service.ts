@@ -25,8 +25,8 @@ export class ProjectService {
         return this.httpService.getRequest<Project>(`${this.apiPrefix}/${id}`);
     }
 
-    updateProject(id: number | string, updateProject: UpdateProject): Observable<Project> {
-        return this.httpService.putRequest<Project>(`${this.apiPrefix}/${id}`, updateProject);
+    updateProject(id: number | string, updateProject: UpdateProject): Observable<UpdateProject> {
+        return this.httpService.putRequest<UpdateProject>(`${this.apiPrefix}/${id}`, updateProject);
     }
 
     removeProject(id: number | string) {

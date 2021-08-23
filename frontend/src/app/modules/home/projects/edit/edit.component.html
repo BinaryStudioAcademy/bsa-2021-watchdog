@@ -1,4 +1,4 @@
-<div class="title"><button routerLink="../" tooltipPosition="bottom" pTooltip="Back to Projects" pButton pRipple
+<div class="title"><button routerLink="../../" tooltipPosition="bottom" pTooltip="Back to Projects" pButton pRipple
     icon="pi pi-chevron-left " class="p-button-outlined back-button"></button>{{project?.name}}
 <div class="header-buttons" >
     <div class="buttons-container">
@@ -22,7 +22,7 @@
             <span>Alert</span>
         </div>
     </ng-template>
-    <app-project-alert *ngIf="project" [editForm]="editForm" [project]="project"></app-project-alert>
+    <app-project-alert *ngIf="project" [editFormAlert]="editFormAlert" [project]="project"></app-project-alert>
 </p-tabPanel>
 </p-tabView>
 

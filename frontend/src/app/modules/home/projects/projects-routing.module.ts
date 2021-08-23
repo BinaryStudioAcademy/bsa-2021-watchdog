@@ -11,11 +11,8 @@ const routes: Routes = [{
     path: 'create',
     component: CreateProjectComponent
 }, {
-    path: ':id',
+    path: 'edit/:id',
     component: EditComponent
-}, {
-    path: '',
-    redirectTo: 'projects'
 }];
 
 @NgModule({

@@ -4,6 +4,7 @@ import { BaseComponent } from '@core/components/base/base.component';
 import { AlertSettings } from '@shared/models/alert-settings/alert-settings';
 import { Project } from '@shared/models/projects/project';
 import { DialogService } from 'primeng/dynamicdialog';
+import { AlertCategory } from '@shared/models/alert-settings/alert-category';
 import { Data } from '../../data';
 
 @Component({
@@ -14,12 +15,13 @@ import { Data } from '../../data';
 })
 export class ProjectAlertComponent extends BaseComponent implements OnInit {
     @Input() alertSetting = {} as AlertSettings;
-    @Input() editForm: FormGroup;
+    @Input() editFormAlert: FormGroup = new FormGroup({});
     @Input() project: Project;
 
     alertCategoryValue = this.alertData.alertCategories;
     specialAlertTypeValue = this.alertData.alertTypes;
     alertTimeIntervalValue = this.alertData.alertTimeIntervals;
+    specialTypes = AlertCategory.Special;
 
     constructor(
         public alertData: Data
@@ -28,7 +30,7 @@ export class ProjectAlertComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (this.project.alertSettings.alertCategory !== 3) {
+        if (this.project.alertSettings.alertCategory !== this.specialTypes) {
             this.initAlertData();
             this.addValidationWithDefaultData();
         } else {
@@ -37,38 +39,38 @@ export class ProjectAlertComponent extends BaseComponent implements OnInit {
     }
 
     addValidation() {
-        this.editForm.addControl('alertCategory', new FormControl(
+        this.editFormAlert.addControl('alertCategory', new FormControl(
             this.project.alertSettings.alertCategory,
             Validators.required
         ));
-        this.editForm.addControl('alertsCount', new FormControl(
+        this.editFormAlert.addControl('alertsCount', new FormControl(
             this.project.alertSettings.specialAlertSetting.alertsCount,
             Validators.required
         ));
-        this.editForm.addControl('specialAlertType', new FormControl(
+        this.editFormAlert.addControl('specialAlertType', new FormControl(
             this.project.alertSettings.specialAlertSetting.specialAlertType,
             Validators.required
         ));
-        this.editForm.addControl('alertTimeInterval', new FormControl(
+        this.editFormAlert.addControl('alertTimeInterval', new FormControl(
             this.project.alertSettings.specialAlertSetting.alertTimeInterval,
             Validators.required
         ));
     }
 
     addValidationWithDefaultData() {
-        this.editForm.addControl('alertCategory', new FormControl(
+        this.editFormAlert.addControl('alertCategory', new FormControl(
             this.project.alertSettings.alertCategory,
             Validators.required
         ));
-        this.editForm.addControl('alertsCount', new FormControl(
+        this.editFormAlert.addControl('alertsCount', new FormControl(
             this.alertSetting.specialAlertSetting.alertsCount,
             Validators.required
         ));
-        this.editForm.addControl('specialAlertType', new FormControl(
+        this.editFormAlert.addControl('specialAlertType', new FormControl(
             this.alertSetting.specialAlertSetting.specialAlertType,
             Validators.required
         ));
-        this.editForm.addControl('alertTimeInterval', new FormControl(
+        this.editFormAlert.addControl('alertTimeInterval', new FormControl(
             this.alertSetting.specialAlertSetting.alertTimeInterval,
             Validators.required
         ));
@@ -83,11 +85,11 @@ export class ProjectAlertComponent extends BaseComponent implements OnInit {
         };
     }
 
-    get alertCategory() { return this.editForm.controls.alertCategory; }
+    get alertCategory() { return this.editFormAlert.controls.alertCategory; }
 
-    get alertsCount() { return this.editForm.controls.alertsCount; }
+    get alertsCount() { return this.editFormAlert.controls.alertsCount; }
 
-    get specialAlertType() { return this.editForm.controls.specialAlertType; }
+    get specialAlertType() { return this.editFormAlert.controls.specialAlertType; }
 
-    get alertTimeInterval() { return this.editForm.controls.alertTimeInterval; }
+    get alertTimeInterval() { return this.editFormAlert.controls.alertTimeInterval; }
 }
