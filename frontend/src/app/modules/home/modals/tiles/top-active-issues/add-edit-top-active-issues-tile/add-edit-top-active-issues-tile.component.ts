@@ -13,6 +13,7 @@ import { Tile } from '@shared/models/tile/tile';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { regexs } from '@shared/constants/regexs';
+import { convertJsonToTileSettings, convertTileSettingsToJson } from '@core/utils/tile.utils';
 
 @Component({
     selector: 'app-add-edit-top-active-issues-tile',
@@ -78,7 +79,7 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
         this.headerTitle = `Editing tile ${this.tileToEdit.name}`;
         this.submitButtonText = 'Update';
 
-        const tileSettings = this.tileService.convertJsonToTileSettings(this.tileToEdit.settings, TileType.TopActiveIssues);
+        const tileSettings = convertJsonToTileSettings(this.tileToEdit.settings, TileType.TopActiveIssues);
         this.formGroup = new FormGroup({
             sourceProjects: new FormControl(
                 tileSettings.sourceProjects,
@@ -179,7 +180,7 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
             type: TileType.TopActiveIssues,
             createdBy: this.authenticationService.getUser().id,
             dashboardId: this.currentDashboardId,
-            settings: this.tileService.convertTileSettingsToJson(<TopActiveIssuesSettings>{
+            settings: convertTileSettingsToJson(<TopActiveIssuesSettings>{
                 issuesCount: values.issuesCount,
                 sourceProjects: values.sourceProjects,
                 dateRange: values.dateRange
@@ -192,7 +193,7 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
         const updatedTile: UpdateTile = {
             id: this.tileToEdit.id,
             name: values.name,
-            settings: this.tileService.convertTileSettingsToJson(<TopActiveIssuesSettings>{
+            settings: convertTileSettingsToJson(<TopActiveIssuesSettings>{
                 issuesCount: values.issuesCount,
                 sourceProjects: values.sourceProjects,
                 dateRange: values.dateRange

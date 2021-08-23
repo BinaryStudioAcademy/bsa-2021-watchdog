@@ -10,6 +10,7 @@ import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { IssueInfo } from '@shared/models/issue/issue-info';
 import { IssueService } from '@core/services/issue.service';
+import { convertJsonToTileSettings, convertTileDateRangeTypeToMs } from '@core/utils/tile.utils';
 
 @Component({
     selector: 'app-top-active-issues-tile[tile][isShownEditTileMenu][userProjects]',
@@ -65,7 +66,7 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
     }
 
     private getTileSettings() {
-        this.tileSettings = this.tileService.convertJsonToTileSettings(this.tile.settings, TileType.TopActiveIssues);
+        this.tileSettings = convertJsonToTileSettings(this.tile.settings, TileType.TopActiveIssues);
     }
 
     private applyProjectSettings() {
@@ -87,7 +88,7 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
 
         this.displayedIssues = [...this.cashedIssuesInfos]
             .filter(info => new Date(info.newest.occurredOn).getTime() >= Date.now()
-                - this.tileService.convertTileDateRangeTypeToMs(this.tileSettings.dateRange)) // date range sort
+                - convertTileDateRangeTypeToMs(this.tileSettings.dateRange)) // date range sort
             .sort((a, b) => b.eventsCount - a.eventsCount) // top sort
             .slice(0, this.tileSettings.issuesCount); // issues count
     }

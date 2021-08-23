@@ -77,7 +77,7 @@ export class TileHeaderComponent extends BaseComponent implements OnInit {
     deleteTile() {
         this.confirmWindowService.confirm({
             title: 'Delete tile?',
-            message: `Are you sure you wish to delete the ${this.tile.name} tile?`,
+            message: `Are you sure you wish to delete the <strong>${this.tile.name}</strong> tile?`,
             acceptButton: { class: 'p-button-primary p-button-outlined' },
             cancelButton: { class: 'p-button-secondary p-button-outlined' },
             accept: () => this.isDeleting.emit(true),
