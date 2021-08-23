@@ -105,7 +105,12 @@
                             <div class="assignee" (click)="openAssign(issue)">
                                 <p-avatarGroup styleClass="p-mb-3">
                                     <p-avatar *ngIf="getNumberAssignee(issue?.assignee) === 0" icon="pi pi-user" shape="circle"></p-avatar>
-                                    <p-avatar *ngFor="let img of getMembersImages(issue?.assignee)" [image]="img" shape="circle"></p-avatar>
+                                    <p-avatar
+                                        *ngFor="let user of getUsers(issue?.assignee)"
+                                        [image]="user.avatarUrl"
+                                        [label]="user.avatarUrl ? '' : user | userInitials"
+                                        shape="circle">
+                                    </p-avatar>
                                     <p-avatar *ngFor="let label of getTeamsLabels(issue?.assignee)" [label]="label" shape="circle"></p-avatar>
                                     <p-avatar *ngIf="getNumberAssignee(issue?.assignee) > 3" [label]="getNumberExtraAssignee(issue?.assignee)" shape="circle" ></p-avatar>
                                 </p-avatarGroup>

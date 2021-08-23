@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
-using Watchdog.Core.Common.DTO.Registration;
 using Watchdog.Core.Common.DTO.User;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
@@ -19,14 +18,16 @@ namespace Watchdog.Core.BLL.Services
         {
         }
 
-        public async Task<IEnumerable<UserDto>> SearchMembersNotInOrganizationAsync(int orgId, string memberEmail)
+        public async Task<IEnumerable<UserDto>> SearchMembersNotInOrganizationAsync(int orgId, int count, string memberEmail)
         {
             var members = await _context.Users
                 .Include(u => u.Members)
                 .Where(u => u.Email.Contains(memberEmail) && !u.Members.Any(m => m.OrganizationId == orgId))
+                .Take(count)
                 .ToListAsync();
             return _mapper.Map<IEnumerable<UserDto>>(members);
         }
+
         public async Task<UserDto> UpdateUserAsync(int userId, UpdateUserDto updateUserDto)
         {
             var existedUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
@@ -48,8 +49,9 @@ namespace Watchdog.Core.BLL.Services
         public async Task<UserDto> GetUserByUidAsync(string uid)
         {
             var user = await _context.Users
-                .SingleOrDefaultAsync(u => u.Uid == uid);
-            return user is null ? default : _mapper.Map<UserDto>(user);
+                .SingleOrDefaultAsync(u => u.Uid == uid) ?? throw new KeyNotFoundException("User is not found!");
+
+            return _mapper.Map<UserDto>(user);
         }
 
         public async Task<UserDto> CreateUserAsync(NewUserDto userDto)

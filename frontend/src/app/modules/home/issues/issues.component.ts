@@ -9,7 +9,7 @@ import { MemberService } from '@core/services/member.service';
 import { forkJoin } from 'rxjs';
 import { TeamService } from '@core/services/team.service';
 import { Assignee } from '@shared/models/issue/assignee';
-import { count, toImages } from '@core/services/issues.utils';
+import { count, toUsers } from '@core/services/issues.utils';
 import { IssueInfo } from '@shared/models/issue/issue-info';
 import { map } from 'rxjs/operators';
 import { AssigneeOptions } from '@shared/models/issue/assignee-options';
@@ -204,8 +204,8 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         return `+${count(assignee) - this.viewedAssignee}`;
     }
 
-    getMembersImages(assignee: Assignee) {
-        return toImages(assignee.memberIds.slice(0, this.viewedAssignee), this.sharedOptions.members);
+    getUsers(assignee: Assignee) {
+        return toUsers(assignee.memberIds.slice(0, this.viewedAssignee), this.sharedOptions.members);
     }
 
     getTeamsLabels(assignee: Assignee) {

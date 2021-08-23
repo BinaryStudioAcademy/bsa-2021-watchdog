@@ -5,7 +5,11 @@
     </ng-template>
     <div class="panel-list">
         <div class="panel-list-item" *ngFor="let member of team?.members">
-            <p-avatar size="large" shape="circle" [label]="member?.user | userInitials">
+            <p-avatar
+                size="large"
+                [image]="member.user.avatarUrl"
+                [label]="member.user.avatarUrl ? '' : member.user | userInitials"
+                shape="circle">
             </p-avatar>
             <div>
                 <div>{{member?.user.firstName+"

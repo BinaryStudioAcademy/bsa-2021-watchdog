@@ -74,7 +74,7 @@ export class TeamsComponent extends BaseComponent implements OnInit, OnDestroy {
                         })
                         .pipe(this.untilThis)
                         .subscribe(team => {
-                            this.memberInTeams = [team, ...this.memberInTeams];
+                            this.memberInTeams = [...this.memberInTeams, team];
                             this.spinnerService.hide();
                             this.toastService.success('Team successfully created!');
                         }, error => {
@@ -91,7 +91,7 @@ export class TeamsComponent extends BaseComponent implements OnInit, OnDestroy {
             .pipe(this.untilThis)
             .subscribe(leavedTeam => {
                 this.memberInTeams = this.memberInTeams.filter(team => team.id !== leavedTeam.id);
-                this.notMemberInTeams = [leavedTeam, ...this.notMemberInTeams];
+                this.notMemberInTeams = [...this.notMemberInTeams, leavedTeam];
                 this.spinnerService.hide();
             }, error => {
                 this.spinnerService.hide();
@@ -104,7 +104,7 @@ export class TeamsComponent extends BaseComponent implements OnInit, OnDestroy {
         this.teamService.joinTeam(teamId, this.member.id)
             .pipe(this.untilThis)
             .subscribe(joinedTeam => {
-                this.memberInTeams = [joinedTeam, ...this.memberInTeams];
+                this.memberInTeams = [...this.memberInTeams, joinedTeam];
                 this.notMemberInTeams = this.notMemberInTeams.filter(team => team.id !== joinedTeam.id);
                 this.spinnerService.hide();
             }, error => {

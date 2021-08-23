@@ -13,6 +13,7 @@ export class OtherTeamsComponent {
     title: string = 'Other Teams';
     placeholder: string = 'There is no teams, you can join.';
     buttonLabel: string = 'Join team';
+    buttonClass: string = 'p-button-outlined';
 
     sendTeam(teamId: number) {
         this.joinedTeam.next(teamId);

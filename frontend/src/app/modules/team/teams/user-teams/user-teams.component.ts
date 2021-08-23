@@ -13,6 +13,7 @@ export class UserTeamsComponent {
     title: string = 'User Teams';
     placeholder: string = 'There is no teams, you can leave.';
     buttonLabel: string = 'Leave team';
+    buttonClass: string = 'p-button-outlined p-button-danger';
 
     sendTeam(teamId: number) {
         this.leavedTeam.next(teamId);
