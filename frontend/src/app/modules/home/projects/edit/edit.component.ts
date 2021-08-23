@@ -15,7 +15,7 @@ import { UpdateProject } from '@shared/models/projects/update-project';
 import { User } from '@shared/models/user/user';
 import { MenuItem, PrimeIcons } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { switchMap, throwIfEmpty } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { Data } from '../data';
 
 @Component({
@@ -75,10 +75,6 @@ export class EditComponent extends BaseComponent implements OnInit {
         });
     }
 
-    test() {
-
-    }
-
     updateProjectFunction() {
         const data = { ...this.editForm.value };
         var project;
@@ -121,15 +117,6 @@ export class EditComponent extends BaseComponent implements OnInit {
         } else {
             this.toastNotifications.error('Form is not valid', 'Error');
         }
-    }
-
-    tests() {
-        const project: UpdateProject = { ...this.editForm.value };
-        debugger;
-    }
-
-    reset() {
-        this.editForm.reset(this.project);
     }
 
     deleteProject(id: string) {
