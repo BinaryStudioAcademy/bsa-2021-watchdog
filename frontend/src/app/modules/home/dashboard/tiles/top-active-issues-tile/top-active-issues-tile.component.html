@@ -1,49 +1,19 @@
 <div class="container">
-    <div class="header">
-        <div class="header-title">
-            <!--    Default title    -->
-            <span *ngIf="!isEditName || !isShownTileMenu">{{tile.name}}</span>
-            <button (click)="toggleNameEditor()" *ngIf="!isEditName && isShownTileMenu"
-                    class="p-button-raised p-button-text p-button-plain"
-                    icon="pi pi-pencil" pButton></button>
-            <!--    Title When Edit    -->
-            <ng-container *ngIf="isEditName && isShownTileMenu" [formGroup]="formGroup">
-                <input [maxLength]="50" [minLength]="3" [tooltipDisabled]="!formGroup.controls.name.errors"
-                       autofocus class="input-text" formControlName="name"
-                       pInputText pTooltip="At least 3 characters but no more than 50. May contain lowercase
-                   (a-z) and uppercase (A-Z) letters, numbers (0-9), space, point, dashes and underscores"
-                       tooltipPosition="top" type="text">
-                <button (click)="saveNameChanges()"
-                        [disabled]="formGroup.controls.name.invalid || !formGroup.controls.name.dirty"
-                        class="p-button-raised p-button-text p-button-plain" icon="pi pi-save" pButton>
-                </button>
-                <button (click)="toggleNameEditor()"
-                        class="p-button-raised p-button-text p-button-plain" icon="pi pi-times" pButton>
-                </button>
-            </ng-container>
-        </div>
-        <!--    Title Right Buttons    -->
-        <div *ngIf="isShownTileMenu" class="header-right-buttons">
-            <div class="button-delete">
-                <button (click)="deleteTile()" class="p-button-raised p-button-text p-button-plain" icon="pi pi-trash"
-                        pButton></button>
-            </div>
-            <div class="button-settings">
-                <button (click)="editTile()" class="p-button-raised p-button-text p-button-plain"
-                        icon="pi pi-cog"
-                        pButton></button>
-            </div>
-        </div>
-    </div>
+    <app-tile-header (isDeleting)="isDeleting.emit(tile)" (isEditing)="editTile()"
+                     [isShownEditTileMenu]="isShownEditTileMenu" [tile]="tile"></app-tile-header>
     <!--    Issues Table    -->
     <div class="table">
-        <p-table [alwaysShowPaginator]="issuesInfo.length > 5" [pageLinks]="1" [paginator]="true" [rows]="5"
-                 [showJumpToPageDropdown]="true" [showPageLinks]="false" [value]="issuesInfo"
+        <p-table [alwaysShowPaginator]="displayedIssues.length > paginatorRows" [pageLinks]="1" [paginator]="true"
+                 [rows]="paginatorRows" [showJumpToPageDropdown]="true" [showPageLinks]="false"
+                 [value]="displayedIssues"
                  selectionMode="single">
             <!--    Columns Define    -->
             <ng-template pTemplate="header">
                 <tr>
                     <th>Issue</th>
+                    <th pSortableColumn="newest.occurredOn">Last seen
+                        <p-sortIcon field="newest.occurredOn"></p-sortIcon>
+                    </th>
                     <th pSortableColumn="eventsCount">Count
                         <p-sortIcon field="eventsCount"></p-sortIcon>
                     </th>
@@ -53,9 +23,11 @@
             <ng-template let-issue pTemplate="body">
                 <tr>
                     <td>
-                        <span class="issue-name"  routerLink="/home/issues/{{issue.newest.id}}">{{issue.errorClass}}</span>
+                        <span class="issue-name"
+                              routerLink="/home/issues/{{issue.newest.id}}">{{issue.errorClass}}</span>
                         <small appTooltipFullName class="issue-message">{{issue.errorMessage}}</small>
                     </td>
+                    <td>{{issue.newest.occurredOn | timeAgo}}</td>
                     <td>{{issue.eventsCount}}</td>
                 </tr>
             </ng-template>

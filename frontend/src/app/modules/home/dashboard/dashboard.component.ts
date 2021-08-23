@@ -50,7 +50,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         private projectService: ProjectService,
         private issueService: IssueService,
         private toastNotification: ToastNotificationService,
-        private spinnerService: SpinnerService
+        private spinnerService: SpinnerService,
     ) {
         super();
     }

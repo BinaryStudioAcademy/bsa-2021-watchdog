@@ -15,7 +15,7 @@ namespace Watchdog.Collector.API.Controllers
         {
             _elasticService = elasticService;
         }
-            
+        
         [HttpPost]
         public async Task<IActionResult> AddNewIssue(IssueMessageDto message)
         {
