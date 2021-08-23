@@ -10,8 +10,8 @@
         <span class="p-inputgroup-addon search-button"><i class="pi pi-search"></i></span>
         <input type="text" pInputText placeholder="Search" name="search" (input)="table.filterGlobal($event.target.value, 'contains')">
     </div>
-    <p-table #table [value]="memberItems" class="members-table" [rows]="10"
-    [paginator]="memberItems?.length > 10"
+    <p-table #table [value]="memberItems" class="members-table" [rows]="membersPerPage"
+    [paginator]="memberItems?.length > membersPerPage"
     [globalFilterFields]="['member.user.firstName','member.user.email','member.role.name']">
         <ng-template pTemplate="header">
             <tr>

@@ -26,6 +26,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
     isInviting: Boolean;
     user: User;
     roles: Role[];
+    membersPerPage: number = 10;
 
     isEdit: boolean = false;
 
