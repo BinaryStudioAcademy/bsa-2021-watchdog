@@ -1,7 +1,13 @@
+<h1 class="content-title">
+    Create New Project
+    <div class="header-buttons">
+        <button #saveBut pButton pRipple class="p-button-primary p-button-outlined" label="Save" (click)="createProject()"
+            [disabled]="!formGroup.valid || !newProject.platformId"></button>
+    </div>
+</h1>
 <div class="create-project-container">
     <!--    Header    -->
     <div class="header">
-        <h2 class="header-title">Create New Project</h2>
         <p class="header-description">Projects allow you to scope error and transaction events to a specific
             application in your organization.
             For example, you might have separate projects for your API server and frontend client.
@@ -91,7 +97,7 @@
                         No more than 50 characters
                     </small>
                     <small *ngIf="formGroup.controls.projectName.errors.pattern" class="p-error">
-                        May contain lowercase (a-z) and uppercase (A-Z) letters, numbers (0-9), dashes, 
+                        May contain lowercase (a-z) and uppercase (A-Z) letters, numbers (0-9), dashes,
                         underscores and spaces
                     </small>
                 </div>
@@ -141,13 +147,6 @@
                     </small>
                 </div>
 
-            </div>
-            <!--    Submit Button   -->
-            <div class="button-block">
-                <button (click)="createProject()"
-                [disabled]="!formGroup.valid || !newProject.platformId"
-                class="p-button-primary p-button-outlined" label="Create Project"
-                pButton></button>
             </div>
 
         </div>
