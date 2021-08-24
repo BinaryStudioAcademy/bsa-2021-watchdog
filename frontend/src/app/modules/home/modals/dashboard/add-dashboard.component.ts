@@ -1,10 +1,12 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '@core/services/authentication.service';
+import { DashboardService } from '@core/services/dashboard.service';
 import { regexs } from '@shared/constants/regexs';
 import { NewDashboard } from '@shared/models/dashboard/new-dashboard';
 import { Organization } from '@shared/models/organization/organization';
 import { User } from '@shared/models/user/user';
+import { createDashboardValidator } from '@shared/validators/unique-dashboard-name.validator';
 import { SelectItem } from 'primeng/api/selectitem';
 
 @Component({
@@ -17,6 +19,7 @@ export class AddDashboardComponent implements OnInit {
     public formGroup: FormGroup = {} as FormGroup;
     selectedIcon: SelectItem;
     icons: SelectItem[];
+    dashboard = {} as NewDashboard;
     @Output() closeModal = new EventEmitter<void>();
     @Output() save = new EventEmitter<NewDashboard>();
 
@@ -24,7 +27,8 @@ export class AddDashboardComponent implements OnInit {
     organization: Organization;
 
     constructor(
-        private authService: AuthenticationService
+        private authService: AuthenticationService,
+        private dashboardService: DashboardService
     ) {
         this.icons = [
             { label: 'pi pi-chart-bar', value: 'pi-chart-bar' },
@@ -40,13 +44,18 @@ export class AddDashboardComponent implements OnInit {
             });
         this.formGroup = new FormGroup({
             name: new FormControl(
-                '',
-                [
-                    Validators.required,
-                    Validators.minLength(3),
-                    Validators.maxLength(50),
-                    Validators.pattern(regexs.dashboardName)
-                ]
+                '', {
+                    validators: [
+                        Validators.required,
+                        Validators.minLength(3),
+                        Validators.maxLength(50),
+                        Validators.pattern(regexs.dashboardName)
+                    ],
+                    asyncValidators: [
+                        createDashboardValidator(this.dashboard, this.dashboardService)
+                    ]
+                }
+
             )
         });
         this.selectedIcon = { label: 'pi pi-chart-bar', value: 'pi-chart-bar' };
