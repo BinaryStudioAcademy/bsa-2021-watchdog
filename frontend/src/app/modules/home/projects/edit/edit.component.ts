@@ -98,7 +98,7 @@ export class EditComponent extends BaseComponent implements OnInit {
         }
     }
 
-    deleteProject(id: string) {
+    deleteProjectModal() {
         this.confirmService.confirm({
             title: `Remove Project ${this.project.name}`,
             message: 'Are you sure, you want to delete this project?',
@@ -106,8 +106,14 @@ export class EditComponent extends BaseComponent implements OnInit {
             acceptButton: { label: 'Yes', class: 'p-button-outlined p-button-danger' },
             cancelButton: { label: 'No', class: 'p-button-outlined p-button-secondary' },
             accept: () => {
-                this.spinnerService.show(true);
-                this.projectService.removeProject(id)
+                this.deleteProjectFunction();
+            }
+        });
+    }
+
+    deleteProjectFunction() {
+        this.spinnerService.show(true);
+                this.projectService.removeProject(this.project.id)
                     .pipe(this.untilThis)
                     .subscribe(() => {
                         this.spinnerService.hide();
@@ -118,7 +124,5 @@ export class EditComponent extends BaseComponent implements OnInit {
                         this.toastNotifications.error(error);
                         this.spinnerService.hide();
                     });
-            }
-        });
     }
 }
