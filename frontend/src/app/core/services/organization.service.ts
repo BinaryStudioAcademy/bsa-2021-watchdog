@@ -30,7 +30,8 @@ export class OrganizationService {
             return this.getOrganizationsByUserId(id)
                 .pipe(
                     tap(organizations => {
-                        const currentOrganizationId = parseInt(localStorage.getItem('currentOrganizationId'), 10);
+                        const radix = 10;
+                        const currentOrganizationId = parseInt(localStorage.getItem('currentOrganizationId'), radix);
                         const organization = organizations.find(o => o.id === currentOrganizationId) ?? organizations[0];
                         this.setCurrentOrganization(organization);
                     }),

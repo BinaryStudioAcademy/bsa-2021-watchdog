@@ -32,7 +32,10 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<OrganizationDto> CreateOrganizationAsync(NewOrganizationDto organizationDto)
         {
+            var roles = await _context.Roles.ToListAsync();
             var organization = _mapper.Map<Organization>(organizationDto);
+            organization.DefaultRoleId = roles.First(r => r.Name.ToLower() == "viewer").Id;
+            organization.OpenMembership = true;
 
             await _context.Organizations.AddAsync(organization);
 
@@ -42,7 +45,7 @@ namespace Watchdog.Core.BLL.Services
                 CreatedBy = organizationDto.CreatedBy,
                 CreatedAt = DateTime.Now,
                 Organization = organization,
-                RoleId = 1,
+                Role = roles.First(r => r.Name.ToLower() == "owner"),
                 IsAccepted = true
             };
             await _context.Members.AddAsync(member);

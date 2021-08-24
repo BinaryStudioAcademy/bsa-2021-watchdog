@@ -10,29 +10,29 @@
                         pInputText>
                     <label for="float-input-comp-name">Organization name</label>
                 </span>
-                <div *ngIf="formGroup.controls.organizationName.touched && formGroup.controls.organizationName.invalid"
+                <div *ngIf="name.invalid && (name.dirty || name.touched)"
                     class="validation">
-                    <small *ngIf="formGroup.controls.organizationName.errors.required">Сan not be empty</small>
-                    <small *ngIf="formGroup.controls.organizationName.value?.length < 3">Min length 3</small>
-                    <small *ngIf="formGroup.controls.organizationName.value?.length > 50">Max length 50</small>
-                    <small *ngIf="formGroup.controls.organizationName.hasError('pattern')">May contain letters, numbers,
+                    <small *ngIf="name.errors.required">Сan not be empty</small>
+                    <small *ngIf="name.value?.length < 3">Min length 3</small>
+                    <small *ngIf="name.value?.length > 50">Max length 50</small>
+                    <small *ngIf="name.hasError('pattern')">May contain letters, numbers,
                         space, special character: !#$%&‘*+—/=?^_`&#123;|&#125;~</small>
                 </div>
             </div>
             <div class="input-block">
                 <span class="p-float-label p-input-icon-right">
-                    <i *ngIf="organizationSlug?.pending" class="pi pi-spin pi-spinner"></i>
+                    <i *ngIf="slug?.pending" class="pi pi-spin pi-spinner"></i>
                     <input id="float-input-comp-slug" type="text" formControlName="organizationSlug" name="comp-slug"
                         pInputText>
                     <label for="float-input-comp-slug">Organization slug</label>
                 </span>
-                <div *ngIf="formGroup.controls.organizationSlug.touched && formGroup.controls.organizationSlug.invalid"
+                <div *ngIf="slug.invalid && (slug.dirty || slug.touched)"
                     class="validation">
-                    <small *ngIf="formGroup.controls.organizationSlug.errors.required">Сan not be empty</small>
-                    <small *ngIf="formGroup.controls.organizationSlug.value?.length < 3">Min length 3</small>
-                    <small *ngIf="formGroup.controls.organizationSlug.value?.length > 50">Max length 50</small>
-                    <small *ngIf="formGroup.controls.organizationSlug.errors?.notUnique">Slug is not unique</small>
-                    <small *ngIf="formGroup.controls.organizationSlug.hasError('pattern')">May contain letters, numbers,
+                    <small *ngIf="slug.errors.required">Сan not be empty</small>
+                    <small *ngIf="slug.value?.length < 3">Min length 3</small>
+                    <small *ngIf="slug.value?.length > 50">Max length 50</small>
+                    <small *ngIf="slug.errors?.notUnique">Slug is not unique</small>
+                    <small *ngIf="slug.hasError('pattern')">May contain letters, numbers,
                         space, dashes and underscores</small>
                 </div>
             </div>

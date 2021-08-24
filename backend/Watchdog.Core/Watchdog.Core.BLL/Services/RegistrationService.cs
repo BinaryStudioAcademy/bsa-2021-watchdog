@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Organization;
@@ -24,8 +25,7 @@ namespace Watchdog.Core.BLL.Services
             if (await _context.Users.AnyAsync(u => u.Email == fullRegistrationDto.User.Email))
                 throw new InvalidOperationException("Such email alreaby exists");
             user.RegisteredAt = DateTime.Now;
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            await _context.Users.AddAsync(user);
 
             return await CreateOrganizationAsync(fullRegistrationDto.Organization, user);
         }
@@ -35,29 +35,30 @@ namespace Watchdog.Core.BLL.Services
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == partialRegistrationDto.UserId);
             user.RegisteredAt = DateTime.Now;
             _context.Users.Update(user);
-            await _context.SaveChangesAsync();
 
             return await CreateOrganizationAsync(partialRegistrationDto.Organization, user);
         }
 
         private async Task<UserDto> CreateOrganizationAsync(RegOrganizationDto regOrganization, User user)
         {
+            var roles = await _context.Roles.ToListAsync();
             var organization = _mapper.Map<Organization>(regOrganization);
-            organization.CreatedBy = user.Id;
+            organization.User = user;
             organization.CreatedAt = DateTime.Now;
-            _context.Organizations.Add(organization);
-            await _context.SaveChangesAsync();
+            organization.DefaultRoleId = roles.First(r => r.Name.ToLower() == "viewer").Id;
+            organization.OpenMembership = true;
+            await _context.Organizations.AddAsync(organization);
 
             var member = new Member
             {
-                UserId = user.Id,
-                CreatedBy = user.Id,
+                User = user,
+                CreatedByUser = user,
                 CreatedAt = DateTime.Now,
-                OrganizationId = organization.Id,
-                RoleId = 1,
+                Organization = organization,
+                Role = roles.First(r => r.Name.ToLower() == "owner"),
                 IsAccepted = true
             };
-            _context.Members.Add(member);
+            await _context.Members.AddAsync(member);
             await _context.SaveChangesAsync();
 
             return _mapper.Map<UserDto>(user);

@@ -68,14 +68,13 @@ export class CreateOrganizationComponent extends BaseComponent implements OnInit
         });
     }
 
-    get organizationSlug() { return this.formGroup.controls.organizationSlug; }
+    get slug() { return this.formGroup.controls.organizationSlug; }
+    get name() { return this.formGroup.controls.organizationName; }
 
     createOrganization() {
         const newOrganization: NewOrganization = {
             name: this.formGroup.controls.organizationName.value,
             organizationSlug: this.formGroup.controls.organizationSlug.value,
-            openMembership: true,
-            defaultRoleId: 3,
             createdBy: this.user.id
         };
         this.organizationService.createOrganization(newOrganization)

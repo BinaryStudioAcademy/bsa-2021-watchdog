@@ -6,8 +6,8 @@ import { NewOrganizationsWithSlug } from '@shared/models/organization/new-organi
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { regexs } from '@shared/constants/regexs';
-import { RegOrganizationDto } from '../DTO/regOrganizationDto';
-import { NewUserDto } from '../DTO/newUserDto';
+import { RegOrganizationDto } from '../DTO/reg-organization-dto';
+import { NewUserDto } from '../DTO/new-user-dto';
 import { OrganizationService } from '@core/services/organization.service';
 import { uniqueSlugValidator } from '@shared/validators/unique-slug.validator';
 
@@ -128,9 +128,6 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
         const organizationDto: RegOrganizationDto = {
             organizationSlug: this.organizationSlug,
             name: this.organization.name,
-            openMembership: true,
-            defaultRoleId: 3, //Viewer
-            avatarUrl: null
         } as RegOrganizationDto;
 
         if (!this.isNotFinishedRegistration) {
