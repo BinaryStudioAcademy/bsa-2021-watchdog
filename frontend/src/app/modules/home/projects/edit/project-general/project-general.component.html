@@ -7,7 +7,7 @@
         <div class="item-field">
             <div class="item-form-input p-input-icon-right">
                 <i *ngIf="name?.pending" class="pi pi-spin pi-spinner"></i>
-                <input formControlName="name" [maxLength]="50" pInputText placeholder="Project name" class="item-form-field">
+                <input formControlName="name" pInputText placeholder="Project name" class="item-form-field">
                 <div *ngIf="name.touched && name.invalid" class="p-error">
                     <small *ngIf="name.errors.required">Сan not be empty</small>
                     <small *ngIf="name.errors.minlength">At least 3 characters</small>
@@ -51,18 +51,8 @@
         </label>
         <div class="item-field">
             <div class="item-form-input p-input-icon-right">
-                <!-- <p-dropdown [options]="dropPlatform" optionLabel="name"
-                    formControlName="platformId" optionValue="id"></p-dropdown> -->
-
-                    <p-dropdown [options]="dropPlatform" optionLabel="name" optionValue="id" [showClear]="true" formControlName="platformId">
-
-                        <ng-template let-platform pTemplate="item">
-                            <div class="platform-item" >
-                                <img [src]="platform.avatarUrl"/>
-                                <div class="member">{{platform.name}}</div>
-                            </div>
-                        </ng-template>
-                    </p-dropdown>
+                <p-dropdown [options]="dropPlatform" optionLabel="name"
+                    formControlName="platformId" optionValue="id"></p-dropdown>
             </div>
         </div>
     </form>
