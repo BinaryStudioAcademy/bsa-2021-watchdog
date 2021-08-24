@@ -18,6 +18,7 @@ import { User } from '@shared/models/user/user';
 import { PrimeIcons } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { switchMap } from 'rxjs/operators';
+import { threadId } from 'worker_threads';
 import { Data } from '../data';
 
 @Component({
@@ -68,18 +69,17 @@ export class EditComponent extends BaseComponent implements OnInit {
     }
 
     alertFormatting() {
-        const alert: AlertSettings = { ...this.editFormAlert.value };
-        const specialAlert: SpecialAlertSetting = { ...this.editFormAlert.value };
+        const specialAlert= { ...this.editFormAlert.value };
         this.alertSetting = {
-            alertCategory: alert.alertCategory,
-            specialAlertSetting: alert.alertCategory === AlertCategory.Special ? specialAlert : null
+            alertCategory: specialAlert.alertCategory,
+            specialAlertSetting: specialAlert.alertCategory === AlertCategory.Special ? specialAlert : null
         };
     }
 
     updateProjectFunction() {
         this.alertFormatting();
         const project: UpdateProject = { ...this.editForm.value, alertSettings: this.alertSetting };
-
+        debugger;
         if (this.editForm.valid) {
             this.spinnerService.show(true);
             this.projectService.updateProject(this.id, project)
@@ -106,12 +106,12 @@ export class EditComponent extends BaseComponent implements OnInit {
             acceptButton: { label: 'Yes', class: 'p-button-outlined p-button-danger' },
             cancelButton: { label: 'No', class: 'p-button-outlined p-button-secondary' },
             accept: () => {
-                this.deleteProjectFunction();
+                this.deleteProject();
             }
         });
     }
 
-    deleteProjectFunction() {
+    deleteProject() {
         this.spinnerService.show(true);
                 this.projectService.removeProject(this.project.id)
                     .pipe(this.untilThis)
