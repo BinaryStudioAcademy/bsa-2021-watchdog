@@ -18,9 +18,6 @@ export class ProjectAlertComponent extends BaseComponent implements OnInit {
     @Input() editFormAlert: FormGroup = new FormGroup({});
     @Input() project: Project;
 
-    alertCategoryValue = this.alertData.alertCategories;
-    specialAlertTypeValue = this.alertData.alertTypes;
-    alertTimeIntervalValue = this.alertData.alertTimeIntervals;
     specialTypes = AlertCategory.Special;
 
     constructor(

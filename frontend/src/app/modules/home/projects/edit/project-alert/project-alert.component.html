@@ -6,7 +6,7 @@
         </label>
         <div class="item-field">
             <div class="item-form-input p-input-icon-right">
-                <p-dropdown [options]="alertCategoryValue" optionLabel="label"
+                <p-dropdown [options]="alertData.alertCategories" optionLabel="label"
                     formControlName="alertCategory" optionValue="value"></p-dropdown>
             </div>
         </div>
@@ -33,7 +33,7 @@
         </label>
         <div class="item-field">
             <div class="item-form-input p-input-icon-right">
-                <p-dropdown [options]="specialAlertTypeValue" optionLabel="label"
+                <p-dropdown [options]="alertData.alertTypes" optionLabel="label"
                     formControlName="specialAlertType" optionValue="value"></p-dropdown>
                 <div *ngIf="specialAlertType.touched && specialAlertType.invalid" class="p-error">
                     <small *ngIf="specialAlertType.errors.required">Сan not be empty</small>
@@ -48,7 +48,7 @@
         </label>
         <div class="item-field">
             <div class="item-form-input p-input-icon-right">
-                <p-dropdown [options]="alertTimeIntervalValue" optionLabel="label"
+                <p-dropdown [options]="alertData.alertTimeIntervals" optionLabel="label"
                     formControlName="alertTimeInterval" optionValue="value"></p-dropdown>
                 <div *ngIf="alertTimeInterval.touched && alertTimeInterval.invalid" class="p-error">
                     <small *ngIf="alertTimeInterval.errors.required">Сan not be empty</small>
