@@ -13,6 +13,7 @@ import { Organization } from '@shared/models/organization/organization';
 import { Role } from '@shared/models/role/role';
 import { TeamOption } from '@shared/models/teams/team-option';
 import { User } from '@shared/models/user/user';
+import { membersRoles } from '@shared/constants/membersRoles';
 import { TreeNode } from 'primeng/api';
 
 @Component({
@@ -61,7 +62,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
         this.roleService.getRoles()
             .pipe(this.untilThis)
             .subscribe(roles => {
-                this.roles = roles.filter(r => r.name !== 'Owner');
+                this.roles = roles.filter(r => r.name !== membersRoles.owner);
                 this.spinnerService.hide();
             }, error => {
                 this.toastNotifications.error(error);
