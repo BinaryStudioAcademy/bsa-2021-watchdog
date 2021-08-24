@@ -57,5 +57,11 @@ namespace Watchdog.Core.API.Controllers
             _logger.LogInformation($"Dashboard: ID = {dashboardId} has been removed.");
             return NoContent();
         }
+
+        [HttpGet("dashboard/{dashboarName}")]
+        public async Task<ActionResult<bool>> IsDashboardNameValid(string dashboarName)
+        {
+            return Ok(await _dashboardService.IsDashboardNameValid(dashboarName));
+        }
     }
 }

@@ -8,6 +8,7 @@ using Watchdog.Core.Common.DTO.Dashboard;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Watchdog.Core.BLL.Services
 {
@@ -63,6 +64,16 @@ namespace Watchdog.Core.BLL.Services
             _context.Remove(dashboard);
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsDashboardNameValid(string dashboardName)
+        {
+            if (dashboardName.Length < 3 || dashboardName.Length > 50)
+            {
+                return false;
+            }
+
+            return !(await _context.Dashboards.ToListAsync()).Any(u => u.Name == dashboardName);
         }
     }
 }
