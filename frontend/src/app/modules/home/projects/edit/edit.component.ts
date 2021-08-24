@@ -9,7 +9,6 @@ import { SpinnerService } from '@core/services/spinner.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { AlertCategory } from '@shared/models/alert-settings/alert-category';
 import { AlertSettings } from '@shared/models/alert-settings/alert-settings';
-import { SpecialAlertSetting } from '@shared/models/alert-settings/special-alert-setting';
 import { Organization } from '@shared/models/organization/organization';
 import { Platform } from '@shared/models/platforms/platform';
 import { Project } from '@shared/models/projects/project';
@@ -18,7 +17,6 @@ import { User } from '@shared/models/user/user';
 import { PrimeIcons } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { switchMap } from 'rxjs/operators';
-import { threadId } from 'worker_threads';
 import { Data } from '../data';
 
 @Component({
@@ -69,7 +67,7 @@ export class EditComponent extends BaseComponent implements OnInit {
     }
 
     alertFormatting() {
-        const specialAlert= { ...this.editFormAlert.value };
+        const specialAlert = { ...this.editFormAlert.value };
         this.alertSetting = {
             alertCategory: specialAlert.alertCategory,
             specialAlertSetting: specialAlert.alertCategory === AlertCategory.Special ? specialAlert : null
@@ -79,7 +77,6 @@ export class EditComponent extends BaseComponent implements OnInit {
     updateProjectFunction() {
         this.alertFormatting();
         const project: UpdateProject = { ...this.editForm.value, alertSettings: this.alertSetting };
-        debugger;
         if (this.editForm.valid) {
             this.spinnerService.show(true);
             this.projectService.updateProject(this.id, project)
@@ -113,16 +110,16 @@ export class EditComponent extends BaseComponent implements OnInit {
 
     deleteProject() {
         this.spinnerService.show(true);
-                this.projectService.removeProject(this.project.id)
-                    .pipe(this.untilThis)
-                    .subscribe(() => {
-                        this.spinnerService.hide();
-                        this.router.navigate(['home', 'projects']).then(() => {
-                            this.toastNotifications.success('Project has been deleted');
-                        });
-                    }, error => {
-                        this.toastNotifications.error(error);
-                        this.spinnerService.hide();
-                    });
+        this.projectService.removeProject(this.project.id)
+            .pipe(this.untilThis)
+            .subscribe(() => {
+                this.spinnerService.hide();
+                this.router.navigate(['home', 'projects']).then(() => {
+                    this.toastNotifications.success('Project has been deleted');
+                });
+            }, error => {
+                this.toastNotifications.error(error);
+                this.spinnerService.hide();
+            });
     }
 }
