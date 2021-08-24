@@ -381,6 +381,46 @@ namespace Watchdog.Core.DAL.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Watchdog.Core.DAL.Entities.AssigneeMember", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("IssueId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
+
+                    b.ToTable("AssigneeMembers");
+                });
+
+            modelBuilder.Entity("Watchdog.Core.DAL.Entities.AssigneeTeam", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("IssueId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("AssigneeTeams");
+                });
+
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Dashboard", b =>
                 {
                     b.Property<int>("Id")
@@ -603,6 +643,47 @@ namespace Watchdog.Core.DAL.Migrations
                             ApplicationId = 8,
                             Name = "deleniti"
                         });
+                });
+
+            modelBuilder.Entity("Watchdog.Core.DAL.Entities.EventMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("EventId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IssueId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("OccurredOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IssueId");
+
+                    b.ToTable("EventMessages");
+                });
+
+            modelBuilder.Entity("Watchdog.Core.DAL.Entities.Issue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ErrorClass")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ErrorMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Issues");
                 });
 
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Member", b =>
@@ -2197,6 +2278,28 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Navigation("Team");
                 });
 
+            modelBuilder.Entity("Watchdog.Core.DAL.Entities.AssigneeMember", b =>
+                {
+                    b.HasOne("Watchdog.Core.DAL.Entities.Member", "Member")
+                        .WithMany("AssigneeMembers")
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Member");
+                });
+
+            modelBuilder.Entity("Watchdog.Core.DAL.Entities.AssigneeTeam", b =>
+                {
+                    b.HasOne("Watchdog.Core.DAL.Entities.Team", "Team")
+                        .WithMany("AssigneeTeams")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Team");
+                });
+
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Dashboard", b =>
                 {
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "User")
@@ -2224,6 +2327,17 @@ namespace Watchdog.Core.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Application");
+                });
+
+            modelBuilder.Entity("Watchdog.Core.DAL.Entities.EventMessage", b =>
+                {
+                    b.HasOne("Watchdog.Core.DAL.Entities.Issue", "Issue")
+                        .WithMany("EventMessages")
+                        .HasForeignKey("IssueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Issue");
                 });
 
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Member", b =>
@@ -2337,8 +2451,15 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Navigation("Tiles");
                 });
 
+            modelBuilder.Entity("Watchdog.Core.DAL.Entities.Issue", b =>
+                {
+                    b.Navigation("EventMessages");
+                });
+
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Member", b =>
                 {
+                    b.Navigation("AssigneeMembers");
+
                     b.Navigation("TeamMembers");
                 });
 
@@ -2366,6 +2487,8 @@ namespace Watchdog.Core.DAL.Migrations
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Team", b =>
                 {
                     b.Navigation("ApplicationTeams");
+
+                    b.Navigation("AssigneeTeams");
 
                     b.Navigation("TeamMembers");
                 });

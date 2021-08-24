@@ -2,7 +2,7 @@ version: '3.8'
 services:
 
     sql_server:
-        image: mcr.microsoft.com/mssql/server:2019-latest
+        image: mcr.microsoft.com/mssql/server:2017-latest
         container_name: sql_server
         ports:
             - 1433:1433
@@ -31,13 +31,13 @@ services:
         container_name: elasticsearch
         ports:
             - 9200:9200
-        volumes:
-            - elasticsearch-data:/usr/share/elasticsearch/data
         environment:
             - xpack.monitoring.enabled=true
             - xpack.watcher.enabled=false
             - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
             - discovery.type=single-node
+        volumes:
+            - esdata-staging:/usr/share/elasticsearch/data
         networks:
             - back
 
@@ -50,8 +50,6 @@ services:
             - 5601:5601
         environment:
             - ELASTICSEARCH_URL=http://elasticsearch:9200
-            - SERVER_BASEPATH=/kibana
-            - SERVER_HOST=0.0.0.0
         networks:
             - back
 
@@ -60,4 +58,5 @@ networks:
         driver: bridge
 
 volumes:
-    elasticsearch-data:
+    esdata-staging:
+        driver: local

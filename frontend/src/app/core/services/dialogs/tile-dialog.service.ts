@@ -90,7 +90,7 @@ export class TileDialogService extends BaseComponent implements OnDestroy {
                     this.toastNotificationService.success('Tile has been added');
                 }
             }, error => {
-                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.toastNotificationService.error(error);
                 this.spinnerService.hide();
             });
     }
@@ -107,7 +107,7 @@ export class TileDialogService extends BaseComponent implements OnDestroy {
                     this.toastNotificationService.success('Tile has been updated');
                 }
             }, error => {
-                this.toastNotificationService.error(`${error}`, 'Error', 2000);
+                this.toastNotificationService.error(error);
                 this.spinnerService.hide();
             });
     }

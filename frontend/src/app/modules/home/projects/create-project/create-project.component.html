@@ -1,4 +1,3 @@
-<app-loading-spinner *ngIf="loadingNumber > 0" [overlay]="true"></app-loading-spinner> 
 <div class="create-project-container">
     <!--    Header    -->
     <div class="header">
@@ -126,7 +125,7 @@
             </div>
             <!-- Description -->
             <div [formGroup]="formGroup" class="project-description">
-                <span class="title">Project name</span>
+                <span class="title">Project description</span>
                 <textarea [autoResize]="true" formControlName="projectDescription" pInputTextarea
                     placeholder="Description"
                     type="textarea" maxlength="1000"

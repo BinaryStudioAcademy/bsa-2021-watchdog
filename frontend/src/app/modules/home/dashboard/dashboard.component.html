@@ -1,5 +1,4 @@
 <!--    Header    -->
-<app-loading-spinner *ngIf="isLoading" [overlay]="true"></app-loading-spinner>
 <div *ngIf="dashboard" [ngClass]="{'remove-margin-box-shadow': showTileMenu}" class="dashboard-header">
     <div class="dashboard-name">
         <h2 appTooltipFullName>{{dashboard?.name}}</h2>
@@ -27,12 +26,12 @@
 <!--    Tiles Content    -->
 <ng-template [ngIf]="dashboard">
     <div *ngIf="!tiles.length" class="tiles-not-found">
-        <span>There is no tiles...</span>
+        <app-no-content-placeholder></app-no-content-placeholder>
     </div>
     <div *ngIf="tiles.length" class="tiles-container">
         <ng-container *ngFor="let tile of tiles" [ngSwitch]="tile.type">
             <app-top-active-issues-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.TopActiveIssues"
-                                        [isShownMenu]="showTileMenu" [tile]="tile"
+                                        [isShownEditTileMenu]="showTileMenu" [tile]="tile"
                                         [userProjects]="projects"
                                         class="top-active-issue">
             </app-top-active-issues-tile>

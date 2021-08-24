@@ -20,6 +20,10 @@ namespace Watchdog.Core.DAL.Context
         public DbSet<Platform> Platforms { get; private set; }
 
         public DbSet<Role> Roles { get; private set; }
+        
+        public DbSet<Issue> Issues { get; set; }
+
+        public DbSet<EventMessage> EventMessages { get; set; }
 
         public DbSet<Team> Teams { get; private set; }
 
@@ -28,6 +32,10 @@ namespace Watchdog.Core.DAL.Context
         public DbSet<Tile> Tiles { get; private set; }
 
         public DbSet<User> Users { get; private set; }
+
+        public DbSet<AssigneeMember> AssigneeMembers { get; private set; }
+
+        public DbSet<AssigneeTeam> AssigneeTeams { get; private set; }
 
         public WatchdogCoreContext(DbContextOptions<WatchdogCoreContext> options) : base(options)
         {

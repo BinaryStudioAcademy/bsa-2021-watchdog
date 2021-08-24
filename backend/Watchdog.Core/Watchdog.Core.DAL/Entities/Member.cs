@@ -10,6 +10,7 @@ namespace Watchdog.Core.DAL.Entities
         public Member()
         {
             TeamMembers = new List<TeamMember>();
+            AssigneeMembers = new List<AssigneeMember>();
         }
         public User User { get; set; }
 
@@ -30,6 +31,8 @@ namespace Watchdog.Core.DAL.Entities
         public Organization Organization { get; set; }
 
         public ICollection<TeamMember> TeamMembers { get; set; }
+
+        public ICollection<AssigneeMember> AssigneeMembers { get; set; }
 
         public bool IsAccepted { get; set; } 
 

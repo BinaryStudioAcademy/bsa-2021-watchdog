@@ -1,3 +1,5 @@
+import { IssueMessage } from '@shared/models/issue/issue-message';
+import { IssuesHubService } from '@core/hubs/issues-hub.service';
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
@@ -10,8 +12,10 @@ import { Assignee } from '@shared/models/issue/assignee';
 import { count, toImages } from '@core/services/issues.utils';
 import { IssueInfo } from '@shared/models/issue/issue-info';
 import { map } from 'rxjs/operators';
-import { AssigneeOptions } from '@shared/models/issue/assigneeOptions';
+import { AssigneeOptions } from '@shared/models/issue/assignee-options';
 import { IssueService } from '@core/services/issue.service';
+import { CoreHttpService } from '@core/services/core-http.service';
+import { Member } from '@shared/models/member/member';
 
 @Component({
     selector: 'app-issues',
@@ -21,7 +25,7 @@ import { IssueService } from '@core/services/issue.service';
 export class IssuesComponent extends BaseComponent implements OnInit {
     issues: IssueInfo[] = [];
 
-    countNew: { [type: string]: number };
+    issuesCount: { [type: string]: number };
 
     selectedIssues: IssueInfo[] = [];
 
@@ -33,18 +37,22 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     organization: Organization;
 
     constructor(
+        private issuesHub: IssuesHubService,
         private issueService: IssueService,
         private toastNotification: ToastNotificationService,
         private authService: AuthenticationService,
         private memberService: MemberService,
-        private teamService: TeamService
+        private teamService: TeamService,
+        private httpService: CoreHttpService
     ) { super(); }
 
     itemsPerPage = 10;
 
     ngOnInit(): void {
         this.isAssign = false;
-        this.setAllFieldsTemp();
+
+        this.setTabPanelFields();
+
         this.authService.getOrganization()
             .pipe(this.untilThis)
             .subscribe(organization => {
@@ -55,11 +63,14 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                         this.sharedOptions.members = members;
                         this.sharedOptions.teams = teams;
                         this.issues = issues;
+                        this.issuesCount.all = this.issues.length;
+                        this.subscribeToIssuesHub();
                     });
             }, errorResponse => {
                 this.toastNotification.error(errorResponse);
             });
     }
+
     loadMember() {
         return this.memberService.getMembersByOrganizationId(this.organization.id)
             .pipe(this.untilThis);
@@ -84,7 +95,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     }
 
     toAssing: Assignee;
-    issueId: string;
+    issueId: number;
     private saveAssing: Assignee;
     openAssign(issue: IssueInfo) {
         this.toAssing = issue.assignee;
@@ -102,7 +113,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             this.issueService.updateAssignee(updateAssignee)
                 .pipe(this.untilThis)
                 .subscribe(() => {
-                    this.toastNotification.success('Asignee apdated');
+                    this.toastNotification.success('Assignee updated');
                 }, errorResponse => {
                     this.toastNotification.error(errorResponse);
                 });
@@ -143,15 +154,44 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                 })));
     }
 
-    private setAllFieldsTemp() {
-        this.countNew = {
-            all: 3,
-            secondtype: 1,
-            thirdtype: 0
+    private subscribeToIssuesHub() {
+        this.issuesHub.messages.pipe(this.untilThis)
+            .subscribe(issue => { this.addIssue(issue); });
+    }
+
+    private addIssue(issue: IssueMessage) {
+        const existingIssue = this.issues.find(i => i.issueId === issue.issueId);
+        this.issues = existingIssue ? this.addExistingIssue(issue, existingIssue) : this.addNewIssue(issue);
+    }
+
+    private addNewIssue(issue: IssueMessage) {
+        const issueInfo: IssueInfo = {
+            issueId: issue.issueId,
+            errorClass: issue.issueDetails.className,
+            errorMessage: issue.issueDetails.errorMessage,
+            eventsCount: 1,
+            newest: { id: issue.id, occurredOn: issue.occurredOn },
+            assignee: { teamIds: [], memberIds: [] },
         };
+        this.issuesCount.all += 1;
+        return [issueInfo, ...this.issues];
+    }
+
+    private addExistingIssue(issue: IssueMessage, existingIssue: IssueInfo) {
+        const changedIssue = {
+            ...existingIssue,
+            eventsCount: existingIssue.eventsCount + 1,
+            newest: { id: issue.id, occurredOn: issue.occurredOn },
+        };
+        return [
+            changedIssue,
+            ...this.issues.filter(i =>
+                i.issueId !== changedIssue.issueId)
+        ];
     }
 
     private viewedAssignee = 3;
+
     getNumberAssignee(assignee: Assignee) {
         return count(assignee);
     }
@@ -172,5 +212,32 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         return assignee.teamIds.slice(0, diff)
             .map(id => this.teamService
                 .getLabel(this.sharedOptions.teams.find(t => t.id === id).name));
+    }
+
+    private setTabPanelFields() {
+        this.issuesCount = {
+            all: 0,
+            secondtype: 0,
+            thirdtype: 0
+        };
+    }
+
+    //it's only for demo
+    throwError() {
+        throw Error('some error happens ');
+    }
+
+    throwTypeError() {
+        throw TypeError('Type \'string[]\' is not assignable to type \'number[]\'.');
+    }
+
+    throwHttpError() {
+        this.httpService.getRequest<Member>('/members/organization/5/user/1000')
+            .pipe(this.untilThis)
+            .subscribe(response => {
+                console.log(response);
+            }, error => {
+                console.error(error);
+            });
     }
 }

@@ -28,21 +28,21 @@ namespace Watchdog.Core.API.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateAssignee(UpdateAssigneeDto assigneeDto)
         {
-            await _issueService.UpdateAssignee(assigneeDto);
+            await _issueService.UpdateAssigneeAsync(assigneeDto);
             return Ok(); 
         }
 
-        [HttpGet("message/{id}")]
-        public async Task<ActionResult<IssueMessage>> GetIssueMessageByIdAsync(string id)
+        [HttpGet("issueId/{issueId:int}/eventId/{eventId}")]
+        public async Task<ActionResult<IssueMessage>> GetEventMessageByIdAsync(int issueId, string eventId)
         {
-            var issueMessage = await _issueService.GetIssueMessageByIdAsync(id);
+            var issueMessage = await _issueService.GetEventMessageByIdAsync(issueId, eventId);
             return Ok(issueMessage);
         }        
         
         [HttpGet("messagesByParent/{id}")]
-        public async Task<ActionResult<IssueMessage>> GetIssueMessagesByParentIdAsync(string id)
+        public async Task<ActionResult<IssueMessage>> GetEventMessagesByIssueIdAsync(int id)
         {
-            var issueMessages = await _issueService.GetIssuesMessagesByParentIdAsync(id);
+            var issueMessages = await _issueService.GetEventMessagesByIssueIdAsync(id);
             return Ok(issueMessages);
         }
     }

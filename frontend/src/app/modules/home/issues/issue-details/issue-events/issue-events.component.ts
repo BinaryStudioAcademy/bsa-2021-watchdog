@@ -4,6 +4,7 @@ import { IssueService } from '@core/services/issue.service';
 import { Router } from '@angular/router';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { BaseComponent } from '@core/components/base/base.component';
+import { SpinnerService } from '@core/services/spinner.service';
 
 @Component({
     selector: 'app-issue-events[issueMessage]',
@@ -11,7 +12,6 @@ import { BaseComponent } from '@core/components/base/base.component';
     styleUrls: ['./issue-events.component.sass']
 })
 export class IssueEventsComponent extends BaseComponent implements OnInit, OnDestroy {
-    isLoading: boolean = true;
     @Input() issueMessage: IssueMessage;
     issues: IssueMessage[] = [];
     paginatorRows: number = 9;
@@ -20,23 +20,25 @@ export class IssueEventsComponent extends BaseComponent implements OnInit, OnDes
         private issueService: IssueService,
         private router: Router,
         private toastNotificationService: ToastNotificationService,
+        private spinnerService: SpinnerService
     ) {
         super();
+        this.spinnerService.show(true);
     }
 
     ngOnInit(): void {
-        this.getIssuesMessages(this.issueMessage.issueId);
+        this.getEventMessages(this.issueMessage.issueId);
     }
 
-    getIssuesMessages(parentId: string) {
-        this.issueService.getIssueMessagesByParent(parentId)
+    getEventMessages(issueId: number) {
+        this.issueService.getEventMessagesByIssueId(issueId)
             .pipe(this.untilThis)
             .subscribe(response => {
                 this.issues = response;
-                this.isLoading = false;
+                this.spinnerService.hide();
             }, errorResponse => {
-                this.toastNotificationService.error(errorResponse, '', 1500);
-                this.isLoading = false;
+                this.toastNotificationService.error(errorResponse);
+                this.spinnerService.hide();
             });
     }
 

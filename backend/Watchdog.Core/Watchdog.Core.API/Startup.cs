@@ -8,15 +8,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using RabbitMQ.Client;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using Watchdog.AspNetCore;
 using Watchdog.Core.API.Extensions;
 using Watchdog.Core.API.Middlewares;
-using Watchdog.Core.BLL.Services;
-using Watchdog.RabbitMQ.Shared.Models;
-using Watchdog.RabbitMQ.Shared.Services;
 
 namespace Watchdog.Core.API
 {
@@ -29,7 +26,7 @@ namespace Watchdog.Core.API
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", reloadOnChange: true, optional: true)
                 .AddEnvironmentVariables();
-
+            
             if (env.IsDevelopment())
             {
                 configurationBuilder.AddUserSecrets<Startup>();
@@ -46,10 +43,11 @@ namespace Watchdog.Core.API
             services.AddRouting(options => options.LowercaseUrls = true);
 
             services.AddWatchdogCoreContext(Configuration);
-            
+
             services.AddElasticSearch(Configuration);
 
             services.RegisterCustomServices(Configuration);
+            services.AddRabbitMQIssueQueues(Configuration);
 
             services.AddValidation();
 
@@ -112,18 +110,10 @@ namespace Watchdog.Core.API
                         };
                     });
 
-            // test rabbitmq
-            services.AddSingleton(x =>
+            services.AddWatchdog(Configuration, new WatchdogMiddlewareSettings()
             {
-                var amqpConnection = new Uri(Configuration.GetSection("RabbitMQConfiguration").GetSection("Uri").Value);
-                var connectionFactory = new ConnectionFactory { Uri = amqpConnection };
-                return connectionFactory.CreateConnection();
+                ClientProvider = new DefaultWatchdogAspNetCoreClientProvider()
             });
-            var producerSettings = new ProducerSettings();
-            Configuration.GetSection("RabbitMQConfiguration:Queues:Test").Bind(producerSettings);
-            services.AddScoped(provider =>
-                new QueueService(new Producer(provider.GetRequiredService<IConnection>(), producerSettings)));
-            // test rabbitmq
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -133,11 +123,13 @@ namespace Watchdog.Core.API
 
             app.UseDeveloperExceptionPage();
 
+            app.UseMiddleware<GenericExceptionHandlerMiddleware>();
+
+            app.UseWatchdog();
+
             app.UseSerilogRequestLogging();
 
             app.UseCors("AnyOrigin");
-
-            app.UseMiddleware<GenericExceptionHandlerMiddleware>();
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {

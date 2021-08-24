@@ -51,5 +51,11 @@ namespace Watchdog.Core.API.Controllers
             var members = await _userService.SearchMembersNotInOrganizationAsync(orgId, memberEmail);
             return Ok(members);
         }
+
+        [HttpGet("email/{userEmail}")]
+        public async Task<ActionResult<bool>> IsEmailValid(string userEmail)
+        {
+            return Ok(await _userService.IsUserEmailValid(userEmail));
+        }
     }
 }

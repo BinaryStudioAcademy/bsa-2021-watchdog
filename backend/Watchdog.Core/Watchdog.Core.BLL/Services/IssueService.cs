@@ -1,169 +1,193 @@
-﻿using Nest;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Nest;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Issue;
 using Watchdog.Core.Common.Models.Issue;
+using Watchdog.Core.DAL.Context;
+using Watchdog.Core.DAL.Entities;
 
 namespace Watchdog.Core.BLL.Services
 {
-    public class IssueService : IIssueService
+    public class IssueService : BaseService, IIssueService
     {
         private readonly IElasticClient _client;
 
-        public IssueService(IElasticClient client)
+        public IssueService(WatchdogCoreContext context, IMapper mapper, IElasticClient client)
+            : base(context, mapper)
         {
             _client = client;
         }
 
+        public async Task<int> AddIssueEventAsync(IssueMessage issueMessage)
+        {
+            var issue = await _context.Issues.FirstOrDefaultAsync(i =>
+                i.ErrorMessage == issueMessage.IssueDetails.ErrorMessage &&
+                i.ErrorClass == issueMessage.IssueDetails.ClassName);
+
+            var newEventMessage = _mapper.Map<EventMessage>(issueMessage);
+            
+            if (issue is null)
+            {
+                var createdIssue = CreateNewIssue(issueMessage);
+                
+                createdIssue.EventMessages.Add(newEventMessage);
+                
+                await _context.SaveChangesAsync();
+                
+                return createdIssue.Id;
+            }
+            
+            newEventMessage.IssueId = issue.Id;
+            
+            _context.EventMessages.Add(newEventMessage);
+            
+            await _context.SaveChangesAsync();
+            
+            return issue.Id;
+        }
+
         public async Task<ICollection<IssueInfoDto>> GetIssuesInfoAsync()
         {
-            var issues = await GetIssuesAsync();
-            var issueMessages = await GetIssueMessagesAsync();
-
-            var issuesInfo = issues
+            var issuesInfo = await _context.Issues
                 .Select(i => new IssueInfoDto()
                 {
                     IssueId = i.Id,
                     ErrorClass = i.ErrorClass,
                     ErrorMessage = i.ErrorMessage,
-                    EventsCount = issueMessages.Count(issueMessage =>
-                        issueMessage.IssueDetails.ErrorMessage == i.ErrorMessage),
+                    EventsCount = _context.EventMessages.Count(em => em.IssueId == i.Id),
                     Newest = new IssueMessageDto()
                     {
-                        Id = issueMessages
-                            .FirstOrDefault(issueMessage => issueMessage.IssueId == i.Id).Id,
-                        OccurredOn = issueMessages
-                            .Where(issueMessage => issueMessage.IssueId == i.Id)
-                            .OrderByDescending(issueMessage => issueMessage.OccurredOn)
+                        Id = _context.EventMessages
+                            .Where(em => em.IssueId == i.Id)
+                            .OrderByDescending(em => em.OccurredOn)
+                            .FirstOrDefault(em => em.IssueId == i.Id).EventId,
+                        OccurredOn = _context.EventMessages
+                            .Where(em => em.IssueId == i.Id)
+                            .OrderByDescending(em => em.OccurredOn)
                             .FirstOrDefault().OccurredOn
                     },
-                    Assignee = i.Assignee
+                    Assignee = new AssigneeDto
+                    {
+                        MemberIds = _context.AssigneeMembers
+                            .Where(a => a.IssueId == i.Id)
+                            .Select(a => a.MemberId)
+                            .ToList(),
+                        TeamIds = _context.AssigneeTeams
+                            .Where(a => a.IssueId == i.Id)
+                            .Select(a => a.TeamId)
+                            .ToList()
+                    }
                 })
-                .ToList();
+                .OrderByDescending(i => i.Newest.OccurredOn)
+                .ToListAsync();
 
             return issuesInfo;
         }
 
-        public async Task<IssueMessage> GetIssueMessageByIdAsync(string issueId)
+        public async Task<IssueMessage> GetEventMessageByIdAsync(int issueId, string eventId)
         {
-            var response = await _client
-                .GetAsync<IssueMessage>(issueId);
+            if (!_context.EventMessages.Any(em => em.IssueId == issueId && em.EventId == eventId))
+            {
+                throw new KeyNotFoundException("There is no event ID with such issue ID.");
+            }
+                
+            var response = await _client.GetAsync<IssueMessage>(eventId);
+
             if (!response.IsValid)
+            {
+                throw new KeyNotFoundException("Event message not found");
+            }
+            
+            response.Source.IssueId = issueId;
+            
+            return response.Source;
+        }
+
+        public async Task<ICollection<IssueMessage>> GetEventMessagesByIssueIdAsync(int issueId)
+        {
+            var issue = await _context.Issues
+                .Include(i => i.EventMessages)
+                .FirstOrDefaultAsync(i => i.Id == issueId);
+
+            var response = await _client.SearchAsync<IssueMessage>(s => s
+                .Size(issue.EventMessages.Count)
+                .Query(q => q
+                    .Ids(c => c
+                        .Values(issue.EventMessages.Select(i => i.EventId)))));
+
+            if (!response.IsValid)
+            {
                 throw new KeyNotFoundException("Issue Message not found");
-
-            var result = response.Source;
-            result.Id = issueId;
-            return result;
+            }
+            
+            return response.Documents.OrderByDescending(em => em.OccurredOn).ToList();
         }
 
-        public async Task<ICollection<IssueMessage>> GetIssuesMessagesByParentIdAsync(string parentIssueId)
+        public Task UpdateAssigneeAsync(UpdateAssigneeDto assigneeDto)
         {
-            var parentIssue = await GetIssueByIdAsync(parentIssueId);
-            var issueMessagesCount = await GetTotalHitsAsync<IssueMessage>();
+            if (assigneeDto is null)
+            {
+                throw new System.ArgumentNullException(nameof(assigneeDto));
+            }
 
-            var issueMessagesResponse = await _client
-                .SearchAsync<IssueMessage>(descriptor => descriptor
-                    .Query(q => q
-                        .Match(m => m
-                            .Field(f => f.IssueId)
-                            .Query(parentIssue.Id)
-                        )
-                    )
-                    .From(0)
-                    .Size(issueMessagesCount));
-            if (!issueMessagesResponse.IsValid)
-                throw new KeyNotFoundException("Issue Messages not found");
-
-            var issueMessages = issueMessagesResponse
-                .Hits
-                .Select(h =>
-                {
-                    h.Source.Id = h.Id;
-                    return h.Source;
-                })
-                .ToList();
-
-            return issueMessages;
+            return UpdateAssigneeInternalAsync(assigneeDto);
         }
 
-        private async Task<Issue> GetIssueByIdAsync(string id)
+        private Issue CreateNewIssue(IssueMessage issueMessage)
         {
-            var issueResponse = await _client
-                .GetAsync<Issue>(id);
-            if (!issueResponse.IsValid)
-                throw new KeyNotFoundException("Issue not found");
-            return issueResponse.Source;
+            var newIssue = _mapper.Map<Issue>(issueMessage);
+            
+            var createdIssue = _context.Issues.Add(newIssue);
+
+            return createdIssue.Entity;
         }
 
-        private async Task<ICollection<Issue>> GetIssuesAsync()
+        private async Task UpdateAssigneeInternalAsync(UpdateAssigneeDto assigneeDto)
         {
-            var issuesCount = await GetTotalHitsAsync<Issue>();
-
-            var issuesSearchResponse = await _client.SearchAsync<Issue>(s => s
-                .From(0)
-                .Size(issuesCount)
-            );
-
-            var issues = issuesSearchResponse
-                .Hits
-                .Select(h =>
-                {
-                    h.Source.Id = h.Id;
-                    return h.Source;
-                })
-                .ToList();
-
-            return issues;
-        }
-
-        private async Task<ICollection<IssueMessage>> GetIssueMessagesAsync()
-        {
-            var issueMessagesCount = await GetTotalHitsAsync<IssueMessage>();
-
-            var searchResponse = await _client.SearchAsync<IssueMessage>(s => s
-                .Source(sf => sf
-                    .Includes(fd => fd
-                        .Field(f => f.IssueId)
-                        .Field(f => f.IssueDetails.ErrorMessage)
-                        .Field(f => f.OccurredOn))
-                )
-                .From(0)
-                .Size(issueMessagesCount)
-            );
-
-            var issueMessages = searchResponse
-                .Hits
-                .Select(h =>
-                {
-                    h.Source.Id = h.Id;
-                    return h.Source;
-                })
-                .ToList();
-
-            return issueMessages;
-        }
-
-        private async Task<int> GetTotalHitsAsync<T>() where T : class
-        {
-            var totalHits = await _client.CountAsync<T>();
-            return (int) totalHits.Count;
-        }
-
-        public async Task UpdateAssignee(UpdateAssigneeDto assigneeDto)
-        {
-            var issueResponse = await _client.GetAsync<Issue>(assigneeDto.IssueId);
-            if (!issueResponse.IsValid)
+            if (!await _context.Issues.AnyAsync(i => i.Id == assigneeDto.IssueId))
             {
                 throw new KeyNotFoundException("Issue doesn't exist");
             }
 
-            var issue = issueResponse.Source;
+            var oldMembers = await _context.AssigneeMembers
+                .Where(a => a.IssueId == assigneeDto.IssueId)
+                .ToListAsync(); // assignee members in db
+            var membersToAdd = assigneeDto.Assignee.MemberIds
+                .Except(oldMembers.Select(a => a.MemberId)); // members in db - members in dto
+            var membersToDelete = oldMembers
+                .Where(m => assigneeDto.Assignee.MemberIds.All(id => m.MemberId != id)); // members in dto - members in db
 
-            issue.Assignee = assigneeDto.Assignee;
-            await _client.UpdateAsync<Issue, Issue>(assigneeDto.IssueId, descriptor => descriptor
-                        .Doc(issue));
+            await _context.AssigneeMembers.AddRangeAsync(
+                membersToAdd.Select(id => new AssigneeMember
+                {
+                    IssueId = assigneeDto.IssueId,
+                    MemberId = id
+                }));
+
+            _context.AssigneeMembers.RemoveRange(membersToDelete);
+
+            var oldTeams = await _context.AssigneeTeams
+                .Where(a => a.IssueId == assigneeDto.IssueId)
+                .ToListAsync(); // assignee teams in db
+            var teamsToAdd = assigneeDto.Assignee.TeamIds
+                .Except(oldTeams.Select(a => a.TeamId)); // teams in db - teams in dto
+            var teamsToDelete = oldTeams
+                .Where(t => assigneeDto.Assignee.TeamIds.All(id => t.TeamId != id)); // teams in db - teams in dto
+
+            await _context.AssigneeTeams.AddRangeAsync(
+                teamsToAdd.Select(id => new AssigneeTeam
+                {
+                    IssueId = assigneeDto.IssueId,
+                    TeamId = id
+                }));
+
+            _context.AssigneeTeams.RemoveRange(teamsToDelete);
+
+            await _context.SaveChangesAsync();
         }
     }
 }

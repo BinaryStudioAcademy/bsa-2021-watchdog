@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using PrimeNG.TableFilter;
-using PrimeNG.TableFilter.Models;
 using SendGrid;
 using System;
 using System.Collections.Generic;
@@ -103,7 +101,7 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<MemberDto>(member);
         }
 
-        public async Task<ICollection<MemberDto>> SearchMembersNotInTeamAsync(int teamId, string memberEmail)
+        public async Task<ICollection<MemberDto>> SearchMembersNotInTeamAsync(int teamId, int count, string memberEmail)
         {
             var team = await _context.Teams.FirstOrDefaultAsync(t => t.Id == teamId);
 
@@ -111,6 +109,7 @@ namespace Watchdog.Core.BLL.Services
                 .Include(m => m.TeamMembers)
                 .Include(m => m.User)
                 .Where(m => m.User.Email.Contains(memberEmail) && !m.TeamMembers.Any(t => t.TeamId == teamId) && m.OrganizationId == team.OrganizationId)
+                .Take(count)
                 .ToListAsync();
             return _mapper.Map<ICollection<MemberDto>>(members);
         }

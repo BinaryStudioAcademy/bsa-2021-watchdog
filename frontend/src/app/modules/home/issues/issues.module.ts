@@ -8,6 +8,7 @@ import { IssuesComponent } from '@modules/home/issues/issues.component';
 import { IssueDetailsComponent } from '@modules/home/issues/issue-details/issue-details/issue-details.component';
 import { IssueHttpComponent } from '@modules/home/issues/issue-details/issue-http/issue-http.component';
 import { AssigneeComponent } from '@modules/home/issues/assignee/assignee.component';
+import { BreadcrumbsComponent } from '@modules/home/issues/issue-details/breadcrumbs/breadcrumbs.component';
 
 @NgModule({
     imports: [
@@ -23,6 +24,7 @@ import { AssigneeComponent } from '@modules/home/issues/assignee/assignee.compon
         IssueHttpComponent,
         IssueEnvironmentComponent,
         AssigneeComponent,
+        BreadcrumbsComponent
     ]
 })
 export class IssuesModule {

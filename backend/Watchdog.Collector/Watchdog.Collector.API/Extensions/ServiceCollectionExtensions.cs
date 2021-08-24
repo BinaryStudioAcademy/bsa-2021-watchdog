@@ -1,12 +1,15 @@
+using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nest;
-using System;
+using RabbitMQ.Client;
 using System.Reflection;
 using Watchdog.Collector.BLL.MappingProfiles;
 using Watchdog.Collector.BLL.Services;
 using Watchdog.Collector.BLL.Services.Abstract;
 using Watchdog.Collector.Common.Models;
+using Watchdog.RabbitMQ.Shared.Models;
+using Watchdog.RabbitMQ.Shared.Services;
 
 namespace Watchdog.Collector.API.Extensions
 {
@@ -23,12 +26,26 @@ namespace Watchdog.Collector.API.Extensions
 
             var settings = new ConnectionSettings(new Uri(connectionString))
                 .DefaultIndex(configuration["ElasticConfiguration:DefaultIndex"])
-                .DefaultMappingFor<Issue>(m =>
-                    m.IndexName(configuration["ElasticConfiguration:IssueIndex"]))
                 .DefaultMappingFor<IssueMessage>(m =>
-                    m.IndexName(configuration["ElasticConfiguration:IssueMessageIndex"]));
+                    m.IndexName(configuration["ElasticConfiguration:EventMessagesIndex"])
+                        .IdProperty(em => em.Id));
 
             services.AddSingleton<IElasticClient>(new ElasticClient(settings));
+        }
+
+        public static void AddRabbitMQIssueProducer(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddSingleton(x =>
+            {
+                var amqpConnection = new Uri(configuration.GetSection("RabbitMQConfiguration:Uri").Value);
+                var connectionFactory = new ConnectionFactory { Uri = amqpConnection };
+                return connectionFactory.CreateConnection();
+            });
+            var producerSettings = new ProducerSettings();
+            configuration.GetSection("RabbitMQConfiguration:Queues:ReceivedIssuesQueueProducer").Bind(producerSettings);
+
+            services.AddScoped<IIssueQueueProducerService>(provider =>
+                new IssueQueueProducerService(new Producer(provider.GetRequiredService<IConnection>(), producerSettings)));
         }
 
         public static void AddAutoMapper(this IServiceCollection services)

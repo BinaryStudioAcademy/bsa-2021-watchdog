@@ -4,12 +4,13 @@ import { SharedModule } from '@shared/shared.module';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '@env/environment';
-import { WatchDogErrorHandler } from '@core/interceptors/watchdog.interceptor';
-import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { WatchDogErrorHandler } from '@core/collecting-errors/interceptors/watchdog.interceptor';
+import { ErrorInterceptor } from './collecting-errors/interceptors/error.interceptor';
 import { ToastNotificationComponent } from './components/toast-notification/toast-notification.component';
 import { ConfirmWindowComponent } from './components/confirm-window/confirm-window.component';
 import { JwtInterceptorService } from './interceptors/jwt-interceptor.service';
 import { AuthGuard } from './guards/auth.guard';
+import { WatchdogService } from './collecting-errors/services/watchdog.service';
 
 @NgModule({
     imports: [
@@ -33,4 +34,6 @@ import { AuthGuard } from './guards/auth.guard';
         ConfirmWindowComponent,
     ]
 })
-export class CoreModule { }
+export class CoreModule {
+    constructor(private wathchdog: WatchdogService) { }
+}

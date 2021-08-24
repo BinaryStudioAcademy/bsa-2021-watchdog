@@ -22,7 +22,7 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
 
     constructor(
         private dataService: ShareDataService<Organization>,
-        private authSerice: AuthenticationService,
+        private authService: AuthenticationService,
         private toastService: ToastNotificationService,
         private organizationService: OrganizationService,
         public router: Router,
@@ -30,19 +30,21 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
 
     ngOnInit(): void {
         this.isLoading = true;
-        this.authSerice.getOrganization()
+        this.organizationService.getOrganizationsByUserId(this.authService.getUser().id)
             .pipe(this.untilThis)
-            .subscribe(organization => {
-                this.organization = organization;
-                this.checkUpdates();
-                this.isLoading = false;
-
-                this.organizationService.getOrganizationsByUserId(this.authSerice.getUser().id)
+            .subscribe(organizations => {
+                this.organizations = organizations;
+                this.authService.getOrganization()
                     .pipe(this.untilThis)
-                    .subscribe(organizations => {
-                        this.organizations = organizations;
+                    .subscribe(organization => {
+                        this.organization = organization;
+                        this.checkUpdates();
+                        this.isLoading = false;
                     });
-            }, error => { this.toastService.error(error); this.isLoading = false; });
+            }, error => {
+                this.toastService.error(error);
+                this.isLoading = false;
+            });
     }
 
     private checkUpdates() {
@@ -55,8 +57,11 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
             });
     }
 
-    click() {
-        if (this.organizations?.length <= 1) this.router.navigate(['home', 'organization', 'settings']);
+    async changeOrganization(organization: Organization) {
+        this.authService.setOrganization(organization);
+        const { url } = this.router;
+        await this.router.navigateByUrl('/', { skipLocationChange: true });
+        await this.router.navigateByUrl(url);
     }
 
     clickIcon(event: Event) {

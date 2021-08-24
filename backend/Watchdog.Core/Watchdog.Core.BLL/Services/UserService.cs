@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Registration;
@@ -14,7 +15,7 @@ namespace Watchdog.Core.BLL.Services
 {
     public class UserService : BaseService, IUserService
     {
-        public UserService(WatchdogCoreContext context, IMapper mapper) : base (context, mapper) 
+        public UserService(WatchdogCoreContext context, IMapper mapper) : base(context, mapper)
         {
         }
 
@@ -28,9 +29,6 @@ namespace Watchdog.Core.BLL.Services
         }
         public async Task<UserDto> UpdateUserAsync(int userId, UpdateUserDto updateUserDto)
         {
-
-            if (await _context.Users.AnyAsync(u => u.Email == updateUserDto.Email))
-                throw new InvalidOperationException("Such email alreaby exists");
             var existedUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             var mergedUser = _mapper.Map(updateUserDto, existedUser);
@@ -64,6 +62,35 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
 
             return _mapper.Map<UserDto>(createdUser.Entity);
+        }
+
+        public async Task<bool> IsUserEmailValid(string userEmail)
+        {
+            var reg = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+            if (userEmail.Length < 6 || !reg.IsMatch(userEmail))
+            {
+                return false;
+            }
+
+            return !(await _context.Users.ToListAsync()).Any(u => u.Email == userEmail);
+        }
+        
+        public async Task<ICollection<string>> GetUserUIdsByApplicationIdAsync(int applicationId)
+        {
+            var teams = _context.Teams
+               .Include(t => t.ApplicationTeams)
+               .Include(t => t.TeamMembers)
+               .ThenInclude(tm => tm.Member)
+               .ThenInclude(m => m.User);
+
+            var members = teams.Where(t => t.ApplicationTeams.Any(at => at.ApplicationId == applicationId))
+                .SelectMany(t => t.TeamMembers)
+                .Select(tm => tm.Member);
+
+            var usersIds = await members.Select(m => m.User.Uid)
+                .Distinct()
+                .ToListAsync();
+            return usersIds;
         }
     }
 }

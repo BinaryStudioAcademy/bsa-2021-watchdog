@@ -41,11 +41,10 @@
                             [showHeader]="false">
                         </p-multiSelect>
                         <button pButton pRipple
-                            class="p-button-success p-button-outlined"
+                            class="p-button-success p-button-outlined invate-button"
                             type="submit"
-                            [label]="!invation.isInvited ? 'Invite' : 'Invited'"
                             [disabled]="!invation.groupForm.valid || invation.isInvited || loadingNumber > 0"
-                            (click)="invate(invation)">
+                            (click)="invite(invation)"> {{!invation.isInvited ? 'Invite' : 'Invited'}}
                         </button>
                     </div>
             </form>

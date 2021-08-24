@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { BaseComponent } from '@core/components/base/base.component';
 import { AuthenticationService } from '@core/services/authentication.service';
@@ -17,6 +17,8 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
     user: User;
     editForm: FormGroup = new FormGroup({});
     pass: FormGroup = new FormGroup({});
+
+    @ViewChild('saveBut') saveButton: ElementRef<HTMLButtonElement>;
 
     constructor(
         private authService: AuthenticationService,
@@ -37,7 +39,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
         if (user.firstName === this.user.firstName
             && user.lastName === this.user.lastName
             && user.email === this.user.email) {
-            this.toastNotificationService.error('You havent changed anything to make changes');
+            this.toastNotificationService.error("You haven't changed anything to make changes");
         } else {
             this.userService.updateUsersById(this.user.id, user)
                 .pipe(this.untilThis)
@@ -53,7 +55,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
     updatePassword() {
         const pass = { ...this.pass.value };
         if (pass.confirmPassword !== pass.newPassword && pass.newPassword !== pass.oldPassword) {
-            this.toastNotificationService.error('Сheck if confrim and new password match');
+            this.toastNotificationService.error('Check if confirm and new password match');
         }
         if (pass.newPassword === pass.oldPassword) {
             this.toastNotificationService.error('The old password is equal to the new one. Enter another new password');
@@ -67,6 +69,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
                 .then(() => {
                     this.authService.updatePassword(pass.confirmPassword);
                     this.toastNotificationService.success('Password has been updated');
+                    this.pass.reset();
                 })
                 .catch(error => {
                     console.warn(error);

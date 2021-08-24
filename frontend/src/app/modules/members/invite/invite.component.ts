@@ -34,6 +34,8 @@ export class InviteComponent extends BaseComponent implements OnInit {
     organization: Organization;
     defaultRole: Role;
 
+    invitingMembersCount = 5;
+
     invations: Invition[] = [{ member: {} as NewMember, groupForm: this.generateGroupForm() }];
     constructor(
         private memberService: MemberService,
@@ -78,17 +80,18 @@ export class InviteComponent extends BaseComponent implements OnInit {
             debounceTime(300),
             switchMap((term: string) => {
                 this.loadingNumber += 1;
-                return this.userService.searchMembersNotInOrganization(this.organization.id, term)
+                return this.userService
+                    .searchMembersNotInOrganization(this.organization.id, this.invitingMembersCount + this.invations.length, term)
                     .pipe(this.untilThis);
             })
         ).subscribe(users => {
             this.notMembers = users
-                .filter(u => !this.invations.some(i => i.groupForm.value.name.id === u.id))
+                .filter(u => !this.invations.some(i => i.groupForm.value.name?.id === u.id))
                 .sort((a, b) => a.email.localeCompare(b.email))
-                .slice(0, 5);
+                .slice(0, this.invitingMembersCount);
             this.loadingNumber -= 1;
         }, error => {
-            this.toastNotifications.error(`${error}`, 'Error');
+            this.toastNotifications.error(error);
             this.loadingNumber -= 1;
         });
 
@@ -99,7 +102,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
                 this.roles = roles;
                 this.loadingNumber -= 1;
             }, error => {
-                this.toastNotifications.error(`${error}`, 'Error');
+                this.toastNotifications.error(error);
                 this.loadingNumber -= 1;
             });
 
@@ -116,7 +119,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
                         this.loadingNumber -= 1;
                     });
             }, error => {
-                this.toastNotifications.error(`${error}`, 'Error');
+                this.toastNotifications.error(error);
                 this.loadingNumber -= 1;
             });
     }
@@ -126,7 +129,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
         this.searchTerm.next(value);
     }
 
-    invate(invitionInput: Invition) {
+    invite(invitionInput: Invition) {
         const invition = invitionInput;
         this.loadingNumber += 1;
         const newMember = {

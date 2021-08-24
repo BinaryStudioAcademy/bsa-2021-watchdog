@@ -1,30 +1,49 @@
-<div class="title">Issues</div>
+<div class="title">
+    <div>
+        Issues
+    </div>
+    <div class="error-buttons">
+        <div class="error-button">
+            <button pButton pRipple type="button" label="Error" class="p-button-outlined p-button-danger"
+                    icon="pi pi-exclamation-circle" (click)="throwError()"></button>
+        </div>
+        <div class="error-button">
+            <button pButton pRipple type="button" label="TypeError" class="p-button-outlined p-button-danger"
+                    icon="pi pi-exclamation-circle" (click)="throwTypeError()"></button>
+        </div>
+        <div class="error-button">
+            <button pButton pRipple type="button" label="HttpError" class="p-button-outlined p-button-danger"
+                    icon="pi pi-exclamation-circle" (click)="throwHttpError()"></button>
+        </div>
+    </div>
+</div>
 <div class="issues-content">
     <p-tabView styleClass="tabview-custom">
 
         <div class="functional-bar">
             <div class="search-block p-inputgroup">
                 <span class="p-inputgroup-addon search-button"><i class="pi pi-search"></i></span>
-                <input name="search" pInputText placeholder="Search" type="text">
+                <input name="search" pInputText placeholder="Search" type="text" (input)="table.filterGlobal($event.target.value, 'contains')">
             </div>
-            <div class="action-block">
-                <span class="p-inputgroup-addon search-button"><i class="pi pi-paperclip"></i></span>
-                <span class="p-inputgroup-addon search-button"><i class="pi pi-plus"></i></span>
-                <span class="p-inputgroup-addon search-button"><i class="pi pi-ellipsis-v"></i></span>
-                <span class="p-inputgroup-addon search-button"><i class="pi pi-times"></i></span>
-            </div>
+<!--            <div class="action-block">-->
+<!--                <span class="p-inputgroup-addon search-button"><i class="pi pi-paperclip"></i></span>-->
+<!--                <span class="p-inputgroup-addon search-button"><i class="pi pi-plus"></i></span>-->
+<!--                <span class="p-inputgroup-addon search-button"><i class="pi pi-ellipsis-v"></i></span>-->
+<!--                <span class="p-inputgroup-addon search-button"><i class="pi pi-times"></i></span>-->
+<!--            </div>-->
         </div>
 
         <p-tabPanel>
             <ng-template pTemplate="header">
                 <div class="header">
                     <span>All Unresolved</span>
-                    <p-badge *ngIf="countNew.all > 0" [value]="countNew.all.toString()"></p-badge>
+                    <p-badge *ngIf="issuesCount.all > 0" [value]="issuesCount.all.toString()"></p-badge>
                 </div>
             </ng-template>
 
-            <p-table [autoLayout]="true" [paginator]="issues?.length > itemsPerPage" [resizableColumns]="true"
-                     [rows]="itemsPerPage" [value]="issues" class="issues-table">
+            <p-table #table [autoLayout]="true" [paginator]="issues?.length > itemsPerPage" [resizableColumns]="true"
+                     [rows]="itemsPerPage" [value]="issues" class="issues-table"
+                     [globalFilterFields]="['errorClass']">
                 <ng-template pTemplate="colgroup">
                     <colgroup>
                         <col id="issue-col">
@@ -40,6 +59,7 @@
                                 <p-checkbox name="allIssues" (onChange)="selectAll($event)"></p-checkbox>
                                 <span>Issue <p-sortIcon field="newest.occurredOn"></p-sortIcon>
                                 </span>
+                                <p-columnFilter [showAddButton]="false" type="text" field="errorClass" display="menu"></p-columnFilter>
                             </div>
                         </th>
                         <th class="center" pSortableColumn="eventsCount">
@@ -48,7 +68,7 @@
                             </span>
                         </th>
                         <th class="center" pSortableColumn="users">
-                            <span>Users <p-sortIcon field="users">
+                            <span>Affected <p-sortIcon field="users">
                                 </p-sortIcon>
                             </span>
                         </th>
@@ -63,7 +83,7 @@
                                 </p-checkbox>
                                 <div class="content">
                                     <span class="name"
-                                          routerLink="/home/issues/{{issue.newest.id}}">{{issue.errorClass}}</span>
+                                          routerLink="/home/issues/{{issue.issueId}}/{{issue.newest.id}}">{{issue.errorClass}}</span>
                                     <span class="description">{{issue.errorMessage}}</span>
                                     <div class="additional-info">
                                         <p-tag *ngIf="issue.isNew" [rounded]="true" class="new-issue"
@@ -80,9 +100,9 @@
                             </div>
                         </td>
                         <td>{{issue.eventsCount}}</td>
-                        <td>{{issue?.users}}</td>
+                        <td>1</td>
                         <td>
-                            <div class="assignee" (click)="openAssign(issue)">                       
+                            <div class="assignee" (click)="openAssign(issue)">
                                 <p-avatarGroup styleClass="p-mb-3">
                                     <p-avatar *ngIf="getNumberAssignee(issue?.assignee) === 0" icon="pi pi-user" shape="circle"></p-avatar>
                                     <p-avatar *ngFor="let img of getMembersImages(issue?.assignee)" [image]="img" shape="circle"></p-avatar>
@@ -97,11 +117,11 @@
             </p-table>
 
         </p-tabPanel>
-        <p-tabPanel [disabled]="true">
+        <p-tabPanel [cache]="false" [disabled]="true">
             <ng-template pTemplate="header">
                 <div class="header">
                     <span>Second Type</span>
-                    <p-badge *ngIf="countNew.secondtype > 0" [value]="countNew.secondtype.toString()"></p-badge>
+                    <p-badge *ngIf="issuesCount.secondtype > 0" [value]="issuesCount.secondtype.toString()"></p-badge>
                 </div>
             </ng-template>
         </p-tabPanel>
@@ -109,13 +129,13 @@
             <ng-template pTemplate="header">
                 <div class="header">
                     <span>Third Type</span>
-                    <p-badge *ngIf="countNew.thirdtype > 0" [value]="countNew.thirdtype.toString()"></p-badge>
+                    <p-badge *ngIf="issuesCount.thirdtype > 0" [value]="issuesCount.thirdtype.toString()"></p-badge>
                 </div>
             </ng-template>
         </p-tabPanel>
     </p-tabView>
 </div>
-<app-assignee 
+<app-assignee
     (closeModal)="closeAssing()"
     [data]="toAssing"
     [members]="sharedOptions.members"

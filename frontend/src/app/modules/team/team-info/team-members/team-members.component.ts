@@ -5,6 +5,7 @@ import { TeamService } from '@core/services/team.service';
 import { Component, Input } from '@angular/core';
 import { Team } from '@shared/models/teams/team';
 import { Member } from '@shared/models/member/member';
+import { SpinnerService } from '@core/services/spinner.service';
 
 @Component({
     selector: 'app-team-members',
@@ -13,9 +14,12 @@ import { Member } from '@shared/models/member/member';
 })
 export class TeamMembersComponent extends BaseComponent {
     @Input() team: Team;
-    isLoading: boolean = false;
 
-    constructor(private teamService: TeamService, private toastService: ToastNotificationService) {
+    constructor(
+        private teamService: TeamService,
+        private toastService: ToastNotificationService,
+        private spinnerService: SpinnerService
+    ) {
         super();
     }
 
@@ -23,28 +27,28 @@ export class TeamMembersComponent extends BaseComponent {
     filterExpression: string;
 
     removeMember(memberId: number) {
-        this.isLoading = true;
+        this.spinnerService.show(true);
         this.teamService.leaveTeam(this.team.id, memberId)
             .subscribe(() => {
                 this.team.members = this.team.members.filter(member => member.id !== memberId);
                 this.toastService.success('Member was removed!');
-                this.isLoading = false;
+                this.spinnerService.hide();
             }, error => {
                 this.toastService.error(error);
-                this.isLoading = false;
+                this.spinnerService.hide();
             });
     }
 
     addMember(member: Member) {
-        this.isLoading = true;
+        this.spinnerService.show(true);
         this.teamService.joinTeam(this.team.id, member.id)
             .pipe(this.untilThis)
             .subscribe(() => {
                 this.team.members = this.team.members.concat(member);
-                this.isLoading = false;
+                this.spinnerService.hide();
                 this.toastService.success('Member was added!');
             }, error => {
-                this.isLoading = false;
+                this.spinnerService.hide();
                 this.toastService.error(error);
             });
     }

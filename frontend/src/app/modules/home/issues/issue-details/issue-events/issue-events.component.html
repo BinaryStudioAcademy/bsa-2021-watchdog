@@ -1,5 +1,4 @@
-<app-loading-spinner *ngIf="isLoading" [overlay]="true"></app-loading-spinner>
-<div *ngIf="!isLoading" class="table">
+<div class="table">
     <p-table [alwaysShowPaginator]="issues.length > paginatorRows" [autoLayout]="true" [pageLinks]="1" [paginator]="true"
              [resizableColumns]="true" [rows]="paginatorRows" [value]="issues" selectionMode="single"
              styleClass="table-override">
@@ -24,7 +23,7 @@
         <ng-template let-issue pTemplate="body">
             <tr>
                 <td>
-                    <span class="issue-time" routerLink="/home/issues/{{issue.id}}">{{issue.occurredOn | date:'MMMM d, y h:mma'}}</span>
+                    <span class="issue-time" routerLink="/home/issues/{{issueMessage.issueId}}/{{issue.id}}">{{issue.occurredOn | date:'MMMM d, y h:mma'}}</span>
                     <small class="issue-id">{{issue.id}}</small>
                 </td>
                 <td>{{issue.issueDetails.environmentMessage.platform}}</td>
