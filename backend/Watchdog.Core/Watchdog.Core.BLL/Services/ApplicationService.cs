@@ -103,5 +103,40 @@ namespace Watchdog.Core.BLL.Services
 
             return _mapper.Map<ApplicationDto>(application);
         }
+
+        public async Task<ApplicationDto> GetApplicationByIdAsync(int appId)
+        {
+            var application = await _context.Applications
+                .Include(p => p.Platform)
+                .FirstOrDefaultAsync(a => a.Id == appId) ??
+                throw new InvalidOperationException("No application with this id!");
+
+            return _mapper.Map<ApplicationDto>(application);
+        }
+
+        public async Task<ApplicationDto> UpdateApplicationAsync(int appId, UpdateApplicationDto updateAppDto)
+        {
+            var existedApplication = await _context.Applications.FirstOrDefaultAsync(a => a.Id == appId) ??
+                throw new InvalidOperationException("No application with this id!");
+
+            var mergedApplication = _mapper.Map(updateAppDto, existedApplication);
+
+            var updateApplication = _context.Update(mergedApplication);
+            await _context.SaveChangesAsync();
+
+            return await GetApplicationByIdAsync(updateApplication.Entity.Id);
+        }
+
+        public async Task DeleteApplicationAsync(int appId)
+        {
+            var application = await _context.Applications
+                .Include(t => t.ApplicationTeams)
+                .FirstOrDefaultAsync(a => a.Id == appId) ??
+                throw new InvalidOperationException("No application with this id!");
+            _context.Remove(application);
+
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

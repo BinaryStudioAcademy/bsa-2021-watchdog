@@ -1,0 +1,101 @@
+@import src/styles/variables
+@import src/styles/mixins
+
+.title
+    @include title
+    @include background-gray
+    display: flex
+
+    .back-button
+        margin-right: .2em
+        border: none
+        border-radius: 100%
+
+.header-buttons
+    margin-left: auto
+    & .buttons-container
+        display: flex
+        align-items: center
+        gap: .2em
+
+.panel
+    margin-right: $indent
+    .item:last-child
+        padding-bottom: $half-indent
+
+.item
+    display: flex
+    padding-bottom: $indent
+    &-definition
+        width: 40%
+        font-size: 1.2em
+        margin-right: 1em
+    &-definition-special
+        margin-left: 40px
+        width: 40%
+        font-size: 1.2em
+        margin-right: 1em
+    &-field
+        width: 58%
+        position: relative
+        align-items: center
+    &-sub-text
+        font-size: .7em
+        margin-top: .2em
+        color: $text-color-secondary
+
+
+.item-form-input
+    width: 100%
+    align-items: center
+    grid-gap: .2em
+    & input
+        width: 100%
+    & textarea
+        width: 100%
+    & .pi
+        height: 1em
+
+.p-error
+    color: $validation-color
+    font-size: .75em
+    margin-top: .1em
+    flex-wrap: wrap
+    position: absolute
+
+.alert-settings
+    margin: 30px 0 10px
+    white-space: nowrap
+
+    .alert-form
+        display: flex
+        flex-wrap: wrap
+        align-items: center
+        margin: 10px 0
+        min-height: $input-height
+        grid-gap: 10px
+    .special-settings
+        display: flex
+        flex-wrap: wrap
+        grid-gap: 10px
+        align-items: center
+        margin-left: 10px
+
+.title
+    font-size: 22px
+    line-height: 22px
+    font-weight: 400
+    margin-bottom: 10px
+
+.platform-item
+    display: flex
+    align-items: center
+    & img
+        @include disable-select
+        width: 20px
+        height: 20px
+        margin: 0 .2em
+
+:host ::ng-deep
+    .p-dropdown
+        width: 100%

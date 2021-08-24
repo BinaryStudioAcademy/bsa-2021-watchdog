@@ -1,0 +1,59 @@
+<p-panel header="Alert" class="panel">
+    <form [formGroup]="editFormAlert" class="item">
+        <label class="item-definition">
+            <div>Alert Category</div>
+            <div class="item-sub-text">The category of alerts, depending on the parameter, will work differently</div>
+        </label>
+        <div class="item-field">
+            <div class="item-form-input p-input-icon-right">
+                <p-dropdown [options]="alertData.alertCategories" optionLabel="label"
+                    formControlName="alertCategory" optionValue="value"></p-dropdown>
+            </div>
+        </div>
+    </form>
+    <form [formGroup]="editFormAlert" *ngIf="this.editFormAlert.controls.alertCategory.value=== specialTypes"
+         class="item">
+        <label class="item-definition-special">
+            <div>Alert Count</div>
+            <div class="item-sub-text">How many alerts will you receive</div>
+        </label>
+        <div class="item-field">
+            <div class="item-form-input p-input-icon-right">
+                <input formControlName="alertsCount" pInputText placeholder="Alerts count" class="item-form-field">
+                <div *ngIf="alertsCount.touched && alertsCount.invalid" class="p-error">
+                    <small *ngIf="alertsCount.errors.required">Сan not be empty</small>
+                </div>
+            </div>
+        </div>
+    </form>
+    <form [formGroup]="editFormAlert" *ngIf="this.editFormAlert.controls.alertCategory.value=== specialTypes" class="item">
+        <label class="item-definition-special">
+            <div>Alert Type</div>
+            <div class="item-sub-text">The type depends on who will receive the alerts</div>
+        </label>
+        <div class="item-field">
+            <div class="item-form-input p-input-icon-right">
+                <p-dropdown [options]="alertData.alertTypes" optionLabel="label"
+                    formControlName="specialAlertType" optionValue="value"></p-dropdown>
+                <div *ngIf="specialAlertType.touched && specialAlertType.invalid" class="p-error">
+                    <small *ngIf="specialAlertType.errors.required">Сan not be empty</small>
+                </div>
+            </div>
+        </div>
+    </form>
+    <form [formGroup]="editFormAlert" *ngIf="this.editFormAlert.controls.alertCategory.value === specialTypes" class="item">
+        <label class="item-definition-special">
+            <div>Alert time interval</div>
+            <div class="item-sub-text">The time after which the notification will arrive</div>
+        </label>
+        <div class="item-field">
+            <div class="item-form-input p-input-icon-right">
+                <p-dropdown [options]="alertData.alertTimeIntervals" optionLabel="label"
+                    formControlName="alertTimeInterval" optionValue="value"></p-dropdown>
+                <div *ngIf="alertTimeInterval.touched && alertTimeInterval.invalid" class="p-error">
+                    <small *ngIf="alertTimeInterval.errors.required">Сan not be empty</small>
+                </div>
+            </div>
+        </div>
+    </form>
+</p-panel>

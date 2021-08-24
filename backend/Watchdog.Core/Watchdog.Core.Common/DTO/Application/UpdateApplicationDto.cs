@@ -1,17 +1,15 @@
-using Watchdog.Core.Common.DTO.Application.AlertSettings;
+﻿using Watchdog.Core.Common.DTO.Application.AlertSettings;
 using Watchdog.Core.Common.DTO.Platform;
 
 namespace Watchdog.Core.Common.DTO.Application
 {
-    public class ApplicationDto
+    public class UpdateApplicationDto
     {
-        public int Id { get; set; }
-
         public string Name { get; set; }
 
         public string Description { get; set; }
 
-        public PlatformDto Platform { get; set; }
+        public int PlatformId { get; set; }
 
         public AlertSettingsDto AlertSettings { get; set; }
 
