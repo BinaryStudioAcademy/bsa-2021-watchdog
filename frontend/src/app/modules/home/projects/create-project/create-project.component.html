@@ -90,8 +90,11 @@
                     <small *ngIf="formGroup.controls.projectName.errors.maxlength" class="p-error">
                         No more than 50 characters
                     </small>
+                    <small *ngIf="formGroup.controls.projectName.errors?.notUnique" class="p-error">
+                        Project name is not unique
+                    </small>
                     <small *ngIf="formGroup.controls.projectName.errors.pattern" class="p-error">
-                        May contain lowercase (a-z) and uppercase (A-Z) letters, numbers (0-9), dashes, 
+                        May contain lowercase (a-z) and uppercase (A-Z) letters, numbers (0-9), dashes,
                         underscores and spaces
                     </small>
                 </div>
