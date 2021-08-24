@@ -142,11 +142,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
             acceptButton: { class: 'p-button-primary p-button-outlined' },
             cancelButton: { class: 'p-button-secondary p-button-outlined' },
             accept: () => {
-                if (memberItem.member.role.name !== 'Owner') {
-                    this.deleteMember(memberItem);
-                } else {
-                    this.toastNotifications.error('You cannot delete this member');
-                }
+                this.deleteMember(memberItem);
             },
         });
     }
