@@ -61,10 +61,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
         this.roleService.getRoles()
             .pipe(this.untilThis)
             .subscribe(roles => {
-                this.roles = roles;
-                if (this.roles[0].name === 'Owner') {
-                    this.roles.shift();
-                }
+                this.roles = roles.filter(r => r.name !== 'Owner');
                 this.spinnerService.hide();
             }, error => {
                 this.toastNotifications.error(error);
@@ -145,7 +142,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
             acceptButton: { class: 'p-button-primary p-button-outlined' },
             cancelButton: { class: 'p-button-secondary p-button-outlined' },
             accept: () => {
-                if (memberItem.member.role.name != 'Owner') {
+                if (memberItem.member.role.name !== 'Owner') {
                     this.deleteMember(memberItem);
                 } else {
                     this.toastNotifications.error('You cannot delete this member');
@@ -156,13 +153,13 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
 
     deleteMember(memberItem: MemberItem) {
         this.memberService.deleteMember(memberItem.member.id)
-                    .pipe(this.untilThis)
-                    .subscribe(() => {
-                        this.toastNotifications.success('Member deleted');
-                        this.memberItems = this.memberItems.filter(m => m.member.id !== memberItem.member.id);
-                    }, error => {
-                        this.toastNotifications.error(error);
-                    });
+            .pipe(this.untilThis)
+            .subscribe(() => {
+                this.toastNotifications.success('Member deleted');
+                this.memberItems = this.memberItems.filter(m => m.member.id !== memberItem.member.id);
+            }, error => {
+                this.toastNotifications.error(error);
+            });
     }
 
     reinvite(member: Member) {
