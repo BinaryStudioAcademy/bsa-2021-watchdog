@@ -1,6 +1,6 @@
 <div class="container">
     <div *ngIf="single?.length && options" class="single-container">
-        <p-tabMenu [activeItem]="chartSingleTabItems[0]" [model]="chartSingleTabItems"></p-tabMenu>
+        <p-tabMenu *ngIf="!chartType" [activeItem]="chartSingleTabItems[0]" [model]="chartSingleTabItems"></p-tabMenu>
         <div class="chart-container" *ngIf="currentSingleTabLable==='Bars'">
             <ngx-charts-bar-vertical [scheme]="options.colorScheme" [results]="single"
                 [gradient]="options.gradient" [xAxis]="options.showXAxis" [yAxis]="options.showYAxis"
@@ -24,8 +24,8 @@
             </ngx-charts-tree-map>
         </div>
     </div>
-    <div *ngIf="multi?.length && options" class="single-container">
-        <p-tabMenu [activeItem]="chartMultiTabItems[0]" [model]="chartMultiTabItems"></p-tabMenu>
+    <div *ngIf="multi?.length && options" class="multi-container">
+        <p-tabMenu *ngIf="!chartType" [activeItem]="chartMultiTabItems[0]" [model]="chartMultiTabItems"></p-tabMenu>
         <div class="chart-container" *ngIf="currentMultiTabLable==='Line'">
             <ngx-charts-line-chart [view]="options.view" [scheme]="options.colorScheme"
                 [legend]="options.showLegend" [showXAxisLabel]="options.showXAxisLabel"

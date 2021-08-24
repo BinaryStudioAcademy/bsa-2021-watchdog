@@ -3,6 +3,7 @@ import { ChartOptions } from '@shared/models/charts/chart-options';
 import { MultiChart } from '@shared/models/charts/multi-chart';
 import { SingleChart } from '@shared/models/charts/single-chart';
 import { MenuItem } from 'primeng/api';
+import { chartTypeLabels, ChartType } from '@shared/models/charts/chart-type';
 
 @Component({
     selector: 'app-charts',
@@ -12,6 +13,7 @@ import { MenuItem } from 'primeng/api';
 export class ChartsComponent implements OnInit {
     @Input() single: SingleChart[];
     @Input() multi: MultiChart[];
+    @Input() chartType: ChartType;
     @Input() chartOptions: ChartOptions;
 
     chartSingleTabItems: MenuItem[];
@@ -26,18 +28,18 @@ export class ChartsComponent implements OnInit {
             { label: 'Pie', command: (event) => this.onSingleTabChange(event?.item) },
             { label: 'Tree', command: (event) => this.onSingleTabChange(event?.item) },
             { label: 'Guage', command: (event) => this.onSingleTabChange(event?.item) }];
-        this.currentSingleTabLable = 'Bars';
 
         this.chartMultiTabItems = [
             { label: 'Line', command: (event) => this.onMultiTabChange(event?.item) },
             { label: 'Polar', command: (event) => this.onMultiTabChange(event?.item) },
             { label: 'Area', command: (event) => this.onMultiTabChange(event?.item) },
             { label: 'Grouped', command: (event) => this.onMultiTabChange(event?.item) }];
-        this.currentMultiTabLable = 'Line';
     }
 
     ngOnInit(): void {
         this.options = this.setOptions(this.chartOptions);
+        this.currentMultiTabLable = chartTypeLabels[this.chartType] ?? 'Line';
+        this.currentSingleTabLable = chartTypeLabels[this.chartType] ?? 'Bars';
     }
 
     setOptions(chartOptions: ChartOptions): ChartOptions {
