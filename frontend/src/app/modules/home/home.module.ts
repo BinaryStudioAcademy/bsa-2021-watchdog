@@ -5,11 +5,9 @@ import { HomeComponent } from './home-page/home-page.component';
 import { OrganizationModule } from './organization/organization.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeRoutingModule } from './home-routing.module';
-import { ProjectsComponent } from './projects/projects/projects.component';
 
 import { AddDashboardComponent } from './modals/dashboard/add-dashboard.component';
 import { UpdateDashboardComponent } from './modals/dashboard/update-dashboard.component';
-import { CreateProjectComponent } from './projects/create-project/create-project.component';
 import { TileMenuComponent } from './dashboard/tile-menu/tile-menu.component';
 
 import { TopActiveIssuesTileComponent } from './dashboard/tiles/top-active-issues-tile/top-active-issues-tile.component';
@@ -22,10 +20,8 @@ import { TileHeaderComponent } from './dashboard/tiles/tile-header/tile-header.c
     declarations: [
         HomeComponent,
         DashboardComponent,
-        ProjectsComponent,
         AddDashboardComponent,
         UpdateDashboardComponent,
-        CreateProjectComponent,
         TileMenuComponent,
         TopActiveIssuesTileComponent,
         AddEditTopActiveIssuesTileComponent,

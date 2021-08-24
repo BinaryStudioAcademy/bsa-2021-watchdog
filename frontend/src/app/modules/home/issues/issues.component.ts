@@ -14,8 +14,6 @@ import { IssueInfo } from '@shared/models/issue/issue-info';
 import { map } from 'rxjs/operators';
 import { AssigneeOptions } from '@shared/models/issue/assignee-options';
 import { IssueService } from '@core/services/issue.service';
-import { CoreHttpService } from '@core/services/core-http.service';
-import { Member } from '@shared/models/member/member';
 
 @Component({
     selector: 'app-issues',
@@ -42,8 +40,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         private toastNotification: ToastNotificationService,
         private authService: AuthenticationService,
         private memberService: MemberService,
-        private teamService: TeamService,
-        private httpService: CoreHttpService
+        private teamService: TeamService
     ) { super(); }
 
     itemsPerPage = 10;
@@ -220,24 +217,5 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             secondtype: 0,
             thirdtype: 0
         };
-    }
-
-    //it's only for demo
-    throwError() {
-        throw Error('some error happens ');
-    }
-
-    throwTypeError() {
-        throw TypeError('Type \'string[]\' is not assignable to type \'number[]\'.');
-    }
-
-    throwHttpError() {
-        this.httpService.getRequest<Member>('/members/organization/5/user/1000')
-            .pipe(this.untilThis)
-            .subscribe(response => {
-                console.log(response);
-            }, error => {
-                console.error(error);
-            });
     }
 }
