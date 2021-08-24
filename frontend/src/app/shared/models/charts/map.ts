@@ -1,3 +1,3 @@
-export interface ProperiesMap<T> {
+export interface PropertiesMap<T> {
     [K: number]: T;
 }

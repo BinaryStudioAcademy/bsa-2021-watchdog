@@ -1,4 +1,4 @@
-import { ProperiesMap } from './map';
+import { PropertiesMap } from './map';
 
 export enum ChartType {
     Bars = 1,
@@ -11,7 +11,7 @@ export enum ChartType {
     Grouped
 }
 
-export const chartTypeLabels: ProperiesMap<string> = {};
+export const chartTypeLabels: PropertiesMap<string> = {};
 
 chartTypeLabels[ChartType.Bars] = 'Bars';
 chartTypeLabels[ChartType.Pie] = 'Pie';
