@@ -14,8 +14,6 @@ import { IssueInfo } from '@shared/models/issue/issue-info';
 import { map } from 'rxjs/operators';
 import { AssigneeOptions } from '@shared/models/issue/assignee-options';
 import { IssueService } from '@core/services/issue.service';
-import { CoreHttpService } from '@core/services/core-http.service';
-import { Member } from '@shared/models/member/member';
 
 @Component({
     selector: 'app-issues',
@@ -25,7 +23,7 @@ import { Member } from '@shared/models/member/member';
 export class IssuesComponent extends BaseComponent implements OnInit {
     issues: IssueInfo[] = [];
 
-    countNew: { [type: string]: number };
+    issuesCount: { [type: string]: number };
 
     selectedIssues: IssueInfo[] = [];
 
@@ -42,15 +40,16 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         private toastNotification: ToastNotificationService,
         private authService: AuthenticationService,
         private memberService: MemberService,
-        private teamService: TeamService,
-        private httpService: CoreHttpService
+        private teamService: TeamService
     ) { super(); }
 
     itemsPerPage = 10;
 
     ngOnInit(): void {
         this.isAssign = false;
-        this.setAllFieldsTemp();
+
+        this.setTabPanelFields();
+
         this.authService.getOrganization()
             .pipe(this.untilThis)
             .subscribe(organization => {
@@ -61,6 +60,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                         this.sharedOptions.members = members;
                         this.sharedOptions.teams = teams;
                         this.issues = issues;
+                        this.issuesCount.all = this.issues.length;
                         this.subscribeToIssuesHub();
                     });
             }, errorResponse => {
@@ -156,14 +156,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             .subscribe(issue => { this.addIssue(issue); });
     }
 
-    private setAllFieldsTemp() {
-        this.countNew = {
-            all: 3,
-            secondtype: 1,
-            thirdtype: 0
-        };
-    }
-
     private addIssue(issue: IssueMessage) {
         const existingIssue = this.issues.find(i => i.issueId === issue.issueId);
         this.issues = existingIssue ? this.addExistingIssue(issue, existingIssue) : this.addNewIssue(issue);
@@ -178,6 +170,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             newest: { id: issue.id, occurredOn: issue.occurredOn },
             assignee: { teamIds: [], memberIds: [] },
         };
+        this.issuesCount.all += 1;
         return [issueInfo, ...this.issues];
     }
 
@@ -218,22 +211,11 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                 .getLabel(this.sharedOptions.teams.find(t => t.id === id).name));
     }
 
-    //it's only for demo
-    throwError() {
-        throw Error('some error happens ');
-    }
-
-    throwTypeError() {
-        throw TypeError('Type \'string[]\' is not assignable to type \'number[]\'.');
-    }
-
-    throwHttpError() {
-        this.httpService.getRequest<Member>('/members/organization/5/user/1000')
-            .pipe(this.untilThis)
-            .subscribe(response => {
-                console.log(response);
-            }, error => {
-                console.error(error);
-            });
+    private setTabPanelFields() {
+        this.issuesCount = {
+            all: 0,
+            secondtype: 0,
+            thirdtype: 0
+        };
     }
 }

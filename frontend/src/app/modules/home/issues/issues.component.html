@@ -2,20 +2,6 @@
     <div>
         Issues
     </div>
-    <div class="error-buttons">
-        <div class="error-button">
-            <button pButton pRipple type="button" label="Error" class="p-button-outlined p-button-danger"
-                    icon="pi pi-exclamation-circle" (click)="throwError()"></button>
-        </div>
-        <div class="error-button">
-            <button pButton pRipple type="button" label="TypeError" class="p-button-outlined p-button-danger"
-                    icon="pi pi-exclamation-circle" (click)="throwTypeError()"></button>
-        </div>
-        <div class="error-button">
-            <button pButton pRipple type="button" label="HttpError" class="p-button-outlined p-button-danger"
-                    icon="pi pi-exclamation-circle" (click)="throwHttpError()"></button>
-        </div>
-    </div>
 </div>
 <div class="issues-content">
     <p-tabView styleClass="tabview-custom">
@@ -37,7 +23,7 @@
             <ng-template pTemplate="header">
                 <div class="header">
                     <span>All Unresolved</span>
-                    <p-badge *ngIf="countNew.all > 0" [value]="countNew.all.toString()"></p-badge>
+                    <p-badge *ngIf="issuesCount.all > 0" [value]="issuesCount.all.toString()"></p-badge>
                 </div>
             </ng-template>
 
@@ -121,7 +107,7 @@
             <ng-template pTemplate="header">
                 <div class="header">
                     <span>Second Type</span>
-                    <p-badge *ngIf="countNew.secondtype > 0" [value]="countNew.secondtype.toString()"></p-badge>
+                    <p-badge *ngIf="issuesCount.secondtype > 0" [value]="issuesCount.secondtype.toString()"></p-badge>
                 </div>
             </ng-template>
         </p-tabPanel>
@@ -129,7 +115,7 @@
             <ng-template pTemplate="header">
                 <div class="header">
                     <span>Third Type</span>
-                    <p-badge *ngIf="countNew.thirdtype > 0" [value]="countNew.thirdtype.toString()"></p-badge>
+                    <p-badge *ngIf="issuesCount.thirdtype > 0" [value]="issuesCount.thirdtype.toString()"></p-badge>
                 </div>
             </ng-template>
         </p-tabPanel>

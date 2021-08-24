@@ -14,5 +14,8 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<ApplicationTeamDto> AddAppTeamAsync(NewApplicationTeamDto appTeam);
         Task<bool> UpdateFavoriteStateAsync(int appTeamId, bool state);
         Task RemoveAppTeam(int appTeamId);
+        Task<ApplicationDto> GetApplicationByIdAsync(int appId);
+        Task<ApplicationDto> UpdateApplicationAsync(int appId, UpdateApplicationDto updateAppDto);
+        Task DeleteApplicationAsync(int appId);
     }
 }
