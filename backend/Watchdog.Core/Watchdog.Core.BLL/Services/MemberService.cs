@@ -71,8 +71,10 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task DeleteMemberAsync(int id)
         {
-            var member = await _context.Members.Include(m => m.TeamMembers).FirstOrDefaultAsync(m => m.Id == id) ?? throw new KeyNotFoundException("Member doesn't exist");
+            var member = await _context.Members.Include(m => m.TeamMembers)
+                .FirstOrDefaultAsync(m => (m.Id == id) || (m.Role.Name != "Owner")) ?? throw new KeyNotFoundException("You cannot delete this member");
             _context.Members.Remove(member);
+
             await _context.SaveChangesAsync();
         }
 
