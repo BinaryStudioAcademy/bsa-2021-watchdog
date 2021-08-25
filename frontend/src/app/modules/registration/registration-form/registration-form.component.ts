@@ -10,6 +10,7 @@ import { RegOrganizationDto } from '../DTO/reg-organization-dto';
 import { NewUserDto } from '../DTO/new-user-dto';
 import { OrganizationService } from '@core/services/organization.service';
 import { uniqueSlugValidator } from '@shared/validators/unique-slug.validator';
+import { checkOrganizationMembership } from '@shared/validators/check-ogranization-membership.validator';
 
 @Component({
     selector: 'app-registration-form',
@@ -24,6 +25,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
     organization_step = false;
     step = 1;
     selectedValue: string;
+    organizationSlugJoin: string;
 
 
     formGroup: FormGroup;
@@ -117,7 +119,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                         Validators.pattern(regexs.organizationSlag),
                     ],
                     asyncValidators: [
-                        uniqueSlugValidator(this.organizationService)
+                        checkOrganizationMembership(this.organizationService)
                     ]
                 }
             ),
