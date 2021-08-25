@@ -3,8 +3,7 @@
         <p-dropdown
             [(ngModel)]="organization"
             [options]="organizations"
-            [readonly]="organizations?.length <= 1"
-            [styleClass]="'org-label'"
+            styleClass="org-label"
             optionLabel="name"
             (onChange)="changeOrganization($event.value)"
             appendTo="body"
@@ -54,6 +53,17 @@
                     </div>
                 </div>
             </ng-template>
+            <ng-template pTemplate="footer">
+                <div class="create-new">
+                    <div
+                        class="create-new-button"
+                        (click)="display=true">
+                        <i class="pi pi-plus"></i>
+                        <span>Create a new</span>
+                    </div>
+                </div>
+            </ng-template>
         </p-dropdown>
     </div>
 </div>
+<app-create-organization [(display)]="display" (organizationCreate)="organizationCreated($event)"></app-create-organization>

@@ -79,8 +79,8 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task RemoveAppTeam(int appTeamId)
         {
-            var appTeam = await _context.ApplicationTeams.FirstOrDefaultAsync(t => t.Id == appTeamId);
-            if (appTeam == null) throw new InvalidOperationException("Application in this team not found!");
+            var appTeam = await _context.ApplicationTeams.FirstOrDefaultAsync(t => t.Id == appTeamId)
+                ?? throw new InvalidOperationException("Application in this team not found!");
 
             _context.ApplicationTeams.Remove(appTeam);
             await _context.SaveChangesAsync();
