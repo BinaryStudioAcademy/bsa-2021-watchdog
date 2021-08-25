@@ -138,5 +138,16 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task<bool> IsProjectNameValid(string projectName, int organizationId)
+        {
+            if (projectName.Length < 3 || projectName.Length > 50)
+            {
+                return false;
+            }
+
+            return !(await _context.Applications
+                .Where(a => a.OrganizationId == organizationId)
+                .AnyAsync(a => a.Name == projectName));
+        }
     }
 }

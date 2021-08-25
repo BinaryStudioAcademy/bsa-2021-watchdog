@@ -63,4 +63,8 @@ export class ProjectService {
     setProjectForTeamAsFavorite(projectTeamId: number, state: boolean): Observable<boolean> {
         return this.httpService.putRequest<boolean>(`${this.apiPrefix}/team/${projectTeamId}/favorite/${state}`, { });
     }
+
+    isProjectNameUnique(name: string, organizationId: number): Observable<boolean> {
+        return this.httpService.getRequest<boolean>(`${this.apiPrefix}/application/${name}/${organizationId}`);
+    }
 }

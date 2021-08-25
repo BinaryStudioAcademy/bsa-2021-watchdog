@@ -17,5 +17,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<ApplicationDto> GetApplicationByIdAsync(int appId);
         Task<ApplicationDto> UpdateApplicationAsync(int appId, UpdateApplicationDto updateAppDto);
         Task DeleteApplicationAsync(int appId);
+        Task<bool> IsProjectNameValid(string projectName, int organizationId);
     }
 }
