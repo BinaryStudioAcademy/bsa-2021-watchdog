@@ -71,5 +71,11 @@ namespace Watchdog.Core.API.Controllers
             var updatedOrganization = await _organizationService.UpdateSettingsAsync(organizationId, settings);
             return Ok(updatedOrganization);
         }
+
+        [HttpGet("slug/join/{organizationJoinSlug}")]
+        public async Task<ActionResult<bool>> IsJoinToOrganizationValid(string organizationJoinSlug)
+        {
+            return Ok(await _organizationService.IsOrganizationJoinValid(organizationJoinSlug));
+        }
     }
 }

@@ -140,7 +140,6 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
             ),
         });
 
-
     }
 
     validateAnother = (another: AbstractControl) => () => {

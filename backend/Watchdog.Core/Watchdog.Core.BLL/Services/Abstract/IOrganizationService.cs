@@ -13,5 +13,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<OrganizationDto> UpdateSettingsAsync(int organizationId, SettingsOrganizationDto settingsDto);
         Task<ICollection<OrganizationDto>> GetUserOrganizationsAsync(int userId);
         Task<bool> IsOrganizationSlugValid(string organizationSlug);
+        Task<bool> IsOrganizationJoinValid(string organizationJoinSlug);
     }
 }
