@@ -4,6 +4,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Organization } from '@shared/models/organization/organization';
 import { Role } from '@shared/models/role/role';
+import { MembersRoles } from '@shared/constants/membersRoles';
 
 @Component({
     selector: 'app-membership-settings',
@@ -24,7 +25,7 @@ export class MembershipSettingsComponent extends BaseComponent implements OnInit
         this.roleService.getRoles()
             .pipe(this.untilThis)
             .subscribe(r => {
-                this.roles = r;
+                this.roles = r.filter(rm => rm.name !== MembersRoles.owner);
             });
 
         this.connectForm();
