@@ -23,9 +23,9 @@
             <ng-template let-issue pTemplate="body">
                 <tr>
                     <td>
-                        <span class="issue-name"
+                        <span appTooltipFullName class="issue-name"
                               routerLink="/home/issues/{{issue.issueId}}/{{issue.newest.id}}">{{issue.errorClass}}</span>
-                        <small appTooltipFullName class="issue-message">{{issue.errorMessage}}</small>
+                        <small appTooltipFullName appTooltipFullName class="issue-message">{{issue.errorMessage}}</small>
                     </td>
                     <td>{{issue.newest.occurredOn | timeAgo}}</td>
                     <td>{{issue.eventsCount}}</td>
