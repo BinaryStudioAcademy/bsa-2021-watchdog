@@ -1,7 +1,6 @@
 @import src/styles/variables
 @import src/styles/mixins
 
-
 .container
     display: flex
     flex-direction: column
@@ -12,6 +11,10 @@
 
         .issue-name
             cursor: pointer
+            display: block
+            overflow: hidden
+            text-overflow: ellipsis
+            white-space: nowrap
 
         .issue-name:hover
             color: #0288D1
@@ -51,4 +54,3 @@
 
     th
         white-space: nowrap
-
