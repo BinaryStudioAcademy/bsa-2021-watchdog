@@ -20,6 +20,7 @@ export class TeamAddMemberComponent extends BaseComponent implements OnInit {
     isLoading: boolean = false;
     members: Member[];
     searchTerm: Subject<string> = new Subject<string>();
+    membersSearchCount = 5;
 
     constructor(
         private memberService: MemberService,
@@ -35,7 +36,7 @@ export class TeamAddMemberComponent extends BaseComponent implements OnInit {
             this.untilThis,
             debounceTime(300),
             switchMap((term: string) =>
-                this.memberService.searchMembersNotInTeam(this.team.id, term)
+                this.memberService.searchMembersNotInTeam(this.team.id, this.membersSearchCount, term)
                     .pipe(this.untilThis))
         ).subscribe(members => {
             this.members = members;

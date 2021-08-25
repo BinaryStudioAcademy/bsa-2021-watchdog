@@ -1,15 +1,34 @@
 <button pButton pRipple label="Add member" icon="pi pi-plus-circle" class="p-button-outlined"
-    (click)="toggle($event,op)"></button>
-<p-overlayPanel #op [appendTo]="'body'" styleClass="overlaypanel">
+    (click)="toggle($event, op)"></button>
+<p-overlayPanel #op [appendTo]="'body'" styleClass="team-overlaypanel">
     <ng-template class="overlay-container" pTemplate>
-        <input #srch pInputText type="search" placeholder="Filter search" (input)="search(srch.value)">
-        <div class="members-invite">Members <a>Invite Member</a></div>
-        <div (click)="addMember(member,op)" role="button" class="overlay-item" *ngFor="let member of members">
-            <p-avatar shape="circle" [label]="member.user | userInitials">
-            </p-avatar>
-            <div class="member">{{member?.user.email}}</div>
-        </div>
-        <div class="overlay-item state" *ngIf="!isLoading && members?.length === 0">Members not found</div>
-        <div class="overlay-item state" *ngIf="isLoading">Searching...</div>
+        <p-panel styleClass="panel" class="panel">
+            <ng-template pTemplate="header">
+                <div class="p-input-icon-right">
+                    <i *ngIf="isLoading" class="pi pi-spin pi-spinner"></i>
+                    <input #srch pInputText placeholder="Filter search" (input)="search(srch.value)" />
+                </div>
+            </ng-template>
+            <div class="content-scroll">
+                <div class="members-invite">
+                    Members
+                    <a [routerLink]="'/home/members'" class="invite-link">Invite Member</a>
+                </div>
+                <div (click)="addMember(member, op)" role="button" class="overlay-item" *ngFor="let member of members">
+                    <p-avatar
+                        [image]="member.user.avatarUrl"
+                        [label]="member.user.avatarUrl ? '' : member.user | userInitials"
+                        shape="circle">
+                    </p-avatar>
+                    <div class="member">{{ member.user.email }}</div>
+                </div>
+                <div class="overlay-item state placeholder-empty" *ngIf="!isLoading && !members?.length">
+                    Members not found
+                </div>
+                <div class="overlay-item state placeholder-empty" *ngIf="isLoading">
+                    Searching...
+                </div>
+            </div>
+        </p-panel>
     </ng-template>
 </p-overlayPanel>

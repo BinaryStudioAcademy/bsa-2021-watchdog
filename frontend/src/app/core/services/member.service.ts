@@ -45,8 +45,8 @@ export class MemberService {
         return this.httpService.getRequest<Member>(`${this.routePrefix}/organization/${organizationId}/user/${userId}`);
     }
 
-    searchMembersNotInTeam(teamId: number, memberEmail: string): Observable<Member[]> {
-        const url = `team/${teamId}/exceptTeam/${memberEmail !== '' ? `?memberEmail=${memberEmail}` : ''}`;
+    searchMembersNotInTeam(teamId: number, count: number, memberEmail: string): Observable<Member[]> {
+        const url = `team/${teamId}/exceptTeam/?count=${count}${memberEmail !== '' ? `&memberEmail=${memberEmail}` : ''}`;
         return this.httpService.getRequest<Member[]>(`${this.routePrefix}/${url}`);
     }
 
