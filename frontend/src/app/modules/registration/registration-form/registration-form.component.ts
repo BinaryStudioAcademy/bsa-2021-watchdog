@@ -17,6 +17,13 @@ import { uniqueSlugValidator } from '@shared/validators/unique-slug.validator';
     styleUrls: ['./registration-form.component.sass']
 })
 export class RegistrationFormComponent extends BaseComponent implements OnInit {
+    personalDetail: FormGroup;
+    ogranizationDetail: FormGroup;
+    personal_step = false;
+    organization_step = false;
+    step = 1;
+
+
     formGroup: FormGroup;
     user = {} as User;
     organization = {} as NewOrganizationsWithSlug;
@@ -42,7 +49,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
             this.user = user;
         }
 
-        this.formGroup = new FormGroup({
+        this.personalDetail = new FormGroup({
             firstName: new FormControl(
                 { value: '', disabled: this.isNotFinishedRegistration },
                 [
@@ -68,6 +75,27 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                     Validators.pattern(regexs.email)
                 ]
             ),
+            password: new FormControl(
+                { value: '', disabled: this.isNotFinishedRegistration },
+            ),
+            confirmPassword: new FormControl(
+                { value: '', disabled: this.isNotFinishedRegistration }
+            ),
+        });
+
+        this.personalDetail.controls.confirmPassword.setValidators([
+            this.equals(this.personalDetail.controls.password),
+            Validators.required
+        ]);
+        this.personalDetail.controls.password.setValidators([
+            Validators.required,
+            Validators.minLength(8),
+            Validators.maxLength(30),
+            Validators.pattern(regexs.password),
+            this.validateAnother(this.personalDetail.controls.confirmPassword)
+        ]);
+
+        this.ogranizationDetail = new FormGroup({
             organizationName: new FormControl(
                 '',
                 [
@@ -91,25 +119,8 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                     ]
                 }
             ),
-            password: new FormControl(
-                { value: '', disabled: this.isNotFinishedRegistration },
-            ),
-            confirmPassword: new FormControl(
-                { value: '', disabled: this.isNotFinishedRegistration }
-            ),
         });
 
-        this.formGroup.controls.confirmPassword.setValidators([
-            this.equals(this.formGroup.controls.password),
-            Validators.required
-        ]);
-        this.formGroup.controls.password.setValidators([
-            Validators.required,
-            Validators.minLength(8),
-            Validators.maxLength(30),
-            Validators.pattern(regexs.password),
-            this.validateAnother(this.formGroup.controls.confirmPassword)
-        ]);
     }
 
     validateAnother = (another: AbstractControl) => () => {
@@ -123,6 +134,31 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
         }
         return null;
     };
+
+    next() {
+        if (this.step == 1) {
+            this.personal_step = true;
+            if (this.personalDetail.invalid) { return }
+                this.step++;
+        }
+    }
+
+    previous() {
+        this.step--;
+        if (this.step == 1) {
+            this.personal_step = false;
+        }
+        if (this.step == 2) {
+            this.organization_step = false
+        }
+    }
+
+    submit() {
+        if(this.step == 2) {
+            this.organization_step = true;
+            if (this.ogranizationDetail.invalid) { return }
+        }
+    }
 
     onSubmit() {
         const organizationDto: RegOrganizationDto = {
@@ -148,4 +184,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                     });
         }
     }
+
+    get personalInfo() { return this.personalDetail.controls; }
+    get organizationInfo() { return this.ogranizationDetail.controls; }
 }
