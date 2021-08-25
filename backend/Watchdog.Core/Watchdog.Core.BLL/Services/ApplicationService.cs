@@ -71,7 +71,7 @@ namespace Watchdog.Core.BLL.Services
             var applications = await _context.Applications
                 .Include(a => a.ApplicationTeams)
                 .Where(a => a.OrganizationId == team.OrganizationId
-                        && !a.ApplicationTeams.Any(t => t.TeamId == teamId)
+                        && a.ApplicationTeams.All(t => t.TeamId != teamId) 
                         && a.Name.Contains(teamName))
                 .ToListAsync();
             return _mapper.Map<ICollection<ApplicationDto>>(applications);
@@ -89,8 +89,9 @@ namespace Watchdog.Core.BLL.Services
         public async Task<ApplicationDto> CreateAppAsync(NewApplicationDto dto)
         {
             var application = _mapper.Map<Application>(dto);
+
             var team = await _context.Teams.FirstOrDefaultAsync(t => t.Id == dto.TeamId) ??
-                throw new KeyNotFoundException("No team with this id!");
+                       throw new KeyNotFoundException("No team with this id!");
 
             await _context.AddAsync(application);
 
