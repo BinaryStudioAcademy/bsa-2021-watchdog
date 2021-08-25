@@ -5,3 +5,12 @@ export const toImages = (memberIds: number[], members: Member[]): string[] =>
     memberIds.map(id => members.find(m => m.id === id).user.avatarUrl);
 
 export const count = (assignee: Assignee): number => assignee.memberIds.length + assignee.teamIds.length;
+
+export const clearNest = (value: string) => {
+    switch (value) {
+        case 'newest.occurredOn':
+            return 'occurredOn';
+        default:
+            return value;
+    }
+}

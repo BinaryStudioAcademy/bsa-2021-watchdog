@@ -4,6 +4,9 @@ import { IssueInfo } from '@shared/models/issue/issue-info';
 import { Observable } from 'rxjs';
 import { UpdateAssignee } from '@shared/models/issue/update-assignee';
 import { IssueMessage } from '@shared/models/issue/issue-message';
+import { LazyLoadEvent } from 'primeng/api';
+import { clear } from './members.utils';
+import { clearNest } from './issues.utils';
 
 @Injectable({ providedIn: 'root' })
 export class IssueService {
@@ -13,6 +16,10 @@ export class IssueService {
 
     public getIssuesInfo(): Observable<IssueInfo[]> {
         return this.httpService.getRequest<IssueInfo[]>(`${this.routePrefix}/info`);
+    }
+
+    public getIssuesInfoLazy(event: LazyLoadEvent): Observable<{ collection: IssueInfo[], totalRecord: number }> {
+        return this.httpService.postRequest<{ collection: IssueInfo[], totalRecord: number }>(`${this.routePrefix}/info`, clear(event, clearNest));
     }
 
     public updateAssignee(updateData: UpdateAssignee): Observable<void> {

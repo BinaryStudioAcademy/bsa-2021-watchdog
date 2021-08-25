@@ -2,8 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Nest;
 using System.Collections.Generic;
+using Watchdog.Core.BLL.Extensions;
 using System.Linq;
 using System.Threading.Tasks;
+using Watchdog.Core.BLL.Models;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Issue;
 using Watchdog.Core.Common.Models.Issue;
@@ -188,6 +190,42 @@ namespace Watchdog.Core.BLL.Services
             _context.AssigneeTeams.RemoveRange(teamsToDelete);
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<(ICollection<IssueInfoDto>, int)> GetIssuesInfoLazyAsync(FilterModel filterModel)
+        {
+            var issues = await  _context.Issues
+                 .Select(i => new IssueInfoDto()
+                 {
+                     IssueId = i.Id,
+                     ErrorClass = i.ErrorClass,
+                     ErrorMessage = i.ErrorMessage,
+                     EventsCount = _context.EventMessages.Count(em => em.IssueId == i.Id),
+                     Newest = new IssueMessageDto()
+                     {
+                         Id = _context.EventMessages
+                            .Where(em => em.IssueId == i.Id)
+                            .OrderByDescending(em => em.OccurredOn)
+                            .FirstOrDefault(em => em.IssueId == i.Id).EventId,
+                         OccurredOn = _context.EventMessages
+                            .Where(em => em.IssueId == i.Id)
+                            .OrderByDescending(em => em.OccurredOn)
+                            .FirstOrDefault().OccurredOn
+                     },
+                     Assignee = new AssigneeDto
+                     {
+                         MemberIds = _context.AssigneeMembers
+                            .Where(a => a.IssueId == i.Id)
+                            .Select(a => a.MemberId)
+                            .ToList(),
+                         TeamIds = _context.AssigneeTeams
+                            .Where(a => a.IssueId == i.Id)
+                            .Select(a => a.TeamId)
+                            .ToList()
+                     }
+                 }).ToListAsync();
+            var result = issues.Filter(filterModel, out var totalRecord).ToList();
+            return (result, totalRecord);
         }
     }
 }

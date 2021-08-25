@@ -36,7 +36,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
 
     invitingMembersCount = 5;
 
-    invations: Invition[] = [{ member: {} as NewMember, groupForm: this.generateGroupForm() }];
+    invations: Invition[];
     constructor(
         private memberService: MemberService,
         private roleService: RoleService,
@@ -66,7 +66,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
                 []
             ),
             role: new FormControl(
-                this.organization.defaultRoleId,
+                this.organization?.defaultRoleId,
                 [
                     Validators.required,
                 ]
@@ -111,7 +111,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis)
             .subscribe(organization => {
                 this.organization = organization;
-
+                this.invations = [{ member: {} as NewMember, groupForm: this.generateGroupForm() }]
                 this.teamService.getTeamOptionsByOrganizationId(organization.id)
                     .pipe(this.untilThis)
                     .subscribe(teams => {

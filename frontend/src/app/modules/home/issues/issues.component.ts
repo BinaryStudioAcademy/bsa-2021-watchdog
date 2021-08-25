@@ -6,14 +6,15 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
 import { Organization } from '@shared/models/organization/organization';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { MemberService } from '@core/services/member.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { TeamService } from '@core/services/team.service';
 import { Assignee } from '@shared/models/issue/assignee';
 import { count, toImages } from '@core/services/issues.utils';
 import { IssueInfo } from '@shared/models/issue/issue-info';
-import { map } from 'rxjs/operators';
+import { debounceTime, map, tap } from 'rxjs/operators';
 import { AssigneeOptions } from '@shared/models/issue/assignee-options';
 import { IssueService } from '@core/services/issue.service';
+import { LazyLoadEvent } from 'primeng/api';
 
 @Component({
     selector: 'app-issues',
@@ -33,6 +34,11 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     isAssign: boolean;
     sharedOptions = {} as AssigneeOptions;
     organization: Organization;
+    globalFilterFields = ['errorClass'];
+    lastEvent: LazyLoadEvent;
+    loading: boolean = false;
+    totalRecords: number;
+    organizationRequest: Observable<Organization>;
 
     constructor(
         private issuesHub: IssuesHubService,
@@ -49,23 +55,28 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         this.isAssign = false;
 
         this.setTabPanelFields();
+        const request = this.authService.getOrganization()
+            .pipe(
+                this.untilThis,
+                tap(organization => {
+                    this.organization = organization;
+                }));
 
-        this.authService.getOrganization()
-            .pipe(this.untilThis)
-            .subscribe(organization => {
-                this.organization = organization;
-                forkJoin([this.loadMember(), this.loadTeams(), this.loadIssues()])
+        this.organizationRequest = request;
+
+        request
+            .subscribe(() => {
+                this.loadIssuesLazy(this.lastEvent);
+                forkJoin([this.loadMember(), this.loadTeams()])
                     .pipe(this.untilThis)
-                    .subscribe(([members, teams, issues]) => {
+                    .subscribe(([members, teams]) => {
                         this.sharedOptions.members = members;
                         this.sharedOptions.teams = teams;
-                        this.issues = issues;
-                        this.issuesCount.all = this.issues.length;
                         this.subscribeToIssuesHub();
                     });
-            }, errorResponse => {
-                this.toastNotification.error(errorResponse);
-            });
+            }, error => {
+                this.toastNotification.error(error);
+            })
     }
 
     loadMember() {
@@ -140,15 +151,23 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         return equalsMembers && equalsTeams;
     }
 
-    private loadIssues() {
-        return this.issueService.getIssuesInfo()
+    async loadIssuesLazy(event: LazyLoadEvent) {
+        this.lastEvent = event;
+        if (!this.organization) {
+            await this.organizationRequest.toPromise();
+        }
+        this.issueService.getIssuesInfoLazy(this.lastEvent)
             .pipe(this.untilThis,
-                map(issues => issues.map(issue => {
-                    if (issue.assignee) {
-                        return issue;
-                    }
-                    return { ...issue, assignee: { teamIds: [], memberIds: [] } as Assignee };
-                })));
+                debounceTime(1000))
+            .subscribe(
+                response => {
+                    this.issues = response.collection;
+                    this.totalRecords = response.totalRecord;
+                },
+                error => {
+                    this.toastNotification.error(error);
+                }
+            );
     }
 
     private subscribeToIssuesHub() {
@@ -167,6 +186,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             errorClass: issue.issueDetails.className,
             errorMessage: issue.issueDetails.errorMessage,
             eventsCount: 1,
+            affected: 1,
             newest: { id: issue.id, occurredOn: issue.occurredOn },
             assignee: { teamIds: [], memberIds: [] },
         };

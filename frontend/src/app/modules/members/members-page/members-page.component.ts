@@ -28,16 +28,14 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
     isInviting: Boolean;
     user: User;
     roles: Role[];
-
+    itemsPerPage: number;
     organization: Organization;
     isEdit: boolean = false;
-
     loading: boolean;
     totalRecords: number;
     globalFilterFields = ['member.user.firstName', 'member.user.email', 'member.role.name'];
-
     organizationRequest: Observable<Organization>;
-
+    lastEvent: LazyLoadEvent;
     constructor(
         private memberService: MemberService,
         private roleService: RoleService,
@@ -54,34 +52,35 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
         this.user = this.authService.getUser();
         this.setUpSharedDate();
         this.isInviting = false;
-        this.spinnerService.show(true);
-        this.authService.getOrganization()
-            .pipe(this.untilThis)
+        this.itemsPerPage = 10;
+        const request = this.authService.getOrganization()
+            .pipe(
+                this.untilThis,
+                tap(organization => {
+                    this.organization = organization;
+                }));
+
+        this.organizationRequest = request;
+
+        request
             .subscribe(() => {
                 this.loadMembers(this.lastEvent);
-                this.spinnerService.hide();
             }, error => {
                 this.toastNotifications.error(error);
-                this.spinnerService.hide();
-            });
-
-        this.spinnerService.show(true);
+            })
         this.roleService.getRoles()
             .pipe(this.untilThis)
             .subscribe(roles => {
                 this.roles = roles;
-                this.spinnerService.hide();
             }, error => {
                 this.toastNotifications.error(error);
-                this.spinnerService.hide();
             });
     }
 
-    lastEvent: LazyLoadEvent;
 
 
-    private async loadMembers(event: LazyLoadEvent) {
-        this.spinnerService.show(true);
+
+    async loadMembers(event: LazyLoadEvent) {
         this.lastEvent = event;
         if (!this.organization) {
             await this.organizationRequest.toPromise();

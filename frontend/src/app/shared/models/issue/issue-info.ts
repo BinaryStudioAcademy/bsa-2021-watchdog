@@ -7,5 +7,6 @@ export interface IssueInfo {
     errorClass: string,
     eventsCount: number,
     assignee?: Assignee,
+    affected: number,
     newest: IssueMessageInfo
 }

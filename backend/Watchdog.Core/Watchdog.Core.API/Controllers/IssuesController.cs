@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Watchdog.Core.BLL.Models;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Issue;
 using Watchdog.Core.Common.Models.Issue;
@@ -23,6 +24,13 @@ namespace Watchdog.Core.API.Controllers
         {
             var issues = await _issueService.GetIssuesInfoAsync();
             return Ok(issues);
+        }
+
+        [HttpPost("info")]
+        public async Task<ActionResult> GetIssuesInfoLazyAsync ([FromBody] FilterModel filterModel)
+        {
+            var (issues, totalRecord) = await _issueService.GetIssuesInfoLazyAsync(filterModel);
+            return Ok(new { Collection = issues, TotalRecords = totalRecord });
         }
 
         [HttpPut]

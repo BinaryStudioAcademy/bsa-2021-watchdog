@@ -19,8 +19,8 @@
         #table 
         [value]="memberItems" 
         class="members-table"
-        [rows]="10" 
-        [paginator]="totalRecords > 10"
+        [rows]="itemsPerPage" 
+        [paginator]="totalRecords > itemsPerPage"
         [lazy]="true"
         (onLazyLoad)="loadMembers($event)" 
         [totalRecords]="totalRecords"

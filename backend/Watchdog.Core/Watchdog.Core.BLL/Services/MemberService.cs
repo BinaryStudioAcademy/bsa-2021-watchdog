@@ -172,14 +172,16 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<(ICollection<MemberDto>, int)> GetMembersByOrganizationIdLazyAsync(int id, FilterModel filterPayload)
         {
-            var members = (await _context.Members.Where(m => m.OrganizationId == id)
+            var members = await _context.Members.Where(m => m.OrganizationId == id)
                 .Include(m => m.User)
                 .Include(m => m.TeamMembers)
                     .ThenInclude(tm => tm.Team)
                 .Include(m => m.Role)
-                .ToListAsync())
-                .Filter(filterPayload, out var totalRecord);
-            return (_mapper.Map<ICollection<MemberDto>>(members), totalRecord);
+                .ToListAsync();
+            var result = _mapper.Map<ICollection<MemberDto>>(members)
+                .Filter(filterPayload, out var totalRecord)
+                .ToList();
+            return (result, totalRecord);
         }
     }
 }

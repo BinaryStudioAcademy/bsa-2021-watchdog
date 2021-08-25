@@ -6,14 +6,14 @@ export const clear = (object: any, clearFunc: (value: string) => string = clearS
         return clearFunc(object);
     }
     if (Array.isArray(object)) {
-        return object.map(o => clear(o));
+        return object.map(o => clear(o, clearFunc));
     }
     if (typeof object === 'object') {
         const newObject = {};
         Object.keys(object).forEach(key => {
             const value = object[key];
             const newKey = clearFunc(key);
-            newObject[newKey] = clear(value);
+            newObject[newKey] = clear(value, clearFunc);
         });
         return newObject;
     }

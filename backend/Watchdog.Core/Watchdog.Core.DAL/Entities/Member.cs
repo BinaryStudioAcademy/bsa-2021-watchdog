@@ -14,17 +14,11 @@ namespace Watchdog.Core.DAL.Entities
         }
         public User User { get; set; }
 
-        public string UserFirstName => User.FirstName;
-
-        public string UserEmail => User.Email;
-
         public int UserId { get; set; }
 
         public int RoleId { get; set; }
 
         public Role Role { get; set; }
-
-        public string RoleName => Role.Name;
 
         public int OrganizationId { get; set; }
 
