@@ -156,7 +156,8 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
     submit() {
         if(this.step == 2) {
             this.organization_step = true;
-            if (this.ogranizationDetail.invalid) { return }
+            this.onSubmit();
+            if (this.ogranizationDetail.invalid) { return; }
         }
     }
 
@@ -165,7 +166,6 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
             organizationSlug: this.organizationSlug,
             name: this.organization.name,
         } as RegOrganizationDto;
-
         if (!this.isNotFinishedRegistration) {
             const userDto = {
                 ...this.user,

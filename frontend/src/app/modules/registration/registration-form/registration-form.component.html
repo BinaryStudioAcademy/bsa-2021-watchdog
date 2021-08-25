@@ -1,4 +1,4 @@
-<form [formGroup]="personalDetail" *ngIf="step == 1">
+<form [formGroup]="personalDetail" action="/signup" method="POST" *ngIf="step == 1">
     <div class="reg-block">
         <div class="input-block">
             <span class="p-float-label">
@@ -71,7 +71,6 @@
             </div>
         </div>
     </div>
-    <div class="border"></div>
     <div class="submit-block">
         <span>
             <button pButton class="submit-button p-button-outlined" label="Next" (click)="next()"
@@ -121,7 +120,7 @@
         </span>
         <span>
             <button pButton class="submit-button p-button-outlined" label="Submit" (click)="submit()"
-                [disabled]="!personalDetail.valid"></button>
+                [disabled]="!ogranizationDetail.valid"></button>
         </span>
     </div>
 </form>
