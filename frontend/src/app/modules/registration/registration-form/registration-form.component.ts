@@ -87,7 +87,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                         Validators.pattern(regexs.organizationSlag),
                     ],
                     asyncValidators: [
-                        uniqueSlugValidator('', this.organizationService)
+                        uniqueSlugValidator(this.organizationService)
                     ]
                 }
             ),

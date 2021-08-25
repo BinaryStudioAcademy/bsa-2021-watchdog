@@ -1,10 +1,11 @@
 import { BaseComponent } from '@core/components/base/base.component';
 import { OrganizationService } from '@core/services/organization.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Organization } from '@shared/models/organization/organization';
 import { Component, Input, OnInit } from '@angular/core';
 import { regexs } from '@shared/constants/regexs';
 import { uniqueSlugValidator } from '@shared/validators/unique-slug.validator';
+import { of } from 'rxjs';
 
 @Component({
     selector: 'app-general-settings',
@@ -41,10 +42,17 @@ export class GeneralSettingsComponent extends BaseComponent implements OnInit {
                 Validators.pattern(regexs.organizationSlag),
             ],
             asyncValidators: [
-                uniqueSlugValidator(this.organization.organizationSlug, this.organizationService)
+                this.slagValidator,
             ]
         }));
     }
+
+    slagValidator = (ctrl: AbstractControl) => {
+        if (this.organization.organizationSlug === ctrl.value) {
+            return of(null);
+        }
+        return uniqueSlugValidator(this.organizationService)(ctrl);
+    };
 
     get name() { return this.parentForm.controls.name; }
 
