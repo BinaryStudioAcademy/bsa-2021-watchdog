@@ -28,7 +28,7 @@ namespace Watchdog.Core.API.Controllers
         public async Task<ActionResult<UserDto>> GetUser(string uid)
         {
             var user = await _userService.GetUserByUidAsync(uid);
-            return user is null ? NotFound() : Ok(user);
+            return Ok(user);
         }
 
         [HttpPost]
@@ -46,9 +46,9 @@ namespace Watchdog.Core.API.Controllers
         }
 
         [HttpGet("organization/{orgId}/notInOrg/")]
-        public async Task<ActionResult<IEnumerable<UserDto>>> GetMembersNotInOrganization(int orgId, string memberEmail = "")
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetMembersNotInOrganization(int orgId, int count, string memberEmail = "")
         {
-            var members = await _userService.SearchMembersNotInOrganizationAsync(orgId, memberEmail);
+            var members = await _userService.SearchMembersNotInOrganizationAsync(orgId, count, memberEmail);
             return Ok(members);
         }
 

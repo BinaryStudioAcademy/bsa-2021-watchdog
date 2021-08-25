@@ -1,3 +1,6 @@
+import { regexs } from '@shared/constants/regexs';
+import { TeamService } from '@core/services/team.service';
+import { uniqueTeamNameValidator } from '@shared/validators/unique-team-name.validator';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -10,7 +13,10 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
 export class CreateTeamComponent implements OnInit {
     teamGroup: FormGroup;
 
-    constructor(private dialogRef: DynamicDialogRef) { }
+    constructor(
+        private dialogRef: DynamicDialogRef,
+        private teamService: TeamService
+    ) { }
 
     ngOnInit(): void {
         this.teamGroup = new FormGroup({
@@ -20,13 +26,20 @@ export class CreateTeamComponent implements OnInit {
                     Validators.required,
                     Validators.minLength(3),
                     Validators.maxLength(50),
+                    Validators.pattern(regexs.teamName)
+                ],
+                [
+                    uniqueTeamNameValidator(this.teamService)
                 ]
             )
         });
     }
 
     createTeam() {
-        const name = <string> this.teamGroup.controls.name.value;
-        this.dialogRef.close(name.split(' ').join('-').toLocaleLowerCase());
+        this.dialogRef.close(this.name.value);
+    }
+
+    get name() {
+        return this.teamGroup.controls.name;
     }
 }
