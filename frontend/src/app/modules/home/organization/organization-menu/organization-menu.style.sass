@@ -1,8 +1,10 @@
 @import src/styles/variables
 @import src/styles/mixins
 
+$item-height: 47px
 ::ng-deep
     .org-dropdown
+        padding: 0.5rem 0
         .org-label
             color: $primary-color-text
             align-items: center
@@ -53,18 +55,38 @@
 
         .p-dropdown-item
             padding: 0.25rem 0.5rem !important
+            height: $item-height
+            &:not(.p-highlight):not(.p-disabled):hover
+                background: $background-hover-color !important
 
         .org-avatar-item.p-avatar
             background-color: $primary-color-darkest
         .org-avatar-item .p-avatar-text
             color: $primary-color-text
 
+        .p-dropdown-items
+            padding: 0 !important
+
     .dropdown-wrapper
         width: 100%
         height: $title-hight
         display: flex
         align-items: center
+.create-new
+    border-top: 1px solid $border-color
 
+.create-new-button
+    margin-top: 0.5rem
+    padding: 0.25rem 0.5rem
+    width: 100%
+    display: grid
+    grid-auto-flow: column
+    justify-content: flex-start
+    grid-gap: 10px
+    cursor: pointer
+
+    &:hover
+        background: $background-hover-color
 .icon
     display: block
     margin-left: auto

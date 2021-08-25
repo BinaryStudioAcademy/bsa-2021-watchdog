@@ -18,6 +18,7 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
     organization: Organization;
     organizations: Organization[];
     menuItems: MenuItem[] = [];
+    display: boolean = false;
     @Input() collapsed: boolean = false;
 
     constructor(
@@ -70,5 +71,11 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
 
     disableParentEvent(event: Event) {
         event.stopPropagation();
+    }
+
+    async organizationCreated(organization: Organization) {
+        this.organizations = this.organizations.concat(organization);
+        await this.changeOrganization(organization);
+        await this.router.navigateByUrl('home/organization/settings');
     }
 }

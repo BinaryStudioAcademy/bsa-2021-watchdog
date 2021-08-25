@@ -2,22 +2,28 @@
           [modal]="true"
           [closable]="false"
           [showHeader] ="false">
-        <p-panel
-        header="Assign" 
+    <p-panel
+        header="Assign"
         class="invite-block">
-            <div class="p-dialog-header">
-                <button class="close-button" (click)="closeModal.emit()"><i class="pi pi-times"></i></button>
-            </div>
-            <form>
-                <div class="assignee-form">
-                    <p-multiSelect name="members" class="select-inp" [options]="members" appendTo="body" defaultLabel="Select members assignee"
-                        display="chip" optionLabel="user.firstName" [(ngModel)]="data.memberIds" optionValue="id">
-                        <ng-template let-member pTemplate="item">
-                            <p-avatar [image]='member.user.avatarUrl' alt="Avatar"  shape="circle" class="assignee-avatar"></p-avatar>
-                            <span class="member-name">{{member.user.firstName}} {{member.user.lastName}}</span>
-                        </ng-template>
-                    </p-multiSelect>
-                    <p-multiSelect name="teams" class="select-inp" [options]="teams" appendTo="body" defaultLabel="Select teams assignee" 
+        <div class="p-dialog-header">
+            <button class="close-button" (click)="closeModal.emit()"><i class="pi pi-times"></i></button>
+        </div>
+        <form>
+            <div class="assignee-form">
+                <p-multiSelect name="members" class="select-inp" [options]="members" appendTo="body" defaultLabel="Select members assignee"
+                display="chip" optionLabel="user.firstName" [(ngModel)]="data.memberIds" optionValue="id">
+                    <ng-template let-member pTemplate="item">
+                        <p-avatar
+                            [label]="member.user.avatarUrl ? '' : member.user | userInitials"
+                            [image]='member.user.avatarUrl'
+                            alt="Avatar"
+                            shape="circle"
+                            class="assignee-avatar">
+                        </p-avatar>
+                        <span class="member-name">{{member.user.firstName}} {{member.user.lastName}}</span>
+                    </ng-template>
+                </p-multiSelect>
+                    <p-multiSelect name="teams" class="select-inp" [options]="teams" appendTo="body" defaultLabel="Select teams assignee"
                     display="chip" optionLabel="name" optionValue="id"
                     [(ngModel)]="data.teamIds">
                     <ng-template let-team pTemplate="item">
@@ -25,7 +31,7 @@
                         <span class="member-name">{{team.name}}</span>
                     </ng-template>
                 </p-multiSelect>
-                </div>
-            </form>
-    </p-panel> 
+            </div>
+        </form>
+    </p-panel>
 </p-dialog>

@@ -194,6 +194,19 @@
         margin: 4px
         font-size: 12px
 
+.content-title
+    display: flex
+    justify-content: space-between
+    position: sticky
+    z-index: 100
+    top: 0
+    @include background-gray
+    @include title
+
+.header-buttons
+    display: flex
+    gap: .2em
+
 @media screen and ( max-width: 1100px )
     .name-settings
         display: grid

@@ -26,7 +26,7 @@
 <!--    Tiles Content    -->
 <ng-template [ngIf]="dashboard">
     <div *ngIf="!tiles.length" class="tiles-not-found">
-        <app-no-content-placeholder></app-no-content-placeholder>
+        <app-no-content-placeholder title="Looks like here are no tiles"></app-no-content-placeholder>
     </div>
     <div *ngIf="tiles.length" class="tiles-container">
         <ng-container *ngFor="let tile of tiles" [ngSwitch]="tile.type">

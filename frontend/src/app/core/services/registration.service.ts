@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FullRegistrationDto } from '@modules/registration/DTO/fullRegistrationDto';
-import { PartialRegistrationDto } from '@modules/registration/DTO/partialRegistrationDto';
+import { FullRegistrationDto } from '@modules/registration/DTO/full-registration-dto';
+import { PartialRegistrationDto } from '@modules/registration/DTO/partial-registration-dto';
 import { User } from '@shared/models/user/user';
 import { CoreHttpService } from './core-http.service';
 import { clear } from './registration.utils';

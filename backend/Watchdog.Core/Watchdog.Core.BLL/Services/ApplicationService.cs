@@ -70,6 +70,7 @@ namespace Watchdog.Core.BLL.Services
 
             var applications = await _context.Applications
                 .Include(a => a.ApplicationTeams)
+                .Include(a => a.Platform)
                 .Where(a => a.OrganizationId == team.OrganizationId
                         && a.ApplicationTeams.All(t => t.TeamId != teamId) 
                         && a.Name.Contains(teamName))
@@ -79,8 +80,8 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task RemoveAppTeam(int appTeamId)
         {
-            var appTeam = await _context.ApplicationTeams.FirstOrDefaultAsync(t => t.Id == appTeamId);
-            if (appTeam == null) throw new InvalidOperationException("Application in this team not found!");
+            var appTeam = await _context.ApplicationTeams.FirstOrDefaultAsync(t => t.Id == appTeamId)
+                ?? throw new InvalidOperationException("Application in this team not found!");
 
             _context.ApplicationTeams.Remove(appTeam);
             await _context.SaveChangesAsync();
@@ -139,5 +140,16 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task<bool> IsProjectNameValid(string projectName, int organizationId)
+        {
+            if (projectName.Length < 3 || projectName.Length > 50)
+            {
+                return false;
+            }
+
+            return !(await _context.Applications
+                .Where(a => a.OrganizationId == organizationId)
+                .AnyAsync(a => a.Name == projectName));
+        }
     }
 }

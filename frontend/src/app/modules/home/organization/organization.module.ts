@@ -5,6 +5,7 @@ import { GeneralSettingsComponent } from './organization-settings/general-settin
 import { MembershipSettingsComponent } from './organization-settings/membership-settings/membership-settings.component';
 import { OrganizationSettingsComponent } from './organization-settings/organization-settings.component';
 import { OrganizationRouitingModule } from './organization-routing.module';
+import { CreateOrganizationComponent } from './create-organization/create-organization.component';
 
 @NgModule({
     imports: [
@@ -20,6 +21,7 @@ import { OrganizationRouitingModule } from './organization-routing.module';
         OrganizationSettingsComponent,
         MembershipSettingsComponent,
         GeneralSettingsComponent,
+        CreateOrganizationComponent,
     ]
 })
 export class OrganizationModule { }

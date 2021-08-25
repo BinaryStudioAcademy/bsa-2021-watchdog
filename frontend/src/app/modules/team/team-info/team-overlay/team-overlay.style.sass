@@ -1,41 +1,60 @@
 @import src/styles/variables
+@import src/styles/mixins
 
 .overlay-item
     display: flex
     align-items: center
-    font-weight: bold
-    padding: .3em
+    font-weight: 400
+    padding: .3em $half-indent
     gap: .3em
     width: 100%
     font-size: .8rem
     border-bottom: 1px solid $border-color
+    height: 45px
     &:hover
         background-color: $penging-color
     &.state
         padding: 1em
     &.project
         padding: 1em
-    & .member
+    .member
         overflow: hidden
         text-overflow: ellipsis
         white-space: nowrap
         height: 1em
+    img
+        @include disable-select
+        width: 20px
+        height: 20px
+        margin: 0 .2em
 
-::ng-deep
-    .overlaypanel .p-overlaypanel-content
-        padding: 0
+::ng-deep .team-overlaypanel
+    .p-overlaypanel-content
         width: 250px
+        padding: 0
         & input
             width: 100%
-            border: none
-            border-bottom: 1px solid $border-color
-            border-bottom-left-radius: 0
-            border-bottom-right-radius: 0
+    &.p-overlaypanel
+        margin: 0
+        top: 0
+    &::after
+        content: none
+    &::before
+        content: none
+    .panel.p-panel .p-panel-content
+        padding: 0
+
+.content-scroll
+    max-height: 300px
+    overflow-y: auto
 
 .members-invite
     background-color: $background-color
     padding: .5rem
     display: flex
-    font-size: .75rem
-    font-weight: bold
+    font-size: .7rem
+    font-weight: 600
     justify-content: space-between
+    .invite-link
+        text-decoration: none
+        color: $link-color
