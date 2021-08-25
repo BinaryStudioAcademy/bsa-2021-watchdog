@@ -30,7 +30,6 @@
                         optionLabel="name" optionValue="type">
             </p-dropdown>
         </div>
-
         <!--    Issues Count Input    -->
         <div class="issues-count">
             <div class="issues-count-title">Count of top items</div>
@@ -38,6 +37,14 @@
                            formControlName="issuesCount" mode="decimal">
             </p-inputNumber>
         </div>
+        <!--    Tile Size Dropdown    -->
+        <div class="tile-size">
+            <div class="tile-size-title">Tile size</div>
+            <p-dropdown [options]=tileSizeDropdown  appendTo="body" formControlName="tileSize"
+                        optionLabel="name" optionValue="type">
+            </p-dropdown>
+        </div>
+        
         <p-divider></p-divider>
 
         <!--    App Source Selection    -->
