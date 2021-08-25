@@ -33,7 +33,8 @@
             <app-top-active-issues-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.TopActiveIssues"
                                         [isShownEditTileMenu]="showTileMenu" [tile]="tile"
                                         [userProjects]="projects"
-                                        class="top-active-issue">
+                                        class="top-active-issue"
+                                        [style.flex-basis.px]="getTileSize(tile)">
             </app-top-active-issues-tile>
         </ng-container>
     </div>
