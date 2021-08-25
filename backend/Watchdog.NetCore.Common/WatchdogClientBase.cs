@@ -124,7 +124,7 @@ namespace Watchdog.NetCore.Common
         protected virtual WatchdogMessage BuildMessage(Exception exception)
         {
             return WatchdogMessageBuilder.New(_settings)
-                .SetTimeStamp(DateTime.Now)
+                .SetTimeStamp(DateTime.UtcNow)
                 .SetMachineName(Environment.MachineName)
                 .SetEnvironmentDetails()
                 .SetExceptionDetails(exception)
