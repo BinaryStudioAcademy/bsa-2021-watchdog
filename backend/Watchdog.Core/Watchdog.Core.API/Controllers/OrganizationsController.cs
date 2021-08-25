@@ -71,5 +71,13 @@ namespace Watchdog.Core.API.Controllers
             var updatedOrganization = await _organizationService.UpdateSettingsAsync(organizationId, settings);
             return Ok(updatedOrganization);
         }
+
+        [HttpDelete("{organizationId}")]
+        public async Task<ActionResult> DeleteOrgsnization(int organizationId)
+        {
+            await _organizationService.DeleteOrganizationAsync(organizationId);
+            return NoContent();
+        }
+
     }
 }

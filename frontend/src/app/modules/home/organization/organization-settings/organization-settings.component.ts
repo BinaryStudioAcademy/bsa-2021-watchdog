@@ -7,6 +7,10 @@ import { BaseComponent } from '@core/components/base/base.component';
 import { Organization } from '@shared/models/organization/organization';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { SpinnerService } from '@core/services/spinner.service';
+import { MemberService } from '@core/services/member.service';
+import { ConfirmWindowService } from '@core/services/confirm-window.service';
+import { Router } from '@angular/router';
+import { ShareDataService } from '@core/services/share-data.service';
 
 @Component({
     selector: 'app-organization-settings',
@@ -16,6 +20,8 @@ import { SpinnerService } from '@core/services/spinner.service';
 export class OrganizationSettingsComponent extends BaseComponent implements OnInit {
     organization: Organization;
     parentForm: FormGroup = new FormGroup({});
+    memberRoleId: number;
+    isRemovingAllowed = false;
 
     @ViewChild('saveBut') saveButton: ElementRef<HTMLButtonElement>;
 
@@ -23,7 +29,11 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
         private authService: AuthenticationService,
         private toastService: ToastNotificationService,
         private organizationService: OrganizationService,
-        private spinnerService: SpinnerService
+        private spinnerService: SpinnerService,
+        private memberService: MemberService,
+        private confirmWindowService: ConfirmWindowService,
+        private dataService: ShareDataService<Organization>,
+        private router: Router
     ) { super(); }
 
     ngOnInit() {
@@ -33,6 +43,7 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
             .subscribe(
                 organization => {
                     this.organization = organization;
+                    this.getRole();
                     this.spinnerService.hide();
                 },
                 error => {
@@ -79,5 +90,47 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
 
     setButtonStateDisabled(state: boolean) {
         if (this.saveButton) this.saveButton.nativeElement.disabled = state;
+    }
+
+    remove() {
+        this.confirmWindowService.confirm({
+            title: 'Delete organization?',
+            message: `Are you sure you wish to delete the <strong>${this.organization.name}</strong>?`,
+            acceptButton: { class: 'p-button-danger p-button-outlined' },
+            cancelButton: { class: 'p-button-secondary p-button-outlined' },
+            accept: () => {
+                this.organizationService.deleteOrganization(this.organization.id)
+                    .pipe(this.untilThis)
+                    .subscribe(() => {
+                        this.toastService.success('Organization deleted');
+                        this.organizationService.clearOrganization();
+                        this.setUserFirstOrganization();
+                    }, error => {
+                        this.toastService.error(error);
+                    });
+            }
+        });
+    }
+
+    setUserFirstOrganization(): void {
+        this.organizationService.getOrganizationsByUserId(this.authService.getUser().id)
+            .pipe(this.untilThis)
+            .subscribe(organizations => {
+                this.organization = organizations.shift();
+                this.authService.setOrganization(this.organization);
+                this.dataService.changeMessage(this.organization);
+                this.router.navigateByUrl('/home');
+            });
+    }
+
+    getRole(): void {
+        const ownerRoleId: number = 1;
+        this.memberService.getMemberByUserAndOrganization(this.organization.id, this.authService.getUser().id)
+            .pipe(this.untilThis)
+            .subscribe(member => {
+                this.isRemovingAllowed = member.roleId === ownerRoleId;
+            }, error => {
+                this.toastService.error(error);
+            });
     }
 }

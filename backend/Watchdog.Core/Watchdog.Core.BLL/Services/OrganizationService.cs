@@ -88,6 +88,21 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<ICollection<OrganizationDto>>(organizaitons);
         }
 
+        public async Task DeleteOrganizationAsync(int organizationId)
+        {
+            var organization = await _context.Organizations
+                .Include(t => t.Teams)
+                    .ThenInclude(m => m.ApplicationTeams)
+                .Include(t => t.Teams)
+                    .ThenInclude(tm => tm.TeamMembers)
+                .Include(m => m.Members)
+                    .ThenInclude(tm => tm.TeamMembers)
+                .FirstOrDefaultAsync(o => o.Id == organizationId) ?? throw new KeyNotFoundException("Organization doesn't exist");
+
+            _context.Organizations.Remove(organization);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<bool> IsOrganizationSlugValid(string organizationSlug)
         {
             var reg = new Regex(@"^[\w\-]+$");

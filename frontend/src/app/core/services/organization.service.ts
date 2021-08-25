@@ -83,6 +83,10 @@ export class OrganizationService {
             }));
     }
 
+    deleteOrganization(organizationId: number) {
+        return this.httpService.deleteRequest(`${this.apiPrefix}/${organizationId}`);
+    }
+
     isSlugUnique(slug: string): Observable<boolean> {
         return this.httpService.getRequest<boolean>(`${this.apiPrefix}/slug/${slug}`);
     }
