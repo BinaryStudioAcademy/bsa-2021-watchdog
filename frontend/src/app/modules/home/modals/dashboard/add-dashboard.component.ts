@@ -52,7 +52,7 @@ export class AddDashboardComponent implements OnInit {
                         Validators.pattern(regexs.dashboardName)
                     ],
                     asyncValidators: [
-                        createDashboardValidator(this.dashboard, this.dashboardService)
+                        createDashboardValidator(this.dashboard, this.dashboardService, this.organization.id)
                     ]
                 }
 

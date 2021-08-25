@@ -31,7 +31,7 @@ export class DashboardService {
         return this.httpService.putRequest<Dashboard>(`${this.routePrefix}`, updateDashboard);
     }
 
-    public isDashboardNameUnique(name: string): Observable<boolean> {
-        return this.httpService.getRequest<boolean>(`${this.routePrefix}/dashboard/${name}`);
+    public isDashboardNameUnique(name: string, organizationId: number): Observable<boolean> {
+        return this.httpService.getRequest<boolean>(`${this.routePrefix}/dashboard/${name}/${organizationId}`);
     }
 }

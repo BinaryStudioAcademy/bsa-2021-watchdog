@@ -66,14 +66,16 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> IsDashboardNameValid(string dashboardName)
+        public async Task<bool> IsDashboardNameValid(string dashboardName, int organizationId)
         {
             if (dashboardName.Length < 3 || dashboardName.Length > 50)
             {
                 return false;
             }
 
-            return !(await _context.Dashboards.ToListAsync()).Any(u => u.Name == dashboardName);
+            return !(await _context.Dashboards
+                .Where(o => o.OrganizationId == organizationId)
+                .AnyAsync(d => d.Name == dashboardName));
         }
     }
 }

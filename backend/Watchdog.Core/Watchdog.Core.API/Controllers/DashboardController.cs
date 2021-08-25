@@ -58,10 +58,10 @@ namespace Watchdog.Core.API.Controllers
             return NoContent();
         }
 
-        [HttpGet("dashboard/{dashboarName}")]
-        public async Task<ActionResult<bool>> IsDashboardNameValid(string dashboarName)
+        [HttpGet("dashboard/{dashboarName}/{organizationId}")]
+        public async Task<ActionResult<bool>> IsDashboardNameValid(string dashboarName, int organizationId)
         {
-            return Ok(await _dashboardService.IsDashboardNameValid(dashboarName));
+            return Ok(await _dashboardService.IsDashboardNameValid(dashboarName, organizationId));
         }
     }
 }
