@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Application;
@@ -140,6 +141,24 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task<ApplicationDto> RefreshApiKeyAsync(int appId)
+        {
+            var application = await _context.Applications.FirstOrDefaultAsync(app => app.Id == appId);
+
+            if (application is null)
+            {
+                throw new InvalidOperationException($"No application with id {appId}.");
+            }
+
+            application.ApiKey = Guid.NewGuid().ToString().ToUpper();
+
+            var updatedApplication = _context.Applications.Update(application);
+
+            await _context.SaveChangesAsync();
+
+            return await GetApplicationByIdAsync(updatedApplication.Entity.Id);
+        }
+
         public async Task<bool> IsProjectNameValid(string projectName, int organizationId)
         {
             if (projectName.Length < 3 || projectName.Length > 50)
@@ -150,6 +169,18 @@ namespace Watchdog.Core.BLL.Services
             return !(await _context.Applications
                 .Where(a => a.OrganizationId == organizationId)
                 .AnyAsync(a => a.Name == projectName));
+        }
+        
+        public async Task<bool> IsApiKeyUnique(string apiKey)
+        {
+            var reg = new Regex(@"^[0-9A-Za-z-_]+$");
+            
+            if (apiKey.Length != 36 && !reg.IsMatch(apiKey))
+            {
+                return false;
+            }
+            
+            return (await _context.Applications.ToListAsync()).All(app => app.ApiKey != apiKey);
         }
     }
 }

@@ -22,6 +22,45 @@
     </form>
     <form [formGroup]="editForm" class="item">
         <label class="item-definition">
+            <div>Platform</div>
+            <div class="item-sub-text">The platform on which the project is running</div>
+        </label>
+        <div class="item-field">
+            <div class="item-form-input p-input-icon-right">
+                <p-dropdown [options]="dropPlatform" optionLabel="name"
+                    formControlName="platformId" optionValue="id"></p-dropdown>
+            </div>
+        </div>
+    </form>
+    <form [formGroup]="editForm" class="item api-key-field">
+        <label class="item-definition">
+            <div>Project Api Key</div>
+            <div class="item-sub-text">A unique key used to identify this project</div>
+        </label>
+        <div class="item-field">
+            <div class="item-form-input api-key-input p-input-icon-right">
+                <i *ngIf="apiKey?.pending" class="pi pi-spin pi-spinner"></i>
+                <input formControlName="apiKey" pInputText placeholder="Api Key">
+                <div *ngIf="apiKey.invalid && (apiKey.dirty || apiKey.touched)"
+                     class="p-error">
+                    <small *ngIf="apiKey.errors?.required">
+                        This field is required.
+                    </small>
+                    <small *ngIf="apiKey.errors?.minlength || apiKey.errors?.maxlength">
+                        Length must be 36 characters. Current length {{apiKey.value.length}}
+                    </small>
+                    <small *ngIf="apiKey.errors?.pattern">Invalid pattern</small>
+                    <small *ngIf="apiKey.errors?.notUnique">Api key is not unique, try again.</small>
+                    <small *ngIf="apiKey.errors?.serverError">Server error.</small>
+                </div>
+            </div>
+            <div class="refresh-button">
+                <button class="p-button-primary p-button-outlined" icon="pi pi-replay" label="Regenerate Api Key" pButton type="button" (click)="refreshApiKey()"></button>
+            </div>
+        </div>
+    </form>
+    <form [formGroup]="editForm" class="item">
+        <label class="item-definition">
             <div>Description</div>
             <div class="item-sub-text">Brief description of the project</div>
         </label>
@@ -29,8 +68,8 @@
             <div class="item-form-input p-input-icon-right">
                 <i *ngIf="description?.pending" class="pi pi-spin pi-spinner"></i>
                 <textarea [autoResize]="true" formControlName="description" pInputTextarea
-                    placeholder="Description"
-                    type="textarea" maxlength="1000">
+                          placeholder="Description"
+                          type="textarea" maxlength="1000">
                 </textarea>
                 <div *ngIf="description.touched && description.invalid" class="p-error">
                     <small *ngIf="name.errors.required">Сan not be empty</small>
@@ -41,18 +80,6 @@
                         underscores and spaces
                     </small>
                 </div>
-            </div>
-        </div>
-    </form>
-    <form [formGroup]="editForm" class="item">
-        <label class="item-definition">
-            <div>Platform</div>
-            <div class="item-sub-text">The platform on which the project is running</div>
-        </label>
-        <div class="item-field">
-            <div class="item-form-input p-input-icon-right">
-                <p-dropdown [options]="dropPlatform" optionLabel="name"
-                    formControlName="platformId" optionValue="id"></p-dropdown>
             </div>
         </div>
     </form>

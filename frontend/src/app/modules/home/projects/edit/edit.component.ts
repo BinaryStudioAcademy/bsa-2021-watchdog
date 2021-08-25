@@ -83,9 +83,7 @@ export class EditComponent extends BaseComponent implements OnInit {
                 .pipe(this.untilThis)
                 .subscribe(() => {
                     this.spinnerService.hide();
-                    this.router.navigate(['home', 'projects']).then(() => {
-                        this.toastNotifications.success('Project has been updated!');
-                    });
+                    this.toastNotifications.success('Project has been updated!');
                 }, error => {
                     this.toastNotifications.error(error);
                     this.spinnerService.hide();

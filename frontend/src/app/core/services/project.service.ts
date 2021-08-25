@@ -33,7 +33,7 @@ export class ProjectService {
         return this.httpService.deleteRequest(`${this.apiPrefix}/${id}`);
     }
 
-    public createProject(project: NewProject): Observable<Project> {
+    createProject(project: NewProject): Observable<Project> {
         return this.httpService.postRequest(`${this.apiPrefix}`, project);
     }
 
@@ -66,5 +66,13 @@ export class ProjectService {
 
     isProjectNameUnique(name: string, organizationId: number): Observable<boolean> {
         return this.httpService.getRequest<boolean>(`${this.apiPrefix}/application/${name}/${organizationId}`);
+    }
+
+    refreshApiKey(appId: number): Observable<Project> {
+        return this.httpService.putRequest<Project>(`${this.apiPrefix}/refreshApiKey/${appId}`, {});
+    }
+
+    isApiKeyUnique(apiKey: string): Observable<boolean> {
+        return this.httpService.getRequest<boolean>(`${this.apiPrefix}/apiKey/${apiKey}`);
     }
 }

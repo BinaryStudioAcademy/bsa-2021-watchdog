@@ -76,6 +76,13 @@ namespace Watchdog.Core.API.Controllers
             var application = await _appService.UpdateApplicationAsync(id, dto);
             return Ok(application);
         }
+        
+        [HttpPut("refreshApiKey/{id:int}")]
+        public async Task<ActionResult<ApplicationDto>> RefreshApiKey(int id)
+        {
+            var updatedApplication = await _appService.RefreshApiKeyAsync(id);
+            return Ok(updatedApplication);
+        }
 
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> DeleteAsync(int id)
@@ -88,6 +95,12 @@ namespace Watchdog.Core.API.Controllers
         public async Task<ActionResult<bool>> IsProjectNameValid(string projectName, int organizationId)
         {
             return Ok(await _appService.IsProjectNameValid(projectName, organizationId));
+        }
+        
+        [HttpGet("apiKey/{apiKey}")]
+        public async Task<ActionResult<bool>> IsSlugValid(string apiKey)
+        {
+            return Ok(await _appService.IsApiKeyUnique(apiKey));
         }
     }
 }
