@@ -73,14 +73,20 @@ $item-height: 47px
         display: flex
         align-items: center
 .create-new
-    padding: 0.25rem 0.5rem !important
-    height: $item-height
+    border-top: 1px solid $border-color
+
+.create-new-button
+    margin-top: 0.5rem
+    padding: 0.25rem 0.5rem
+    width: 100%
+    display: grid
+    grid-auto-flow: column
+    justify-content: flex-start
+    grid-gap: 10px
+    cursor: pointer
 
     &:hover
         background: $background-hover-color
-
-.create-new-button
-    width: 100%
 .icon
     display: block
     margin-left: auto

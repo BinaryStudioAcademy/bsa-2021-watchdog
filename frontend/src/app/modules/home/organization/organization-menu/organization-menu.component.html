@@ -55,14 +55,12 @@
             </ng-template>
             <ng-template pTemplate="footer">
                 <div class="create-new">
-                    <button
-                        class="p-button-primary p-button-outlined create-new-button p-button-info"
-                        icon="pi pi-plus-circle"
-                        label="Create new"
-                        pButton
-                        type="button"
+                    <div
+                        class="create-new-button"
                         (click)="display=true">
-                    </button>
+                        <i class="pi pi-plus"></i>
+                        <span>Create a new</span>
+                    </div>
                 </div>
             </ng-template>
         </p-dropdown>
