@@ -142,8 +142,10 @@
         <button pButton class="submit-button p-button-outlined" label="Previous" (click)="previous()"></button>
     </span>
     <span>
-        <button pButton class="submit-button p-button-outlined" label="Submit" (click)="submit()"
+        <button pButton class="submit-button p-button-outlined" *ngIf="selectedValue == 'create-organization'" label="Submit" (click)="submit()"
             [disabled]="!ogranizationDetail.valid"></button>
+        <button pButton class="submit-button p-button-outlined" *ngIf="selectedValue == 'join-organization'" label="Submit" (click)="submit()"
+            [disabled]="!ogranizationJoin.valid"></button>
     </span>
 </div>
 
