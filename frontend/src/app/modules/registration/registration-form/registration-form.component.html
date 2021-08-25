@@ -78,8 +78,11 @@
         </span>
     </div>
 </form>
-
-<form [formGroup]="ogranizationDetail" action="/signup" class="reg-form" method="POST" *ngIf="step == 2">
+<div class="radio-button-organization" *ngIf="step == 2">
+    <p-radioButton name="groupname" value="create-organization" label="Create new organization" [(ngModel)]="selectedValue"></p-radioButton>
+    <p-radioButton name="groupname" value="join-organization" label="Join to organization" [(ngModel)]="selectedValue"></p-radioButton>
+</div>
+<form [formGroup]="ogranizationDetail" action="/signup" class="reg-form organization-form" method="POST" *ngIf="step == 2 && selectedValue == 'create-organization'">
     <div class="reg-block">
         <div class="input-block">
             <span class="p-float-label">
@@ -113,14 +116,34 @@
             </div>
         </div>
     </div>
-    <div class="border"></div>
-    <div class="submit-block">
-        <span>
-            <button pButton class="submit-button p-button-outlined" label="Previous" (click)="previous()"></button>
-        </span>
-        <span>
-            <button pButton class="submit-button p-button-outlined" label="Submit" (click)="submit()"
-                [disabled]="!ogranizationDetail.valid"></button>
-        </span>
+</form>
+<form [formGroup]="ogranizationJoin" action="/signup" class="reg-form organization-form" method="POST" *ngIf="step == 2 && selectedValue == 'join-organization'">
+    <div class="reg-block">
+        <div class="input-block">
+            <span class="p-float-label">
+                <input id="float-input-comp-slug" type="text" formControlName="organizationSlugJoin" name="comp-slug"
+                    pInputText [(ngModel)]="organizationSlug">
+                <label for="float-input-comp-slug">Organization slug</label>
+            </span>
+            <div *ngIf="organization_step && ogranizationJoin.controls.organizationSlug.touched && ogranizationJoin.controls.organizationSlug.invalid"
+                class="validation">
+                <small *ngIf="ogranizationJoin.controls.organizationSlug.errors.required">Сan not be empty</small>
+                <small *ngIf="ogranizationJoin.controls.organizationSlug.value?.length < 3">Min length 3</small>
+                <small *ngIf="ogranizationJoin.controls.organizationSlug.value?.length > 50">Max length 50</small>
+                <small *ngIf="ogranizationJoin.controls.organizationSlug.errors?.notUnique">Slug is not unique</small>
+                <small *ngIf="ogranizationJoin.controls.organizationSlug.hasError('pattern')">May contain letters, numbers,
+                    space, dashes and underscores</small>
+            </div>
+        </div>
     </div>
 </form>
+<div class="submit-block" *ngIf="step == 2">
+    <span>
+        <button pButton class="submit-button p-button-outlined" label="Previous" (click)="previous()"></button>
+    </span>
+    <span>
+        <button pButton class="submit-button p-button-outlined" label="Submit" (click)="submit()"
+            [disabled]="!ogranizationDetail.valid"></button>
+    </span>
+</div>
+

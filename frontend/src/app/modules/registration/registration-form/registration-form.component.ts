@@ -19,9 +19,11 @@ import { uniqueSlugValidator } from '@shared/validators/unique-slug.validator';
 export class RegistrationFormComponent extends BaseComponent implements OnInit {
     personalDetail: FormGroup;
     ogranizationDetail: FormGroup;
+    ogranizationJoin: FormGroup;
     personal_step = false;
     organization_step = false;
     step = 1;
+    selectedValue: string;
 
 
     formGroup: FormGroup;
@@ -120,6 +122,24 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                 }
             ),
         });
+
+        this.ogranizationJoin = new FormGroup({
+            organizationSlugJoin: new FormControl(
+                '',
+                {
+                    validators: [
+                        Validators.required,
+                        Validators.minLength(3),
+                        Validators.maxLength(50),
+                        Validators.pattern(regexs.organizationSlag),
+                    ],
+                    asyncValidators: [
+                        uniqueSlugValidator(this.organizationService)
+                    ]
+                }
+            ),
+        });
+
 
     }
 
