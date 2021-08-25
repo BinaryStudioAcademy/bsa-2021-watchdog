@@ -83,5 +83,11 @@ namespace Watchdog.Core.API.Controllers
             await _appService.DeleteApplicationAsync(id);
             return NoContent();
         }
+
+        [HttpGet("application/{projectName}/{organizationId}")]
+        public async Task<ActionResult<bool>> IsProjectNameValid(string projectName, int organizationId)
+        {
+            return Ok(await _appService.IsProjectNameValid(projectName, organizationId));
+        }
     }
 }

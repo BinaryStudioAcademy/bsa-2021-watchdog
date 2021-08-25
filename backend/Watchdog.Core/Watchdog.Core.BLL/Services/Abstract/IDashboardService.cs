@@ -11,5 +11,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<DashboardDto> CreateDashboardAsync(NewDashboardDto newDashboard);
         Task<DashboardDto> UpdateDashboardAsync(UpdateDashboardDto updateDashboard);
         Task DeleteDashboardAsync(int dashboardId);
+        Task<bool> IsDashboardNameValid(string dashboardName, int organizationId);
     }
 }

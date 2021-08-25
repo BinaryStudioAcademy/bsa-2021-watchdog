@@ -1,0 +1,36 @@
+@import src/styles/variables
+@import src/styles/mixins
+
+::ng-deep
+    .new-org
+        width: 400px
+        min-width: 400px
+        max-width: 90vw
+        .p-dialog-header
+            padding: 1rem !important
+            border: 1px solid $p-dialog-header-border-color
+            padding: 1rem
+            background: $p-dialog-header-background-color
+            height: 50px
+            border-radius: 0 !important
+        .header
+            font-weight: 600
+
+        .p-dialog-content
+            padding: 2rem 1rem 1rem 1rem !important
+        .p-dialog-footer
+            padding: 0 1rem 1rem 1rem !important
+            button
+                margin: 0 0 0 0.5rem
+
+.reg-block
+    display: grid
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))
+    align-items: flex-start
+    flex-wrap: wrap
+    grid-gap: 30px
+
+input
+    width: 100%
+.p-float-label
+    width: 100%

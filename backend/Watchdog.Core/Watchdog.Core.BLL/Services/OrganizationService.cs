@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -29,14 +30,29 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<ICollection<OrganizationDto>>(organizations);
         }
 
-        public async Task<OrganizationDto> CreateOrganizationAsync(OrganizationDto organizationDto)
+        public async Task<OrganizationDto> CreateOrganizationAsync(NewOrganizationDto organizationDto)
         {
+            var roles = await _context.Roles.ToListAsync();
             var organization = _mapper.Map<Organization>(organizationDto);
+            organization.DefaultRoleId = roles.First(r => r.Name.ToLower() == "viewer").Id;
+            organization.OpenMembership = true;
 
-            var createdUser = _context.Organizations.Add(organization);
+            await _context.Organizations.AddAsync(organization);
+
+            var member = new Member
+            {
+                UserId = organizationDto.CreatedBy,
+                CreatedBy = organizationDto.CreatedBy,
+                CreatedAt = DateTime.Now,
+                Organization = organization,
+                Role = roles.First(r => r.Name.ToLower() == "owner"),
+                IsAccepted = true
+            };
+            await _context.Members.AddAsync(member);
+
             await _context.SaveChangesAsync();
 
-            return _mapper.Map<OrganizationDto>(createdUser.Entity);
+            return _mapper.Map<OrganizationDto>(organization);
         }
 
         public async Task<OrganizationDto> UpdateOrganizationAsync(int organizationId, NewOrganizationDto organizationDto)
