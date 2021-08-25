@@ -17,19 +17,19 @@
         padding: 1em
     &.project
         padding: 1em
-    & .member
+    .member
         overflow: hidden
         text-overflow: ellipsis
         white-space: nowrap
         height: 1em
-    & img
+    img
         @include disable-select
         width: 20px
         height: 20px
         margin: 0 .2em
 
 ::ng-deep .team-overlaypanel
-    & .p-overlaypanel-content
+    .p-overlaypanel-content
         width: 250px
         padding: 0
         & input
@@ -41,7 +41,7 @@
         content: none
     &::before
         content: none
-    & .panel.p-panel .p-panel-content
+    .panel.p-panel .p-panel-content
         padding: 0
 
 .content-scroll
@@ -55,6 +55,6 @@
     font-size: .7rem
     font-weight: 600
     justify-content: space-between
-    & .invite-link
+    .invite-link
         text-decoration: none
-        color: var(--indigo-300)
+        color: $link-color

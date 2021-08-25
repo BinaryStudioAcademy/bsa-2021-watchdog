@@ -1,6 +1,6 @@
 <div class="teams-panel">
     <p-panel [header]="title">
-        <div class="placeholder-empty" *ngIf="teams?.length === 0">{{placeholder}}</div>
+        <div class="placeholder-empty" *ngIf="!teams?.length">{{placeholder}}</div>
         <div class="team" *ngFor="let team of teams">
             <div class="team-info">
                 <a class="team-avatar" [routerLink]="'./'+team.id">

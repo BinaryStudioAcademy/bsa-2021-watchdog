@@ -2,8 +2,9 @@ import { regexs } from '@shared/constants/regexs';
 import { uniqueTeamNameValidator } from '@shared/validators/unique-team-name.validator';
 import { TeamService } from '@core/services/team.service';
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { Team } from '@shared/models/teams/team';
+import { of } from 'rxjs';
 
 @Component({
     selector: 'app-team-settings',
@@ -23,9 +24,16 @@ export class TeamSettingsComponent implements OnInit {
             Validators.maxLength(50),
             Validators.pattern(regexs.teamName),
         ], [
-            uniqueTeamNameValidator(this.team, this.teamService)
+            this.teamNameValidator
         ]));
     }
+
+    teamNameValidator = (ctrl: AbstractControl) => {
+        if (this.team.name === ctrl.value) {
+            return of(null);
+        }
+        return uniqueTeamNameValidator(this.teamService)(ctrl);
+    };
 
     get name() {
         return this.parentForm.controls.name;

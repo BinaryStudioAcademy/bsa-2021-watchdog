@@ -4,7 +4,6 @@ import { uniqueTeamNameValidator } from '@shared/validators/unique-team-name.val
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Team } from '@shared/models/teams/team';
 
 @Component({
     selector: 'app-create-team',
@@ -30,7 +29,7 @@ export class CreateTeamComponent implements OnInit {
                     Validators.pattern(regexs.teamName)
                 ],
                 [
-                    uniqueTeamNameValidator({} as Team, this.teamService)
+                    uniqueTeamNameValidator(this.teamService)
                 ]
             )
         });

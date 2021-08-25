@@ -15,12 +15,10 @@
                     <ng-template let-member pTemplate="item">
                         <p-avatar
                             [label]="member.user.avatarUrl ? '' : member.user | userInitials"
-                            *ngIf="member.user.avatarUrl"
                             [image]='member.user.avatarUrl'
                             alt="Avatar"
                             shape="circle"
-                            class="assignee-avatar"></p-avatar>
-                        <p-avatar *ngIf="!member.user.avatarUrl" shape="circle" >
+                            class="assignee-avatar">
                         </p-avatar>
                         <span class="member-name">{{member.user.firstName}} {{member.user.lastName}}</span>
                     </ng-template>
