@@ -14,7 +14,7 @@ namespace Watchdog.NetCore.Common.Builders
         {
             var message = new WatchdogEnvironmentMessage();
 
-            DateTime now = DateTime.Now;
+            DateTime now = DateTime.UtcNow;
             message.UtcOffset = TimeZoneInfo.Local.GetUtcOffset(now).TotalHours;
             message.Locale = CultureInfo.CurrentCulture.DisplayName;
             message.Platform = Environment.OSVersion.Platform.ToString();

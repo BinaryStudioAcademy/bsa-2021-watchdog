@@ -37,7 +37,7 @@ namespace Watchdog.Core.BLL.Services
         {
             var dashboard = _mapper.Map<Dashboard>(newDashboard, opts => opts.AfterMap((src, dst) =>
             {
-                dst.CreatedAt = DateTime.Now;
+                dst.CreatedAt = DateTime.UtcNow;
             }));
 
             _context.Add(dashboard);
