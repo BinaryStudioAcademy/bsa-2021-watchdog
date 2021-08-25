@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 using Watchdog.Core.DAL.Entities;
 
 namespace Watchdog.Core.DAL.Context.EntityConfigurations
@@ -59,6 +60,12 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
                    .WithOne(t => t.User)
                    .HasForeignKey(d => d.CreatedBy)
                    .OnDelete(DeleteBehavior.SetNull);
+
+            builder.Property(u => u.RegisteredAt)
+                   .HasConversion(
+                        v => v,
+                        v => v.HasValue ? DateTime.SpecifyKind(v.Value, DateTimeKind.Utc) : v
+                        );
         }
     }
 }
