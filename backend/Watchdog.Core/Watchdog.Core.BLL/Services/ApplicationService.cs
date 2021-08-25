@@ -146,7 +146,6 @@ namespace Watchdog.Core.BLL.Services
             }
 
             return !(await _context.Applications
-                .Include(p => p.Platform)
                 .Where(a => a.OrganizationId == organizationId)
                 .AnyAsync(a => a.Name == projectName));
         }
