@@ -13,6 +13,7 @@ import { Organization } from '@shared/models/organization/organization';
 import { Role } from '@shared/models/role/role';
 import { TeamOption } from '@shared/models/teams/team-option';
 import { User } from '@shared/models/user/user';
+import { MembersRoles } from '@shared/constants/membersRoles';
 import { TreeNode } from 'primeng/api';
 
 @Component({
@@ -26,6 +27,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
     isInviting: Boolean;
     user: User;
     roles: Role[];
+    membersPerPage: number = 10;
 
     isEdit: boolean = false;
 
@@ -60,7 +62,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
         this.roleService.getRoles()
             .pipe(this.untilThis)
             .subscribe(roles => {
-                this.roles = roles;
+                this.roles = roles.filter(r => r.name !== MembersRoles.owner);
                 this.spinnerService.hide();
             }, error => {
                 this.toastNotifications.error(error);
@@ -133,7 +135,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
             });
     }
 
-    deleteMember(memberItem: MemberItem) {
+    deleteMemberModal(memberItem: MemberItem) {
         this.confirmWindowService.confirm({
             title: 'Delete member?',
             message: `Are you sure you wish to delete the <strong>${memberItem.member.user.firstName}`
@@ -141,17 +143,22 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
             acceptButton: { class: 'p-button-primary p-button-outlined' },
             cancelButton: { class: 'p-button-secondary p-button-outlined' },
             accept: () => {
-                this.memberService.deleteMember(memberItem.member.id)
-                    .pipe(this.untilThis)
-                    .subscribe(() => {
-                        this.toastNotifications.success('Member deleted');
-                        this.memberItems = this.memberItems.filter(m => m.member.id !== memberItem.member.id);
-                    }, error => {
-                        this.toastNotifications.error(error);
-                    });
+                this.deleteMember(memberItem);
             },
         });
     }
+
+    deleteMember(memberItem: MemberItem) {
+        this.memberService.deleteMember(memberItem.member.id)
+            .pipe(this.untilThis)
+            .subscribe(() => {
+                this.toastNotifications.success('Member deleted');
+                this.memberItems = this.memberItems.filter(m => m.member.id !== memberItem.member.id);
+            }, error => {
+                this.toastNotifications.error(error);
+            });
+    }
+
     reinvite(member: Member) {
         this.memberService.reinviteMember(member.id)
             .pipe(this.untilThis)

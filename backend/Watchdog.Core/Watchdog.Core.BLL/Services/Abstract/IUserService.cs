@@ -14,7 +14,7 @@ namespace Watchdog.Core.BLL.Services.Abstract
 
         Task<UserDto> CreateUserAsync(NewUserDto userDto);
 
-        Task<IEnumerable<UserDto>> SearchMembersNotInOrganizationAsync(int orgId, string memberEmail);
+        Task<IEnumerable<UserDto>> SearchMembersNotInOrganizationAsync(int orgId, int count, string memberEmail);
 
         Task<bool> IsUserEmailValid(string userEmail);
         

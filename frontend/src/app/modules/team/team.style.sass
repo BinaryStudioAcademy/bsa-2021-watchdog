@@ -16,7 +16,7 @@
 .header-button
     margin-left: auto
 
-::ng-deep
+:host ::ng-deep
     .team-panel .p-panel-content
         padding: 0
     .team-panel.p-panel
@@ -30,7 +30,17 @@
     font-size: .8rem
 
 .star
-    & .pi-star
-        color: rgb(245, 207, 35)
-    & .pi
+    .pi-star
+        color: $star-color
+    .pi
         cursor: pointer
+
+
+.placeholder-empty
+    font-weight: 300
+    color: $placeholder-text-color
+    opacity: .8
+    justify-content: space-around
+    text-align: center
+    &:hover
+        background: none

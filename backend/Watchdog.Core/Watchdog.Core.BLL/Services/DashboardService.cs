@@ -8,6 +8,7 @@ using Watchdog.Core.Common.DTO.Dashboard;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Watchdog.Core.BLL.Services
 {
@@ -36,7 +37,7 @@ namespace Watchdog.Core.BLL.Services
         {
             var dashboard = _mapper.Map<Dashboard>(newDashboard, opts => opts.AfterMap((src, dst) =>
             {
-                dst.CreatedAt = DateTime.Now;
+                dst.CreatedAt = DateTime.UtcNow;
             }));
 
             _context.Add(dashboard);
@@ -63,6 +64,18 @@ namespace Watchdog.Core.BLL.Services
             _context.Remove(dashboard);
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsDashboardNameValid(string dashboardName, int organizationId)
+        {
+            if (dashboardName.Length < 3 || dashboardName.Length > 50)
+            {
+                return false;
+            }
+
+            return !(await _context.Dashboards
+                .Where(o => o.OrganizationId == organizationId)
+                .AnyAsync(d => d.Name == dashboardName));
         }
     }
 }

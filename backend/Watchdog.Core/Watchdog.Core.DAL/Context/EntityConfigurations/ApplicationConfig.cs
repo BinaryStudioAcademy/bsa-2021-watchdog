@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Newtonsoft.Json;
+using System;
 using Watchdog.Core.DAL.Entities;
 using Watchdog.Core.DAL.Entities.AlertSettings;
 
@@ -24,6 +25,12 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
             builder.HasMany(a => a.Environments)
                    .WithOne(e => e.Application)
                    .HasForeignKey(e => e.ApplicationId);
+
+            builder.Property(a => a.CreatedAt)
+                .HasConversion(
+                     v => v,
+                     v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+                     );
         }
     }
 }
