@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '@shared/models/user/user';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { BaseComponent } from '@core/components/base/base.component';
-import { NewOrganizationsWithSlug } from '@shared/models/organization/newOrganizationsWithSlug';
+import { NewOrganizationsWithSlug } from '@shared/models/organization/new-organizations-with-slug';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { regexs } from '@shared/constants/regexs';
-import { RegOrganizationDto } from '../DTO/regOrganizationDto';
-import { NewUserDto } from '../DTO/newUserDto';
-import { uniqueSlugValidatorInRegistration } from '@shared/validators/unique-slug-in-registration.validator';
+import { RegOrganizationDto } from '../DTO/reg-organization-dto';
+import { NewUserDto } from '../DTO/new-user-dto';
 import { OrganizationService } from '@core/services/organization.service';
+import { uniqueSlugValidator } from '@shared/validators/unique-slug.validator';
 
 @Component({
     selector: 'app-registration-form',
@@ -78,7 +78,8 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                 ]
             ),
             organizationSlug: new FormControl(
-                '', {
+                '',
+                {
                     validators: [
                         Validators.required,
                         Validators.minLength(3),
@@ -86,7 +87,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                         Validators.pattern(regexs.organizationSlag),
                     ],
                     asyncValidators: [
-                        uniqueSlugValidatorInRegistration(this.organization, this.organizationService)
+                        uniqueSlugValidator(this.organizationService)
                     ]
                 }
             ),
@@ -127,9 +128,6 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
         const organizationDto: RegOrganizationDto = {
             organizationSlug: this.organizationSlug,
             name: this.organization.name,
-            openMembership: true, //TEMP
-            defaultRoleId: 1, //TEMP
-            avatarUrl: null //TEMP
         } as RegOrganizationDto;
 
         if (!this.isNotFinishedRegistration) {

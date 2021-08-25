@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Threading.Tasks;
+using Watchdog.AspNetCore;
 using Watchdog.Notifier.API.Extensions;
 using Watchdog.Notifier.BLL.Hubs;
 
@@ -50,6 +51,11 @@ namespace Watchdog.Notifier.API
             services.AddSignalR();
             services.AddRabbitMQIssueConsumer(Configuration);
 
+            services.AddWatchdog(Configuration, new WatchdogMiddlewareSettings()
+            {
+                ClientProvider = new DefaultWatchdogAspNetCoreClientProvider()
+            });
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
@@ -82,6 +88,8 @@ namespace Watchdog.Notifier.API
         public void Configure(IApplicationBuilder app)
         {
             app.UseDeveloperExceptionPage();
+
+            app.UseWatchdog();
 
             app.UseSerilogRequestLogging();
 

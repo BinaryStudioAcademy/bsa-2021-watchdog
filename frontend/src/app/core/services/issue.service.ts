@@ -18,11 +18,11 @@ export class IssueService {
     public updateAssignee(updateData: UpdateAssignee): Observable<void> {
         return this.httpService.putRequest<void>(`${this.routePrefix}`, updateData);
     }
-    public getIssueMessage(id: string): Observable<IssueMessage> {
-        return this.httpService.getRequest<IssueMessage>(`${this.routePrefix}/message/${id}`);
+    public getIssueMessage(issueId: number, eventId: string): Observable<IssueMessage> {
+        return this.httpService.getRequest<IssueMessage>(`${this.routePrefix}/issueId/${issueId}/eventId/${eventId}`);
     }
 
-    public getIssueMessagesByParent(parentIssueId: string): Observable<IssueMessage[]> {
-        return this.httpService.getRequest<IssueMessage[]>(`${this.routePrefix}/messagesbyparent/${parentIssueId}`);
+    public getEventMessagesByIssueId(issueId: number | string): Observable<IssueMessage[]> {
+        return this.httpService.getRequest<IssueMessage[]>(`${this.routePrefix}/messagesbyparent/${issueId}`);
     }
 }

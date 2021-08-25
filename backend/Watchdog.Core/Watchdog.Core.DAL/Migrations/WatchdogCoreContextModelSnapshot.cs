@@ -388,10 +388,8 @@ namespace Watchdog.Core.DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("IssueId")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                    b.Property<int>("IssueId")
+                        .HasColumnType("int");
 
                     b.Property<int>("MemberId")
                         .HasColumnType("int");
@@ -410,10 +408,8 @@ namespace Watchdog.Core.DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("IssueId")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                    b.Property<int>("IssueId")
+                        .HasColumnType("int");
 
                     b.Property<int>("TeamId")
                         .HasColumnType("int");
@@ -647,6 +643,47 @@ namespace Watchdog.Core.DAL.Migrations
                             ApplicationId = 8,
                             Name = "deleniti"
                         });
+                });
+
+            modelBuilder.Entity("Watchdog.Core.DAL.Entities.EventMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("EventId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IssueId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("OccurredOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IssueId");
+
+                    b.ToTable("EventMessages");
+                });
+
+            modelBuilder.Entity("Watchdog.Core.DAL.Entities.Issue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ErrorClass")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ErrorMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Issues");
                 });
 
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Member", b =>
@@ -2292,6 +2329,17 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Navigation("Application");
                 });
 
+            modelBuilder.Entity("Watchdog.Core.DAL.Entities.EventMessage", b =>
+                {
+                    b.HasOne("Watchdog.Core.DAL.Entities.Issue", "Issue")
+                        .WithMany("EventMessages")
+                        .HasForeignKey("IssueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Issue");
+                });
+
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Member", b =>
                 {
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "CreatedByUser")
@@ -2401,6 +2449,11 @@ namespace Watchdog.Core.DAL.Migrations
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Dashboard", b =>
                 {
                     b.Navigation("Tiles");
+                });
+
+            modelBuilder.Entity("Watchdog.Core.DAL.Entities.Issue", b =>
+                {
+                    b.Navigation("EventMessages");
                 });
 
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Member", b =>

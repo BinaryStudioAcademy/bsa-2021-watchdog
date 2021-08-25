@@ -9,15 +9,6 @@
             <span>{{issueMessage.occurredOn | date:'MMMM d, y h:mma'}}</span>
         </div>
     </div>
-    <!--    Issue Id    -->
-    <div class="issue-details-column">
-        <div class="title">
-            <span>Issue id</span>
-        </div>
-        <div class="value">
-            <span>{{issueMessage.id}}</span>
-        </div>
-    </div>
     <!--    Class name    -->
     <div class="issue-details-column">
         <div class="title">
@@ -47,6 +38,15 @@
             </div>
         </div>
     </ng-template>
+    <!--    Issue Id    -->
+    <div class="issue-details-column">
+        <div class="title">
+            <span>Id</span>
+        </div>
+        <div class="value">
+            <span>{{issueMessage.id}}</span>
+        </div>
+    </div>
 </div>
 <!--    Stacktrace    -->
 <div class="issue-stacktrace">
@@ -58,7 +58,7 @@
             <div class="stacktrace-row-info">
                 <span>
                     at <span class="method-name">{{st.methodName}}</span>
-                    <ng-template [ngIf]="st.arguments.length">arguments: {{st.arguments}}</ng-template>
+                    <ng-template [ngIf]="st.arguments?.length">arguments: {{st.arguments}}</ng-template>
                     line <span class="line-number">{{st.lineNumber}}</span>,
                     column <span class="column">{{st.column}}</span>
                      (<span class="file">{{st.file}}<span class="colon">:<span

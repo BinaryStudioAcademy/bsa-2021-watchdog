@@ -23,7 +23,7 @@
         <ng-template let-issue pTemplate="body">
             <tr>
                 <td>
-                    <span class="issue-time" routerLink="/home/issues/{{issue.id}}">{{issue.occurredOn | date:'MMMM d, y h:mma'}}</span>
+                    <span class="issue-time" routerLink="/home/issues/{{issueMessage.issueId}}/{{issue.id}}">{{issue.occurredOn | date:'MMMM d, y h:mma'}}</span>
                     <small class="issue-id">{{issue.id}}</small>
                 </td>
                 <td>{{issue.issueDetails.environmentMessage.platform}}</td>

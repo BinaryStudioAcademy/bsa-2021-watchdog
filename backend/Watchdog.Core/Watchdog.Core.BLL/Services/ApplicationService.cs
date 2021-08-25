@@ -80,8 +80,8 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task RemoveAppTeam(int appTeamId)
         {
-            var appTeam = await _context.ApplicationTeams.FirstOrDefaultAsync(t => t.Id == appTeamId);
-            if (appTeam == null) throw new InvalidOperationException("Application in this team not found!");
+            var appTeam = await _context.ApplicationTeams.FirstOrDefaultAsync(t => t.Id == appTeamId)
+                ?? throw new InvalidOperationException("Application in this team not found!");
 
             _context.ApplicationTeams.Remove(appTeam);
             await _context.SaveChangesAsync();
@@ -103,6 +103,52 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
 
             return _mapper.Map<ApplicationDto>(application);
+        }
+
+        public async Task<ApplicationDto> GetApplicationByIdAsync(int appId)
+        {
+            var application = await _context.Applications
+                .Include(p => p.Platform)
+                .FirstOrDefaultAsync(a => a.Id == appId) ??
+                throw new InvalidOperationException("No application with this id!");
+
+            return _mapper.Map<ApplicationDto>(application);
+        }
+
+        public async Task<ApplicationDto> UpdateApplicationAsync(int appId, UpdateApplicationDto updateAppDto)
+        {
+            var existedApplication = await _context.Applications.FirstOrDefaultAsync(a => a.Id == appId) ??
+                throw new InvalidOperationException("No application with this id!");
+
+            var mergedApplication = _mapper.Map(updateAppDto, existedApplication);
+
+            var updateApplication = _context.Update(mergedApplication);
+            await _context.SaveChangesAsync();
+
+            return await GetApplicationByIdAsync(updateApplication.Entity.Id);
+        }
+
+        public async Task DeleteApplicationAsync(int appId)
+        {
+            var application = await _context.Applications
+                .Include(t => t.ApplicationTeams)
+                .FirstOrDefaultAsync(a => a.Id == appId) ??
+                throw new InvalidOperationException("No application with this id!");
+            _context.Remove(application);
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsProjectNameValid(string projectName, int organizationId)
+        {
+            if (projectName.Length < 3 || projectName.Length > 50)
+            {
+                return false;
+            }
+
+            return !(await _context.Applications
+                .Where(a => a.OrganizationId == organizationId)
+                .AnyAsync(a => a.Name == projectName));
         }
     }
 }

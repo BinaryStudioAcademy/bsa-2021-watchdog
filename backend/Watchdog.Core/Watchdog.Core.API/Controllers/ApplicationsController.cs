@@ -56,11 +56,38 @@ namespace Watchdog.Core.API.Controllers
             await _appService.RemoveAppTeam(appTeamId);
             return NoContent();
         }
+
         [HttpPost]
         public async Task<ActionResult<ApplicationDto>> Create(NewApplicationDto dto)
         {
             var application = await _appService.CreateAppAsync(dto);
             return Created($"/applications/{application.Id}", application);
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<ApplicationDto>> GetApplicationById(int id)
+        {
+            return Ok(await _appService.GetApplicationByIdAsync(id));
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<ApplicationDto>> UpdateApplication(int id, UpdateApplicationDto dto)
+        {
+            var application = await _appService.UpdateApplicationAsync(id, dto);
+            return Ok(application);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> DeleteAsync(int id)
+        {
+            await _appService.DeleteApplicationAsync(id);
+            return NoContent();
+        }
+
+        [HttpGet("application/{projectName}/{organizationId}")]
+        public async Task<ActionResult<bool>> IsProjectNameValid(string projectName, int organizationId)
+        {
+            return Ok(await _appService.IsProjectNameValid(projectName, organizationId));
         }
     }
 }

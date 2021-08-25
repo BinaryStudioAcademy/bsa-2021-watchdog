@@ -27,11 +27,11 @@ export class IssueEventsComponent extends BaseComponent implements OnInit, OnDes
     }
 
     ngOnInit(): void {
-        this.getIssuesMessages(this.issueMessage.issueId);
+        this.getEventMessages(this.issueMessage.issueId);
     }
 
-    getIssuesMessages(parentId: string) {
-        this.issueService.getIssueMessagesByParent(parentId)
+    getEventMessages(issueId: number) {
+        this.issueService.getEventMessagesByIssueId(issueId)
             .pipe(this.untilThis)
             .subscribe(response => {
                 this.issues = response;
