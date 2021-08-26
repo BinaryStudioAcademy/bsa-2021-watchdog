@@ -27,6 +27,13 @@ namespace Watchdog.Core.API.Controllers
             return Ok(organizations);
         }
 
+        [HttpGet("default/user/{userId}")]
+        public async Task<ActionResult<OrganizationDto>> GetDafaultOrganizationByUserIdAsync(int userId)
+        {
+            var organization = await _organizationService.GetDafaultOrganizationByUserIdAsync(userId);
+            return Ok(organization);
+        }
+
         [HttpGet("slug/{organizationSlug}")]
         public async Task<ActionResult<bool>> IsSlugValid(string organizationSlug)
         {
@@ -71,5 +78,13 @@ namespace Watchdog.Core.API.Controllers
             var updatedOrganization = await _organizationService.UpdateSettingsAsync(organizationId, settings);
             return Ok(updatedOrganization);
         }
+
+        [HttpDelete("{organizationId}")]
+        public async Task<ActionResult> DeleteOrgsnization(int organizationId)
+        {
+            await _organizationService.DeleteOrganizationAsync(organizationId);
+            return NoContent();
+        }
+
     }
 }

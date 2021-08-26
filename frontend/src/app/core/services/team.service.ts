@@ -46,8 +46,8 @@ export class TeamService {
         return this.httpService.deleteRequest(`${this.routePrefix}/leaveTeam/${teamId}/member/${memberId}`);
     }
 
-    public isNameUnique(teamName: string): Observable<boolean> {
-        return this.httpService.getRequest(`${this.routePrefix}/teamName/${teamName}`);
+    public isNameUnique(teamName: string, orgId: number): Observable<boolean> {
+        return this.httpService.getRequest(`${this.routePrefix}/orgId/${orgId}/teamName/${teamName}`);
     }
 
     public updateTeam(id: number, team: UpdateTeam): Observable<Team> {

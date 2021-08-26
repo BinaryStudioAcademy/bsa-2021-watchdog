@@ -48,10 +48,12 @@ namespace Watchdog.Core.BLL.Services
         {
             var team = _mapper.Map<Team>(newTeam, opts => opts.AfterMap((src, dst) =>
             {
-                dst.CreatedAt = DateTime.Now;
+                dst.CreatedAt = DateTime.UtcNow;
             }));
 
-            var member = await _context.Members.Include(m => m.User).FirstOrDefaultAsync(m => m.User.Id == team.CreatedBy);
+            var member = await _context.Members
+                .Include(m => m.User)
+                .FirstOrDefaultAsync(m => m.UserId == team.CreatedBy && m.OrganizationId == newTeam.OrganizationId);
 
             var createdTeam = _context.Teams.Add(team);
             await _context.SaveChangesAsync();
@@ -61,8 +63,7 @@ namespace Watchdog.Core.BLL.Services
                 MemberId = member.Id,
                 TeamId = createdTeam.Entity.Id
             });
-
-
+            
             return _mapper.Map<TeamDto>(createdTeam.Entity);
         }
 
@@ -124,9 +125,9 @@ namespace Watchdog.Core.BLL.Services
                         .ThenInclude(m => m.User);
         }
 
-        public async Task<bool> IsTeamNameUniqueAsync(string teamName)
+        public async Task<bool> IsTeamNameUniqueAsync(int orgId, string teamName)
         {
-            return !await _context.Teams.AnyAsync(t => t.Name == teamName);
+            return !await _context.Teams.Where(t => t.OrganizationId == orgId).AnyAsync(t => t.Name == teamName);
         }
 
         public async Task<ICollection<TeamOptionDto>> GetTeamsOptionsByOrganizationIdAsync(int organizationId)

@@ -18,6 +18,7 @@
     <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
     <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.4.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
+    <PackageReference Include="Watchdog.AspNetCore" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,8 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Watchdog.AspNetCore\Watchdog.AspNetCore.csproj" />
-    <ProjectReference Include="..\..\Watchdog.NetCore.Common\Watchdog.NetCore.Common.csproj" />
     <ProjectReference Include="..\Watchdog.Collector.BLL\Watchdog.Collector.BLL.csproj" />
   </ItemGroup>
 

@@ -8,6 +8,8 @@ namespace Watchdog.Core.Common.DTO.Application
         public int Id { get; set; }
 
         public string Name { get; set; }
+        
+        public string ApiKey { get; set; }
 
         public string Description { get; set; }
 

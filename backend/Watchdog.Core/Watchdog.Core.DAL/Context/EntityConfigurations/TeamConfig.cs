@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 using Watchdog.Core.DAL.Entities;
 
 namespace Watchdog.Core.DAL.Context.EntityConfigurations
@@ -11,10 +12,7 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
             builder.Property(t => t.Name)
                    .HasMaxLength(128)
                    .IsRequired();
-
-            builder.HasIndex(t => t.Name)
-                   .IsUnique();
-
+            
             builder.HasMany(t => t.TeamMembers)
                    .WithOne(tm => tm.Team)
                    .HasForeignKey(tm => tm.TeamId)
@@ -24,6 +22,12 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
                    .WithOne(at => at.Team)
                    .HasForeignKey(at => at.TeamId)
                    .OnDelete(DeleteBehavior.ClientCascade);
+            
+            builder.Property(a => a.CreatedAt)
+                .HasConversion(
+                     v => v,
+                     v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+                     );
         }
     }
 }

@@ -66,6 +66,10 @@ export class OrganizationService {
         return this.httpService.getRequest<Organization>(`${this.apiPrefix}/${id}`);
     }
 
+    getDafaultOrganizationByUserId(userId: number): Observable<Organization> {
+        return this.httpService.getRequest<Organization>(`${this.apiPrefix}/default/user/${userId}`);
+    }
+
     createOrganization(organization: NewOrganization) {
         return this.httpService.postRequest<Organization>(this.apiPrefix, organization);
     }
@@ -81,6 +85,10 @@ export class OrganizationService {
                 this.dataService.changeMessage(organization);
                 return organization;
             }));
+    }
+
+    deleteOrganization(organizationId: number) {
+        return this.httpService.deleteRequest(`${this.apiPrefix}/${organizationId}`);
     }
 
     isSlugUnique(slug: string): Observable<boolean> {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 using Watchdog.Core.DAL.Entities;
 
 namespace Watchdog.Core.DAL.Context.EntityConfigurations
@@ -40,6 +41,13 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
             builder.HasMany(o => o.Dashboards)
                    .WithOne(d => d.Organization)
                    .HasForeignKey(d => d.OrganizationId);
+
+
+            builder.Property(a => a.CreatedAt)
+                .HasConversion(
+                     v => v,
+                     v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+                     );
         }
     }
 }
