@@ -24,7 +24,7 @@ import { TileSizeType } from '@shared/models/tile/enums/tile-size-type';
 export class AddEditTopActiveIssuesTileComponent implements OnInit {
     public formGroup: FormGroup;
     public dateRangeDropdown: DateRangeDropdown[];
-    public tileSizeDropdown: tileSizeDropdown[];
+    public tileSizeDropdown: TileSizeDropdown[];
     public headerTitle: string;
     public submitButtonText: string;
     currentDashboardId: number;
@@ -191,18 +191,19 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
 
     private initTileSizeDropdown(): void {
         this.tileSizeDropdown = [
-        {
-            type: TileSizeType.Small,
-            name: 'Small'
-        },
-        {
-            type: TileSizeType.Medium,
-            name: 'Medium'
-        },
-        {
-            type: TileSizeType.Large,
-            name: 'Large'
-        }];
+            {
+                type: TileSizeType.Small,
+                name: 'Small'
+            },
+            {
+                type: TileSizeType.Medium,
+                name: 'Medium'
+            },
+            {
+                type: TileSizeType.Large,
+                name: 'Large'
+            }
+        ];
     }
 
     private addTile(values: any): void {
@@ -242,7 +243,7 @@ interface DateRangeDropdown {
     type: TileDateRangeType
 }
 
-interface tileSizeDropdown {
+interface TileSizeDropdown {
     name: string,
     type: TileSizeType
 }

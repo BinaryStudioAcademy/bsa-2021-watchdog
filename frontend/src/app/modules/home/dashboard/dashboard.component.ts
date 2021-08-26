@@ -21,7 +21,6 @@ import { map } from 'rxjs/operators';
 import { IssueService } from '@core/services/issue.service';
 import { SpinnerService } from '@core/services/spinner.service';
 import { convertJsonToTileSettings } from '@core/utils/tile.utils';
-import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
 
 @Component({
     selector: 'app-dashboard',
