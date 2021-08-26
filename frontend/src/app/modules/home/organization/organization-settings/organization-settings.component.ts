@@ -21,6 +21,7 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
     organization: Organization;
     parentForm: FormGroup = new FormGroup({});
     memberRoleId: number;
+    defaultOrganization: Organization;
     isRemovingAllowed = false;
 
     @ViewChild('saveBut') saveButton: ElementRef<HTMLButtonElement>;
@@ -43,7 +44,7 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
             .subscribe(
                 organization => {
                     this.organization = organization;
-                    this.getRole();
+                    this.setUserFirstOrganization();
                     this.spinnerService.hide();
                 },
                 error => {
@@ -104,7 +105,9 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
                     .subscribe(() => {
                         this.toastService.success('Organization deleted');
                         this.organizationService.clearOrganization();
-                        this.setUserFirstOrganization();
+                        this.authService.setOrganization(this.defaultOrganization);
+                        this.dataService.changeMessage(this.defaultOrganization);
+                        this.router.navigateByUrl('/home');
                     }, error => {
                         this.toastService.error(error);
                     });
@@ -116,10 +119,10 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
         this.organizationService.getDafaultOrganizationByUserId(this.authService.getUserId())
             .pipe(this.untilThis)
             .subscribe(organization => {
-                this.organization = organization;
-                this.authService.setOrganization(this.organization);
-                this.dataService.changeMessage(this.organization);
-                this.router.navigateByUrl('/home');
+                this.defaultOrganization = organization;
+                this.getRole();
+            }, error => {
+                this.toastService.error(error);
             });
     }
 
@@ -127,7 +130,7 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
         this.memberService.isMemberOwner(this.authService.getUserId())
             .pipe(this.untilThis)
             .subscribe(isMemberOwner => {
-                this.isRemovingAllowed = isMemberOwner;
+                this.isRemovingAllowed = isMemberOwner && this.defaultOrganization.id!=this.organization.id;
             }, error => {
                 this.toastService.error(error);
             });
