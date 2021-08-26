@@ -16,7 +16,6 @@ import { UpdateProject } from '@shared/models/projects/update-project';
 import { User } from '@shared/models/user/user';
 import { PrimeIcons } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { switchMap } from 'rxjs/operators';
 import { Data } from '../data';
 
 @Component({
@@ -73,7 +72,7 @@ export class EditComponent extends BaseComponent implements OnInit {
                 if (tab) {
                     this.activeIndex = Number(tab);
                 }
-            })
+            });
     }
 
     alertFormatting() {
