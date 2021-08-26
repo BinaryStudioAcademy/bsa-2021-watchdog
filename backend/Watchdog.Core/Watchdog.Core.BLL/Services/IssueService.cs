@@ -25,11 +25,11 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<int> AddIssueEventAsync(IssueMessage issueMessage)
         {
-            var issue = await _context.Issues.Include(i=>i.Application).FirstOrDefaultAsync(i =>
-                i.ErrorMessage == issueMessage.IssueDetails.ErrorMessage &&
-                i.ErrorClass == issueMessage.IssueDetails.ClassName &&
-                i.Application.ApiKey == issueMessage.ApiKey);
-            
+            var issue = await _context.Issues.Include(i => i.Application).FirstOrDefaultAsync(i =>
+                  i.ErrorMessage == issueMessage.IssueDetails.ErrorMessage &&
+                  i.ErrorClass == issueMessage.IssueDetails.ClassName &&
+                  i.Application.ApiKey == issueMessage.ApiKey);
+
             var newEventMessage = _mapper.Map<EventMessage>(issueMessage);
 
             if (issue is null)
@@ -54,8 +54,10 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<ICollection<IssueInfoDto>> GetIssuesInfoAsync(int memberId)
         {
-            var member = await _context.Members
-                .FirstOrDefaultAsync(m => m.Id == memberId) ?? throw new KeyNotFoundException("There is no member with such ID.");
+            if (await _context.Members.AllAsync(m => m.Id != memberId))
+            {
+                throw new KeyNotFoundException("There is no member with such ID.");
+            }
 
             var issuesInfo = await _context.Applications
                 .Include(a => a.ApplicationTeams)
