@@ -12,6 +12,7 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<(ICollection<IssueInfoDto>, int)> GetIssuesInfoLazyAsync(FilterModel filterModel);
         Task<ICollection<IssueInfoDto>> GetIssuesInfoAsync();
         Task<ICollection<IssueMessage>> GetEventMessagesByIssueIdAsync(int issueId);
+        Task<(ICollection<IssueMessage>, int)> GetEventMessagesByIssueIdLazyAsync(int issueId, FilterModel filterModel);
         Task<IssueMessage> GetEventMessageByIdAsync(int issueId, string eventId);
         Task UpdateAssigneeAsync(UpdateAssigneeDto assigneeDto);
     }

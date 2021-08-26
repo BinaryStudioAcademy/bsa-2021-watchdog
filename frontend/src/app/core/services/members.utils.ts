@@ -1,3 +1,21 @@
+export const clearString = (value: string) => {
+    switch (value) {
+        case 'member.user.firstName':
+            return 'userFirstName';
+
+        case 'member.user.email':
+            return 'userEmail';
+
+        case 'member.role.name':
+            return 'roleName';
+
+        case 'member.isAccepted':
+            return 'isAccepted';
+        default:
+            return value;
+    }
+};
+
 export const clear = (object: any, clearFunc: (value: string) => string = clearString): any => {
     if (object === null) {
         return null;
@@ -18,23 +36,4 @@ export const clear = (object: any, clearFunc: (value: string) => string = clearS
         return newObject;
     }
     return object;
-
 };
-
-export const clearString = (value: string) => {
-    switch (value) {
-        case 'member.user.firstName':
-            return 'userFirstName';
-
-        case 'member.user.email':
-            return 'userEmail';
-
-        case 'member.role.name':
-            return 'roleName';
-
-        case 'member.isAccepted':
-            return 'isAccepted';
-        default:
-            return value;
-    }
-}

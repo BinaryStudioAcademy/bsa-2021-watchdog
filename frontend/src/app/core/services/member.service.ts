@@ -24,10 +24,11 @@ export class MemberService {
         return this.httpService.getRequest<Member[]>(`${this.routePrefix}/organization/${organizationId}`);
     }
 
-    getMembersByOrganizationIdLazy(organizationId: number, event: LazyLoadEvent): Observable<{ collection: Member[], totalRecord: number }> {
-        return this.httpService.postRequest<{ collection: Member[], totalRecord: number }>(`${this.routePrefix}/organization/${organizationId}`, clear(event));
+    getMembersByOrganizationIdLazy(organizationId: number, event: LazyLoadEvent):
+    Observable<{ collection: Member[], totalRecord: number }> {
+        return this.httpService
+            .postRequest<{ collection: Member[], totalRecord: number }>(`${this.routePrefix}/organization/${organizationId}`, clear(event));
     }
-
 
     private static member: Member;
 

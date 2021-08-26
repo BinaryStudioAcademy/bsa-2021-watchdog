@@ -129,6 +129,21 @@ namespace Watchdog.Core.BLL.Services
             return response.Documents.OrderByDescending(em => em.OccurredOn).ToList();
         }
 
+        public async Task<(ICollection<IssueMessage>, int)> GetEventMessagesByIssueIdLazyAsync(int issueId, FilterModel filterModel)
+        {
+            var issue = await _context.Issues
+                .Include(i => i.EventMessages)
+                .FirstOrDefaultAsync(i => i.Id == issueId);
+
+            var response = await _client.SearchAsync<IssueMessage>(s => s
+                .Size(issue.EventMessages.Count)
+                .Query(q => q
+                    .Ids(c => c
+                        .Values(issue.EventMessages.Select(i => i.EventId)))));
+            var result = response.Documents.ToList().Filter(filterModel, out int totalRecord);
+            return (result.ToList(),totalRecord);
+        }
+
         public Task UpdateAssigneeAsync(UpdateAssigneeDto assigneeDto)
         {
             if (assigneeDto is null)
@@ -227,5 +242,6 @@ namespace Watchdog.Core.BLL.Services
             var result = issues.Filter(filterModel, out var totalRecord).ToList();
             return (result, totalRecord);
         }
+
     }
 }

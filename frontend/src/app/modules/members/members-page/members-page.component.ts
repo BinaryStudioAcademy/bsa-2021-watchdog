@@ -58,16 +58,16 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
                 this.untilThis,
                 tap(organization => {
                     this.organization = organization;
-                }));
+                })
+            );
 
         this.organizationRequest = request;
 
         request
             .subscribe(() => {
-                this.loadMembers(this.lastEvent);
             }, error => {
                 this.toastNotifications.error(error);
-            })
+            });
         this.roleService.getRoles()
             .pipe(this.untilThis)
             .subscribe(roles => {
@@ -77,15 +77,12 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
             });
     }
 
-
-
-
     async loadMembers(event: LazyLoadEvent) {
         this.lastEvent = event;
         if (!this.organization) {
             await this.organizationRequest.toPromise();
         }
-        this.memberService.getMembersByOrganizationIdLazy(this.organization.id, event)
+        this.memberService.getMembersByOrganizationIdLazy(this.organization.id, event ?? { first: 22 } as LazyLoadEvent)
             .pipe(this.untilThis,
                 debounceTime(1000))
             .subscribe(response => {

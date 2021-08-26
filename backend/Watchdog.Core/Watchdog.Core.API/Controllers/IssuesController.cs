@@ -53,5 +53,12 @@ namespace Watchdog.Core.API.Controllers
             var issueMessages = await _issueService.GetEventMessagesByIssueIdAsync(id);
             return Ok(issueMessages);
         }
+
+        [HttpPost("messagesByParent/{id}")]
+        public async Task<ActionResult> GetEventMessagesByIssueIdLazyAsync(int id, [FromBody] FilterModel filterModel)
+        {
+            var (issueMessages, totalRecords) = await _issueService.GetEventMessagesByIssueIdLazyAsync(id, filterModel);
+            return Ok(new { Collection = issueMessages, TotalRecords = totalRecords });
+        }
     }
 }

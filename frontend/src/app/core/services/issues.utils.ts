@@ -13,4 +13,15 @@ export const clearNest = (value: string) => {
         default:
             return value;
     }
-}
+};
+
+export const clearIssueMessage = (value: string) => {
+    switch (value) {
+        case 'issueDetails.environmentMessage.platform':
+            return 'platform';
+        case 'issueDetails.environmentMessage.browser':
+            return 'browser';
+        default:
+            return value;
+    }
+};

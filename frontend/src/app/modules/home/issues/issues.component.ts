@@ -11,7 +11,7 @@ import { TeamService } from '@core/services/team.service';
 import { Assignee } from '@shared/models/issue/assignee';
 import { count, toImages } from '@core/services/issues.utils';
 import { IssueInfo } from '@shared/models/issue/issue-info';
-import { debounceTime, map, tap } from 'rxjs/operators';
+import { debounceTime, tap } from 'rxjs/operators';
 import { AssigneeOptions } from '@shared/models/issue/assignee-options';
 import { IssueService } from '@core/services/issue.service';
 import { LazyLoadEvent } from 'primeng/api';
@@ -60,7 +60,8 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                 this.untilThis,
                 tap(organization => {
                     this.organization = organization;
-                }));
+                })
+            );
 
         this.organizationRequest = request;
 
@@ -76,7 +77,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                     });
             }, error => {
                 this.toastNotification.error(error);
-            })
+            });
     }
 
     loadMember() {
@@ -152,6 +153,9 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     }
 
     async loadIssuesLazy(event: LazyLoadEvent) {
+        if (!event) {
+            return;
+        }
         this.lastEvent = event;
         if (!this.organization) {
             await this.organizationRequest.toPromise();
