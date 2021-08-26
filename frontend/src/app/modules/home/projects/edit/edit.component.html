@@ -7,22 +7,30 @@
     </div>
 </div>
 </div>
-<p-tabView>
-<p-tabPanel>
-    <ng-template pTemplate="header">
-        <div class="header">
-            <span>General settings</span>
-        </div>
-    </ng-template>
-    <app-project-general *ngIf="project" [editForm]="editForm" [project]="project"></app-project-general>
-</p-tabPanel>
-<p-tabPanel>
-    <ng-template pTemplate="header">
-        <div class="header">
-            <span>Alert</span>
-        </div>
-    </ng-template>
-    <app-project-alert *ngIf="project" [editFormAlert]="editFormAlert" [project]="project"></app-project-alert>
-</p-tabPanel>
+<p-tabView [(activeIndex)]="activeIndex">
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <div class="header">
+                <span>General settings</span>
+            </div>
+        </ng-template>
+        <app-project-general *ngIf="project" [editForm]="editForm" [project]="project"></app-project-general>
+    </p-tabPanel>
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <div class="header">
+                <span>Alert</span>
+            </div>
+        </ng-template>
+        <app-project-alert *ngIf="project" [editFormAlert]="editFormAlert" [project]="project"></app-project-alert>
+    </p-tabPanel>
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <div class="header">
+                <span>Configure {{project?.platform.name}}</span>
+            </div>
+        </ng-template>
+        <app-configure-wrapper *ngIf="project" [project]="project"></app-configure-wrapper>
+    </p-tabPanel>
 </p-tabView>
 

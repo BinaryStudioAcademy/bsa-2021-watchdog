@@ -62,10 +62,10 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
             .subscribe(organization => {
                 this.organization = organization;
                 this.loadTeams();
+                this.addValidation();
+                this.initPlatforms();
+                this.initAlertData();
             });
-        this.initPlatforms();
-        this.initAlertData();
-        this.addValidation();
     }
 
     private addValidation() {
@@ -77,7 +77,8 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                 ]
             ),
             projectName: new FormControl(
-                '', {
+                '',
+                {
                     validators: [
                         Validators.required,
                         Validators.minLength(3),
@@ -229,7 +230,7 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                 .subscribe(
                     project => {
                         this.toastNotifications.success(`${project.name} created!`);
-                        this.router.navigate(['home', 'projects']);
+                        this.router.navigate(['home', 'projects', 'edit', `${project.id}`], { queryParams: { tab: '2' } });
                         this.spinnerService.hide();
                     },
                     error => {

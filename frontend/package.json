@@ -26,6 +26,8 @@
     "@microsoft/signalr": "^5.0.8",
     "@swimlane/ngx-charts": "^18.0.1",
     "firebase": "^8.8.1",
+    "highlight.js": "^11.2.0",
+    "ngx-highlightjs": "^4.1.4",
     "ngx-json-viewer": "^3.0.2",
     "primeicons": "^4.1.0",
     "primeng": "^12.0.1",
