@@ -20,6 +20,7 @@ import { ProjectService } from '@core/services/project.service';
 import { map } from 'rxjs/operators';
 import { IssueService } from '@core/services/issue.service';
 import { SpinnerService } from '@core/services/spinner.service';
+import { convertJsonToTileSettings } from '@core/utils/tile.utils';
 
 @Component({
     selector: 'app-dashboard',
@@ -157,6 +158,11 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                 this.toastNotificationService.error(error);
                 this.spinnerService.hide();
             });
+    }
+
+    getTileSize(tile: Tile) {
+        const settings = convertJsonToTileSettings(tile.settings, TileType.TopActiveIssues);
+        return settings.tileSize * 150 + 350;
     }
 
     toggleTileMenu(): void {
