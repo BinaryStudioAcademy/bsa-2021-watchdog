@@ -24,6 +24,14 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<OrganizationDto>(organization);
         }
 
+        public async Task<OrganizationDto> GetDafaultOrganizationByUserIdAsync(int userId)
+        {
+            var organization = await _context.Organizations
+                .Where(o => o.Members.Any(m => m.User.Id == userId))
+                .FirstOrDefaultAsync();
+            return _mapper.Map<OrganizationDto>(organization);
+        }
+
         public async Task<ICollection<OrganizationDto>> GetAllOrganizationsAsync()
         {
             var organizations = await _context.Organizations.ToListAsync();
@@ -86,6 +94,21 @@ namespace Watchdog.Core.BLL.Services
                 .ToListAsync();
 
             return _mapper.Map<ICollection<OrganizationDto>>(organizaitons);
+        }
+
+        public async Task DeleteOrganizationAsync(int organizationId)
+        {
+            var organization = await _context.Organizations
+                .Include(t => t.Teams)
+                    .ThenInclude(m => m.ApplicationTeams)
+                .Include(t => t.Teams)
+                    .ThenInclude(tm => tm.TeamMembers)
+                .Include(m => m.Members)
+                    .ThenInclude(tm => tm.TeamMembers)
+                .FirstOrDefaultAsync(o => o.Id == organizationId) ?? throw new KeyNotFoundException("Organization doesn't exist");
+
+            _context.Organizations.Remove(organization);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> IsOrganizationSlugValid(string organizationSlug)

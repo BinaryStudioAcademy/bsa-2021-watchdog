@@ -6,6 +6,7 @@ import { ProjectTeam } from '@shared/models/projects/project-team';
 import { NewProjectTeam } from '@shared/models/projects/new-project-team';
 import { CoreHttpService } from './core-http.service';
 import { UpdateProject } from '@shared/models/projects/update-project';
+import { share, tap } from 'rxjs/operators';
 import { AppSecrets } from '@shared/models/projects/app-secrets';
 
 @Injectable({
@@ -18,8 +19,19 @@ export class ProjectService {
         private httpService: CoreHttpService
     ) { }
 
+    private projRequest$: Observable<Project[]>;
     getProjectsByOrganizationId(id: number): Observable<Project[]> {
-        return this.httpService.getRequest(`${this.apiPrefix}/organization/${id}`);
+        if (this.projRequest$) {
+            return this.projRequest$;
+        }
+        this.projRequest$ = this.httpService.getRequest<Project[]>(`${this.apiPrefix}/organization/${id}`)
+            .pipe(
+                tap(() => {
+                    this.projRequest$ = null;
+                }),
+                share()
+            );
+        return this.projRequest$;
     }
 
     getProjectById(id: number | string): Observable<Project> {
@@ -62,7 +74,7 @@ export class ProjectService {
     }
 
     setProjectForTeamAsFavorite(projectTeamId: number, state: boolean): Observable<boolean> {
-        return this.httpService.putRequest<boolean>(`${this.apiPrefix}/team/${projectTeamId}/favorite/${state}`, { });
+        return this.httpService.putRequest<boolean>(`${this.apiPrefix}/team/${projectTeamId}/favorite/${state}`, {});
     }
 
     isProjectNameUnique(name: string, organizationId: number): Observable<boolean> {
