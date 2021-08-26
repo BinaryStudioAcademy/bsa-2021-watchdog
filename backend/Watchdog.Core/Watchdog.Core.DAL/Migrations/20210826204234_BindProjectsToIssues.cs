@@ -3,128 +3,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Watchdog.Core.DAL.Migrations
 {
-    public partial class NullAppsFix : Migration
+    public partial class BindProjectsToIssues : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Issues_Applications_ApplicationId",
-                table: "Issues");
-
-            migrationBuilder.AlterColumn<int>(
+            migrationBuilder.AddColumn<int>(
                 name: "ApplicationId",
                 table: "Issues",
                 type: "int",
                 nullable: false,
-                defaultValue: 0,
-                oldClrType: typeof(int),
-                oldType: "int",
-                oldNullable: true);
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 1,
-                column: "ApiKey",
-                value: "5536A932-6C4E-4188-9792-828799E42B01");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 2,
-                column: "ApiKey",
-                value: "1133612F-95AF-44A3-BF5D-983E0CDE23BC");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 3,
-                column: "ApiKey",
-                value: "922A46F3-4BE6-44E3-98EC-FA2ED266D1FA");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 4,
-                column: "ApiKey",
-                value: "2852E95A-0A7B-481E-8B8C-0E8001735C03");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 5,
-                column: "ApiKey",
-                value: "DD74AC8A-6FB6-4766-97F4-9C0EEC0E3985");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 6,
-                column: "ApiKey",
-                value: "478DA34D-8C27-4C8B-8B7D-984D3BF091B9");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 7,
-                column: "ApiKey",
-                value: "F2567440-0FF5-45D0-903B-5ECA94D604BF");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 8,
-                column: "ApiKey",
-                value: "0C6F4526-9C22-4E5B-8E1C-81AB61B3D73C");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 9,
-                column: "ApiKey",
-                value: "1E8C84B7-C717-420F-9BB0-B16D81103723");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 10,
-                column: "ApiKey",
-                value: "CC8D20E9-34C2-417D-A06B-0CFE2E7DC4D6");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 11,
-                column: "ApiKey",
-                value: "71B693C8-0F57-4BF3-B149-30DC998C4CD2");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 12,
-                column: "ApiKey",
-                value: "CDF2787C-791A-4A72-96C6-6C0A41237E1D");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 13,
-                column: "ApiKey",
-                value: "8EA51D03-0C00-451B-BF4C-F61962272FE0");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 14,
-                column: "ApiKey",
-                value: "6E82D8FE-A61C-4141-9DC2-717B8D441E0F");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 15,
-                column: "ApiKey",
-                value: "6B30D12A-5B3C-480C-AA0B-67FAAF8FD7CA");
+                defaultValue: 0);
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
@@ -357,6 +245,13 @@ namespace Watchdog.Core.DAL.Migrations
                 columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
                 values: new object[] { 3, new DateTime(2019, 9, 10, 11, 8, 14, 739, DateTimeKind.Unspecified).AddTicks(4528), 5, 8, "Ergonomic Soft Soap", "{\"sourceProjects\": [3],\"dateRange\": 0,\"issuesCount\": 144}", 1 });
 
+            migrationBuilder.Sql("Delete From Issues;");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Issues_ApplicationId",
+                table: "Issues",
+                column: "ApplicationId");
+
             migrationBuilder.AddForeignKey(
                 name: "FK_Issues_Applications_ApplicationId",
                 table: "Issues",
@@ -372,118 +267,13 @@ namespace Watchdog.Core.DAL.Migrations
                 name: "FK_Issues_Applications_ApplicationId",
                 table: "Issues");
 
-            migrationBuilder.AlterColumn<int>(
+            migrationBuilder.DropIndex(
+                name: "IX_Issues_ApplicationId",
+                table: "Issues");
+
+            migrationBuilder.DropColumn(
                 name: "ApplicationId",
-                table: "Issues",
-                type: "int",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 1,
-                column: "ApiKey",
-                value: "AA8D9EB4-513F-4485-AB88-FDA2C7DDBF37");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 2,
-                column: "ApiKey",
-                value: "FF092079-FF3A-4266-8441-C8F556ADB3C7");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 3,
-                column: "ApiKey",
-                value: "86649B15-6FC2-42B0-8D46-E8781F57C1C4");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 4,
-                column: "ApiKey",
-                value: "CF99AE20-2A8F-409E-94ED-56DEC20A1E53");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 5,
-                column: "ApiKey",
-                value: "3A122FCD-6CFC-4D1F-819C-CDE1926B9F2C");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 6,
-                column: "ApiKey",
-                value: "78C3EAA4-3DB8-4FFF-A671-604D23669C8E");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 7,
-                column: "ApiKey",
-                value: "50B066A9-39C4-4684-B02D-1F577E6B243C");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 8,
-                column: "ApiKey",
-                value: "790B7A91-6D5D-42C8-81A3-7B777DCB4328");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 9,
-                column: "ApiKey",
-                value: "3752717F-BB9A-4834-AC7A-5B65D596C624");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 10,
-                column: "ApiKey",
-                value: "03B01E0A-3995-4E96-B6B2-D622C2BD8F19");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 11,
-                column: "ApiKey",
-                value: "9CD472DA-27D0-447A-BA12-9574F8C7846A");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 12,
-                column: "ApiKey",
-                value: "B4992B8B-66CB-4D06-A495-E3BDCB957A79");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 13,
-                column: "ApiKey",
-                value: "D1647082-5A1E-4967-820B-17A08FB07EC4");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 14,
-                column: "ApiKey",
-                value: "3C04D6F6-34A4-4CAF-80FD-AFF370BD9349");
-
-            migrationBuilder.UpdateData(
-                table: "Applications",
-                keyColumn: "Id",
-                keyValue: 15,
-                column: "ApiKey",
-                value: "78A7753E-88D4-41F6-8895-086808841189");
+                table: "Issues");
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
@@ -715,14 +505,6 @@ namespace Watchdog.Core.DAL.Migrations
                 keyValue: 35,
                 columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
                 values: new object[] { 1, new DateTime(2021, 4, 5, 19, 34, 20, 208, DateTimeKind.Unspecified).AddTicks(9212), 13, 3, "Incredible Plastic Computer", "{\"sourceProjects\": [13],\"dateRange\": 2,\"issuesCount\": 866}", 0 });
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Issues_Applications_ApplicationId",
-                table: "Issues",
-                column: "ApplicationId",
-                principalTable: "Applications",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
         }
     }
 }
