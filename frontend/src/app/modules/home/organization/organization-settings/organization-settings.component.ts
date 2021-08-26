@@ -130,7 +130,7 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
         this.memberService.isMemberOwner(this.authService.getUserId())
             .pipe(this.untilThis)
             .subscribe(isMemberOwner => {
-                this.isRemovingAllowed = isMemberOwner && this.defaultOrganization.id!=this.organization.id;
+                this.isRemovingAllowed = isMemberOwner && this.defaultOrganization.id !== this.organization.id;
             }, error => {
                 this.toastService.error(error);
             });
