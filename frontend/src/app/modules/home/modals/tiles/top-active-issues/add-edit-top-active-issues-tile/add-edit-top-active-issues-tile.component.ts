@@ -15,6 +15,7 @@ import { regexs } from '@shared/constants/regexs';
 import { convertJsonToTileSettings, convertTileSettingsToJson } from '@core/utils/tile.utils';
 import { TilesModalData } from '@modules/home/modals/tiles/data/tiles-modal-data';
 import { DateRangeDropdown } from '@modules/home/modals/tiles/models/date-range-dropdown';
+import { TileSizeType } from '@shared/models/tile/enums/tile-size-type';
 
 @Component({
     selector: 'app-add-edit-top-active-issues-tile',
@@ -25,6 +26,7 @@ import { DateRangeDropdown } from '@modules/home/modals/tiles/models/date-range-
 export class AddEditTopActiveIssuesTileComponent implements OnInit {
     public formGroup: FormGroup;
     public dateRangeDropdown: DateRangeDropdown[];
+    public tileSizeDropdown: TileSizeDropdown[];
     public headerTitle: string;
     public submitButtonText: string;
     currentDashboardId: number;
@@ -47,6 +49,8 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
         this.userProjects = this.dialogConfig.data.userProjects;
 
         this.initDateRangeDropdown();
+        this.initTileSizeDropdown();
+
         switch (this.isAddMode) {
             case true:
                 this.addTileInit();
@@ -108,6 +112,12 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
                     Validators.min(1),
                     Validators.max(1000)
                 ]
+            ),
+            tileSize: new FormControl(
+                tileSettings.tileSize,
+                [
+                    Validators.required
+                ]
             )
         });
     }
@@ -146,12 +156,35 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
                     Validators.min(1),
                     Validators.max(1000)
                 ]
+            ),
+            tileSize: new FormControl(
+                this.tileSizeDropdown[0].type,
+                [
+                    Validators.required
+                ]
             )
         });
     }
 
     private initDateRangeDropdown(): void {
         this.dateRangeDropdown = this.tileModalData.dateRangeDropdownItems;
+    }
+
+    private initTileSizeDropdown(): void {
+        this.tileSizeDropdown = [
+            {
+                type: TileSizeType.Small,
+                name: 'Small'
+            },
+            {
+                type: TileSizeType.Medium,
+                name: 'Medium'
+            },
+            {
+                type: TileSizeType.Large,
+                name: 'Large'
+            }
+        ];
     }
 
     private addTile(values: any): void {
@@ -164,7 +197,8 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
             settings: convertTileSettingsToJson(<TopActiveIssuesSettings>{
                 issuesCount: values.issuesCount,
                 sourceProjects: values.sourceProjects,
-                dateRange: values.dateRange
+                dateRange: values.dateRange,
+                tileSize: values.tileSize
             })
         };
         this.close(newTile);
@@ -177,9 +211,15 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
             settings: convertTileSettingsToJson(<TopActiveIssuesSettings>{
                 issuesCount: values.issuesCount,
                 sourceProjects: values.sourceProjects,
-                dateRange: values.dateRange
+                dateRange: values.dateRange,
+                tileSize: values.tileSize
             })
         };
         this.close(updatedTile);
     }
+}
+
+interface TileSizeDropdown {
+    name: string,
+    type: TileSizeType
 }
