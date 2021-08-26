@@ -30,4 +30,8 @@ export class IssueService {
     public getEventMessagesInfo(): Observable<IssueMessageInfo[]> {
         return this.httpService.getRequest<IssueMessageInfo[]>(`${this.routePrefix}/messages`);
     }
+
+    public getEventMessagesInfoByProjectId(projectId: number): Observable<IssueMessageInfo[]> {
+        return this.httpService.getRequest<IssueMessageInfo[]>(`${this.routePrefix}/messages/application/${projectId}`);
+    }
 }
