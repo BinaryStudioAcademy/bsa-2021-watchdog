@@ -10,6 +10,8 @@ import { RegOrganizationDto } from '../DTO/reg-organization-dto';
 import { NewUserDto } from '../DTO/new-user-dto';
 import { OrganizationService } from '@core/services/organization.service';
 import { uniqueSlugValidator } from '@shared/validators/unique-slug.validator';
+import { RegistrationSteps } from './registration-steps';
+import { RegistrationTabs } from './registration-tabs';
 
 @Component({
     selector: 'app-registration-form',
@@ -23,10 +25,13 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
 
     personal_step = false;
     organization_step = false;
-    step = 1;
+
+    stepRegistration = RegistrationSteps;
+    step = this.stepRegistration.First;
 
     organizationSlugJoin: string;
-    indexOfSelectedTab: number = 0;
+    tabRegistration = RegistrationTabs;
+    indexOfSelectedTab = this.tabRegistration.CreateOrganization;
 
     user = {} as User;
     organization = {} as NewOrganizationsWithSlug;
@@ -154,7 +159,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
     };
 
     next() {
-        if (this.step === 1) {
+        if (this.step === this.stepRegistration.First) {
             this.personal_step = true;
             if (this.personalDetail.invalid) { return; }
             this.step += 1;
@@ -163,21 +168,21 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
 
     previous() {
         this.step -= 1;
-        if (this.step === 1) {
+        if (this.step === this.stepRegistration.First) {
             this.personal_step = false;
         }
-        if (this.step === 2) {
+        if (this.step === this.stepRegistration.Second) {
             this.organization_step = false;
         }
     }
 
     submit() {
-        if (this.step === 2) {
+        if (this.step === this.stepRegistration.Second) {
             this.organization_step = true;
-            if (this.indexOfSelectedTab === 0) {
+            if (this.indexOfSelectedTab === this.tabRegistration.CreateOrganization) {
                 this.onSubmit();
             }
-            if (this.indexOfSelectedTab === 1) {
+            if (this.indexOfSelectedTab === this.tabRegistration.JoinToOrganization) {
                 this.onSumbitWithJoin();
             }
         }
