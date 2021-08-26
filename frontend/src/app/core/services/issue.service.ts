@@ -12,8 +12,8 @@ export class IssueService {
 
     constructor(private httpService: CoreHttpService) { }
 
-    public getIssuesInfo(): Observable<IssueInfo[]> {
-        return this.httpService.getRequest<IssueInfo[]>(`${this.routePrefix}/info`);
+    public getIssuesInfo(memberId: number): Observable<IssueInfo[]> {
+        return this.httpService.getRequest<IssueInfo[]>(`${this.routePrefix}/info/${memberId}`);
     }
 
     public updateAssignee(updateData: UpdateAssignee): Observable<void> {

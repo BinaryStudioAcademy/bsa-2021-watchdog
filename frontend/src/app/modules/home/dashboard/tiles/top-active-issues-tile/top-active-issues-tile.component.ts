@@ -1,10 +1,10 @@
+import { AuthenticationService } from '@core/services/authentication.service';
+import { switchMap } from 'rxjs/operators';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Project } from '@shared/models/projects/project';
 import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
-import { TileService } from '@core/services/tile.service';
 import { TileType } from '@shared/models/tile/enums/tile-type';
 import { Tile } from '@shared/models/tile/tile';
-import { ConfirmWindowService } from '@core/services/confirm-window.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
 import { BaseComponent } from '@core/components/base/base.component';
@@ -29,11 +29,10 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
     displayedIssues: IssueInfo[] = [];
 
     constructor(
-        private tileService: TileService,
         private toastNotificationService: ToastNotificationService,
-        private confirmWindowService: ConfirmWindowService,
         private tileDialogService: TileDialogService,
         private issueService: IssueService,
+        private authService: AuthenticationService,
     ) {
         super();
     }
@@ -72,10 +71,8 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
     }
 
     private getIssuesInfo() {
-        //TODO: Get issues from projects of user organization
-        this.issueService
-            .getIssuesInfo()
-            .pipe(this.untilThis)
+        this.authService.getMember()
+            .pipe(this.untilThis, switchMap(member => this.issueService.getIssuesInfo(member.id)))
             .subscribe(issuesInfo => {
                 this.applyIssuesSettings(issuesInfo);
             }, error => {

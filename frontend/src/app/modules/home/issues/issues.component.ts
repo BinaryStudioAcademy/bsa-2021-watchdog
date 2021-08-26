@@ -3,7 +3,6 @@ import { IssuesHubService } from '@core/hubs/issues-hub.service';
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
-import { Organization } from '@shared/models/organization/organization';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { MemberService } from '@core/services/member.service';
 import { forkJoin } from 'rxjs';
@@ -11,9 +10,10 @@ import { TeamService } from '@core/services/team.service';
 import { Assignee } from '@shared/models/issue/assignee';
 import { count, toUsers } from '@core/services/issues.utils';
 import { IssueInfo } from '@shared/models/issue/issue-info';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { AssigneeOptions } from '@shared/models/issue/assignee-options';
 import { IssueService } from '@core/services/issue.service';
+import { Member } from '@shared/models/member/member';
 
 @Component({
     selector: 'app-issues',
@@ -32,7 +32,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     selectedTime: string;
     isAssign: boolean;
     sharedOptions = {} as AssigneeOptions;
-    organization: Organization;
+    member: Member;
 
     constructor(
         private issuesHub: IssuesHubService,
@@ -50,11 +50,11 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
         this.setTabPanelFields();
 
-        this.authService.getOrganization()
+        this.authService.getMember()
             .pipe(this.untilThis)
-            .subscribe(organization => {
-                this.organization = organization;
-                forkJoin([this.loadMember(), this.loadTeams(), this.loadIssues()])
+            .subscribe(member => {
+                this.member = member;
+                forkJoin([this.loadMember(), this.loadTeams(), this.loadIssues(member.id)])
                     .pipe(this.untilThis)
                     .subscribe(([members, teams, issues]) => {
                         this.sharedOptions.members = members;
@@ -69,12 +69,12 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     }
 
     loadMember() {
-        return this.memberService.getMembersByOrganizationId(this.organization.id)
+        return this.memberService.getMembersByOrganizationId(this.member.organizationId)
             .pipe(this.untilThis);
     }
 
     loadTeams() {
-        return this.teamService.getTeamOptionsByOrganizationId(this.organization.id)
+        return this.teamService.getTeamOptionsByOrganizationId(this.member.organizationId)
             .pipe(this.untilThis);
     }
 
@@ -140,15 +140,16 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         return equalsMembers && equalsTeams;
     }
 
-    private loadIssues() {
-        return this.issueService.getIssuesInfo()
-            .pipe(this.untilThis,
+    private loadIssues(memberId: number) {
+        return this.issueService.getIssuesInfo(memberId)
+            .pipe(
                 map(issues => issues.map(issue => {
                     if (issue.assignee) {
                         return issue;
                     }
                     return { ...issue, assignee: { teamIds: [], memberIds: [] } as Assignee };
-                })));
+                }))
+            );
     }
 
     private subscribeToIssuesHub() {
