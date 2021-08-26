@@ -140,7 +140,7 @@ namespace Watchdog.Core.BLL.Services
                 .Query(q => q
                     .Ids(c => c
                         .Values(issue.EventMessages.Select(i => i.EventId)))));
-            var result = response.Documents.ToList().Filter(filterModel, out int totalRecord);
+            var result = response.Documents.AsEnumerable().Filter(filterModel, out int totalRecord);
             return (result.ToList(),totalRecord);
         }
 
