@@ -124,9 +124,9 @@ namespace Watchdog.Core.BLL.Services
                         .ThenInclude(m => m.User);
         }
 
-        public async Task<bool> IsTeamNameUniqueAsync(string teamName)
+        public async Task<bool> IsTeamNameUniqueAsync(int orgId, string teamName)
         {
-            return !await _context.Teams.AnyAsync(t => t.Name == teamName);
+            return !await _context.Teams.Where(t => t.OrganizationId == orgId).AnyAsync(t => t.Name == teamName);
         }
 
         public async Task<ICollection<TeamOptionDto>> GetTeamsOptionsByOrganizationIdAsync(int organizationId)

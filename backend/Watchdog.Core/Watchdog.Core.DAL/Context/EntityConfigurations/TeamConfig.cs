@@ -13,9 +13,6 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
                    .HasMaxLength(128)
                    .IsRequired();
 
-            builder.HasIndex(t => t.Name)
-                   .IsUnique();
-
             builder.HasMany(t => t.TeamMembers)
                    .WithOne(tm => tm.Team)
                    .HasForeignKey(tm => tm.TeamId)

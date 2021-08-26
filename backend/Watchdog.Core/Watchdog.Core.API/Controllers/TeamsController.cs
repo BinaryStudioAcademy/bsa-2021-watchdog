@@ -79,10 +79,10 @@ namespace Watchdog.Core.API.Controllers
             return Ok(updatedTeam);
         }
 
-        [HttpGet("teamName/{teamName}")]
-        public async Task<ActionResult<bool>> CheckTeamName(string teamName)
+        [HttpGet("orgId/{orgId:int}/teamName/{teamName}")]
+        public async Task<ActionResult<bool>> CheckTeamName(int orgId, string teamName)
         {
-            var isUnique = await _teamService.IsTeamNameUniqueAsync(teamName);
+            var isUnique = await _teamService.IsTeamNameUniqueAsync(orgId, teamName);
             return Ok(isUnique);
         }
 
