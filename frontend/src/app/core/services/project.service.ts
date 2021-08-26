@@ -6,7 +6,7 @@ import { ProjectTeam } from '@shared/models/projects/project-team';
 import { NewProjectTeam } from '@shared/models/projects/new-project-team';
 import { CoreHttpService } from './core-http.service';
 import { UpdateProject } from '@shared/models/projects/update-project';
-import {AppSecrets} from "@shared/models/projects/app-secrets";
+import { AppSecrets } from '@shared/models/projects/app-secrets';
 
 @Injectable({
     providedIn: 'root',
