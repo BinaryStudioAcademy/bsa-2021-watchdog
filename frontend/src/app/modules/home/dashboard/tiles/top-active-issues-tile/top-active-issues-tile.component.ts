@@ -54,7 +54,7 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
     }
 
     private getTileSettings() {
-        this.tileSettings = convertJsonToTileSettings(this.tile.settings, TileType.TopActiveIssues);
+        this.tileSettings = convertJsonToTileSettings(this.tile.settings, TileType.TopActiveIssues) as TopActiveIssuesSettings;
     }
 
     private applyProjectSettings() {

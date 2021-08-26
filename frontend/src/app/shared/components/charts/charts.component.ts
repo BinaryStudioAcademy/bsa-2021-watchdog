@@ -5,6 +5,7 @@ import { SingleChart } from '@shared/models/charts/single-chart';
 import { ChartType } from '@shared/models/charts/chart-type';
 import { AreaChartComponent } from '@swimlane/ngx-charts';
 import { BaseComponent } from '@core/components/base/base.component';
+import { TileType } from '@shared/models/tile/enums/tile-type';
 
 @Component({
     selector: 'app-charts[chartType]',
@@ -16,11 +17,12 @@ export class ChartsComponent extends BaseComponent implements OnInit, AfterViewI
     @Input() multi: MultiChart[];
     @Input() chartType: ChartType;
     @Input() chartOptions: ChartOptions;
-    @Input() chartContainerStyles: { [style: string]: any; };
+    @Input() tileType: TileType;
     @ViewChild('chart') chart: AreaChartComponent;
     options: ChartOptions;
     ChartType = ChartType;
     observer: ResizeObserver;
+    TileType = TileType;
 
     constructor(
         private host: ElementRef,

@@ -1,4 +1,4 @@
 export interface SingleChart {
-    name: any,
-    value: any
+    name: string | number | Date,
+    value: number
 }

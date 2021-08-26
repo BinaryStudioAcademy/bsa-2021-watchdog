@@ -39,7 +39,6 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
     multi: MultiChart[] = [];
     chartOptions: ChartOptions;
     ChartType = ChartType;
-    chartContainerStyles: { [styleClass: string]: any };
     isLoading: boolean = true;
 
     constructor(
@@ -70,7 +69,7 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
     }
 
     private getTileSettings() {
-        this.tileSettings = convertJsonToTileSettings(this.tile.settings, TileType.IssuesPerTime);
+        this.tileSettings = convertJsonToTileSettings(this.tile.settings, TileType.IssuesPerTime) as IssuesPerTimeSettings;
     }
 
     private applyProjectSettings() {
@@ -96,31 +95,30 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
     private getMultiChartSeries(
         dateNow: Date | number, dateRangeMsOffset: number, granularityType: TileGranularityType, eventsInfo: IssueMessageInfo[]
     ) {
-        const issuesPerTime: { [time: number]: IssueMessageInfo[] } = {};
+        const issuesPerTime: { [time: number]: number } = {};
 
         const dateMsNow = convertDateToTileGranularityTimeStamp(granularityType, dateNow);
         const dateMsPast = convertDateToTileGranularityTimeStamp(granularityType, dateMsNow - dateRangeMsOffset);
         const granularityOffset = convertTileGranularityTypeToMs(granularityType);
 
-        // filling empty space with 0
+        // filling keys with date (i) and value with issue count (0)
         for (let i = dateMsPast; i < dateMsNow; i += granularityOffset) {
-            issuesPerTime[i] = [];
+            issuesPerTime[i] = 0;
         }
-        if (eventsInfo.length) {
-            // filling with real data
-            eventsInfo.forEach((info) => {
-                const timeStamp = convertDateToTileGranularityTimeStamp(granularityType, info.occurredOn);
-                if (issuesPerTime[timeStamp]) {
-                    issuesPerTime[timeStamp].push(info);
-                } else {
-                    issuesPerTime[timeStamp] = [info];
-                }
-            });
-        }
+
+        // filling count
+        eventsInfo.forEach((info) => {
+            const timeStamp = convertDateToTileGranularityTimeStamp(granularityType, info.occurredOn);
+            if (issuesPerTime[timeStamp]) {
+                issuesPerTime[timeStamp] += 1;
+            } else {
+                issuesPerTime[timeStamp] = 1;
+            }
+        });
 
         return Object.entries(issuesPerTime).map<SingleChart>(([key, val]) => ({
             name: new Date(+key),
-            value: val.length
+            value: val
         }));
     }
 
@@ -137,11 +135,6 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
     }
 
     private initChartSettings(): void {
-        this.chartContainerStyles = {
-            'min-height': '420px',
-            'min-width': 'unset',
-        };
-
         this.chartOptions = {
             animations: true,
             gradient: true,

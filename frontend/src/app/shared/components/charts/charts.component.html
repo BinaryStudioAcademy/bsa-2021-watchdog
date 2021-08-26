@@ -1,5 +1,5 @@
 <div [ngSwitch]="chartType" class="container">
-    <div *ngSwitchCase="ChartType.Bars" [ngStyle]="chartContainerStyles" class="chart-container">
+    <div *ngSwitchCase="ChartType.Bars" class="chart-container">
         <ngx-charts-bar-vertical #chart [gradient]="options.gradient" [legend]="options.showLegend"
                                  [results]="single" [roundDomains]="options.roundDomains"
                                  [scheme]="options.colorScheme"
@@ -7,23 +7,24 @@
                                  [xAxis]="options.showXAxis" [yAxis]="options.showYAxis">
         </ngx-charts-bar-vertical>
     </div>
-    <div *ngSwitchCase="ChartType.Pie" [ngStyle]="chartContainerStyles" class="chart-container">
+    <div *ngSwitchCase="ChartType.Pie" class="chart-container">
         <ngx-charts-advanced-pie-chart #chart [gradient]="options.gradient" [results]="single"
                                        [scheme]="options.colorScheme" [view]="options.view">
         </ngx-charts-advanced-pie-chart>
     </div>
-    <div *ngSwitchCase="ChartType.Gauge" [ngStyle]="chartContainerStyles" class="chart-container">
+    <div *ngSwitchCase="ChartType.Gauge" class="chart-container">
         <ngx-charts-gauge #chart [legend]="options.showLegend" [results]="single" [scheme]="options.colorScheme"
                           [view]="options.view">
         </ngx-charts-gauge>
     </div>
-    <div *ngSwitchCase="ChartType.Tree" [ngStyle]="chartContainerStyles" class="chart-container">
+    <div *ngSwitchCase="ChartType.Tree" class="chart-container">
         <ngx-charts-tree-map #chart [animations]="options.animations" [gradient]="options.gradient"
                              [results]="single"
                              [scheme]="options.colorScheme" [view]="options.view">
         </ngx-charts-tree-map>
     </div>
-    <div *ngSwitchCase="ChartType.Line" [ngStyle]="chartContainerStyles" class="chart-container">
+    <div *ngSwitchCase="ChartType.Line" [ngClass]="{'issues-per-time': tileType === TileType.IssuesPerTime}"
+         class="chart-container">
         <ngx-charts-line-chart #chart [autoScale]="options.autoScale"
                                [legend]="options.showLegend" [results]="multi"
                                [roundDomains]="options.roundDomains" [scheme]="options.colorScheme"
@@ -33,7 +34,7 @@
                                [yAxisLabel]="options.yAxisLabel" [yAxis]="options.showYAxis">
         </ngx-charts-line-chart>
     </div>
-    <div *ngSwitchCase="ChartType.Polar" [ngStyle]="chartContainerStyles" class="chart-container">
+    <div *ngSwitchCase="ChartType.Polar" class="chart-container">
         <ngx-charts-polar-chart #chart [autoScale]="options.autoScale" [legend]="options.showLegend"
                                 [results]="multi" [roundDomains]="options.roundDomains"
                                 [scheme]="options.colorScheme" [showXAxisLabel]="options.showXAxisLabel"
@@ -42,7 +43,7 @@
                                 [yAxisLabel]="options.yAxisLabel" [yAxis]="options.showYAxis">
         </ngx-charts-polar-chart>
     </div>
-    <div *ngSwitchCase="ChartType.Area" [ngStyle]="chartContainerStyles" class="chart-container">
+    <div *ngSwitchCase="ChartType.Area" class="chart-container">
         <ngx-charts-area-chart #chart [autoScale]="options.autoScale" [legend]="options.showLegend"
                                [results]="multi" [roundDomains]="options.roundDomains"
                                [scheme]="options.colorScheme"
@@ -52,7 +53,7 @@
                                [yAxisLabel]="options.yAxisLabel" [yAxis]="options.showYAxis">
         </ngx-charts-area-chart>
     </div>
-    <div *ngSwitchCase="ChartType.Grouped" [ngStyle]="chartContainerStyles" class="chart-container">
+    <div *ngSwitchCase="ChartType.Grouped" class="chart-container">
         <ngx-charts-bar-vertical-2d #chart [legend]="options.showLegend" [results]="multi"
                                     [roundDomains]="options.roundDomains" [scheme]="options.colorScheme"
                                     [showXAxisLabel]="options.showXAxisLabel"

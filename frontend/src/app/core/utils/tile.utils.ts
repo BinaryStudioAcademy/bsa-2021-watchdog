@@ -4,7 +4,7 @@ import { TileDateRangeType } from '@shared/models/tile/enums/tile-date-range-typ
 import { IssuesPerTimeSettings } from '@shared/models/tile/settings/issues-per-time-settings';
 import { TileGranularityType } from '@shared/models/tile/enums/tile-granularity-type';
 
-export const convertJsonToTileSettings = (json: string, type: TileType): any => {
+export const convertJsonToTileSettings = (json: string, type: TileType) => {
     switch (type) {
         case TileType.TopActiveIssues:
             return JSON.parse(json) as TopActiveIssuesSettings;

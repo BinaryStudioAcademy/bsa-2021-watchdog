@@ -78,7 +78,7 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
         this.headerTitle = `Editing tile ${this.tileToEdit.name}`;
         this.submitButtonText = 'Update';
 
-        const tileSettings = convertJsonToTileSettings(this.tileToEdit.settings, TileType.TopActiveIssues);
+        const tileSettings = convertJsonToTileSettings(this.tileToEdit.settings, TileType.TopActiveIssues) as TopActiveIssuesSettings;
         this.formGroup = new FormGroup({
             sourceProjects: new FormControl(
                 tileSettings.sourceProjects,
