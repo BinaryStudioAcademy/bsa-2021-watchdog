@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Watchdog.Core.DAL.Context;
 
 namespace Watchdog.Core.DAL.Migrations
 {
     [DbContext(typeof(WatchdogCoreContext))]
-    partial class WatchdogCoreContextModelSnapshot : ModelSnapshot
+    [Migration("20210825110311_AddApiKeyForApplication")]
+    partial class AddApiKeyForApplication
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
