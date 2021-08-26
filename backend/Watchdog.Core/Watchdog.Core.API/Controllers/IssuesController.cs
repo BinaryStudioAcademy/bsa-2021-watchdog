@@ -52,5 +52,14 @@ namespace Watchdog.Core.API.Controllers
             var issueMessages = await _issueService.GetAllIssueMessages();
             return Ok(issueMessages);
         }
+        
+        [HttpGet("messages/application/{applicationId:int}")]
+        public async Task<ActionResult<ICollection<IssueMessageDto>>> GetAllIssueMessages(int applicationId)
+        {
+            var issueMessages = await _issueService.GetAllIssueMessagesByApplicationId(applicationId);
+            return Ok(issueMessages);
+        }
+        
+        
     }
 }

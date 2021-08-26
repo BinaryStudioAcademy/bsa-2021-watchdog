@@ -157,6 +157,23 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<ICollection<IssueMessageDto>>(messages);
         }
 
+
+        public async Task<ICollection<IssueMessageDto>> GetAllIssueMessagesByApplicationId(int applicationId)
+        {
+            if (!await _context.Applications.AnyAsync(application => application.Id == applicationId))
+            {
+                throw new KeyNotFoundException("Application not found");
+            }
+
+            var messages = await _context.EventMessages
+                .AsNoTracking()
+                .Include(message => message.Issue)
+                .Where(message => message.Issue.ApplicationId == applicationId)
+                .ToListAsync();
+
+            return _mapper.Map<ICollection<IssueMessageDto>>(messages);
+        }
+
         private async Task<Issue> CreateNewIssue(IssueMessage issueMessage)
         {
             var newIssue = _mapper.Map<Issue>(issueMessage);
