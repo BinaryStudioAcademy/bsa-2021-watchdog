@@ -17,7 +17,7 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<IEnumerable<UserDto>> SearchMembersNotInOrganizationAsync(int orgId, int count, string memberEmail);
 
         Task<bool> IsUserEmailValid(string userEmail);
-        
-        Task<ICollection<string>> GetUserUIdsByApplicationIdAsync(int applicationId);
+
+        Task<ICollection<string>> GetUserUIdsByApplicationUIdAsync(string applicationUid);
     }
 }

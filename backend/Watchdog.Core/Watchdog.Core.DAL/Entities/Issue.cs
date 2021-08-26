@@ -9,9 +9,10 @@ namespace Watchdog.Core.DAL.Entities
         {
             EventMessages = new List<EventMessage>();
         }
-        
+
         public string ErrorClass { get; set; }
         public string ErrorMessage { get; set; }
+        public Application Application { get; set; }
         public ICollection<EventMessage> EventMessages { get; set; }
     }
 }

@@ -18,10 +18,10 @@ namespace Watchdog.Core.API.Controllers
             _issueService = issueService;
         }
 
-        [HttpGet("info")]
-        public async Task<ActionResult<ICollection<IssueInfoDto>>> GetIssuesInfoAsync()
+        [HttpGet("info/{memberId:int}")]
+        public async Task<ActionResult<ICollection<IssueInfoDto>>> GetIssuesInfoAsync(int memberId)
         {
-            var issues = await _issueService.GetIssuesInfoAsync();
+            var issues = await _issueService.GetIssuesInfoAsync(memberId);
             return Ok(issues);
         }
 
@@ -29,7 +29,7 @@ namespace Watchdog.Core.API.Controllers
         public async Task<ActionResult> UpdateAssignee(UpdateAssigneeDto assigneeDto)
         {
             await _issueService.UpdateAssigneeAsync(assigneeDto);
-            return Ok(); 
+            return Ok();
         }
 
         [HttpGet("issueId/{issueId:int}/eventId/{eventId}")]
@@ -37,8 +37,8 @@ namespace Watchdog.Core.API.Controllers
         {
             var issueMessage = await _issueService.GetEventMessageByIdAsync(issueId, eventId);
             return Ok(issueMessage);
-        }        
-        
+        }
+
         [HttpGet("messagesByParent/{id}")]
         public async Task<ActionResult<IssueMessage>> GetEventMessagesByIssueIdAsync(int id)
         {

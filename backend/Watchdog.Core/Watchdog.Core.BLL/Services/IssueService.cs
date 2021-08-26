@@ -29,30 +29,39 @@ namespace Watchdog.Core.BLL.Services
                 i.ErrorClass == issueMessage.IssueDetails.ClassName);
 
             var newEventMessage = _mapper.Map<EventMessage>(issueMessage);
-            
+
             if (issue is null)
             {
                 var createdIssue = CreateNewIssue(issueMessage);
-                
+
                 createdIssue.EventMessages.Add(newEventMessage);
-                
+
                 await _context.SaveChangesAsync();
-                
+
                 return createdIssue.Id;
             }
-            
+
             newEventMessage.IssueId = issue.Id;
-            
+
             _context.EventMessages.Add(newEventMessage);
-            
+
             await _context.SaveChangesAsync();
-            
+
             return issue.Id;
         }
 
-        public async Task<ICollection<IssueInfoDto>> GetIssuesInfoAsync()
+        public async Task<ICollection<IssueInfoDto>> GetIssuesInfoAsync(int memberId)
         {
+            var member = await _context.Members.Include(m => m.TeamMembers).FirstOrDefaultAsync(m => m.Id == memberId)
+                         ?? throw new KeyNotFoundException("There is no member with such ID.");
+
             var issuesInfo = await _context.Issues
+                .Include(i => i.Application)
+                .ThenInclude(a => a.ApplicationTeams)
+                .Where(i => i.Application.ApplicationTeams
+                                         .Select(at => at.TeamId)
+                                         .Intersect(member.TeamMembers.Select(tm => tm.TeamId))
+                                         .Any())
                 .Select(i => new IssueInfoDto()
                 {
                     IssueId = i.Id,
@@ -94,16 +103,16 @@ namespace Watchdog.Core.BLL.Services
             {
                 throw new KeyNotFoundException("There is no event ID with such issue ID.");
             }
-                
+
             var response = await _client.GetAsync<IssueMessage>(eventId);
 
             if (!response.IsValid)
             {
                 throw new KeyNotFoundException("Event message not found");
             }
-            
+
             response.Source.IssueId = issueId;
-            
+
             return response.Source;
         }
 
@@ -123,7 +132,7 @@ namespace Watchdog.Core.BLL.Services
             {
                 throw new KeyNotFoundException("Issue Message not found");
             }
-            
+
             return response.Documents.OrderByDescending(em => em.OccurredOn).ToList();
         }
 
@@ -140,7 +149,7 @@ namespace Watchdog.Core.BLL.Services
         private Issue CreateNewIssue(IssueMessage issueMessage)
         {
             var newIssue = _mapper.Map<Issue>(issueMessage);
-            
+
             var createdIssue = _context.Issues.Add(newIssue);
 
             return createdIssue.Entity;
