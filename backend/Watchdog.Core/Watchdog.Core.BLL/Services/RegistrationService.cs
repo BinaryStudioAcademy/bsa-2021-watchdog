@@ -70,8 +70,8 @@ namespace Watchdog.Core.BLL.Services
                 User = user,
                 CreatedByUser = ownerOrganization,
                 Organization = organization,
-                Role = roles.First(r => r.Name.ToLower() == "viewer"),
-                IsAccepted = false
+                Role = roles.First(r => r.Id == organization.DefaultRoleId),
+                IsAccepted = organization.OpenMembership
             };
             await _context.Members.AddAsync(member);
             await _context.SaveChangesAsync();

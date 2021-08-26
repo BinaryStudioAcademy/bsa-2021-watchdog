@@ -11,6 +11,7 @@ import { NewUserDto } from '../DTO/new-user-dto';
 import { OrganizationService } from '@core/services/organization.service';
 import { uniqueSlugValidator } from '@shared/validators/unique-slug.validator';
 import { checkOrganizationMembership } from '@shared/validators/check-ogranization-membership.validator';
+import { FullRegistrationWithJoinDto } from '../DTO/full-registration-with-join-dto';
 
 @Component({
     selector: 'app-registration-form',
