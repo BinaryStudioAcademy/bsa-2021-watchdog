@@ -21,6 +21,7 @@ import { map } from 'rxjs/operators';
 import { IssueService } from '@core/services/issue.service';
 import { SpinnerService } from '@core/services/spinner.service';
 import { convertJsonToTileSettings } from '@core/utils/tile.utils';
+import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
 
 @Component({
     selector: 'app-dashboard',
@@ -161,7 +162,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     }
 
     getTileSize(tile: Tile) {
-        const settings = convertJsonToTileSettings(tile.settings, TileType.TopActiveIssues);
+        const settings = convertJsonToTileSettings(tile.settings, TileType.TopActiveIssues) as TopActiveIssuesSettings;
         return settings.tileSize * 150 + 350;
     }
 

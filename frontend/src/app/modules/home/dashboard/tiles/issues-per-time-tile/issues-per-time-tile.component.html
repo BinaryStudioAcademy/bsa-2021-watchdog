@@ -1,0 +1,9 @@
+<div class="container">
+    <app-tile-header (isDeleting)="isDeleting.emit(tile)" (isEditing)="editTile()"
+                     [isShownEditTileMenu]="isShownEditTileMenu" [tile]="tile"></app-tile-header>
+
+
+    <app-charts *ngIf="!isLoading && multi?.length " [chartOptions]="chartOptions" [tileType]="tile.type"
+                [chartType]="ChartType.Line" [multi]="multi">
+    </app-charts>
+</div>
