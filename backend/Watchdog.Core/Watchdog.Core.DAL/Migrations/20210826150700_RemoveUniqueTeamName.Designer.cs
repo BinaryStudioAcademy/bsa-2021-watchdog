@@ -10,7 +10,7 @@ using Watchdog.Core.DAL.Context;
 namespace Watchdog.Core.DAL.Migrations
 {
     [DbContext(typeof(WatchdogCoreContext))]
-    [Migration("20210826122434_RemoveUniqueTeamName")]
+    [Migration("20210826150700_RemoveUniqueTeamName")]
     partial class RemoveUniqueTeamName
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,7 +68,7 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 1,
-                            ApiKey = "2764744F-6585-4248-9F4E-B0EA30560D07",
+                            ApiKey = "3D576A66-C2D0-B973-5496-049EC4C8B237",
                             CreatedAt = new DateTime(2021, 6, 20, 4, 1, 54, 96, DateTimeKind.Unspecified).AddTicks(6185),
                             CreatedBy = 5,
                             Description = "unleash back-end supply-chains",
@@ -79,51 +79,18 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 2,
-                            ApiKey = "BA23AA09-A752-40C3-9BBF-BB1D35A43850",
-                            CreatedAt = new DateTime(2019, 8, 12, 17, 20, 56, 326, DateTimeKind.Unspecified).AddTicks(9638),
-                            CreatedBy = 8,
-                            Description = "cultivate granular infrastructures",
-                            Name = "Schmidt - Hilpert",
-                            OrganizationId = 1,
-                            PlatformId = 3
+                            ApiKey = "2ABB45FA-6B15-73FA-4D00-739E2245C578",
+                            CreatedAt = new DateTime(2021, 2, 12, 2, 4, 53, 954, DateTimeKind.Unspecified).AddTicks(9302),
+                            CreatedBy = 19,
+                            Description = "enable rich convergence",
+                            Name = "Lang Group",
+                            OrganizationId = 4,
+                            PlatformId = 2
                         },
                         new
                         {
                             Id = 3,
-                            ApiKey = "32B9EB79-ECE1-4E61-BB1C-E8B764311C46",
-                            CreatedAt = new DateTime(2019, 7, 30, 17, 0, 56, 106, DateTimeKind.Unspecified).AddTicks(8790),
-                            CreatedBy = 3,
-                            Description = "exploit scalable platforms",
-                            Name = "Cole, Bartoletti and Prohaska",
-                            OrganizationId = 3,
-                            PlatformId = 16
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ApiKey = "E2A9A68F-6DB8-4CEC-BFC0-DE77DDBFC28D",
-                            CreatedAt = new DateTime(2020, 2, 23, 12, 13, 2, 529, DateTimeKind.Unspecified).AddTicks(289),
-                            CreatedBy = 1,
-                            Description = "cultivate one-to-one web-readiness",
-                            Name = "Schmeler - Boehm",
-                            OrganizationId = 3,
-                            PlatformId = 6
-                        },
-                        new
-                        {
-                            Id = 5,
-                            ApiKey = "ACE671F1-CB07-461E-AD72-F06402E25BDF",
-                            CreatedAt = new DateTime(2020, 10, 29, 10, 39, 4, 413, DateTimeKind.Unspecified).AddTicks(5606),
-                            CreatedBy = 20,
-                            Description = "enhance efficient communities",
-                            Name = "Nitzsche, Vandervort and Nolan",
-                            OrganizationId = 5,
-                            PlatformId = 17
-                        },
-                        new
-                        {
-                            Id = 6,
-                            ApiKey = "4CF552F5-A441-47B4-9262-4A606AEC09D7",
+                            ApiKey = "392A4645-25A4-5E97-C82D-FD2A8198A350",
                             CreatedAt = new DateTime(2020, 4, 6, 21, 58, 23, 764, DateTimeKind.Unspecified).AddTicks(5366),
                             CreatedBy = 7,
                             Description = "transform dot-com content",
@@ -133,102 +100,135 @@ namespace Watchdog.Core.DAL.Migrations
                         },
                         new
                         {
-                            Id = 7,
-                            ApiKey = "73AE2FF6-5593-4E32-9673-BED3ABB5E4D7",
-                            CreatedAt = new DateTime(2019, 11, 9, 2, 34, 53, 333, DateTimeKind.Unspecified).AddTicks(609),
-                            CreatedBy = 14,
-                            Description = "implement B2B blockchains",
-                            Name = "Breitenberg, Bednar and Ullrich",
+                            Id = 4,
+                            ApiKey = "6266BC9A-789E-4851-26B4-49135C4E06C4",
+                            CreatedAt = new DateTime(2021, 1, 10, 15, 3, 19, 975, DateTimeKind.Unspecified).AddTicks(2834),
+                            CreatedBy = 2,
+                            Description = "iterate open-source methodologies",
+                            Name = "Monahan LLC",
                             OrganizationId = 1,
-                            PlatformId = 2
-                        },
-                        new
-                        {
-                            Id = 8,
-                            ApiKey = "62029E8E-9710-4649-8D38-4C1B06154F3B",
-                            CreatedAt = new DateTime(2020, 3, 12, 14, 10, 16, 522, DateTimeKind.Unspecified).AddTicks(8649),
-                            CreatedBy = 19,
-                            Description = "target leading-edge paradigms",
-                            Name = "Gleichner - Tromp",
-                            OrganizationId = 4,
-                            PlatformId = 10
-                        },
-                        new
-                        {
-                            Id = 9,
-                            ApiKey = "11395990-1A94-475D-AEB0-E08BAE5BAEB2",
-                            CreatedAt = new DateTime(2019, 10, 29, 10, 58, 52, 199, DateTimeKind.Unspecified).AddTicks(4340),
-                            CreatedBy = 11,
-                            Description = "incentivize robust applications",
-                            Name = "Dibbert, Muller and Beier",
-                            OrganizationId = 4,
                             PlatformId = 12
                         },
                         new
                         {
-                            Id = 10,
-                            ApiKey = "034BAABB-E76C-423B-B0B2-FA268A592C9A",
-                            CreatedAt = new DateTime(2019, 12, 8, 6, 2, 36, 243, DateTimeKind.Unspecified).AddTicks(7412),
-                            CreatedBy = 15,
-                            Description = "exploit bricks-and-clicks communities",
-                            Name = "Beier, Bergnaum and Lesch",
-                            OrganizationId = 2,
-                            PlatformId = 5
-                        },
-                        new
-                        {
-                            Id = 11,
-                            ApiKey = "FFF5B503-F81C-4CD3-920B-4F13022AAD21",
+                            Id = 5,
+                            ApiKey = "CB5F6485-86D2-8B54-DBF7-658F84D83972",
                             CreatedAt = new DateTime(2019, 10, 13, 12, 5, 2, 725, DateTimeKind.Unspecified).AddTicks(731),
                             CreatedBy = 7,
                             Description = "morph scalable e-commerce",
-                            Name = "Larkin Inc",
+                            Name = "Goyette, Larkin and Boyer",
                             OrganizationId = 2,
                             PlatformId = 7
                         },
                         new
                         {
+                            Id = 6,
+                            ApiKey = "AB779A58-AA46-CCF9-E3C6-E8778C07C32B",
+                            CreatedAt = new DateTime(2019, 8, 14, 17, 42, 2, 349, DateTimeKind.Unspecified).AddTicks(9103),
+                            CreatedBy = 3,
+                            Description = "morph world-class web services",
+                            Name = "Gleichner, Hammes and Hintz",
+                            OrganizationId = 1,
+                            PlatformId = 17
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ApiKey = "C138099D-EAF7-22F5-FBF0-634C1FE48B0C",
+                            CreatedAt = new DateTime(2021, 6, 15, 19, 59, 35, 109, DateTimeKind.Unspecified).AddTicks(3753),
+                            CreatedBy = 3,
+                            Description = "synthesize bleeding-edge paradigms",
+                            Name = "Harber - Collins",
+                            OrganizationId = 2,
+                            PlatformId = 12
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ApiKey = "9BEDE7D8-200E-91F6-0CF0-9322CEFE826A",
+                            CreatedAt = new DateTime(2019, 11, 20, 11, 41, 29, 323, DateTimeKind.Unspecified).AddTicks(8875),
+                            CreatedBy = 12,
+                            Description = "generate killer e-business",
+                            Name = "Price and Sons",
+                            OrganizationId = 2,
+                            PlatformId = 11
+                        },
+                        new
+                        {
+                            Id = 9,
+                            ApiKey = "574FDA26-EA17-11A7-0D35-5FE143558ED8",
+                            CreatedAt = new DateTime(2020, 12, 4, 12, 59, 54, 245, DateTimeKind.Unspecified).AddTicks(9861),
+                            CreatedBy = 12,
+                            Description = "evolve one-to-one relationships",
+                            Name = "Schultz, Conroy and Hane",
+                            OrganizationId = 1,
+                            PlatformId = 18
+                        },
+                        new
+                        {
+                            Id = 10,
+                            ApiKey = "7DB45655-3483-D02F-CFB6-BD987C3726ED",
+                            CreatedAt = new DateTime(2020, 9, 11, 23, 4, 44, 138, DateTimeKind.Unspecified).AddTicks(6437),
+                            CreatedBy = 9,
+                            Description = "harness out-of-the-box deliverables",
+                            Name = "Shanahan - Bayer",
+                            OrganizationId = 3,
+                            PlatformId = 3
+                        },
+                        new
+                        {
+                            Id = 11,
+                            ApiKey = "19480132-0B6A-BC77-9551-5C90B12AB273",
+                            CreatedAt = new DateTime(2021, 1, 2, 17, 17, 10, 167, DateTimeKind.Unspecified).AddTicks(9812),
+                            CreatedBy = 18,
+                            Description = "morph out-of-the-box relationships",
+                            Name = "Oberbrunner - Volkman",
+                            OrganizationId = 1,
+                            PlatformId = 11
+                        },
+                        new
+                        {
                             Id = 12,
-                            ApiKey = "DCE5B089-6D3F-4E41-9E60-AD699187674F",
-                            CreatedAt = new DateTime(2020, 10, 16, 17, 41, 22, 99, DateTimeKind.Unspecified).AddTicks(4346),
-                            CreatedBy = 4,
-                            Description = "cultivate killer metrics",
-                            Name = "Wintheiser - Ward",
-                            OrganizationId = 4,
-                            PlatformId = 4
+                            ApiKey = "EB29D6EE-AD68-0292-2D87-B64CB120BFA2",
+                            CreatedAt = new DateTime(2021, 2, 5, 12, 2, 8, 727, DateTimeKind.Unspecified).AddTicks(3042),
+                            CreatedBy = 16,
+                            Description = "grow killer functionalities",
+                            Name = "Kling, Hintz and Okuneva",
+                            OrganizationId = 2,
+                            PlatformId = 7
                         },
                         new
                         {
                             Id = 13,
-                            ApiKey = "C0C37A96-D201-40E5-BA14-85B5822A0628",
-                            CreatedAt = new DateTime(2020, 10, 20, 17, 49, 27, 974, DateTimeKind.Unspecified).AddTicks(474),
-                            CreatedBy = 7,
-                            Description = "expedite sticky applications",
-                            Name = "Conroy - Yost",
-                            OrganizationId = 5,
-                            PlatformId = 5
+                            ApiKey = "4936F4CE-812E-742E-89E6-6B65F3E31F28",
+                            CreatedAt = new DateTime(2021, 2, 3, 5, 11, 14, 419, DateTimeKind.Unspecified).AddTicks(2970),
+                            CreatedBy = 13,
+                            Description = "visualize robust applications",
+                            Name = "Ondricka LLC",
+                            OrganizationId = 4,
+                            PlatformId = 13
                         },
                         new
                         {
                             Id = 14,
-                            ApiKey = "653E152D-F702-461F-B48D-745AC24FD025",
-                            CreatedAt = new DateTime(2021, 2, 15, 8, 18, 38, 596, DateTimeKind.Unspecified).AddTicks(2936),
-                            CreatedBy = 20,
-                            Description = "orchestrate customized partnerships",
-                            Name = "Olson Group",
+                            ApiKey = "AF16B9B4-84C6-3858-DE9D-CBE459351D3C",
+                            CreatedAt = new DateTime(2020, 2, 5, 6, 23, 41, 435, DateTimeKind.Unspecified).AddTicks(7930),
+                            CreatedBy = 14,
+                            Description = "optimize vertical infomediaries",
+                            Name = "Kovacek - Hirthe",
                             OrganizationId = 5,
                             PlatformId = 18
                         },
                         new
                         {
                             Id = 15,
-                            ApiKey = "9D7AF347-39A0-47DF-89CA-D91578F31EAD",
-                            CreatedAt = new DateTime(2019, 10, 6, 4, 20, 27, 200, DateTimeKind.Unspecified).AddTicks(4990),
-                            CreatedBy = 9,
-                            Description = "redefine B2B partnerships",
-                            Name = "Franecki - Fahey",
-                            OrganizationId = 1,
-                            PlatformId = 12
+                            ApiKey = "EDC608D6-DCB7-A466-CC75-5EDA20E70DBB",
+                            CreatedAt = new DateTime(2021, 4, 16, 6, 3, 51, 505, DateTimeKind.Unspecified).AddTicks(7350),
+                            CreatedBy = 6,
+                            Description = "visualize ubiquitous channels",
+                            Name = "Kunde Group",
+                            OrganizationId = 5,
+                            PlatformId = 6
                         });
                 });
 

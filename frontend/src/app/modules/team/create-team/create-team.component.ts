@@ -16,7 +16,7 @@ import { Organization } from '@shared/models/organization/organization';
     styleUrls: ['./create-team.component.sass']
 })
 export class CreateTeamComponent extends BaseComponent implements OnInit {
-    currentOrg: Organization;
+    currentOrgId: number;
     teamGroup: FormGroup;
 
     constructor(
@@ -33,8 +33,7 @@ export class CreateTeamComponent extends BaseComponent implements OnInit {
         this.authService.getOrganization()
             .pipe(this.untilThis)
             .subscribe(organization => {
-                this.currentOrg = organization;
-                this.checkUpdates();
+                this.currentOrgId = organization.id;
             }, error => {
                 this.toastService.error(error, 'Error', 1500);
             });
@@ -49,7 +48,7 @@ export class CreateTeamComponent extends BaseComponent implements OnInit {
                     Validators.pattern(regexs.teamName)
                 ],
                 [
-                    uniqueTeamNameValidator(this.teamService, this.currentOrg.id)
+                    uniqueTeamNameValidator(this.teamService, this.currentOrgId)
                 ]
             )
         });
@@ -61,15 +60,5 @@ export class CreateTeamComponent extends BaseComponent implements OnInit {
 
     get name() {
         return this.teamGroup.controls.name;
-    }
-
-    private checkUpdates() {
-        this.dataService.currentMessage
-            .pipe(this.untilThis)
-            .subscribe(organization => {
-                if (this.currentOrg.id === organization.id) {
-                    this.currentOrg = organization;
-                }
-            });
     }
 }

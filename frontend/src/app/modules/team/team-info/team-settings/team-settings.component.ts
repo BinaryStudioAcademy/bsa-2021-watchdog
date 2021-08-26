@@ -19,7 +19,7 @@ import { Organization } from '@shared/models/organization/organization';
 export class TeamSettingsComponent extends BaseComponent implements OnInit {
     @Input() team: Team;
     @Input() parentForm: FormGroup;
-    currentOrg: Organization;
+    currentOrgId: number;
 
     constructor(
         private teamService: TeamService,
@@ -34,8 +34,7 @@ export class TeamSettingsComponent extends BaseComponent implements OnInit {
         this.authService.getOrganization()
             .pipe(this.untilThis)
             .subscribe(organization => {
-                this.currentOrg = organization;
-                this.checkUpdates();
+                this.currentOrgId = organization.id;
             }, error => {
                 this.toastService.error(error, 'Error', 1500);
             });
@@ -54,20 +53,10 @@ export class TeamSettingsComponent extends BaseComponent implements OnInit {
         if (this.team.name === ctrl.value) {
             return of(null);
         }
-        return uniqueTeamNameValidator(this.teamService, this.currentOrg.id)(ctrl);
+        return uniqueTeamNameValidator(this.teamService, this.currentOrgId)(ctrl);
     };
 
     get name() {
         return this.parentForm.controls.name;
-    }
-
-    private checkUpdates() {
-        this.dataService.currentMessage
-            .pipe(this.untilThis)
-            .subscribe(organization => {
-                if (this.currentOrg.id === organization.id) {
-                    this.currentOrg = organization;
-                }
-            });
     }
 }
