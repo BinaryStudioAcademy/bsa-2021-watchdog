@@ -13,6 +13,7 @@ namespace Watchdog.Core.DAL.Entities
         public string ErrorClass { get; set; }
         public string ErrorMessage { get; set; }
         public Application Application { get; set; }
+        public int ApplicationId { get; set; }
         public ICollection<EventMessage> EventMessages { get; set; }
     }
 }

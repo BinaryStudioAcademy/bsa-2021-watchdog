@@ -26,7 +26,6 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
                    .HasForeignKey(at => at.TeamId)
                    .OnDelete(DeleteBehavior.ClientCascade);
 
-
             builder.Property(a => a.CreatedAt)
                 .HasConversion(
                      v => v,

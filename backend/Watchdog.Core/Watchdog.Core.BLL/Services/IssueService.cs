@@ -26,13 +26,14 @@ namespace Watchdog.Core.BLL.Services
         {
             var issue = await _context.Issues.FirstOrDefaultAsync(i =>
                 i.ErrorMessage == issueMessage.IssueDetails.ErrorMessage &&
-                i.ErrorClass == issueMessage.IssueDetails.ClassName);
+                i.ErrorClass == issueMessage.IssueDetails.ClassName &&
+                i.Application.ApiKey == issueMessage.ApiKey);
 
             var newEventMessage = _mapper.Map<EventMessage>(issueMessage);
 
             if (issue is null)
             {
-                var createdIssue = CreateNewIssue(issueMessage);
+                var createdIssue = await CreateNewIssue(issueMessage);
 
                 createdIssue.EventMessages.Add(newEventMessage);
 
@@ -52,16 +53,15 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<ICollection<IssueInfoDto>> GetIssuesInfoAsync(int memberId)
         {
-            var member = await _context.Members.Include(m => m.TeamMembers).FirstOrDefaultAsync(m => m.Id == memberId)
-                         ?? throw new KeyNotFoundException("There is no member with such ID.");
+            var member = await _context.Members
+                .FirstOrDefaultAsync(m => m.Id == memberId) ?? throw new KeyNotFoundException("There is no member with such ID.");
 
-            var issuesInfo = await _context.Issues
-                .Include(i => i.Application)
-                .ThenInclude(a => a.ApplicationTeams)
-                .Where(i => i.Application.ApplicationTeams
-                                         .Select(at => at.TeamId)
-                                         .Intersect(member.TeamMembers.Select(tm => tm.TeamId))
-                                         .Any())
+            var issuesInfo = await _context.Applications
+                .Include(a => a.ApplicationTeams)
+                .ThenInclude(at => at.Team)
+                .ThenInclude(t => t.TeamMembers)
+                .Where(a => a.ApplicationTeams.Any(at => at.Team.TeamMembers.Any(tm => tm.MemberId == memberId)))
+                .SelectMany(a => a.Issues)
                 .Select(i => new IssueInfoDto()
                 {
                     IssueId = i.Id,
@@ -151,14 +151,17 @@ namespace Watchdog.Core.BLL.Services
             var messages = await _context.EventMessages
                 .AsNoTracking()
                 .ToListAsync();
-            
+
             return _mapper.Map<ICollection<IssueMessageDto>>(messages);
         }
 
-        private Issue CreateNewIssue(IssueMessage issueMessage)
+        private async Task<Issue> CreateNewIssue(IssueMessage issueMessage)
         {
             var newIssue = _mapper.Map<Issue>(issueMessage);
+            var application = await _context.Applications.FirstOrDefaultAsync(a => a.ApiKey == issueMessage.ApiKey)
+                ?? throw new KeyNotFoundException("No project with this id!");
 
+            newIssue.Application = application;
             var createdIssue = _context.Issues.Add(newIssue);
 
             return createdIssue.Entity;

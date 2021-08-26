@@ -55,12 +55,21 @@ namespace Watchdog.Core.BLL.Services.Queue
             var userIds = await userService.GetUserUIdsByApplicationUIdAsync(applicationUId);
 
             var issueService = scope.ServiceProvider.GetRequiredService<IIssueService>();
-            issueMessageReceived.IssueId = await issueService.AddIssueEventAsync(issueMessageReceived);
+            try
+            {
+                issueMessageReceived.IssueId = await issueService.AddIssueEventAsync(issueMessageReceived);
 
-            var notifyService = scope.ServiceProvider.GetRequiredService<INotifyQueueProducerService>();
-            notifyService.NotifyUsers(userIds, issueMessageReceived);
-
-            _consumer.SetAcknowledge(args.DeliveryTag, true);
+                var notifyService = scope.ServiceProvider.GetRequiredService<INotifyQueueProducerService>();
+                notifyService.NotifyUsers(userIds, issueMessageReceived);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+            finally
+            {
+                _consumer.SetAcknowledge(args.DeliveryTag, true);
+            }
         }
 
         public override void Dispose()
