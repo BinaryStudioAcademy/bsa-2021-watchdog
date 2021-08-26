@@ -59,13 +59,12 @@ export class ProjectGeneralComponent extends BaseComponent implements OnInit {
         this.editForm.addControl('platformId', new FormControl(this.project.platform.id, Validators.required));
     }
 
-    refreshApiKey() {
-        this.projectService.refreshApiKey(this.project.id)
+    getApiKey() {
+        this.projectService.getApiKey()
             .pipe(this.untilThis)
-            .subscribe(updatedProject => {
-                this.project = updatedProject;
+            .subscribe(app => {
                 this.editForm.patchValue({
-                    apiKey: updatedProject.apiKey,
+                    apiKey: app.apiKey,
                 });
             });
     }

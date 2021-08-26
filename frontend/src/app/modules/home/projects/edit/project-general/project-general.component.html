@@ -39,7 +39,7 @@
         </label>
         <div class="item-field">
             <div class="item-form-input api-key-input p-input-icon-right">
-                <i *ngIf="apiKey?.pending" class="pi pi-spin pi-spinner"></i>
+                <i *ngIf="apiKey.pending" class="pi pi-spin pi-spinner"></i>
                 <input formControlName="apiKey" pInputText placeholder="Api Key">
                 <div *ngIf="apiKey.invalid && (apiKey.dirty || apiKey.touched)"
                      class="p-error">
@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div class="refresh-button">
-                <button class="p-button-primary p-button-outlined" icon="pi pi-replay" label="Regenerate Api Key" pButton type="button" (click)="refreshApiKey()"></button>
+                <button class="p-button-primary p-button-outlined" icon="pi pi-replay" label="Regenerate Api Key" pButton type="button" (click)="getApiKey()"></button>
             </div>
         </div>
     </form>

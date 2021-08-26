@@ -119,6 +119,11 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<ApplicationDto> UpdateApplicationAsync(int appId, UpdateApplicationDto updateAppDto)
         {
+            if (_context.Applications.Any(app => app.ApiKey == updateAppDto.ApiKey))
+            {
+                throw new InvalidOperationException("There are already exists application with such id.");
+            }
+            
             var existedApplication = await _context.Applications.FirstOrDefaultAsync(a => a.Id == appId) ??
                 throw new InvalidOperationException("No application with this id!");
 
@@ -141,25 +146,7 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<ApplicationDto> RefreshApiKeyAsync(int appId)
-        {
-            var application = await _context.Applications.FirstOrDefaultAsync(app => app.Id == appId);
-
-            if (application is null)
-            {
-                throw new InvalidOperationException($"No application with id {appId}.");
-            }
-
-            application.ApiKey = Guid.NewGuid().ToString().ToUpper();
-
-            var updatedApplication = _context.Applications.Update(application);
-
-            await _context.SaveChangesAsync();
-
-            return await GetApplicationByIdAsync(updatedApplication.Entity.Id);
-        }
-
-        public async Task<bool> IsProjectNameValid(string projectName, int organizationId)
+        public async Task<bool> IsProjectNameValidAsync(string projectName, int organizationId)
         {
             if (projectName.Length < 3 || projectName.Length > 50)
             {
@@ -171,7 +158,7 @@ namespace Watchdog.Core.BLL.Services
                 .AnyAsync(a => a.Name == projectName));
         }
         
-        public async Task<bool> IsApiKeyUnique(string apiKey)
+        public async Task<bool> IsApiKeyUniqueAsync(string apiKey)
         {
             var reg = new Regex(@"^[0-9A-Za-z-_]+$");
             
@@ -180,7 +167,9 @@ namespace Watchdog.Core.BLL.Services
                 return false;
             }
             
-            return (await _context.Applications.ToListAsync()).All(app => app.ApiKey != apiKey);
+            return await _context.Applications.AllAsync(app => app.ApiKey != apiKey);
         }
+        
+        public AppKeys GenerateApiKeyAsync() => new() { ApiKey = Guid.NewGuid().ToString().ToUpper() };
     }
 }
