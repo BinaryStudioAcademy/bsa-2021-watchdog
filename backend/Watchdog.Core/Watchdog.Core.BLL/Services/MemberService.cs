@@ -167,7 +167,15 @@ namespace Watchdog.Core.BLL.Services
             var member = await AddMemberAsync(memberDto);
             var response = await InviteMemberAsync(member);
             return new InvitedMemberDto { Member = member, StatusCode = response.StatusCode };
+        }
 
+        public async Task<bool> IsMemberOwner(int id)
+        {
+            var member = await _context.Members
+                .Include(r => r.Role)
+                .FirstOrDefaultAsync(m => m.User.Id == id) ?? throw new KeyNotFoundException("Member doesn't exists");
+
+            return member.Role.Name == "Owner";
         }
     }
 }

@@ -124,11 +124,10 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
     }
 
     getRole(): void {
-        const ownerRoleId: number = 1;
-        this.memberService.getMemberByUserAndOrganization(this.organization.id, this.authService.getUserId())
+        this.memberService.isMemberOwner(this.authService.getUserId())
             .pipe(this.untilThis)
-            .subscribe(member => {
-                this.isRemovingAllowed = member.roleId === ownerRoleId;
+            .subscribe(isMemberOwner => {
+                this.isRemovingAllowed = isMemberOwner;
             }, error => {
                 this.toastService.error(error);
             });

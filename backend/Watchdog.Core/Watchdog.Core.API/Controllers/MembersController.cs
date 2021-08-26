@@ -87,5 +87,11 @@ namespace Watchdog.Core.API.Controllers
         {
             return Ok(await _memberService.GetMemberByUserIdAndOrganizationIdAsync(userId, orgId));
         }
+
+        [HttpGet("isowner/{userId}")]
+        public async Task<ActionResult<bool>> IsMemberOwner(int userId)
+        {
+            return Ok(await _memberService.IsMemberOwner(userId));
+        }
     }
 }
