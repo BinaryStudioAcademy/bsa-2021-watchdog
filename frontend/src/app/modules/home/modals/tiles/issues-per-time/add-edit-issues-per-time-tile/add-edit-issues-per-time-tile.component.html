@@ -7,7 +7,6 @@
                     icon="pi pi-times" pButton pTooltip="Close window" tooltipPosition="bottom"></button>
         </div>
     </div>
-
     <!--    Content    -->
     <div class="content">
         <!--    Name Input    -->
@@ -26,17 +25,30 @@
         <!--    Date Range Dropdown    -->
         <div class="date-range">
             <div class="date-range-title">Date range</div>
-            <p-dropdown [options]="dateRangeDropdown" appendTo="body" formControlName="dateRange"
+            <p-dropdown (onChange)="onSelectedDateRange($event.value)" [options]="dateRangeDropdown" appendTo="body"
+                        formControlName="dateRange"
                         optionLabel="name" optionValue="type" styleClass="date-range-dropdown">
             </p-dropdown>
         </div>
-
-        <!--    Issues Count Input    -->
-        <div class="issues-count">
-            <div class="issues-count-title">Count of top items</div>
-            <p-inputNumber [max]="1000" [min]="1" [showButtons]="true" [size]="2" [step]="1"
-                           formControlName="issuesCount" mode="decimal">
-            </p-inputNumber>
+        <!--    Granularity Dropdown    -->
+        <div class="granularity">
+            <div class="granularity-title">Granularity</div>
+            <p-dropdown [options]="granularityDropdown" appendTo="body" formControlName="granularity" optionLabel="name"
+                        optionValue="type" styleClass="granularity-dropdown">
+            </p-dropdown>
+        </div>
+        <!--    Issue Statuses Checkboxes    -->
+        <div class="issue-statuses">
+            <div class="issue-statuses-title">Statuses to include</div>
+            <div *ngFor="let status of issueStatusCheckboxes" class="issue-statuses-checkboxes">
+                <p-checkbox [formControl]="$any(formGroup).controls['issueStatuses']" [value]="status.type"
+                            inputId="{{status.type}}">
+                </p-checkbox>
+                <label [for]="status.type" class="p-checkbox-label">{{status.name}}</label>
+            </div>
+            <div *ngIf="formGroup.controls.issueStatuses.invalid" class="validation">
+                <small *ngIf="formGroup.controls.issueStatuses.errors.required">Field is required</small>
+            </div>
         </div>
 
         <p-divider></p-divider>
@@ -52,7 +64,6 @@
             </div>
         </div>
     </div>
-
     <!--    Footer    -->
     <div class="footer">
         <div class="footer-content">
@@ -63,7 +74,6 @@
                 pTooltip="Cancel changes"
                 tooltipPosition="bottom" type="button">
             </button>
-
             <!--    Submit    -->
             <button
                 (click)="submit()" [disabled]="!formGroup.valid"

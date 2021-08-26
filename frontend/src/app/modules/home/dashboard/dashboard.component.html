@@ -30,11 +30,15 @@
     </div>
     <div *ngIf="tiles.length" class="tiles-container">
         <ng-container *ngFor="let tile of tiles" [ngSwitch]="tile.type">
-            <app-top-active-issues-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.TopActiveIssues"
-                                        [isShownEditTileMenu]="showTileMenu" [tile]="tile"
-                                        [userProjects]="projects"
-                                        class="top-active-issue">
-            </app-top-active-issues-tile>
+                <app-top-active-issues-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.TopActiveIssues"
+                                            [isShownEditTileMenu]="showTileMenu" [tile]="tile"
+                                            [userProjects]="projects"
+                                            class="top-active-issue">
+                </app-top-active-issues-tile>
+                <app-issues-per-time-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.IssuesPerTime"
+                                          [isShownEditTileMenu]="showTileMenu" [tile]="tile"
+                                          [userProjects]="projects" class="issues-per-time">
+                </app-issues-per-time-tile>
         </ng-container>
     </div>
 </ng-template>

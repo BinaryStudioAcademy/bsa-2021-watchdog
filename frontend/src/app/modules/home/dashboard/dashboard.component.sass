@@ -1,8 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap')
 @import src/styles/variables
 @import src/styles/mixins
-
-$top-active-issues-tile-height: 494px
 
 .remove-margin-box-shadow
     box-shadow: unset !important
@@ -13,7 +10,6 @@ $top-active-issues-tile-height: 494px
     @include background-gray
     @include title
     display: flex
-    flex-direction: row
     align-items: center
     justify-content: space-between
 
@@ -38,7 +34,7 @@ $top-active-issues-tile-height: 494px
     height: 100%
     width: 100%
 
-// Tiles Container
+
 .tiles-container
     padding: 15px
     display: flex
@@ -47,12 +43,17 @@ $top-active-issues-tile-height: 494px
 
     %card
         margin: 5px 5px 5px
-        box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12)
-        border: 1px solid #dee2e6
+        box-shadow: $tile-card-box-shadow
+        border: 1px solid $border-color
+        flex: 1 1 auto
 
     .top-active-issue
         @extend %card
-        height: $top-active-issues-tile-height
-        flex-grow: 1
-        flex-shrink: 0
-        flex-basis: 400px
+        height: 494px
+        width: 410px
+
+    .issues-per-time
+        @extend %card
+        height: 494px
+        width: 410px
+
