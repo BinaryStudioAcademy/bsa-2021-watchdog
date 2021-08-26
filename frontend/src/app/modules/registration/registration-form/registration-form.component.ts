@@ -22,14 +22,14 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
     personalDetail: FormGroup;
     ogranizationDetail: FormGroup;
     ogranizationJoin: FormGroup;
+
     personal_step = false;
     organization_step = false;
     step = 1;
-    selectedValue: string;
+
     organizationSlugJoin: string;
+    indexOfSelectedTab: number = 0;
 
-
-    formGroup: FormGroup;
     user = {} as User;
     organization = {} as NewOrganizationsWithSlug;
     organizationSlug: string;
@@ -137,7 +137,6 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                         Validators.pattern(regexs.organizationSlag),
                     ],
                     asyncValidators: [
-                        //uniqueSlugValidator(this.organizationService)
                     ]
                 }
             ),
@@ -178,7 +177,13 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
     submit() {
         if(this.step == 2) {
             this.organization_step = true;
-            this.onSumbitWithJoin();
+            debugger;
+            if (this.indexOfSelectedTab == 0) {
+                this.onSubmit();
+            }
+            if (this.indexOfSelectedTab == 1) {
+                this.onSumbitWithJoin();
+            }
             if (this.ogranizationDetail.invalid) { return; }
         }
     }
@@ -227,6 +232,10 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                     this.toastService.error(error);
                 });
         }
+    }
+
+    handleChange(e) {
+        this.indexOfSelectedTab = e.index;
     }
 
     get personalInfo() { return this.personalDetail.controls; }
