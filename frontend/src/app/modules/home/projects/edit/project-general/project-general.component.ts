@@ -1,10 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@core/components/base/base.component';
 import { PlatformService } from '@core/services/platform.service';
 import { regexs } from '@shared/constants/regexs';
 import { Platform } from '@shared/models/platforms/platform';
 import { Project } from '@shared/models/projects/project';
+import { ProjectService } from '@core/services/project.service';
+import { of } from 'rxjs';
+import { uniqueApiKeyValidator } from '@shared/validators/api-key.validator';
 
 @Component({
     selector: 'app-project-general',
@@ -18,6 +21,7 @@ export class ProjectGeneralComponent extends BaseComponent implements OnInit {
 
     constructor(
         private platformService: PlatformService,
+        private projectService: ProjectService
     ) {
         super();
     }
@@ -41,12 +45,42 @@ export class ProjectGeneralComponent extends BaseComponent implements OnInit {
             Validators.maxLength(1000),
             Validators.pattern(regexs.projectDescription),
         ]));
+        this.editForm.addControl('apiKey', new FormControl(this.project.apiKey, {
+            validators: [
+                Validators.required,
+                Validators.maxLength(36),
+                Validators.minLength(36),
+                Validators.pattern(regexs.projectApiKey),
+            ],
+            asyncValidators: [
+                this.apiKeyValidator
+            ]
+        }));
         this.editForm.addControl('platformId', new FormControl(this.project.platform.id, Validators.required));
     }
+
+    getApiKey() {
+        this.projectService.getApiKey()
+            .pipe(this.untilThis)
+            .subscribe(app => {
+                this.editForm.patchValue({
+                    apiKey: app.apiKey,
+                });
+            });
+    }
+
+    apiKeyValidator = (ctrl: AbstractControl) => {
+        if (this.project.apiKey === ctrl.value) {
+            return of(null);
+        }
+        return uniqueApiKeyValidator(this.projectService)(ctrl);
+    };
 
     get name() { return this.editForm.controls.name; }
 
     get description() { return this.editForm.controls.description; }
 
     get platformId() { return this.editForm.controls.platformId; }
+
+    get apiKey() { return this.editForm.controls.apiKey; }
 }

@@ -37,6 +37,9 @@
         margin-right: 1em
     &-field
         width: 58%
+        display: flex
+        flex-flow: row wrap
+        justify-content: space-between
         position: relative
         align-items: center
     &-sub-text
@@ -55,6 +58,9 @@
         width: 100%
     & .pi
         height: 1em
+
+.api-key-input
+    width: 70%
 
 .p-error
     color: $validation-color
@@ -96,6 +102,16 @@
         height: 20px
         margin: 0 .2em
 
-:host ::ng-deep
+\:host ::ng-deep
     .p-dropdown
+        width: 100%
+
+@media screen and (max-width: 1400px)
+    .refresh-button
+        margin-top: 15px
+    .api-key-input
+        width: 100%
+
+@media screen and (max-width: 660px)
+    .refresh-button
         width: 100%

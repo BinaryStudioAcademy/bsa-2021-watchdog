@@ -51,7 +51,7 @@ namespace Watchdog.Core.BLL.Services
             {
                 UserId = organizationDto.CreatedBy,
                 CreatedBy = organizationDto.CreatedBy,
-                CreatedAt = DateTime.Now,
+                CreatedAt = DateTime.UtcNow,
                 Organization = organization,
                 Role = roles.First(r => r.Name.ToLower() == "owner"),
                 IsAccepted = true

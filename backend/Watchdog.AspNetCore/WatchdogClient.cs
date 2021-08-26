@@ -85,7 +85,7 @@ namespace Watchdog.AspNetCore
         protected override WatchdogMessage BuildMessage(Exception exception)
         {
             return WatchdogMessageBuilder.New(GetSettings())
-              .SetTimeStamp(DateTime.Now)
+              .SetTimeStamp(DateTime.UtcNow)
               .SetMachineName(Environment.MachineName)
               .SetEnvironmentDetails()
               .SetExceptionDetails(exception)

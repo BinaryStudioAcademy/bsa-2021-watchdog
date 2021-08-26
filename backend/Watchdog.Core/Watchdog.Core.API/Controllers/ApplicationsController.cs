@@ -87,7 +87,19 @@ namespace Watchdog.Core.API.Controllers
         [HttpGet("application/{projectName}/{organizationId}")]
         public async Task<ActionResult<bool>> IsProjectNameValid(string projectName, int organizationId)
         {
-            return Ok(await _appService.IsProjectNameValid(projectName, organizationId));
+            return Ok(await _appService.IsProjectNameValidAsync(projectName, organizationId));
+        }
+        
+        [HttpGet("apiKey/{apiKey}")]
+        public async Task<ActionResult<bool>> IsApiKeyUnique(string apiKey)
+        {
+            return Ok(await _appService.IsApiKeyUniqueAsync(apiKey));
+        }
+        
+        [HttpGet("apiKey")]
+        public ActionResult<AppKeys> GetApiKey()
+        {
+            return Ok(_appService.GenerateApiKeyAsync());
         }
     }
 }

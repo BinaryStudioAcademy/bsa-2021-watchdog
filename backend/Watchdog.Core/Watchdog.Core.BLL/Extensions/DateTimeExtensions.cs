@@ -40,7 +40,7 @@ namespace Watchdog.Core.BLL.Extensions
 
         public static AlertTimeInterval ToAlertTimeIntervalTimeAdo(DateTime dateTime)
         {
-            return ToAlertTimeInterval(DateTime.Now - dateTime);
+            return ToAlertTimeInterval(DateTime.UtcNow - dateTime);
         }
     }
 }
