@@ -37,5 +37,12 @@ namespace Watchdog.Core.API.Controllers
             var user = await _registrationService.PartialRegistrationAsync(registrationDto);
             return Ok(user);
         }
+
+        [HttpPost("partialWithJoin")]
+        public async Task<ActionResult<UserDto>> PartialRegistrationWithJoinAsync(PartialRegistrationWithJoinDto partialRegistrationWithJoinDto)
+        {
+            var user = await _registrationService.PartialRegistrationWithJoinAsync(partialRegistrationWithJoinDto);
+            return Ok(user);
+        }
     }
 }

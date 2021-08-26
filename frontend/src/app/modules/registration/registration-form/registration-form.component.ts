@@ -119,7 +119,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                         Validators.pattern(regexs.organizationSlag),
                     ],
                     asyncValidators: [
-                        checkOrganizationMembership(this.organizationService)
+                        uniqueSlugValidator(this.organizationService)
                     ]
                 }
             ),
@@ -136,7 +136,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                         Validators.pattern(regexs.organizationSlag),
                     ],
                     asyncValidators: [
-                        uniqueSlugValidator(this.organizationService)
+                        //uniqueSlugValidator(this.organizationService)
                     ]
                 }
             ),
@@ -177,7 +177,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
     submit() {
         if(this.step == 2) {
             this.organization_step = true;
-            this.onSubmit();
+            this.onSumbitWithJoin();
             if (this.ogranizationDetail.invalid) { return; }
         }
     }
@@ -203,6 +203,28 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                     error => {
                         this.toastService.error(error);
                     });
+        }
+    }
+
+    onSumbitWithJoin() {
+        if (!this.isNotFinishedRegistration) {
+            const userDto = {
+                ...this.user,
+            } as NewUserDto;
+            debugger;
+            this.authService.singOnWithEmailAndPasswordWithJoin({ organizationSlug: this.organizationSlugJoin, user: userDto },
+                this.password, ['home'])
+                    .subscribe(() => { },
+                    error => {
+                        this.toastService.error(error);
+                    });
+        } else {
+            this.authService.finishPartialRegistrationWithJoin({ organizationSlug: this.organizationSlugJoin, userId: this.user.id },
+                ['home'])
+                .subscribe(() => { },
+                error => {
+                    this.toastService.error(error);
+                });
         }
     }
 

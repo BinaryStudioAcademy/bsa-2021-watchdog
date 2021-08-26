@@ -43,6 +43,15 @@ namespace Watchdog.Core.BLL.Services
             return await JoinToOrganizationAsync(fullRegistrationWithJoinDto.OrganizationSlug, user);
         }
 
+        public async Task<UserDto> PartialRegistrationWithJoinAsync(PartialRegistrationWithJoinDto partialRegistrationWithJoinDto)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == partialRegistrationWithJoinDto.UserId);
+            user.RegisteredAt = DateTime.Now;
+            _context.Users.Update(user);
+
+            return await JoinToOrganizationAsync(partialRegistrationWithJoinDto.OrganizationSlug, user);
+        }
+
         public async Task<UserDto> PartialRegistrationAsync(PartialRegistrationDto partialRegistrationDto)
         {
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == partialRegistrationDto.UserId);
