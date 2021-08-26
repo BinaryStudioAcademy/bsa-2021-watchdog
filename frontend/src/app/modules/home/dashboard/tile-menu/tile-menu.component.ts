@@ -38,6 +38,7 @@ export class TileMenuComponent implements OnInit {
 
     ngOnInit(): void {
         this.initMenuListItems();
+        this.initMenuChartItems();
     }
 
     clearDashboardTiles() {
@@ -66,13 +67,37 @@ export class TileMenuComponent implements OnInit {
         }
     }
 
+    chartItemSelected(item?: MenuItem): void {
+        switch (+item.id) {
+            case TileType.IssuesPerTime:
+                this.selectedItem = item;
+                this.tileDialogService.showIssuesPerTimeCreateDialog(this.userProjects, this.dashboardId, this.tiles);
+                break;
+            default:
+                this.selectedItem = undefined;
+                break;
+        }
+    }
+
     private initMenuListItems(): void {
         this.menuListItems = [
             {
                 id: TileType.TopActiveIssues.toString(),
                 label: 'Top Active Issues',
-                icon: 'pi pi-fw pi-ban',
+                icon: 'pi pi-ban',
                 command: event => this.listItemSelected(event.item)
-            }];
+            },
+        ];
+    }
+
+    private initMenuChartItems(): void {
+        this.menuChartItems = [
+            {
+                id: TileType.IssuesPerTime.toString(),
+                label: 'Issues Per Time',
+                icon: 'pi pi-chart-bar',
+                command: event => this.chartItemSelected(event.item)
+            },
+        ];
     }
 }

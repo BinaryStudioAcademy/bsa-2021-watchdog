@@ -65,4 +65,8 @@ export class MemberService {
     getInitials(member: Member) {
         return member.user.firstName.toUpperCase().substr(0, 1) + member.user.lastName.toUpperCase().substr(0, 1);
     }
+
+    isMemberOwner(userId: number): Observable<boolean> {
+        return this.httpService.getRequest<boolean>(`${this.routePrefix}/isowner/${userId}`);
+    }
 }
