@@ -4,6 +4,7 @@ import { regexs } from '@shared/constants/regexs';
 import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
 import { SelectItem } from 'primeng/api/selectitem';
+import { icons } from './icons-list';
 
 @Component({
     selector: 'app-update-dashboard',
@@ -14,17 +15,10 @@ export class UpdateDashboardComponent implements OnInit {
     title: string = 'Edit dashboard';
     public formGroup: FormGroup = {} as FormGroup;
     selectedIcon: SelectItem;
-    icons: SelectItem[];
+    icons: SelectItem[] = icons;
     @Input() dashboard: Dashboard;
     @Output() closeModal = new EventEmitter<void>();
     @Output() save = new EventEmitter<UpdateDashboard>();
-
-    constructor() {
-        this.icons = [
-            { label: 'pi pi-chart-bar', value: 'pi-chart-bar' },
-            { label: 'pi pi-chart-line', value: 'pi-chart-line' }
-        ];
-    }
 
     ngOnInit() {
         this.formGroup = new FormGroup({

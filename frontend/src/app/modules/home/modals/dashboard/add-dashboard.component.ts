@@ -6,6 +6,7 @@ import { NewDashboard } from '@shared/models/dashboard/new-dashboard';
 import { Organization } from '@shared/models/organization/organization';
 import { User } from '@shared/models/user/user';
 import { SelectItem } from 'primeng/api/selectitem';
+import { icons } from './icons-list';
 
 @Component({
     selector: 'app-add-dashboard',
@@ -16,7 +17,7 @@ export class AddDashboardComponent implements OnInit {
     title: string = 'Add dashboard';
     public formGroup: FormGroup = {} as FormGroup;
     selectedIcon: SelectItem;
-    icons: SelectItem[];
+    icons: SelectItem[] = icons;
     @Output() closeModal = new EventEmitter<void>();
     @Output() save = new EventEmitter<NewDashboard>();
 
@@ -25,12 +26,7 @@ export class AddDashboardComponent implements OnInit {
 
     constructor(
         private authService: AuthenticationService
-    ) {
-        this.icons = [
-            { label: 'pi pi-chart-bar', value: 'pi-chart-bar' },
-            { label: 'pi pi-chart-line', value: 'pi-chart-line' }
-        ];
-    }
+    ) { }
 
     ngOnInit() {
         this.user = this.authService.getUser();
