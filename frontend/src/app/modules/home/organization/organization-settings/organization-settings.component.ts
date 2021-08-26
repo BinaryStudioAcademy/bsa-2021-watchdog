@@ -7,6 +7,10 @@ import { BaseComponent } from '@core/components/base/base.component';
 import { Organization } from '@shared/models/organization/organization';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { SpinnerService } from '@core/services/spinner.service';
+import { MemberService } from '@core/services/member.service';
+import { ConfirmWindowService } from '@core/services/confirm-window.service';
+import { Router } from '@angular/router';
+import { ShareDataService } from '@core/services/share-data.service';
 
 @Component({
     selector: 'app-organization-settings',
@@ -16,6 +20,9 @@ import { SpinnerService } from '@core/services/spinner.service';
 export class OrganizationSettingsComponent extends BaseComponent implements OnInit {
     organization: Organization;
     parentForm: FormGroup = new FormGroup({});
+    memberRoleId: number;
+    defaultOrganization: Organization;
+    isRemovingAllowed = false;
 
     @ViewChild('saveBut') saveButton: ElementRef<HTMLButtonElement>;
 
@@ -23,7 +30,11 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
         private authService: AuthenticationService,
         private toastService: ToastNotificationService,
         private organizationService: OrganizationService,
-        private spinnerService: SpinnerService
+        private spinnerService: SpinnerService,
+        private memberService: MemberService,
+        private confirmWindowService: ConfirmWindowService,
+        private dataService: ShareDataService<Organization>,
+        private router: Router
     ) { super(); }
 
     ngOnInit() {
@@ -33,6 +44,7 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
             .subscribe(
                 organization => {
                     this.organization = organization;
+                    this.setUserFirstOrganization();
                     this.spinnerService.hide();
                 },
                 error => {
@@ -79,5 +91,48 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
 
     setButtonStateDisabled(state: boolean) {
         if (this.saveButton) this.saveButton.nativeElement.disabled = state;
+    }
+
+    remove() {
+        this.confirmWindowService.confirm({
+            title: 'Delete organization?',
+            message: `Are you sure you wish to delete the <strong>${this.organization.name}</strong>?`,
+            acceptButton: { class: 'p-button-danger p-button-outlined' },
+            cancelButton: { class: 'p-button-secondary p-button-outlined' },
+            accept: () => {
+                this.organizationService.deleteOrganization(this.organization.id)
+                    .pipe(this.untilThis)
+                    .subscribe(() => {
+                        this.toastService.success('Organization deleted');
+                        this.organizationService.clearOrganization();
+                        this.authService.setOrganization(this.defaultOrganization);
+                        this.dataService.changeMessage(this.defaultOrganization);
+                        this.router.navigateByUrl('/home');
+                    }, error => {
+                        this.toastService.error(error);
+                    });
+            }
+        });
+    }
+
+    setUserFirstOrganization(): void {
+        this.organizationService.getDafaultOrganizationByUserId(this.authService.getUserId())
+            .pipe(this.untilThis)
+            .subscribe(organization => {
+                this.defaultOrganization = organization;
+                this.getRole();
+            }, error => {
+                this.toastService.error(error);
+            });
+    }
+
+    getRole(): void {
+        this.memberService.isMemberOwner(this.authService.getUserId())
+            .pipe(this.untilThis)
+            .subscribe(isMemberOwner => {
+                this.isRemovingAllowed = isMemberOwner && this.defaultOrganization.id !== this.organization.id;
+            }, error => {
+                this.toastService.error(error);
+            });
     }
 }
