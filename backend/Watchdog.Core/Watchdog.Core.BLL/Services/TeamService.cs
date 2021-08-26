@@ -48,7 +48,7 @@ namespace Watchdog.Core.BLL.Services
         {
             var team = _mapper.Map<Team>(newTeam, opts => opts.AfterMap((src, dst) =>
             {
-                dst.CreatedAt = DateTime.Now;
+                dst.CreatedAt = DateTime.UtcNow;
             }));
 
             var member = await _context.Members.Include(m => m.User).FirstOrDefaultAsync(m => m.User.Id == team.CreatedBy);

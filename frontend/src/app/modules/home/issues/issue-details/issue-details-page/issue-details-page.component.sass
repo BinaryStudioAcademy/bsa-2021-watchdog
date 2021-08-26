@@ -6,13 +6,16 @@
     @include title
     display: flex
     align-items: center
-    justify-content: space-between
+    justify-content: flex-start
     white-space: nowrap
 
+    .back-button
+        margin-right: .2em
+        border: none
+        border-radius: 100%
     h2
-        padding-bottom: 6px
         max-width: 450px
-        overflow: hidden
+        overflow: clip
         white-space: nowrap
         text-overflow: ellipsis
         cursor: default

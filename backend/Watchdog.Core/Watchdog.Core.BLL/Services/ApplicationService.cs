@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Application;
@@ -70,8 +71,9 @@ namespace Watchdog.Core.BLL.Services
 
             var applications = await _context.Applications
                 .Include(a => a.ApplicationTeams)
+                .Include(a => a.Platform)
                 .Where(a => a.OrganizationId == team.OrganizationId
-                        && !a.ApplicationTeams.Any(t => t.TeamId == teamId)
+                        && a.ApplicationTeams.All(t => t.TeamId != teamId) 
                         && a.Name.Contains(teamName))
                 .ToListAsync();
             return _mapper.Map<ICollection<ApplicationDto>>(applications);
@@ -79,8 +81,8 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task RemoveAppTeam(int appTeamId)
         {
-            var appTeam = await _context.ApplicationTeams.FirstOrDefaultAsync(t => t.Id == appTeamId);
-            if (appTeam == null) throw new InvalidOperationException("Application in this team not found!");
+            var appTeam = await _context.ApplicationTeams.FirstOrDefaultAsync(t => t.Id == appTeamId)
+                ?? throw new InvalidOperationException("Application in this team not found!");
 
             _context.ApplicationTeams.Remove(appTeam);
             await _context.SaveChangesAsync();
@@ -89,8 +91,9 @@ namespace Watchdog.Core.BLL.Services
         public async Task<ApplicationDto> CreateAppAsync(NewApplicationDto dto)
         {
             var application = _mapper.Map<Application>(dto);
+
             var team = await _context.Teams.FirstOrDefaultAsync(t => t.Id == dto.TeamId) ??
-                throw new KeyNotFoundException("No team with this id!");
+                       throw new KeyNotFoundException("No team with this id!");
 
             await _context.AddAsync(application);
 
@@ -116,6 +119,11 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<ApplicationDto> UpdateApplicationAsync(int appId, UpdateApplicationDto updateAppDto)
         {
+            if (_context.Applications.Any(app => app.ApiKey == updateAppDto.ApiKey))
+            {
+                throw new InvalidOperationException("There are already exists application with such id.");
+            }
+            
             var existedApplication = await _context.Applications.FirstOrDefaultAsync(a => a.Id == appId) ??
                 throw new InvalidOperationException("No application with this id!");
 
@@ -138,5 +146,30 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task<bool> IsProjectNameValidAsync(string projectName, int organizationId)
+        {
+            if (projectName.Length < 3 || projectName.Length > 50)
+            {
+                return false;
+            }
+
+            return !(await _context.Applications
+                .Where(a => a.OrganizationId == organizationId)
+                .AnyAsync(a => a.Name == projectName));
+        }
+        
+        public async Task<bool> IsApiKeyUniqueAsync(string apiKey)
+        {
+            var reg = new Regex(@"^[0-9A-Za-z-_]+$");
+            
+            if (apiKey.Length != 36 && !reg.IsMatch(apiKey))
+            {
+                return false;
+            }
+            
+            return await _context.Applications.AllAsync(app => app.ApiKey != apiKey);
+        }
+        
+        public AppKeys GenerateApiKeyAsync() => new() { ApiKey = Guid.NewGuid().ToString().ToUpper() };
     }
 }

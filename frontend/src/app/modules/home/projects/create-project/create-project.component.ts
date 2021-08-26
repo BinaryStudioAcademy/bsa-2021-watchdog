@@ -18,6 +18,7 @@ import { AlertSettings } from '@shared/models/alert-settings/alert-settings';
 import { regexs } from '@shared/constants/regexs';
 import { ProjectService } from '@core/services/project.service';
 import { Router } from '@angular/router';
+import { uniqueProjectNameValidator } from '@shared/validators/unique-project-name.validator';
 import { SpinnerService } from '@core/services/spinner.service';
 
 @Component({
@@ -76,13 +77,17 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                 ]
             ),
             projectName: new FormControl(
-                '',
-                [
-                    Validators.required,
-                    Validators.minLength(3),
-                    Validators.maxLength(50),
-                    Validators.pattern(regexs.projectName)
-                ]
+                '', {
+                    validators: [
+                        Validators.required,
+                        Validators.minLength(3),
+                        Validators.maxLength(50),
+                        Validators.pattern(regexs.projectName)
+                    ],
+                    asyncValidators: [
+                        uniqueProjectNameValidator(this.newProject, this.projectService, this.organization.id)
+                    ]
+                }
             ),
             projectDescription: new FormControl(
                 '',

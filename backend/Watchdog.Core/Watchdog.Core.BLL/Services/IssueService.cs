@@ -137,6 +137,15 @@ namespace Watchdog.Core.BLL.Services
             return UpdateAssigneeInternalAsync(assigneeDto);
         }
 
+        public async Task<ICollection<IssueMessageDto>> GetAllIssueMessages()
+        {
+            var messages = await _context.EventMessages
+                .AsNoTracking()
+                .ToListAsync();
+            
+            return _mapper.Map<ICollection<IssueMessageDto>>(messages);
+        }
+
         private Issue CreateNewIssue(IssueMessage issueMessage)
         {
             var newIssue = _mapper.Map<Issue>(issueMessage);

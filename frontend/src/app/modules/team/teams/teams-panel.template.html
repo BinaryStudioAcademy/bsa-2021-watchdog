@@ -1,0 +1,25 @@
+<div class="teams-panel">
+    <p-panel [header]="title">
+        <div class="placeholder-empty" *ngIf="!teams?.length">{{placeholder}}</div>
+        <div class="team" *ngFor="let team of teams">
+            <div class="team-info">
+                <a class="team-avatar" [routerLink]="'./'+team.id">
+                    <p-avatar styleClass="team-info-avatar" [label]="team.name | teamNameAvatar"></p-avatar>
+                </a>
+                <a class="team-title" [routerLink]="'./'+team.id">
+                    <div class="team-name">
+                        #{{team.name}}
+                    </div>
+                    <div class="team-members">
+                        {{team.members.length}} members
+                    </div>
+                </a>
+            </div>
+            <div>
+                <button pButton pRipple type="button" [label]="buttonLabel" [class]="buttonClass"
+                    icon="pi pi-plus-circle" (click)="sendTeam(team.id)">
+                </button>
+            </div>
+        </div>
+    </p-panel>
+</div>

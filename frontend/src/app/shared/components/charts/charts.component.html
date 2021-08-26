@@ -1,62 +1,66 @@
-<div class="container">
-    <div *ngIf="single?.length && options" class="single-container">
-        <p-tabMenu [activeItem]="chartSingleTabItems[0]" [model]="chartSingleTabItems"></p-tabMenu>
-        <div class="chart-container" *ngIf="currentSingleTabLable==='Bars'">
-            <ngx-charts-bar-vertical [scheme]="options.colorScheme" [results]="single"
-                [gradient]="options.gradient" [xAxis]="options.showXAxis" [yAxis]="options.showYAxis"
-                [legend]="options.showLegend" [showXAxisLabel]="options.showXAxisLabel"
-                [showYAxisLabel]="options.showYAxisLabel">
-            </ngx-charts-bar-vertical>
-        </div>
-        <div class="chart-container" *ngIf="currentSingleTabLable==='Pie'">
-            <ngx-charts-advanced-pie-chart [scheme]="options.colorScheme" [results]="single"
-                [gradient]="options.gradient" [view]="options.view">
-            </ngx-charts-advanced-pie-chart>
-        </div>
-        <div class="chart-container" *ngIf="currentSingleTabLable==='Guage'">
-            <ngx-charts-gauge [view]="options.view" [scheme]="options.colorScheme" [results]="single"
-                [legend]="options.showLegend">
-            </ngx-charts-gauge>
-        </div>
-        <div class="chart-container" *ngIf="currentSingleTabLable==='Tree'">
-            <ngx-charts-tree-map [view]="options.view" [scheme]="options.colorScheme" [results]="single"
-                [gradient]="options.gradient" [animations]="options.animations">
-            </ngx-charts-tree-map>
-        </div>
+<div [ngSwitch]="chartType" class="container">
+    <div *ngSwitchCase="ChartType.Bars" class="chart-container">
+        <ngx-charts-bar-vertical #chart [gradient]="options.gradient" [legend]="options.showLegend"
+                                 [results]="single" [roundDomains]="options.roundDomains"
+                                 [scheme]="options.colorScheme"
+                                 [showXAxisLabel]="options.showXAxisLabel" [showYAxisLabel]="options.showYAxisLabel"
+                                 [xAxis]="options.showXAxis" [yAxis]="options.showYAxis">
+        </ngx-charts-bar-vertical>
     </div>
-    <div *ngIf="multi?.length && options" class="single-container">
-        <p-tabMenu [activeItem]="chartMultiTabItems[0]" [model]="chartMultiTabItems"></p-tabMenu>
-        <div class="chart-container" *ngIf="currentMultiTabLable==='Line'">
-            <ngx-charts-line-chart [view]="options.view" [scheme]="options.colorScheme"
-                [legend]="options.showLegend" [showXAxisLabel]="options.showXAxisLabel"
-                [showYAxisLabel]="options.showYAxisLabel" [xAxis]="options.showXAxis"
-                [yAxis]="options.showYAxis" [xAxisLabel]="options.xAxisLabel"
-                [yAxisLabel]="options.yAxisLabel" [timeline]="options.timeline" [results]="multi">
-            </ngx-charts-line-chart>
-        </div>
-        <div class="chart-container" *ngIf="currentMultiTabLable==='Polar'">
-            <ngx-charts-polar-chart [view]="options.view" [scheme]="options.colorScheme"
-                [legend]="options.showLegend" [showXAxisLabel]="options.showXAxisLabel"
-                [showYAxisLabel]="options.showYAxisLabel" [xAxis]="options.showXAxis"
-                [yAxis]="options.showYAxis" [xAxisLabel]="options.xAxisLabel"
-                [yAxisLabel]="options.yAxisLabel" [results]="multi">
-            </ngx-charts-polar-chart>
-        </div>
-        <div class="chart-container" *ngIf="currentMultiTabLable==='Area'">
-            <ngx-charts-area-chart [view]="options.view" [scheme]="options.colorScheme"
-                [legend]="options.showLegend" [showXAxisLabel]="options.showXAxisLabel"
-                [showYAxisLabel]="options.showYAxisLabel" [xAxis]="options.showXAxis"
-                [yAxis]="options.showYAxis" [xAxisLabel]="options.xAxisLabel"
-                [yAxisLabel]="options.yAxisLabel" [timeline]="options.timeline" [results]="multi">
-            </ngx-charts-area-chart>
-        </div>
-        <div class="chart-container" *ngIf="currentMultiTabLable==='Grouped'">
-            <ngx-charts-bar-vertical-2d [view]="options.view" [scheme]="options.colorScheme"
-                [legend]="options.showLegend" [showXAxisLabel]="options.showXAxisLabel"
-                [showYAxisLabel]="options.showYAxisLabel" [xAxis]="options.showXAxis"
-                [yAxis]="options.showYAxis" [xAxisLabel]="options.xAxisLabel"
-                [yAxisLabel]="options.yAxisLabel" [results]="multi">
-            </ngx-charts-bar-vertical-2d>
-        </div>
+    <div *ngSwitchCase="ChartType.Pie" class="chart-container">
+        <ngx-charts-advanced-pie-chart #chart [gradient]="options.gradient" [results]="single"
+                                       [scheme]="options.colorScheme" [view]="options.view">
+        </ngx-charts-advanced-pie-chart>
+    </div>
+    <div *ngSwitchCase="ChartType.Gauge" class="chart-container">
+        <ngx-charts-gauge #chart [legend]="options.showLegend" [results]="single" [scheme]="options.colorScheme"
+                          [view]="options.view">
+        </ngx-charts-gauge>
+    </div>
+    <div *ngSwitchCase="ChartType.Tree" class="chart-container">
+        <ngx-charts-tree-map #chart [animations]="options.animations" [gradient]="options.gradient"
+                             [results]="single"
+                             [scheme]="options.colorScheme" [view]="options.view">
+        </ngx-charts-tree-map>
+    </div>
+    <div *ngSwitchCase="ChartType.Line" [ngClass]="{'issues-per-time': tileType === TileType.IssuesPerTime}"
+         class="chart-container">
+        <ngx-charts-line-chart #chart [autoScale]="options.autoScale"
+                               [legend]="options.showLegend" [results]="multi"
+                               [roundDomains]="options.roundDomains" [scheme]="options.colorScheme"
+                               [showXAxisLabel]="options.showXAxisLabel" [showYAxisLabel]="options.showYAxisLabel"
+                               [timeline]="options.timeline" [view]="options.view"
+                               [xAxisLabel]="options.xAxisLabel" [xAxis]="options.showXAxis"
+                               [yAxisLabel]="options.yAxisLabel" [yAxis]="options.showYAxis">
+        </ngx-charts-line-chart>
+    </div>
+    <div *ngSwitchCase="ChartType.Polar" class="chart-container">
+        <ngx-charts-polar-chart #chart [autoScale]="options.autoScale" [legend]="options.showLegend"
+                                [results]="multi" [roundDomains]="options.roundDomains"
+                                [scheme]="options.colorScheme" [showXAxisLabel]="options.showXAxisLabel"
+                                [showYAxisLabel]="options.showYAxisLabel" [view]="options.view"
+                                [xAxisLabel]="options.xAxisLabel" [xAxis]="options.showXAxis"
+                                [yAxisLabel]="options.yAxisLabel" [yAxis]="options.showYAxis">
+        </ngx-charts-polar-chart>
+    </div>
+    <div *ngSwitchCase="ChartType.Area" class="chart-container">
+        <ngx-charts-area-chart #chart [autoScale]="options.autoScale" [legend]="options.showLegend"
+                               [results]="multi" [roundDomains]="options.roundDomains"
+                               [scheme]="options.colorScheme"
+                               [showXAxisLabel]="options.showXAxisLabel" [showYAxisLabel]="options.showYAxisLabel"
+                               [timeline]="options.timeline" [view]="options.view"
+                               [xAxisLabel]="options.xAxisLabel" [xAxis]="options.showXAxis"
+                               [yAxisLabel]="options.yAxisLabel" [yAxis]="options.showYAxis">
+        </ngx-charts-area-chart>
+    </div>
+    <div *ngSwitchCase="ChartType.Grouped" class="chart-container">
+        <ngx-charts-bar-vertical-2d #chart [legend]="options.showLegend" [results]="multi"
+                                    [roundDomains]="options.roundDomains" [scheme]="options.colorScheme"
+                                    [showXAxisLabel]="options.showXAxisLabel"
+                                    [showYAxisLabel]="options.showYAxisLabel"
+                                    [view]="options.view" [xAxisLabel]="options.xAxisLabel"
+                                    [xAxis]="options.showXAxis" [yAxisLabel]="options.yAxisLabel"
+                                    [yAxis]="options.showYAxis">
+        </ngx-charts-bar-vertical-2d>
     </div>
 </div>
