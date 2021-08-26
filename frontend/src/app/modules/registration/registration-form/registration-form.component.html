@@ -1,4 +1,4 @@
-<form [formGroup]="personalDetail" action="/signup" method="POST" *ngIf="step == 1">
+<form [formGroup]="personalDetail" action="/signup" method="POST" *ngIf="step === 1">
     <div class="reg-block">
         <div class="input-block">
             <span class="p-float-label">
@@ -78,7 +78,7 @@
         </span>
     </div>
 </form>
-<div *ngIf="step == 2">
+<div *ngIf="step === 2">
     <p-tabView (onChange)="handleChange($event)">
         <p-tabPanel >
             <ng-template pTemplate="header">
@@ -86,7 +86,7 @@
                     <span>Create new organization</span>
                 </div>
             </ng-template>
-            <form [formGroup]="ogranizationDetail" action="/signup" class="reg-form organization-form" method="POST" *ngIf="indexOfSelectedTab == 0">
+            <form [formGroup]="ogranizationDetail" action="/signup" class="reg-form organization-form" method="POST" *ngIf="indexOfSelectedTab === 0">
                 <div class="reg-block">
                     <div class="input-block">
                         <span class="p-float-label">
@@ -128,7 +128,7 @@
                     <span>Join to exist organization</span>
                 </div>
             </ng-template>
-            <form [formGroup]="ogranizationJoin" action="/signup" class="reg-form organization-form" method="POST" *ngIf="indexOfSelectedTab == 1">
+            <form [formGroup]="ogranizationJoin" action="/signup" class="reg-form organization-form" method="POST" *ngIf="indexOfSelectedTab === 1">
                 <div class="reg-block">
                     <div class="input-block">
                         <span class="p-float-label">
@@ -151,7 +151,7 @@
         </p-tabPanel>
         </p-tabView>
 </div>
-<div class="submit-block" *ngIf="step == 2">
+<div class="submit-block" *ngIf="step === 2">
     <span>
         <button pButton class="submit-button p-button-outlined" label="Previous" (click)="previous()"></button>
     </span>

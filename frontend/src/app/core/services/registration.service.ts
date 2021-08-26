@@ -20,7 +20,7 @@ export class RegistrationService {
         return this.http.postRequest<User>(`/${this.apiPrefix}/full`, dto);
     }
 
-    public performFullRegistrationWithJoin (registrationDto: FullRegistrationWithJoinDto) {
+    public performFullRegistrationWithJoin(registrationDto: FullRegistrationWithJoinDto) {
         const dto = clear(registrationDto);
         return this.http.postRequest<User>(`/${this.apiPrefix}/fullWithJoin`, dto);
     }

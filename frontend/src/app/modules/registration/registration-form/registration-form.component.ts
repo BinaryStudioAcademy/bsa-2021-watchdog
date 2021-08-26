@@ -10,8 +10,6 @@ import { RegOrganizationDto } from '../DTO/reg-organization-dto';
 import { NewUserDto } from '../DTO/new-user-dto';
 import { OrganizationService } from '@core/services/organization.service';
 import { uniqueSlugValidator } from '@shared/validators/unique-slug.validator';
-import { checkOrganizationMembership } from '@shared/validators/check-ogranization-membership.validator';
-import { FullRegistrationWithJoinDto } from '../DTO/full-registration-with-join-dto';
 
 @Component({
     selector: 'app-registration-form',
@@ -141,7 +139,6 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                 }
             ),
         });
-
     }
 
     validateAnother = (another: AbstractControl) => () => {
@@ -157,34 +154,32 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
     };
 
     next() {
-        if (this.step == 1) {
+        if (this.step === 1) {
             this.personal_step = true;
-            if (this.personalDetail.invalid) { return }
-                this.step++;
+            if (this.personalDetail.invalid) { return; }
+            this.step += 1;
         }
     }
 
     previous() {
-        this.step--;
-        if (this.step == 1) {
+        this.step -= 1;
+        if (this.step === 1) {
             this.personal_step = false;
         }
-        if (this.step == 2) {
-            this.organization_step = false
+        if (this.step === 2) {
+            this.organization_step = false;
         }
     }
 
     submit() {
-        if(this.step == 2) {
+        if (this.step === 2) {
             this.organization_step = true;
-            debugger;
-            if (this.indexOfSelectedTab == 0) {
+            if (this.indexOfSelectedTab === 0) {
                 this.onSubmit();
             }
-            if (this.indexOfSelectedTab == 1) {
+            if (this.indexOfSelectedTab === 1) {
                 this.onSumbitWithJoin();
             }
-            if (this.ogranizationDetail.invalid) { return; }
         }
     }
 
@@ -217,10 +212,9 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
             const userDto = {
                 ...this.user,
             } as NewUserDto;
-            debugger;
             this.authService.singOnWithEmailAndPasswordWithJoin({ organizationSlug: this.organizationSlugJoin, user: userDto },
                 this.password, ['home'])
-                    .subscribe(() => { },
+                .subscribe(() => { },
                     error => {
                         this.toastService.error(error);
                     });
@@ -228,9 +222,9 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
             this.authService.finishPartialRegistrationWithJoin({ organizationSlug: this.organizationSlugJoin, userId: this.user.id },
                 ['home'])
                 .subscribe(() => { },
-                error => {
-                    this.toastService.error(error);
-                });
+                    error => {
+                        this.toastService.error(error);
+                    });
         }
     }
 
