@@ -36,7 +36,7 @@ export class TeamSettingsComponent extends BaseComponent implements OnInit {
             .subscribe(organization => {
                 this.currentOrgId = organization.id;
             }, error => {
-                this.toastService.error(error, 'Error', 1500);
+                this.toastService.error(error);
             });
 
         this.parentForm.addControl('name', new FormControl(this.team.name, [

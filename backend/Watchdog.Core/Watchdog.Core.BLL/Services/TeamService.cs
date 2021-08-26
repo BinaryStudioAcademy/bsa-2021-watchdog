@@ -51,7 +51,9 @@ namespace Watchdog.Core.BLL.Services
                 dst.CreatedAt = DateTime.UtcNow;
             }));
 
-            var member = await _context.Members.Include(m => m.User).FirstOrDefaultAsync(m => m.User.Id == team.CreatedBy);
+            var member = await _context.Members
+                .Include(m => m.User)
+                .FirstOrDefaultAsync(m => m.UserId == team.CreatedBy && m.OrganizationId == newTeam.OrganizationId);
 
             var createdTeam = _context.Teams.Add(team);
             await _context.SaveChangesAsync();
@@ -61,8 +63,7 @@ namespace Watchdog.Core.BLL.Services
                 MemberId = member.Id,
                 TeamId = createdTeam.Entity.Id
             });
-
-
+            
             return _mapper.Map<TeamDto>(createdTeam.Entity);
         }
 
