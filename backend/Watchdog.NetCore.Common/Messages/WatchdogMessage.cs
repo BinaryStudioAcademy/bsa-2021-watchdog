@@ -10,6 +10,7 @@ namespace Watchdog.NetCore.Common.Messages
             Details = new WatchdogMessageDetails();
         }
 
+        public string ApiKey { get; set; }
         public DateTime OccurredOn { get; set; }
 
         public WatchdogMessageDetails Details { get; set; }

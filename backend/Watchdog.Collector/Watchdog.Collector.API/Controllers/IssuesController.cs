@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Watchdog.Collector.BLL.Services.Abstract;
 using Watchdog.Collector.Common.DTO.Issue;
-using Watchdog.NetCore.Common.Messages;
+using Watchdog.Common.Messages;
 
 namespace Watchdog.Collector.API.Controllers
 {
