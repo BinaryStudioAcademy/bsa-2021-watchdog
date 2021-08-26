@@ -218,36 +218,7 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<(ICollection<IssueInfoDto>, int)> GetIssuesInfoLazyAsync(FilterModel filterModel)
         {
-            var issues = await  _context.Issues
-                 .Select(i => new IssueInfoDto()
-                 {
-                     IssueId = i.Id,
-                     ErrorClass = i.ErrorClass,
-                     ErrorMessage = i.ErrorMessage,
-                     EventsCount = _context.EventMessages.Count(em => em.IssueId == i.Id),
-                     Newest = new IssueMessageDto()
-                     {
-                         Id = _context.EventMessages
-                            .Where(em => em.IssueId == i.Id)
-                            .OrderByDescending(em => em.OccurredOn)
-                            .FirstOrDefault(em => em.IssueId == i.Id).EventId,
-                         OccurredOn = _context.EventMessages
-                            .Where(em => em.IssueId == i.Id)
-                            .OrderByDescending(em => em.OccurredOn)
-                            .FirstOrDefault().OccurredOn
-                     },
-                     Assignee = new AssigneeDto
-                     {
-                         MemberIds = _context.AssigneeMembers
-                            .Where(a => a.IssueId == i.Id)
-                            .Select(a => a.MemberId)
-                            .ToList(),
-                         TeamIds = _context.AssigneeTeams
-                            .Where(a => a.IssueId == i.Id)
-                            .Select(a => a.TeamId)
-                            .ToList()
-                     }
-                 }).ToListAsync();
+            var issues = await GetIssuesInfoAsync();
             var result = issues.Filter(filterModel, out var totalRecord).ToList();
             return (result, totalRecord);
         }
