@@ -113,10 +113,10 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
     }
 
     setUserFirstOrganization(): void {
-        this.organizationService.getOrganizationsByUserId(this.authService.getUserId())
+        this.organizationService.getDafaultOrganizationByUserId(this.authService.getUserId())
             .pipe(this.untilThis)
-            .subscribe(organizations => {
-                this.organization = organizations.shift();
+            .subscribe(organization => {
+                this.organization = organization;
                 this.authService.setOrganization(this.organization);
                 this.dataService.changeMessage(this.organization);
                 this.router.navigateByUrl('/home');

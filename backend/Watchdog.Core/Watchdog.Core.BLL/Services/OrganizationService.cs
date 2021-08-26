@@ -24,6 +24,14 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<OrganizationDto>(organization);
         }
 
+        public async Task<OrganizationDto> GetDafaultOrganizationByUserIdAsync(int userId)
+        {
+            var organization = await _context.Organizations
+                .Where(o => o.Members.Any(m => m.User.Id == userId))
+                .FirstOrDefaultAsync();
+            return _mapper.Map<OrganizationDto>(organization);
+        }
+
         public async Task<ICollection<OrganizationDto>> GetAllOrganizationsAsync()
         {
             var organizations = await _context.Organizations.ToListAsync();

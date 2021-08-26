@@ -7,6 +7,7 @@ namespace Watchdog.Core.BLL.Services.Abstract
     public interface IOrganizationService
     {
         Task<OrganizationDto> GetOrganizationAsync(int organizationId);
+        Task<OrganizationDto> GetDafaultOrganizationByUserIdAsync(int userId);
         Task<ICollection<OrganizationDto>> GetAllOrganizationsAsync();
         Task<OrganizationDto> CreateOrganizationAsync(NewOrganizationDto organizationDto);
         Task<OrganizationDto> UpdateOrganizationAsync(int organizationId, NewOrganizationDto organizationDto);
