@@ -159,6 +159,18 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
             });
     }
 
+    approve(member: Member) {
+        this.memberService.approveMember(member.id)
+            .pipe(this.untilThis)
+            .subscribe(() => {
+                this.toastNotifications.success('Member approved');
+                this.setUpSharedDate();
+                //window.location.reload();
+            }, error => {
+                this.toastNotifications.error(error);
+            });
+    }
+
     reinvite(member: Member) {
         this.memberService.reinviteMember(member.id)
             .pipe(this.untilThis)

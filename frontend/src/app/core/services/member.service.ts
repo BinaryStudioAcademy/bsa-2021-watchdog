@@ -62,6 +62,10 @@ export class MemberService {
         return this.httpService.postRequest(`${this.routePrefix}/reinvite`, { id });
     }
 
+    approveMember(id: number) {
+        return this.httpService.postRequest(`${this.routePrefix}/approveUser`, { id });
+    }
+
     getInitials(member: Member) {
         return member.user.firstName.toUpperCase().substr(0, 1) + member.user.lastName.toUpperCase().substr(0, 1);
     }

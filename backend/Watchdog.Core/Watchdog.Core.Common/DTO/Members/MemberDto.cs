@@ -14,5 +14,6 @@ namespace Watchdog.Core.Common.DTO.Members
         public UserDto User { get; set; }
         public IEnumerable<TeamOptionDto> Teams { get; set; }
         public bool IsAccepted { get; set; }
+        public bool IsApproved { get; set; }
     }
 }

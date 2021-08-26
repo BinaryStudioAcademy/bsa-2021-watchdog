@@ -75,6 +75,13 @@ namespace Watchdog.Core.API.Controllers
             return Ok();
         }
 
+        [HttpPost("approveUser")]
+        public async Task<ActionResult<int>> ApproveUser(InviteDto dto)
+        {
+            await _memberService.ApproveUserAsync(dto.Id);
+            return Ok();
+        }
+
         [HttpGet("team/{teamId}/exceptTeam/")]
         public async Task<ActionResult<ICollection<MemberDto>>> GetMembersExceptTeam(int teamId, int count, string memberEmail = "")
         {

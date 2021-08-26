@@ -162,6 +162,15 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task ApproveUserAsync(int id)
+        {
+            var member = await _context.Members.FirstOrDefaultAsync(m => m.Id == id) ?? throw new KeyNotFoundException("Member doesn't exists");
+
+            member.IsApproved = true;
+
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<InvitedMemberDto> AddAndInviteMember(NewMemberDto memberDto)
         {
             var member = await AddMemberAsync(memberDto);
