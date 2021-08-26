@@ -1,43 +1,58 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ChartOptions } from '@shared/models/charts/chart-options';
 import { MultiChart } from '@shared/models/charts/multi-chart';
 import { SingleChart } from '@shared/models/charts/single-chart';
-import { MenuItem } from 'primeng/api';
+import { ChartType } from '@shared/models/charts/chart-type';
+import { AreaChartComponent } from '@swimlane/ngx-charts';
+import { BaseComponent } from '@core/components/base/base.component';
+import { TileType } from '@shared/models/tile/enums/tile-type';
 
 @Component({
-    selector: 'app-charts',
+    selector: 'app-charts[chartType]',
     templateUrl: './charts.component.html',
     styleUrls: ['./charts.component.sass']
 })
-export class ChartsComponent implements OnInit {
+export class ChartsComponent extends BaseComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() single: SingleChart[];
     @Input() multi: MultiChart[];
+    @Input() chartType: ChartType;
     @Input() chartOptions: ChartOptions;
-
-    chartSingleTabItems: MenuItem[];
-    currentSingleTabLable: string;
-    chartMultiTabItems: MenuItem[];
-    currentMultiTabLable: string;
+    @Input() tileType: TileType;
+    @ViewChild('chart') chart: AreaChartComponent;
     options: ChartOptions;
+    ChartType = ChartType;
+    observer: ResizeObserver;
+    TileType = TileType;
 
-    constructor() {
-        this.chartSingleTabItems = [
-            { label: 'Bars', command: (event) => this.onSingleTabChange(event?.item) },
-            { label: 'Pie', command: (event) => this.onSingleTabChange(event?.item) },
-            { label: 'Tree', command: (event) => this.onSingleTabChange(event?.item) },
-            { label: 'Guage', command: (event) => this.onSingleTabChange(event?.item) }];
-        this.currentSingleTabLable = 'Bars';
-
-        this.chartMultiTabItems = [
-            { label: 'Line', command: (event) => this.onMultiTabChange(event?.item) },
-            { label: 'Polar', command: (event) => this.onMultiTabChange(event?.item) },
-            { label: 'Area', command: (event) => this.onMultiTabChange(event?.item) },
-            { label: 'Grouped', command: (event) => this.onMultiTabChange(event?.item) }];
-        this.currentMultiTabLable = 'Line';
+    constructor(
+        private host: ElementRef,
+        private zone: NgZone
+    ) {
+        super();
     }
 
-    ngOnInit(): void {
+    ngOnInit() {
         this.options = this.setOptions(this.chartOptions);
+    }
+
+    ngAfterViewInit() {
+        if (!this.options.view) {
+            this.observer = new ResizeObserver(() => {
+                this.zone.run(() => {
+                    // update chart size on parent resize
+                    this.chart.update();
+                });
+            });
+
+            this.observer.observe(this.host.nativeElement);
+        }
+    }
+
+    ngOnDestroy() {
+        super.ngOnDestroy();
+        if (this.observer) {
+            this.observer.unobserve(this.host.nativeElement);
+        }
     }
 
     setOptions(chartOptions: ChartOptions): ChartOptions {
@@ -53,18 +68,12 @@ export class ChartsComponent implements OnInit {
             showXAxisLabel: chartOptions?.showXAxisLabel ?? true,
             showYAxisLabel: chartOptions?.showYAxisLabel ?? false,
             timeline: chartOptions?.timeline ?? true,
+            roundDomains: chartOptions?.roundDomains ?? true,
+            autoScale: chartOptions?.autoScale ?? false,
             colorScheme: chartOptions?.colorScheme ?? {
                 domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
             },
             view: chartOptions?.view
         };
-    }
-
-    onSingleTabChange(item) {
-        this.currentSingleTabLable = item.label;
-    }
-
-    onMultiTabChange(item) {
-        this.currentMultiTabLable = item.label;
     }
 }

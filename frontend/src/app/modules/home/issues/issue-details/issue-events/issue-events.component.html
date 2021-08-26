@@ -34,9 +34,13 @@
         <ng-template let-issue pTemplate="body">
             <tr>
                 <td>
-                    <span class="issue-time"
-                        routerLink="/home/issues/{{issueMessage.issueId}}/{{issue.id}}">{{issue.occurredOn | date:'MMMM
-                        d, y h:mma'}}</span>
+                    <span
+                        class="issue-time"
+                        [class.current] = "issueMessage.id === issue.id"
+                        routerLink="/home/issues/{{issueMessage.issueId}}/{{issue.id}}">
+                        {{issue.occurredOn | date:'MMMM d, y h:mma'}}
+                    </span>
+                    <p-tag *ngIf="issueMessage.id === issue.id" styleClass="label" severity="info" value="current" [rounded]="true"></p-tag>
                     <small class="issue-id">{{issue.id}}</small>
                 </td>
                 <td>{{issue.issueDetails.environmentMessage.platform}}</td>

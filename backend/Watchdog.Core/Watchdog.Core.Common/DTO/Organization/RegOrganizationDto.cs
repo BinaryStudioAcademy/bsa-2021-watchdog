@@ -4,8 +4,5 @@
     {
         public string OrganizationSlug { get; set; }
         public string Name { get; set; }
-        public bool OpenMembership { get; set; }
-        public int DefaultRoleId { get; set; }
-        public string AvatarUrl { get; set; }
     }
 }

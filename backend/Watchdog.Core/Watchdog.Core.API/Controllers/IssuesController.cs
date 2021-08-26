@@ -60,5 +60,12 @@ namespace Watchdog.Core.API.Controllers
             var (issueMessages, totalRecords) = await _issueService.GetEventMessagesByIssueIdLazyAsync(id, filterModel);
             return Ok(new { Collection = issueMessages, TotalRecords = totalRecords });
         }
+        
+        [HttpGet("messages")]
+        public async Task<ActionResult<ICollection<IssueMessageDto>>> GetAllIssueMessages()
+        {
+            var issueMessages = await _issueService.GetAllIssueMessages();
+            return Ok(issueMessages);
+        }
     }
 }

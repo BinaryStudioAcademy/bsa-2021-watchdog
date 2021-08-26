@@ -9,8 +9,8 @@ import { filter, mergeMap, switchMap, tap, map } from 'rxjs/operators';
 import { from, of, Observable, Subject, merge } from 'rxjs';
 import { User } from '@shared/models/user/user';
 import { NewUser } from '@shared/models/user/newUser';
-import { FullRegistrationDto } from '@modules/registration/DTO/fullRegistrationDto';
-import { PartialRegistrationDto } from '@modules/registration/DTO/partialRegistrationDto';
+import { FullRegistrationDto } from '@modules/registration/DTO/full-registration-dto';
+import { PartialRegistrationDto } from '@modules/registration/DTO/partial-registration-dto';
 import { Organization } from '@shared/models/organization/organization';
 import { UserService } from './user.service';
 import { RegistrationService } from './registration.service';
@@ -51,6 +51,10 @@ export class AuthenticationService {
             AuthenticationService.user = JSON.parse(localStorage.getItem('user'));
         }
         return AuthenticationService.user;
+    }
+
+    getUserId(): number {
+        return this.getUser()?.id;
     }
 
     private static organizationSource: Subject<Organization> = new Subject<Organization>();

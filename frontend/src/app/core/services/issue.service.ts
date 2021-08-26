@@ -7,6 +7,7 @@ import { IssueMessage } from '@shared/models/issue/issue-message';
 import { LazyLoadEvent } from 'primeng/api';
 import { clear } from './members.utils';
 import { clearIssueMessage, clearNest } from './issues.utils';
+import { IssueMessageInfo } from '@shared/models/issue/issue-message-info';
 
 @Injectable({ providedIn: 'root' })
 export class IssueService {
@@ -40,5 +41,8 @@ export class IssueService {
             `${this.routePrefix}/messagesbyparent/${issueId}`,
             clear(event, clearIssueMessage)
         );
+    }
+    public getEventMessagesInfo(): Observable<IssueMessageInfo[]> {
+        return this.httpService.getRequest<IssueMessageInfo[]>(`${this.routePrefix}/messages`);
     }
 }

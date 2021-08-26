@@ -19,9 +19,6 @@ namespace Watchdog.Core.Common.Validators.Organization
                 .MaximumLength(50)
                 .Matches(@"^[\w\-]+$");
 
-            RuleFor(o => o.DefaultRoleId)
-                .NotEmpty();
-
             RuleFor(o => o.CreatedBy).NotEmpty();
         }
     }

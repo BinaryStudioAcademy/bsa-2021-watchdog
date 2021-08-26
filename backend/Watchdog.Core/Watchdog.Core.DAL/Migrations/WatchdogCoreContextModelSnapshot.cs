@@ -29,6 +29,9 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<string>("AlertSettings")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ApiKey")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -63,6 +66,7 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 1,
+                            ApiKey = "7780B80F-5FD6-4BE0-B0B8-D66CE988DB9D",
                             CreatedAt = new DateTime(2021, 6, 20, 4, 1, 54, 96, DateTimeKind.Unspecified).AddTicks(6185),
                             CreatedBy = 5,
                             Description = "unleash back-end supply-chains",
@@ -73,6 +77,7 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 2,
+                            ApiKey = "AFEC1C46-C01C-4AF8-BA42-B5C7913B501D",
                             CreatedAt = new DateTime(2019, 8, 12, 17, 20, 56, 326, DateTimeKind.Unspecified).AddTicks(9638),
                             CreatedBy = 8,
                             Description = "cultivate granular infrastructures",
@@ -83,6 +88,7 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 3,
+                            ApiKey = "ED51B204-B786-4F36-A0D3-4D188999BDBF",
                             CreatedAt = new DateTime(2019, 7, 30, 17, 0, 56, 106, DateTimeKind.Unspecified).AddTicks(8790),
                             CreatedBy = 3,
                             Description = "exploit scalable platforms",
@@ -93,6 +99,7 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 4,
+                            ApiKey = "0D7E6C59-C8D8-44D0-AE9E-F19624529DF5",
                             CreatedAt = new DateTime(2020, 2, 23, 12, 13, 2, 529, DateTimeKind.Unspecified).AddTicks(289),
                             CreatedBy = 1,
                             Description = "cultivate one-to-one web-readiness",
@@ -103,6 +110,7 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 5,
+                            ApiKey = "3482B274-9CEE-44EE-A1AB-005B236107A1",
                             CreatedAt = new DateTime(2020, 10, 29, 10, 39, 4, 413, DateTimeKind.Unspecified).AddTicks(5606),
                             CreatedBy = 20,
                             Description = "enhance efficient communities",
@@ -113,6 +121,7 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 6,
+                            ApiKey = "18EB3E31-6F02-4332-B38A-4DB87EF530FB",
                             CreatedAt = new DateTime(2020, 4, 6, 21, 58, 23, 764, DateTimeKind.Unspecified).AddTicks(5366),
                             CreatedBy = 7,
                             Description = "transform dot-com content",
@@ -123,6 +132,7 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 7,
+                            ApiKey = "4A1C44B8-B6E9-47DD-8077-8FC4B9D5E69D",
                             CreatedAt = new DateTime(2019, 11, 9, 2, 34, 53, 333, DateTimeKind.Unspecified).AddTicks(609),
                             CreatedBy = 14,
                             Description = "implement B2B blockchains",
@@ -133,6 +143,7 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 8,
+                            ApiKey = "B3854AA4-A529-4B2A-8F03-F8FE72823A61",
                             CreatedAt = new DateTime(2020, 3, 12, 14, 10, 16, 522, DateTimeKind.Unspecified).AddTicks(8649),
                             CreatedBy = 19,
                             Description = "target leading-edge paradigms",
@@ -143,6 +154,7 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 9,
+                            ApiKey = "51880460-BFF5-41AA-A52B-7B058EC5218D",
                             CreatedAt = new DateTime(2019, 10, 29, 10, 58, 52, 199, DateTimeKind.Unspecified).AddTicks(4340),
                             CreatedBy = 11,
                             Description = "incentivize robust applications",
@@ -153,6 +165,7 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 10,
+                            ApiKey = "30A12F02-CA94-4089-969D-0671AC291C73",
                             CreatedAt = new DateTime(2019, 12, 8, 6, 2, 36, 243, DateTimeKind.Unspecified).AddTicks(7412),
                             CreatedBy = 15,
                             Description = "exploit bricks-and-clicks communities",
@@ -163,6 +176,7 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 11,
+                            ApiKey = "63AD102A-58CF-46C0-8C10-ADCEAE2E8955",
                             CreatedAt = new DateTime(2019, 10, 13, 12, 5, 2, 725, DateTimeKind.Unspecified).AddTicks(731),
                             CreatedBy = 7,
                             Description = "morph scalable e-commerce",
@@ -173,6 +187,7 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 12,
+                            ApiKey = "B44E7E2D-3B81-4189-9916-3AF83F7B108B",
                             CreatedAt = new DateTime(2020, 10, 16, 17, 41, 22, 99, DateTimeKind.Unspecified).AddTicks(4346),
                             CreatedBy = 4,
                             Description = "cultivate killer metrics",
@@ -183,6 +198,7 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 13,
+                            ApiKey = "F1929F7E-C003-4185-9C80-E65B60BEBDD3",
                             CreatedAt = new DateTime(2020, 10, 20, 17, 49, 27, 974, DateTimeKind.Unspecified).AddTicks(474),
                             CreatedBy = 7,
                             Description = "expedite sticky applications",
@@ -193,6 +209,7 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 14,
+                            ApiKey = "F67B3095-8977-4558-9D09-AA50992BBD6C",
                             CreatedAt = new DateTime(2021, 2, 15, 8, 18, 38, 596, DateTimeKind.Unspecified).AddTicks(2936),
                             CreatedBy = 20,
                             Description = "orchestrate customized partnerships",
@@ -203,6 +220,7 @@ namespace Watchdog.Core.DAL.Migrations
                         new
                         {
                             Id = 15,
+                            ApiKey = "C62F35E9-4D32-4A1D-B14F-1BDBBE427B8A",
                             CreatedAt = new DateTime(2019, 10, 6, 4, 20, 27, 200, DateTimeKind.Unspecified).AddTicks(4990),
                             CreatedBy = 9,
                             Description = "redefine B2B partnerships",

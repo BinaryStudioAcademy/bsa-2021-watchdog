@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -23,20 +24,43 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<OrganizationDto>(organization);
         }
 
+        public async Task<OrganizationDto> GetDafaultOrganizationByUserIdAsync(int userId)
+        {
+            var organization = await _context.Organizations
+                .Where(o => o.Members.Any(m => m.User.Id == userId))
+                .FirstOrDefaultAsync();
+            return _mapper.Map<OrganizationDto>(organization);
+        }
+
         public async Task<ICollection<OrganizationDto>> GetAllOrganizationsAsync()
         {
             var organizations = await _context.Organizations.ToListAsync();
             return _mapper.Map<ICollection<OrganizationDto>>(organizations);
         }
 
-        public async Task<OrganizationDto> CreateOrganizationAsync(OrganizationDto organizationDto)
+        public async Task<OrganizationDto> CreateOrganizationAsync(NewOrganizationDto organizationDto)
         {
+            var roles = await _context.Roles.ToListAsync();
             var organization = _mapper.Map<Organization>(organizationDto);
+            organization.DefaultRoleId = roles.First(r => r.Name.ToLower() == "viewer").Id;
+            organization.OpenMembership = true;
 
-            var createdUser = _context.Organizations.Add(organization);
+            await _context.Organizations.AddAsync(organization);
+
+            var member = new Member
+            {
+                UserId = organizationDto.CreatedBy,
+                CreatedBy = organizationDto.CreatedBy,
+                CreatedAt = DateTime.UtcNow,
+                Organization = organization,
+                Role = roles.First(r => r.Name.ToLower() == "owner"),
+                IsAccepted = true
+            };
+            await _context.Members.AddAsync(member);
+
             await _context.SaveChangesAsync();
 
-            return _mapper.Map<OrganizationDto>(createdUser.Entity);
+            return _mapper.Map<OrganizationDto>(organization);
         }
 
         public async Task<OrganizationDto> UpdateOrganizationAsync(int organizationId, NewOrganizationDto organizationDto)
@@ -70,6 +94,21 @@ namespace Watchdog.Core.BLL.Services
                 .ToListAsync();
 
             return _mapper.Map<ICollection<OrganizationDto>>(organizaitons);
+        }
+
+        public async Task DeleteOrganizationAsync(int organizationId)
+        {
+            var organization = await _context.Organizations
+                .Include(t => t.Teams)
+                    .ThenInclude(m => m.ApplicationTeams)
+                .Include(t => t.Teams)
+                    .ThenInclude(tm => tm.TeamMembers)
+                .Include(m => m.Members)
+                    .ThenInclude(tm => tm.TeamMembers)
+                .FirstOrDefaultAsync(o => o.Id == organizationId) ?? throw new KeyNotFoundException("Organization doesn't exist");
+
+            _context.Organizations.Remove(organization);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> IsOrganizationSlugValid(string organizationSlug)

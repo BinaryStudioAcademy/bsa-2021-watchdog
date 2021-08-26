@@ -1,7 +1,6 @@
 @import src/styles/variables
 @import src/styles/mixins
 
-
 .container
     display: flex
     flex-direction: column
@@ -11,19 +10,17 @@
         height: 100%
 
         .issue-name
+            @extend %text-block-overflow
             cursor: pointer
 
         .issue-name:hover
-            color: #0288D1
+            color: $text-hover-color
 
         .issue-message
+            @extend %text-block-overflow
             font-size: 12px
             margin-top: 3px
-            color: rgb(147, 134, 160)
-            display: block
-            overflow: hidden
-            text-overflow: ellipsis
-            white-space: nowrap
+            color: $text-color-secondary
 
         ::ng-deep p-table
             height: 100%
@@ -37,18 +34,22 @@
                 align-items: center
 
                 ::ng-deep p-paginator
-                    border-top: 1px solid #e9ecef
                     width: 100%
-        //override paginator dropdown text
+
+                td
+                    vertical-align: middle
+                    white-space: nowrap
+
+                th
+                    white-space: nowrap
+
         ::ng-deep .p-dropdown-label
             display: flex
             align-items: center
 
-\:host ::ng-deep
-    td
-        vertical-align: middle
-        white-space: nowrap
 
-    th
-        white-space: nowrap
-
+%text-block-overflow
+    display: block
+    overflow-x: clip
+    text-overflow: ellipsis
+    white-space: nowrap

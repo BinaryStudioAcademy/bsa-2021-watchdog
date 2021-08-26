@@ -18,6 +18,7 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
     organization: Organization;
     organizations: Organization[];
     menuItems: MenuItem[] = [];
+    display: boolean = false;
     @Input() collapsed: boolean = false;
 
     constructor(
@@ -29,29 +30,15 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
     ) { super(); }
 
     ngOnInit(): void {
-        this.isLoading = true;
-        this.organizationService.getOrganizationsByUserId(this.authService.getUser().id)
-            .pipe(this.untilThis)
-            .subscribe(organizations => {
-                this.organizations = organizations;
-                this.authService.getOrganization()
-                    .pipe(this.untilThis)
-                    .subscribe(organization => {
-                        this.organization = organization;
-                        this.checkUpdates();
-                        this.isLoading = false;
-                    });
-            }, error => {
-                this.toastService.error(error);
-                this.isLoading = false;
-            });
+        this.getOrganizations();
     }
 
     private checkUpdates() {
         this.dataService.currentMessage
             .pipe(this.untilThis)
             .subscribe(organization => {
-                if (this.organization.id === organization.id) {
+                this.getOrganizations();
+                if (this.organization.id === organization?.id) {
                     this.organization = organization;
                 }
             });
@@ -70,5 +57,30 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
 
     disableParentEvent(event: Event) {
         event.stopPropagation();
+    }
+
+    getOrganizations() {
+        this.isLoading = true;
+        this.organizationService.getOrganizationsByUserId(this.authService.getUserId())
+            .pipe(this.untilThis)
+            .subscribe(organizations => {
+                this.organizations = organizations;
+                this.authService.getOrganization()
+                    .pipe(this.untilThis)
+                    .subscribe(organization => {
+                        this.organization = organization;
+                        this.checkUpdates();
+                        this.isLoading = false;
+                    });
+            }, error => {
+                this.toastService.error(error);
+                this.isLoading = false;
+            });
+    }
+
+    async organizationCreated(organization: Organization) {
+        this.organizations = this.organizations.concat(organization);
+        await this.changeOrganization(organization);
+        await this.router.navigateByUrl('home/organization/settings');
     }
 }

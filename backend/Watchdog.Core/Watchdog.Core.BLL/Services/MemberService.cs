@@ -72,8 +72,10 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task DeleteMemberAsync(int id)
         {
-            var member = await _context.Members.Include(m => m.TeamMembers).FirstOrDefaultAsync(m => m.Id == id) ?? throw new KeyNotFoundException("Member doesn't exist");
+            var member = await _context.Members.Include(m => m.TeamMembers)
+                .FirstOrDefaultAsync(m => (m.Id == id) && (m.Role.Name != "Owner")) ?? throw new InvalidOperationException("You cannot delete this member");
             _context.Members.Remove(member);
+
             await _context.SaveChangesAsync();
         }
 
@@ -162,12 +164,20 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<InvitedMemberDto> AddAndInviteMember(NewMemberDto memberDto)
+        public async Task<InvitedMemberDto> AddInvitedMemberAsync(NewMemberDto memberDto)
         {
             var member = await AddMemberAsync(memberDto);
             var response = await InviteMemberAsync(member);
             return new InvitedMemberDto { Member = member, StatusCode = response.StatusCode };
+        }
 
+        public async Task<bool> IsMemberOwnerAsync(int id)
+        {
+            var member = await _context.Members
+                .Include(r => r.Role)
+                .FirstOrDefaultAsync(m => m.User.Id == id) ?? throw new KeyNotFoundException("Member doesn't exists");
+
+            return member.Role.Name.ToLower() == "owner";
         }
 
         public async Task<(ICollection<MemberDto>, int)> GetMembersByOrganizationIdLazyAsync(int id, FilterModel filterPayload)

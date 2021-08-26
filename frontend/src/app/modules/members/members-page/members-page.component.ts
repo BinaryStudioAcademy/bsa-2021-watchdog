@@ -16,6 +16,7 @@ import { User } from '@shared/models/user/user';
 import { LazyLoadEvent, TreeNode } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { debounceTime, tap } from 'rxjs/operators';
+import { MembersRoles } from '@shared/constants/membersRoles';
 
 @Component({
     selector: 'app-members-page',
@@ -30,6 +31,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
     roles: Role[];
     itemsPerPage: number;
     organization: Organization;
+
     isEdit: boolean = false;
     loading: boolean;
     totalRecords: number;
@@ -71,7 +73,8 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
         this.roleService.getRoles()
             .pipe(this.untilThis)
             .subscribe(roles => {
-                this.roles = roles;
+                this.roles = roles.filter(r => r.name !== MembersRoles.owner);
+                this.spinnerService.hide();
             }, error => {
                 this.toastNotifications.error(error);
             });
@@ -82,7 +85,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
         if (!this.organization) {
             await this.organizationRequest.toPromise();
         }
-        this.memberService.getMembersByOrganizationIdLazy(this.organization.id, event ?? { first: 22 } as LazyLoadEvent)
+        this.memberService.getMembersByOrganizationIdLazy(this.organization.id, event)
             .pipe(this.untilThis,
                 debounceTime(1000))
             .subscribe(response => {
@@ -147,7 +150,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
             });
     }
 
-    deleteMember(memberItem: MemberItem) {
+    deleteMemberModal(memberItem: MemberItem) {
         this.confirmWindowService.confirm({
             title: 'Delete member?',
             message: `Are you sure you wish to delete the <strong>${memberItem.member.user.firstName}`
@@ -155,18 +158,22 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
             acceptButton: { class: 'p-button-primary p-button-outlined' },
             cancelButton: { class: 'p-button-secondary p-button-outlined' },
             accept: () => {
-                this.memberService.deleteMember(memberItem.member.id)
-                    .pipe(this.untilThis)
-                    .subscribe(() => {
-                        this.toastNotifications.success('Member deleted');
-                        this.memberItems = this.memberItems.filter(m => m.member.id !== memberItem.member.id);
-                        this.loadMembers(this.lastEvent);
-                    }, error => {
-                        this.toastNotifications.error(error);
-                    });
+                this.deleteMember(memberItem);
             },
         });
     }
+
+    deleteMember(memberItem: MemberItem) {
+        this.memberService.deleteMember(memberItem.member.id)
+            .pipe(this.untilThis)
+            .subscribe(() => {
+                this.toastNotifications.success('Member deleted');
+                this.memberItems = this.memberItems.filter(m => m.member.id !== memberItem.member.id);
+            }, error => {
+                this.toastNotifications.error(error);
+            });
+    }
+
     reinvite(member: Member) {
         this.memberService.reinviteMember(member.id)
             .pipe(this.untilThis)

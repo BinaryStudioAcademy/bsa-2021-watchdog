@@ -53,8 +53,8 @@ export class MemberService {
         return this.httpService.getRequest<Member>(`${this.routePrefix}/organization/${organizationId}/user/${userId}`);
     }
 
-    searchMembersNotInTeam(teamId: number, memberEmail: string): Observable<Member[]> {
-        const url = `team/${teamId}/exceptTeam/${memberEmail !== '' ? `?memberEmail=${memberEmail}` : ''}`;
+    searchMembersNotInTeam(teamId: number, count: number, memberEmail: string): Observable<Member[]> {
+        const url = `team/${teamId}/exceptTeam/?count=${count}${memberEmail !== '' ? `&memberEmail=${memberEmail}` : ''}`;
         return this.httpService.getRequest<Member[]>(`${this.routePrefix}/${url}`);
     }
 
@@ -72,5 +72,9 @@ export class MemberService {
 
     getInitials(member: Member) {
         return member.user.firstName.toUpperCase().substr(0, 1) + member.user.lastName.toUpperCase().substr(0, 1);
+    }
+
+    isMemberOwner(userId: number): Observable<boolean> {
+        return this.httpService.getRequest<boolean>(`${this.routePrefix}/isowner/${userId}`);
     }
 }

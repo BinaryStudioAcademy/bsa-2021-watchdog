@@ -16,6 +16,7 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
 import { TeamService } from '@core/services/team.service';
 import { UserService } from '@core/services/user.service';
 import { ShareDataService } from '@core/services/share-data.service';
+import { MembersRoles } from '@shared/constants/membersRoles';
 import { Invition } from '@shared/models/member/invition';
 import { SpinnerService } from '@core/services/spinner.service';
 
@@ -101,7 +102,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
         this.roleService.getRoles()
             .pipe(this.untilThis)
             .subscribe(roles => {
-                this.roles = roles;
+                this.roles = roles.filter(r => r.name !== MembersRoles.owner);
                 this.spinnerService.hide();
             }, error => {
                 this.toastNotifications.error(error);

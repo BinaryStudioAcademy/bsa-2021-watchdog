@@ -14,6 +14,6 @@
             <button icon="pi pi-minus-circle" class="p-button-outlined p-button-danger" pButton label="Remove"
                 (click)="removeFromTeam(projectTeam.id)"></button>
         </div>
-        <div class="panel-list-item" *ngIf="projectTeams?.length===0">No projects yet...</div>
+        <div class="panel-list-item placeholder-empty" *ngIf="!projectTeams?.length">No projects yet...</div>
     </div>
 </p-panel>

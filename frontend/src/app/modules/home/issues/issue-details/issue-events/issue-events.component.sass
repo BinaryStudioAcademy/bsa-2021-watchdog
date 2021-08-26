@@ -1,16 +1,17 @@
 @import src/styles/variables
 @import src/styles/mixins
 
-
 .table
     padding-top: 12px
     height: 100%
 
     .issue-time
-        cursor: pointer
         @include disable-select
 
-    .issue-time:hover
+    .issue-time:not(.current)
+        cursor: pointer
+
+    .issue-time:hover:not(.current)
         color: $primary-color
 
     .issue-id
@@ -40,8 +41,13 @@
                 ::ng-deep p-paginator
                     width: 100%
         //override paginator dropdown text
-        ::ng-deep .p-dropdown-label
-            display: flex
-            align-items: center
+:host ::ng-deep
+    .p-dropdown-label
+        display: flex
+        align-items: center
 
-
+    .label
+        padding: 0 0.4rem !important
+        @include disable-select
+        position: relative
+        top: -0.1rem

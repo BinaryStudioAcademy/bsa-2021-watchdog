@@ -4,9 +4,7 @@ export interface ChartOptions {
     xAxisLabel?: string;
     yAxisLabel?: string;
     legendTitle?: string;
-
     view?: [number, number];
-
     animations?: boolean;
     showXAxis?: boolean;
     showYAxis?: boolean;
@@ -15,5 +13,7 @@ export interface ChartOptions {
     showXAxisLabel?: boolean;
     showYAxisLabel?: boolean;
     timeline?: boolean;
+    roundDomains?: boolean;
+    autoScale?: boolean;
     colorScheme?: ColorScheme;
 }

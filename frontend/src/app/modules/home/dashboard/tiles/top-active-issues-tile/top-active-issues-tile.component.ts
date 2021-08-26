@@ -21,8 +21,8 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
     @Input() tile: Tile;
     @Input() isShownEditTileMenu: boolean = false;
     @Input() userProjects: Project[] = [];
-    cashedIssuesInfos: IssueInfo[] = [];
     @Output() isDeleting: EventEmitter<Tile> = new EventEmitter<Tile>();
+
     paginatorRows: number = 5;
     tileSettings: TopActiveIssuesSettings;
     requiredProjects: Project[] = [];
@@ -43,53 +43,43 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
     }
 
     editTile() {
-        this.tileDialogService.showTopActiveIssuesEditDialog(this.userProjects, this.tile, () => this.applySettings());
+        this.tileDialogService.showTopActiveIssuesEditDialog(this.userProjects, this.tile,
+            () => this.applySettings());
     }
 
     private applySettings() {
         this.getTileSettings();
         this.applyProjectSettings();
-        if (!this.cashedIssuesInfos.length) {
-            //TODO: Get issues from projects of user organization
-            this.issueService
-                .getIssuesInfo()
-                .pipe(this.untilThis)
-                .subscribe(issuesInfo => {
-                    this.cashedIssuesInfos = issuesInfo;
-                    this.applyIssuesSettings();
-                }, error => {
-                    this.toastNotificationService.error(error);
-                });
-        } else {
-            this.applyIssuesSettings();
-        }
+        this.getIssuesInfo();
     }
 
     private getTileSettings() {
-        this.tileSettings = convertJsonToTileSettings(this.tile.settings, TileType.TopActiveIssues);
+        this.tileSettings = convertJsonToTileSettings(this.tile.settings, TileType.TopActiveIssues) as TopActiveIssuesSettings;
     }
 
     private applyProjectSettings() {
-        if (this.userProjects?.length) {
-            this.requiredProjects = [...this.userProjects.filter(proj => {
-                for (let i = 0; i < this.tileSettings.sourceProjects.length; i += 1) {
-                    if (this.tileSettings.sourceProjects[i] === proj.id) {
-                        return true;
-                    }
-                }
-                return false;
-            })];
-        }
+        this.requiredProjects = this.userProjects.filter(proj => this.tileSettings.sourceProjects.some(id => id === proj.id));
     }
 
-    private applyIssuesSettings() {
+    private applyIssuesSettings(issuesInfo: IssueInfo[]) {
         //TODO: Filter issues by requiredProjects (future feature)
         //TODO: Filter issues by 'active' issue type (future feature)
-
-        this.displayedIssues = [...this.cashedIssuesInfos]
+        this.displayedIssues = issuesInfo
             .filter(info => new Date(info.newest.occurredOn).getTime() >= Date.now()
                 - convertTileDateRangeTypeToMs(this.tileSettings.dateRange)) // date range sort
             .sort((a, b) => b.eventsCount - a.eventsCount) // top sort
             .slice(0, this.tileSettings.issuesCount); // issues count
+    }
+
+    private getIssuesInfo() {
+        //TODO: Get issues from projects of user organization
+        this.issueService
+            .getIssuesInfo()
+            .pipe(this.untilThis)
+            .subscribe(issuesInfo => {
+                this.applyIssuesSettings(issuesInfo);
+            }, error => {
+                this.toastNotificationService.error(error);
+            });
     }
 }

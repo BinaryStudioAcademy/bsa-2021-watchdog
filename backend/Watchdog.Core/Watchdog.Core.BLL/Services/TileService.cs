@@ -29,7 +29,7 @@ namespace Watchdog.Core.BLL.Services
         public async Task<TileDto> CreateTileAsync(NewTileDto newTileDto)
         {
             var tile = _mapper.Map<Tile>(newTileDto, opts =>
-                opts.AfterMap((_, dst) => { dst.CreatedAt = DateTime.Now; }));
+                opts.AfterMap((_, dst) => { dst.CreatedAt = DateTime.UtcNow; }));
 
             await _context.AddAsync(tile);
             await _context.SaveChangesAsync();
