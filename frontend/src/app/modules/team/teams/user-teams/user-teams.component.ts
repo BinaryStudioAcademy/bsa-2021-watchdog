@@ -14,6 +14,7 @@ export class UserTeamsComponent {
     placeholder: string = 'There is no teams, you can leave.';
     buttonLabel: string = 'Leave team';
     buttonClass: string = 'p-button-outlined p-button-danger';
+    icon: string = 'pi pi-minus-circle';
 
     sendTeam(teamId: number) {
         this.leavedTeam.next(teamId);

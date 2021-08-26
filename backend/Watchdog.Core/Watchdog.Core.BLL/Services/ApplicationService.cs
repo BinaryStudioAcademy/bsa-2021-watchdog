@@ -119,7 +119,7 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<ApplicationDto> UpdateApplicationAsync(int appId, UpdateApplicationDto updateAppDto)
         {
-            if (_context.Applications.Any(app => app.ApiKey == updateAppDto.ApiKey))
+            if (_context.Applications.Any(app => app.ApiKey == updateAppDto.ApiKey && app.Id != appId))
             {
                 throw new InvalidOperationException("There are already exists application with such id.");
             }
