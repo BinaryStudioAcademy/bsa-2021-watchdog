@@ -170,6 +170,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             eventsCount: 1,
             newest: { id: issue.id, occurredOn: issue.occurredOn },
             assignee: { teamIds: [], memberIds: [] },
+            project: issue.project,
         };
         this.issuesCount.all += 1;
         return [issueInfo, ...this.issues];

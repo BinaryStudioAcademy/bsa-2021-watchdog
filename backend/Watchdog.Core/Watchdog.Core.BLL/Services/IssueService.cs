@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
+using Watchdog.Core.Common.DTO.Application;
 using Watchdog.Core.Common.DTO.Issue;
 using Watchdog.Core.Common.Models.Issue;
 using Watchdog.Core.DAL.Context;
@@ -24,11 +25,11 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<int> AddIssueEventAsync(IssueMessage issueMessage)
         {
-            var issue = await _context.Issues.FirstOrDefaultAsync(i =>
+            var issue = await _context.Issues.Include(i=>i.Application).FirstOrDefaultAsync(i =>
                 i.ErrorMessage == issueMessage.IssueDetails.ErrorMessage &&
                 i.ErrorClass == issueMessage.IssueDetails.ClassName &&
                 i.Application.ApiKey == issueMessage.ApiKey);
-
+            
             var newEventMessage = _mapper.Map<EventMessage>(issueMessage);
 
             if (issue is null)
@@ -42,10 +43,10 @@ namespace Watchdog.Core.BLL.Services
                 return createdIssue.Id;
             }
 
+            issueMessage.Application = _mapper.Map<ApplicationDto>(issue.Application);
             newEventMessage.IssueId = issue.Id;
 
             _context.EventMessages.Add(newEventMessage);
-
             await _context.SaveChangesAsync();
 
             return issue.Id;
@@ -68,6 +69,7 @@ namespace Watchdog.Core.BLL.Services
                     ErrorClass = i.ErrorClass,
                     ErrorMessage = i.ErrorMessage,
                     EventsCount = _context.EventMessages.Count(em => em.IssueId == i.Id),
+                    Application = _mapper.Map<ApplicationDto>(i.Application),
                     Newest = new IssueMessageDto()
                     {
                         Id = _context.EventMessages
@@ -160,6 +162,8 @@ namespace Watchdog.Core.BLL.Services
             var newIssue = _mapper.Map<Issue>(issueMessage);
             var application = await _context.Applications.FirstOrDefaultAsync(a => a.ApiKey == issueMessage.ApiKey)
                 ?? throw new KeyNotFoundException("No project with this id!");
+
+            issueMessage.Application = _mapper.Map<ApplicationDto>(application);
 
             newIssue.Application = application;
             var createdIssue = _context.Issues.Add(newIssue);
