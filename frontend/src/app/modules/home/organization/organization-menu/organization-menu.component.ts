@@ -61,7 +61,7 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
 
     getOrganizations() {
         this.isLoading = true;
-        this.organizationService.getOrganizationsByUserId(this.authService.getUser().id)
+        this.organizationService.getOrganizationsByUserId(this.authService.getUserId())
             .pipe(this.untilThis)
             .subscribe(organizations => {
                 this.organizations = organizations;

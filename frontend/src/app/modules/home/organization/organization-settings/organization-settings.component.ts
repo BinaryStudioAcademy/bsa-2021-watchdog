@@ -113,7 +113,7 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
     }
 
     setUserFirstOrganization(): void {
-        this.organizationService.getOrganizationsByUserId(this.authService.getUser().id)
+        this.organizationService.getOrganizationsByUserId(this.authService.getUserId())
             .pipe(this.untilThis)
             .subscribe(organizations => {
                 this.organization = organizations.shift();
@@ -125,7 +125,7 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
 
     getRole(): void {
         const ownerRoleId: number = 1;
-        this.memberService.getMemberByUserAndOrganization(this.organization.id, this.authService.getUser().id)
+        this.memberService.getMemberByUserAndOrganization(this.organization.id, this.authService.getUserId())
             .pipe(this.untilThis)
             .subscribe(member => {
                 this.isRemovingAllowed = member.roleId === ownerRoleId;
