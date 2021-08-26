@@ -14,6 +14,7 @@ export class OtherTeamsComponent {
     placeholder: string = 'There is no teams, you can join.';
     buttonLabel: string = 'Join team';
     buttonClass: string = 'p-button-outlined';
+    icon: string = 'pi pi-plus-circle';
 
     sendTeam(teamId: number) {
         this.joinedTeam.next(teamId);
