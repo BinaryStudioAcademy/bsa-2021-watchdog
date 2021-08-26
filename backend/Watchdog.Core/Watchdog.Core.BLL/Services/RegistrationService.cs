@@ -35,8 +35,6 @@ namespace Watchdog.Core.BLL.Services
             var user = _mapper.Map<User>(fullRegistrationWithJoinDto.User);
             if (await _context.Users.AnyAsync(u => u.Email == fullRegistrationWithJoinDto.User.Email))
                 throw new InvalidOperationException("Such email alreaby exists");
-            if (await _context.Organizations.AnyAsync(o => o.OrganizationSlug != fullRegistrationWithJoinDto.OrganizationSlug))
-                throw new InvalidOperationException("Organization doesn't exist");
             user.RegisteredAt = DateTime.Now;
             await _context.Users.AddAsync(user);
 
