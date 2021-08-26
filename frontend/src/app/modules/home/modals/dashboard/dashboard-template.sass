@@ -10,22 +10,27 @@ button
 
 .input-section
     padding: 8px 0
+    position: relative
 
 ul
+    width: 100%
     list-style: none
-    display: flex
-    flex-direction: row
-    width: fit-content
-    margin: 5px 0 0
+    display: grid
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr
+    justify-content: space-evenly
+    justify-items: center
+    align-content: space-evenly
+    align-items: center
+    margin: 10px 0 0
     padding: 5px 0 0
 
 li
     display: block
     padding: 10px
-    width: 40px
-    height: 40px
+    margin: 5px
+    width: 50px
+    height: 50px
     border-radius: 5px
-    margin-right: 5px
     &:hover
         background-color: $hover-color
     .icon-container
@@ -33,6 +38,8 @@ li
         justify-content: center
         align-items: center
         margin-top: 2px
+        .pi
+            font-size: 1.2em
 
 .selected
     background-color: lightgray
@@ -45,7 +52,7 @@ li
 
 :host ::ng-deep
     .p-dialog
-        width: 30vw
+        width: 25vw
         .p-dialog-header
             display: none
         .p-dialog-content
@@ -53,6 +60,5 @@ li
 :host ::ng-deep
     .p-panel
         overflow-y: hidden
-        .p-panel-header,
-        .p-panel-content
-            border-radius: 0
+        .p-panel-header
+            margin-bottom: 10px
