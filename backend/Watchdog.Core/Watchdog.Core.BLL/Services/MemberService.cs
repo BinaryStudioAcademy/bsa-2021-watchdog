@@ -162,7 +162,7 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<InvitedMemberDto> AddAndInviteMemberAsync(NewMemberDto memberDto)
+        public async Task<InvitedMemberDto> AddInvitedMemberAsync(NewMemberDto memberDto)
         {
             var member = await AddMemberAsync(memberDto);
             var response = await InviteMemberAsync(member);

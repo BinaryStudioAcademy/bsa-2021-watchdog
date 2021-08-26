@@ -42,7 +42,7 @@ namespace Watchdog.Core.API.Controllers
         [HttpPost]
         public async Task<ActionResult<InvitedMemberDto>> AddMember(NewMemberDto newMemberDto)
         {
-            var invitedMember = await _memberService.AddAndInviteMemberAsync(newMemberDto);
+            var invitedMember = await _memberService.AddInvitedMemberAsync(newMemberDto);
             return Ok(invitedMember);
         }
 
