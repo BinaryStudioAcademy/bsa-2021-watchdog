@@ -8,5 +8,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
     {
         Task<UserDto> FullRegistrationAsync(FullRegistrationDto fullRegistrationDto);
         Task<UserDto> PartialRegistrationAsync(PartialRegistrationDto partialRegistrationDto);
+        Task<UserDto> FullRegistrationWithJoinAsync(FullRegistrationWithJoinDto fullRegistrationWithJoinDto);
     }
 }
