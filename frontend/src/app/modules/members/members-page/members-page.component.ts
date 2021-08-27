@@ -67,6 +67,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
 
         request
             .subscribe(() => {
+                this.loadMembers(this.lastEvent);
             }, error => {
                 this.toastNotifications.error(error);
             });
@@ -82,6 +83,9 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
 
     async loadMembers(event: LazyLoadEvent) {
         this.lastEvent = event;
+        if (!this.lastEvent) {
+            return;
+        }
         if (!this.organization) {
             await this.organizationRequest.toPromise();
         }

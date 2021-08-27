@@ -1,18 +1,18 @@
 <div class="table">
-    <p-table 
-        [alwaysShowPaginator]="totalRecords > paginatorRows" 
-        [autoLayout]="true" 
-        [pageLinks]="1"
-        [paginator]="true" 
-        [resizableColumns]="true" 
-        [rows]="paginatorRows" 
-        [value]="issues" 
+    <p-table
+        [autoLayout]="true"
+        [paginator]="totalRecords > paginatorRows"
+        [resizableColumns]="true"
+        [rows]="paginatorRows"
+        [value]="issues"
         selectionMode="single"
-        styleClass="table-override"  
+        styleClass="table-override"
         [lazy]="true"
-        (onLazyLoad)="getEventMessages($event)" 
-        [totalRecords]="totalRecords" 
-        [loading]="loading">
+        (onLazyLoad)="getEventMessages($event)"
+        [totalRecords]="totalRecords"
+        [loading]="loading"
+        sortField="occurredOn"
+        [sortOrder]="-1">
         <!--    Columns Define    -->
         <ng-template pTemplate="header">
             <tr>
