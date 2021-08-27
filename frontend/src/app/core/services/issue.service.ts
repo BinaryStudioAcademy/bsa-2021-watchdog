@@ -36,7 +36,7 @@ export class IssueService {
     }
 
     public getEventMessagesByIssueIdLazy(issueId: number | string, event: LazyLoadEvent):
-    Observable<{ collection: IssueMessage[], totalRecords: number }> {
+        Observable<{ collection: IssueMessage[], totalRecords: number }> {
         return this.httpService.postRequest<{ collection: IssueMessage[], totalRecords: number }>(
             `${this.routePrefix}/messagesbyparent/${issueId}`,
             clear(event, clearIssueMessage)
