@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Watchdog.Collector.BLL.Services.Abstract;
 using Watchdog.Collector.Common.DTO.Issue;
 using Watchdog.Collector.Common.Models;
-using Watchdog.NetCore.Common.Messages;
+using Watchdog.Common.Messages;
 
 namespace Watchdog.Collector.BLL.Services
 {

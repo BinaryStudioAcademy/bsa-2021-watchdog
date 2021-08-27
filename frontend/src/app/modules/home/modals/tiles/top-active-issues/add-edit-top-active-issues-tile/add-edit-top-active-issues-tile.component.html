@@ -13,8 +13,8 @@
         <!--    Name Input    -->
         <div class="tile-name">
             <div class="input-title">Name</div>
-            <input [maxLength]="50" class="input-text" formControlName="name" pInputText type="text">
-            <div *ngIf="formGroup.controls.name.touched && formGroup.controls.name.invalid" class="validation">
+            <input class="input-text" formControlName="name" pInputText type="text">
+            <div *ngIf="formGroup.controls.name.invalid" class="validation">
                 <small *ngIf="formGroup.controls.name.errors.required">Field is required</small>
                 <small *ngIf="formGroup.controls.name.errors.maxlength">Max name length 50</small>
                 <small *ngIf="formGroup.controls.name.errors.minlength">Min name length 3</small>
@@ -27,7 +27,7 @@
         <div class="date-range">
             <div class="date-range-title">Date range</div>
             <p-dropdown [options]="dateRangeDropdown" appendTo="body" formControlName="dateRange"
-                        optionLabel="name" optionValue="type">
+                        optionLabel="name" optionValue="type" styleClass="date-range-dropdown">
             </p-dropdown>
         </div>
         <!--    Issues Count Input    -->
@@ -44,7 +44,7 @@
                         optionLabel="name" optionValue="type">
             </p-dropdown>
         </div>
-        
+
         <p-divider></p-divider>
 
         <!--    App Source Selection    -->
@@ -66,7 +66,8 @@
             <!--    Close    -->
             <button
                 (click)="close()"
-                class="p-button-secondary p-button-outlined cancel-button" label="Cancel" pButton pTooltip="Cancel changes"
+                class="p-button-secondary p-button-outlined cancel-button" label="Cancel" pButton
+                pTooltip="Cancel changes"
                 tooltipPosition="bottom" type="button">
             </button>
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Watchdog.Core.BLL.Models;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Members;
 
@@ -25,6 +25,13 @@ namespace Watchdog.Core.API.Controllers
             return Ok(members);
         }
 
+        [HttpPost("organization/{organizationId}")]
+        public async Task<ActionResult<ICollection<MemberDto>>> GetAllMembers([FromRoute] int organizationId, [FromBody] FilterModel filterPayload)
+        {
+            var (members, totalRecord) = await _memberService.GetMembersByOrganizationIdLazyAsync(organizationId, filterPayload);
+            return Ok(new { Collection = members, TotalRecord = totalRecord });
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<MemberDto>> GetMemberById(int id)
         {
@@ -42,7 +49,7 @@ namespace Watchdog.Core.API.Controllers
         [HttpPost]
         public async Task<ActionResult<InvitedMemberDto>> AddMember(NewMemberDto newMemberDto)
         {
-            var invitedMember = await _memberService.AddAndInviteMember(newMemberDto);
+            var invitedMember = await _memberService.AddInvitedMemberAsync(newMemberDto);
             return Ok(invitedMember);
         }
 
@@ -86,6 +93,12 @@ namespace Watchdog.Core.API.Controllers
         public async Task<ActionResult<MemberDto>> GetMemberByUserAndOrganization(int userId, int orgId)
         {
             return Ok(await _memberService.GetMemberByUserIdAndOrganizationIdAsync(userId, orgId));
+        }
+
+        [HttpGet("isowner/{userId}")]
+        public async Task<ActionResult<bool>> IsMemberOwner(int userId)
+        {
+            return Ok(await _memberService.IsMemberOwnerAsync(userId));
         }
     }
 }

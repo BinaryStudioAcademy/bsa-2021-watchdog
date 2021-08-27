@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Watchdog.Collector.Common.Models;
-using Watchdog.NetCore.Common.Messages;
+using Watchdog.Common.Messages;
 
 namespace Watchdog.Collector.BLL.MappingProfiles
 {

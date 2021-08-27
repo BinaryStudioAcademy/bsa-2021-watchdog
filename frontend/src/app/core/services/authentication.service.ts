@@ -53,6 +53,10 @@ export class AuthenticationService {
         return AuthenticationService.user;
     }
 
+    getUserId(): number {
+        return this.getUser()?.id;
+    }
+
     private static organizationSource: Subject<Organization> = new Subject<Organization>();
 
     getOrganization(): Observable<Organization> {

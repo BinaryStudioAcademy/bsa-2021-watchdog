@@ -1,10 +1,10 @@
+import { AuthenticationService } from '@core/services/authentication.service';
+import { switchMap } from 'rxjs/operators';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Project } from '@shared/models/projects/project';
 import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
-import { TileService } from '@core/services/tile.service';
 import { TileType } from '@shared/models/tile/enums/tile-type';
 import { Tile } from '@shared/models/tile/tile';
-import { ConfirmWindowService } from '@core/services/confirm-window.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
 import { BaseComponent } from '@core/components/base/base.component';
@@ -21,19 +21,18 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
     @Input() tile: Tile;
     @Input() isShownEditTileMenu: boolean = false;
     @Input() userProjects: Project[] = [];
-    cashedIssuesInfos: IssueInfo[] = [];
     @Output() isDeleting: EventEmitter<Tile> = new EventEmitter<Tile>();
+
     paginatorRows: number = 5;
     tileSettings: TopActiveIssuesSettings;
     requiredProjects: Project[] = [];
     displayedIssues: IssueInfo[] = [];
 
     constructor(
-        private tileService: TileService,
         private toastNotificationService: ToastNotificationService,
-        private confirmWindowService: ConfirmWindowService,
         private tileDialogService: TileDialogService,
         private issueService: IssueService,
+        private authService: AuthenticationService,
     ) {
         super();
     }
@@ -43,53 +42,41 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
     }
 
     editTile() {
-        this.tileDialogService.showTopActiveIssuesEditDialog(this.userProjects, this.tile, () => this.applySettings());
+        this.tileDialogService.showTopActiveIssuesEditDialog(this.userProjects, this.tile,
+            () => this.applySettings());
     }
 
     private applySettings() {
         this.getTileSettings();
         this.applyProjectSettings();
-        if (!this.cashedIssuesInfos.length) {
-            //TODO: Get issues from projects of user organization
-            this.issueService
-                .getIssuesInfo()
-                .pipe(this.untilThis)
-                .subscribe(issuesInfo => {
-                    this.cashedIssuesInfos = issuesInfo;
-                    this.applyIssuesSettings();
-                }, error => {
-                    this.toastNotificationService.error(error);
-                });
-        } else {
-            this.applyIssuesSettings();
-        }
+        this.getIssuesInfo();
     }
 
     private getTileSettings() {
-        this.tileSettings = convertJsonToTileSettings(this.tile.settings, TileType.TopActiveIssues);
+        this.tileSettings = convertJsonToTileSettings(this.tile.settings, TileType.TopActiveIssues) as TopActiveIssuesSettings;
     }
 
     private applyProjectSettings() {
-        if (this.userProjects?.length) {
-            this.requiredProjects = [...this.userProjects.filter(proj => {
-                for (let i = 0; i < this.tileSettings.sourceProjects.length; i += 1) {
-                    if (this.tileSettings.sourceProjects[i] === proj.id) {
-                        return true;
-                    }
-                }
-                return false;
-            })];
-        }
+        this.requiredProjects = this.userProjects.filter(proj => this.tileSettings.sourceProjects.some(id => id === proj.id));
     }
 
-    private applyIssuesSettings() {
-        //TODO: Filter issues by requiredProjects (future feature)
+    private applyIssuesSettings(issuesInfo: IssueInfo[]) {
         //TODO: Filter issues by 'active' issue type (future feature)
-
-        this.displayedIssues = [...this.cashedIssuesInfos]
-            .filter(info => new Date(info.newest.occurredOn).getTime() >= Date.now()
-                - convertTileDateRangeTypeToMs(this.tileSettings.dateRange)) // date range sort
+        this.displayedIssues = issuesInfo
+            .filter(info =>
+                new Date(info.newest.occurredOn).getTime() >= Date.now() - convertTileDateRangeTypeToMs(this.tileSettings.dateRange)
+                && this.requiredProjects.some(proj => proj.id === info.project.id))
             .sort((a, b) => b.eventsCount - a.eventsCount) // top sort
             .slice(0, this.tileSettings.issuesCount); // issues count
+    }
+
+    private getIssuesInfo() {
+        this.authService.getMember()
+            .pipe(this.untilThis, switchMap(member => this.issueService.getIssuesInfo(member.id)))
+            .subscribe(issuesInfo => {
+                this.applyIssuesSettings(issuesInfo);
+            }, error => {
+                this.toastNotificationService.error(error);
+            });
     }
 }

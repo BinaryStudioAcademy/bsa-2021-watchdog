@@ -16,7 +16,6 @@ import { UpdateProject } from '@shared/models/projects/update-project';
 import { User } from '@shared/models/user/user';
 import { PrimeIcons } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { switchMap } from 'rxjs/operators';
 import { Data } from '../data';
 
 @Component({
@@ -35,6 +34,8 @@ export class EditComponent extends BaseComponent implements OnInit {
     id: string;
     dropPlatform: Platform[];
 
+    activeIndex: number = 0;
+
     constructor(
         private toastNotifications: ToastNotificationService,
         private authService: AuthenticationService,
@@ -50,20 +51,28 @@ export class EditComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         this.id = this.activatedRoute.snapshot.params.id;
-        this.activatedRoute.paramMap.pipe(
-            switchMap(params => params.getAll('id'))
-        ).subscribe(data => {
-            this.id = data;
-            this.user = this.authService.getUser();
-            this.authService.getOrganization()
-                .subscribe(organization => {
-                    this.organization = organization;
-                });
-            this.projectService.getProjectById(this.id).pipe(this.untilThis)
-                .subscribe(project => {
-                    this.project = project;
-                });
-        });
+        this.activatedRoute.paramMap
+            .pipe(this.untilThis)
+            .subscribe(params => {
+                this.id = params.get('id');
+                this.user = this.authService.getUser();
+                this.authService.getOrganization()
+                    .subscribe(organization => {
+                        this.organization = organization;
+                    });
+                this.projectService.getProjectById(this.id).pipe(this.untilThis)
+                    .subscribe(project => {
+                        this.project = project;
+                    });
+            });
+        this.activatedRoute.queryParamMap
+            .pipe(this.untilThis)
+            .subscribe(params => {
+                const tab = params.get('tab');
+                if (tab) {
+                    this.activeIndex = Number(tab);
+                }
+            });
     }
 
     alertFormatting() {
@@ -81,11 +90,10 @@ export class EditComponent extends BaseComponent implements OnInit {
             this.spinnerService.show(true);
             this.projectService.updateProject(this.id, project)
                 .pipe(this.untilThis)
-                .subscribe(() => {
+                .subscribe((updatedProject) => {
+                    this.project = updatedProject;
                     this.spinnerService.hide();
-                    this.router.navigate(['home', 'projects']).then(() => {
-                        this.toastNotifications.success('Project has been updated!');
-                    });
+                    this.toastNotifications.success('Project has been updated!');
                 }, error => {
                     this.toastNotifications.error(error);
                     this.spinnerService.hide();

@@ -9,27 +9,28 @@
         <div class="functional-bar">
             <div class="search-block p-inputgroup">
                 <span class="p-inputgroup-addon search-button"><i class="pi pi-search"></i></span>
-                <input name="search" pInputText placeholder="Search" type="text" (input)="table.filterGlobal($event.target.value, 'contains')">
+                <input name="search" pInputText placeholder="Search" type="text"
+                    (input)="table.filterGlobal({value: $event.target.value, fields: globalFilterFields }, 'contains')">
             </div>
-<!--            <div class="action-block">-->
-<!--                <span class="p-inputgroup-addon search-button"><i class="pi pi-paperclip"></i></span>-->
-<!--                <span class="p-inputgroup-addon search-button"><i class="pi pi-plus"></i></span>-->
-<!--                <span class="p-inputgroup-addon search-button"><i class="pi pi-ellipsis-v"></i></span>-->
-<!--                <span class="p-inputgroup-addon search-button"><i class="pi pi-times"></i></span>-->
-<!--            </div>-->
+            <!-- <div class="action-block">
+               <span class="p-inputgroup-addon search-button"><i class="pi pi-paperclip"></i></span>
+               <span class="p-inputgroup-addon search-button"><i class="pi pi-plus"></i></span>
+               <span class="p-inputgroup-addon search-button"><i class="pi pi-ellipsis-v"></i></span>
+               <span class="p-inputgroup-addon search-button"><i class="pi pi-times"></i></span>
+           </div> -->
         </div>
 
         <p-tabPanel>
             <ng-template pTemplate="header">
                 <div class="header">
                     <span>All Unresolved</span>
-                    <p-badge *ngIf="issuesCount.all > 0" [value]="issuesCount.all.toString()"></p-badge>
+                    <p-badge *ngIf="totalRecords > 0" [value]="totalRecords.toString()"></p-badge>
                 </div>
             </ng-template>
 
             <p-table #table [autoLayout]="true" [paginator]="issues?.length > itemsPerPage" [resizableColumns]="true"
-                     [rows]="itemsPerPage" [value]="issues" class="issues-table"
-                     [globalFilterFields]="['errorClass']">
+                [rows]="itemsPerPage" [value]="issues" class="issues-table" [lazy]="true"
+                (onLazyLoad)="loadIssuesLazy($event)" [totalRecords]="totalRecords" [loading]="loading">
                 <ng-template pTemplate="colgroup">
                     <colgroup>
                         <col id="issue-col">
@@ -45,7 +46,9 @@
                                 <p-checkbox name="allIssues" (onChange)="selectAll($event)"></p-checkbox>
                                 <span>Issue <p-sortIcon field="newest.occurredOn"></p-sortIcon>
                                 </span>
-                                <p-columnFilter [showAddButton]="false" type="text" field="errorClass" display="menu"></p-columnFilter>
+                                <p-columnFilter [showAddButton]="false" [showOperator]="false" type="text"
+                                    field="errorClass" display="menu">
+                                </p-columnFilter>
                             </div>
                         </th>
                         <th class="center" pSortableColumn="eventsCount">
@@ -53,8 +56,8 @@
                                 </p-sortIcon>
                             </span>
                         </th>
-                        <th class="center" pSortableColumn="users">
-                            <span>Affected <p-sortIcon field="users">
+                        <th class="center" pSortableColumn="project.name">
+                            <span>Project <p-sortIcon field="project.name">
                                 </p-sortIcon>
                             </span>
                         </th>
@@ -69,24 +72,25 @@
                                 </p-checkbox>
                                 <div class="content">
                                     <span class="name"
-                                          routerLink="/home/issues/{{issue.issueId}}/{{issue.newest.id}}">{{issue.errorClass}}</span>
+                                        routerLink="/home/issues/{{issue.issueId}}/{{issue.newest.id}}">{{issue.errorClass}}</span>
                                     <span class="description">{{issue.errorMessage}}</span>
                                     <div class="additional-info">
                                         <p-tag *ngIf="issue.isNew" [rounded]="true" class="new-issue"
-                                               styleClass="p-mr-2" value="New issue"></p-tag>
+                                            styleClass="p-mr-2" value="New issue">
+                                        </p-tag>
                                         <span>{{issue.projectTag}}</span>
                                         <div class="tooltip">
-                                            <span><i
-                                                class="pi pi-clock time-icon"></i>{{issue.newest.occurredOn | timeAgo}}</span>
-                                            <span
-                                                class="tooltiptext">{{issue.newest.occurredOn | date:'MMMM d, y h:mma'}}</span>
+                                            <span><i class="pi pi-clock time-icon"></i>{{issue.newest.occurredOn |
+                                                timeAgo}}</span>
+                                            <span class="tooltiptext">{{issue.newest.occurredOn | date:'MMMM d, y
+                                                h:mma'}}</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </td>
                         <td>{{issue.eventsCount}}</td>
-                        <td>1</td>
+                        <td>{{issue.project.name}}</td>
                         <td>
                             <div class="assignee" (click)="openAssign(issue)">
                                 <p-avatarGroup styleClass="p-mb-3">
@@ -126,10 +130,6 @@
         </p-tabPanel>
     </p-tabView>
 </div>
-<app-assignee
-    (closeModal)="closeAssing()"
-    [data]="toAssing"
-    [members]="sharedOptions.members"
-    [teams]="sharedOptions.teams"
-    *ngIf="isAssign">
+<app-assignee (closeModal)="closeAssign()" [data]="toAssing" [members]="sharedOptions.members"
+    [teams]="sharedOptions.teams" *ngIf="isAssign">
 </app-assignee>

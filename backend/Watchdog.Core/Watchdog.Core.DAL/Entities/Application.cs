@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Watchdog.Core.DAL.Entities.AlertSettings;
 using Watchdog.Core.DAL.Entities.Common;
 
@@ -10,7 +11,11 @@ namespace Watchdog.Core.DAL.Entities
         {
             Environments = new List<Environment>();
             ApplicationTeams = new List<ApplicationTeam>();
+            Issues = new List<Issue>();
+            ApiKey = Guid.NewGuid().ToString();
         }
+
+        public string ApiKey { get; set; }
 
         public string Name { get; set; }
 
@@ -31,5 +36,7 @@ namespace Watchdog.Core.DAL.Entities
         public ICollection<Environment> Environments { get; set; }
 
         public ICollection<ApplicationTeam> ApplicationTeams { get; set; }
+
+        public ICollection<Issue> Issues { get; set; }
     }
 }

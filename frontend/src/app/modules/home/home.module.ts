@@ -15,6 +15,9 @@ import { AddEditTopActiveIssuesTileComponent }
     from './modals/tiles/top-active-issues/add-edit-top-active-issues-tile/add-edit-top-active-issues-tile.component';
 import { IssuesModule } from '@modules/home/issues/issues.module';
 import { TileHeaderComponent } from './dashboard/tiles/tile-header/tile-header.component';
+import { IssuesPerTimeTileComponent } from './dashboard/tiles/issues-per-time-tile/issues-per-time-tile.component';
+import { AddEditIssuesPerTimeTileComponent }
+    from './modals/tiles/issues-per-time/add-edit-issues-per-time-tile/add-edit-issues-per-time-tile.component';
 
 @NgModule({
     declarations: [
@@ -26,6 +29,8 @@ import { TileHeaderComponent } from './dashboard/tiles/tile-header/tile-header.c
         TopActiveIssuesTileComponent,
         AddEditTopActiveIssuesTileComponent,
         TileHeaderComponent,
+        IssuesPerTimeTileComponent,
+        AddEditIssuesPerTimeTileComponent,
     ],
     imports: [
         SharedModule,
