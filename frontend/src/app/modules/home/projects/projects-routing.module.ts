@@ -10,11 +10,9 @@ const routes: Routes = [{
     component: ProjectsComponent
 }, {
     path: 'create',
-    canActivate: [ApprovedGuard],
     component: CreateProjectComponent
 }, {
     path: 'edit/:id',
-    canActivate: [ApprovedGuard],
     component: EditComponent
 }];
 

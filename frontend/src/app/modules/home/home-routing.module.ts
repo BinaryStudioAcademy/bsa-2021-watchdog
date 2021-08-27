@@ -20,7 +20,6 @@ const routes: Routes = [{
             .then(m => m.ProjectsModule),
     }, {
         path: 'issues',
-        canActivate: [ApprovedGuard],
         loadChildren: () => import('./issues/issues.module')
             .then(m => m.IssuesModule),
     }, {
@@ -28,21 +27,17 @@ const routes: Routes = [{
         component: UserProfileComponent,
     }, {
         path: 'teams',
-        canActivate: [ApprovedGuard],
         loadChildren: () => import('../team/team.module')
             .then(m => m.TeamModule),
     }, {
         path: 'dashboard/:id',
-        canActivate: [ApprovedGuard],
         component: DashboardComponent,
     }, {
         path: 'members',
-        canActivate: [ApprovedGuard],
         loadChildren: () => import('../members/members.module')
             .then(m => m.MembersModule),
     }, {
         path: 'organization',
-        canActivate: [ApprovedGuard],
         loadChildren: () => import('./organization/organization.module')
             .then(m => m.OrganizationModule),
     }, {

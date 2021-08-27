@@ -17,22 +17,17 @@ export class ApprovedGuard extends BaseComponent implements CanActivate {
 
     canActivate() {
         this.authService.getMember()
+            .pipe(this.untilThis)
             .subscribe(m => {
                 this.member = m;
-                debugger;
             })
-            debugger;
         if (this.member.isApproved === true) {
-            this.router.navigate(['landing']);
-            debugger;
             return true;
         }
 
         if (this.member.isApproved === false) {
+            this.router.navigate(['landing']);
             return false;
         }
-
-        this.router.navigate(['**']);
-        return false;
     }
 }

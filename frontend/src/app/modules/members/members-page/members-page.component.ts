@@ -164,8 +164,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis)
             .subscribe(() => {
                 this.toastNotifications.success('Member approved');
-                this.setUpSharedDate();
-                //window.location.reload();
+                window.location.reload();
             }, error => {
                 this.toastNotifications.error(error);
             });
