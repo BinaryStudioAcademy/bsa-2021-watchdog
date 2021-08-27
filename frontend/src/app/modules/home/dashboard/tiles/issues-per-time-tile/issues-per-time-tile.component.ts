@@ -39,7 +39,9 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
     multi: MultiChart[] = [];
     chartOptions: ChartOptions;
     ChartType = ChartType;
-    isLoading: boolean = true;
+    dateMsNow: number;
+    dateRangeMsOffset: number;
+    dateMsPast: number;
 
     constructor(
         private tileService: TileService,
@@ -62,34 +64,32 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
     }
 
     private applySettings() {
-        this.isLoading = true;
+        this.multi = [];
         this.getTileSettings();
         this.applyProjectSettings();
-        this.getEventMessages();
     }
 
     private getTileSettings() {
         this.tileSettings = convertJsonToTileSettings(this.tile.settings, TileType.IssuesPerTime) as IssuesPerTimeSettings;
+        this.dateMsNow = new Date().getTime();
+        this.dateRangeMsOffset = convertTileDateRangeTypeToMs(this.tileSettings.dateRange);
+        this.dateMsPast = this.dateMsNow - this.dateRangeMsOffset;
     }
 
     private applyProjectSettings() {
         this.requiredProjects = this.userProjects.filter(proj => this.tileSettings.sourceProjects.some(id => id === proj.id));
+        this.requiredProjects.forEach(proj => {
+            this.getEventMessages(proj);
+        });
     }
 
-    private applyIssuesSettings(messageInfos: IssueMessageInfo[]) {
-        //please, be careful with Date in all this methods
-        const dateMsNow = new Date().getTime();
-        const dateRangeMsOffset = convertTileDateRangeTypeToMs(this.tileSettings.dateRange);
-        const dateMsPast = dateMsNow - dateRangeMsOffset;
+    private applyIssuesSettings(messageInfos: IssueMessageInfo[], project: Project) {
         //TODO: Filter issues by issue status type (future feature)
-        //TODO: Set multi.series by project issue events info
-
-        this.multi = this.requiredProjects.map<MultiChart>(value => ({
-            name: value.name,
-            series: this.getMultiChartSeries(dateMsNow, dateRangeMsOffset, this.tileSettings.granularity,
-                messageInfos.filter(info => new Date(info.occurredOn).getTime() >= dateMsPast))
-        }));
-        this.isLoading = false;
+        this.multi.push({
+            name: project.name,
+            series: this.getMultiChartSeries(this.dateMsNow, this.dateRangeMsOffset, this.tileSettings.granularity,
+                messageInfos.filter(info => new Date(info.occurredOn).getTime() >= this.dateMsPast))
+        });
     }
 
     private getMultiChartSeries(
@@ -122,13 +122,12 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
         }));
     }
 
-    private getEventMessages(): void {
-        //TODO: Get issues from projects of user organization
+    private getEventMessages(project: Project): void {
         this.issueService
-            .getEventMessagesInfo()
+            .getEventMessagesInfoByProjectId(project.id)
             .pipe(this.untilThis)
             .subscribe(messagesInfo => {
-                this.applyIssuesSettings(messagesInfo);
+                this.applyIssuesSettings(messagesInfo, project);
             }, error => {
                 this.toastNotificationService.error(error);
             });

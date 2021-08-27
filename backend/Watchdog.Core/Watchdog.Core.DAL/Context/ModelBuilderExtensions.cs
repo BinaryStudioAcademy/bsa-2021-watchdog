@@ -3,7 +3,6 @@ using Bogus.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Watchdog.Core.Common.Enums.Tiles;
 using Watchdog.Core.DAL.Context.EntityConfigurations;
 using Watchdog.Core.DAL.Entities;
@@ -61,7 +60,7 @@ namespace Watchdog.Core.DAL.Context
                 .RuleFor(a => a.PlatformId, f => f.Random.Number(1, _numberOfPlatforms))
                 .RuleFor(a => a.CreatedBy, f => f.Random.Number(1, _numberOfUsers))
                 .RuleFor(a => a.CreatedAt, f => f.Date.Past(2, new DateTime(2021, 7, 20)))
-                .RuleFor(a => a.ApiKey, f => Guid.NewGuid().ToString().ToUpper())
+                .RuleFor(a => a.ApiKey, f => f.Random.Guid().ToString().ToUpper())
                 .Generate(count);
         }
 

@@ -16,6 +16,7 @@ import { convertJsonToTileSettings, convertTileSettingsToJson } from '@core/util
 import { TilesModalData } from '@modules/home/modals/tiles/data/tiles-modal-data';
 import { DateRangeDropdown } from '@modules/home/modals/tiles/models/date-range-dropdown';
 import { TileSizeType } from '@shared/models/tile/enums/tile-size-type';
+import { TileDateRangeType } from '@shared/models/tile/enums/tile-date-range-type';
 
 @Component({
     selector: 'app-add-edit-top-active-issues-tile',
@@ -144,7 +145,7 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
                 ]
             ),
             dateRange: new FormControl(
-                this.dateRangeDropdown[1].type,
+                TileDateRangeType.ThePastDay,
                 [
                     Validators.required
                 ]
@@ -158,7 +159,7 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
                 ]
             ),
             tileSize: new FormControl(
-                this.tileSizeDropdown[0].type,
+                TileSizeType.Medium,
                 [
                     Validators.required
                 ]
@@ -171,20 +172,7 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
     }
 
     private initTileSizeDropdown(): void {
-        this.tileSizeDropdown = [
-            {
-                type: TileSizeType.Small,
-                name: 'Small'
-            },
-            {
-                type: TileSizeType.Medium,
-                name: 'Medium'
-            },
-            {
-                type: TileSizeType.Large,
-                name: 'Large'
-            }
-        ];
+        this.tileSizeDropdown = this.tileModalData.tileSizeDropdownItems;
     }
 
     private addTile(values: any): void {
