@@ -161,6 +161,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         if (!this.member) {
             await this.memberRequest.toPromise();
         }
+        this.loading = true;
         this.issueService.getIssuesInfoLazy(this.member.id, this.lastEvent)
             .pipe(this.untilThis,
                 debounceTime(1000))
@@ -168,9 +169,11 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                 response => {
                     this.issues = response.collection;
                     this.totalRecords = response.totalRecord;
+                    this.loading = false;
                 },
                 error => {
                     this.toastNotification.error(error);
+                    this.loading = false;
                 }
             );
     }
