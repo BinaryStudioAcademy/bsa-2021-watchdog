@@ -12,7 +12,7 @@ export const clearNest = (value: string) => {
         case 'newest.occurredOn':
             return 'occurredOn';
         case 'project.name':
-            return 'projectName'
+            return 'projectName';
         default:
             return value;
     }

@@ -1,4 +1,3 @@
-import { IssueMessage } from '@shared/models/issue/issue-message';
 import { IssuesHubService } from '@core/hubs/issues-hub.service';
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@core/components/base/base.component';
@@ -62,7 +61,8 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                 tap(member => {
                     this.member = member;
                 }),
-                share());
+                share()
+            );
 
         this.memberRequest = request;
 
