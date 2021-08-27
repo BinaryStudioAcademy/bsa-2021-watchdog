@@ -6,6 +6,7 @@ import { IssueService } from '@core/services/issue.service';
 
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { IssueMessage } from '@shared/models/issue/issue-message';
+import { regexs } from '@shared/constants/regexs';
 
 @Component({
     selector: 'app-issue-details-page',
@@ -31,7 +32,13 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
         this.activatedRoute.paramMap.pipe(this.untilThis)
             .subscribe(param => {
                 this.activeTabIndex = 0;
-                this.getIssueMessage(+param.get('issueId'), param.get('eventId'));
+                const eventId: string = param.get('eventId');
+                if (eventId.match(regexs.issueEventIdGUID)) {
+                    this.getIssueMessage(+param.get('issueId'), eventId);
+                } else {
+                    this.isNotFound = true;
+                    this.spinnerService.hide();
+                }
             });
     }
 
