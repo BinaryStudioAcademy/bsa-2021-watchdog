@@ -45,7 +45,7 @@
             <!--    Specific Alert Settings    -->
             <div class="special-settings" *ngIf="category.value === 3">
                 <p-inputNumber [(ngModel)]="alertSetting.specialAlertSetting.alertsCount"
-                               [disabled]="formGroup.controls?.alertCategory.value !== 3"
+                               [disabled]="!isSpecialCategory(formGroup.controls?.alertCategory.value)"
                                [min]="0" [showButtons]="true" [size]="2" [step]="1"
                                class="radiobutton-settings-alerts-count"
                                mode="decimal"
@@ -53,14 +53,14 @@
                                decrementButtonClass="p-button-outlined">
                 </p-inputNumber>
                 <p-dropdown [(ngModel)]="alertSetting.specialAlertSetting.specialAlertType"
-                            [disabled]="formGroup.controls?.alertCategory.value !== 3"
+                            [disabled]="!isSpecialCategory(formGroup.controls?.alertCategory.value)"
                             [options]="alertData.alertTypes"
                             optionValue="value" optionLabel="label"
                             class="radiobutton-settings-alert-type">
                 </p-dropdown>
                 <span>a unique error in</span>
                 <p-dropdown [(ngModel)]="alertSetting.specialAlertSetting.alertTimeInterval"
-                            [disabled]="formGroup.controls?.alertCategory.value !== 3"
+                            [disabled]="!isSpecialCategory(formGroup.controls?.alertCategory.value)"
                             [options]="alertData.alertTimeIntervals"
                             optionValue="value" optionLabel="label"
                             class="radiobutton-settings-alert-type"

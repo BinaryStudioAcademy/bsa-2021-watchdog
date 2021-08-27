@@ -20,6 +20,7 @@ import { ProjectService } from '@core/services/project.service';
 import { Router } from '@angular/router';
 import { uniqueProjectNameValidator } from '@shared/validators/unique-project-name.validator';
 import { SpinnerService } from '@core/services/spinner.service';
+import { AlertCategory } from '@shared/models/alert-settings/alert-category';
 
 @Component({
     selector: 'app-create-project',
@@ -183,6 +184,8 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
             }
         }
     }
+
+    isSpecialCategory = (category: number) => category === AlertCategory.Special;
 
     openDialog() {
         this.createTeamDialog = this.dialogService.open(CreateTeamComponent, {

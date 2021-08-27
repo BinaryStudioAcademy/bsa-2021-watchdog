@@ -1,3 +1,4 @@
+import { main, errorHandler, appModule } from './angular.constants';
 import { Component, OnInit } from '@angular/core';
 import { BaseConfigurationComponent } from '../base-configuration.component';
 
@@ -12,43 +13,8 @@ export class AngularComponent extends BaseConfigurationComponent implements OnIn
     appModule: string;
 
     ngOnInit(): void {
-        this.main = `import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { AppModule } from './app/app.module';
-import * as Watchdog from '@watchdog-bsa/watchdog-js';
-
-Watchdog.init('${this.apiKey}');
-
-enableProdMode();
-platformBrowserDynamic()
-    .bootstrapModule(AppModule)
-    .catch(err => { console.error(err); });`;
-
-        this.errorHandler = `import { ErrorHandler, Injectable } from '@angular/core';
-import * as Watchdog from '@watchdog-bsa/watchdog-js';
-import { throwError } from 'rxjs';
-
-@Injectable()
-export class WatchdogErrorHandler implements ErrorHandler {
-    handleError(error: any) {
-        Watchdog.handleError(error);
-        return throwError(error);
-    }
-}`;
-        this.appModule = `import { WatchdogErrorHandler } from './watchdog.interceptor';
-import { NgModule } from '@angular/core';
-import { AppComponent } from './app.component';
-
-@NgModule({
-    declarations: [
-        AppComponent
-    ],
-    providers: [
-        { provide: ErrorHandler, useClass: WatchdogErrorHandler },
-    ],
-    bootstrap: [AppComponent]
-})
-
-export class AppModule { }`;
+        this.main = main(this.apiKey);
+        this.errorHandler = errorHandler;
+        this.appModule = appModule;
     }
 }
