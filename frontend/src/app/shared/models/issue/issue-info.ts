@@ -9,5 +9,6 @@ export interface IssueInfo {
     eventsCount: number,
     project: Project,
     assignee?: Assignee,
+    affected: number,
     newest: IssueMessageInfo
 }

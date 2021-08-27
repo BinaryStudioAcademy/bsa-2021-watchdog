@@ -14,6 +14,8 @@ namespace Watchdog.Core.Common.Models.Issue
         public ApplicationDto Application { get; set; }
 
         public DateTime OccurredOn { get; set; }
+        public string Platform => IssueDetails.EnvironmentMessage.Platform;
+        public string Browser => IssueDetails.EnvironmentMessage.Browser;
         public IssueMessageDetails IssueDetails { get; set; }
     }
 }

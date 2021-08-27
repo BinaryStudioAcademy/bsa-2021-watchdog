@@ -1,18 +1,18 @@
-import { IssueMessage } from '@shared/models/issue/issue-message';
 import { IssuesHubService } from '@core/hubs/issues-hub.service';
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { MemberService } from '@core/services/member.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { TeamService } from '@core/services/team.service';
 import { Assignee } from '@shared/models/issue/assignee';
 import { count, toUsers } from '@core/services/issues.utils';
 import { IssueInfo } from '@shared/models/issue/issue-info';
-import { map } from 'rxjs/operators';
+import { debounceTime, share, tap } from 'rxjs/operators';
 import { AssigneeOptions } from '@shared/models/issue/assignee-options';
 import { IssueService } from '@core/services/issue.service';
+import { LazyLoadEvent } from 'primeng/api';
 import { Member } from '@shared/models/member/member';
 
 @Component({
@@ -32,6 +32,11 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     selectedTime: string;
     isAssign: boolean;
     sharedOptions = {} as AssigneeOptions;
+    globalFilterFields = ['errorClass', 'projectName'];
+    lastEvent: LazyLoadEvent;
+    loading: boolean = false;
+    totalRecords: number;
+    memberRequest: Observable<Member>;
     member: Member;
 
     constructor(
@@ -50,25 +55,33 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
         this.setTabPanelFields();
 
-        this.authService.getMember()
-            .pipe(this.untilThis)
-            .subscribe(member => {
-                this.member = member;
-                forkJoin([this.loadMember(), this.loadTeams(), this.loadIssues(member.id)])
+        const request = this.authService.getMember()
+            .pipe(
+                this.untilThis,
+                tap(member => {
+                    this.member = member;
+                }),
+                share()
+            );
+
+        this.memberRequest = request;
+
+        request
+            .subscribe(() => {
+                this.loadIssuesLazy(this.lastEvent);
+                forkJoin([this.loadMembers(), this.loadTeams()])
                     .pipe(this.untilThis)
-                    .subscribe(([members, teams, issues]) => {
+                    .subscribe(([members, teams]) => {
                         this.sharedOptions.members = members;
                         this.sharedOptions.teams = teams;
-                        this.issues = issues;
-                        this.issuesCount.all = this.issues.length;
                         this.subscribeToIssuesHub();
                     });
-            }, errorResponse => {
-                this.toastNotification.error(errorResponse);
+            }, error => {
+                this.toastNotification.error(error);
             });
     }
 
-    loadMember() {
+    loadMembers() {
         return this.memberService.getMembersByOrganizationId(this.member.organizationId)
             .pipe(this.untilThis);
     }
@@ -101,7 +114,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         this.isAssign = true;
     }
 
-    closeAssing() {
+    closeAssign() {
         if (!this.compareAssigns()) {
             const updateAssignee = {
                 assignee: this.toAssing,
@@ -140,53 +153,31 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         return equalsMembers && equalsTeams;
     }
 
-    private loadIssues(memberId: number) {
-        return this.issueService.getIssuesInfo(memberId)
-            .pipe(
-                map(issues => issues.map(issue => {
-                    if (issue.assignee) {
-                        return issue;
-                    }
-                    return { ...issue, assignee: { teamIds: [], memberIds: [] } as Assignee };
-                }))
+    async loadIssuesLazy(event: LazyLoadEvent) {
+        if (!event) {
+            return;
+        }
+        this.lastEvent = event;
+        if (!this.member) {
+            await this.memberRequest.toPromise();
+        }
+        this.issueService.getIssuesInfoLazy(this.member.id, this.lastEvent)
+            .pipe(this.untilThis,
+                debounceTime(1000))
+            .subscribe(
+                response => {
+                    this.issues = response.collection;
+                    this.totalRecords = response.totalRecord;
+                },
+                error => {
+                    this.toastNotification.error(error);
+                }
             );
     }
 
     private subscribeToIssuesHub() {
         this.issuesHub.messages.pipe(this.untilThis)
-            .subscribe(issue => { this.addIssue(issue); });
-    }
-
-    private addIssue(issue: IssueMessage) {
-        const existingIssue = this.issues.find(i => i.issueId === issue.issueId);
-        this.issues = existingIssue ? this.addExistingIssue(issue, existingIssue) : this.addNewIssue(issue);
-    }
-
-    private addNewIssue(issue: IssueMessage) {
-        const issueInfo: IssueInfo = {
-            issueId: issue.issueId,
-            errorClass: issue.issueDetails.className,
-            errorMessage: issue.issueDetails.errorMessage,
-            eventsCount: 1,
-            newest: { id: issue.id, occurredOn: issue.occurredOn },
-            assignee: { teamIds: [], memberIds: [] },
-            project: issue.project,
-        };
-        this.issuesCount.all += 1;
-        return [issueInfo, ...this.issues];
-    }
-
-    private addExistingIssue(issue: IssueMessage, existingIssue: IssueInfo) {
-        const changedIssue = {
-            ...existingIssue,
-            eventsCount: existingIssue.eventsCount + 1,
-            newest: { id: issue.id, occurredOn: issue.occurredOn },
-        };
-        return [
-            changedIssue,
-            ...this.issues.filter(i =>
-                i.issueId !== changedIssue.issueId)
-        ];
+            .subscribe(() => { this.loadIssuesLazy(this.lastEvent); });
     }
 
     private viewedAssignee = 3;

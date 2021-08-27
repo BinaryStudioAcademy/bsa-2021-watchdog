@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Watchdog.Core.BLL.Models;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Issue;
 using Watchdog.Core.Common.Models.Issue;
@@ -18,11 +19,11 @@ namespace Watchdog.Core.API.Controllers
             _issueService = issueService;
         }
 
-        [HttpGet("info/{memberId:int}")]
-        public async Task<ActionResult<ICollection<IssueInfoDto>>> GetIssuesInfoAsync(int memberId)
+        [HttpPost("info/{memberId:int}")]
+        public async Task<ActionResult> GetIssuesInfoLazyAsync (int memberId, [FromBody] FilterModel filterModel)
         {
-            var issues = await _issueService.GetIssuesInfoAsync(memberId);
-            return Ok(issues);
+            var (issues, totalRecord) = await _issueService.GetIssuesInfoLazyAsync(memberId, filterModel);
+            return Ok(new { Collection = issues, TotalRecords = totalRecord });
         }
 
         [HttpPut]
@@ -44,6 +45,13 @@ namespace Watchdog.Core.API.Controllers
         {
             var issueMessages = await _issueService.GetEventMessagesByIssueIdAsync(id);
             return Ok(issueMessages);
+        }
+
+        [HttpPost("messagesByParent/{id}")]
+        public async Task<ActionResult> GetEventMessagesByIssueIdLazyAsync(int id, [FromBody] FilterModel filterModel)
+        {
+            var (issueMessages, totalRecords) = await _issueService.GetEventMessagesByIssueIdLazyAsync(id, filterModel);
+            return Ok(new { Collection = issueMessages, TotalRecords = totalRecords });
         }
         
         [HttpGet("messages")]
