@@ -17,6 +17,8 @@ import { IssuesPerTimeSettings } from '@shared/models/tile/settings/issues-per-t
 import { GranularityDropdown } from '@modules/home/modals/tiles/models/granularity-dropdown';
 import { IssueStatusCheckbox } from '@modules/home/modals/tiles/models/issue-status-checkbox';
 import { TileDateRangeType } from '@shared/models/tile/enums/tile-date-range-type';
+import { TileGranularityType } from '@shared/models/tile/enums/tile-granularity-type';
+import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 
 @Component({
     selector: 'app-add-edit-issues-per-time-tile',
@@ -151,19 +153,19 @@ export class AddEditIssuesPerTimeTileComponent implements OnInit {
                 ]
             ),
             dateRange: new FormControl(
-                this.dateRangeDropdown[1].type,
+                TileDateRangeType.ThePastDay,
                 [
                     Validators.required,
                 ]
             ),
             granularity: new FormControl(
-                this.granularityDropdown[0].type,
+                TileGranularityType.OneHour,
                 [
                     Validators.required,
                 ]
             ),
             issueStatuses: new FormControl(
-                [this.issueStatusCheckboxes[0].type],
+                [IssueStatus.Active],
                 [
                     Validators.required,
                 ]

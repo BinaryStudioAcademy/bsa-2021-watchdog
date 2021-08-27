@@ -14,5 +14,9 @@ namespace Watchdog.Core.Common.DTO.Members
         public UserDto User { get; set; }
         public IEnumerable<TeamOptionDto> Teams { get; set; }
         public bool IsAccepted { get; set; }
+        // For sorting and filtering in lazy loading
+        public string UserFirstName => User?.FirstName;
+        public string UserEmail => User?.Email;
+        public string RoleName => Role?.Name;
     }
 }

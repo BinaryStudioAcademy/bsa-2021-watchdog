@@ -13,8 +13,10 @@ import { Organization } from '@shared/models/organization/organization';
 import { Role } from '@shared/models/role/role';
 import { TeamOption } from '@shared/models/teams/team-option';
 import { User } from '@shared/models/user/user';
+import { LazyLoadEvent, TreeNode } from 'primeng/api';
+import { Observable } from 'rxjs';
+import { debounceTime, tap } from 'rxjs/operators';
 import { MembersRoles } from '@shared/constants/membersRoles';
-import { TreeNode } from 'primeng/api';
 
 @Component({
     selector: 'app-members-page',
@@ -27,10 +29,15 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
     isInviting: Boolean;
     user: User;
     roles: Role[];
-    membersPerPage: number = 10;
+    itemsPerPage: number;
+    organization: Organization;
 
     isEdit: boolean = false;
-
+    loading: boolean;
+    totalRecords: number;
+    globalFilterFields = ['member.user.firstName', 'member.user.email', 'member.role.name'];
+    organizationRequest: Observable<Organization>;
+    lastEvent: LazyLoadEvent;
     constructor(
         private memberService: MemberService,
         private roleService: RoleService,
@@ -47,18 +54,22 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
         this.user = this.authService.getUser();
         this.setUpSharedDate();
         this.isInviting = false;
-        this.spinnerService.show(true);
-        this.authService.getOrganization()
-            .pipe(this.untilThis)
-            .subscribe(organization => {
-                this.loadMembers(organization);
-                this.spinnerService.hide();
+        this.itemsPerPage = 10;
+        const request = this.authService.getOrganization()
+            .pipe(
+                this.untilThis,
+                tap(organization => {
+                    this.organization = organization;
+                })
+            );
+
+        this.organizationRequest = request;
+
+        request
+            .subscribe(() => {
             }, error => {
                 this.toastNotifications.error(error);
-                this.spinnerService.hide();
             });
-
-        this.spinnerService.show(true);
         this.roleService.getRoles()
             .pipe(this.untilThis)
             .subscribe(roles => {
@@ -66,16 +77,20 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
                 this.spinnerService.hide();
             }, error => {
                 this.toastNotifications.error(error);
-                this.spinnerService.hide();
             });
     }
 
-    private loadMembers(organization: Organization) {
-        this.spinnerService.show(true);
-        this.memberService.getMembersByOrganizationId(organization.id)
-            .pipe(this.untilThis)
-            .subscribe(members => {
-                this.memberItems = members.map(member => ({ member, treeTeams: this.fromTeams(member.teams) }));
+    async loadMembers(event: LazyLoadEvent) {
+        this.lastEvent = event;
+        if (!this.organization) {
+            await this.organizationRequest.toPromise();
+        }
+        this.memberService.getMembersByOrganizationIdLazy(this.organization.id, event)
+            .pipe(this.untilThis,
+                debounceTime(1000))
+            .subscribe(response => {
+                this.memberItems = response.collection.map(member => ({ member, treeTeams: this.fromTeams(member.teams) }));
+                this.totalRecords = response.totalRecord;
                 this.spinnerService.hide();
             }, error => {
                 this.toastNotifications.error(error);
@@ -86,8 +101,8 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
     private setUpSharedDate() {
         this.updateDataService.currentMessage
             .pipe(this.untilThis)
-            .subscribe(member => {
-                this.memberItems = this.memberItems.concat({ member, treeTeams: this.fromTeams(member.teams) });
+            .subscribe(() => {
+                this.loadMembers(this.lastEvent);
             });
     }
 

@@ -41,7 +41,7 @@ export class ProjectGeneralComponent extends BaseComponent implements OnInit {
             Validators.maxLength(50),
             Validators.pattern(regexs.projectName),
         ]));
-        this.editForm.addControl('description', new FormControl(this.project.description, [
+        this.editForm.addControl('description', new FormControl(this.project.description ?? '', [
             Validators.maxLength(1000),
             Validators.pattern(regexs.projectDescription),
         ]));

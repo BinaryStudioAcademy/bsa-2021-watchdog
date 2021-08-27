@@ -3,13 +3,12 @@
 
 .issue-details-environment
     padding: 12px 0
-    display: flex
-    flex-direction: column
+    display: grid
 
     &-column
         background: $background-color
-        display: flex
-        flex-wrap: wrap
+        display: grid
+        grid-template-columns: 1fr 5fr
         border: 1px solid $issue-info-border-color
         min-width: 150px
 
@@ -22,3 +21,6 @@
             width: fit-content
             overflow: hidden
             overflow-wrap: break-word
+            span
+                overflow-wrap: anywhere
+                line-height: normal

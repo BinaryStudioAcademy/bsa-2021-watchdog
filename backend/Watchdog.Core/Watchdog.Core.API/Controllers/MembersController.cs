@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Watchdog.Core.BLL.Models;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Members;
 
@@ -23,6 +23,13 @@ namespace Watchdog.Core.API.Controllers
         {
             var members = await _memberService.GetMembersByOrganizationIdAsync(organizationId);
             return Ok(members);
+        }
+
+        [HttpPost("organization/{organizationId}")]
+        public async Task<ActionResult<ICollection<MemberDto>>> GetAllMembers([FromRoute] int organizationId, [FromBody] FilterModel filterPayload)
+        {
+            var (members, totalRecord) = await _memberService.GetMembersByOrganizationIdLazyAsync(organizationId, filterPayload);
+            return Ok(new { Collection = members, TotalRecord = totalRecord });
         }
 
         [HttpGet("{id}")]

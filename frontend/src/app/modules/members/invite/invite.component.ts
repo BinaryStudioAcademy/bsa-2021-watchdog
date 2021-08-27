@@ -18,6 +18,7 @@ import { UserService } from '@core/services/user.service';
 import { ShareDataService } from '@core/services/share-data.service';
 import { MembersRoles } from '@shared/constants/membersRoles';
 import { Invition } from '@shared/models/member/invition';
+import { SpinnerService } from '@core/services/spinner.service';
 
 @Component({
     selector: 'app-invite',
@@ -33,10 +34,11 @@ export class InviteComponent extends BaseComponent implements OnInit {
     loadingNumber: number = 0;
     user: User;
     organization: Organization;
+    defaultRole: Role;
 
     invitingMembersCount = 5;
 
-    invations: Invition[] = [{ member: {} as NewMember, groupForm: this.generateGroupForm() }];
+    invations: Invition[];
     constructor(
         private memberService: MemberService,
         private roleService: RoleService,
@@ -44,7 +46,8 @@ export class InviteComponent extends BaseComponent implements OnInit {
         private toastNotifications: ToastNotificationService,
         private teamService: TeamService,
         private userService: UserService,
-        private updateDataService: ShareDataService<Member>
+        private updateDataService: ShareDataService<Member>,
+        private spinnerService: SpinnerService
     ) {
         super();
     }
@@ -66,7 +69,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
                 []
             ),
             role: new FormControl(
-                '',
+                this.organization?.defaultRoleId,
                 [
                     Validators.required,
                 ]
@@ -79,7 +82,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
             this.untilThis,
             debounceTime(300),
             switchMap((term: string) => {
-                this.loadingNumber += 1;
+                this.spinnerService.show();
                 return this.userService
                     .searchMembersNotInOrganization(this.organization.id, this.invitingMembersCount + this.invations.length, term)
                     .pipe(this.untilThis);
@@ -89,38 +92,38 @@ export class InviteComponent extends BaseComponent implements OnInit {
                 .filter(u => !this.invations.some(i => i.groupForm.value.name?.id === u.id))
                 .sort((a, b) => a.email.localeCompare(b.email))
                 .slice(0, this.invitingMembersCount);
-            this.loadingNumber -= 1;
+            this.spinnerService.hide();
         }, error => {
             this.toastNotifications.error(error);
-            this.loadingNumber -= 1;
+            this.spinnerService.hide();
         });
 
-        this.loadingNumber += 1;
+        this.spinnerService.show();
         this.roleService.getRoles()
             .pipe(this.untilThis)
             .subscribe(roles => {
                 this.roles = roles.filter(r => r.name !== MembersRoles.owner);
-                this.loadingNumber -= 1;
+                this.spinnerService.hide();
             }, error => {
                 this.toastNotifications.error(error);
-                this.loadingNumber -= 1;
+                this.spinnerService.hide();
             });
 
-        this.loadingNumber += 1;
+        this.spinnerService.show();
         this.authService.getOrganization()
             .pipe(this.untilThis)
             .subscribe(organization => {
                 this.organization = organization;
-
+                this.invations = [{ member: {} as NewMember, groupForm: this.generateGroupForm() }];
                 this.teamService.getTeamOptionsByOrganizationId(organization.id)
                     .pipe(this.untilThis)
                     .subscribe(teams => {
                         this.teams = teams;
-                        this.loadingNumber -= 1;
+                        this.spinnerService.hide();
                     });
             }, error => {
                 this.toastNotifications.error(error);
-                this.loadingNumber -= 1;
+                this.spinnerService.hide();
             });
     }
 
@@ -131,7 +134,7 @@ export class InviteComponent extends BaseComponent implements OnInit {
 
     invite(invitionInput: Invition) {
         const invition = invitionInput;
-        this.loadingNumber += 1;
+        this.spinnerService.show();
         const newMember = {
             userId: invition.groupForm.value.name.id,
             roleId: invition.groupForm.value.role,
@@ -144,11 +147,11 @@ export class InviteComponent extends BaseComponent implements OnInit {
                 this.toastNotifications.success('Member invited');
                 invition.isInvited = true;
                 this.updateDataService.changeMessage(invatedMember.member);
-                this.loadingNumber -= 1;
+                this.spinnerService.hide();
             },
             error => {
                 this.toastNotifications.error(error);
-                this.loadingNumber -= 1;
+                this.spinnerService.hide();
             });
     }
 

@@ -36,8 +36,8 @@ namespace Watchdog.Core.BLL.Services
         {
             var memberTeams = await GetTeamsWithMembersAsQueryable()
                 .Where(t => t.OrganizationId == organizationId)
-                .Where(t => isForMemberInTeam ? 
-                        t.TeamMembers.Any(tm => tm.MemberId == memberId) : 
+                .Where(t => isForMemberInTeam ?
+                        t.TeamMembers.Any(tm => tm.MemberId == memberId) :
                         t.TeamMembers.All(tm => tm.MemberId != memberId))
                 .ToListAsync();
 
@@ -97,11 +97,11 @@ namespace Watchdog.Core.BLL.Services
             var teamMember = await _context.TeamMembers
                 .FirstOrDefaultAsync(tm => tm.MemberId == memberId && tm.TeamId == teamId)
                     ?? throw new KeyNotFoundException("Team or member was not found");
-            
+
             _context.Remove(teamMember);
-            
+
             await _context.SaveChangesAsync();
-            
+
             return await GetTeamAsync(teamMember.TeamId);
         }
 
@@ -110,7 +110,7 @@ namespace Watchdog.Core.BLL.Services
             var team = await _context.Teams
                 .Include(t => t.ApplicationTeams)
                 .Include(t => t.TeamMembers)
-                .FirstOrDefaultAsync(t => t.Id == teamId) 
+                .FirstOrDefaultAsync(t => t.Id == teamId)
                     ?? throw new KeyNotFoundException("Team was not found");
             _context.Remove(team);
 

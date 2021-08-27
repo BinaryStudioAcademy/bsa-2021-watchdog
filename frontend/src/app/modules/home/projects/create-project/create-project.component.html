@@ -45,7 +45,7 @@
             <!--    Specific Alert Settings    -->
             <div class="special-settings" *ngIf="category.value === 3">
                 <p-inputNumber [(ngModel)]="alertSetting.specialAlertSetting.alertsCount"
-                               [disabled]="formGroup.controls.alertCategory.value !== 3"
+                               [disabled]="!isSpecialCategory(formGroup.controls?.alertCategory.value)"
                                [min]="0" [showButtons]="true" [size]="2" [step]="1"
                                class="radiobutton-settings-alerts-count"
                                mode="decimal"
@@ -53,14 +53,14 @@
                                decrementButtonClass="p-button-outlined">
                 </p-inputNumber>
                 <p-dropdown [(ngModel)]="alertSetting.specialAlertSetting.specialAlertType"
-                            [disabled]="formGroup.controls.alertCategory.value !== 3"
+                            [disabled]="!isSpecialCategory(formGroup.controls?.alertCategory.value)"
                             [options]="alertData.alertTypes"
                             optionValue="value" optionLabel="label"
                             class="radiobutton-settings-alert-type">
                 </p-dropdown>
                 <span>a unique error in</span>
                 <p-dropdown [(ngModel)]="alertSetting.specialAlertSetting.alertTimeInterval"
-                            [disabled]="formGroup.controls.alertCategory.value !== 3"
+                            [disabled]="!isSpecialCategory(formGroup.controls?.alertCategory.value)"
                             [options]="alertData.alertTimeIntervals"
                             optionValue="value" optionLabel="label"
                             class="radiobutton-settings-alert-type"
@@ -85,21 +85,21 @@
                            class="project-name-input"
                            [(ngModel)] = "newProject.name">
                 </div>
-                <div *ngIf="formGroup.controls.projectName.touched && formGroup.controls.projectName.invalid"
+                <div *ngIf="formGroup.controls?.projectName.touched && formGroup.controls?.projectName.invalid"
                      class="input-validation-error" id="projectName">
-                    <small *ngIf="formGroup.controls.projectName.errors.required" class="p-error">
+                    <small *ngIf="formGroup.controls?.projectName.errors.required" class="p-error">
                         Сan not be empty
                     </small>
-                    <small *ngIf="formGroup.controls.projectName.errors.minlength" class="p-error">
+                    <small *ngIf="formGroup.controls?.projectName.errors.minlength" class="p-error">
                         At least 3 characters
                     </small>
-                    <small *ngIf="formGroup.controls.projectName.errors.maxlength" class="p-error">
+                    <small *ngIf="formGroup.controls?.projectName.errors.maxlength" class="p-error">
                         No more than 50 characters
                     </small>
-                    <small *ngIf="formGroup.controls.projectName.errors?.notUnique" class="p-error">
+                    <small *ngIf="formGroup.controls?.projectName.errors?.notUnique" class="p-error">
                         Project name is not unique in organization
                     </small>
-                    <small *ngIf="formGroup.controls.projectName.errors.pattern" class="p-error">
+                    <small *ngIf="formGroup.controls?.projectName.errors.pattern" class="p-error">
                         May contain lowercase (a-z) and uppercase (A-Z) letters, numbers (0-9), dashes,
                         underscores and spaces
                     </small>
@@ -119,9 +119,9 @@
 
                 </div>
                 <!--    Team not selected Warning   -->
-                <div *ngIf="formGroup.controls.team.dirty && formGroup.controls.team.invalid"
+                <div *ngIf="formGroup.controls?.team.dirty && formGroup.controls?.team.invalid"
                      class="input-validation-error" id="team">
-                    <small *ngIf="formGroup.controls.team.errors.required" class="p-error">
+                    <small *ngIf="formGroup.controls?.team.errors.required" class="p-error">
                         Required field
                     </small>
                 </div>
@@ -140,12 +140,12 @@
                     type="textarea" maxlength="1000"
                     [(ngModel)] = "newProject.description">
                 </textarea>
-                <div *ngIf="formGroup.controls.projectDescription.touched && formGroup.controls.projectDescription.invalid"
+                <div *ngIf="formGroup.controls?.projectDescription.touched && formGroup.controls?.projectDescription.invalid"
                      class="validation" id="projectDescription">
-                     <small *ngIf="formGroup.controls.projectDescription.errors.maxlength" class="p-error">
+                     <small *ngIf="formGroup.controls?.projectDescription.errors.maxlength" class="p-error">
                         No more than 1000 characters
                     </small>
-                    <small *ngIf="formGroup.controls.projectDescription.errors.pattern" class="p-error">
+                    <small *ngIf="formGroup.controls?.projectDescription.errors.pattern" class="p-error">
                         May contain lowercase (a-z) and uppercase (A-Z) letters, numbers (0-9) and symbols<br>-_!#$%&'*+—/=?^`&#123;|&#125;~.,:;`"\№@()<>[]
                     </small>
                 </div>

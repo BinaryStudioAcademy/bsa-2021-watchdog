@@ -1,4 +1,4 @@
-import { Breadcrumb } from '@core/collecting-errors/models/breadcrumb';
+import { Breadcrumb } from '@shared/models/issue/breadcrumb';
 import { PrimeIcons } from 'primeng/api';
 
 export const getIconAndColor = (breadcrumb: Breadcrumb) => {

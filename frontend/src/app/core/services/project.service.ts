@@ -38,6 +38,10 @@ export class ProjectService {
         return this.httpService.getRequest<Project>(`${this.apiPrefix}/${id}`);
     }
 
+    getProjectsByMemberId(id: number): Observable<Project[]> {
+        return this.httpService.getRequest<Project[]>(`${this.apiPrefix}/member/${id}`);
+    }
+
     updateProject(id: number | string, updateProject: UpdateProject): Observable<Project> {
         return this.httpService.putRequest<Project>(`${this.apiPrefix}/${id}`, updateProject);
     }
