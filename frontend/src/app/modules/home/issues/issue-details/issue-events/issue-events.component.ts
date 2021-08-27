@@ -26,13 +26,16 @@ export class IssueEventsComponent extends BaseComponent implements OnDestroy {
     }
 
     async getEventMessages(event: LazyLoadEvent) {
+        this.loading = true;
         this.issueService.getEventMessagesByIssueIdLazy(this.issueMessage.issueId, event)
             .pipe(this.untilThis)
             .subscribe(response => {
                 this.issues = response.collection;
                 this.totalRecords = response.totalRecords;
+                this.loading = false;
             }, errorResponse => {
                 this.toastNotificationService.error(errorResponse);
+                this.loading = false;
             });
     }
 
