@@ -160,7 +160,7 @@ namespace Watchdog.Core.BLL.Services
         }
 
 
-        public async Task<ICollection<IssueMessageDto>> GetAllIssueMessagesByApplicationId(int applicationId)
+        public async Task<ICollection<IssueMessageDto>> GetAllIssueMessagesByApplicationIdAsync(int applicationId)
         {
             if (!await _context.Applications.AnyAsync(application => application.Id == applicationId))
             {
