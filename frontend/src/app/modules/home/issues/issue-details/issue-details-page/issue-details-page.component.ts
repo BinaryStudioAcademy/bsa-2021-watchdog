@@ -33,7 +33,7 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
             .subscribe(param => {
                 this.activeTabIndex = 0;
                 const eventId: string = param.get('eventId');
-                if (eventId.match(regexs.issueEventIdGUID)) {
+                if (eventId.match(regexs.issueEventIdGuid)) {
                     this.getIssueMessage(+param.get('issueId'), eventId);
                 } else {
                     this.isNotFound = true;
