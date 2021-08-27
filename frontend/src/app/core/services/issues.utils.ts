@@ -11,6 +11,8 @@ export const clearNest = (value: string) => {
     switch (value) {
         case 'newest.occurredOn':
             return 'occurredOn';
+        case 'project.name':
+            return 'projectName'
         default:
             return value;
     }

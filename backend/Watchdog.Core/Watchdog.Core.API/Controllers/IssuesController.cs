@@ -19,17 +19,10 @@ namespace Watchdog.Core.API.Controllers
             _issueService = issueService;
         }
 
-        [HttpGet("info")]
-        public async Task<ActionResult<ICollection<IssueInfoDto>>> GetIssuesInfoAsync()
+        [HttpPost("info/{memberId:int}")]
+        public async Task<ActionResult> GetIssuesInfoLazyAsync (int memberId, [FromBody] FilterModel filterModel)
         {
-            var issues = await _issueService.GetIssuesInfoAsync();
-            return Ok(issues);
-        }
-
-        [HttpPost("info")]
-        public async Task<ActionResult> GetIssuesInfoLazyAsync ([FromBody] FilterModel filterModel)
-        {
-            var (issues, totalRecord) = await _issueService.GetIssuesInfoLazyAsync(filterModel);
+            var (issues, totalRecord) = await _issueService.GetIssuesInfoLazyAsync(memberId, filterModel);
             return Ok(new { Collection = issues, TotalRecords = totalRecord });
         }
 
@@ -37,7 +30,7 @@ namespace Watchdog.Core.API.Controllers
         public async Task<ActionResult> UpdateAssignee(UpdateAssigneeDto assigneeDto)
         {
             await _issueService.UpdateAssigneeAsync(assigneeDto);
-            return Ok(); 
+            return Ok();
         }
 
         [HttpGet("issueId/{issueId:int}/eventId/{eventId}")]
@@ -45,8 +38,8 @@ namespace Watchdog.Core.API.Controllers
         {
             var issueMessage = await _issueService.GetEventMessageByIdAsync(issueId, eventId);
             return Ok(issueMessage);
-        }        
-        
+        }
+
         [HttpGet("messagesByParent/{id}")]
         public async Task<ActionResult<IssueMessage>> GetEventMessagesByIssueIdAsync(int id)
         {
@@ -67,5 +60,14 @@ namespace Watchdog.Core.API.Controllers
             var issueMessages = await _issueService.GetAllIssueMessages();
             return Ok(issueMessages);
         }
+        
+        [HttpGet("messages/application/{applicationId:int}")]
+        public async Task<ActionResult<ICollection<IssueMessageDto>>> GetAllIssueMessages(int applicationId)
+        {
+            var issueMessages = await _issueService.GetAllIssueMessagesByApplicationIdAsync(applicationId);
+            return Ok(issueMessages);
+        }
+        
+        
     }
 }

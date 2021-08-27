@@ -15,13 +15,13 @@ export class IssueService {
 
     constructor(private httpService: CoreHttpService) { }
 
-    public getIssuesInfo(): Observable<IssueInfo[]> {
-        return this.httpService.getRequest<IssueInfo[]>(`${this.routePrefix}/info`);
+    public getIssuesInfo(memberId: number): Observable<IssueInfo[]> {
+        return this.httpService.getRequest<IssueInfo[]>(`${this.routePrefix}/info/${memberId}`);
     }
 
-    public getIssuesInfoLazy(event: LazyLoadEvent): Observable<{ collection: IssueInfo[], totalRecord: number }> {
+    public getIssuesInfoLazy(memberId: number, event: LazyLoadEvent): Observable<{ collection: IssueInfo[], totalRecord: number }> {
         return this.httpService
-            .postRequest<{ collection: IssueInfo[], totalRecord: number }>(`${this.routePrefix}/info`, clear(event, clearNest));
+            .postRequest<{ collection: IssueInfo[], totalRecord: number }>(`${this.routePrefix}/info/${memberId}`, clear(event, clearNest));
     }
 
     public updateAssignee(updateData: UpdateAssignee): Observable<void> {
@@ -36,7 +36,7 @@ export class IssueService {
     }
 
     public getEventMessagesByIssueIdLazy(issueId: number | string, event: LazyLoadEvent):
-    Observable<{ collection: IssueMessage[], totalRecords: number }> {
+        Observable<{ collection: IssueMessage[], totalRecords: number }> {
         return this.httpService.postRequest<{ collection: IssueMessage[], totalRecords: number }>(
             `${this.routePrefix}/messagesbyparent/${issueId}`,
             clear(event, clearIssueMessage)
@@ -44,5 +44,9 @@ export class IssueService {
     }
     public getEventMessagesInfo(): Observable<IssueMessageInfo[]> {
         return this.httpService.getRequest<IssueMessageInfo[]>(`${this.routePrefix}/messages`);
+    }
+
+    public getEventMessagesInfoByProjectId(projectId: number): Observable<IssueMessageInfo[]> {
+        return this.httpService.getRequest<IssueMessageInfo[]>(`${this.routePrefix}/messages/application/${projectId}`);
     }
 }

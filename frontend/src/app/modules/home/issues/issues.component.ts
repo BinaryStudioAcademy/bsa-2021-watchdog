@@ -3,7 +3,6 @@ import { IssuesHubService } from '@core/hubs/issues-hub.service';
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
-import { Organization } from '@shared/models/organization/organization';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { MemberService } from '@core/services/member.service';
 import { forkJoin, Observable } from 'rxjs';
@@ -11,10 +10,11 @@ import { TeamService } from '@core/services/team.service';
 import { Assignee } from '@shared/models/issue/assignee';
 import { count, toUsers } from '@core/services/issues.utils';
 import { IssueInfo } from '@shared/models/issue/issue-info';
-import { debounceTime, tap } from 'rxjs/operators';
+import { debounceTime, share, tap } from 'rxjs/operators';
 import { AssigneeOptions } from '@shared/models/issue/assignee-options';
 import { IssueService } from '@core/services/issue.service';
 import { LazyLoadEvent } from 'primeng/api';
+import { Member } from '@shared/models/member/member';
 
 @Component({
     selector: 'app-issues',
@@ -33,12 +33,12 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     selectedTime: string;
     isAssign: boolean;
     sharedOptions = {} as AssigneeOptions;
-    organization: Organization;
-    globalFilterFields = ['errorClass'];
+    globalFilterFields = ['errorClass', 'projectName'];
     lastEvent: LazyLoadEvent;
     loading: boolean = false;
     totalRecords: number;
-    organizationRequest: Observable<Organization>;
+    memberRequest: Observable<Member>;
+    member: Member;
 
     constructor(
         private issuesHub: IssuesHubService,
@@ -55,20 +55,21 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         this.isAssign = false;
 
         this.setTabPanelFields();
-        const request = this.authService.getOrganization()
+
+        const request = this.authService.getMember()
             .pipe(
                 this.untilThis,
-                tap(organization => {
-                    this.organization = organization;
-                })
-            );
+                tap(member => {
+                    this.member = member;
+                }),
+                share());
 
-        this.organizationRequest = request;
+        this.memberRequest = request;
 
         request
             .subscribe(() => {
                 this.loadIssuesLazy(this.lastEvent);
-                forkJoin([this.loadMember(), this.loadTeams()])
+                forkJoin([this.loadMembers(), this.loadTeams()])
                     .pipe(this.untilThis)
                     .subscribe(([members, teams]) => {
                         this.sharedOptions.members = members;
@@ -80,13 +81,13 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             });
     }
 
-    loadMember() {
-        return this.memberService.getMembersByOrganizationId(this.organization.id)
+    loadMembers() {
+        return this.memberService.getMembersByOrganizationId(this.member.organizationId)
             .pipe(this.untilThis);
     }
 
     loadTeams() {
-        return this.teamService.getTeamOptionsByOrganizationId(this.organization.id)
+        return this.teamService.getTeamOptionsByOrganizationId(this.member.organizationId)
             .pipe(this.untilThis);
     }
 
@@ -157,10 +158,10 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             return;
         }
         this.lastEvent = event;
-        if (!this.organization) {
-            await this.organizationRequest.toPromise();
+        if (!this.member) {
+            await this.memberRequest.toPromise();
         }
-        this.issueService.getIssuesInfoLazy(this.lastEvent)
+        this.issueService.getIssuesInfoLazy(this.member.id, this.lastEvent)
             .pipe(this.untilThis,
                 debounceTime(1000))
             .subscribe(
@@ -176,39 +177,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     private subscribeToIssuesHub() {
         this.issuesHub.messages.pipe(this.untilThis)
-            .subscribe(issue => { this.addIssue(issue); });
-    }
-
-    private addIssue(issue: IssueMessage) {
-        const existingIssue = this.issues.find(i => i.issueId === issue.issueId);
-        this.issues = existingIssue ? this.addExistingIssue(issue, existingIssue) : this.addNewIssue(issue);
-    }
-
-    private addNewIssue(issue: IssueMessage) {
-        const issueInfo: IssueInfo = {
-            issueId: issue.issueId,
-            errorClass: issue.issueDetails.className,
-            errorMessage: issue.issueDetails.errorMessage,
-            eventsCount: 1,
-            affected: 1,
-            newest: { id: issue.id, occurredOn: issue.occurredOn },
-            assignee: { teamIds: [], memberIds: [] },
-        };
-        this.issuesCount.all += 1;
-        return [issueInfo, ...this.issues];
-    }
-
-    private addExistingIssue(issue: IssueMessage, existingIssue: IssueInfo) {
-        const changedIssue = {
-            ...existingIssue,
-            eventsCount: existingIssue.eventsCount + 1,
-            newest: { id: issue.id, occurredOn: issue.occurredOn },
-        };
-        return [
-            changedIssue,
-            ...this.issues.filter(i =>
-                i.issueId !== changedIssue.issueId)
-        ];
+            .subscribe(() => { this.loadIssuesLazy(this.lastEvent); });
     }
 
     private viewedAssignee = 3;

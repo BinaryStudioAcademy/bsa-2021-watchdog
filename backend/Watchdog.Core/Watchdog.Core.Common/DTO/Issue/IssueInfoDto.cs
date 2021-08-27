@@ -1,4 +1,6 @@
 using System;
+using Newtonsoft.Json;
+using Watchdog.Core.Common.DTO.Application;
 
 namespace Watchdog.Core.Common.DTO.Issue
 {
@@ -10,7 +12,9 @@ namespace Watchdog.Core.Common.DTO.Issue
         public int EventsCount { get; set; }
         public IssueMessageDto Newest { get; set; }
         public DateTime OccurredOn => Newest.OccurredOn;
-        public int Affected { get; set; } = 1; // Temp TODO remove autosetting property 
+        [JsonProperty("project")]
+        public ApplicationDto Application { get; set; }
+        public string ProjectName => Application?.Name;
         public AssigneeDto Assignee { get; set; }
     }
 }

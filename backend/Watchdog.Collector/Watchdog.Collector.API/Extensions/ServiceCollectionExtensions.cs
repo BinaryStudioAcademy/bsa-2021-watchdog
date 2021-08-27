@@ -28,7 +28,7 @@ namespace Watchdog.Collector.API.Extensions
                 .DefaultIndex(configuration["ElasticConfiguration:DefaultIndex"])
                 .DefaultMappingFor<IssueMessage>(m =>
                     m.IndexName(configuration["ElasticConfiguration:EventMessagesIndex"])
-                        .IdProperty(em => em.Id));
+                        .IdProperty(em => em.Id).Ignore(em => em.ApiKey));
 
             services.AddSingleton<IElasticClient>(new ElasticClient(settings));
         }
