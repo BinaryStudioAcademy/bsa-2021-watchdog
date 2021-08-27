@@ -1,7 +1,7 @@
 <!--    Details    -->
 <div class="issue-details-http">
     <!--    Url    -->
-    <div class="issue-details-http-column">
+    <div *ngIf="issueHttpResponse.url" class="issue-details-http-column">
         <div class="title">
             <span>Url</span>
         </div>
@@ -19,7 +19,7 @@
         </div>
     </div>
     <!--    Status text    -->
-    <div class="issue-details-http-column">
+    <div *ngIf="issueHttpResponse.statusText" class="issue-details-http-column">
         <div class="title">
             <span>Status text</span>
         </div>
@@ -28,7 +28,7 @@
         </div>
     </div>
     <!--    Message    -->
-    <div class="issue-details-http-column">
+    <div *ngIf="issueHttpResponse.message" class="issue-details-http-column">
         <div class="title">
             <span>Message</span>
         </div>

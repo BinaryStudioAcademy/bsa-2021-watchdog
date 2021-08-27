@@ -10,7 +10,7 @@
         </div>
     </div>
     <!--    Class name    -->
-    <div class="issue-details-column">
+    <div *ngIf="issueMessage.issueDetails.className" class="issue-details-column">
         <div class="title">
             <span>Class name</span>
         </div>
@@ -19,7 +19,7 @@
         </div>
     </div>
     <!--    Message    -->
-    <div class="issue-details-column">
+    <div *ngIf="issueMessage.issueDetails.errorMessage" class="issue-details-column">
         <div class="title">
             <span>Message</span>
         </div>
@@ -39,7 +39,7 @@
         </div>
     </ng-template>
     <!--    Issue Id    -->
-    <div class="issue-details-column">
+    <div *ngIf="issueMessage.id" class="issue-details-column">
         <div class="title">
             <span>Id</span>
         </div>

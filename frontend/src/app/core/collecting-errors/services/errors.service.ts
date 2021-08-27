@@ -72,7 +72,10 @@ export class ErrorsService {
             browser: navigator.appCodeName,
             browserName: navigator.appName,
             browserVersion: navigator.appVersion,
-            platform: navigator.platform
+            platform: navigator.platform,
+            systemType: null,
+            utcOffset: null,
+            locale: null
         };
     }
 }
