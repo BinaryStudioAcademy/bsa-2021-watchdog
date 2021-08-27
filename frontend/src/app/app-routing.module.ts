@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ApprovedGuard } from '@core/guards/approved.guard';
 import { AuthGuard } from '@core/guards/auth.guard';
 import { UnauthorizedGuard } from '@core/guards/unauthorized.guard';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';

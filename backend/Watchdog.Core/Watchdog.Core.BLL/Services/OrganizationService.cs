@@ -82,7 +82,7 @@ namespace Watchdog.Core.BLL.Services
         public async Task<ICollection<OrganizationDto>> GetUserOrganizationsAsync(int userId)
         {
             var organizaitons = await _context.Organizations
-                .Where(o => o.Members.Any(m => m.User.Id == userId))
+                .Where(o => o.Members.Any(m => (m.User.Id == userId) && (m.IsApproved == true)))
                 .ToListAsync();
 
             return _mapper.Map<ICollection<OrganizationDto>>(organizaitons);
