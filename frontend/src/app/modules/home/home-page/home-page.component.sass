@@ -87,6 +87,7 @@ $collapsed-side-panel-width: 68px
         border-radius: 50px
 
     .user-name
+        @include text-overflow-x-nowrap
         width: 100%
         margin-top: 2px
         font-family: "DM Sans", serif
@@ -98,9 +99,6 @@ $collapsed-side-panel-width: 68px
         font-size: 16px
         cursor: pointer
         transition: 200ms all ease-in-out
-        text-overflow: ellipsis
-        white-space: nowrap
-        overflow: hidden
         &:hover
             color: rgb(255,255,255, 0.55)
 
@@ -158,6 +156,7 @@ $collapsed-side-panel-width: 68px
     width: $collapsed-side-panel-width
 
 .button
+    @include text-overflow-x-nowrap
     width: 100%
     margin-top: 2px
     font-family: "DM Sans", serif
@@ -170,9 +169,6 @@ $collapsed-side-panel-width: 68px
     font-size: 16px
     cursor: pointer
     transition: 200ms all ease-in-out
-    text-overflow: ellipsis
-    white-space: nowrap
-    overflow: hidden
     height: 45px
     display: flex
     align-items: center
@@ -184,9 +180,7 @@ $collapsed-side-panel-width: 68px
         padding-left: 10px
         margin-bottom: 1px
     span
-        white-space: nowrap
-        overflow: hidden
-        text-overflow: ellipsis
+        @include text-overflow-x-nowrap
 
 .dashboards-none
     display: none
