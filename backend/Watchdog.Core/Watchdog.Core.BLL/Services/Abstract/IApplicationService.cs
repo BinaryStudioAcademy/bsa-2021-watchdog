@@ -20,5 +20,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task DeleteApplicationAsync(int appId);
         Task<bool> IsProjectNameValidAsync(string projectName, int organizationId);
         Task<bool> IsApiKeyUniqueAsync(string apiKey);
+        Task<ICollection<ApplicationDto>> GetAppsByMemberIdAsync(int memberId);
     }
 }

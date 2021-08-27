@@ -5,6 +5,8 @@ import { TileGranularityType } from '@shared/models/tile/enums/tile-granularity-
 import { IssueStatusCheckbox } from '@modules/home/modals/tiles/models/issue-status-checkbox';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import { DateRangeGranularityMap } from '@modules/home/modals/tiles/models/date-range-granularity-map';
+import { TileSizeDropdown } from '@modules/home/modals/tiles/models/tile-size-dropdown';
+import { TileSizeType } from '@shared/models/tile/enums/tile-size-type';
 
 export class TilesModalData {
     dateRangeGranularityMap: DateRangeGranularityMap<GranularityDropdown[]> = {};
@@ -48,6 +50,21 @@ export class TilesModalData {
         {
             type: IssueStatus.PermanentlyIgnored,
             name: 'Permanently ignored'
+        }
+    ];
+
+    tileSizeDropdownItems: TileSizeDropdown[] = [
+        {
+            type: TileSizeType.Small,
+            name: 'Small'
+        },
+        {
+            type: TileSizeType.Medium,
+            name: 'Medium'
+        },
+        {
+            type: TileSizeType.Large,
+            name: 'Large'
         }
     ];
 

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Breadcrumb } from '@core/collecting-errors/models/breadcrumb';
+import { Breadcrumb } from '@shared/models/issue/breadcrumb';
 import { getIconAndColor } from '@core/services/breadcrumb.utils';
 import { BreadcrumbItem } from '@shared/models/issue/breadcrumb-item';
 import { IssueMessage } from '@shared/models/issue/issue-message';
