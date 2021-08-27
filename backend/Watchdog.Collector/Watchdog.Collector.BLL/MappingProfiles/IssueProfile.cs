@@ -29,8 +29,7 @@ namespace Watchdog.Collector.BLL.MappingProfiles
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.StatusCode))
                 .ForMember(dest => dest.StatusText, opt => opt.MapFrom(src => src.StatusDescription));
 
-            CreateMap<WatchdogEnvironmentMessage, IssueEnvironment>()
-                .ForMember(dest => dest.Platform, opt => opt.MapFrom(src => src.Platform));
+            CreateMap<WatchdogEnvironmentMessage, IssueEnvironment>();
         }
     }
 }

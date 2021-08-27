@@ -14,10 +14,10 @@ namespace Watchdog.NetCore.Common.Builders
         {
             var message = new WatchdogEnvironmentMessage();
 
-            DateTime now = DateTime.UtcNow;
-            message.UtcOffset = TimeZoneInfo.Local.GetUtcOffset(now).TotalHours;
+            message.UtcOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
             message.Locale = CultureInfo.CurrentCulture.DisplayName;
             message.Platform = Environment.OSVersion.Platform.ToString();
+            message.SystemType = Environment.Is64BitOperatingSystem ? "64-bit" : "32-bit";
 
             return message;
         }

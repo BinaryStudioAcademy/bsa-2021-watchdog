@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.WebUtilities;
 using Watchdog.NetCore.Common.Messages;
 
 namespace Watchdog.AspNetCore.Builders
@@ -12,11 +12,10 @@ namespace Watchdog.AspNetCore.Builders
 
         public static WatchdogResponseMessage Build(HttpContext context)
         {
-            var httpResponseFeature = context.Features.Get<IHttpResponseFeature>();
             return new WatchdogResponseMessage
             {
                 StatusCode = context.Response.StatusCode,
-                StatusDescription = httpResponseFeature?.ReasonPhrase
+                StatusDescription = ReasonPhrases.GetReasonPhrase(context.Response.StatusCode)
             };
         }
     }

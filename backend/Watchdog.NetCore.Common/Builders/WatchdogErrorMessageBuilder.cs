@@ -59,7 +59,7 @@ namespace Watchdog.NetCore.Common.Builders
             {
                 MethodBase method = frame.GetMethod();
 
-                if (method is not null)
+                if (method is not null && frame.HasSource())
                 {
                     int lineNumber = frame.GetFileLineNumber();
                     int columnNumber = frame.GetFileColumnNumber();
@@ -173,8 +173,7 @@ namespace Watchdog.NetCore.Common.Builders
 
                 foreach (Exception e in ae.InnerExceptions)
                 {
-                    message.InnerErrors[index] = Build(e);
-                    index++;
+                    message.InnerErrors[index++] = Build(e);
                 }
             }
             else if (exception.InnerException is not null)
