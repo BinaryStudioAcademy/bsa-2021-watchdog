@@ -34,7 +34,7 @@ namespace Watchdog.Core.BLL.Services
 
             if (issue is null)
             {
-                var createdIssue = await CreateNewIssue(issueMessage);
+                var createdIssue = await CreateNewIssueAsync(issueMessage);
 
                 createdIssue.EventMessages.Add(newEventMessage);
 
@@ -61,8 +61,8 @@ namespace Watchdog.Core.BLL.Services
 
             var issuesInfo = await _context.Applications
                 .Include(a => a.ApplicationTeams)
-                .ThenInclude(at => at.Team)
-                .ThenInclude(t => t.TeamMembers)
+                    .ThenInclude(at => at.Team)
+                        .ThenInclude(t => t.TeamMembers)
                 .Where(a => a.ApplicationTeams.Any(at => at.Team.TeamMembers.Any(tm => tm.MemberId == memberId)))
                 .SelectMany(a => a.Issues)
                 .Select(i => new IssueInfoDto()
@@ -176,11 +176,11 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<ICollection<IssueMessageDto>>(messages);
         }
 
-        private async Task<Issue> CreateNewIssue(IssueMessage issueMessage)
+        private async Task<Issue> CreateNewIssueAsync(IssueMessage issueMessage)
         {
             var newIssue = _mapper.Map<Issue>(issueMessage);
             var application = await _context.Applications.FirstOrDefaultAsync(a => a.ApiKey == issueMessage.ApiKey)
-                ?? throw new KeyNotFoundException("No project with this id!");
+                ?? throw new KeyNotFoundException("No project with this API KEY!");
 
             issueMessage.Application = _mapper.Map<ApplicationDto>(application);
 

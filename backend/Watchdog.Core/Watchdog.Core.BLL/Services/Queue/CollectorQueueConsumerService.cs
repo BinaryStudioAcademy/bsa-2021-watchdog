@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RabbitMQ.Client.Events;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -47,7 +48,6 @@ namespace Watchdog.Core.BLL.Services.Queue
 
             _logger.LogInformation("Processing issue from collector: {0}, {1}", issueMessageReceived.IssueDetails.ClassName, issueMessageReceived.IssueDetails.ErrorMessage);
 
-            //TODO: Change to future value from IssueMessage
             string applicationUId = issueMessageReceived.ApiKey;
 
             using var scope = _provider.CreateScope();
@@ -62,7 +62,7 @@ namespace Watchdog.Core.BLL.Services.Queue
                 var notifyService = scope.ServiceProvider.GetRequiredService<INotifyQueueProducerService>();
                 notifyService.NotifyUsers(userIds, issueMessageReceived);
             }
-            catch (Exception ex)
+            catch (KeyNotFoundException ex)
             {
                 _logger.LogError(ex.Message);
             }

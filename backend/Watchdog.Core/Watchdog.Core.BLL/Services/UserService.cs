@@ -80,11 +80,11 @@ namespace Watchdog.Core.BLL.Services
         public async Task<ICollection<string>> GetUserUIdsByApplicationUIdAsync(string applicationUId)
         {
             var teams = _context.Teams
-               .Include(t => t.ApplicationTeams)
-               .ThenInclude(at => at.Application)
-               .Include(t => t.TeamMembers)
-               .ThenInclude(tm => tm.Member)
-               .ThenInclude(m => m.User);
+                .Include(t => t.ApplicationTeams)
+                    .ThenInclude(at => at.Application)
+                .Include(t => t.TeamMembers)
+                    .ThenInclude(tm => tm.Member)
+                        .ThenInclude(m => m.User);
 
             var members = teams.Where(t => t.ApplicationTeams.Any(at => at.Application.ApiKey == applicationUId))
                 .SelectMany(t => t.TeamMembers)

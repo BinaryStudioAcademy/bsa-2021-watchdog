@@ -174,8 +174,11 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<ICollection<ApplicationDto>> GetAppsByMemberIdAsync(int memberId)
         {
-            var member = await _context.Members.Include(m => m.TeamMembers).ThenInclude(tm => tm.Team)
-                .ThenInclude(t => t.ApplicationTeams).ThenInclude(at => at.Application)
+            var member = await _context.Members
+                .Include(m => m.TeamMembers)
+                    .ThenInclude(tm => tm.Team)
+                        .ThenInclude(t => t.ApplicationTeams)
+                            .ThenInclude(at => at.Application)
                 .FirstOrDefaultAsync(m => m.Id == memberId) ?? throw new KeyNotFoundException("No member with such id!");
 
             var apps = member.TeamMembers.SelectMany(tm => tm.Team.ApplicationTeams).Select(at => at.Application).Distinct();
