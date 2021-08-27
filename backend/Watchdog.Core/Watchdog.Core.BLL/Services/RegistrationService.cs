@@ -72,7 +72,7 @@ namespace Watchdog.Core.BLL.Services
                 Organization = organization,
                 Role = roles.First(r => r.Id == organization.DefaultRoleId),
                 IsAccepted = organization.OpenMembership,
-                IsApproved = false
+                IsApproved = organization.OpenMembership ? true : false
             };
             await _context.Members.AddAsync(member);
             await _context.SaveChangesAsync();

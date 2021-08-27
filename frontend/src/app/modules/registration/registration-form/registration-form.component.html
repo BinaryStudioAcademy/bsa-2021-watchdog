@@ -1,4 +1,4 @@
-<form [formGroup]="personalDetail" action="/signup" method="POST" *ngIf="stepRegistration.First">
+<form [formGroup]="personalDetail" action="/signup" method="POST" *ngIf="step === stepRegistration.First">
     <div class="reg-block">
         <div class="input-block">
             <span class="p-float-label">
@@ -78,7 +78,7 @@
         </span>
     </div>
 </form>
-<div *ngIf="stepRegistration.Second">
+<div *ngIf="step === stepRegistration.Second">
     <p-tabView (onChange)="handleChange($event)">
         <p-tabPanel >
             <ng-template pTemplate="header">
