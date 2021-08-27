@@ -5,9 +5,11 @@ export const appsetting = (apiKey: string) => `{
     }
 }
 `;
-export const configureServices = `public void ConfigureServices(IServiceCollection services)
+export const configureServices = `public IConfiguration Configuration { get; }
+
+public void ConfigureServices(IServiceCollection services)
 {
-    services.AddControllers();
+    services.AddControllers(Configuration);
 
     // other services
 
