@@ -149,10 +149,10 @@ export class InviteComponent extends BaseComponent implements OnInit {
                 this.updateDataService.changeMessage(invatedMember.member);
                 this.spinnerService.hide();
             },
-            error => {
-                this.toastNotifications.error(`${error}`, 'Error');
-                this.spinnerService.hide();
-            });
+                error => {
+                    this.toastNotifications.error(error);
+                    this.spinnerService.hide();
+                });
     }
 
     addNew() {

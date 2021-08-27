@@ -113,7 +113,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         this.isAssign = true;
     }
 
-    closeAssing() {
+    closeAssign() {
         if (!this.compareAssigns()) {
             const updateAssignee = {
                 assignee: this.toAssing,

@@ -31,7 +31,6 @@ export class IssueEventsComponent extends BaseComponent implements OnDestroy {
             .subscribe(response => {
                 this.issues = response.collection;
                 this.totalRecords = response.totalRecords;
-                console.dir(this.issues);
             }, errorResponse => {
                 this.toastNotificationService.error(errorResponse);
             });
