@@ -27,8 +27,23 @@
         </label>
         <div class="item-field">
             <div class="item-form-input p-input-icon-right">
-                <p-dropdown [options]="dropPlatform" optionLabel="name"
-                    formControlName="platformId" optionValue="id"></p-dropdown>
+                <p-dropdown
+                    [options]="dropPlatform"
+                    formControlName="platformId"
+                    optionValue="id">
+                    <ng-template let-platform pTemplate="item">
+                        <div class="platform-item">
+                            <img alt="{{platform.name}}" [src]="platform.avatarUrl | save">
+                            <div>{{platform.name}}</div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-platform pTemplate="selectedItem">
+                        <div class="platform-item">
+                            <img alt="{{platform.name}}" [src]="platform.avatarUrl | save">
+                            <div>{{platform.name}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
             </div>
         </div>
     </form>

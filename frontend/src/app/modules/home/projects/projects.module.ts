@@ -6,6 +6,12 @@ import { ProjectsComponent } from './projects/projects.component';
 import { EditComponent } from './edit/edit.component';
 import { ProjectGeneralComponent } from './edit/project-general/project-general.component';
 import { ProjectAlertComponent } from './edit/project-alert/project-alert.component';
+import { ConfigureWrapperComponent } from './edit/configure/configure-wrapper/configure-wrapper.component';
+import { AspNetCoreComponent } from './edit/configure/configurations/asp-net-core/asp-net-core.component';
+import { HighlightModule } from 'ngx-highlightjs';
+import { AngularComponent } from './edit/configure/configurations/angular/angular.component';
+import { ReactComponent } from './edit/configure/configurations/react/react.component';
+import { JavascriptComponent } from './edit/configure/configurations/javascript/javascript.component';
 
 @NgModule({
     declarations: [
@@ -14,11 +20,17 @@ import { ProjectAlertComponent } from './edit/project-alert/project-alert.compon
         EditComponent,
         ProjectGeneralComponent,
         ProjectAlertComponent,
+        ConfigureWrapperComponent,
+        AspNetCoreComponent,
+        AngularComponent,
+        ReactComponent,
+        JavascriptComponent,
     ],
     imports: [
         SharedModule,
-        ProjectsRoutingModule
-    ],
+        ProjectsRoutingModule,
+        HighlightModule
+    ]
 })
 export class ProjectsModule {
 }
