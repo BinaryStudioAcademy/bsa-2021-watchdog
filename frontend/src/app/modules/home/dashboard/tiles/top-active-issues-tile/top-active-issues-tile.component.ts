@@ -61,11 +61,11 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
     }
 
     private applyIssuesSettings(issuesInfo: IssueInfo[]) {
-        //TODO: Filter issues by requiredProjects (future feature)
         //TODO: Filter issues by 'active' issue type (future feature)
         this.displayedIssues = issuesInfo
-            .filter(info => new Date(info.newest.occurredOn).getTime() >= Date.now()
-                - convertTileDateRangeTypeToMs(this.tileSettings.dateRange)) // date range sort
+            .filter(info =>
+                new Date(info.newest.occurredOn).getTime() >= Date.now() - convertTileDateRangeTypeToMs(this.tileSettings.dateRange)
+                && this.requiredProjects.some(proj => proj.id === info.project.id))
             .sort((a, b) => b.eventsCount - a.eventsCount) // top sort
             .slice(0, this.tileSettings.issuesCount); // issues count
     }
