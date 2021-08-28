@@ -171,9 +171,10 @@ namespace Watchdog.Core.BLL.Services
             return new InvitedMemberDto { Member = member, StatusCode = response.StatusCode };
         }
 
-        public async Task<bool> IsMemberOwnerAsync(int id)
+        public async Task<bool> IsMemberOwnerAsync(int organizationId, int id)
         {
             var member = await _context.Members
+                .Where(m => m.OrganizationId == organizationId)
                 .Include(r => r.Role)
                 .FirstOrDefaultAsync(m => m.User.Id == id) ?? throw new KeyNotFoundException("Member doesn't exists");
 

@@ -95,10 +95,10 @@ namespace Watchdog.Core.API.Controllers
             return Ok(await _memberService.GetMemberByUserIdAndOrganizationIdAsync(userId, orgId));
         }
 
-        [HttpGet("isowner/{userId}")]
-        public async Task<ActionResult<bool>> IsMemberOwner(int userId)
+        [HttpGet("organization/{orgId}/isowner/{userId}")]
+        public async Task<ActionResult<bool>> IsMemberOwner(int orgId, int userId)
         {
-            return Ok(await _memberService.IsMemberOwnerAsync(userId));
+            return Ok(await _memberService.IsMemberOwnerAsync(orgId, userId));
         }
     }
 }

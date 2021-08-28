@@ -127,7 +127,7 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
     }
 
     getRole(): void {
-        this.memberService.isMemberOwner(this.authService.getUserId())
+        this.memberService.isMemberOwner(this.organization.id, this.authService.getUserId())
             .pipe(this.untilThis)
             .subscribe(isMemberOwner => {
                 this.isRemovingAllowed = isMemberOwner && this.defaultOrganization.id !== this.organization.id;
