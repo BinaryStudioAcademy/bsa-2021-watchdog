@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { DashboardService } from '@core/services/dashboard.service';
@@ -8,6 +8,7 @@ import { Organization } from '@shared/models/organization/organization';
 import { User } from '@shared/models/user/user';
 import { createDashboardValidator } from '@shared/validators/unique-dashboard-name.validator';
 import { SelectItem } from 'primeng/api/selectitem';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { icons } from './icons-list';
 
 @Component({
@@ -21,14 +22,13 @@ export class AddDashboardComponent implements OnInit {
     selectedIcon: SelectItem;
     icons: SelectItem[] = icons;
     dashboard = {} as NewDashboard;
-    @Output() closeModal = new EventEmitter<void>();
-    @Output() save = new EventEmitter<NewDashboard>();
 
     user: User;
     organization: Organization;
 
     constructor(
         private authService: AuthenticationService,
+        private dialogRef: DynamicDialogRef,
         private dashboardService: DashboardService
     ) { }
 
@@ -51,7 +51,6 @@ export class AddDashboardComponent implements OnInit {
                         createDashboardValidator(this.dashboard, this.dashboardService, this.organization.id)
                     ]
                 }
-
             )
         });
         this.selectedIcon = { label: 'pi pi-chart-bar', value: 'pi-chart-bar' };
@@ -66,6 +65,10 @@ export class AddDashboardComponent implements OnInit {
         dashboard.icon = this.selectedIcon.value;
         dashboard.createdBy = this.user.id;
         dashboard.organizationId = this.organization.id;
-        this.save.emit(dashboard);
+        this.close(dashboard);
+    }
+
+    close(dashboard?: NewDashboard) {
+        this.dialogRef.close(dashboard);
     }
 }

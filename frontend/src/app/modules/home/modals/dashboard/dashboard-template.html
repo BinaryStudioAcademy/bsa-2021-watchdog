@@ -1,39 +1,37 @@
-<p-dialog [visible]="true" [draggable]="false" [resizable]="false" [modal]="true">
+<div class="modal-container">
     <form [formGroup]="formGroup" (ngSubmit)="saveHandle()">
-        <p-panel header={{title}}>
-            <div class="input-section">
-                <span class="p-float-label">
-                    <input id="float-input-dashboard-name" type="text" pInputText formControlName="name">
-                    <label for="float-input-dashboard-name">Dashboard name</label>
-                </span>
-                <div *ngIf="formGroup.controls.name.touched && formGroup.controls.name.invalid" class="validation">
-                    <small *ngIf="formGroup.controls.name.errors.required">Field name can't be empty</small>
-                    <small *ngIf="formGroup.controls.name.value.length < 3">Min name length 3</small>
-                    <small *ngIf="formGroup.controls.name.value.length > 50">Max name length 50</small>
-                    <small *ngIf="formGroup.controls.name.errors?.notUnique">Dashboard name is not unique</small>
-                    <small *ngIf="formGroup.controls.name.hasError('pattern')">Name must contain latin letters, numbers,
-                        underscores, dashes, dots or spaces</small>
-                </div>
+        <div class="input-section">
+            <span class="p-float-label">
+                <input id="float-input-dashboard-name" type="text" pInputText formControlName="name">
+                <label for="float-input-dashboard-name">Dashboard name</label>
+            </span>
+            <div *ngIf="formGroup.controls.name.touched && formGroup.controls.name.invalid" class="validation">
+                <small *ngIf="formGroup.controls.name.errors.required">Field name can't be empty</small>
+                <small *ngIf="formGroup.controls.name.value.length < 3">Min name length 3</small>
+                <small *ngIf="formGroup.controls.name.value.length > 50">Max name length 50</small>
+                <small *ngIf="formGroup.controls.name.errors?.notUnique">Dashboard name is not unique</small>
+                <small *ngIf="formGroup.controls.name.hasError('pattern')">Name must contain latin letters, numbers,
+                    underscores, dashes, dots or spaces</small>
             </div>
-            <div class="input-section">
-                <label>Icon</label>
-                <ul>
-                    <li *ngFor="let icon of icons" (click)="onSelect(icon)"
-                        [ngClass]="{ 'selected': icon.label === this.selectedIcon.label}">
-                        <div class="icon-container">
-                            <i [ngClass]="icon.label"></i>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="buttons-container">
-                <button pButton pRipple type="button" label="Cancel" class="p-button-secondary p-button-outlined"
-                    (click)="closeModal.emit()">
-                </button>
-                <button pButton pRipple type="submit" label="Save" class="p-button-primary p-button-outlined"
-                    [disabled]="!formGroup.valid || !this.selectedIcon">
-                </button>
-            </div>
-        </p-panel>
+        </div>
+        <div class="input-section">
+            <label>Icon</label>
+            <ul>
+                <li *ngFor="let icon of icons" (click)="onSelect(icon)"
+                    [ngClass]="{ 'selected': icon.label === this.selectedIcon.label}">
+                    <div class="icon-container">
+                        <i [ngClass]="icon.label"></i>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="buttons-container">
+            <button pButton pRipple type="button" label="Cancel" class="p-button-secondary p-button-outlined"
+                (click)="close()">
+            </button>
+            <button pButton pRipple type="submit" label="Save" class="p-button-primary p-button-outlined"
+                [disabled]="!formGroup.valid || !this.selectedIcon">
+            </button>
+        </div>
     </form>
-</p-dialog>
+</div>
