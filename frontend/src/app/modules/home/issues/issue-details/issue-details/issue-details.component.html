@@ -57,12 +57,11 @@
         <div *ngFor="let st of issueMessage.issueDetails.stackTrace" class="stacktrace-row">
             <div class="stacktrace-row-info">
                 <span>
-                    at <span class="method-name">{{st.methodName}}</span>
-                    <ng-template [ngIf]="st.arguments?.length">arguments: {{st.arguments}}</ng-template>
+                    <span class="class-name">{{st.className}}.</span>
+                    <span class="method-name">{{st.methodName}}</span>
+                    <span *ngIf="st.file"> in <span class="file-name">{{st.file}}</span></span>:
                     line <span class="line-number">{{st.lineNumber}}</span>,
-                    column <span class="column">{{st.column}}</span>
-                     (<span class="file">{{st.file}}<span class="colon">:<span
-                    class="line-number">{{st.lineNumber}}</span></span></span>)
+                    column <span class="column-number">{{st.column}}</span>
                 </span>
             </div>
         </div>
