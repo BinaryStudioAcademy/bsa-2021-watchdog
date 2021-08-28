@@ -36,8 +36,6 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     tiles: Tile[] = [];
     tileTypes = TileType;
     projects: Project[] = [];
-    user: User;
-    organization: Organization;
     updateDashboardDialog: DynamicDialogRef;
     member: Member;
 
