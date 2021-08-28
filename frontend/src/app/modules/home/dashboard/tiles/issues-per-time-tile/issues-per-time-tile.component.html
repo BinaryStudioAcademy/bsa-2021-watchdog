@@ -3,7 +3,7 @@
                      [isShownEditTileMenu]="isShownEditTileMenu" [tile]="tile"></app-tile-header>
 
 
-    <app-charts *ngIf="!isLoading && multi?.length " [chartOptions]="chartOptions" [tileType]="tile.type"
+    <app-charts *ngIf="multi?.length === requiredProjects?.length" [chartOptions]="chartOptions" [tileType]="tile.type"
                 [chartType]="ChartType.Line" [multi]="multi">
     </app-charts>
 </div>

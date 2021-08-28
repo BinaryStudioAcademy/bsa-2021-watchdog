@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { InvitedMember } from '@shared/models/member/invited-member';
 import { Member } from '@shared/models/member/member';
 import { NewMember } from '@shared/models/member/new-member';
+import { LazyLoadEvent } from 'primeng/api';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { CoreHttpService } from './core-http.service';
+import { clear } from './members.utils';
 
 @Injectable({
     providedIn: 'root'
@@ -20,6 +22,12 @@ export class MemberService {
 
     getMembersByOrganizationId(organizationId: number): Observable<Member[]> {
         return this.httpService.getRequest<Member[]>(`${this.routePrefix}/organization/${organizationId}`);
+    }
+
+    getMembersByOrganizationIdLazy(organizationId: number, event: LazyLoadEvent):
+    Observable<{ collection: Member[], totalRecord: number }> {
+        return this.httpService
+            .postRequest<{ collection: Member[], totalRecord: number }>(`${this.routePrefix}/organization/${organizationId}`, clear(event));
     }
 
     private static member: Member;

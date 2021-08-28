@@ -15,13 +15,11 @@
         color: $primary-color
 
     .issue-id
+        @include text-overflow-x-nowrap
         font-size: 12px
         margin-top: 3px
         color: $table-secondary-color
         display: block
-        overflow: hidden
-        text-overflow: ellipsis
-        white-space: nowrap
 
     .table-override
         ::ng-deep p-table

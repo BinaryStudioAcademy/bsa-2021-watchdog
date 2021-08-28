@@ -1,44 +1,41 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { IssueMessage } from '@shared/models/issue/issue-message';
 import { IssueService } from '@core/services/issue.service';
-import { Router } from '@angular/router';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { BaseComponent } from '@core/components/base/base.component';
-import { SpinnerService } from '@core/services/spinner.service';
+import { LazyLoadEvent } from 'primeng/api';
 
 @Component({
     selector: 'app-issue-events[issueMessage]',
     templateUrl: './issue-events.component.html',
     styleUrls: ['./issue-events.component.sass']
 })
-export class IssueEventsComponent extends BaseComponent implements OnInit, OnDestroy {
+export class IssueEventsComponent extends BaseComponent implements OnDestroy {
     @Input() issueMessage: IssueMessage;
     issues: IssueMessage[] = [];
     paginatorRows: number = 9;
+    lastEvent: LazyLoadEvent;
+    loading: boolean = false;
+    totalRecords: number;
 
     constructor(
         private issueService: IssueService,
-        private router: Router,
         private toastNotificationService: ToastNotificationService,
-        private spinnerService: SpinnerService
     ) {
         super();
-        this.spinnerService.show(true);
     }
 
-    ngOnInit(): void {
-        this.getEventMessages(this.issueMessage.issueId);
-    }
-
-    getEventMessages(issueId: number) {
-        this.issueService.getEventMessagesByIssueId(issueId)
+    async getEventMessages(event: LazyLoadEvent) {
+        this.loading = true;
+        this.issueService.getEventMessagesByIssueIdLazy(this.issueMessage.issueId, event)
             .pipe(this.untilThis)
             .subscribe(response => {
-                this.issues = response;
-                this.spinnerService.hide();
+                this.issues = response.collection;
+                this.totalRecords = response.totalRecords;
+                this.loading = false;
             }, errorResponse => {
                 this.toastNotificationService.error(errorResponse);
-                this.spinnerService.hide();
+                this.loading = false;
             });
     }
 

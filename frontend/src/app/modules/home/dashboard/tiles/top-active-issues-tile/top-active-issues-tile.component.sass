@@ -10,14 +10,16 @@
         height: 100%
 
         .issue-name
-            @extend %text-block-overflow
+            @include text-overflow-x-nowrap
+            display: block
             cursor: pointer
 
         .issue-name:hover
             color: $text-hover-color
 
         .issue-message
-            @extend %text-block-overflow
+            @include text-overflow-x-nowrap
+            display: block
             font-size: 12px
             margin-top: 3px
             color: $text-color-secondary
@@ -46,10 +48,3 @@
         ::ng-deep .p-dropdown-label
             display: flex
             align-items: center
-
-
-%text-block-overflow
-    display: block
-    overflow-x: clip
-    text-overflow: ellipsis
-    white-space: nowrap

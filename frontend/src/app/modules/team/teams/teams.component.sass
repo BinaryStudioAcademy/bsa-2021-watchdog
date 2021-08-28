@@ -16,21 +16,28 @@
     margin: 4px 0
     border-width: thin
     border-bottom: 1px solid $border-color
+    button
+        white-space: nowrap
 
 .team-info
     display: flex
     flex-direction: row
     align-items: center
     cursor: pointer
+    max-width: 65%
 
 .team-title
     margin-left: 8px
     font-family: "DM Sans", serif
+    max-width: 65%
+    position: relative
 
 .team-name
+    @include text-overflow-x-nowrap
     color: var(--indigo-500)
     font-size: 1.2rem
     margin-bottom: 6px
+    width: 100%
 
 .team-members
     color: var(--bluegray-600)

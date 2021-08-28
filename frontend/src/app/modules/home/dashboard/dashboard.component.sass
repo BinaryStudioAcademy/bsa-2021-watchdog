@@ -23,11 +23,9 @@
             white-space: nowrap
 
     h2
+        @include text-overflow-x-nowrap
         padding-bottom: 6px
         max-width: 450px
-        overflow: hidden
-        white-space: nowrap
-        text-overflow: ellipsis
         cursor: default
 
 .tiles-not-found
@@ -42,7 +40,7 @@
 
     %card
         margin: 5px 5px 5px
-        box-shadow: $tile-card-box-shadow
+        box-shadow: $card-box-shadow
         border: 1px solid $border-color
         flex: 1 1 auto
 

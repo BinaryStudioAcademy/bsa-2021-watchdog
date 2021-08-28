@@ -13,17 +13,15 @@ import { ConfirmOptions } from '@shared/models/confirm-window/confirm-options';
 import { ConfirmWindowService } from '@core/services/confirm-window.service';
 import { Project } from '@shared/models/projects/project';
 import { TileService } from '@core/services/tile.service';
-import { User } from '@shared/models/user/user';
-import { Organization } from '@shared/models/organization/organization';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { ProjectService } from '@core/services/project.service';
 import { map } from 'rxjs/operators';
-import { IssueService } from '@core/services/issue.service';
 import { SpinnerService } from '@core/services/spinner.service';
 import { convertJsonToTileSettings } from '@core/utils/tile.utils';
 import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UpdateDashboardComponent } from '../modals/dashboard/update-dashboard.component';
+import { Member } from '@shared/models/member/member';
 
 @Component({
     selector: 'app-dashboard',
@@ -41,6 +39,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     user: User;
     organization: Organization;
     updateDashboardDialog: DynamicDialogRef;
+    member: Member;
 
     constructor(
         private route: ActivatedRoute,
@@ -53,8 +52,6 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         private tileService: TileService,
         private authService: AuthenticationService,
         private projectService: ProjectService,
-        private issueService: IssueService,
-        private toastNotification: ToastNotificationService,
         private spinnerService: SpinnerService,
         private dialogService: DialogService
     ) {
@@ -62,12 +59,9 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     }
 
     ngOnInit(): void {
-        this.user = this.authService.getUser();
-        this.authService.getOrganization()
-            .pipe(this.untilThis)
-            .subscribe(organization => {
-                this.organization = organization;
-
+        this.authService.getMember().pipe(this.untilThis)
+            .subscribe(member => {
+                this.member = member;
                 this.route.params
                     .pipe(this.untilThis)
                     .subscribe(params => this.getParams(params));
@@ -140,8 +134,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     }
 
     initProjects() {
-        return this.projectService
-            .getProjectsByOrganizationId(this.organization.id)
+        return this.projectService.getProjectsByMemberId(this.member.id)
             .pipe(map(projects => {
                 this.projects = projects;
             }));

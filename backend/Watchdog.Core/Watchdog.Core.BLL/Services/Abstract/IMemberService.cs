@@ -1,6 +1,7 @@
 ﻿using SendGrid;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Watchdog.Core.BLL.Models;
 using Watchdog.Core.Common.DTO.Members;
 
 namespace Watchdog.Core.BLL.Services.Abstract
@@ -9,7 +10,11 @@ namespace Watchdog.Core.BLL.Services.Abstract
     {
         Task<MemberDto> GetMemberByIdAsync(int id);
         Task<ICollection<MemberDto>> GetMembersByOrganizationIdAsync(int id);
+
+        Task<(ICollection<MemberDto>, int)> GetMembersByOrganizationIdLazyAsync(int id, FilterModel filterPayload);
+
         Task<ICollection<MemberDto>> SearchMembersNotInTeamAsync(int teamId, int count, string memberEmail);
+
         Task<ICollection<MemberDto>> GetAllMembersAsync();
 
         Task<MemberDto> AddMemberAsync(NewMemberDto memberDto);

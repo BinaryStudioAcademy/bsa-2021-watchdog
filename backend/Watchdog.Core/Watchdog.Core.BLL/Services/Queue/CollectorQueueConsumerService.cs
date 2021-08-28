@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RabbitMQ.Client.Events;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -47,20 +48,28 @@ namespace Watchdog.Core.BLL.Services.Queue
 
             _logger.LogInformation("Processing issue from collector: {0}, {1}", issueMessageReceived.IssueDetails.ClassName, issueMessageReceived.IssueDetails.ErrorMessage);
 
-            //TODO: Change to future value from IssueMessage
-            int applicationId = 16;
+            string applicationUId = issueMessageReceived.ApiKey;
 
             using var scope = _provider.CreateScope();
             var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
-            var userIds = await userService.GetUserUIdsByApplicationIdAsync(applicationId);
+            var userIds = await userService.GetUserUIdsByApplicationUIdAsync(applicationUId);
 
             var issueService = scope.ServiceProvider.GetRequiredService<IIssueService>();
-            issueMessageReceived.IssueId = await issueService.AddIssueEventAsync(issueMessageReceived);
-            
-            var notifyService = scope.ServiceProvider.GetRequiredService<INotifyQueueProducerService>();
-            notifyService.NotifyUsers(userIds, issueMessageReceived);
-            
-            _consumer.SetAcknowledge(args.DeliveryTag, true);
+            try
+            {
+                issueMessageReceived.IssueId = await issueService.AddIssueEventAsync(issueMessageReceived);
+
+                var notifyService = scope.ServiceProvider.GetRequiredService<INotifyQueueProducerService>();
+                notifyService.NotifyUsers(userIds, issueMessageReceived);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+            finally
+            {
+                _consumer.SetAcknowledge(args.DeliveryTag, true);
+            }
         }
 
         public override void Dispose()
