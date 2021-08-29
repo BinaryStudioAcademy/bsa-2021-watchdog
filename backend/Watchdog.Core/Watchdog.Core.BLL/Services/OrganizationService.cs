@@ -46,7 +46,8 @@ namespace Watchdog.Core.BLL.Services
                 CreatedAt = DateTime.Now,
                 Organization = organization,
                 Role = roles.First(r => r.Name.ToLower() == "owner"),
-                IsAccepted = true
+                IsAccepted = true,
+                IsApproved = true
             };
             await _context.Members.AddAsync(member);
 

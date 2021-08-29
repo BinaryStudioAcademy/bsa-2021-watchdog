@@ -96,8 +96,9 @@ namespace Watchdog.Core.BLL.Services
                 CreatedByUser = user,
                 CreatedAt = DateTime.Now,
                 Organization = organization,
-                Role = roles.First(r => r.Name.ToLower() == "owner"),
-                IsAccepted = true
+                Role = roles.First(r => r.Id == organization.DefaultRoleId),
+                IsAccepted = true,
+                IsApproved = true
             };
             await _context.Members.AddAsync(member);
             await _context.SaveChangesAsync();

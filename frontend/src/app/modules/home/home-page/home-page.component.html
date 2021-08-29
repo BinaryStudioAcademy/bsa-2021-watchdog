@@ -81,8 +81,8 @@
                     </button>
                 </div>
                 <!--    Add dashboard button    -->
-                <button 
-                    (click)="displayModal=true" 
+                <button
+                    (click)="displayModal=true"
                     class="button dashboard add-button"
                     pTooltip="{{collapsed ? 'Add dashboard' : undefined}}">
                     <i class="pi pi-plus"></i>
@@ -91,9 +91,9 @@
             </div>
             <!--    Setting button    -->
             <div>
-                <button 
-                    [routerLinkActive]="['active']" 
-                    class="button" 
+                <button
+                    [routerLinkActive]="['active']"
+                    class="button"
                     pTooltip="{{collapsed ? 'Settings' : undefined}}"
                     routerLink="organization/settings">
                     <i class="pi pi-cog"></i>
@@ -125,3 +125,4 @@
 
 <app-add-dashboard (closeModal)="displayModal = !displayModal" (save)="addDashboard($event)" *ngIf="displayModal">
 </app-add-dashboard>
+<app-create-organization [(display)]="display" (organizationCreate)="changeOrganization($event)"></app-create-organization>

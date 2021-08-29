@@ -11,6 +11,7 @@ import { AuthenticationService } from '@core/services/authentication.service';
 import { MenuItem } from 'primeng/api/menuitem';
 import { Organization } from '@shared/models/organization/organization';
 import { Router } from '@angular/router';
+import { SpinnerService } from '@core/services/spinner.service';
 
 @Component({
     selector: 'app-home',
@@ -20,6 +21,7 @@ import { Router } from '@angular/router';
 export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     dashboards: Dashboard[];
     userItems: MenuItem[];
+    display: boolean = false;
     dashboardsShown: boolean = false;
     displayModal: boolean = false;
     collapsed: boolean = false;
@@ -33,7 +35,8 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         private deleteDataService: ShareDataService<number>,
         private authService: AuthenticationService,
         private toastNotificationService: ToastNotificationService,
-        private router: Router
+        private router: Router,
+        private spinner: SpinnerService
     ) {
         super();
         this.user = authService.getUser();
@@ -45,11 +48,13 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
 
     async ngOnInit() {
         this.user = this.authService.getUser();
-
         this.authService.getOrganization()
             .subscribe(organization => {
                 this.organization = organization;
                 this.getAllDashboards();
+            }, () => {
+                this.spinner.hide();
+                this.display = true;
             });
         await this.runHubs();
     }
@@ -102,6 +107,12 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
                         this.toastNotificationService.error(error);
                     });
             });
+    }
+
+    async changeOrganization(organization: Organization) {
+        this.authService.setOrganization(organization);
+        await this.router.navigateByUrl('home/organization/settings');
+        window.location.reload();
     }
 
     ngOnDestroy() {
