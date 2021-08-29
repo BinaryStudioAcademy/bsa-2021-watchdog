@@ -168,6 +168,7 @@ namespace Watchdog.Core.BLL.Services
         {
             var member = await _context.Members.FirstOrDefaultAsync(m => m.Id == id) ?? throw new KeyNotFoundException("Member doesn't exists");
 
+            member.IsAccepted = true;
             member.IsApproved = true;
 
             await _context.SaveChangesAsync();

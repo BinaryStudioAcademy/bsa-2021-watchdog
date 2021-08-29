@@ -112,7 +112,7 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> IsOrganizationSlugValid(string organizationSlug)
+        public async Task<bool> IsOrganizationSlugValidAsync(string organizationSlug)
         {
             var reg = new Regex(@"^[\w\-]+$");
             if (organizationSlug.Length > 50 || organizationSlug.Length < 3 || !reg.IsMatch(organizationSlug))
@@ -122,6 +122,6 @@ namespace Watchdog.Core.BLL.Services
 
             return !(await _context.Organizations.ToListAsync()).Any(o => o.OrganizationSlug == organizationSlug);
         }
- 
+
     }
 }

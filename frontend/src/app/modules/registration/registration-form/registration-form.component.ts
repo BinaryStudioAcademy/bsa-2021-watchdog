@@ -10,6 +10,7 @@ import { RegOrganizationDto } from '../DTO/reg-organization-dto';
 import { NewUserDto } from '../DTO/new-user-dto';
 import { OrganizationService } from '@core/services/organization.service';
 import { uniqueSlugValidator } from '@shared/validators/unique-slug.validator';
+import { existOrganization } from '@shared/validators/exist-organization.validator';
 import { RegistrationSteps } from './registration-steps';
 import { RegistrationTabs } from './registration-tabs';
 
@@ -140,6 +141,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                         Validators.pattern(regexs.organizationSlag),
                     ],
                     asyncValidators: [
+                        existOrganization(this.organizationService)
                     ]
                 }
             ),

@@ -35,9 +35,15 @@ namespace Watchdog.Core.API.Controllers
         }
 
         [HttpGet("slug/{organizationSlug}")]
-        public async Task<ActionResult<bool>> IsSlugValid(string organizationSlug)
+        public async Task<ActionResult<bool>> IsSlugValidAsync(string organizationSlug)
         {
-            return Ok(await _organizationService.IsOrganizationSlugValid(organizationSlug));
+            return Ok(await _organizationService.IsOrganizationSlugValidAsync(organizationSlug));
+        }
+
+        [HttpGet("orgExist/{organizationSlug}")]
+        public async Task<ActionResult<bool>> IsOrganizationExistAsync(string organizationSlug)
+        {
+            return Ok(!(await _organizationService.IsOrganizationSlugValidAsync(organizationSlug)));
         }
 
         [HttpGet("{organizationId}")]

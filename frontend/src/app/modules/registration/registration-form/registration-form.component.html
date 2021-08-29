@@ -143,6 +143,7 @@
                             <small *ngIf="ogranizationJoin.controls.organizationSlug.errors.required">Сan not be empty</small>
                             <small *ngIf="ogranizationJoin.controls.organizationSlug.value?.length < 3">Min length 3</small>
                             <small *ngIf="ogranizationJoin.controls.organizationSlug.value?.length > 50">Max length 50</small>
+                            <small *ngIf="ogranizationJoin.controls.organizationSlug.errors?.doesntExist">Doesnt exist organization</small>
                             <small *ngIf="ogranizationJoin.controls.organizationSlug.hasError('pattern')">May contain letters, numbers,
                                 space, dashes and underscores</small>
                         </div>
