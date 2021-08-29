@@ -36,8 +36,8 @@ namespace Watchdog.Core.BLL.Services
         {
             var memberTeams = await GetTeamsWithMembersAsQueryable()
                 .Where(t => t.OrganizationId == organizationId)
-                .Where(t => isForMemberInTeam ? 
-                        t.TeamMembers.Any(tm => tm.MemberId == memberId) : 
+                .Where(t => isForMemberInTeam ?
+                        t.TeamMembers.Any(tm => tm.MemberId == memberId) :
                         t.TeamMembers.All(tm => tm.MemberId != memberId))
                 .ToListAsync();
 
@@ -48,10 +48,12 @@ namespace Watchdog.Core.BLL.Services
         {
             var team = _mapper.Map<Team>(newTeam, opts => opts.AfterMap((src, dst) =>
             {
-                dst.CreatedAt = DateTime.Now;
+                dst.CreatedAt = DateTime.UtcNow;
             }));
 
-            var member = await _context.Members.Include(m => m.User).FirstOrDefaultAsync(m => m.User.Id == team.CreatedBy);
+            var member = await _context.Members
+                .Include(m => m.User)
+                .FirstOrDefaultAsync(m => m.UserId == team.CreatedBy && m.OrganizationId == newTeam.OrganizationId);
 
             var createdTeam = _context.Teams.Add(team);
             await _context.SaveChangesAsync();
@@ -61,8 +63,7 @@ namespace Watchdog.Core.BLL.Services
                 MemberId = member.Id,
                 TeamId = createdTeam.Entity.Id
             });
-
-
+            
             return _mapper.Map<TeamDto>(createdTeam.Entity);
         }
 
@@ -96,11 +97,11 @@ namespace Watchdog.Core.BLL.Services
             var teamMember = await _context.TeamMembers
                 .FirstOrDefaultAsync(tm => tm.MemberId == memberId && tm.TeamId == teamId)
                     ?? throw new KeyNotFoundException("Team or member was not found");
-            
+
             _context.Remove(teamMember);
-            
+
             await _context.SaveChangesAsync();
-            
+
             return await GetTeamAsync(teamMember.TeamId);
         }
 
@@ -109,7 +110,7 @@ namespace Watchdog.Core.BLL.Services
             var team = await _context.Teams
                 .Include(t => t.ApplicationTeams)
                 .Include(t => t.TeamMembers)
-                .FirstOrDefaultAsync(t => t.Id == teamId) 
+                .FirstOrDefaultAsync(t => t.Id == teamId)
                     ?? throw new KeyNotFoundException("Team was not found");
             _context.Remove(team);
 
@@ -124,9 +125,9 @@ namespace Watchdog.Core.BLL.Services
                         .ThenInclude(m => m.User);
         }
 
-        public async Task<bool> IsTeamNameUniqueAsync(string teamName)
+        public async Task<bool> IsTeamNameUniqueAsync(int orgId, string teamName)
         {
-            return !await _context.Teams.AnyAsync(t => t.Name == teamName);
+            return !await _context.Teams.Where(t => t.OrganizationId == orgId).AnyAsync(t => t.Name == teamName);
         }
 
         public async Task<ICollection<TeamOptionDto>> GetTeamsOptionsByOrganizationIdAsync(int organizationId)

@@ -12,12 +12,19 @@
     align-items: center
     margin-bottom: 5px
 
+// mixin to disable user selection
 @mixin disable-select
     -webkit-user-select: none
     -moz-user-select: none
     user-select: none
+// mixin to hide text with ellipsis without wrap space
+@mixin text-overflow-x-nowrap
+       overflow-x: clip
+       white-space: nowrap
+       text-overflow: ellipsis
 
-@mixin media-padding($selector) // mixin to formating padding depens on screen width
+// mixin to formatting padding depends on screen width
+@mixin media-padding($selector)
     #{$selector}
         padding-left: 200px
         padding-right: 200px

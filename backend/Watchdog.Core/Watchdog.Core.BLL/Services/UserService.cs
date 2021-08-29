@@ -76,16 +76,17 @@ namespace Watchdog.Core.BLL.Services
 
             return !(await _context.Users.ToListAsync()).Any(u => u.Email == userEmail);
         }
-        
-        public async Task<ICollection<string>> GetUserUIdsByApplicationIdAsync(int applicationId)
+
+        public async Task<ICollection<string>> GetUserUIdsByApplicationUIdAsync(string applicationUId)
         {
             var teams = _context.Teams
-               .Include(t => t.ApplicationTeams)
-               .Include(t => t.TeamMembers)
-               .ThenInclude(tm => tm.Member)
-               .ThenInclude(m => m.User);
+                .Include(t => t.ApplicationTeams)
+                    .ThenInclude(at => at.Application)
+                .Include(t => t.TeamMembers)
+                    .ThenInclude(tm => tm.Member)
+                        .ThenInclude(m => m.User);
 
-            var members = teams.Where(t => t.ApplicationTeams.Any(at => at.ApplicationId == applicationId))
+            var members = teams.Where(t => t.ApplicationTeams.Any(at => at.Application.ApiKey == applicationUId))
                 .SelectMany(t => t.TeamMembers)
                 .Select(tm => tm.Member);
 

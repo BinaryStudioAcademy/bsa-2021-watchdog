@@ -24,7 +24,7 @@ namespace Watchdog.Core.BLL.Services
             var user = _mapper.Map<User>(fullRegistrationDto.User);
             if (await _context.Users.AnyAsync(u => u.Email == fullRegistrationDto.User.Email))
                 throw new InvalidOperationException("Such email alreaby exists");
-            user.RegisteredAt = DateTime.Now;
+            user.RegisteredAt = DateTime.UtcNow;
             await _context.Users.AddAsync(user);
 
             return await CreateOrganizationAsync(fullRegistrationDto.Organization, user);
@@ -53,7 +53,7 @@ namespace Watchdog.Core.BLL.Services
         public async Task<UserDto> PartialRegistrationAsync(PartialRegistrationDto partialRegistrationDto)
         {
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == partialRegistrationDto.UserId);
-            user.RegisteredAt = DateTime.Now;
+            user.RegisteredAt = DateTime.UtcNow;
             _context.Users.Update(user);
 
             return await CreateOrganizationAsync(partialRegistrationDto.Organization, user);
@@ -85,7 +85,7 @@ namespace Watchdog.Core.BLL.Services
             var roles = await _context.Roles.ToListAsync();
             var organization = _mapper.Map<Organization>(regOrganization);
             organization.User = user;
-            organization.CreatedAt = DateTime.Now;
+            organization.CreatedAt = DateTime.UtcNow;
             organization.DefaultRoleId = roles.First(r => r.Name.ToLower() == "viewer").Id;
             organization.OpenMembership = true;
             await _context.Organizations.AddAsync(organization);
@@ -94,7 +94,7 @@ namespace Watchdog.Core.BLL.Services
             {
                 User = user,
                 CreatedByUser = user,
-                CreatedAt = DateTime.Now,
+                CreatedAt = DateTime.UtcNow,
                 Organization = organization,
                 Role = roles.First(r => r.Id == organization.DefaultRoleId),
                 IsAccepted = true,

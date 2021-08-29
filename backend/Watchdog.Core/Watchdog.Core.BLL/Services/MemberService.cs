@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Watchdog.Core.BLL.Extensions;
 using Watchdog.Core.BLL.Models;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Members;
@@ -47,7 +48,7 @@ namespace Watchdog.Core.BLL.Services
             var user = (await _context.Users.FirstOrDefaultAsync(u => u.Id == memberDto.UserId)) ?? throw new KeyNotFoundException("User doesn't exist");
             var organization = await _context.Organizations
                 .Include(o => o.Members)
-                .FirstOrDefaultAsync(o => o.Id == memberDto.OrganizationId) 
+                .FirstOrDefaultAsync(o => o.Id == memberDto.OrganizationId)
                     ?? throw new KeyNotFoundException("Such organization doesn't exist");
 
             if (organization.Members.Any(m => m.UserId == user.Id))
@@ -59,7 +60,7 @@ namespace Watchdog.Core.BLL.Services
 
             foreach (int teamId in memberDto.TeamIds)
             {
-                member.TeamMembers.Add(new TeamMember { TeamId = teamId});
+                member.TeamMembers.Add(new TeamMember { TeamId = teamId });
             }
 
             await _context.Members.AddAsync(member);
@@ -89,6 +90,7 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<ICollection<MemberDto>>(members);
 
         }
+
 
         public async Task<MemberDto> GetMemberByIdAsync(int id)
         {
@@ -150,7 +152,7 @@ namespace Watchdog.Core.BLL.Services
                 ?? throw new KeyNotFoundException("Member doesn't exists");
             member.RoleId = dto.RoleId;
             await _context.SaveChangesAsync();
-            return _mapper.Map<MemberDto>(member);  
+            return _mapper.Map<MemberDto>(member);
         }
 
         public async Task AcceptInviteAsync(int id)
@@ -171,12 +173,34 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<InvitedMemberDto> AddAndInviteMember(NewMemberDto memberDto)
+        public async Task<InvitedMemberDto> AddInvitedMemberAsync(NewMemberDto memberDto)
         {
             var member = await AddMemberAsync(memberDto);
             var response = await InviteMemberAsync(member);
             return new InvitedMemberDto { Member = member, StatusCode = response.StatusCode };
+        }
 
+        public async Task<bool> IsMemberOwnerAsync(int id)
+        {
+            var member = await _context.Members
+                .Include(r => r.Role)
+                .FirstOrDefaultAsync(m => m.User.Id == id) ?? throw new KeyNotFoundException("Member doesn't exists");
+
+            return member.Role.Name.ToLower() == "owner";
+        }
+
+        public async Task<(ICollection<MemberDto>, int)> GetMembersByOrganizationIdLazyAsync(int id, FilterModel filterPayload)
+        {
+            var members = await _context.Members.Where(m => m.OrganizationId == id)
+                .Include(m => m.User)
+                .Include(m => m.TeamMembers)
+                    .ThenInclude(tm => tm.Team)
+                .Include(m => m.Role)
+                .ToListAsync();
+            var result = _mapper.Map<ICollection<MemberDto>>(members)
+                .Filter(filterPayload, out var totalRecord)
+                .ToList();
+            return (result, totalRecord);
         }
     }
 }

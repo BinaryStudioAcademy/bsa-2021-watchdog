@@ -30,6 +30,12 @@ namespace Watchdog.Core.API.Controllers
             return Ok(await _appService.GetAppsByTeamIdAsync(teamId));
         }
 
+        [HttpGet("member/{memberId}")]
+        public async Task<ActionResult<ICollection<ApplicationDto>>> GetApplicationsByMember(int memberId)
+        {
+            return Ok(await _appService.GetAppsByMemberIdAsync(memberId));
+        }
+
         [HttpGet("team/{teamId}/exceptTeam/")]
         public async Task<ActionResult<ICollection<ApplicationDto>>> GetApplicationsExceptTeam(int teamId, string appName = "")
         {
@@ -87,7 +93,19 @@ namespace Watchdog.Core.API.Controllers
         [HttpGet("application/{projectName}/{organizationId}")]
         public async Task<ActionResult<bool>> IsProjectNameValid(string projectName, int organizationId)
         {
-            return Ok(await _appService.IsProjectNameValid(projectName, organizationId));
+            return Ok(await _appService.IsProjectNameValidAsync(projectName, organizationId));
+        }
+
+        [HttpGet("apiKey/{apiKey}")]
+        public async Task<ActionResult<bool>> IsApiKeyUnique(string apiKey)
+        {
+            return Ok(await _appService.IsApiKeyUniqueAsync(apiKey));
+        }
+
+        [HttpGet("apiKey")]
+        public ActionResult<AppKeys> GetApiKey()
+        {
+            return Ok(_appService.GenerateApiKeyAsync());
         }
     }
 }

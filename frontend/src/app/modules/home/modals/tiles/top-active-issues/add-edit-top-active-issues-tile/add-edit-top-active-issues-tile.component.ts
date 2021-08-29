@@ -4,7 +4,6 @@ import { Project } from '@shared/models/projects/project';
 import { NewTile } from '@shared/models/tile/new-tile';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { TileService } from '@core/services/tile.service';
-import { TileDateRangeType } from '@shared/models/tile/enums/tile-date-range-type';
 import { TileCategory } from '@shared/models/tile/enums/tile-category';
 import { TileType } from '@shared/models/tile/enums/tile-type';
 import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
@@ -14,15 +13,21 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { regexs } from '@shared/constants/regexs';
 import { convertJsonToTileSettings, convertTileSettingsToJson } from '@core/utils/tile.utils';
+import { TilesModalData } from '@modules/home/modals/tiles/data/tiles-modal-data';
+import { DateRangeDropdown } from '@modules/home/modals/tiles/models/date-range-dropdown';
+import { TileSizeType } from '@shared/models/tile/enums/tile-size-type';
+import { TileDateRangeType } from '@shared/models/tile/enums/tile-date-range-type';
 
 @Component({
     selector: 'app-add-edit-top-active-issues-tile',
     templateUrl: './add-edit-top-active-issues-tile.component.html',
-    styleUrls: ['./add-edit-top-active-issues-tile.component.sass']
+    styleUrls: ['./add-edit-top-active-issues-tile.component.sass'],
+    providers: [TilesModalData]
 })
 export class AddEditTopActiveIssuesTileComponent implements OnInit {
     public formGroup: FormGroup;
     public dateRangeDropdown: DateRangeDropdown[];
+    public tileSizeDropdown: TileSizeDropdown[];
     public headerTitle: string;
     public submitButtonText: string;
     currentDashboardId: number;
@@ -33,9 +38,10 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
     constructor(
         private toastNotificationService: ToastNotificationService,
         private tileService: TileService,
-        public ref: DynamicDialogRef,
-        public dialogConfig: DynamicDialogConfig,
-        private authenticationService: AuthenticationService
+        private ref: DynamicDialogRef,
+        private dialogConfig: DynamicDialogConfig,
+        private authenticationService: AuthenticationService,
+        private tileModalData: TilesModalData
     ) {
     }
 
@@ -44,17 +50,17 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
         this.userProjects = this.dialogConfig.data.userProjects;
 
         this.initDateRangeDropdown();
+        this.initTileSizeDropdown();
+
         switch (this.isAddMode) {
-            case false:
-                this.tileToEdit = this.dialogConfig.data.tileToUpdate;
-                this.editTileInit();
-                break;
             case true:
-                this.currentDashboardId = this.dialogConfig.data.dashboardId;
                 this.addTileInit();
                 break;
+            case false:
+                this.editTileInit();
+                break;
             default:
-                console.log(`Bad Modal Mode - '${this.isAddMode}'`);
+                console.error(`Bad Modal Mode - '${this.isAddMode}'`);
                 this.close();
         }
     }
@@ -64,9 +70,6 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
     }
 
     submit(): void {
-        if (this.formGroup.invalid) {
-            this.toastNotificationService.error('One or more fields is not valid!');
-        }
         const values = this.formGroup.value;
         if (this.isAddMode) {
             this.addTile(values);
@@ -76,10 +79,11 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
     }
 
     private editTileInit() {
+        this.tileToEdit = this.dialogConfig.data.tileToUpdate;
         this.headerTitle = `Editing tile ${this.tileToEdit.name}`;
         this.submitButtonText = 'Update';
 
-        const tileSettings = convertJsonToTileSettings(this.tileToEdit.settings, TileType.TopActiveIssues);
+        const tileSettings = convertJsonToTileSettings(this.tileToEdit.settings, TileType.TopActiveIssues) as TopActiveIssuesSettings;
         this.formGroup = new FormGroup({
             sourceProjects: new FormControl(
                 tileSettings.sourceProjects,
@@ -109,12 +113,19 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
                     Validators.min(1),
                     Validators.max(1000)
                 ]
+            ),
+            tileSize: new FormControl(
+                tileSettings.tileSize,
+                [
+                    Validators.required
+                ]
             )
         });
     }
 
     private addTileInit() {
-        this.headerTitle = 'Create Top Active Issues tile';
+        this.currentDashboardId = this.dialogConfig.data.dashboardId;
+        this.headerTitle = 'Create a tile';
         this.submitButtonText = 'Create';
 
         this.formGroup = new FormGroup({
@@ -134,7 +145,7 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
                 ]
             ),
             dateRange: new FormControl(
-                this.dateRangeDropdown[1].type,
+                TileDateRangeType.ThePastDay,
                 [
                     Validators.required
                 ]
@@ -146,31 +157,22 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
                     Validators.min(1),
                     Validators.max(1000)
                 ]
+            ),
+            tileSize: new FormControl(
+                TileSizeType.Medium,
+                [
+                    Validators.required
+                ]
             )
         });
     }
 
     private initDateRangeDropdown(): void {
-        this.dateRangeDropdown = [{
-            type: TileDateRangeType.ThePastHour,
-            name: 'The Past Hour'
-        },
-        {
-            type: TileDateRangeType.ThePastDay,
-            name: 'The Past Day'
-        },
-        {
-            type: TileDateRangeType.ThePast2Days,
-            name: 'The Past 2 Days'
-        },
-        {
-            type: TileDateRangeType.ThePastWeek,
-            name: 'The Past Week'
-        },
-        {
-            type: TileDateRangeType.ThePast2Weeks,
-            name: 'The Past 2 Weeks'
-        }];
+        this.dateRangeDropdown = this.tileModalData.dateRangeDropdownItems;
+    }
+
+    private initTileSizeDropdown(): void {
+        this.tileSizeDropdown = this.tileModalData.tileSizeDropdownItems;
     }
 
     private addTile(values: any): void {
@@ -183,7 +185,8 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
             settings: convertTileSettingsToJson(<TopActiveIssuesSettings>{
                 issuesCount: values.issuesCount,
                 sourceProjects: values.sourceProjects,
-                dateRange: values.dateRange
+                dateRange: values.dateRange,
+                tileSize: values.tileSize
             })
         };
         this.close(newTile);
@@ -196,14 +199,15 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
             settings: convertTileSettingsToJson(<TopActiveIssuesSettings>{
                 issuesCount: values.issuesCount,
                 sourceProjects: values.sourceProjects,
-                dateRange: values.dateRange
+                dateRange: values.dateRange,
+                tileSize: values.tileSize
             })
         };
         this.close(updatedTile);
     }
 }
 
-interface DateRangeDropdown {
+interface TileSizeDropdown {
     name: string,
-    type: TileDateRangeType
+    type: TileSizeType
 }

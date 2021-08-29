@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Watchdog.Collector.Common.DTO.Issue;
-using Watchdog.NetCore.Common.Messages;
+using Watchdog.Common.Messages;
 
 namespace Watchdog.Collector.BLL.Services.Abstract
 {

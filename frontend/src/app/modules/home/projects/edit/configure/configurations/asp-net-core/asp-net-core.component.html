@@ -1,0 +1,13 @@
+<span>Install the <strong>NuGet</strong> package:</span>
+<span>Package Manager:</span>
+<pre><code highlight="Install-Package Watchdog.AspNetCore -Version 1.0.0" ></code></pre>
+<span>Or .NET Core CLI:</span>
+<pre><code highlight="dotnet add package Watchdog.AspNetCore -v 1.0.0" ></code></pre>
+<span>Add Watchdog to <strong><code>Startup.cs</code></strong>:</span>
+<span>As service:</span>
+<pre><code [highlight]="configureServices" [languages]="['csharp']" ></code></pre>
+<span>And as middleware:</span>
+<pre><code [highlight]="configure" [languages]="['csharp']" ></code></pre>
+<span>Then add to <strong><code>appsettings.json</code></strong> your api key:</span>
+<pre><code [highlight]="appsetting" [languages]="['json']"></code></pre>
+

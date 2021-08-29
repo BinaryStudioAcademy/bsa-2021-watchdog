@@ -6,6 +6,8 @@ import { ProjectTeam } from '@shared/models/projects/project-team';
 import { NewProjectTeam } from '@shared/models/projects/new-project-team';
 import { CoreHttpService } from './core-http.service';
 import { UpdateProject } from '@shared/models/projects/update-project';
+import { share, tap } from 'rxjs/operators';
+import { AppSecrets } from '@shared/models/projects/app-secrets';
 
 @Injectable({
     providedIn: 'root',
@@ -17,23 +19,38 @@ export class ProjectService {
         private httpService: CoreHttpService
     ) { }
 
+    private projRequest$: Observable<Project[]>;
     getProjectsByOrganizationId(id: number): Observable<Project[]> {
-        return this.httpService.getRequest(`${this.apiPrefix}/organization/${id}`);
+        if (this.projRequest$) {
+            return this.projRequest$;
+        }
+        this.projRequest$ = this.httpService.getRequest<Project[]>(`${this.apiPrefix}/organization/${id}`)
+            .pipe(
+                tap(() => {
+                    this.projRequest$ = null;
+                }),
+                share()
+            );
+        return this.projRequest$;
     }
 
     getProjectById(id: number | string): Observable<Project> {
         return this.httpService.getRequest<Project>(`${this.apiPrefix}/${id}`);
     }
 
-    updateProject(id: number | string, updateProject: UpdateProject): Observable<UpdateProject> {
-        return this.httpService.putRequest<UpdateProject>(`${this.apiPrefix}/${id}`, updateProject);
+    getProjectsByMemberId(id: number): Observable<Project[]> {
+        return this.httpService.getRequest<Project[]>(`${this.apiPrefix}/member/${id}`);
+    }
+
+    updateProject(id: number | string, updateProject: UpdateProject): Observable<Project> {
+        return this.httpService.putRequest<Project>(`${this.apiPrefix}/${id}`, updateProject);
     }
 
     removeProject(id: number | string) {
         return this.httpService.deleteRequest(`${this.apiPrefix}/${id}`);
     }
 
-    public createProject(project: NewProject): Observable<Project> {
+    createProject(project: NewProject): Observable<Project> {
         return this.httpService.postRequest(`${this.apiPrefix}`, project);
     }
 
@@ -61,10 +78,18 @@ export class ProjectService {
     }
 
     setProjectForTeamAsFavorite(projectTeamId: number, state: boolean): Observable<boolean> {
-        return this.httpService.putRequest<boolean>(`${this.apiPrefix}/team/${projectTeamId}/favorite/${state}`, { });
+        return this.httpService.putRequest<boolean>(`${this.apiPrefix}/team/${projectTeamId}/favorite/${state}`, {});
     }
 
     isProjectNameUnique(name: string, organizationId: number): Observable<boolean> {
         return this.httpService.getRequest<boolean>(`${this.apiPrefix}/application/${name}/${organizationId}`);
+    }
+
+    getApiKey(): Observable<AppSecrets> {
+        return this.httpService.getRequest<AppSecrets>(`${this.apiPrefix}/apiKey`, {});
+    }
+
+    isApiKeyUnique(apiKey: string): Observable<boolean> {
+        return this.httpService.getRequest<boolean>(`${this.apiPrefix}/apiKey/${apiKey}`);
     }
 }

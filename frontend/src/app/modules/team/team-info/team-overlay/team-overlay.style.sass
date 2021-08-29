@@ -10,6 +10,7 @@
     width: 100%
     font-size: .8rem
     border-bottom: 1px solid $border-color
+    cursor: pointer
     height: 45px
     &:hover
         background-color: $penging-color
@@ -18,9 +19,7 @@
     &.project
         padding: 1em
     .member
-        overflow: hidden
-        text-overflow: ellipsis
-        white-space: nowrap
+        @include text-overflow-x-nowrap
         height: 1em
     img
         @include disable-select
@@ -55,6 +54,8 @@
     font-size: .7rem
     font-weight: 600
     justify-content: space-between
+    cursor: pointer
+
     .invite-link
         text-decoration: none
         color: $link-color
