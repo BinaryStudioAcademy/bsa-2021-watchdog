@@ -94,8 +94,4 @@ export class OrganizationService {
     isSlugUnique(slug: string): Observable<boolean> {
         return this.httpService.getRequest<boolean>(`${this.apiPrefix}/slug/${slug}`);
     }
-
-    isOrganizationMembershipOpen(slug: string): Observable<boolean> {
-        return this.httpService.getRequest<boolean>(`${this.apiPrefix}/slug/join/${slug}`);
-    }
 }

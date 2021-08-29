@@ -122,19 +122,6 @@ namespace Watchdog.Core.BLL.Services
 
             return !(await _context.Organizations.ToListAsync()).Any(o => o.OrganizationSlug == organizationSlug);
         }
-
-        public async Task<bool> IsOrganizationJoinValid(string organizationJoinSlug)
-        {
-            var reg = new Regex(@"^[\w\-]+$");
-            if (organizationJoinSlug.Length > 50 || organizationJoinSlug.Length < 3 || !reg.IsMatch(organizationJoinSlug))
-            {
-                return false;
-            }
-
-            return !(await _context.Organizations
-                .Where(o => o.OrganizationSlug == organizationJoinSlug)
-                .AnyAsync(m => m.OpenMembership == true));
-        }
-        
+ 
     }
 }
