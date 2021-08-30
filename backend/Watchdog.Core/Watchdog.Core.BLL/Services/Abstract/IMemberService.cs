@@ -27,6 +27,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<MemberDto> GetMemberByUserIdAndOrganizationIdAsync(int userId, int orgId);
         Task<MemberDto> UpdateAsync(UpdateMemberDto dto);
         Task AcceptInviteAsync(int id);
-        Task<bool> IsMemberOwnerAsync(int id);
+        Task<bool> IsMemberOwnerAsync(int memberId);
     }
 }
