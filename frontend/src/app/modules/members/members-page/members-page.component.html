@@ -95,7 +95,7 @@
                     <div class="content" *ngIf="memberItem.isEdit">
                         <p-dropdown
                             [(ngModel)]="memberItem.member.role"
-                            [options]="roles"
+                            [options]="editRoles"
                             appendTo="body"
                             [disabled]="memberItem.saveRole.name === 'Owner'"
                             optionLabel="name" name="roles-dropdown"
