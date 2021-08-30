@@ -5,10 +5,13 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 import * as Watchdog from '@watchdog-bsa/watchdog-js';
 
-Watchdog.init('6DB23407-EE62-431C-87E1-5585FF54562E', false);
+const apiKey = '6DB23407-EE62-431C-87E1-5585FF54562E';
 
 if (environment.production) {
+    Watchdog.init(apiKey, false);
     enableProdMode();
+} else {
+    Watchdog.init(apiKey, false, 'http://localhost:5090/issues/');
 }
 
 platformBrowserDynamic().bootstrapModule(AppModule)
