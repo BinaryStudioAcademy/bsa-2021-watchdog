@@ -82,9 +82,14 @@
         <div class="item-field">
             <div class="item-form-input p-input-icon-right">
                 <i *ngIf="description?.pending" class="pi pi-spin pi-spinner"></i>
-                <textarea [autoResize]="true" formControlName="description" pInputTextarea
-                          placeholder="Description"
-                          type="textarea" maxlength="1000">
+                <textarea
+                    class="description"
+                    [autoResize]="true"
+                    formControlName="description"
+                    pInputTextarea
+                    placeholder="Description"
+                    type="textarea"
+                    maxlength="1000">
                 </textarea>
                 <div *ngIf="description.touched && description.invalid" class="p-error">
                     <small *ngIf="name.errors.required">Сan not be empty</small>

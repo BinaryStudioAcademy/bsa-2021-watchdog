@@ -1,30 +1,39 @@
 <div class="invite-wrapper">
         <div class="title">Members</div>
         <div class="buttons">
-            <button (click)="toggleAllEditors()" class="p-button-secondary p-button-outlined" label="Edit" pButton pRipple></button>
-            <button pButton class="inviteMembers p-button-outlined" (click)="isInviting=true" pRipple type="button" label="Invite"></button>
+            <button
+                (click)="toggleAllEditors()"
+                class="p-button-secondary p-button-outlined"
+                label="Edit"
+                pButton
+                pRipple></button>
+            <button
+                pButton
+                class="inviteMembers p-button-outlined"
+                (click)="isInviting=true"
+                pRipple type="button"
+                label="Invite"></button>
         </div>
     </div>
 <div class="members-container">
     <div class="p-inputgroup filter-input">
         <span class="p-inputgroup-addon search-button"><i class="pi pi-search"></i></span>
-        <input 
-            type="text" 
-            pInputText 
-            placeholder="Search" 
-            name="search" 
+        <input
+            type="text"
+            pInputText
+            placeholder="Search"
+            name="search"
             (input)="table.filterGlobal({value: $event.target.value, fields: globalFilterFields }, 'contains')">
     </div>
-    <p-table 
-        #table 
-        [value]="memberItems" 
+    <p-table
+        #table
+        [value]="memberItems"
         class="members-table"
-        [rows]="itemsPerPage" 
+        [rows]="itemsPerPage"
         [paginator]="totalRecords > itemsPerPage"
         [lazy]="true"
-        (onLazyLoad)="loadMembers($event)" 
-        [totalRecords]="totalRecords"
-        [loading]="loading">
+        (onLazyLoad)="loadMembers($event)"
+        [totalRecords]="totalRecords">
         <ng-template pTemplate="header">
             <tr>
                 <th pSortableColumn="member.user.firstName">
@@ -33,7 +42,13 @@
                             Full Name
                             <p-sortIcon field="member.user.firstName"></p-sortIcon>
                         </span>
-                        <p-columnFilter [showAddButton]="false" [showOperator]="false"  type="text" field="member.user.firstName" display="menu" [maxConstraints]="1"></p-columnFilter>
+                        <p-columnFilter
+                            [showAddButton]="false"
+                            [showOperator]="false"
+                            type="text"
+                            field="member.user.firstName"
+                            display="menu"
+                            [maxConstraints]="1"></p-columnFilter>
                     </div>
                 </th>
                 <th class="email-col" pSortableColumn="member.user.email">
@@ -95,7 +110,7 @@
                     <div class="content" *ngIf="memberItem.isEdit">
                         <p-dropdown
                             [(ngModel)]="memberItem.member.role"
-                            [options]="roles"
+                            [options]="editRoles"
                             appendTo="body"
                             [disabled]="memberItem.saveRole.name === 'Owner'"
                             optionLabel="name" name="roles-dropdown"
