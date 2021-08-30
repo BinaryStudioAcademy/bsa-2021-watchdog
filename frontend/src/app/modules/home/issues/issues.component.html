@@ -9,36 +9,34 @@
         <div class="functional-bar">
             <div class="search-block p-inputgroup">
                 <span class="p-inputgroup-addon search-button"><i class="pi pi-search"></i></span>
-                <input name="search" pInputText placeholder="Search" type="text"
+                <input
+                    name="search"
+                    pInputText
+                    placeholder="Search"
+                    type="text"
                     (input)="table.filterGlobal({value: $event.target.value, fields: globalFilterFields }, 'contains')">
             </div>
-            <!-- <div class="action-block">
-               <span class="p-inputgroup-addon search-button"><i class="pi pi-paperclip"></i></span>
-               <span class="p-inputgroup-addon search-button"><i class="pi pi-plus"></i></span>
-               <span class="p-inputgroup-addon search-button"><i class="pi pi-ellipsis-v"></i></span>
-               <span class="p-inputgroup-addon search-button"><i class="pi pi-times"></i></span>
-           </div> -->
         </div>
 
         <p-tabPanel>
             <ng-template pTemplate="header">
                 <div class="header">
                     <span>All Unresolved</span>
-                    <p-badge *ngIf="totalRecords > 0" [value]="totalRecords.toString()"></p-badge>
+                    <p-badge *ngIf="totalRecords" [value]="totalRecords?.toString()"></p-badge>
                 </div>
             </ng-template>
 
-            <p-table #table [autoLayout]="true" [paginator]="issues?.length > itemsPerPage" [resizableColumns]="true"
-                [rows]="itemsPerPage" [value]="issues" class="issues-table" [lazy]="true"
-                (onLazyLoad)="loadIssuesLazy($event)" [totalRecords]="totalRecords" [loading]="loading">
-                <ng-template pTemplate="colgroup">
-                    <colgroup>
-                        <col id="issue-col">
-                        <col id="events-col">
-                        <col id="users-col">
-                        <col id="assignee-col">
-                    </colgroup>
-                </ng-template>
+            <p-table
+                #table
+                [value]="issues"
+                class="issues-table"
+                [rows]="itemsPerPage"
+                [autoLayout]="true"
+                [paginator]="totalRecords > itemsPerPage"
+                [resizableColumns]="true"
+                [lazy]="true"
+                (onLazyLoad)="loadIssuesLazy($event)"
+                [totalRecords]="totalRecords">
                 <ng-template pTemplate="header">
                     <tr>
                         <th class="name" pSortableColumn="newest.occurredOn">
@@ -46,8 +44,12 @@
                                 <p-checkbox name="allIssues" (onChange)="selectAll($event)"></p-checkbox>
                                 <span>Issue <p-sortIcon field="newest.occurredOn"></p-sortIcon>
                                 </span>
-                                <p-columnFilter [showAddButton]="false" [showOperator]="false" type="text"
-                                    field="errorClass" display="menu">
+                                <p-columnFilter
+                                    [showAddButton]="false"
+                                    [showOperator]="false"
+                                    type="text"
+                                    field="errorClass"
+                                    display="menu">
                                 </p-columnFilter>
                             </div>
                         </th>
@@ -82,8 +84,7 @@
                                         <div class="tooltip">
                                             <span><i class="pi pi-clock time-icon"></i>{{issue.newest.occurredOn |
                                                 timeAgo}}</span>
-                                            <span class="tooltiptext">{{issue.newest.occurredOn | date:'MMMM d, y
-                                                h:mma'}}</span>
+                                            <span class="tooltiptext">{{issue.newest.occurredOn | date:'MMMM d, y h:mma'}}</span>
                                         </div>
                                     </div>
                                 </div>

@@ -19,9 +19,9 @@ export class IssueService {
         return this.httpService.getRequest<IssueInfo[]>(`${this.routePrefix}/info/${memberId}`);
     }
 
-    public getIssuesInfoLazy(memberId: number, event: LazyLoadEvent): Observable<{ collection: IssueInfo[], totalRecord: number }> {
+    public getIssuesInfoLazy(memberId: number, event: LazyLoadEvent): Observable<{ collection: IssueInfo[], totalRecords: number }> {
         return this.httpService
-            .postRequest<{ collection: IssueInfo[], totalRecord: number }>(`${this.routePrefix}/info/${memberId}`, clear(event, clearNest));
+            .postRequest(`${this.routePrefix}/info/${memberId}`, clear(event, clearNest));
     }
 
     public updateAssignee(updateData: UpdateAssignee): Observable<void> {
