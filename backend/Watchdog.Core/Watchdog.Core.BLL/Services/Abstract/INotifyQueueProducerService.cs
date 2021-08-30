@@ -5,6 +5,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
 {
     public interface INotifyQueueProducerService
     {
-        void NotifyUsers(ICollection<int> memgersIds, IssueMessage message);
+        void NotifyUsers(ICollection<int> membersIds, IssueMessage message);
     }
 }
