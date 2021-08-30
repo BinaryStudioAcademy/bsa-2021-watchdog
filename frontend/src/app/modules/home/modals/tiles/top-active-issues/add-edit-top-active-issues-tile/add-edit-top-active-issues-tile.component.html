@@ -50,7 +50,7 @@
         <!--    App Source Selection    -->
         <div class="sources-selection">
             <div class="sources-selection-title">Add sources</div>
-            <p-multiSelect [options]="userProjects" appendTo="body" defaultLabel="Select application"
+            <p-multiSelect [options]="userProjects" appendTo="body" defaultLabel="Select project"
                            display="chip" formControlName="sourceProjects" optionLabel="name"
                            optionValue="id"></p-multiSelect>
             <div *ngIf="formGroup.controls.sourceProjects.touched && formGroup.controls.sourceProjects.invalid"
