@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Watchdog.Core.BLL.Models;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Issue;
+using Watchdog.Core.Common.Enums.Issues;
 using Watchdog.Core.Common.Models.Issue;
 
 namespace Watchdog.Core.API.Controllers
@@ -17,6 +18,13 @@ namespace Watchdog.Core.API.Controllers
         public IssuesController(IIssueService issueService)
         {
             _issueService = issueService;
+        }
+        
+        [HttpGet("{issueId:int}")]
+        public async Task<ActionResult<IssueDto>> GetIssueByIdAsync(int issueId)
+        {
+            var issuesInfo = await _issueService.GetIssueByIdAsync(issueId);
+            return Ok(issuesInfo);
         }
 
         [HttpGet("info/{memberId:int}")]
@@ -69,9 +77,16 @@ namespace Watchdog.Core.API.Controllers
         }
 
         [HttpGet("messages/application/{applicationId:int}")]
-        public async Task<ActionResult<ICollection<IssueMessageDto>>> GetAllIssueMessages(int applicationId)
+        public async Task<ActionResult<ICollection<IssueMessageDto>>> GetAllIssueMessagesByApplicationIdAsync(int applicationId)
         {
             var issueMessages = await _issueService.GetAllIssueMessagesByApplicationIdAsync(applicationId);
+            return Ok(issueMessages);
+        }
+        
+        [HttpPost("messages/application/{applicationId:int}/filterByStatuses")]
+        public async Task<ActionResult<ICollection<IssueMessageDto>>> GetAllIssueMessagesByApplicationIdAsync(int applicationId, [FromBody] IssueStatusesFilterDto issueStatuses)
+        {
+            var issueMessages = await _issueService.GetAllIssueMessagesByApplicationIdAsync(applicationId, issueStatuses);
             return Ok(issueMessages);
         }
 

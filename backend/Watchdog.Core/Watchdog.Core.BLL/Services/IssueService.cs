@@ -61,6 +61,17 @@ namespace Watchdog.Core.BLL.Services
             return issue.Id;
         }
 
+        public async Task<IssueDto> GetIssueByIdAsync(int issueId)
+        {
+            var issueEntity = await _context.Issues
+                .AsNoTracking()
+                .Include(issue => issue.Application)
+                .FirstOrDefaultAsync(issue => issue.Id == issueId)
+                ?? throw new KeyNotFoundException("Issue not found");
+            
+            return _mapper.Map<IssueDto>(issueEntity);
+        }
+        
         public async Task<ICollection<IssueInfoDto>> GetIssuesInfoAsync(int memberId)
         {
             if (await _context.Members.AllAsync(m => m.Id != memberId))
@@ -81,6 +92,7 @@ namespace Watchdog.Core.BLL.Services
                     ErrorMessage = i.ErrorMessage,
                     EventsCount = _context.EventMessages.Count(em => em.IssueId == i.Id),
                     Application = _mapper.Map<ApplicationDto>(i.Application),
+                    Status = i.Status,
                     Newest = new IssueMessageDto()
                     {
                         Id = _context.EventMessages
@@ -195,6 +207,26 @@ namespace Watchdog.Core.BLL.Services
                 .AsNoTracking()
                 .Include(message => message.Issue)
                 .Where(message => message.Issue.ApplicationId == applicationId)
+                .ToListAsync();
+
+            return _mapper.Map<ICollection<IssueMessageDto>>(messages);
+        }
+        
+        public async Task<ICollection<IssueMessageDto>> GetAllIssueMessagesByApplicationIdAsync(
+            int applicationId, 
+            IssueStatusesFilterDto statusesFilterDto)
+        {
+            if (!await _context.Applications.AnyAsync(application => application.Id == applicationId))
+            {
+                throw new KeyNotFoundException("Application not found");
+            }
+
+            var messages = await _context.EventMessages
+                .AsNoTracking()
+                .Include(message => message.Issue)
+                .Where(message => 
+                    message.Issue.ApplicationId == applicationId 
+                    && statusesFilterDto.IssueStatuses.Contains(message.Issue.Status))
                 .ToListAsync();
 
             return _mapper.Map<ICollection<IssueMessageDto>>(messages);

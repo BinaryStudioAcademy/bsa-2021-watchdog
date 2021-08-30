@@ -11,6 +11,7 @@ import { BaseComponent } from '@core/components/base/base.component';
 import { IssueInfo } from '@shared/models/issue/issue-info';
 import { IssueService } from '@core/services/issue.service';
 import { convertJsonToTileSettings, convertTileDateRangeTypeToMs } from '@core/utils/tile.utils';
+import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 
 @Component({
     selector: 'app-top-active-issues-tile[tile][isShownEditTileMenu][userProjects]',
@@ -64,8 +65,9 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
         //TODO: Filter issues by 'active' issue type (future feature)
         this.displayedIssues = issuesInfo
             .filter(info =>
-                new Date(info.newest.occurredOn).getTime() >= Date.now() - convertTileDateRangeTypeToMs(this.tileSettings.dateRange)
-                && this.requiredProjects.some(proj => proj.id === info.project.id))
+                info.status === IssueStatus.Active
+                && this.requiredProjects.some(proj => proj.id === info.project.id
+                && new Date(info.newest.occurredOn).getTime() >= Date.now() - convertTileDateRangeTypeToMs(this.tileSettings.dateRange)))
             .sort((a, b) => b.eventsCount - a.eventsCount) // top sort
             .slice(0, this.tileSettings.issuesCount); // issues count
     }
