@@ -110,10 +110,7 @@ namespace Watchdog.Core.API
                         };
                     });
 
-            services.AddWatchdog(Configuration, new WatchdogMiddlewareSettings()
-            {
-                ClientProvider = new DefaultWatchdogAspNetCoreClientProvider()
-            });
+            services.AddWatchdog(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -121,11 +118,7 @@ namespace Watchdog.Core.API
         {
             var apiPrefix = env.IsProduction() ? "/api" : string.Empty;
 
-            app.UseDeveloperExceptionPage();
-
             app.UseMiddleware<GenericExceptionHandlerMiddleware>();
-
-            app.UseWatchdog();
 
             app.UseSerilogRequestLogging();
 

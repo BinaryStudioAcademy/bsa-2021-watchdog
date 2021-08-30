@@ -43,10 +43,7 @@ namespace Watchdog.Collector.API
             services.AddElasticSearch(Configuration);
             services.RegisterCustomServices();
 
-            services.AddWatchdog(Configuration, new WatchdogMiddlewareSettings()
-            {
-                ClientProvider = new DefaultWatchdogAspNetCoreClientProvider()
-            });
+            services.AddWatchdog(Configuration);
 
             services.AddAutoMapper();
 
@@ -97,8 +94,6 @@ namespace Watchdog.Collector.API
             var apiPrefix = env.IsProduction() ? "/collector" : string.Empty;
 
             app.UseDeveloperExceptionPage();
-
-            app.UseWatchdog();
 
             app.UseSerilogRequestLogging();
 
