@@ -62,9 +62,9 @@ namespace Watchdog.Core.API.Controllers
         }
 
         [HttpGet("messages")]
-        public async Task<ActionResult<ICollection<IssueMessageDto>>> GetAllIssueMessages()
+        public async Task<ActionResult<ICollection<IssueMessageDto>>> GetAllIssueMessagesAsync()
         {
-            var issueMessages = await _issueService.GetAllIssueMessages();
+            var issueMessages = await _issueService.GetAllIssueMessagesAsync();
             return Ok(issueMessages);
         }
 
@@ -75,6 +75,12 @@ namespace Watchdog.Core.API.Controllers
             return Ok(issueMessages);
         }
 
+        [HttpPut("updateStatus")]
+        public async Task<ActionResult> UpdateIssueStatusAsync(UpdateIssueStatusDto issueStatusDto)
+        {
+            await _issueService.UpdateIssueStatusAsync(issueStatusDto);
+            return Ok();
+        }
 
     }
 }

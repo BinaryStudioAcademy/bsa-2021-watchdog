@@ -9,6 +9,7 @@ using Watchdog.Core.BLL.Models;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Application;
 using Watchdog.Core.Common.DTO.Issue;
+using Watchdog.Core.Common.Enums.Issues;
 using Watchdog.Core.Common.Models.Issue;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
@@ -27,7 +28,8 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<int> AddIssueEventAsync(IssueMessage issueMessage)
         {
-            var issue = await _context.Issues.Include(i => i.Application).FirstOrDefaultAsync(i =>
+            var issue = await _context.Issues.Include(i => i.Application)
+                .FirstOrDefaultAsync(i =>
                   i.ErrorMessage == issueMessage.IssueDetails.ErrorMessage &&
                   i.ErrorClass == issueMessage.IssueDetails.ClassName &&
                   i.Application.ApiKey == issueMessage.ApiKey);
@@ -45,6 +47,11 @@ namespace Watchdog.Core.BLL.Services
                 return createdIssue.Id;
             }
 
+            if (issue.Status is IssueStatus.Resolved)
+            {
+                issue.Status = IssueStatus.Active;
+            }
+            
             issueMessage.Application = _mapper.Map<ApplicationDto>(issue.Application);
             newEventMessage.IssueId = issue.Id;
 
@@ -167,7 +174,7 @@ namespace Watchdog.Core.BLL.Services
             return UpdateAssigneeInternalAsync(assigneeDto);
         }
 
-        public async Task<ICollection<IssueMessageDto>> GetAllIssueMessages()
+        public async Task<ICollection<IssueMessageDto>> GetAllIssueMessagesAsync()
         {
             var messages = await _context.EventMessages
                 .AsNoTracking()
@@ -193,6 +200,16 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<ICollection<IssueMessageDto>>(messages);
         }
 
+        public async Task UpdateIssueStatusAsync(UpdateIssueStatusDto issueStatusDto)
+        {
+            var issueEntity = await _context.Issues.FirstOrDefaultAsync(issue => issue.Id == issueStatusDto.IssueId) 
+                              ?? throw new KeyNotFoundException("Issue doesn't exist");
+
+            issueEntity.Status = issueStatusDto.Status;
+            _context.Update(issueEntity);
+            await _context.SaveChangesAsync();
+        }
+
         private async Task<Issue> CreateNewIssueAsync(IssueMessage issueMessage)
         {
             var newIssue = _mapper.Map<Issue>(issueMessage);
@@ -200,7 +217,7 @@ namespace Watchdog.Core.BLL.Services
                 ?? throw new KeyNotFoundException("No project with this API KEY!");
 
             issueMessage.Application = _mapper.Map<ApplicationDto>(application);
-
+            newIssue.Status = IssueStatus.Active;
             newIssue.Application = application;
             var createdIssue = _context.Issues.Add(newIssue);
 
