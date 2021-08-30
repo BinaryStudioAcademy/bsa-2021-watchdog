@@ -19,6 +19,8 @@ import { map } from 'rxjs/operators';
 import { SpinnerService } from '@core/services/spinner.service';
 import { convertJsonToTileSettings } from '@core/utils/tile.utils';
 import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { UpdateDashboardComponent } from '../modals/dashboard/update-dashboard.component';
 import { Member } from '@shared/models/member/member';
 
 @Component({
@@ -34,6 +36,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     tiles: Tile[] = [];
     tileTypes = TileType;
     projects: Project[] = [];
+    updateDashboardDialog: DynamicDialogRef;
     member: Member;
 
     constructor(
@@ -48,6 +51,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         private authService: AuthenticationService,
         private projectService: ProjectService,
         private spinnerService: SpinnerService,
+        private dialogService: DialogService
     ) {
         super();
     }
@@ -62,16 +66,29 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
             });
     }
 
-    updateDashboard(dashboard: UpdateDashboard) {
-        this.isEditing = false;
-        this.dashboardService.updateDashboard(dashboard)
+    openUpdateDashboardDialog() {
+        this.updateDashboardDialog = this.dialogService.open(UpdateDashboardComponent, {
+            header: 'Edit dashboard',
+            width: '400px',
+            showHeader: true,
+            baseZIndex: 10000,
+            data: { dashboard: this.dashboard }
+        });
+
+        this.updateDashboardDialog.onClose
             .pipe(this.untilThis)
-            .subscribe(updatedDashboard => {
-                this.dashboard = updatedDashboard;
-                this.updateDataService.changeMessage(this.dashboard);
-                this.toastNotificationService.success('Dashboard has been updated');
-            }, error => {
-                this.toastNotificationService.error(error);
+            .subscribe((updateDashboard: UpdateDashboard) => {
+                if (updateDashboard) {
+                    this.dashboardService.updateDashboard(updateDashboard)
+                        .pipe(this.untilThis)
+                        .subscribe(updatedDashboard => {
+                            this.dashboard = updatedDashboard;
+                            this.updateDataService.changeMessage(this.dashboard);
+                            this.toastNotificationService.success('Dashboard has been updated');
+                        }, error => {
+                            this.toastNotificationService.error(error);
+                        });
+                }
             });
     }
 
