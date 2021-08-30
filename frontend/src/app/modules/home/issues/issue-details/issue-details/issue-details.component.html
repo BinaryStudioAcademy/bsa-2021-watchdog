@@ -27,17 +27,6 @@
             <span>{{issueMessage.issueDetails.errorMessage}}</span>
         </div>
     </div>
-    <!--    Url    -->
-    <ng-template [ngIf]="issueMessage.issueDetails.url && issueMessage.issueDetails.url !== ''">
-        <div class="issue-details-column">
-            <div class="title">
-                <span>Url</span>
-            </div>
-            <div class="value">
-                <span>{{issueMessage.issueDetails.url}}</span>
-            </div>
-        </div>
-    </ng-template>
     <!--    Issue Id    -->
     <div *ngIf="issueMessage.id" class="issue-details-column">
         <div class="title">

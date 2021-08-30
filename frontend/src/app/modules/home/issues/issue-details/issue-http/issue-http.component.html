@@ -10,7 +10,7 @@
         </div>
     </div>
     <!--    Status    -->
-    <div class="issue-details-http-column">
+    <div *ngIf="issueHttpResponse.status !== 0" class="issue-details-http-column">
         <div class="title">
             <span>Status</span>
         </div>
@@ -34,6 +34,59 @@
         </div>
         <div class="value">
             <span>{{issueHttpResponse.message}}</span>
+        </div>
+    </div>
+    <!--    Host Name    -->
+    <div *ngIf="issueHttpResponse.hostName" class="issue-details-http-column">
+        <div class="title">
+            <span>Host Name</span>
+        </div>
+        <div class="value">
+            <span>{{issueHttpResponse.hostName}}</span>
+        </div>
+    </div>
+    <!--    Http Method    -->
+    <div *ngIf="issueHttpResponse.httpMethod" class="issue-details-http-column">
+        <div class="title">
+            <span>Http Name</span>
+        </div>
+        <div class="value">
+            <span>{{issueHttpResponse.httpMethod}}</span>
+        </div>
+    </div>
+    <!--    IP Address    -->
+    <div *ngIf="issueHttpResponse.ipAddress" class="issue-details-http-column">
+        <div class="title">
+            <span>IP Address</span>
+        </div>
+        <div class="value">
+            <span>{{issueHttpResponse.ipAddress}}</span>
+        </div>
+    </div>
+    <!--    Headers    -->
+    <div *ngIf="(issueHttpResponse.headers | json) !== '{}'" class="issue-details-http-column">
+        <div class="title">
+            <span>Headers</span>
+        </div>
+        <div class="value">
+            <div *ngFor="let pair of issueHttpResponse.headers | keyvalue">
+                <span class="key">{{pair.key}}</span>
+                :
+                <span class="value">{{pair.value}}</span>
+            </div>
+        </div>
+    </div>
+    <!--    Query String    -->
+    <div *ngIf="(issueHttpResponse.queryString | json) !== '{}'" class="issue-details-http-column">
+        <div class="title">
+            <span>Query String</span>
+        </div>
+        <div class="value">
+            <div *ngFor="let pair of issueHttpResponse.queryString | keyvalue">
+                <span class="key">{{pair.key}}</span>
+                :
+                <span class="value">{{pair.value}}</span>
+            </div>
         </div>
     </div>
 </div>
