@@ -59,16 +59,15 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                 this.untilThis,
                 tap(member => {
                     this.member = member;
-                }),
-                share()
+                })
             )
             .subscribe(() => {
-                this.loadIssuesLazy(this.lastEvent);
                 forkJoin([this.loadMembers(), this.loadTeams()])
                     .pipe(this.untilThis)
                     .subscribe(([members, teams]) => {
                         this.sharedOptions.members = members;
                         this.sharedOptions.teams = teams;
+                        this.loadIssuesLazy(this.lastEvent);
                         this.subscribeToIssuesHub();
                     });
             }, error => {
