@@ -14,7 +14,6 @@ import { Role } from '@shared/models/role/role';
 import { TeamOption } from '@shared/models/teams/team-option';
 import { User } from '@shared/models/user/user';
 import { LazyLoadEvent, TreeNode } from 'primeng/api';
-import { Observable } from 'rxjs';
 import { debounceTime, tap } from 'rxjs/operators';
 import { MembersRoles } from '@shared/constants/membersRoles';
 
@@ -33,10 +32,8 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
     organization: Organization;
 
     isEdit: boolean = false;
-    loading: boolean;
     totalRecords: number;
     globalFilterFields = ['member.user.firstName', 'member.user.email', 'member.role.name'];
-    organizationRequest: Observable<Organization>;
     lastEvent: LazyLoadEvent;
     constructor(
         private memberService: MemberService,
@@ -45,7 +42,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
         private authService: AuthenticationService,
         private confirmWindowService: ConfirmWindowService,
         private updateDataService: ShareDataService<Member>,
-        private spinnerService: SpinnerService
+        private spinner: SpinnerService
     ) {
         super();
     }
@@ -55,17 +52,13 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
         this.setUpSharedDate();
         this.isInviting = false;
         this.itemsPerPage = 10;
-        const request = this.authService.getOrganization()
+        this.authService.getOrganization()
             .pipe(
                 this.untilThis,
                 tap(organization => {
                     this.organization = organization;
                 })
-            );
-
-        this.organizationRequest = request;
-
-        request
+            )
             .subscribe(() => {
                 this.loadMembers(this.lastEvent);
             }, error => {
@@ -75,30 +68,31 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis)
             .subscribe(roles => {
                 this.roles = roles.filter(r => r.name !== MembersRoles.owner);
-                this.spinnerService.hide();
+                this.spinner.hide();
             }, error => {
                 this.toastNotifications.error(error);
             });
     }
 
     async loadMembers(event: LazyLoadEvent) {
-        this.lastEvent = event;
-        if (!this.lastEvent) {
+        if (!event) {
             return;
         }
+        this.lastEvent = event;
         if (!this.organization) {
-            await this.organizationRequest.toPromise();
+            return;
         }
+        this.spinner.show(true);
         this.memberService.getMembersByOrganizationIdLazy(this.organization.id, event)
             .pipe(this.untilThis,
                 debounceTime(1000))
             .subscribe(response => {
                 this.memberItems = response.collection.map(member => ({ member, treeTeams: this.fromTeams(member.teams) }));
                 this.totalRecords = response.totalRecord;
-                this.spinnerService.hide();
+                this.spinner.hide();
             }, error => {
                 this.toastNotifications.error(error);
-                this.spinnerService.hide();
+                this.spinner.hide();
             });
     }
 

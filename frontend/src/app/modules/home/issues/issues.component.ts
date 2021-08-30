@@ -1,10 +1,11 @@
+import { SpinnerService } from '../../../core/services/spinner.service';
 import { IssuesHubService } from '@core/hubs/issues-hub.service';
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { MemberService } from '@core/services/member.service';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { TeamService } from '@core/services/team.service';
 import { Assignee } from '@shared/models/issue/assignee';
 import { count, toUsers } from '@core/services/issues.utils';
@@ -29,15 +30,14 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     timeOptions: string[];
 
-    selectedTime: string;
     isAssign: boolean;
     sharedOptions = {} as AssigneeOptions;
     globalFilterFields = ['errorClass', 'projectName'];
     lastEvent: LazyLoadEvent;
-    loading: boolean = false;
+    loading: boolean;
     totalRecords: number;
-    memberRequest: Observable<Member>;
     member: Member;
+    itemsPerPage = 10;
 
     constructor(
         private issuesHub: IssuesHubService,
@@ -45,28 +45,23 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         private toastNotification: ToastNotificationService,
         private authService: AuthenticationService,
         private memberService: MemberService,
-        private teamService: TeamService
+        private teamService: TeamService,
+        private spinner: SpinnerService
     ) { super(); }
-
-    itemsPerPage = 10;
 
     ngOnInit(): void {
         this.isAssign = false;
 
         this.setTabPanelFields();
 
-        const request = this.authService.getMember()
+        this.authService.getMember()
             .pipe(
                 this.untilThis,
                 tap(member => {
                     this.member = member;
                 }),
                 share()
-            );
-
-        this.memberRequest = request;
-
-        request
+            )
             .subscribe(() => {
                 this.loadIssuesLazy(this.lastEvent);
                 forkJoin([this.loadMembers(), this.loadTeams()])
@@ -159,21 +154,21 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         }
         this.lastEvent = event;
         if (!this.member) {
-            await this.memberRequest.toPromise();
+            return;
         }
-        this.loading = true;
+        this.spinner.show(true);
         this.issueService.getIssuesInfoLazy(this.member.id, this.lastEvent)
             .pipe(this.untilThis,
                 debounceTime(1000))
             .subscribe(
                 response => {
-                    this.issues = response.collection;
-                    this.totalRecords = response.totalRecord;
-                    this.loading = false;
+                    this.issues = response.collection.concat();
+                    this.totalRecords = response.totalRecords;
+                    this.spinner.hide();
                 },
                 error => {
                     this.toastNotification.error(error);
-                    this.loading = false;
+                    this.spinner.hide();
                 }
             );
     }
