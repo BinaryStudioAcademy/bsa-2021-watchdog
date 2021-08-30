@@ -10,7 +10,7 @@ import { TeamService } from '@core/services/team.service';
 import { Assignee } from '@shared/models/issue/assignee';
 import { count, toUsers } from '@core/services/issues.utils';
 import { IssueInfo } from '@shared/models/issue/issue-info';
-import { debounceTime, share, tap } from 'rxjs/operators';
+import { debounceTime, tap } from 'rxjs/operators';
 import { AssigneeOptions } from '@shared/models/issue/assignee-options';
 import { IssueService } from '@core/services/issue.service';
 import { LazyLoadEvent } from 'primeng/api';
@@ -59,16 +59,15 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                 this.untilThis,
                 tap(member => {
                     this.member = member;
-                }),
-                share()
+                })
             )
             .subscribe(() => {
-                this.loadIssuesLazy(this.lastEvent);
                 forkJoin([this.loadMembers(), this.loadTeams()])
                     .pipe(this.untilThis)
                     .subscribe(([members, teams]) => {
                         this.sharedOptions.members = members;
                         this.sharedOptions.teams = teams;
+                        this.loadIssuesLazy(this.lastEvent);
                         this.subscribeToIssuesHub();
                     });
             }, error => {
