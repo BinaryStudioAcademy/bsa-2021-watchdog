@@ -71,4 +71,6 @@ export class AddDashboardComponent implements OnInit {
     close(dashboard?: NewDashboard) {
         this.dialogRef.close(dashboard);
     }
+
+    get name() { return this.formGroup.controls.name; }
 }

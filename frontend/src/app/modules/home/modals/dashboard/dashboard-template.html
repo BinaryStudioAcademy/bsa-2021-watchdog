@@ -5,12 +5,13 @@
                 <input id="float-input-dashboard-name" type="text" pInputText formControlName="name">
                 <label for="float-input-dashboard-name">Dashboard name</label>
             </span>
-            <div *ngIf="formGroup.controls.name.touched && formGroup.controls.name.invalid" class="validation">
-                <small *ngIf="formGroup.controls.name.errors.required">Field name can't be empty</small>
-                <small *ngIf="formGroup.controls.name.value.length < 3">Min name length 3</small>
-                <small *ngIf="formGroup.controls.name.value.length > 50">Max name length 50</small>
-                <small *ngIf="formGroup.controls.name.errors?.notUnique">Dashboard name is not unique</small>
-                <small *ngIf="formGroup.controls.name.hasError('pattern')">Name must contain latin letters, numbers,
+            <div *ngIf="name.touched && name.invalid" class="validation">
+                <small *ngIf="name.errors?.required">Field name can't be empty</small>
+                <small *ngIf="name.errors?.minlength || name.errors?.maxlength">
+                    Length must be between 3 and 50 characters.
+                </small>
+                <small *ngIf="name.errors?.notUnique">Dashboard name is not unique</small>
+                <small *ngIf="name.errors?.pattern">Name must contain latin letters, numbers,
                     underscores, dashes, dots or spaces</small>
             </div>
         </div>
