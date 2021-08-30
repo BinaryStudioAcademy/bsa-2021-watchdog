@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 import {
     HttpTransportType,
-    HubConnection,
     HubConnectionBuilder,
     LogLevel,
 } from '@microsoft/signalr';
@@ -12,18 +11,10 @@ import {
     providedIn: 'root',
 })
 export class SignalRHubFactoryService {
-    private hubLookup = new Map<string, HubConnection>();
-
     constructor(private authService: AuthenticationService) { }
 
     createHub(hubUrl: string) {
-        if (this.hubLookup.has(hubUrl)) {
-            return this.hubLookup.get(hubUrl);
-        }
-
         const hub = this.buildHub(hubUrl);
-        this.hubLookup.set(hubUrl, hub);
-
         return hub;
     }
 
