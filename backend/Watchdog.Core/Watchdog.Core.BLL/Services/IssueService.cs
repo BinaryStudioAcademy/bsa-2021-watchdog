@@ -214,7 +214,7 @@ namespace Watchdog.Core.BLL.Services
         
         public async Task<ICollection<IssueMessageDto>> GetAllIssueMessagesByApplicationIdAsync(
             int applicationId, 
-            IssueStatusesFilterDto statusesFilterDto)
+            IssueStatusesFilterDto statusesFilter)
         {
             if (!await _context.Applications.AnyAsync(application => application.Id == applicationId))
             {
@@ -226,7 +226,7 @@ namespace Watchdog.Core.BLL.Services
                 .Include(message => message.Issue)
                 .Where(message => 
                     message.Issue.ApplicationId == applicationId 
-                    && statusesFilterDto.IssueStatuses.Contains(message.Issue.Status))
+                    && statusesFilter.IssueStatuses.Contains(message.Issue.Status))
                 .ToListAsync();
 
             return _mapper.Map<ICollection<IssueMessageDto>>(messages);
