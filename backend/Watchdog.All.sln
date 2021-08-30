@@ -39,6 +39,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.Notifier.BLL", "Wa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Watchdog.Notifier", "Watchdog.Notifier", "{988E764A-5A55-460F-BDE3-A84D2C482CDD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Watchdog.Loader", "Watchdog.Loader", "{18295CCF-0FC0-4F0D-BD2E-23377C4E2C65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watchdog.Loader.API", "Watchdog.Loader.API\Watchdog.Loader.API.csproj", "{B269BA7B-95A2-47FB-8113-26F21EEEFB7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,6 +93,10 @@ Global
 		{C4341D93-0511-4567-88AF-0D0C4626BF7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4341D93-0511-4567-88AF-0D0C4626BF7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4341D93-0511-4567-88AF-0D0C4626BF7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B269BA7B-95A2-47FB-8113-26F21EEEFB7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B269BA7B-95A2-47FB-8113-26F21EEEFB7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B269BA7B-95A2-47FB-8113-26F21EEEFB7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B269BA7B-95A2-47FB-8113-26F21EEEFB7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -105,6 +113,7 @@ Global
 		{ED90239D-F573-4FE2-9726-1BA31889A3BE} = {F8C29B95-9387-484E-965A-451A173F69D1}
 		{8F8310F2-41F5-4832-9B7E-4C5650DF69CE} = {988E764A-5A55-460F-BDE3-A84D2C482CDD}
 		{C4341D93-0511-4567-88AF-0D0C4626BF7F} = {988E764A-5A55-460F-BDE3-A84D2C482CDD}
+		{B269BA7B-95A2-47FB-8113-26F21EEEFB7C} = {18295CCF-0FC0-4F0D-BD2E-23377C4E2C65}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {53583653-F77E-4F5C-A5E3-97634ABB27C5}
