@@ -78,7 +78,7 @@
                                     <span appTooltipFullName class="description">{{issue.errorMessage}}</span>
                                     <div class="additional-info">
                                         <ng-container [ngSwitch]="issue.status">
-                                            <p-tag *ngSwitchCase="IssueStatus.Active" [rounded]="true" severity="danger"
+                                            <p-tag *ngSwitchCase="IssueStatus.Active" [rounded]="true" styleClass="active-tag"
                                                    value="active"></p-tag>
                                             <p-tag *ngSwitchCase="IssueStatus.Resolved" [rounded]="true"
                                                    severity="success" value="resolved"></p-tag>
