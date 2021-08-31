@@ -3,6 +3,7 @@ import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active
 import { TileDateRangeType } from '@shared/models/tile/enums/tile-date-range-type';
 import { IssuesPerTimeSettings } from '@shared/models/tile/settings/issues-per-time-settings';
 import { TileGranularityType } from '@shared/models/tile/enums/tile-granularity-type';
+import { CountIssuesSettings } from '@shared/models/tile/settings/count-issues-settings';
 
 export const convertJsonToTileSettings = (json: string, type: TileType) => {
     switch (type) {
@@ -10,6 +11,8 @@ export const convertJsonToTileSettings = (json: string, type: TileType) => {
             return JSON.parse(json) as TopActiveIssuesSettings;
         case TileType.IssuesPerTime:
             return JSON.parse(json) as IssuesPerTimeSettings;
+        case TileType.IssuesCount:
+            return JSON.parse(json) as CountIssuesSettings;
         default:
             return undefined;
     }
@@ -42,6 +45,10 @@ export const convertTileDateRangeTypeToMs = (type: TileDateRangeType): number | 
             return daysToMs(7);
         case TileDateRangeType.ThePast2Weeks:
             return daysToMs(14);
+        case TileDateRangeType.ThePast30Days:
+            return daysToMs(30);
+        case TileDateRangeType.ThePastYear:
+            return daysToMs(365);
         default:
             return undefined;
     }
