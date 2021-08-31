@@ -21,7 +21,7 @@ import { TileSizeType } from '@shared/models/tile/enums/tile-size-type';
 @Component({
     selector: 'app-add-edit-count-issues-tile',
     templateUrl: './add-edit-count-issues-tile.component.html',
-    styleUrls: ['./add-edit-count-issues-tile.component.sass'],
+    styleUrls: ['../../add-edit-modal-styles.sass'],
     providers: [TilesModalData],
 })
 export class AddEditCountIssuesTileComponent implements OnInit {
@@ -208,6 +208,10 @@ export class AddEditCountIssuesTileComponent implements OnInit {
     private initTileSizeDropdown(): void {
         this.tileSizeDropdown = this.tileModalData.tileSizeDropdownItems;
     }
+
+    get name() { return this.formGroup.controls.name; }
+    get issueStatuses() { return this.formGroup.controls.issueStatuses; }
+    get sourceProjects() { return this.formGroup.controls.sourceProjects; }
 }
 
 interface TileSizeDropdown {

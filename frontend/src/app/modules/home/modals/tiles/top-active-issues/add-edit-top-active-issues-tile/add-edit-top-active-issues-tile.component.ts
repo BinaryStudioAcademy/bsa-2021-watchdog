@@ -21,7 +21,7 @@ import { TileDateRangeType } from '@shared/models/tile/enums/tile-date-range-typ
 @Component({
     selector: 'app-add-edit-top-active-issues-tile',
     templateUrl: './add-edit-top-active-issues-tile.component.html',
-    styleUrls: ['./add-edit-top-active-issues-tile.component.sass'],
+    styleUrls: ['../../add-edit-modal-styles.sass'],
     providers: [TilesModalData]
 })
 export class AddEditTopActiveIssuesTileComponent implements OnInit {

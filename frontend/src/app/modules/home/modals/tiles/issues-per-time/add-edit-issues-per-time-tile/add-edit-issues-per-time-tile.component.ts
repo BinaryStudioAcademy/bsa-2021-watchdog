@@ -23,7 +23,7 @@ import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 @Component({
     selector: 'app-add-edit-issues-per-time-tile',
     templateUrl: './add-edit-issues-per-time-tile.component.html',
-    styleUrls: ['./add-edit-issues-per-time-tile.component.sass'],
+    styleUrls: ['../../add-edit-modal-styles.sass'],
     providers: [TilesModalData],
 })
 export class AddEditIssuesPerTimeTileComponent implements OnInit {
