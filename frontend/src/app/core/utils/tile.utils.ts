@@ -49,6 +49,8 @@ export const convertTileDateRangeTypeToMs = (type: TileDateRangeType): number | 
             return daysToMs(30);
         case TileDateRangeType.ThePastYear:
             return daysToMs(365);
+        case TileDateRangeType.All:
+            return Date.now();
         default:
             return undefined;
     }

@@ -1,14 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Tile } from '@shared/models/tile/tile';
 import { Project } from '@shared/models/projects/project';
-import { TileService } from '@core/services/tile.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
-import { ConfirmWindowService } from '@core/services/confirm-window.service';
 import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
 import { IssueService } from '@core/services/issue.service';
 import { TileType } from '@shared/models/tile/enums/tile-type';
 import { BaseComponent } from '@core/components/base/base.component';
-import { IssueMessageInfo } from '@shared/models/issue/issue-message-info';
 import { ChartOptions } from '@shared/models/charts/chart-options';
 import { ChartType } from '@shared/models/charts/chart-type';
 import { SingleChart } from '@shared/models/charts/single-chart';
@@ -18,6 +15,8 @@ import {
 } from '@core/utils/tile.utils';
 import { CountIssuesSettings } from '@shared/models/tile/settings/count-issues-settings';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
+import { IssueStatusesByDateRangeFilter } from '@shared/models/issue/issue-statuses-by-date-range-filter';
+import { dateRangeTypeLabels } from '@shared/models/tile/enums/tile-date-range-type';
 
 @Component({
     selector: 'app-issues-count-tile[tile][isShownEditTileMenu][userProjects]',
@@ -29,11 +28,12 @@ export class IssuesCountTileComponent extends BaseComponent implements OnInit {
     @Input() isShownEditTileMenu: boolean = false;
     @Input() userProjects: Project[] = [];
     @Output() isDeleting: EventEmitter<Tile> = new EventEmitter<Tile>();
-    paginatorRows: number = 5;
     tileSettings: CountIssuesSettings;
     requiredProjects: Project[] = [];
     dateMsNow: number;
     expectedIssueStatuses: IssueStatus[];
+    status = IssueStatus;
+    dateRangeLabel: string;
     dateRangeMsOffset: number;
     ChartType: ChartType = ChartType.NumberCard;
     dateMsPast: number;
@@ -41,9 +41,7 @@ export class IssuesCountTileComponent extends BaseComponent implements OnInit {
     chartOptions: ChartOptions;
 
     constructor(
-        private tileService: TileService,
         private toastNotificationService: ToastNotificationService,
-        private confirmWindowService: ConfirmWindowService,
         private tileDialogService: TileDialogService,
         private issueService: IssueService,
     ) {
@@ -68,14 +66,21 @@ export class IssuesCountTileComponent extends BaseComponent implements OnInit {
         this.dateRangeMsOffset = convertTileDateRangeTypeToMs(this.tileSettings.dateRange);
         this.dateMsPast = this.dateMsNow - this.dateRangeMsOffset;
         this.expectedIssueStatuses = this.tileSettings.issueStatuses;
+        this.dateRangeLabel = dateRangeTypeLabels[this.tileSettings.dateRange];
     }
 
-    private getEventMessages(project: Project): void {
-        this.issueService
-            .getEventMessagesInfoByProjectId(project.id)
+    private getEventMessagesCount(project: Project): void {
+        const filter: IssueStatusesByDateRangeFilter = {
+            issueStatuses: this.expectedIssueStatuses,
+            dateRange: new Date(Number(this.dateMsPast))
+        };
+        this.issueService.getFilteredIssueCountByStatusesAndDateRangeByApplicationId(project.id, filter)
             .pipe(this.untilThis)
-            .subscribe(messagesInfo => {
-                this.applyIssuesSettings(messagesInfo, project);
+            .subscribe(messagesCount => {
+                this.single.push({
+                    name: project.name,
+                    value: messagesCount
+                });
             }, error => {
                 this.toastNotificationService.error(error);
             });
@@ -84,28 +89,8 @@ export class IssuesCountTileComponent extends BaseComponent implements OnInit {
     private applyProjectSettings() {
         this.requiredProjects = this.userProjects.filter(proj => this.tileSettings.sourceProjects.some(id => id === proj.id));
         this.requiredProjects.forEach(proj => {
-            this.getEventMessages(proj);
+            this.getEventMessagesCount(proj);
         });
-    }
-
-    private applyIssuesSettings(messageInfos: IssueMessageInfo[], project: Project) {
-        //TODO: Filter issues by issue status type (future feature)
-        this.single.push({
-            name: project.name,
-            value: messageInfos.filter(info => this.filterIssue(info)).length
-        });
-    }
-
-    filterIssue(messageInfo: IssueMessageInfo): boolean {
-        return this.checkDateRange(messageInfo) && this.checkStatus(messageInfo);
-    }
-
-    checkDateRange(messageInfo: IssueMessageInfo): boolean {
-        return new Date(messageInfo.occurredOn).getTime() >= this.dateMsPast;
-    }
-
-    checkStatus(messageInfo: IssueMessageInfo): boolean {
-        return this.expectedIssueStatuses.includes(messageInfo.status);
     }
 
     private initChartSettings(): void {

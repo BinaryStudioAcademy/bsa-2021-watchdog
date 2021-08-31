@@ -31,6 +31,25 @@ export class TilesModalData {
         {
             type: TileDateRangeType.ThePast2Weeks,
             name: 'The past 2 weeks'
+        }
+    ];
+
+    dateRangeIssuesCountDropdownItems: DateRangeDropdown[] = [
+        {
+            type: TileDateRangeType.All,
+            name: 'All'
+        },
+        {
+            type: TileDateRangeType.ThePastHour,
+            name: 'The past hour'
+        },
+        {
+            type: TileDateRangeType.ThePastDay,
+            name: 'The past day'
+        },
+        {
+            type: TileDateRangeType.ThePastWeek,
+            name: 'The past week'
         },
         {
             type: TileDateRangeType.ThePast30Days,

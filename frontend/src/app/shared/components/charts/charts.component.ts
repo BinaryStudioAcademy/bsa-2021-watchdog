@@ -74,7 +74,7 @@ export class ChartsComponent extends BaseComponent implements OnInit, AfterViewI
                 domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
             },
             view: chartOptions?.view,
-            cardColor: chartOptions?.cardColor ?? '#d9d9d9'
+            cardColor: chartOptions?.cardColor ?? '#ebebeb'
         };
     }
 }

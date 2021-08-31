@@ -17,6 +17,7 @@ import { TileDateRangeType } from '@shared/models/tile/enums/tile-date-range-typ
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import { CountIssuesSettings } from '@shared/models/tile/settings/count-issues-settings';
 import { TileSizeType } from '@shared/models/tile/enums/tile-size-type';
+import { TileSizeDropdown } from '@shared/models/tile/tile-size-dropdown';
 
 @Component({
     selector: 'app-add-edit-count-issues-tile',
@@ -33,7 +34,7 @@ export class AddEditCountIssuesTileComponent implements OnInit {
     formGroup: FormGroup;
     dateRangeDropdown: DateRangeDropdown[];
     issueStatusCheckboxes: IssueStatusCheckbox[];
-    public tileSizeDropdown: TileSizeDropdown[];
+    tileSizeDropdown: TileSizeDropdown[];
 
     headerTitle: string;
     submitButtonText: string;
@@ -165,7 +166,7 @@ export class AddEditCountIssuesTileComponent implements OnInit {
     }
 
     private initDateRangeDropdown(): void {
-        this.dateRangeDropdown = this.tileModalData.dateRangeDropdownItems;
+        this.dateRangeDropdown = this.tileModalData.dateRangeIssuesCountDropdownItems;
     }
 
     private initIssueStatusCheckboxes(): void {
@@ -212,9 +213,4 @@ export class AddEditCountIssuesTileComponent implements OnInit {
     get name() { return this.formGroup.controls.name; }
     get issueStatuses() { return this.formGroup.controls.issueStatuses; }
     get sourceProjects() { return this.formGroup.controls.sourceProjects; }
-}
-
-interface TileSizeDropdown {
-    name: string,
-    type: TileSizeType
 }
