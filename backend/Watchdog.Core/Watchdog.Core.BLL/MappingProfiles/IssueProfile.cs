@@ -24,9 +24,7 @@ namespace Watchdog.Core.BLL.MappingProfiles
                 .ForMember(dest => dest.OccurredOn,
                     opt => opt.MapFrom(scr => scr.OccurredOn));
 
-            CreateMap<EventMessage, IssueMessageDto>()
-                .ForMember(dest => dest.Status,
-                    opt => opt.MapFrom(scr => scr.Issue.Status));
+            CreateMap<EventMessage, IssueMessageDto>();
             CreateMap<Issue, IssueDto>();
         }
     }

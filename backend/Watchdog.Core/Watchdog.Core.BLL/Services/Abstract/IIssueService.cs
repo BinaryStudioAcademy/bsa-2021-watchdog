@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Models;
 using Watchdog.Core.Common.DTO.Issue;
-using Watchdog.Core.Common.Enums.Issues;
 using Watchdog.Core.Common.Models.Issue;
-using Watchdog.Core.DAL.Entities;
 
 namespace Watchdog.Core.BLL.Services.Abstract
 {
@@ -20,6 +19,7 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<ICollection<IssueMessageDto>> GetAllIssueMessagesAsync();
         Task<ICollection<IssueMessageDto>> GetAllIssueMessagesByApplicationIdAsync(int applicationId);
         Task<ICollection<IssueMessageDto>> GetAllIssueMessagesByApplicationIdAsync(int applicationId, IssueStatusesFilterDto statusesFilter);
+        Task<int> GetFilteredIssueCountByStatusesAndDateRangeByApplicationIdAsync(int applicationId, IssueStatusesByDateRangeFilter filter);
         Task UpdateIssueStatusAsync(UpdateIssueStatusDto issueStatusDto);
         Task<IssueDto> GetIssueByIdAsync(int issueId);
     }

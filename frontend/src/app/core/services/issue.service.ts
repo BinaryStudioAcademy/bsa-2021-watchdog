@@ -11,6 +11,7 @@ import { IssueMessageInfo } from '@shared/models/issue/issue-message-info';
 import { UpdateIssueStatus } from '@shared/models/issue/update-issue-status';
 import { Issue } from '@shared/models/issue/issue';
 import { IssueStatusesFilter } from '@shared/models/issue/issue-statuses-filter';
+import { IssueStatusesByDateRangeFilter } from '@shared/models/issue/issue-statuses-by-date-range-filter';
 
 @Injectable({ providedIn: 'root' })
 export class IssueService {
@@ -60,6 +61,16 @@ export class IssueService {
         return this.httpService.postRequest<IssueMessageInfo[]>(
             `${this.routePrefix}/messages/application/${projectId}/filterbystatuses`,
             issueStatusesFilter
+        );
+    }
+
+    public getFilteredIssueCountByStatusesAndDateRangeByApplicationId(
+        projectId: number,
+        issueFilter: IssueStatusesByDateRangeFilter
+    ): Observable<number> {
+        return this.httpService.postRequest<number>(
+            `${this.routePrefix}/messages/application/${projectId}/filterbystatusesanddate`,
+            issueFilter
         );
     }
 
