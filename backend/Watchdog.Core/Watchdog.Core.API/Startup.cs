@@ -106,21 +106,14 @@ namespace Watchdog.Core.API
                         };
                     });
 
-            services.AddWatchdog(Configuration, new WatchdogMiddlewareSettings()
-            {
-                ClientProvider = new DefaultWatchdogAspNetCoreClientProvider()
-            });
+            services.AddWatchdog(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             var apiPrefix = env.IsProduction() ? "/api" : string.Empty;
 
-            app.UseDeveloperExceptionPage();
-
             app.UseMiddleware<GenericExceptionHandlerMiddleware>();
-
-            app.UseWatchdog();
 
             app.UseSerilogRequestLogging();
 

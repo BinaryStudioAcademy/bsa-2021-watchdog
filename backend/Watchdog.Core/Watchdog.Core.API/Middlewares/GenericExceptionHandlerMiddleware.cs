@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Watchdog.AspNetCore;
 
 namespace Watchdog.Core.API.Middlewares
 {
@@ -14,11 +15,15 @@ namespace Watchdog.Core.API.Middlewares
 
         private readonly RequestDelegate _next;
         private readonly ILogger<GenericExceptionHandlerMiddleware> _logger;
+        private readonly IWatchdogAspNetCoreClientProvider _clientProvider;
 
-        public GenericExceptionHandlerMiddleware(RequestDelegate next, ILogger<GenericExceptionHandlerMiddleware> logger)
+        public GenericExceptionHandlerMiddleware(RequestDelegate next,
+                                                 ILogger<GenericExceptionHandlerMiddleware> logger,
+                                                 IWatchdogAspNetCoreClientProvider clientProvider)
         {
             _next = next;
             _logger = logger;
+            _clientProvider = clientProvider;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -34,7 +39,7 @@ namespace Watchdog.Core.API.Middlewares
             }
         }
 
-        private static Task HandleException(HttpContext context, Exception exception)
+        private Task HandleException(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
 
@@ -46,6 +51,8 @@ namespace Watchdog.Core.API.Middlewares
                 DbUpdateException ex => (ex.InnerException as SqlException).Number == SqlServerViolationOfUniqueIndex ? 409 : 500,
                 _ => 500
             };
+
+            _clientProvider.GetClient(context).TrackException(exception);
 
             return context.Response.WriteAsync(exception is DbUpdateException ? exception.InnerException.Message : exception.Message);
         }
