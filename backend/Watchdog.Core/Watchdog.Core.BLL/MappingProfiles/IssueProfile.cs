@@ -25,6 +25,7 @@ namespace Watchdog.Core.BLL.MappingProfiles
                     opt => opt.MapFrom(scr => scr.OccurredOn));
 
             CreateMap<EventMessage, IssueMessageDto>();
+            CreateMap<Issue, IssueDto>();
         }
     }
 }
