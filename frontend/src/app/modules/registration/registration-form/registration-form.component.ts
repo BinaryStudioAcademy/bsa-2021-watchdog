@@ -30,16 +30,16 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
     stepRegistration = RegistrationSteps;
     step = this.stepRegistration.First;
 
-    organizationSlugJoin: string;
+    organizationSlugJoins: string;
     tabRegistration = RegistrationTabs;
     indexOfSelectedTab = this.tabRegistration.CreateOrganization;
 
     user = {} as User;
     organization = {} as NewOrganizationsWithSlug;
-    organizationSlug: string;
+    organizationSlugs: string;
 
-    password: string;
-    confirmPassword: string;
+    passwords: string;
+    confirmPasswords: string;
 
     isNotFinishedRegistration = false;
 
@@ -192,7 +192,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
 
     onSubmit() {
         const organizationDto: RegOrganizationDto = {
-            organizationSlug: this.organizationSlug,
+            organizationSlug: this.organizationSlugs,
             name: this.organization.name,
         } as RegOrganizationDto;
         if (!this.isNotFinishedRegistration) {
@@ -200,7 +200,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                 ...this.user,
             } as NewUserDto;
 
-            this.authService.signOnWithEmailAndPassword({ organization: organizationDto, user: userDto }, this.password, ['home'])
+            this.authService.signOnWithEmailAndPassword({ organization: organizationDto, user: userDto }, this.passwords, ['home'])
                 .subscribe(() => { },
                     error => {
                         this.toastService.error(error);
@@ -219,14 +219,14 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
             const userDto = {
                 ...this.user,
             } as NewUserDto;
-            this.authService.singOnWithEmailAndPasswordWithJoin({ organizationSlug: this.organizationSlugJoin, user: userDto },
-                this.password, ['home'])
+            this.authService.singOnWithEmailAndPasswordWithJoin({ organizationSlug: this.organizationSlugJoins, user: userDto },
+                this.passwords, ['home'])
                 .subscribe(() => { },
                     error => {
                         this.toastService.error(error);
                     });
         } else {
-            this.authService.finishPartialRegistrationWithJoin({ organizationSlug: this.organizationSlugJoin, userId: this.user.id },
+            this.authService.finishPartialRegistrationWithJoin({ organizationSlug: this.organizationSlugJoins, userId: this.user.id },
                 ['home'])
                 .subscribe(() => { },
                     error => {
@@ -241,4 +241,13 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
 
     get personalInfo() { return this.personalDetail.controls; }
     get organizationInfo() { return this.ogranizationDetail.controls; }
+    get firstName() { return this.personalDetail.controls.firstName; }
+    get lastName() { return this.personalDetail.controls.lastName; }
+    get email() { return this.personalDetail.controls.email; }
+    get password() { return this.personalDetail.controls.password; }
+    get confirmPassword() { return this.personalDetail.controls.confirmPassword; }
+    get organizationName() { return this.personalDetail.controls.organizationName; }
+    get organizationSlug() { return this.personalDetail.controls.organizationSlug; }
+    get organizationSlugJoin() { return this.personalDetail.controls.organizationSlugJoin; }
+
 }

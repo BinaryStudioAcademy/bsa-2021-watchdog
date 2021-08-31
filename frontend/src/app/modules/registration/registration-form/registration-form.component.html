@@ -6,12 +6,12 @@
                     [(ngModel)]="user.firstName" [disabled]="isNotFinishedRegistration">
                 <label for="float-input-first-name">First Name</label>
             </span>
-            <div *ngIf="personalStep && personalDetail.controls.firstName.touched && personalDetail.controls.firstName.invalid"
+            <div *ngIf="personalStep && firstName.touched && firstName.invalid"
                 class="validation">
-                <small *ngIf="personalDetail.controls.firstName.errors.required">Сan not be empty</small>
-                <small *ngIf="personalDetail.controls.firstName.value?.length < 2">Min length 2</small>
-                <small *ngIf="personalDetail.controls.firstName.value?.length > 30">Max length 30</small>
-                <small *ngIf="personalDetail.controls.firstName.hasError('pattern')">May letters, dashes and space</small>
+                <small *ngIf="firstName.errors?.required">Сan not be empty</small>
+                <small *ngIf="firstName.errors?.minlength">Min length 2</small>
+                <small *ngIf="firstName.errors?.maxlength">Max length 30</small>
+                <small *ngIf="firstName.errors?.pattern">May letters, dashes and space</small>
             </div>
         </div>
         <div class="input-block">
@@ -20,10 +20,10 @@
                     [(ngModel)]="user.lastName" [disabled]="isNotFinishedRegistration">
                 <label for="float-input-last-name">Last Name</label>
             </span>
-            <div *ngIf="personalStep && personalDetail.controls.lastName.touched && personalDetail.controls.lastName.invalid" class="validation">>
-                <small *ngIf="personalDetail.controls.lastName.value?.length < 2">Min length 2</small>
-                <small *ngIf="personalDetail.controls.lastName.value?.length > 30">Max length 30</small>
-                <small *ngIf="personalDetail.controls.lastName.hasError('pattern')">May contain letters, dashes and space</small>
+            <div *ngIf="personalStep && lastName.touched && lastName.invalid" class="validation">>
+                <small *ngIf="lastName.errors?.minlength">Min length 2</small>
+                <small *ngIf="lastName.errors?.maxlength">Max length 30</small>
+                <small *ngIf="lastName.errors?.pattern">May contain letters, dashes and space</small>
             </div>
         </div>
     </div>
@@ -34,10 +34,10 @@
                     [(ngModel)]="user.email" [disabled]="isNotFinishedRegistration">
                 <label for="float-input-email">Email</label>
             </span>
-            <div *ngIf="personalStep && personalDetail.controls.email.touched && personalDetail.controls.email.invalid" class="validation">
-                <small *ngIf="personalDetail.controls.email.errors.required">Сan not be empty</small>
-                <small *ngIf="personalDetail.controls.email.value?.length < 6">Min length 6</small>
-                <small *ngIf="personalDetail.controls.email.hasError('pattern')">Invalid Email</small>
+            <div *ngIf="personalStep && email.touched && email.invalid" class="validation">
+                <small *ngIf="email.errors?.required">Сan not be empty</small>
+                <small *ngIf="email.errors?.minlength">Min length 6</small>
+                <small *ngIf="email.errors?.pattern">Invalid Email</small>
             </div>
         </div>
         <div class="input-block blank-block">
@@ -46,28 +46,28 @@
     <div class="reg-block" *ngIf="!isNotFinishedRegistration">
         <div class="input-block">
             <span class="p-float-label">
-                <p-password id="float-input-pass" formControlName="password" name="password" [(ngModel)]="password"
+                <p-password id="float-input-pass" formControlName="password" name="password" [(ngModel)]="passwords"
                     [feedback]="false" [toggleMask]="true"></p-password>
                 <label for="float-input-role">Password</label>
             </span>
-            <div *ngIf="personalStep && personalDetail.controls.password.touched && personalDetail.controls.password.invalid" class="validation">
-                <small *ngIf="personalDetail.controls.password.errors.required">Сan not be empty</small>
-                <small *ngIf="personalDetail.controls.password.value?.length < 8">Min length 8</small>
-                <small *ngIf="personalDetail.controls.password.value?.length > 30">Max length 30</small>
-                <small *ngIf="personalDetail.controls.password.hasError('pattern')">Must contain at least 1 lowercase letter,
+            <div *ngIf="personalStep && password.touched && password.invalid" class="validation">
+                <small *ngIf="password.errors.required">Сan not be empty</small>
+                <small *ngIf="password.errors?.minlength">Min length 8</small>
+                <small *ngIf="password.errors?.maxlength">Max length 30</small>
+                <small *ngIf="password.errors?.pattern">Must contain at least 1 lowercase letter,
                     1 uppercase letter, 1 number, 1 symbol </small>
             </div>
         </div>
         <div class="input-block">
             <span class="p-float-label">
                 <p-password id="float-input-pass" formControlName="confirmPassword" name="confirm-password"
-                    [(ngModel)]="confirmPassword" [feedback]="false" [toggleMask]="true"></p-password>
+                    [(ngModel)]="confirmPasswords" [feedback]="false" [toggleMask]="true"></p-password>
                 <label for="float-input-role">Confirm password</label>
             </span>
-            <div *ngIf="personalStep && personalDetail.controls.confirmPassword.touched && personalDetail.controls.confirmPassword.invalid"
+            <div *ngIf="personalStep && confirmPassword.touched && confirmPassword.invalid"
                 class="validation">
-                <small *ngIf="personalDetail.controls.confirmPassword.errors.required">Сan not be empty</small>
-                <small *ngIf="personalDetail.controls.confirmPassword.errors.notEqual">Passwords must match</small>
+                <small *ngIf="confirmPassword.errors?.required">Сan not be empty</small>
+                <small *ngIf="confirmPassword.errors?.notEqual">Passwords must match</small>
             </div>
         </div>
     </div>
@@ -95,28 +95,28 @@
                                 pInputText [(ngModel)]="organization.name">
                             <label for="float-input-comp-name">Organization name</label>
                         </span>
-                        <div *ngIf="organizationStep && ogranizationDetail.controls.organizationName.touched && ogranizationDetail.controls.organizationName.invalid"
+                        <div *ngIf="organizationStep && organizationName.touched && organizationName.invalid"
                             class="validation">
-                            <small *ngIf="ogranizationDetail.controls.organizationName.errors.required">Сan not be empty</small>
-                            <small *ngIf="ogranizationDetail.controls.organizationName.value?.length < 3">Min length 3</small>
-                            <small *ngIf="ogranizationDetail.controls.organizationName.value?.length > 50">Max length 50</small>
-                            <small *ngIf="ogranizationDetail.controls.organizationName.hasError('pattern')">May contain letters, numbers,
-                                space, special character: !#$%&‘*+—/=?^_`&#123;|&#125;~</small>
+                            <small *ngIf="organizationName.errors?.required">Сan not be empty</small>
+                            <small *ngIf="organizationName.errors?.minlength">Min length 3</small>
+                            <small *ngIf="organizationName.errors?.maxlength">Max length 50</small>
+                            <small *ngIf="organizationName.errors?.pattern">May contain letters, numbers,
+                                space, special character</small>
                         </div>
                     </div>
                     <div class="input-block">
                         <span class="p-float-label">
                             <input id="float-input-comp-slug" type="text" formControlName="organizationSlug" name="comp-slug"
-                                pInputText [(ngModel)]="organizationSlug">
+                                pInputText [(ngModel)]="organizationSlugs">
                             <label for="float-input-comp-slug">Organization slug</label>
                         </span>
-                        <div *ngIf="organizationStep && ogranizationDetail.controls.organizationSlug.touched && ogranizationDetail.controls.organizationSlug.invalid"
+                        <div *ngIf="organizationStep && organizationSlug.touched && organizationSlug.invalid"
                             class="validation">
-                            <small *ngIf="ogranizationDetail.controls.organizationSlug.errors.required">Сan not be empty</small>
-                            <small *ngIf="ogranizationDetail.controls.organizationSlug.value?.length < 3">Min length 3</small>
-                            <small *ngIf="ogranizationDetail.controls.organizationSlug.value?.length > 50">Max length 50</small>
-                            <small *ngIf="ogranizationDetail.controls.organizationSlug.errors?.notUnique">Slug is not unique</small>
-                            <small *ngIf="ogranizationDetail.controls.organizationSlug.hasError('pattern')">May contain letters, numbers,
+                            <small *ngIf="organizationSlug.errors?.required">Сan not be empty</small>
+                            <small *ngIf="organizationSlug.errors?.minlength">Min length 3</small>
+                            <small *ngIf="organizationSlug.errors?.maxlength">Max length 50</small>
+                            <small *ngIf="organizationSlug.errors?.notUnique">Slug is not unique</small>
+                            <small *ngIf="organizationSlug.errors?.pattern">May contain letters, numbers,
                                 space, dashes and underscores</small>
                         </div>
                     </div>
@@ -135,16 +135,16 @@
                     <div class="input-block">
                         <span class="p-float-label">
                             <input id="float-input-comp-slug" type="text" formControlName="organizationSlugJoin" name="comp-slug"
-                                pInputText [(ngModel)]="organizationSlugJoin">
+                                pInputText [(ngModel)]="organizationSlugJoins">
                             <label for="float-input-comp-slug">Organization slug</label>
                         </span>
-                        <div *ngIf="organizationStep && ogranizationJoin.controls.organizationSlug.touched && ogranizationJoin.controls.organizationSlug.invalid"
+                        <div *ngIf="organizationStep && organizationSlug.touched && organizationSlug.invalid"
                             class="validation">
-                            <small *ngIf="ogranizationJoin.controls.organizationSlug.errors.required">Сan not be empty</small>
-                            <small *ngIf="ogranizationJoin.controls.organizationSlug.value?.length < 3">Min length 3</small>
-                            <small *ngIf="ogranizationJoin.controls.organizationSlug.value?.length > 50">Max length 50</small>
-                            <small *ngIf="ogranizationJoin.controls.organizationSlug.errors?.doesntExist">Doesnt exist organization</small>
-                            <small *ngIf="ogranizationJoin.controls.organizationSlug.hasError('pattern')">May contain letters, numbers,
+                            <small *ngIf="organizationSlug.errors?.required">Сan not be empty</small>
+                            <small *ngIf="organizationSlug.errors?.minlength">Min length 3</small>
+                            <small *ngIf="organizationSlug.errors?.maxlength">Max length 50</small>
+                            <small *ngIf="organizationSlug.errors?.doesntExist">Doesnt exist organization</small>
+                            <small *ngIf="organizationSlug.errors?.pattern">May contain letters, numbers,
                                 space, dashes and underscores</small>
                         </div>
                     </div>
