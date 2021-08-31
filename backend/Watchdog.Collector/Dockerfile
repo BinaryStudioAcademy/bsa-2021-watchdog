@@ -9,6 +9,7 @@ COPY ["Watchdog.Collector/Watchdog.Collector.API/Watchdog.Collector.API.csproj",
 COPY ["Watchdog.Collector/Watchdog.Collector.BLL/Watchdog.Collector.BLL.csproj", "Watchdog.Collector/Watchdog.Collector.BLL/"]
 COPY ["Watchdog.Collector/Watchdog.Collector.Common/Watchdog.Collector.Common.csproj", "Watchdog.Collector/Watchdog.Collector.Common/"]
 COPY ["Watchdog.RabbitMQ.Shared/Watchdog.RabbitMQ.Shared.csproj", "Watchdog.RabbitMQ.Shared/"]
+COPY ["Watchdog.Models.Shared/Watchdog.Models.Shared.csproj", "Watchdog.Models.Shared/"]
 
 RUN dotnet restore "Watchdog.Collector/Watchdog.Collector.API/Watchdog.Collector.API.csproj"
 COPY . .

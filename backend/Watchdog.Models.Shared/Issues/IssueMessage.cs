@@ -1,6 +1,6 @@
 using System;
 
-namespace Watchdog.Collector.Common.Models
+namespace Watchdog.Models.Shared.Issues
 {
     public class IssueMessage
     {
@@ -8,5 +8,6 @@ namespace Watchdog.Collector.Common.Models
         public DateTime OccurredOn { get; set; }
         public string ApiKey { get; set; }
         public IssueMessageDetails IssueDetails { get; set; }
+        public int? IssueId { get; set; }
     }
 }

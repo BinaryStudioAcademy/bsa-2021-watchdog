@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Watchdog.Core.BLL.Models;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Issue;
-using Watchdog.Core.Common.Models.Issue;
+using Watchdog.Models.Shared.Issues;
 
 namespace Watchdog.Core.API.Controllers
 {

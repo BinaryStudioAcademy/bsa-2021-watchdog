@@ -7,9 +7,9 @@ using System.Reflection;
 using Watchdog.Collector.BLL.MappingProfiles;
 using Watchdog.Collector.BLL.Services;
 using Watchdog.Collector.BLL.Services.Abstract;
-using Watchdog.Collector.Common.Models;
 using Watchdog.RabbitMQ.Shared.Models;
 using Watchdog.RabbitMQ.Shared.Services;
+using Watchdog.Models.Shared.Issues;
 
 namespace Watchdog.Collector.API.Extensions
 {
