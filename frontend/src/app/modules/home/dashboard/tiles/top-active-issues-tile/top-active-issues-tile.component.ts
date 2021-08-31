@@ -62,7 +62,6 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
     }
 
     private applyIssuesSettings(issuesInfo: IssueInfo[]) {
-        //TODO: Filter issues by 'active' issue type (future feature)
         this.displayedIssues = issuesInfo
             .filter(info =>
                 info.status === IssueStatus.Active

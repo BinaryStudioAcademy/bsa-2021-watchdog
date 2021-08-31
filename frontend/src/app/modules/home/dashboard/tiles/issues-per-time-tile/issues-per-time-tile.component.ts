@@ -86,7 +86,6 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
     }
 
     private applyIssuesSettings(messageInfos: IssueMessageInfo[], project: Project) {
-        //TODO: Filter issues by issue status type (future feature)
         this.multi.push({
             name: project.name,
             series: this.getMultiChartSeries(this.dateMsNow, this.dateRangeMsOffset, this.tileSettings.granularity,
