@@ -249,5 +249,4 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
     get organizationName() { return this.personalDetail.controls.organizationName; }
     get organizationSlug() { return this.personalDetail.controls.organizationSlug; }
     get organizationSlugJoin() { return this.personalDetail.controls.organizationSlugJoin; }
-
 }
