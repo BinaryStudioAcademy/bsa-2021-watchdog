@@ -48,11 +48,11 @@ namespace Watchdog.Core.BLL.Services.Queue
 
             _logger.LogInformation("Processing issue from collector: {0}, {1}", issueMessageReceived.IssueDetails.ClassName, issueMessageReceived.IssueDetails.ErrorMessage);
 
-            string applicationUId = issueMessageReceived.ApiKey;
+            string applicationUid = issueMessageReceived.ApiKey;
 
             using var scope = _provider.CreateScope();
-            var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
-            var userIds = await userService.GetUserUIdsByApplicationUIdAsync(applicationUId);
+            var memberService = scope.ServiceProvider.GetRequiredService<IMemberService>();
+            var membersIds = await memberService.GetMembersIdsByApplicationUid(applicationUid);
 
             var issueService = scope.ServiceProvider.GetRequiredService<IIssueService>();
             try
@@ -60,7 +60,7 @@ namespace Watchdog.Core.BLL.Services.Queue
                 issueMessageReceived.IssueId = await issueService.AddIssueEventAsync(issueMessageReceived);
 
                 var notifyService = scope.ServiceProvider.GetRequiredService<INotifyQueueProducerService>();
-                notifyService.NotifyUsers(userIds, issueMessageReceived);
+                notifyService.NotifyUsers(membersIds, issueMessageReceived);
             }
             catch (KeyNotFoundException ex)
             {
