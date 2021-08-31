@@ -27,7 +27,7 @@ services:
         environment:
             - ASPNETCORE_ENVIRONMENT=Production
         env_file:
-            - /etc/
+            - /etc/environment
             
     watchdog_loader:
         image: vobilyk/watchdog_loader:latest
