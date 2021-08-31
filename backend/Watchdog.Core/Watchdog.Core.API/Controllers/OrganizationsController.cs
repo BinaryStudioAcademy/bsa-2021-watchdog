@@ -41,6 +41,7 @@ namespace Watchdog.Core.API.Controllers
             return Ok(await _organizationService.IsOrganizationSlugValidAsync(organizationSlug));
         }
 
+        [AllowAnonymous]
         [HttpGet("exists/{organizationSlug}")]
         public async Task<ActionResult<bool>> IsOrganizationExistAsync(string organizationSlug)
         {

@@ -87,8 +87,8 @@ namespace Watchdog.Core.API.Controllers
         [HttpPost("approveUser")]
         public async Task<ActionResult<int>> ApproveUser(InviteDto dto)
         {
-            await _memberService.ApproveUserAsync(dto.Id);
-            return Ok();
+            var member = await _memberService.ApproveUserAsync(dto.Id);
+            return Ok(member);
         }
 
         [HttpGet("team/{teamId:int}/exceptTeam/")]
