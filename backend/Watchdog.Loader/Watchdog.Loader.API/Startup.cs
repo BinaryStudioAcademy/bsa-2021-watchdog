@@ -10,15 +10,15 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using Watchdog.AspNetCore;
-using Watchdog.Collector.API.Extensions;
+using Watchdog.Loader.API.Extensions;
 
-namespace Watchdog.Collector.API
+namespace Watchdog.Loader.API
 {
     public class Startup
     {
         public IConfiguration Configuration { get; }
 
-        public Startup(IConfiguration _, IHostEnvironment env)
+        public Startup(IHostEnvironment env)
         {
             var configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -36,19 +36,13 @@ namespace Watchdog.Collector.API
 
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddControllers();
             services.AddHealthChecks();
 
-            services.AddAutoMapper();
-            services.AddElasticSearch(Configuration);
-            services.RegisterCustomServices();
+            services.RegisterCustomServices(Configuration);
 
-            services.AddWatchdog(Configuration, new WatchdogMiddlewareSettings()
-            {
-                ClientProvider = new DefaultWatchdogAspNetCoreClientProvider()
-            });
-
-            services.AddRabbitMQIssueProducer(Configuration);
+            services.AddWatchdog(Configuration);
 
             services.AddCors(options =>
             {
@@ -60,7 +54,7 @@ namespace Watchdog.Collector.API
 
             services.AddSwaggerGen(o =>
             {
-                o.SwaggerDoc("v1", new OpenApiInfo { Title = "Watchdog.Collector", Version = "v1" });
+                o.SwaggerDoc("v1", new OpenApiInfo { Title = "Watchdog.Loader", Version = "v1" });
                 o.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.ApiKey,
@@ -92,7 +86,7 @@ namespace Watchdog.Collector.API
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            var apiPrefix = env.IsProduction() ? "/collector" : string.Empty;
+            var apiPrefix = env.IsProduction() ? "/loader" : string.Empty;
 
             app.UseDeveloperExceptionPage();
 
@@ -124,7 +118,7 @@ namespace Watchdog.Collector.API
                 }
             });
 
-            app.UseSwaggerUI(c => c.SwaggerEndpoint($"{apiPrefix}/swagger/v1/swagger.json", "Watchdog.Collector v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint($"{apiPrefix}/swagger/v1/swagger.json", "Watchdog.Loader v1"));
 
             app.UseEndpoints(endpoints =>
             {

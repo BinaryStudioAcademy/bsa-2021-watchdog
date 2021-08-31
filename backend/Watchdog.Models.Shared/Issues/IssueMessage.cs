@@ -1,12 +1,13 @@
 using System;
-using Watchdog.Models.Shared.Issues;
 
-namespace Watchdog.Collector.Common.DTO.Issue
+namespace Watchdog.Models.Shared.Issues
 {
-    public class IssueMessageDto
+    public class IssueMessage
     {
+        public string Id { get; set; }
         public DateTime OccurredOn { get; set; }
         public string ApiKey { get; set; }
         public IssueMessageDetails IssueDetails { get; set; }
+        public int? IssueId { get; set; }
     }
 }

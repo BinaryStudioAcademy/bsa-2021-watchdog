@@ -9,9 +9,9 @@ using Watchdog.Core.BLL.Models;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Application;
 using Watchdog.Core.Common.DTO.Issue;
-using Watchdog.Core.Common.Models.Issue;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
+using Watchdog.Models.Shared.Issues;
 
 namespace Watchdog.Core.BLL.Services
 {
@@ -45,7 +45,6 @@ namespace Watchdog.Core.BLL.Services
                 return createdIssue.Id;
             }
 
-            issueMessage.Application = _mapper.Map<ApplicationDto>(issue.Application);
             newEventMessage.IssueId = issue.Id;
 
             _context.EventMessages.Add(newEventMessage);
@@ -198,8 +197,6 @@ namespace Watchdog.Core.BLL.Services
             var newIssue = _mapper.Map<Issue>(issueMessage);
             var application = await _context.Applications.FirstOrDefaultAsync(a => a.ApiKey == issueMessage.ApiKey)
                 ?? throw new KeyNotFoundException("No project with this API KEY!");
-
-            issueMessage.Application = _mapper.Map<ApplicationDto>(application);
 
             newIssue.Application = application;
             var createdIssue = _context.Issues.Add(newIssue);

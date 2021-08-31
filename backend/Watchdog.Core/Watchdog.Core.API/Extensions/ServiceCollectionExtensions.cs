@@ -8,7 +8,6 @@ using Nest;
 using Watchdog.Core.BLL.MappingProfiles;
 using Watchdog.Core.BLL.Services;
 using Watchdog.Core.BLL.Services.Abstract;
-using Watchdog.Core.Common.Models.Issue;
 using Watchdog.Core.Common.Validators.Organization;
 using Watchdog.Core.DAL.Context;
 using RabbitMQ.Client;
@@ -16,6 +15,7 @@ using Watchdog.RabbitMQ.Shared.Models;
 using Watchdog.RabbitMQ.Shared.Services;
 using Watchdog.Core.BLL.Services.Queue;
 using Microsoft.Extensions.Logging;
+using Watchdog.Models.Shared.Issues;
 
 namespace Watchdog.Core.API.Extensions
 {
@@ -40,6 +40,9 @@ namespace Watchdog.Core.API.Extensions
             services.AddTransient<ITileService, TileService>();
             services.AddTransient<IRegistrationService, RegistrationService>();
             services.AddEmailSendService(configuration);
+            services.AddElasticSearch(configuration);
+            services.AddRabbitMQ(configuration);
+            
         }
 
         public static void AddElasticSearch(this IServiceCollection services, IConfiguration configuration)
@@ -49,7 +52,7 @@ namespace Watchdog.Core.API.Extensions
             var settings = new ConnectionSettings(new Uri(connectionString))
                 .DefaultMappingFor<IssueMessage>(m => 
                     m.IndexName(configuration["ElasticConfiguration:EventMessagesIndex"])
-                        .IdProperty(em => em.Id));
+                        .IdProperty(em => em.Id).Ignore(em => em.ApiKey));
             
             services.AddSingleton<IElasticClient>(new ElasticClient(settings));
         }
@@ -89,7 +92,7 @@ namespace Watchdog.Core.API.Extensions
             }));
         }
 
-        public static void AddRabbitMQIssueQueues(this IServiceCollection services, IConfiguration configuration)
+        public static void AddRabbitMQ(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton(x =>
             {
@@ -98,10 +101,20 @@ namespace Watchdog.Core.API.Extensions
                 return connectionFactory.CreateConnection();
             });
 
+            services.AddRabbitMQIssueQueues(configuration);
+        }
+
+        private static void AddRabbitMQIssueQueues(this IServiceCollection services, IConfiguration configuration)
+        {
             var producerSettings = new ProducerSettings();
             var consumerSettings = new ConsumerSettings();
-            configuration.GetSection("RabbitMQConfiguration:Queues:NotifyIssuesQueueProducer").Bind(producerSettings);
-            configuration.GetSection("RabbitMQConfiguration:Queues:ReceivedIssuesQueueConsumer").Bind(consumerSettings);
+            configuration
+                .GetSection("RabbitMQConfiguration:Queues:NotifyIssuesQueueProducer")
+                .Bind(producerSettings);
+
+            configuration
+                .GetSection("RabbitMQConfiguration:Queues:ReceivedIssuesQueueConsumer")
+                .Bind(consumerSettings);
 
             services.AddScoped<INotifyQueueProducerService>(provider =>
                 new NotifyQueueProducerService(
