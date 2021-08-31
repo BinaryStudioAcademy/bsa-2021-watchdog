@@ -40,7 +40,7 @@ namespace Watchdog.Core.API.Controllers
             return Ok(await _organizationService.IsOrganizationSlugValidAsync(organizationSlug));
         }
 
-        [HttpGet("orgExist/{organizationSlug}")]
+        [HttpGet("exists/{organizationSlug}")]
         public async Task<ActionResult<bool>> IsOrganizationExistAsync(string organizationSlug)
         {
             return Ok(!(await _organizationService.IsOrganizationSlugValidAsync(organizationSlug)));
@@ -78,6 +78,7 @@ namespace Watchdog.Core.API.Controllers
             var organization = await _organizationService.UpdateOrganizationAsync(organizationId, organizationDto);
             return Ok(organization);
         }
+
         [HttpPut("settings/{organizationId}")]
         public async Task<ActionResult<OrganizationDto>> UpdateSettings(int organizationId, SettingsOrganizationDto settings)
         {

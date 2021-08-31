@@ -157,7 +157,7 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task AcceptInviteAsync(int id)
         {
-            var member = await _context.Members.FirstOrDefaultAsync(m => m.Id == id) ?? throw new KeyNotFoundException("Member doesn't exists");
+            var member = await _context.Members.FirstOrDefaultAsync(m => m.Id == id) ?? throw new KeyNotFoundException("Member doesn't exist");
 
             member.IsAccepted = true;
 
@@ -166,7 +166,7 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task ApproveUserAsync(int id)
         {
-            var member = await _context.Members.FirstOrDefaultAsync(m => m.Id == id) ?? throw new KeyNotFoundException("Member doesn't exists");
+            var member = await _context.Members.FirstOrDefaultAsync(m => m.Id == id) ?? throw new KeyNotFoundException("Member doesn't exist");
 
             member.IsAccepted = true;
             member.IsApproved = true;

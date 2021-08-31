@@ -96,6 +96,6 @@ export class OrganizationService {
     }
 
     isOrganizationExist(slug: string): Observable<boolean> {
-        return this.httpService.getRequest<boolean>(`${this.apiPrefix}/orgExist/${slug}`);
+        return this.httpService.getRequest<boolean>(`${this.apiPrefix}/exists/${slug}`);
     }
 }

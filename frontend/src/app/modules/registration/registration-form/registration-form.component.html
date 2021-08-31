@@ -6,7 +6,7 @@
                     [(ngModel)]="user.firstName" [disabled]="isNotFinishedRegistration">
                 <label for="float-input-first-name">First Name</label>
             </span>
-            <div *ngIf="personal_step && personalDetail.controls.firstName.touched && personalDetail.controls.firstName.invalid"
+            <div *ngIf="personalStep && personalDetail.controls.firstName.touched && personalDetail.controls.firstName.invalid"
                 class="validation">
                 <small *ngIf="personalDetail.controls.firstName.errors.required">Сan not be empty</small>
                 <small *ngIf="personalDetail.controls.firstName.value?.length < 2">Min length 2</small>
@@ -20,7 +20,7 @@
                     [(ngModel)]="user.lastName" [disabled]="isNotFinishedRegistration">
                 <label for="float-input-last-name">Last Name</label>
             </span>
-            <div *ngIf="personal_step && personalDetail.controls.lastName.touched && personalDetail.controls.lastName.invalid" class="validation">>
+            <div *ngIf="personalStep && personalDetail.controls.lastName.touched && personalDetail.controls.lastName.invalid" class="validation">>
                 <small *ngIf="personalDetail.controls.lastName.value?.length < 2">Min length 2</small>
                 <small *ngIf="personalDetail.controls.lastName.value?.length > 30">Max length 30</small>
                 <small *ngIf="personalDetail.controls.lastName.hasError('pattern')">May contain letters, dashes and space</small>
@@ -34,7 +34,7 @@
                     [(ngModel)]="user.email" [disabled]="isNotFinishedRegistration">
                 <label for="float-input-email">Email</label>
             </span>
-            <div *ngIf="personal_step && personalDetail.controls.email.touched && personalDetail.controls.email.invalid" class="validation">
+            <div *ngIf="personalStep && personalDetail.controls.email.touched && personalDetail.controls.email.invalid" class="validation">
                 <small *ngIf="personalDetail.controls.email.errors.required">Сan not be empty</small>
                 <small *ngIf="personalDetail.controls.email.value?.length < 6">Min length 6</small>
                 <small *ngIf="personalDetail.controls.email.hasError('pattern')">Invalid Email</small>
@@ -50,7 +50,7 @@
                     [feedback]="false" [toggleMask]="true"></p-password>
                 <label for="float-input-role">Password</label>
             </span>
-            <div *ngIf="personal_step && personalDetail.controls.password.touched && personalDetail.controls.password.invalid" class="validation">
+            <div *ngIf="personalStep && personalDetail.controls.password.touched && personalDetail.controls.password.invalid" class="validation">
                 <small *ngIf="personalDetail.controls.password.errors.required">Сan not be empty</small>
                 <small *ngIf="personalDetail.controls.password.value?.length < 8">Min length 8</small>
                 <small *ngIf="personalDetail.controls.password.value?.length > 30">Max length 30</small>
@@ -64,7 +64,7 @@
                     [(ngModel)]="confirmPassword" [feedback]="false" [toggleMask]="true"></p-password>
                 <label for="float-input-role">Confirm password</label>
             </span>
-            <div *ngIf="personal_step && personalDetail.controls.confirmPassword.touched && personalDetail.controls.confirmPassword.invalid"
+            <div *ngIf="personalStep && personalDetail.controls.confirmPassword.touched && personalDetail.controls.confirmPassword.invalid"
                 class="validation">
                 <small *ngIf="personalDetail.controls.confirmPassword.errors.required">Сan not be empty</small>
                 <small *ngIf="personalDetail.controls.confirmPassword.errors.notEqual">Passwords must match</small>
@@ -83,7 +83,7 @@
         <p-tabPanel >
             <ng-template pTemplate="header">
                 <div class="header">
-                    <span>Create new organization</span>
+                    <span>Create a new organization</span>
                 </div>
             </ng-template>
             <form [formGroup]="ogranizationDetail" action="/signup" class="reg-form organization-form" method="POST"
@@ -95,7 +95,7 @@
                                 pInputText [(ngModel)]="organization.name">
                             <label for="float-input-comp-name">Organization name</label>
                         </span>
-                        <div *ngIf="organization_step && ogranizationDetail.controls.organizationName.touched && ogranizationDetail.controls.organizationName.invalid"
+                        <div *ngIf="organizationStep && ogranizationDetail.controls.organizationName.touched && ogranizationDetail.controls.organizationName.invalid"
                             class="validation">
                             <small *ngIf="ogranizationDetail.controls.organizationName.errors.required">Сan not be empty</small>
                             <small *ngIf="ogranizationDetail.controls.organizationName.value?.length < 3">Min length 3</small>
@@ -110,7 +110,7 @@
                                 pInputText [(ngModel)]="organizationSlug">
                             <label for="float-input-comp-slug">Organization slug</label>
                         </span>
-                        <div *ngIf="organization_step && ogranizationDetail.controls.organizationSlug.touched && ogranizationDetail.controls.organizationSlug.invalid"
+                        <div *ngIf="organizationStep && ogranizationDetail.controls.organizationSlug.touched && ogranizationDetail.controls.organizationSlug.invalid"
                             class="validation">
                             <small *ngIf="ogranizationDetail.controls.organizationSlug.errors.required">Сan not be empty</small>
                             <small *ngIf="ogranizationDetail.controls.organizationSlug.value?.length < 3">Min length 3</small>
@@ -126,7 +126,7 @@
         <p-tabPanel>
             <ng-template pTemplate="header">
                 <div class="header">
-                    <span>Join to exist organization</span>
+                    <span>Join the existing organization</span>
                 </div>
             </ng-template>
             <form [formGroup]="ogranizationJoin" action="/signup" class="reg-form organization-form" method="POST"
@@ -138,7 +138,7 @@
                                 pInputText [(ngModel)]="organizationSlugJoin">
                             <label for="float-input-comp-slug">Organization slug</label>
                         </span>
-                        <div *ngIf="organization_step && ogranizationJoin.controls.organizationSlug.touched && ogranizationJoin.controls.organizationSlug.invalid"
+                        <div *ngIf="organizationStep && ogranizationJoin.controls.organizationSlug.touched && ogranizationJoin.controls.organizationSlug.invalid"
                             class="validation">
                             <small *ngIf="ogranizationJoin.controls.organizationSlug.errors.required">Сan not be empty</small>
                             <small *ngIf="ogranizationJoin.controls.organizationSlug.value?.length < 3">Min length 3</small>

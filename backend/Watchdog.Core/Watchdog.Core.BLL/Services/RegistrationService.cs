@@ -35,19 +35,20 @@ namespace Watchdog.Core.BLL.Services
             var user = _mapper.Map<User>(fullRegistrationWithJoinDto.User);
             if (await _context.Users.AnyAsync(u => u.Email == fullRegistrationWithJoinDto.User.Email))
                 throw new InvalidOperationException("Such email alreaby exists");
-            user.RegisteredAt = DateTime.Now;
+            user.RegisteredAt = DateTime.UtcNow;
             await _context.Users.AddAsync(user);
 
-            return await JoinToOrganizationAsync(fullRegistrationWithJoinDto.OrganizationSlug, user);
+            return await JoinOrganizationAsync(fullRegistrationWithJoinDto.OrganizationSlug, user);
         }
 
         public async Task<UserDto> PartialRegistrationWithJoinAsync(PartialRegistrationWithJoinDto partialRegistrationWithJoinDto)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == partialRegistrationWithJoinDto.UserId);
-            user.RegisteredAt = DateTime.Now;
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == partialRegistrationWithJoinDto.UserId)
+                ?? throw new InvalidOperationException("User doesn't exist");
+            user.RegisteredAt = DateTime.UtcNow;
             _context.Users.Update(user);
 
-            return await JoinToOrganizationAsync(partialRegistrationWithJoinDto.OrganizationSlug, user);
+            return await JoinOrganizationAsync(partialRegistrationWithJoinDto.OrganizationSlug, user);
         }
 
         public async Task<UserDto> PartialRegistrationAsync(PartialRegistrationDto partialRegistrationDto)
@@ -59,11 +60,13 @@ namespace Watchdog.Core.BLL.Services
             return await CreateOrganizationAsync(partialRegistrationDto.Organization, user);
         }
 
-        private async Task<UserDto> JoinToOrganizationAsync(string organizationSlug, User user)
+        private async Task<UserDto> JoinOrganizationAsync(string organizationSlug, User user)
         {
             var roles = await _context.Roles.ToListAsync();
-            var organization = await _context.Organizations.FirstOrDefaultAsync(s => s.OrganizationSlug == organizationSlug);
-            var ownerOrganization = await _context.Users.Include(o => o.Organizations).FirstOrDefaultAsync(s => s.Id == organization.CreatedBy);
+            var organization = await _context.Organizations.FirstOrDefaultAsync(s => s.OrganizationSlug == organizationSlug)
+                ?? throw new InvalidOperationException("Organization doesn't exist");
+            var ownerOrganization = await _context.Users.Include(o => o.Organizations).FirstOrDefaultAsync(s => s.Id == organization.CreatedBy)
+                ?? throw new InvalidOperationException("Organization doesn't exist");
 
             var member = new Member
             {
@@ -72,7 +75,7 @@ namespace Watchdog.Core.BLL.Services
                 Organization = organization,
                 Role = roles.First(r => r.Id == organization.DefaultRoleId),
                 IsAccepted = organization.OpenMembership,
-                IsApproved = organization.OpenMembership ? true : false
+                IsApproved = organization.OpenMembership
             };
             await _context.Members.AddAsync(member);
             await _context.SaveChangesAsync();
@@ -96,7 +99,7 @@ namespace Watchdog.Core.BLL.Services
                 CreatedByUser = user,
                 CreatedAt = DateTime.UtcNow,
                 Organization = organization,
-                Role = roles.First(r => r.Id == organization.DefaultRoleId),
+                Role = roles.First(r => r.Name.ToLower() == "owner"),
                 IsAccepted = true,
                 IsApproved = true
             };
