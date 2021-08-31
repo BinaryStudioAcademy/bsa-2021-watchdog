@@ -6,7 +6,7 @@ export const icons = [
     { label: 'pi pi-map', value: 'pi-map' },
     { label: 'pi pi-image', value: 'pi-image' },
     { label: 'pi pi-images', value: 'pi-images' },
-    { label: 'pi pi-circle-off', value: 'pi-circle-off' },
-    { label: 'pi pi-ticket', value: 'pi-ticket' },
-    { label: 'pi pi-tablet', value: 'pi-tablet' }
+    { label: 'pi pi-book', value: 'pi-book' },
+    { label: 'pi pi-share-alt', value: 'pi-share-alt' },
+    { label: 'pi pi-sun', value: 'pi-sun' }
 ];
