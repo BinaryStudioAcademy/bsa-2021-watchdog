@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Platform;
 
 namespace Watchdog.Core.API.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class PlatformsController : ControllerBase

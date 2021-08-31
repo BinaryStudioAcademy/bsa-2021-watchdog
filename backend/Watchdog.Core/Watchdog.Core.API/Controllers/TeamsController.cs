@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Team;
 
 namespace Watchdog.Core.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class TeamsController : ControllerBase
@@ -30,7 +32,7 @@ namespace Watchdog.Core.API.Controllers
             var teams = await _teamService.GetTeamsOptionsByOrganizationIdAsync(organizationId);
             return Ok(teams);
         }
-        [HttpGet("{teamId}")]
+        [HttpGet("{teamId:int}")]
         public async Task<ActionResult<TeamDto>> Get(int teamId)
         {
             var team = await _teamService.GetTeamAsync(teamId);
@@ -78,7 +80,8 @@ namespace Watchdog.Core.API.Controllers
             var updatedTeam = await _teamService.LeaveTeamAsync(teamId, memberId);
             return Ok(updatedTeam);
         }
-
+        
+        [AllowAnonymous]
         [HttpGet("orgId/{orgId:int}/teamName/{teamName}")]
         public async Task<ActionResult<bool>> CheckTeamName(int orgId, string teamName)
         {
