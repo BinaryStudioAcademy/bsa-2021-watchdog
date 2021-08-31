@@ -102,6 +102,7 @@ namespace Watchdog.Core.API.Extensions
             });
 
             services.AddRabbitMQIssueQueues(configuration);
+            services.AddRabbitMQLoaderQueues(configuration);
         }
 
         private static void AddRabbitMQIssueQueues(this IServiceCollection services, IConfiguration configuration)
@@ -129,6 +130,22 @@ namespace Watchdog.Core.API.Extensions
                         provider.GetRequiredService<IConnection>()),
                         consumerSettings,
                         provider.GetRequiredService<ILogger<CollectorQueueConsumerService>>()));
+        }
+
+        private static void AddRabbitMQLoaderQueues(this IServiceCollection services, IConfiguration configuration)
+        {
+            var producerSettings = new ProducerSettings();
+            configuration
+                .GetSection("RabbitMQConfiguration:Queues:LoaderQueueProducer")
+                .Bind(producerSettings);
+
+
+            services.AddScoped<INotifyLoaderQueueProducerService>(provider =>
+                new NotifyLoaderQueueProducerService(
+                    new Producer(
+                        provider.GetRequiredService<IConnection>(),
+                        producerSettings)));
+
         }
     }
 }

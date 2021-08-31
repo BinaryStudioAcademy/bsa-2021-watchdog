@@ -4,7 +4,7 @@ using Nest;
 using RabbitMQ.Client;
 using System;
 using Watchdog.Loader.BLL.Services;
-using Watchdog.Loader.BLL.Services.Abstract;
+using Watchdog.Models.Shared.Loader;
 using Watchdog.RabbitMQ.Shared.Models;
 using Watchdog.RabbitMQ.Shared.Services;
 
@@ -24,9 +24,9 @@ namespace Watchdog.Loader.API.Extensions
 
             var settings = new ConnectionSettings(new Uri(connectionString))
                 .DefaultIndex(configuration["ElasticConfiguration:DefaultIndex"])
-                .DefaultMappingFor<object>(m =>
-                    m.IndexName(configuration["ElasticConfiguration:EventMessagesIndex"])
-                        /*.IdProperty(em => em.Id).Ignore(em => em.ApiKey)*/);
+                .DefaultMappingFor<TestResult>(m =>
+                    m.IndexName(configuration["ElasticConfiguration:LoaderMessagesIndex"])
+                        .IdProperty(x => x.Id));
 
             services.AddSingleton<IElasticClient>(new ElasticClient(settings));
         }
@@ -44,15 +44,18 @@ namespace Watchdog.Loader.API.Extensions
 
         private static void AddRabbitMQQueues(this IServiceCollection services, IConfiguration configuration)
         {
-            var producerSettings = new ProducerSettings();
-            configuration
-                .GetSection("RabbitMQConfiguration:Queues:LoaderQueueProducer")
-                .Bind(producerSettings);
+            var consumerSettings = new ConsumerSettings();
 
-            services.AddScoped<ILoaderProducerService>(provider =>
-                new LoaderProducerService(new Producer(
-                    provider.GetRequiredService<IConnection>(),
-                    producerSettings)));
+            configuration
+                .GetSection("RabbitMQConfiguration:Queues:LoaderQueueConsumer")
+                .Bind(consumerSettings);
+
+            services.AddHostedService(provider =>
+                new LoaderConsumerService(
+                    provider,
+                    new Consumer(
+                        provider.GetRequiredService<IConnection>()),
+                        consumerSettings));
 
         }
     }
