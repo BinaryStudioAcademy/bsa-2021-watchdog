@@ -1,24 +1,33 @@
 <!--    Header    -->
-<div class="issue-details-header">
-    <button class="p-button-outlined back-button" icon="pi pi-chevron-left " pButton pRipple pTooltip="Back to Issues"
-            routerLink="../../" tooltipPosition="bottom">
-
-    </button>
-    <div>
+<div class="header">
+    <div class="left-side">
+        <button class="p-button-outlined back-button" icon="pi pi-chevron-left " pButton pRipple
+                pTooltip="Back to Issues"
+                routerLink="../../" tooltipPosition="bottom">
+        </button>
         <h2 appTooltipFullName>{{issueMessage?.issueDetails.className}}</h2>
+    </div>
+
+    <div *ngIf="issue" class="action-buttons">
+        <p-dropdown (onChange)="onSelectedIssueStatus()" [(ngModel)]="selected" [disabled]="isLoadingStatus" [ngClass]="{
+        'dropdown-active-status': selected === IssueStatus.Active,
+        'dropdown-resolved-status': selected === IssueStatus.Resolved,
+        'dropdown-ignored-status': selected === IssueStatus.Ignored
+        }" [options]="issueStatusDropdownItems" optionLabel="name" optionValue="type" styleClass="dropdown">
+        </p-dropdown>
     </div>
 </div>
 <!--    NotFound    -->
 <div *ngIf="isNotFound">
     <app-not-found></app-not-found>
 </div>
-<ng-template [ngIf]="issueMessage && !isNotFound">
+<ng-template [ngIf]="issueMessage && issue && !isNotFound">
     <!--    Content    -->
-    <div class="issue-details-content">
+    <div class="content">
         <p-tabView [(activeIndex)]="activeTabIndex" styleClass="tabview">
             <p-tabPanel header="Issue details">
                 <ng-template pTemplate="content">
-                    <app-issue-details [issueMessage]="issueMessage"></app-issue-details>
+                    <app-issue-details [issueMessage]="issueMessage" [issue]="issue"></app-issue-details>
                 </ng-template>
             </p-tabPanel>
             <p-tabPanel header="Environment">

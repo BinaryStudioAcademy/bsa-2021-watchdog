@@ -20,6 +20,13 @@ namespace Watchdog.Core.API.Controllers
         {
             _issueService = issueService;
         }
+        
+        [HttpGet("{issueId:int}")]
+        public async Task<ActionResult<IssueDto>> GetIssueByIdAsync(int issueId)
+        {
+            var issuesInfo = await _issueService.GetIssueByIdAsync(issueId);
+            return Ok(issuesInfo);
+        }
 
         [HttpGet("info/{memberId:int}")]
         public async Task<ActionResult<ICollection<IssueInfoDto>>> GetIssuesInfoAsync(int memberId)
@@ -64,17 +71,32 @@ namespace Watchdog.Core.API.Controllers
         }
 
         [HttpGet("messages")]
-        public async Task<ActionResult<ICollection<IssueMessageDto>>> GetAllIssueMessages()
+        public async Task<ActionResult<ICollection<IssueMessageDto>>> GetAllIssueMessagesAsync()
         {
-            var issueMessages = await _issueService.GetAllIssueMessages();
+            var issueMessages = await _issueService.GetAllIssueMessagesAsync();
             return Ok(issueMessages);
         }
 
         [HttpGet("messages/application/{applicationId:int}")]
-        public async Task<ActionResult<ICollection<IssueMessageDto>>> GetAllIssueMessages(int applicationId)
+        public async Task<ActionResult<ICollection<IssueMessageDto>>> GetAllIssueMessagesByApplicationIdAsync(int applicationId)
         {
             var issueMessages = await _issueService.GetAllIssueMessagesByApplicationIdAsync(applicationId);
             return Ok(issueMessages);
         }
+        
+        [HttpPost("messages/application/{applicationId:int}/filterByStatuses")]
+        public async Task<ActionResult<ICollection<IssueMessageDto>>> GetAllIssueMessagesByApplicationIdAsync(int applicationId, [FromBody] IssueStatusesFilterDto issueStatuses)
+        {
+            var issueMessages = await _issueService.GetAllIssueMessagesByApplicationIdAsync(applicationId, issueStatuses);
+            return Ok(issueMessages);
+        }
+
+        [HttpPut("updateStatus")]
+        public async Task<ActionResult> UpdateIssueStatusAsync(UpdateIssueStatusDto issueStatusDto)
+        {
+            await _issueService.UpdateIssueStatusAsync(issueStatusDto);
+            return Ok();
+        }
+
     }
 }

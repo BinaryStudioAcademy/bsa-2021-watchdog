@@ -4,8 +4,11 @@
 .title
     @include title
     @include background-gray
+    margin-bottom: 10px
+
     .error-buttons
         margin-left: 30px
+
         .error-button
             display: inline-block
             margin-right: 30px
@@ -36,10 +39,13 @@
 
 #issue-col
     width: 65%
+
 #events-col
     width: 10%
+
 #users-col
     width: 10%
+
 #assignee-col
     width: 15%
 
@@ -68,6 +74,7 @@ td,
     grid-template-columns: auto 1fr
     grid-gap: 10px
     align-items: flex-start
+
     .description
         @include text-overflow-x-nowrap
 
@@ -82,7 +89,7 @@ td,
         cursor: pointer
 
     .name:hover
-        color: #026799
+        color: $text-hover-color
 
 .additional-info
     font-size: 0.8rem
@@ -90,6 +97,7 @@ td,
     flex-direction: row
     align-items: center
     grid-gap: 4px
+
 .time-icon
     font-size: 0.6rem
     margin-right: 2px
@@ -97,10 +105,12 @@ td,
 .tooltip
     position: relative
     display: inline-block
-    .tooltiptext
+    margin-bottom: 1px
+
+    &-text
         visibility: hidden
-        background-color: black
-        color: #fff
+        background-color: $tooltip-background-color
+        color: $tooltip-text-color
         text-align: center
         font-weight: 600
         padding: 7px
@@ -109,32 +119,16 @@ td,
         z-index: 1
         top: -7px
         left: 115%
-        &::after
-            content: " "
-            position: absolute
-            top: 50%
-            right: 100%
-            margin-top: -5px
-            border-width: 5px
-            border-style: solid
-            border-color: transparent black transparent transparent
-    &:hover
-        .tooltiptext
-            transition-delay: 250ms
-            visibility: visible
-            width: max-content
 
-:host ::ng-deep
+    &:hover &-text
+        transition-delay: 250ms
+        visibility: visible
+        width: max-content
+
+\:host ::ng-deep
     .p-tabview-nav-link
         &:focus
             box-shadow: none !important
-
-    .p-badge
-        background-color: lightgray
-
-    .p-highlight
-        .p-badge
-            background-color: $primary-color
 
     .p-dropdown
         height: 40px
@@ -145,6 +139,12 @@ td,
         align-items: center
 
     .p-tag
+        @include disable-select
         height: 1.1rem
-        background-color: $tag-color
-        color: $text-color
+        width: 61px
+
+        .p-tag-value
+            margin-bottom: 2px
+
+::ng-deep .active-tag
+    background: $issue-status-active-color
