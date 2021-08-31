@@ -27,6 +27,15 @@
             <span>{{issueMessage.issueDetails.errorMessage}}</span>
         </div>
     </div>
+    <!--    Project name    -->
+    <div class="issue-details-column">
+        <div class="title">
+            <span>Project</span>
+        </div>
+        <div class="value">
+            <span>{{issue.project.name}}</span>
+        </div>
+    </div>
     <!--    Issue Id    -->
     <div *ngIf="issueMessage.id" class="issue-details-column">
         <div class="title">

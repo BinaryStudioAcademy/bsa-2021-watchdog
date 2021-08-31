@@ -19,4 +19,8 @@
 		<ProjectReference Include="..\Watchdog.Notifier.BLL\Watchdog.Notifier.BLL.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Controllers\" />
+	</ItemGroup>
+
 </Project>

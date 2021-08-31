@@ -47,6 +47,7 @@
             "inlineStyleLanguage": "sass",
             "assets": [
               "src/favicon.ico",
+              "src/loaderio-9c07cdfde25df154c4fe71164f3ad28f.txt",
               "src/assets"
             ],
             "styles": [

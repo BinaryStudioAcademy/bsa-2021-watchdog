@@ -10,6 +10,7 @@ COPY ["Watchdog.Core/Watchdog.Core.BLL/Watchdog.Core.BLL.csproj", "Watchdog.Core
 COPY ["Watchdog.Core/Watchdog.Core.DAL/Watchdog.Core.DAL.csproj", "Watchdog.Core/Watchdog.Core.DAL/"]
 COPY ["Watchdog.Core/Watchdog.Core.Common/Watchdog.Core.Common.csproj", "Watchdog.Core/Watchdog.Core.Common/"]
 COPY ["Watchdog.RabbitMQ.Shared/Watchdog.RabbitMQ.Shared.csproj", "Watchdog.RabbitMQ.Shared/"]
+COPY ["Watchdog.Models.Shared/Watchdog.Models.Shared.csproj", "Watchdog.Models.Shared/"]
 
 RUN dotnet restore "Watchdog.Core/Watchdog.Core.API/Watchdog.Core.API.csproj"
 COPY . .

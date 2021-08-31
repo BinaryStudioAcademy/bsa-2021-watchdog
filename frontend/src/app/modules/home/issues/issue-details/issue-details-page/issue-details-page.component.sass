@@ -1,24 +1,57 @@
 @import src/styles/variables
 @import src/styles/mixins
 
-.issue-details-header
+.header
     @include background-gray
     @include title
     display: flex
     align-items: center
-    justify-content: flex-start
+    justify-content: space-between
     white-space: nowrap
 
-    .back-button
-        margin-right: .2em
-        border: none
-        border-radius: 100%
-    h2
-        @include text-overflow-x-nowrap
-        max-width: 450px
-        cursor: default
+    .left-side
+        display: flex
+        align-items: center
 
-.issue-details-content
+        .back-button
+            margin-right: .2em
+            border: none
+            border-radius: 100%
+
+        h2
+            @include text-overflow-x-nowrap
+            max-width: 450px
+            cursor: default
+
+
+::ng-deep .dropdown
+    height: 39px
+    display: flex
+    align-items: center
+    width: 150px
+    margin-bottom: 1px
+    border-color: $border-color
+
+    .p-dropdown-label
+        color: $primary-color-text
+        font-weight: 500
+
+    .p-dropdown-trigger
+        color: $primary-color-text
+
+::ng-deep .dropdown-active-status
+    .p-dropdown
+        background: $issue-status-active-color
+
+::ng-deep .dropdown-resolved-status
+    .p-dropdown
+        background: $issue-status-resolved-color
+
+::ng-deep .dropdown-ignored-status
+    .p-dropdown
+        background: $issue-status-ignored-color
+
+.content
     padding: $half-indent
 
     ::ng-deep .tabview

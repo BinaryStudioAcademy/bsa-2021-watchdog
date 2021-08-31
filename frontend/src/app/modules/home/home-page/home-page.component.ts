@@ -51,11 +51,11 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         this.user = this.authService.getUser();
 
         this.authService.getOrganization()
-            .subscribe(organization => {
+            .subscribe(async organization => {
                 this.organization = organization;
                 this.getAllDashboards();
+                await this.runHubs();
             });
-        await this.runHubs();
     }
 
     async runHubs() {
@@ -65,7 +65,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     async runIssuesHub() {
         try {
             await this.issuesHub.start();
-            this.issuesHub.messages.pipe(this.untilThis).subscribe(issue => {
+            this.issuesHub.listenMessages(issue => {
                 this.toastNotificationService.info(`Received issue: ${issue.issueDetails.errorMessage}`);
             });
         } catch {

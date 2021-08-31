@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Watchdog.Core.Common.Models.Issue;
+using Watchdog.Models.Shared.Issues;
 
 namespace Watchdog.Core.BLL.Services.Abstract
 {
     public interface INotifyQueueProducerService
     {
-        void NotifyUsers(ICollection<string> userUids, IssueMessage message);
+        void NotifyUsers(ICollection<int> membersIds, IssueMessage message);
     }
 }

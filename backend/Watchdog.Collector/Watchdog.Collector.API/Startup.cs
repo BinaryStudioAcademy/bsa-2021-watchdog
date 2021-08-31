@@ -45,8 +45,6 @@ namespace Watchdog.Collector.API
 
             services.AddWatchdog(Configuration);
 
-            services.AddAutoMapper();
-
             services.AddRabbitMQIssueProducer(Configuration);
 
             services.AddCors(options =>

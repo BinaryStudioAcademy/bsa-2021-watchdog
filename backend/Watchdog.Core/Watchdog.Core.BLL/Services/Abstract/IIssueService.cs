@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Models;
 using Watchdog.Core.Common.DTO.Issue;
-using Watchdog.Core.Common.Models.Issue;
+using Watchdog.Models.Shared.Issues;
 
 namespace Watchdog.Core.BLL.Services.Abstract
 {
@@ -15,7 +15,10 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<(ICollection<IssueMessage>, int)> GetEventMessagesByIssueIdLazyAsync(int issueId, FilterModel filterModel);
         Task<IssueMessage> GetEventMessageByIdAsync(int issueId, string eventId);
         Task UpdateAssigneeAsync(UpdateAssigneeDto assigneeDto);
-        Task<ICollection<IssueMessageDto>> GetAllIssueMessages();
+        Task<ICollection<IssueMessageDto>> GetAllIssueMessagesAsync();
         Task<ICollection<IssueMessageDto>> GetAllIssueMessagesByApplicationIdAsync(int applicationId);
+        Task<ICollection<IssueMessageDto>> GetAllIssueMessagesByApplicationIdAsync(int applicationId, IssueStatusesFilterDto statusesFilter);
+        Task UpdateIssueStatusAsync(UpdateIssueStatusDto issueStatusDto);
+        Task<IssueDto> GetIssueByIdAsync(int issueId);
     }
 }
