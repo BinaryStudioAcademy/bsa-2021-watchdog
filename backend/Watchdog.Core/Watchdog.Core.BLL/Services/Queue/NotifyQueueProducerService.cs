@@ -1,22 +1,30 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using Watchdog.Core.BLL.Services.Abstract;
-using Watchdog.Models.Shared.Loader;
+using Watchdog.Core.Common.DTO.Issue;
+using Watchdog.Models.Shared.Issues;
 using Watchdog.RabbitMQ.Shared.Interfaces;
 
 namespace Watchdog.Core.BLL.Services.Queue
 {
-    public class NotifyLoaderQueueProducerService : INotifyLoaderQueueProducerService
+    public class NotifyQueueProducerService : INotifyQueueProducerService
     {
         private readonly IProducer _producer;
 
-        public NotifyLoaderQueueProducerService(IProducer producer)
+        public NotifyQueueProducerService(IProducer producer)
         {
             _producer = producer;
         }
 
-        public void SendMessage(LoaderMessage message)
+        public void NotifyUsers(ICollection<int> membersIds, IssueMessage message)
         {
-            _producer.Send(JsonConvert.SerializeObject(message), message.GetType().Name);
+            var body = JsonConvert.SerializeObject(new IssueQueueMessageDto
+            {
+                Issue = message,
+                MembersIds = membersIds
+            });
+
+            _producer.Send(body, "JSON");
         }
     }
 }
