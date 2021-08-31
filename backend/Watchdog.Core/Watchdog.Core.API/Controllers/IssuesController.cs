@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Watchdog.Core.BLL.Models;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Issue;
@@ -8,6 +9,7 @@ using Watchdog.Core.Common.Models.Issue;
 
 namespace Watchdog.Core.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class IssuesController : ControllerBase
@@ -47,14 +49,14 @@ namespace Watchdog.Core.API.Controllers
             return Ok(issueMessage);
         }
 
-        [HttpGet("messagesByParent/{id}")]
+        [HttpGet("messagesByParent/{id:int}")]
         public async Task<ActionResult<IssueMessage>> GetEventMessagesByIssueIdAsync(int id)
         {
             var issueMessages = await _issueService.GetEventMessagesByIssueIdAsync(id);
             return Ok(issueMessages);
         }
 
-        [HttpPost("messagesByParent/{id}")]
+        [HttpPost("messagesByParent/{id:int}")]
         public async Task<ActionResult> GetEventMessagesByIssueIdLazyAsync(int id, [FromBody] FilterModel filterModel)
         {
             var (issueMessages, totalRecords) = await _issueService.GetEventMessagesByIssueIdLazyAsync(id, filterModel);
@@ -74,7 +76,5 @@ namespace Watchdog.Core.API.Controllers
             var issueMessages = await _issueService.GetAllIssueMessagesByApplicationIdAsync(applicationId);
             return Ok(issueMessages);
         }
-
-
     }
 }
