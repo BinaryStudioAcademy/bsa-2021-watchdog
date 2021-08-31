@@ -21,7 +21,9 @@ import {
     convertJsonToTileSettings,
     convertTileDateRangeTypeToMs,
     convertTileGranularityTypeToMs,
+    convertTileSettingsToJson,
 } from '@core/utils/tile.utils';
+import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 
 @Component({
     selector: 'app-issues-per-time-tile[tile][isShownEditTileMenu][userProjects]',
@@ -84,7 +86,6 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
     }
 
     private applyIssuesSettings(messageInfos: IssueMessageInfo[], project: Project) {
-        //TODO: Filter issues by issue status type (future feature)
         this.multi.push({
             name: project.name,
             series: this.getMultiChartSeries(this.dateMsNow, this.dateRangeMsOffset, this.tileSettings.granularity,
@@ -122,15 +123,40 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
         }));
     }
 
-    private getEventMessages(project: Project): void {
-        this.issueService
-            .getEventMessagesInfoByProjectId(project.id)
+    //please delete this method when all old tile issue statuses will be removed
+    // this method was added only to maintain compatibility with older types
+    // it will remove old issue statuses and set default(all)
+    fixTileIssueStatus(statuses: IssueStatus[]) {
+        this.tileSettings.issueStatuses = statuses.length
+            ? statuses
+            : [IssueStatus.Active, IssueStatus.Resolved, IssueStatus.Ignored] as IssueStatus[];
+        this.tile.settings = convertTileSettingsToJson(this.tileSettings);
+        this.tileService
+            .updateTile(this.tile)
             .pipe(this.untilThis)
-            .subscribe(messagesInfo => {
-                this.applyIssuesSettings(messagesInfo, project);
+            .subscribe(response => {
+                this.tile = response;
+                this.applySettings();
             }, error => {
                 this.toastNotificationService.error(error);
             });
+    }
+
+    private getEventMessages(project: Project): void {
+        //please remove the condition and leave only getEventMessagesInfoByProjectIdFilteredByStatuses method
+        const statuses = this.tileSettings.issueStatuses.filter(value => Object.values(IssueStatus).includes(value));
+        if (this.tileSettings.issueStatuses.length !== statuses.length) {
+            this.fixTileIssueStatus(statuses);
+        } else {
+            this.issueService
+                .getEventMessagesInfoByProjectIdFilteredByStatuses(project.id, { issueStatuses: this.tileSettings.issueStatuses })
+                .pipe(this.untilThis)
+                .subscribe(messagesInfo => {
+                    this.applyIssuesSettings(messagesInfo, project);
+                }, error => {
+                    this.toastNotificationService.error(error);
+                });
+        }
     }
 
     private initChartSettings(): void {

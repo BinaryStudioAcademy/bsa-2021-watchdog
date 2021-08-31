@@ -28,6 +28,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
     isInviting: Boolean;
     user: User;
     roles: Role[];
+    editRoles: Role[];
     itemsPerPage: number;
     organization: Organization;
 
@@ -67,7 +68,8 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
         this.roleService.getRoles()
             .pipe(this.untilThis)
             .subscribe(roles => {
-                this.roles = roles.filter(r => r.name !== MembersRoles.owner);
+                this.editRoles = roles.filter(r => r.name !== MembersRoles.owner);
+                this.roles = roles;
                 this.spinner.hide();
             }, error => {
                 this.toastNotifications.error(error);
