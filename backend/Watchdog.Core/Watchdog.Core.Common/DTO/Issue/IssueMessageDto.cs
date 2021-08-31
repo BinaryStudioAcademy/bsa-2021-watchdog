@@ -1,4 +1,5 @@
 using System;
+using Watchdog.Core.Common.Enums.Issues;
 
 namespace Watchdog.Core.Common.DTO.Issue
 {

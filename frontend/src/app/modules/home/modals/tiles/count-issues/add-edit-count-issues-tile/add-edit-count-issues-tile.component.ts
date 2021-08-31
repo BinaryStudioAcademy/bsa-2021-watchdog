@@ -1,48 +1,49 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Project } from '@shared/models/projects/project';
-import { NewTile } from '@shared/models/tile/new-tile';
-import { ToastNotificationService } from '@core/services/toast-notification.service';
-import { TileService } from '@core/services/tile.service';
-import { TileCategory } from '@shared/models/tile/enums/tile-category';
-import { TileType } from '@shared/models/tile/enums/tile-type';
-import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
-import { UpdateTile } from '@shared/models/tile/update-tile';
 import { Tile } from '@shared/models/tile/tile';
+import { Project } from '@shared/models/projects/project';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AuthenticationService } from '@core/services/authentication.service';
-import { regexs } from '@shared/constants/regexs';
 import { convertJsonToTileSettings, convertTileSettingsToJson } from '@core/utils/tile.utils';
+import { TileType } from '@shared/models/tile/enums/tile-type';
+import { regexs } from '@shared/constants/regexs';
+import { NewTile } from '@shared/models/tile/new-tile';
+import { TileCategory } from '@shared/models/tile/enums/tile-category';
+import { UpdateTile } from '@shared/models/tile/update-tile';
 import { TilesModalData } from '@modules/home/modals/tiles/data/tiles-modal-data';
 import { DateRangeDropdown } from '@modules/home/modals/tiles/models/date-range-dropdown';
-import { TileSizeType } from '@shared/models/tile/enums/tile-size-type';
+import { IssueStatusCheckbox } from '@modules/home/modals/tiles/models/issue-status-checkbox';
 import { TileDateRangeType } from '@shared/models/tile/enums/tile-date-range-type';
+import { IssueStatus } from '@shared/models/issue/enums/issue-status';
+import { CountIssuesSettings } from '@shared/models/tile/settings/count-issues-settings';
+import { TileSizeType } from '@shared/models/tile/enums/tile-size-type';
 import { TileSizeDropdown } from '@shared/models/tile/tile-size-dropdown';
 
 @Component({
-    selector: 'app-add-edit-top-active-issues-tile',
-    templateUrl: './add-edit-top-active-issues-tile.component.html',
+    selector: 'app-add-edit-count-issues-tile',
+    templateUrl: './add-edit-count-issues-tile.component.html',
     styleUrls: ['../../add-edit-modal-styles.sass'],
-    providers: [TilesModalData]
+    providers: [TilesModalData],
 })
-export class AddEditTopActiveIssuesTileComponent implements OnInit {
-    formGroup: FormGroup;
-    dateRangeDropdown: DateRangeDropdown[];
-    tileSizeDropdown: TileSizeDropdown[];
-    headerTitle: string;
-    submitButtonText: string;
-    currentDashboardId: number;
+export class AddEditCountIssuesTileComponent implements OnInit {
+    userProjects: Project[];
     tileToEdit: Tile;
     isAddMode: boolean;
-    userProjects: Project[];
+    currentDashboardId: number;
+
+    formGroup: FormGroup;
+    dateRangeDropdown: DateRangeDropdown[];
+    issueStatusCheckboxes: IssueStatusCheckbox[];
+    tileSizeDropdown: TileSizeDropdown[];
+
+    headerTitle: string;
+    submitButtonText: string;
 
     constructor(
-        private toastNotificationService: ToastNotificationService,
-        private tileService: TileService,
         private ref: DynamicDialogRef,
+        private tileModalData: TilesModalData,
         private dialogConfig: DynamicDialogConfig,
         private authenticationService: AuthenticationService,
-        private tileModalData: TilesModalData
     ) {
     }
 
@@ -51,14 +52,15 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
         this.userProjects = this.dialogConfig.data.userProjects;
 
         this.initDateRangeDropdown();
+        this.initIssueStatusCheckboxes();
         this.initTileSizeDropdown();
 
         switch (this.isAddMode) {
-            case true:
-                this.addTileInit();
-                break;
             case false:
                 this.editTileInit();
+                break;
+            case true:
+                this.addTileInit();
                 break;
             default:
                 console.error(`Bad Modal Mode - '${this.isAddMode}'`);
@@ -84,14 +86,8 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
         this.headerTitle = `Editing tile ${this.tileToEdit.name}`;
         this.submitButtonText = 'Update';
 
-        const tileSettings = convertJsonToTileSettings(this.tileToEdit.settings, TileType.TopActiveIssues) as TopActiveIssuesSettings;
+        const tileSettings = convertJsonToTileSettings(this.tileToEdit.settings, TileType.IssuesCount) as CountIssuesSettings;
         this.formGroup = new FormGroup({
-            sourceProjects: new FormControl(
-                tileSettings.sourceProjects,
-                [
-                    Validators.required
-                ]
-            ),
             name: new FormControl(
                 this.tileToEdit.name,
                 [
@@ -107,12 +103,16 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
                     Validators.required
                 ]
             ),
-            issuesCount: new FormControl(
-                tileSettings.issuesCount,
+            issueStatuses: new FormControl(
+                tileSettings.issueStatuses,
                 [
                     Validators.required,
-                    Validators.min(1),
-                    Validators.max(1000)
+                ]
+            ),
+            sourceProjects: new FormControl(
+                tileSettings.sourceProjects,
+                [
+                    Validators.required
                 ]
             ),
             tileSize: new FormControl(
@@ -128,35 +128,32 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
         this.currentDashboardId = this.dialogConfig.data.dashboardId;
         this.headerTitle = 'Create a tile';
         this.submitButtonText = 'Create';
-
         this.formGroup = new FormGroup({
-            sourceProjects: new FormControl(
-                [],
-                [
-                    Validators.required
-                ]
-            ),
             name: new FormControl(
-                'Top active issues tile',
+                'Issues count',
                 [
                     Validators.required,
                     Validators.minLength(3),
                     Validators.maxLength(50),
-                    Validators.pattern(regexs.tileName)
+                    Validators.pattern(regexs.tileName),
                 ]
             ),
             dateRange: new FormControl(
                 TileDateRangeType.ThePastDay,
                 [
-                    Validators.required
+                    Validators.required,
                 ]
             ),
-            issuesCount: new FormControl(
-                5,
+            issueStatuses: new FormControl(
+                [IssueStatus.Active],
                 [
                     Validators.required,
-                    Validators.min(1),
-                    Validators.max(1000)
+                ]
+            ),
+            sourceProjects: new FormControl(
+                [],
+                [
+                    Validators.required,
                 ]
             ),
             tileSize: new FormControl(
@@ -169,24 +166,25 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
     }
 
     private initDateRangeDropdown(): void {
-        this.dateRangeDropdown = this.tileModalData.dateRangeDropdownItems;
+        this.dateRangeDropdown = this.tileModalData.dateRangeIssuesCountDropdownItems;
     }
 
-    private initTileSizeDropdown(): void {
-        this.tileSizeDropdown = this.tileModalData.tileSizeDropdownItems;
+    private initIssueStatusCheckboxes(): void {
+        this.issueStatusCheckboxes = this.tileModalData.issueStatusCheckboxes;
     }
 
     private addTile(values: any): void {
         const newTile: NewTile = {
             name: values.name,
-            category: TileCategory.List,
-            type: TileType.TopActiveIssues,
+            category: TileCategory.Chart,
+            type: TileType.IssuesCount,
             createdBy: this.authenticationService.getUser().id,
             dashboardId: this.currentDashboardId,
-            settings: convertTileSettingsToJson(<TopActiveIssuesSettings>{
+            settings: convertTileSettingsToJson(<CountIssuesSettings>{
+                dateRange: values.dateRange,
                 issuesCount: values.issuesCount,
                 sourceProjects: values.sourceProjects,
-                dateRange: values.dateRange,
+                issueStatuses: values.issueStatuses,
                 tileSize: values.tileSize
             })
         };
@@ -197,13 +195,22 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
         const updatedTile: UpdateTile = {
             id: this.tileToEdit.id,
             name: values.name,
-            settings: convertTileSettingsToJson(<TopActiveIssuesSettings>{
+            settings: convertTileSettingsToJson(<CountIssuesSettings>{
+                dateRange: values.dateRange,
                 issuesCount: values.issuesCount,
                 sourceProjects: values.sourceProjects,
-                dateRange: values.dateRange,
+                issueStatuses: values.issueStatuses,
                 tileSize: values.tileSize
             })
         };
         this.close(updatedTile);
     }
+
+    private initTileSizeDropdown(): void {
+        this.tileSizeDropdown = this.tileModalData.tileSizeDropdownItems;
+    }
+
+    get name() { return this.formGroup.controls.name; }
+    get issueStatuses() { return this.formGroup.controls.issueStatuses; }
+    get sourceProjects() { return this.formGroup.controls.sourceProjects; }
 }

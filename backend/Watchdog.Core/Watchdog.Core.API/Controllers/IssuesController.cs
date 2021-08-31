@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -91,6 +92,13 @@ namespace Watchdog.Core.API.Controllers
         {
             var issueMessages =
                 await _issueService.GetAllIssueMessagesByApplicationIdAsync(applicationId, issueStatuses);
+            return Ok(issueMessages);
+        }
+
+        [HttpPost("messages/application/{applicationId:int}/filterByStatusesAndDate")]
+        public async Task<ActionResult<int>> GetFilteredIssueCountByStatusesAndDateRangeByApplicationIdAsync(int applicationId, [FromBody] IssueStatusesByDateRangeFilter filter)
+        {
+            var issueMessages = await _issueService.GetFilteredIssueCountByStatusesAndDateRangeByApplicationIdAsync(applicationId, filter);
             return Ok(issueMessages);
         }
 

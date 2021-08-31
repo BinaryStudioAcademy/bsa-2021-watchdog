@@ -34,6 +34,33 @@ export class TilesModalData {
         }
     ];
 
+    dateRangeIssuesCountDropdownItems: DateRangeDropdown[] = [
+        {
+            type: TileDateRangeType.All,
+            name: 'All'
+        },
+        {
+            type: TileDateRangeType.ThePastHour,
+            name: 'The past hour'
+        },
+        {
+            type: TileDateRangeType.ThePastDay,
+            name: 'The past day'
+        },
+        {
+            type: TileDateRangeType.ThePastWeek,
+            name: 'The past week'
+        },
+        {
+            type: TileDateRangeType.ThePast30Days,
+            name: 'The past month'
+        },
+        {
+            type: TileDateRangeType.ThePastYear,
+            name: 'The past year'
+        }
+    ];
+
     issueStatusCheckboxes: IssueStatusCheckbox[] = [
         {
             type: IssueStatus.Active,
