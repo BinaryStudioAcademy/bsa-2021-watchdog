@@ -1,64 +1,52 @@
 @import src/styles/variables
 
-button
-    margin: 4px 0
-    width: 45%
+.modal-container
+    padding-top: 15px
+    width: 350px
+    button
+        margin: 4px 0
+        width: 45%
 
-.buttons-container
-    display: flex
-    justify-content: space-between
-
-.input-section
-    padding: 8px 0
-    position: relative
-
-ul
-    width: 100%
-    list-style: none
-    display: grid
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr
-    justify-content: space-evenly
-    justify-items: center
-    align-content: space-evenly
-    align-items: center
-    margin: 10px 0 0
-    padding: 5px 0 0
-
-li
-    display: block
-    padding: 10px
-    margin: 5px
-    width: 50px
-    height: 50px
-    border-radius: 5px
-    &:hover
-        background-color: $hover-color
-    .icon-container
+    .buttons-container
         display: flex
-        justify-content: center
-        align-items: center
-        margin-top: 2px
-        .pi
-            font-size: 1.2em
+        justify-content: space-between
 
-.selected
-    background-color: lightgray
+    .input-section
+        padding: 8px 0
+        position: relative
+
+    ul
+        width: 100%
+        list-style: none
+        display: grid
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr
+        justify-content: space-evenly
+        justify-items: center
+        align-content: space-evenly
+        align-items: center
+        margin: 10px 0 0
+        padding: 5px 0 0
+
+    li
+        display: block
+        padding: 15px
+        margin: 5px
+        width: 50px
+        height: 50px
+        border-radius: 5px
+        &:hover
+            background-color: $hover-color
+        .icon-container
+            display: flex
+            justify-content: center
+            align-items: center
+            margin-top: 2px
+            .pi
+                font-size: 1.2em
+
+    .selected
+        background-color: $selected-color
 
 :host ::ng-deep
     .p-inputtext
-        margin: 5px auto
         width: 100%
-        height: 40px
-
-:host ::ng-deep
-    .p-dialog
-        width: 25vw
-        .p-dialog-header
-            display: none
-        .p-dialog-content
-            padding: 0
-:host ::ng-deep
-    .p-panel
-        overflow-y: hidden
-        .p-panel-header
-            margin-bottom: 10px

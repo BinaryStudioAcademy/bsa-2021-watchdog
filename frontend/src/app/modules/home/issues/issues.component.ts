@@ -1,19 +1,21 @@
+import { SpinnerService } from '@core/services/spinner.service';
 import { IssuesHubService } from '@core/hubs/issues-hub.service';
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { MemberService } from '@core/services/member.service';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { TeamService } from '@core/services/team.service';
 import { Assignee } from '@shared/models/issue/assignee';
 import { count, toUsers } from '@core/services/issues.utils';
 import { IssueInfo } from '@shared/models/issue/issue-info';
-import { debounceTime, share, tap } from 'rxjs/operators';
+import { debounceTime, tap } from 'rxjs/operators';
 import { AssigneeOptions } from '@shared/models/issue/assignee-options';
 import { IssueService } from '@core/services/issue.service';
 import { LazyLoadEvent } from 'primeng/api';
 import { Member } from '@shared/models/member/member';
+import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 
 @Component({
     selector: 'app-issues',
@@ -22,22 +24,21 @@ import { Member } from '@shared/models/member/member';
 })
 export class IssuesComponent extends BaseComponent implements OnInit {
     issues: IssueInfo[] = [];
-
     issuesCount: { [type: string]: number };
-
     selectedIssues: IssueInfo[] = [];
-
-    timeOptions: string[];
-
-    selectedTime: string;
     isAssign: boolean;
     sharedOptions = {} as AssigneeOptions;
     globalFilterFields = ['errorClass', 'projectName'];
     lastEvent: LazyLoadEvent;
-    loading: boolean = false;
+    loading: boolean;
     totalRecords: number;
-    memberRequest: Observable<Member>;
     member: Member;
+    itemsPerPage = 10;
+    toAssign: Assignee;
+    issueId: number;
+    IssueStatus = IssueStatus;
+    private saveAssign: Assignee;
+    private viewedAssignee = 3;
 
     constructor(
         private issuesHub: IssuesHubService,
@@ -45,35 +46,31 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         private toastNotification: ToastNotificationService,
         private authService: AuthenticationService,
         private memberService: MemberService,
-        private teamService: TeamService
-    ) { super(); }
-
-    itemsPerPage = 10;
+        private teamService: TeamService,
+        private spinner: SpinnerService
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.isAssign = false;
 
         this.setTabPanelFields();
 
-        const request = this.authService.getMember()
+        this.authService.getMember()
             .pipe(
                 this.untilThis,
                 tap(member => {
                     this.member = member;
-                }),
-                share()
-            );
-
-        this.memberRequest = request;
-
-        request
+                })
+            )
             .subscribe(() => {
-                this.loadIssuesLazy(this.lastEvent);
                 forkJoin([this.loadMembers(), this.loadTeams()])
                     .pipe(this.untilThis)
                     .subscribe(([members, teams]) => {
                         this.sharedOptions.members = members;
                         this.sharedOptions.teams = teams;
+                        this.loadIssuesLazy(this.lastEvent);
                         this.subscribeToIssuesHub();
                     });
             }, error => {
@@ -104,20 +101,17 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         event.originalEvent.stopPropagation();
     }
 
-    toAssing: Assignee;
-    issueId: number;
-    private saveAssing: Assignee;
     openAssign(issue: IssueInfo) {
-        this.toAssing = issue.assignee;
+        this.toAssign = issue.assignee;
         this.issueId = issue.issueId;
-        this.saveAssing = { memberIds: this.toAssing.memberIds.concat(), teamIds: this.toAssing.teamIds.concat() };
+        this.saveAssign = { memberIds: this.toAssign.memberIds.concat(), teamIds: this.toAssign.teamIds.concat() };
         this.isAssign = true;
     }
 
     closeAssign() {
         if (!this.compareAssigns()) {
             const updateAssignee = {
-                assignee: this.toAssing,
+                assignee: this.toAssign,
                 issueId: this.issueId,
             };
             this.issueService.updateAssignee(updateAssignee)
@@ -131,59 +125,30 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         this.isAssign = false;
     }
 
-    private compareAssigns() {
-        if (this.saveAssing.memberIds.length !== this.toAssing.memberIds.length) {
-            return false;
-        }
-        if (this.saveAssing.teamIds.length !== this.toAssing.teamIds.length) {
-            return false;
-        }
-        const before = {
-            memberIds: this.saveAssing.memberIds.concat().sort(),
-            teamIds: this.saveAssing.teamIds.concat().sort()
-        };
-        const after = {
-            memberIds: this.toAssing.memberIds.concat().sort(),
-            teamIds: this.toAssing.teamIds.concat().sort()
-        };
-
-        const equalsMembers = before.memberIds.every((item, index) => item === after.memberIds[index]);
-        const equalsTeams = before.teamIds.every((item, index) => item === after.teamIds[index]);
-
-        return equalsMembers && equalsTeams;
-    }
-
     async loadIssuesLazy(event: LazyLoadEvent) {
         if (!event) {
             return;
         }
         this.lastEvent = event;
         if (!this.member) {
-            await this.memberRequest.toPromise();
+            return;
         }
-        this.loading = true;
+        this.spinner.show(true);
         this.issueService.getIssuesInfoLazy(this.member.id, this.lastEvent)
             .pipe(this.untilThis,
                 debounceTime(1000))
             .subscribe(
                 response => {
-                    this.issues = response.collection;
-                    this.totalRecords = response.totalRecord;
-                    this.loading = false;
+                    this.issues = response.collection.concat();
+                    this.totalRecords = response.totalRecords;
+                    this.spinner.hide();
                 },
                 error => {
                     this.toastNotification.error(error);
-                    this.loading = false;
+                    this.spinner.hide();
                 }
             );
     }
-
-    private subscribeToIssuesHub() {
-        this.issuesHub.messages.pipe(this.untilThis)
-            .subscribe(() => { this.loadIssuesLazy(this.lastEvent); });
-    }
-
-    private viewedAssignee = 3;
 
     getNumberAssignee(assignee: Assignee) {
         return count(assignee);
@@ -207,11 +172,41 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                 .getLabel(this.sharedOptions.teams.find(t => t.id === id).name));
     }
 
+    private compareAssigns() {
+        if (this.saveAssign.memberIds.length !== this.toAssign.memberIds.length) {
+            return false;
+        }
+        if (this.saveAssign.teamIds.length !== this.toAssign.teamIds.length) {
+            return false;
+        }
+        const before = {
+            memberIds: this.saveAssign.memberIds.concat().sort(),
+            teamIds: this.saveAssign.teamIds.concat().sort()
+        };
+        const after = {
+            memberIds: this.toAssign.memberIds.concat().sort(),
+            teamIds: this.toAssign.teamIds.concat().sort()
+        };
+
+        const equalsMembers = before.memberIds.every((item, index) => item === after.memberIds[index]);
+        const equalsTeams = before.teamIds.every((item, index) => item === after.teamIds[index]);
+
+        return equalsMembers && equalsTeams;
+    }
+
+    private subscribeToIssuesHub() {
+        this.issuesHub.messages.pipe(this.untilThis)
+            .subscribe(() => {
+                this.loadIssuesLazy(this.lastEvent);
+            });
+    }
+
     private setTabPanelFields() {
         this.issuesCount = {
             all: 0,
-            secondtype: 0,
-            thirdtype: 0
+            active: 0,
+            resolved: 0,
+            ignored: 0,
         };
     }
 }

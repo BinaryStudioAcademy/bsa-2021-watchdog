@@ -47,10 +47,6 @@ export class TilesModalData {
             type: IssueStatus.Ignored,
             name: 'Ignored'
         },
-        {
-            type: IssueStatus.PermanentlyIgnored,
-            name: 'Permanently ignored'
-        }
     ];
 
     tileSizeDropdownItems: TileSizeDropdown[] = [

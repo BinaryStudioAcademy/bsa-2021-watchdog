@@ -6,7 +6,6 @@ import { Data } from '@modules/home/projects/data';
 import { PlatformService } from '@core/services/platform.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { Platform } from '@shared/models/platforms/platform';
-import { NewProject } from '@shared/models/projects/new-project';
 import { TeamService } from '@core/services/team.service';
 import { TeamOption } from '@shared/models/teams/team-option';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -21,6 +20,7 @@ import { Router } from '@angular/router';
 import { uniqueProjectNameValidator } from '@shared/validators/unique-project-name.validator';
 import { SpinnerService } from '@core/services/spinner.service';
 import { AlertCategory } from '@shared/models/alert-settings/alert-category';
+import { NewProject } from '@shared/models/projects/new-project';
 
 @Component({
     selector: 'app-create-project',
@@ -40,7 +40,7 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
     };
     teams: TeamOption[];
     alertSetting = {} as AlertSettings;
-    formGroup = {} as FormGroup;
+    formGroup: FormGroup;
     createTeamDialog: DynamicDialogRef;
 
     constructor(
@@ -87,7 +87,7 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                         Validators.pattern(regexs.projectName)
                     ],
                     asyncValidators: [
-                        uniqueProjectNameValidator(this.newProject, this.projectService, this.organization.id)
+                        uniqueProjectNameValidator(this.projectService, this.organization.id)
                     ]
                 }
             ),
@@ -106,6 +106,10 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
             ),
         });
     }
+    get alertCategory() { return this.formGroup.controls.alertCategory; }
+    get projectName() { return this.formGroup.controls.projectName; }
+    get projectDescription() { return this.formGroup.controls.projectDescription; }
+    get team() { return this.formGroup.controls.team; }
 
     private initPlatforms() {
         this.loadPlatforms();
@@ -222,11 +226,16 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
 
     createProject(): void {
         if (this.formGroup.valid && this.newProject.platformId) {
+            this.newProject.description = this.projectDescription.value;
+            this.newProject.name = this.projectName.value;
             this.newProject.organizationId = this.organization.id;
             this.newProject.createdBy = this.user.id;
+            this.newProject.teamId = this.team.value;
             this.newProject.alertSettings = {
                 alertCategory: this.alertSetting.alertCategory,
-                specialAlertSetting: this.alertSetting.alertCategory === 3 ? this.alertSetting.specialAlertSetting : null
+                specialAlertSetting: this.alertSetting.alertCategory === AlertCategory.Special
+                    ? this.alertSetting.specialAlertSetting
+                    : null
             };
             this.spinnerService.show(true);
             this.projectService.createProject(this.newProject)

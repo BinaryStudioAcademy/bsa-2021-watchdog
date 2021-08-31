@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System.Linq;
 using System.Threading.Tasks;
 using Watchdog.AspNetCore;
 using Watchdog.Notifier.API.Extensions;
@@ -47,8 +48,8 @@ namespace Watchdog.Notifier.API
 
             services.AddControllers();
             services.AddHealthChecks();
-
             services.AddSignalR();
+
             services.AddRabbitMQIssueConsumer(Configuration);
 
             services.AddWatchdog(Configuration, new WatchdogMiddlewareSettings()

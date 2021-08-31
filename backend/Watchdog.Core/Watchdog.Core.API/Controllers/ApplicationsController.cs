@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Application;
 using Watchdog.Core.Common.DTO.ApplicationTeam;
 
 namespace Watchdog.Core.API.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class ApplicationsController : ControllerBase
@@ -18,25 +20,25 @@ namespace Watchdog.Core.API.Controllers
             _appService = appService;
         }
 
-        [HttpGet("organization/{organizationId}")]
+        [HttpGet("organization/{organizationId:int}")]
         public async Task<ActionResult<ICollection<ApplicationDto>>> GetApplicationsByOrganization(int organizationId)
         {
             return Ok(await _appService.GetAppsByOrganizationIdAsync(organizationId));
         }
 
-        [HttpGet("team/{teamId}")]
+        [HttpGet("team/{teamId:int}")]
         public async Task<ActionResult<ICollection<ApplicationTeamDto>>> GetApplicationsByTeam(int teamId)
         {
             return Ok(await _appService.GetAppsByTeamIdAsync(teamId));
         }
 
-        [HttpGet("member/{memberId}")]
+        [HttpGet("member/{memberId:int}")]
         public async Task<ActionResult<ICollection<ApplicationDto>>> GetApplicationsByMember(int memberId)
         {
             return Ok(await _appService.GetAppsByMemberIdAsync(memberId));
         }
 
-        [HttpGet("team/{teamId}/exceptTeam/")]
+        [HttpGet("team/{teamId:int}/exceptTeam/")]
         public async Task<ActionResult<ICollection<ApplicationDto>>> GetApplicationsExceptTeam(int teamId, string appName = "")
         {
             return Ok(await _appService.SearchAppsNotInTeamAsync(teamId, appName));
@@ -49,14 +51,14 @@ namespace Watchdog.Core.API.Controllers
             return Ok(createdAppTeam);
         }
 
-        [HttpPut("team/{appTeamId}/favorite/{state}")]
+        [HttpPut("team/{appTeamId:int}/favorite/{state:bool}")]
         public async Task<ActionResult<bool>> SetFavoriteAppForTeam(bool state, int appTeamId)
         {
             var updatedState = await _appService.UpdateFavoriteStateAsync(appTeamId, state);
             return Ok(updatedState);
         }
 
-        [HttpDelete("team/{appTeamId}")]
+        [HttpDelete("team/{appTeamId:int}")]
         public async Task<IActionResult> DeleteApplicationFromTeam(int appTeamId)
         {
             await _appService.RemoveAppTeam(appTeamId);
@@ -90,7 +92,7 @@ namespace Watchdog.Core.API.Controllers
             return NoContent();
         }
 
-        [HttpGet("application/{projectName}/{organizationId}")]
+        [HttpGet("application/{projectName}/{organizationId:int}")]
         public async Task<ActionResult<bool>> IsProjectNameValid(string projectName, int organizationId)
         {
             return Ok(await _appService.IsProjectNameValidAsync(projectName, organizationId));

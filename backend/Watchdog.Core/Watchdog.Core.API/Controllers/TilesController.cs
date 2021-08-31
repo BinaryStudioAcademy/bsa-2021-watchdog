@@ -9,7 +9,7 @@ using Watchdog.Core.Common.DTO.Tile;
 
 namespace Watchdog.Core.API.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class TilesController : ControllerBase
