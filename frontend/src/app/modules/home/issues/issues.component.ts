@@ -67,10 +67,10 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             .subscribe(() => {
                 forkJoin([this.loadMembers(), this.loadTeams()])
                     .pipe(this.untilThis)
-                    .subscribe(async ([members, teams]) => {
+                    .subscribe(([members, teams]) => {
                         this.sharedOptions.members = members;
                         this.sharedOptions.teams = teams;
-                        await this.loadIssuesLazy(this.lastEvent);
+                        this.loadIssuesLazy(this.lastEvent);
                         this.subscribeToIssuesHub();
                     });
             }, error => {
@@ -196,8 +196,8 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     private subscribeToIssuesHub() {
         this.issuesHub.messages.pipe(this.untilThis)
-            .subscribe(async () => {
-                await this.loadIssuesLazy(this.lastEvent);
+            .subscribe(() => {
+                this.loadIssuesLazy(this.lastEvent);
             });
     }
 
