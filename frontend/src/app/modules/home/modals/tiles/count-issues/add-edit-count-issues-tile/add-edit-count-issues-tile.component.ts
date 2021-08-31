@@ -103,7 +103,7 @@ export class AddEditCountIssuesTileComponent implements OnInit {
                 ]
             ),
             issueStatuses: new FormControl(
-                [IssueStatus.Active],
+                tileSettings.issueStatuses,
                 [
                     Validators.required,
                 ]

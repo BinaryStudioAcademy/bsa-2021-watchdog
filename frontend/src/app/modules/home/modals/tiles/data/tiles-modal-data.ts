@@ -31,6 +31,14 @@ export class TilesModalData {
         {
             type: TileDateRangeType.ThePast2Weeks,
             name: 'The past 2 weeks'
+        },
+        {
+            type: TileDateRangeType.ThePast30Days,
+            name: 'The past month'
+        },
+        {
+            type: TileDateRangeType.ThePastYear,
+            name: 'The past year'
         }
     ];
 

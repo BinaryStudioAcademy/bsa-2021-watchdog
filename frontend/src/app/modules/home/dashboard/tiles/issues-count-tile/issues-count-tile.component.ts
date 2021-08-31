@@ -17,6 +17,7 @@ import {
     convertTileDateRangeTypeToMs
 } from '@core/utils/tile.utils';
 import { CountIssuesSettings } from '@shared/models/tile/settings/count-issues-settings';
+import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 
 @Component({
     selector: 'app-issues-count-tile[tile][isShownEditTileMenu][userProjects]',
@@ -32,6 +33,7 @@ export class IssuesCountTileComponent extends BaseComponent implements OnInit {
     tileSettings: CountIssuesSettings;
     requiredProjects: Project[] = [];
     dateMsNow: number;
+    expectedIssueStatuses: IssueStatus[];
     dateRangeMsOffset: number;
     ChartType: ChartType = ChartType.NumberCard;
     dateMsPast: number;
@@ -55,6 +57,7 @@ export class IssuesCountTileComponent extends BaseComponent implements OnInit {
 
     private applySettings() {
         this.single = [];
+        this.expectedIssueStatuses = [];
         this.getTileSettings();
         this.applyProjectSettings();
     }
@@ -64,6 +67,7 @@ export class IssuesCountTileComponent extends BaseComponent implements OnInit {
         this.dateMsNow = new Date().getTime();
         this.dateRangeMsOffset = convertTileDateRangeTypeToMs(this.tileSettings.dateRange);
         this.dateMsPast = this.dateMsNow - this.dateRangeMsOffset;
+        this.expectedIssueStatuses = this.tileSettings.issueStatuses;
     }
 
     private getEventMessages(project: Project): void {
@@ -88,12 +92,20 @@ export class IssuesCountTileComponent extends BaseComponent implements OnInit {
         //TODO: Filter issues by issue status type (future feature)
         this.single.push({
             name: project.name,
-            value: messageInfos.filter(info => this.checkDateRange(info)).length
+            value: messageInfos.filter(info => this.filterIssue(info)).length
         });
+    }
+
+    filterIssue(messageInfo: IssueMessageInfo): boolean {
+        return this.checkDateRange(messageInfo) && this.checkStatus(messageInfo);
     }
 
     checkDateRange(messageInfo: IssueMessageInfo): boolean {
         return new Date(messageInfo.occurredOn).getTime() >= this.dateMsPast;
+    }
+
+    checkStatus(messageInfo: IssueMessageInfo): boolean {
+        return this.expectedIssueStatuses.includes(messageInfo.status);
     }
 
     private initChartSettings(): void {
