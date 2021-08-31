@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using System.Collections.Generic;
 using Watchdog.Common.Messages;
 using Watchdog.Models.Shared.Issues;
 
