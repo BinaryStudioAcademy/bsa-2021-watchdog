@@ -65,7 +65,7 @@ namespace Watchdog.Core.BLL.Services
             var roles = await _context.Roles.ToListAsync();
             var organization = await _context.Organizations.FirstOrDefaultAsync(s => s.OrganizationSlug == organizationSlug)
                 ?? throw new InvalidOperationException("Organization doesn't exist");
-            var ownerOrganization = await _context.Users.Include(o => o.Organizations).FirstOrDefaultAsync(s => s.Id == organization.CreatedBy)
+            var ownerOrganization = await _context.Users.FirstOrDefaultAsync(s => s.Id == organization.CreatedBy)
                 ?? throw new InvalidOperationException("Organization doesn't exist");
 
             var member = new Member

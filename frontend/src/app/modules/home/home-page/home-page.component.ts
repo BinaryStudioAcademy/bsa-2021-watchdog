@@ -128,7 +128,6 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     async changeOrganization(organization: Organization) {
         this.authService.setOrganization(organization);
         await this.router.navigateByUrl('home/organization/settings');
-        window.location.reload();
     }
 
     ngOnDestroy() {
