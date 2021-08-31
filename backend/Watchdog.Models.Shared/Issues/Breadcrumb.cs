@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Watchdog.Core.Common.Models.Issue
+namespace Watchdog.Models.Shared.Issues
 {
     public class Breadcrumb
     {

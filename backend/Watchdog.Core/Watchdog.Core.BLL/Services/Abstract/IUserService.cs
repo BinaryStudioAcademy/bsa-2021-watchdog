@@ -18,6 +18,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
 
         Task<bool> IsUserEmailValid(string userEmail);
 
-        Task<ICollection<string>> GetUserUIdsByApplicationUIdAsync(string applicationUId);
+        Task<ICollection<string>> GetUserUidsByApplicationUidAsync(string applicationUid);
     }
 }

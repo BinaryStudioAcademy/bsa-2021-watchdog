@@ -1,7 +1,7 @@
 <!--    Details    -->
 <div class="issue-details-environment">
     <!--    Platform    -->
-    <div class="issue-details-environment-column">
+    <div *ngIf="issueEnvironment.platform" class="issue-details-environment-column">
         <div class="title">
             <span>Platform</span>
         </div>
@@ -9,8 +9,35 @@
             <span>{{issueEnvironment.platform}}</span>
         </div>
     </div>
+    <!--    System type    -->
+    <div *ngIf="issueEnvironment.systemType" class="issue-details-environment-column">
+        <div class="title">
+            <span>System type</span>
+        </div>
+        <div class="value">
+            <span>{{issueEnvironment.systemType}}</span>
+        </div>
+    </div>
+    <!--    UTC offset    -->
+    <div *ngIf="issueEnvironment.utcOffset" class="issue-details-environment-column">
+        <div class="title">
+            <span>UTC offset</span>
+        </div>
+        <div class="value">
+            <span>{{issueEnvironment.utcOffset < 0 ? "" : "+"}}{{issueEnvironment.utcOffset}}:00</span>
+        </div>
+    </div>
+    <!--    Locale    -->
+    <div *ngIf="issueEnvironment.locale" class="issue-details-environment-column">
+        <div class="title">
+            <span>Locale</span>
+        </div>
+        <div class="value">
+            <span>{{issueEnvironment.locale}}</span>
+        </div>
+    </div>
     <!--    Browser    -->
-    <div class="issue-details-environment-column">
+    <div *ngIf="issueEnvironment.browser" class="issue-details-environment-column">
         <div class="title">
             <span>Browser</span>
         </div>
@@ -19,7 +46,7 @@
         </div>
     </div>
     <!--    Browser name    -->
-    <div class="issue-details-environment-column">
+    <div *ngIf="issueEnvironment.browserName" class="issue-details-environment-column">
         <div class="title">
             <span>Browser name</span>
         </div>
@@ -28,7 +55,7 @@
         </div>
     </div>
     <!--    Browser version    -->
-    <div class="issue-details-environment-column">
+    <div *ngIf="issueEnvironment.browserVersion" class="issue-details-environment-column">
         <div class="title">
             <span>Browser version</span>
         </div>

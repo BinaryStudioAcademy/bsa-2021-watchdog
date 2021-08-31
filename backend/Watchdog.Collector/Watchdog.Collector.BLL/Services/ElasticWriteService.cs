@@ -4,8 +4,8 @@ using System;
 using System.Threading.Tasks;
 using Watchdog.Collector.BLL.Services.Abstract;
 using Watchdog.Collector.Common.DTO.Issue;
-using Watchdog.Collector.Common.Models;
 using Watchdog.Common.Messages;
+using Watchdog.Models.Shared.Issues;
 
 namespace Watchdog.Collector.BLL.Services
 {

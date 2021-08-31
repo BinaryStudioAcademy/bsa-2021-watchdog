@@ -1,4 +1,4 @@
-namespace Watchdog.Collector.Common.Models
+namespace Watchdog.Models.Shared.Issues
 {
     public class StackFrame
     {

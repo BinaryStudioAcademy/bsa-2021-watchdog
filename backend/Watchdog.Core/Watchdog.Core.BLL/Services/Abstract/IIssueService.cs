@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Watchdog.Core.BLL.Models;
 using Watchdog.Core.Common.DTO.Issue;
 using Watchdog.Core.Common.Models.Issue;
+using Watchdog.Models.Shared.Issues;
 
 namespace Watchdog.Core.BLL.Services.Abstract
 {

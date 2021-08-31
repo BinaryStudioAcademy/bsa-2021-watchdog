@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Dashboard;
 
 namespace Watchdog.Core.API.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class DashboardController : ControllerBase
@@ -22,14 +22,14 @@ namespace Watchdog.Core.API.Controllers
             _dashboardService = dashboardService;
         }
 
-        [HttpGet("organization/{organizationId}")]
+        [HttpGet("organization/{organizationId:int}")]
         public async Task<ActionResult<ICollection<DashboardDto>>> GetByOrganization(int organizationId)
         {
             var dashboards = await _dashboardService.GetAllDashboardsByOrganizationAsync(organizationId);
             return Ok(dashboards); 
         }
 
-        [HttpGet("{dashboardId}")]
+        [HttpGet("{dashboardId:int}")]
         public async Task<ActionResult<DashboardDto>> Get(int dashboardId)
         {
             var dashboard = await _dashboardService.GetDashboardAsync(dashboardId);
@@ -50,7 +50,7 @@ namespace Watchdog.Core.API.Controllers
             return Ok(updatedDashboard);
         }
 
-        [HttpDelete("{dashboardId}")]
+        [HttpDelete("{dashboardId:int}")]
         public async Task<ActionResult> Delete(int dashboardId)
         {
             await _dashboardService.DeleteDashboardAsync(dashboardId);
@@ -58,10 +58,10 @@ namespace Watchdog.Core.API.Controllers
             return NoContent();
         }
 
-        [HttpGet("dashboard/{dashboarName}/{organizationId}")]
-        public async Task<ActionResult<bool>> IsDashboardNameValid(string dashboarName, int organizationId)
+        [HttpGet("dashboard/{dashboardName}/{organizationId:int}")]
+        public async Task<ActionResult<bool>> IsDashboardNameValid(string dashboardName, int organizationId)
         {
-            return Ok(await _dashboardService.IsDashboardNameValid(dashboarName, organizationId));
+            return Ok(await _dashboardService.IsDashboardNameValid(dashboardName, organizationId));
         }
     }
 }

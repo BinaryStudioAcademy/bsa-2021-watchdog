@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Watchdog.Notifier.Common.Models
+namespace Watchdog.Models.Shared.Issues
 {
     public class IssueMessageDetails
     {
