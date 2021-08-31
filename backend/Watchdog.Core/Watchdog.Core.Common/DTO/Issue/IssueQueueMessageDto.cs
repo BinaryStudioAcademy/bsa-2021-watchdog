@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using Watchdog.Core.Common.Models.Issue;
+using Watchdog.Models.Shared.Issues;
 
 namespace Watchdog.Core.Common.DTO.Issue
 {
     public class IssueQueueMessageDto
     {
         public IssueMessage Issue { get; set; }
-        public ICollection<string> UserUids { get; set; }
+        public ICollection<int> MembersIds { get; set; }
     }
 }

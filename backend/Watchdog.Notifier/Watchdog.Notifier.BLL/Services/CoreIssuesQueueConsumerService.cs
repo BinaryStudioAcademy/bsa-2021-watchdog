@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.SignalR;
 using Watchdog.Notifier.BLL.Hubs.Interfaces;
 using RabbitMQ.Client;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace Watchdog.Notifier.BLL.Services
 {
@@ -38,13 +39,15 @@ namespace Watchdog.Notifier.BLL.Services
         private async void Received(object sender, BasicDeliverEventArgs arg)
         {
             var messageString = Encoding.UTF8.GetString(arg.Body.Span);
-            var issueMessage = JsonConvert.DeserializeObject<IssueQueueMessageDto>(messageString);
+            var queueMessage = JsonConvert.DeserializeObject<IssueQueueMessageDto>(messageString);
 
             _consumer.SetAcknowledge(arg.DeliveryTag, true);
 
-            _logger.LogInformation("Processing issue from core: {0}, {1}", issueMessage.Issue.IssueDetails.ClassName, issueMessage.Issue.IssueDetails.ErrorMessage);
+            _logger.LogInformation("Processing issue from core: {0}, {1}",
+                queueMessage.Issue.IssueDetails.ClassName,
+                queueMessage.Issue.IssueDetails.ErrorMessage);
 
-            await _hub.Clients.Users(issueMessage.UserUids).SendIssue(issueMessage.Issue);
+            await _hub.Clients.Groups(queueMessage.MembersIds.Select(i => i.ToString()).ToList()).SendIssue(queueMessage.Issue);
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)

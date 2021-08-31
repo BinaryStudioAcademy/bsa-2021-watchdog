@@ -8,7 +8,7 @@ using Watchdog.Core.Common.DTO.Organization;
 
 namespace Watchdog.Core.API.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class OrganizationsController : ControllerBase
@@ -27,13 +27,14 @@ namespace Watchdog.Core.API.Controllers
             return Ok(organizations);
         }
 
-        [HttpGet("default/user/{userId}")]
-        public async Task<ActionResult<OrganizationDto>> GetDafaultOrganizationByUserIdAsync(int userId)
+        [HttpGet("default/user/{userId:int}")]
+        public async Task<ActionResult<OrganizationDto>> GetDefaultOrganizationByUserIdAsync(int userId)
         {
             var organization = await _organizationService.GetDafaultOrganizationByUserIdAsync(userId);
             return Ok(organization);
         }
-
+        
+        [AllowAnonymous]
         [HttpGet("slug/{organizationSlug}")]
         public async Task<ActionResult<bool>> IsSlugValidAsync(string organizationSlug)
         {
@@ -46,20 +47,21 @@ namespace Watchdog.Core.API.Controllers
             return Ok(!(await _organizationService.IsOrganizationSlugValidAsync(organizationSlug)));
         }
 
-        [HttpGet("{organizationId}")]
+        [HttpGet("{organizationId:int}")]
         public async Task<ActionResult<OrganizationDto>> GetAsync(int organizationId)
         {
             var organization = await _organizationService.GetOrganizationAsync(organizationId);
             return Ok(organization);
         }
 
-        [HttpGet("user/{userId}")]
+        [HttpGet("user/{userId:int}")]
         public async Task<ActionResult<ICollection<OrganizationDto>>> GetByUserAsync(int userId)
         {
             var organizations = await _organizationService.GetUserOrganizationsAsync(userId);
             return Ok(organizations);
         }
-
+        
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<OrganizationDto>> CreateOrganizationAsync(NewOrganizationDto organizationDto)
         {
@@ -67,7 +69,7 @@ namespace Watchdog.Core.API.Controllers
             return Ok(organization);
         }
 
-        [HttpPut("{organizationId}")]
+        [HttpPut("{organizationId:int}")]
         public async Task<ActionResult<OrganizationDto>> UpdateAsync(int organizationId, NewOrganizationDto organizationDto)
         {
             if (!ModelState.IsValid)
@@ -78,16 +80,16 @@ namespace Watchdog.Core.API.Controllers
             var organization = await _organizationService.UpdateOrganizationAsync(organizationId, organizationDto);
             return Ok(organization);
         }
-
-        [HttpPut("settings/{organizationId}")]
+        
+        [HttpPut("settings/{organizationId:int}")]
         public async Task<ActionResult<OrganizationDto>> UpdateSettings(int organizationId, SettingsOrganizationDto settings)
         {
             var updatedOrganization = await _organizationService.UpdateSettingsAsync(organizationId, settings);
             return Ok(updatedOrganization);
         }
-        
-        [HttpDelete("{organizationId}")]
-        public async Task<ActionResult> DeleteOrgsnization(int organizationId)
+
+        [HttpDelete("{organizationId:int}")]
+        public async Task<ActionResult> DeleteOrganization(int organizationId)
         {
             await _organizationService.DeleteOrganizationAsync(organizationId);
             return NoContent();

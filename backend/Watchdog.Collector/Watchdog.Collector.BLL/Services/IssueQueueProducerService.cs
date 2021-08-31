@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Watchdog.Collector.BLL.Services.Abstract;
-using Watchdog.Collector.Common.Models;
+using Watchdog.Models.Shared.Issues;
 using Watchdog.RabbitMQ.Shared.Interfaces;
 
 namespace Watchdog.Collector.BLL.Services

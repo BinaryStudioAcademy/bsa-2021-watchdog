@@ -7,7 +7,7 @@ using Watchdog.Core.Common.DTO.Role;
 
 namespace Watchdog.Core.API.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class RolesController : ControllerBase

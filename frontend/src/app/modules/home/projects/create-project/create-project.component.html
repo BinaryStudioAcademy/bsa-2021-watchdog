@@ -1,11 +1,17 @@
 <h1 class="content-title">
     Create New Project
     <div class="header-buttons">
-        <button #saveBut pButton pRipple class="p-button-primary p-button-outlined" label="Save" (click)="createProject()"
-            [disabled]="!formGroup.valid || !newProject.platformId"></button>
+        <button
+        #saveBut
+        pButton
+        pRipple
+        class="p-button-primary p-button-outlined"
+        label="Save"
+        (click)="createProject()"
+        [disabled]="!formGroup?.valid || !newProject?.platformId"></button>
     </div>
 </h1>
-<div class="create-project-container">
+<div class="create-project-container" *ngIf="formGroup">
     <!--    Header    -->
     <div class="header">
         <p class="header-description">Projects allow you to scope error and transaction events to a specific
@@ -19,9 +25,11 @@
         <p-tabMenu [activeItem]="platforms.platformTabItems[0]" [model]="platforms.platformTabItems"></p-tabMenu>
         <!--    Platform Cards    -->
         <div class="platform-cards">
-                <div (click)="newProject.platformId = platform.id"
-                 *ngFor="let platform of platforms.viewPlatformCards"
-                 [ngClass]="{ 'selected-card': platform.id === this.newProject.platformId}" class="card">
+                <div
+                    (click)="newProject.platformId = platform.id"
+                    *ngFor="let platform of platforms.viewPlatformCards"
+                    [ngClass]="{ 'selected-card': platform.id === this.newProject.platformId}"
+                    class="card">
                 <img alt="{{platform.name}}" [src]="platform.avatarUrl | save">
                 <h3>{{platform.name}}</h3>
             </div>
@@ -38,33 +46,39 @@
 
         <div *ngFor="let category of alertData.alertCategories" class="alert-form">
             <form [formGroup]="formGroup">
-                <p-radioButton [inputId]="category.value.toString()" [value]="category.value" [label]="category.label"
-                               formControlName="alertCategory" name="alertCategory" [(ngModel)]="alertSetting.alertCategory">
+                <p-radioButton
+                    [inputId]="category.value.toString()"
+                    [value]="category.value"
+                    [label]="category.label"
+                    formControlName="alertCategory"
+                    name="alertCategory">
                 </p-radioButton>
             </form>
             <!--    Specific Alert Settings    -->
             <div class="special-settings" *ngIf="category.value === 3">
-                <p-inputNumber [(ngModel)]="alertSetting.specialAlertSetting.alertsCount"
-                               [disabled]="!isSpecialCategory(formGroup.controls?.alertCategory.value)"
-                               [min]="0" [showButtons]="true" [size]="2" [step]="1"
-                               class="radiobutton-settings-alerts-count"
-                               mode="decimal"
-                               incrementButtonClass="p-button-outlined"
-                               decrementButtonClass="p-button-outlined">
+                <p-inputNumber
+                    [(ngModel)]="alertSetting.specialAlertSetting.alertsCount"
+                    [disabled]="!isSpecialCategory(formGroup.controls?.alertCategory.value)"
+                    [min]="0" [showButtons]="true" [size]="2" [step]="1"
+                    class="radiobutton-settings-alerts-count"
+                    mode="decimal"
+                    incrementButtonClass="p-button-outlined"
+                    decrementButtonClass="p-button-outlined">
                 </p-inputNumber>
-                <p-dropdown [(ngModel)]="alertSetting.specialAlertSetting.specialAlertType"
-                            [disabled]="!isSpecialCategory(formGroup.controls?.alertCategory.value)"
-                            [options]="alertData.alertTypes"
-                            optionValue="value" optionLabel="label"
-                            class="radiobutton-settings-alert-type">
+                <p-dropdown
+                    [(ngModel)]="alertSetting.specialAlertSetting.specialAlertType"
+                    [disabled]="!isSpecialCategory(formGroup.controls?.alertCategory.value)"
+                    [options]="alertData.alertTypes"
+                    optionValue="value" optionLabel="label"
+                    class="radiobutton-settings-alert-type">
                 </p-dropdown>
                 <span>a unique error in</span>
-                <p-dropdown [(ngModel)]="alertSetting.specialAlertSetting.alertTimeInterval"
-                            [disabled]="!isSpecialCategory(formGroup.controls?.alertCategory.value)"
-                            [options]="alertData.alertTimeIntervals"
-                            optionValue="value" optionLabel="label"
-                            class="radiobutton-settings-alert-type"
-                >
+                <p-dropdown
+                    [(ngModel)]="alertSetting.specialAlertSetting.alertTimeInterval"
+                    [disabled]="!isSpecialCategory(formGroup.controls?.alertCategory.value)"
+                    [options]="alertData.alertTimeIntervals"
+                    optionValue="value" optionLabel="label"
+                    class="radiobutton-settings-alert-type">
                 </p-dropdown>
             </div>
         </div>
@@ -79,27 +93,30 @@
                 <span class="title">Project name</span>
                 <div class="p-input-icon-left">
                     <i class="pi pi-file"></i>
-                    <input aria-describedby="projectName" formControlName="projectName" pInputText
-                           placeholder="Project name"
-                           type="text"
-                           class="project-name-input"
-                           [(ngModel)] = "newProject.name">
+                    <i *ngIf="projectName?.pending" class="pi pi-spin pi-spinner right"></i>
+                    <input
+                        aria-describedby="projectName"
+                        formControlName="projectName"
+                        pInputText
+                        placeholder="Project name"
+                        type="text"
+                        class="project-name-input">
                 </div>
-                <div *ngIf="formGroup.controls?.projectName.touched && formGroup.controls?.projectName.invalid"
+                <div *ngIf="projectName.invalid && (projectName.dirty || projectName.touched)"
                      class="input-validation-error" id="projectName">
-                    <small *ngIf="formGroup.controls?.projectName.errors.required" class="p-error">
+                    <small *ngIf="projectName?.errors.required" class="p-error">
                         Сan not be empty
                     </small>
-                    <small *ngIf="formGroup.controls?.projectName.errors.minlength" class="p-error">
+                    <small *ngIf="projectName?.errors.minlength" class="p-error">
                         At least 3 characters
                     </small>
-                    <small *ngIf="formGroup.controls?.projectName.errors.maxlength" class="p-error">
+                    <small *ngIf="projectName?.errors.maxlength" class="p-error">
                         No more than 50 characters
                     </small>
-                    <small *ngIf="formGroup.controls?.projectName.errors?.notUnique" class="p-error">
+                    <small *ngIf="projectName?.errors.notUnique" class="p-error">
                         Project name is not unique in organization
                     </small>
-                    <small *ngIf="formGroup.controls?.projectName.errors.pattern" class="p-error">
+                    <small *ngIf="projectName?.errors.pattern" class="p-error">
                         May contain lowercase (a-z) and uppercase (A-Z) letters, numbers (0-9), dashes,
                         underscores and spaces
                     </small>
@@ -110,9 +127,14 @@
             <div [formGroup]="formGroup" class="project-team">
                 <span class="title">Team</span>
                 <div class="dropdown-with-button">
-                    <p-dropdown [options]="teams" aria-describedby="team" class="radiobutton-settings-alert-type"
-                                formControlName="team" optionLabel="name" placeholder="Select team" optionValue="id"
-                                [(ngModel)] = "newProject.teamId">
+                    <p-dropdown
+                        [options]="teams"
+                        aria-describedby="team"
+                        class="radiobutton-settings-alert-type"
+                        formControlName="team"
+                        optionLabel="name"
+                        placeholder="Select team"
+                        optionValue="id">
                         <ng-template let-team pTemplate="item">#{{team.name}}</ng-template>
                         <ng-template let-team pTemplate="selectedItem">#{{team.name}}</ng-template>
                     </p-dropdown>
@@ -127,31 +149,36 @@
                 </div>
             </div>
             <div class="add-team-block">
-                <button class="p-button-text button-add-team" icon="pi pi-plus-circle" pButton pRipple
-                pTooltip="Create a team"
-                tooltipPosition="top" type="button"
-                (click) = "openDialog()"></button>
+                <button
+                    class="p-button-text button-add-team"
+                    icon="pi pi-plus-circle"
+                    pButton
+                    pRipple
+                    pTooltip="Create a team"
+                    tooltipPosition="top" type="button"
+                    (click) = "openDialog()"></button>
             </div>
             <!-- Description -->
             <div [formGroup]="formGroup" class="project-description">
                 <span class="title">Project description</span>
-                <textarea [autoResize]="true" formControlName="projectDescription" pInputTextarea
+                <textarea
+                    [autoResize]="true"
+                    formControlName="projectDescription"
+                    pInputTextarea
                     placeholder="Description"
-                    type="textarea" maxlength="1000"
-                    [(ngModel)] = "newProject.description">
+                    type="textarea"
+                    maxlength="1000">
                 </textarea>
-                <div *ngIf="formGroup.controls?.projectDescription.touched && formGroup.controls?.projectDescription.invalid"
+                <div *ngIf="projectDescription.invalid && (projectDescription.dirty || projectDescription.touched)"
                      class="validation" id="projectDescription">
-                     <small *ngIf="formGroup.controls?.projectDescription.errors.maxlength" class="p-error">
+                     <small *ngIf="projectDescription.errors.maxlength" class="p-error">
                         No more than 1000 characters
                     </small>
-                    <small *ngIf="formGroup.controls?.projectDescription.errors.pattern" class="p-error">
+                    <small *ngIf="projectDescription.errors.pattern" class="p-error">
                         May contain lowercase (a-z) and uppercase (A-Z) letters, numbers (0-9) and symbols<br>-_!#$%&'*+—/=?^`&#123;|&#125;~.,:;`"\№@()<>[]
                     </small>
                 </div>
-
             </div>
-
         </div>
     </div>
 </div>
