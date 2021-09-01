@@ -11,6 +11,7 @@
         grid-gap: 10px
         border: 1px solid $issue-info-border-color
         min-width: 140px
+        word-break: break-all
 
         .title
             width: 175px
@@ -19,8 +20,12 @@
         .value
             padding: 8px 12px
             width: fit-content
-            overflow: hidden
-            overflow-wrap: break-word
             span
                 overflow-wrap: anywhere
                 line-height: normal
+                
+            .key
+                color: $header-name-color
+            
+            .value
+                color: $header-value-color

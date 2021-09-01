@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Nest;
 using System.Collections.Generic;
@@ -10,9 +11,9 @@ using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Application;
 using Watchdog.Core.Common.DTO.Issue;
 using Watchdog.Core.Common.Enums.Issues;
-using Watchdog.Core.Common.Models.Issue;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
+using Watchdog.Models.Shared.Issues;
 
 namespace Watchdog.Core.BLL.Services
 {
@@ -51,8 +52,7 @@ namespace Watchdog.Core.BLL.Services
             {
                 issue.Status = IssueStatus.Active;
             }
-            
-            issueMessage.Application = _mapper.Map<ApplicationDto>(issue.Application);
+
             newEventMessage.IssueId = issue.Id;
 
             _context.EventMessages.Add(newEventMessage);
@@ -248,8 +248,8 @@ namespace Watchdog.Core.BLL.Services
             var application = await _context.Applications.FirstOrDefaultAsync(a => a.ApiKey == issueMessage.ApiKey)
                 ?? throw new KeyNotFoundException("No project with this API KEY!");
 
-            issueMessage.Application = _mapper.Map<ApplicationDto>(application);
             newIssue.Status = IssueStatus.Active;
+
             newIssue.Application = application;
             var createdIssue = _context.Issues.Add(newIssue);
 
@@ -307,5 +307,23 @@ namespace Watchdog.Core.BLL.Services
             return (result, totalRecord);
         }
 
+        public async Task<int> GetFilteredIssueCountByStatusesAndDateRangeByApplicationIdAsync(int applicationId, IssueStatusesByDateRangeFilter filter)
+        {
+            if (!await _context.Applications.AnyAsync(application => application.Id == applicationId))
+            {
+                throw new KeyNotFoundException("Application not found");
+            }
+
+            var messagesCount = _context.EventMessages
+                .AsNoTracking()
+                .Include(message => message.Issue)
+                .Where(message =>
+                    message.Issue.ApplicationId == applicationId
+                    && filter.IssueStatuses.Contains(message.Issue.Status)
+                    && message.OccurredOn  >= filter.DateRange)
+                .Count();
+
+            return messagesCount;
+        }
     }
 }

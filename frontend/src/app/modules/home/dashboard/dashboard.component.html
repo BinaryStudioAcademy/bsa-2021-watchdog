@@ -33,6 +33,10 @@
                 [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects"
                 [style.flex-basis.px]="getTileSize(tile)" class="issues-per-time">
             </app-issues-per-time-tile>
+            <app-issues-count-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.IssuesCount"
+                [isShownEditTileMenu]="showTileMenu" [tile]="tile"
+                [userProjects]="projects" [style.flex-basis.px]="getTileSize(tile)" class="issues-count">
+            </app-issues-count-tile>
         </ng-container>
     </div>
 </ng-template>
