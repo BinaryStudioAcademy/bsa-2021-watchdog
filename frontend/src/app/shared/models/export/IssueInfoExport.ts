@@ -1,6 +1,3 @@
-﻿/**
- * Use only to pdf/excel export, property is the table column
- */
 export interface IssueInfoExport {
     LastErrorUrl?: string,
     ErrorClass?: string,

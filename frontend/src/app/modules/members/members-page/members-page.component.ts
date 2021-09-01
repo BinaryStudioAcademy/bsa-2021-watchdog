@@ -195,10 +195,6 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
         this.spinner.hide();
     }
 
-    ngOnDestroy() {
-        super.ngOnDestroy();
-    }
-
     private setUpSharedDate() {
         this.updateDataService.currentMessage
             .pipe(this.untilThis)
