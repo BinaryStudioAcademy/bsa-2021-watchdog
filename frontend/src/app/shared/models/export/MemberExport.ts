@@ -1,7 +1,7 @@
 export interface MemberExport {
-    FullName: string,
-    Email: string,
-    Role: string,
-    Teams: string,
-    Accepted: string,
+    FullName?: string,
+    Email?: string,
+    Role?: string,
+    Teams?: string,
+    Accepted?: string,
 }
