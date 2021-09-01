@@ -12,6 +12,7 @@
         grid-template-columns: 1fr 5fr
         border: 1px solid $issue-info-border-color
         min-width: 150px
+        word-break: break-all
 
         .title
             width: 175px
@@ -21,11 +22,9 @@
         .value
             padding: 8px 12px
             width: fit-content
-            overflow: hidden
-            overflow-wrap: break-word
             span
-                overflow-wrap: anywhere
                 line-height: normal
+
 .issue-stacktrace
     padding: 16px 0
 
@@ -37,19 +36,7 @@
         span
             line-height: 30px
 
-    &-message
-        padding-top: 24px
-        font-weight: 400
-        font-size: 17px
-        border-bottom: 1px solid $border-color
-
-        span
-            line-height: 30px
-            overflow-wrap: break-word
-
     .stacktrace
-        padding-left: 6px
-        padding-right: 6px
         margin-top: 12px
 
         &-row
@@ -57,12 +44,12 @@
             margin-bottom: 6px
 
             &-info
-                display: flex
-                flex-direction: row
                 line-height: 20px
-                padding-left: 8px
-                padding-bottom: 1px
-                padding-top: 1px
+                padding: 1px 8px 1px 8px
+                word-break: break-all
+
+                .class-name
+                    color: $stacktrace-class-name-color
 
                 .method-name
                     color: $stacktrace-method-name-color
@@ -70,14 +57,11 @@
                 .line-number
                     color: $stacktrace-line-number-color
 
-                .column
+                .column-number
                     color: $stacktrace-column-color
 
-                .file
+                .file-name
                     color: $stacktrace-file-color
-
-                    .colon
-                        color: $text-color
 
     .no-stacktrace
         padding-top: 12px

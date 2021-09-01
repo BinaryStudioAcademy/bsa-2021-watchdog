@@ -33,6 +33,22 @@ services:
           ASPNETCORE_ENVIRONMENT: 'Development'
           ElasticConfiguration__Uri: 'http://elasticsearch:9200'
 
+  watchdog_loader:
+      build:
+        context: ./backend
+        dockerfile: ./Watchdog.Loader/Dockerfile
+        args:
+            - PROJECT_PORT=5110
+      container_name: 'watchdog_loader'
+      restart: on-failure
+      ports:
+          - "5110:5110"
+      networks:
+          - back
+      environment:
+          ASPNETCORE_ENVIRONMENT: 'Development'
+          ElasticConfiguration__Uri: 'http://elasticsearch:9200'
+
   watchdog_notifier:
       build:
         context: ./backend
@@ -53,6 +69,7 @@ services:
         - watchdog_core
         - watchdog_collector
         - watchdog_notifier
+        - watchdog_loader
     build:
         context: ./frontend
         dockerfile: Dockerfile.dev

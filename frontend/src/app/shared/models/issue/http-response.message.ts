@@ -3,4 +3,9 @@ export interface HttpResponseErrorMessage {
     url: string,
     status: number,
     statusText: string,
+    hostName: string,
+    httpMethod: string,
+    ipAddress: string,
+    headers: Map<string, string>,
+    queryString: Map<string, string>
 }

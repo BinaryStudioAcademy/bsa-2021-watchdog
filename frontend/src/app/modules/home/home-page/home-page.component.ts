@@ -11,6 +11,8 @@ import { AuthenticationService } from '@core/services/authentication.service';
 import { MenuItem } from 'primeng/api/menuitem';
 import { Organization } from '@shared/models/organization/organization';
 import { Router } from '@angular/router';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { AddDashboardComponent } from '../modals/dashboard/add-dashboard.component';
 
 @Component({
     selector: 'app-home',
@@ -25,6 +27,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     collapsed: boolean = false;
     user: User;
     organization: Organization;
+    createDashboardDialog: DynamicDialogRef;
 
     constructor(
         private issuesHub: IssuesHubService,
@@ -32,6 +35,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         private updateDataService: ShareDataService<Dashboard>,
         private deleteDataService: ShareDataService<number>,
         private authService: AuthenticationService,
+        private dialogService: DialogService,
         private toastNotificationService: ToastNotificationService,
         private router: Router
     ) {
@@ -47,11 +51,11 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         this.user = this.authService.getUser();
 
         this.authService.getOrganization()
-            .subscribe(organization => {
+            .subscribe(async organization => {
                 this.organization = organization;
                 this.getAllDashboards();
+                await this.runHubs();
             });
-        await this.runHubs();
     }
 
     async runHubs() {
@@ -61,7 +65,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     async runIssuesHub() {
         try {
             await this.issuesHub.start();
-            this.issuesHub.messages.pipe(this.untilThis).subscribe(issue => {
+            this.issuesHub.listenMessages(issue => {
                 this.toastNotificationService.info(`Received issue: ${issue.issueDetails.errorMessage}`);
             });
         } catch {
@@ -69,16 +73,28 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         }
     }
 
-    addDashboard(newDashboard: NewDashboard) {
-        this.displayModal = false;
-        this.dashboardService.addDashboard(newDashboard)
+    openAddDashboarDialog() {
+        this.createDashboardDialog = this.dialogService.open(AddDashboardComponent, {
+            header: 'Add dashboard',
+            width: '400px',
+            showHeader: true,
+            baseZIndex: 10000,
+        });
+
+        this.createDashboardDialog.onClose
             .pipe(this.untilThis)
-            .subscribe(async dashboard => {
-                await this.getAllDashboards();
-                this.toastNotificationService.success('Dashboard has been added');
-                await this.router.navigate([`/home/dashboard/${dashboard.id}`]);
-            }, error => {
-                this.toastNotificationService.error(error);
+            .subscribe((newDashboard: NewDashboard) => {
+                if (newDashboard) {
+                    this.dashboardService.addDashboard(newDashboard)
+                        .pipe(this.untilThis)
+                        .subscribe(async dashboard => {
+                            await this.getAllDashboards();
+                            this.toastNotificationService.success('Dashboard has been added');
+                            await this.router.navigate([`/home/dashboard/${dashboard.id}`]);
+                        }, error => {
+                            this.toastNotificationService.error(error);
+                        });
+                }
             });
     }
 

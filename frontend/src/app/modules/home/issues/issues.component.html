@@ -9,45 +9,47 @@
         <div class="functional-bar">
             <div class="search-block p-inputgroup">
                 <span class="p-inputgroup-addon search-button"><i class="pi pi-search"></i></span>
-                <input name="search" pInputText placeholder="Search" type="text"
-                    (input)="table.filterGlobal({value: $event.target.value, fields: globalFilterFields }, 'contains')">
+                <input
+                    (input)="table.filterGlobal({value: $event.target.value, fields: globalFilterFields }, 'contains')"
+                    name="search"
+                    pInputText
+                    placeholder="Search"
+                    type="text">
             </div>
-            <!-- <div class="action-block">
-               <span class="p-inputgroup-addon search-button"><i class="pi pi-paperclip"></i></span>
-               <span class="p-inputgroup-addon search-button"><i class="pi pi-plus"></i></span>
-               <span class="p-inputgroup-addon search-button"><i class="pi pi-ellipsis-v"></i></span>
-               <span class="p-inputgroup-addon search-button"><i class="pi pi-times"></i></span>
-           </div> -->
         </div>
 
         <p-tabPanel>
             <ng-template pTemplate="header">
                 <div class="header">
-                    <span>All Unresolved</span>
-                    <p-badge *ngIf="totalRecords > 0" [value]="totalRecords.toString()"></p-badge>
+                    <span>All</span>
+                    <p-badge *ngIf="totalRecords" [value]="totalRecords?.toString()"></p-badge>
                 </div>
             </ng-template>
 
-            <p-table #table [autoLayout]="true" [paginator]="issues?.length > itemsPerPage" [resizableColumns]="true"
-                [rows]="itemsPerPage" [value]="issues" class="issues-table" [lazy]="true"
-                (onLazyLoad)="loadIssuesLazy($event)" [totalRecords]="totalRecords" [loading]="loading">
-                <ng-template pTemplate="colgroup">
-                    <colgroup>
-                        <col id="issue-col">
-                        <col id="events-col">
-                        <col id="users-col">
-                        <col id="assignee-col">
-                    </colgroup>
-                </ng-template>
+            <p-table
+                #table
+                (onLazyLoad)="loadIssuesLazy($event)"
+                [autoLayout]="true"
+                [lazy]="true"
+                [paginator]="totalRecords > itemsPerPage"
+                [resizableColumns]="true"
+                [rows]="itemsPerPage"
+                [totalRecords]="totalRecords"
+                [value]="issues"
+                class="issues-table">
                 <ng-template pTemplate="header">
                     <tr>
                         <th class="name" pSortableColumn="newest.occurredOn">
                             <div class="issue">
-                                <p-checkbox name="allIssues" (onChange)="selectAll($event)"></p-checkbox>
+                                <p-checkbox (onChange)="selectAll($event)" name="allIssues"></p-checkbox>
                                 <span>Issue <p-sortIcon field="newest.occurredOn"></p-sortIcon>
                                 </span>
-                                <p-columnFilter [showAddButton]="false" [showOperator]="false" type="text"
-                                    field="errorClass" display="menu">
+                                <p-columnFilter
+                                    [showAddButton]="false"
+                                    [showOperator]="false"
+                                    display="menu"
+                                    field="errorClass"
+                                    type="text">
                                 </p-columnFilter>
                             </div>
                         </th>
@@ -72,18 +74,22 @@
                                 </p-checkbox>
                                 <div class="content">
                                     <span class="name"
-                                        routerLink="/home/issues/{{issue.issueId}}/{{issue.newest.id}}">{{issue.errorClass}}</span>
+                                          routerLink="/home/issues/{{issue.issueId}}/{{issue.newest.id}}">{{issue.errorClass}}</span>
                                     <span appTooltipFullName class="description">{{issue.errorMessage}}</span>
                                     <div class="additional-info">
-                                        <p-tag *ngIf="issue.isNew" [rounded]="true" class="new-issue"
-                                            styleClass="p-mr-2" value="New issue">
-                                        </p-tag>
-                                        <span>{{issue.projectTag}}</span>
+                                        <ng-container [ngSwitch]="issue.status">
+                                            <p-tag *ngSwitchCase="IssueStatus.Active" [rounded]="true" styleClass="active-tag"
+                                                   value="active"></p-tag>
+                                            <p-tag *ngSwitchCase="IssueStatus.Resolved" [rounded]="true"
+                                                   severity="success" value="resolved"></p-tag>
+                                            <p-tag *ngSwitchCase="IssueStatus.Ignored" [rounded]="true" severity="info"
+                                                   value="ignored"></p-tag>
+                                        </ng-container>
                                         <div class="tooltip">
                                             <span><i class="pi pi-clock time-icon"></i>{{issue.newest.occurredOn |
                                                 timeAgo}}</span>
-                                            <span class="tooltiptext">{{issue.newest.occurredOn | date:'MMMM d, y
-                                                h:mma'}}</span>
+                                            <span
+                                                class="tooltip-text">{{issue.newest.occurredOn | date:'MMMM d, y h:mma'}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -92,17 +98,21 @@
                         <td>{{issue.eventsCount}}</td>
                         <td>{{issue.project.name}}</td>
                         <td>
-                            <div class="assignee" (click)="openAssign(issue)">
+                            <div (click)="openAssign(issue)" class="assignee">
                                 <p-avatarGroup styleClass="p-mb-3">
-                                    <p-avatar *ngIf="getNumberAssignee(issue?.assignee) === 0" icon="pi pi-user" shape="circle"></p-avatar>
+                                    <p-avatar *ngIf="getNumberAssignee(issue?.assignee) === 0" icon="pi pi-user"
+                                              shape="circle"></p-avatar>
                                     <p-avatar
                                         *ngFor="let user of getUsers(issue?.assignee)"
                                         [image]="user.avatarUrl"
                                         [label]="user.avatarUrl ? '' : user | userInitials"
                                         shape="circle">
                                     </p-avatar>
-                                    <p-avatar *ngFor="let label of getTeamsLabels(issue?.assignee)" [label]="label" shape="circle"></p-avatar>
-                                    <p-avatar *ngIf="getNumberAssignee(issue?.assignee) > 3" [label]="getNumberExtraAssignee(issue?.assignee)" shape="circle" ></p-avatar>
+                                    <p-avatar *ngFor="let label of getTeamsLabels(issue?.assignee)" [label]="label"
+                                              shape="circle"></p-avatar>
+                                    <p-avatar *ngIf="getNumberAssignee(issue?.assignee) > 3"
+                                              [label]="getNumberExtraAssignee(issue?.assignee)"
+                                              shape="circle"></p-avatar>
                                 </p-avatarGroup>
                                 <i class="pi pi-chevron-down"></i>
                             </div>
@@ -115,21 +125,29 @@
         <p-tabPanel [cache]="false" [disabled]="true">
             <ng-template pTemplate="header">
                 <div class="header">
-                    <span>Second Type</span>
-                    <p-badge *ngIf="issuesCount.secondtype > 0" [value]="issuesCount.secondtype.toString()"></p-badge>
+                    <span>Active</span>
+                    <p-badge *ngIf="issuesCount.active" [value]="issuesCount.active.toString()"></p-badge>
                 </div>
             </ng-template>
         </p-tabPanel>
         <p-tabPanel [disabled]="true">
             <ng-template pTemplate="header">
                 <div class="header">
-                    <span>Third Type</span>
-                    <p-badge *ngIf="issuesCount.thirdtype > 0" [value]="issuesCount.thirdtype.toString()"></p-badge>
+                    <span>Resolved</span>
+                    <p-badge *ngIf="issuesCount.resolved" [value]="issuesCount.resolved.toString()"></p-badge>
+                </div>
+            </ng-template>
+        </p-tabPanel>
+        <p-tabPanel [disabled]="true">
+            <ng-template pTemplate="header">
+                <div class="header">
+                    <span>Ignored</span>
+                    <p-badge *ngIf="issuesCount.ignored" [value]="issuesCount.ignored.toString()"></p-badge>
                 </div>
             </ng-template>
         </p-tabPanel>
     </p-tabView>
 </div>
-<app-assignee (closeModal)="closeAssign()" [data]="toAssing" [members]="sharedOptions.members"
-    [teams]="sharedOptions.teams" *ngIf="isAssign">
+<app-assignee (closeModal)="closeAssign()" *ngIf="isAssign" [data]="toAssign"
+              [members]="sharedOptions.members" [teams]="sharedOptions.teams">
 </app-assignee>

@@ -16,4 +16,5 @@ export interface ChartOptions {
     roundDomains?: boolean;
     autoScale?: boolean;
     colorScheme?: ColorScheme;
+    cardColor?: string;
 }

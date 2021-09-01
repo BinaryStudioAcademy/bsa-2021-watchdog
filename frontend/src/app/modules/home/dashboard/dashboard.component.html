@@ -6,22 +6,17 @@
     <!--    Right Buttons    -->
     <div class="action-buttons">
         <button (click)="confirmDelete()" [disabled]="!dashboard" class="p-button-danger p-button-outlined"
-                label="Delete" pButton pRipple></button>
-        <button (click)="isEditing = true" [disabled]="!dashboard" class="p-button-primary p-button-outlined"
-                label="Edit" pButton pRipple></button>
+            label="Delete" pButton pRipple></button>
+        <button (click)="openUpdateDashboardDialog()" [disabled]="!dashboard" class="p-button-primary p-button-outlined" label="Edit"
+            pButton pRipple></button>
         <button (click)="toggleTileMenu()" [disabled]="!dashboard" class="p-button-secondary p-button-outlined"
-                label="Edit Tiles"
-                pButton pRipple></button>
+            label="Edit Tiles" pButton pRipple></button>
     </div>
 </div>
 
 <app-tile-menu (clearTiles)="deleteAllTiles(dashboard.id)" (closeMenu)="this.showTileMenu = false;"
-               *ngIf="showTileMenu && dashboard" [dashboardId]="dashboard.id" [tiles]="tiles" [userProjects]="projects">
+    *ngIf="showTileMenu && dashboard" [dashboardId]="dashboard.id" [tiles]="tiles" [userProjects]="projects">
 </app-tile-menu>
-
-<app-update-dashboard (closeModal)="isEditing = !isEditing" (save)="updateDashboard($event)" *ngIf="isEditing"
-                      [dashboard]="dashboard">
-</app-update-dashboard>
 
 <!--    Tiles Content    -->
 <ng-template [ngIf]="dashboard">
@@ -30,15 +25,18 @@
     </div>
     <div *ngIf="tiles.length" class="tiles-container">
         <ng-container *ngFor="let tile of tiles" [ngSwitch]="tile.type">
-                <app-top-active-issues-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.TopActiveIssues"
-                                            [isShownEditTileMenu]="showTileMenu" [tile]="tile"
-                                            [userProjects]="projects" [style.flex-basis.px]="getTileSize(tile)"
-                                            class="top-active-issue">
-                </app-top-active-issues-tile>
-                <app-issues-per-time-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.IssuesPerTime"
-                                          [isShownEditTileMenu]="showTileMenu" [tile]="tile"
-                                          [userProjects]="projects" [style.flex-basis.px]="getTileSize(tile)" class="issues-per-time">
-                </app-issues-per-time-tile>
+            <app-top-active-issues-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.TopActiveIssues"
+                [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects"
+                [style.flex-basis.px]="getTileSize(tile)" class="top-active-issue">
+            </app-top-active-issues-tile>
+            <app-issues-per-time-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.IssuesPerTime"
+                [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects"
+                [style.flex-basis.px]="getTileSize(tile)" class="issues-per-time">
+            </app-issues-per-time-tile>
+            <app-issues-count-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.IssuesCount"
+                [isShownEditTileMenu]="showTileMenu" [tile]="tile"
+                [userProjects]="projects" [style.flex-basis.px]="getTileSize(tile)" class="issues-count">
+            </app-issues-count-tile>
         </ng-container>
     </div>
 </ng-template>

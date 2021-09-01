@@ -8,6 +8,10 @@ import { LazyLoadEvent } from 'primeng/api';
 import { clear } from './members.utils';
 import { clearIssueMessage, clearNest } from './issues.utils';
 import { IssueMessageInfo } from '@shared/models/issue/issue-message-info';
+import { UpdateIssueStatus } from '@shared/models/issue/update-issue-status';
+import { Issue } from '@shared/models/issue/issue';
+import { IssueStatusesFilter } from '@shared/models/issue/issue-statuses-filter';
+import { IssueStatusesByDateRangeFilter } from '@shared/models/issue/issue-statuses-by-date-range-filter';
 
 @Injectable({ providedIn: 'root' })
 export class IssueService {
@@ -19,9 +23,9 @@ export class IssueService {
         return this.httpService.getRequest<IssueInfo[]>(`${this.routePrefix}/info/${memberId}`);
     }
 
-    public getIssuesInfoLazy(memberId: number, event: LazyLoadEvent): Observable<{ collection: IssueInfo[], totalRecord: number }> {
+    public getIssuesInfoLazy(memberId: number, event: LazyLoadEvent): Observable<{ collection: IssueInfo[], totalRecords: number }> {
         return this.httpService
-            .postRequest<{ collection: IssueInfo[], totalRecord: number }>(`${this.routePrefix}/info/${memberId}`, clear(event, clearNest));
+            .postRequest(`${this.routePrefix}/info/${memberId}`, clear(event, clearNest));
     }
 
     public updateAssignee(updateData: UpdateAssignee): Observable<void> {
@@ -48,5 +52,33 @@ export class IssueService {
 
     public getEventMessagesInfoByProjectId(projectId: number): Observable<IssueMessageInfo[]> {
         return this.httpService.getRequest<IssueMessageInfo[]>(`${this.routePrefix}/messages/application/${projectId}`);
+    }
+
+    public getEventMessagesInfoByProjectIdFilteredByStatuses(
+        projectId: number,
+        issueStatusesFilter: IssueStatusesFilter
+    ): Observable<IssueMessageInfo[]> {
+        return this.httpService.postRequest<IssueMessageInfo[]>(
+            `${this.routePrefix}/messages/application/${projectId}/filterbystatuses`,
+            issueStatusesFilter
+        );
+    }
+
+    public getFilteredIssueCountByStatusesAndDateRangeByApplicationId(
+        projectId: number,
+        issueFilter: IssueStatusesByDateRangeFilter
+    ): Observable<number> {
+        return this.httpService.postRequest<number>(
+            `${this.routePrefix}/messages/application/${projectId}/filterbystatusesanddate`,
+            issueFilter
+        );
+    }
+
+    public updateIssueStatus(updateData: UpdateIssueStatus): Observable<void> {
+        return this.httpService.putRequest<void>(`${this.routePrefix}/updatestatus`, updateData);
+    }
+
+    public getIssueById(issueId: number): Observable<Issue> {
+        return this.httpService.getRequest<Issue>(`${this.routePrefix}/${issueId}`);
     }
 }

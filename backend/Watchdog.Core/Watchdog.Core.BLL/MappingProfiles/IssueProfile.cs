@@ -1,7 +1,7 @@
 using AutoMapper;
 using Watchdog.Core.Common.DTO.Issue;
-using Watchdog.Core.Common.Models.Issue;
 using Watchdog.Core.DAL.Entities;
+using Watchdog.Models.Shared.Issues;
 
 namespace Watchdog.Core.BLL.MappingProfiles
 {
@@ -25,6 +25,7 @@ namespace Watchdog.Core.BLL.MappingProfiles
                     opt => opt.MapFrom(scr => scr.OccurredOn));
 
             CreateMap<EventMessage, IssueMessageDto>();
+            CreateMap<Issue, IssueDto>();
         }
     }
 }

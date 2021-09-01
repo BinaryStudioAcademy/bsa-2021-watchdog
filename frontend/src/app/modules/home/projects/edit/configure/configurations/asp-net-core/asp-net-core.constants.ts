@@ -1,35 +1,49 @@
-export const appsetting = (apiKey: string) => `{
-    // other setting
+export const packageVersion = '1.0.2';
+export const packageName = 'Watchdog.AspNetCore';
+
+export const packageManagerInstallationCommand = `Install-Package ${packageName} -version ${packageVersion}`;
+export const dotnetCliInstallationCommand = `dotnet add package ${packageName} --version ${packageVersion}`;
+
+export const configureServices = `public IConfiguration Configuration { get; }
+
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddControllers();
+
+    services.AddWatchdog(Configuration);
+}
+`;
+
+export const appsettings = (apiKey: string) => `{
     "WatchdogSettings": {
         "ApiKey": "${apiKey}"
     }
 }
 `;
-export const configureServices = `public IConfiguration Configuration { get; }
 
-public void ConfigureServices(IServiceCollection services)
+export const sample = `using Microsoft.AspNetCore.Http;
+using System;
+using Watchdog.AspNetCore;
+
+namespace WebApplication
 {
-    services.AddControllers(Configuration);
-
-    // other services
-
-    services.AddWatchdog();
-
-    // other services
-}
-`;
-
-export const configure = `public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-{
-    // If you have a generic exception handler, then it should be here.
-
-    app.UseWatchdog();
-
-    // other middlewares
-
-    app.UseEndpoints(endpoints =>
+    public class ExceptionObserver
     {
-        endpoints.MapControllers();
-    });
+        private readonly IWatchdogAspNetCoreClientProvider _clientProvider;
+
+        public ExceptionObserver(IWatchdogAspNetCoreClientProvider clientProvider)
+        {
+            _clientProvider = clientProvider;
+        }
+
+        public void HandleException(HttpContext httpContext, Exception exception)
+        {
+            // To immediately send an exception with the current request state
+            _clientProvider.GetClient(httpContext).SendAsync(exception);
+
+            // To send an exception with the the handled request state
+            _clientProvider.GetClient(httpContext).TrackException(exception);
+        }
+    }
 }
 `;

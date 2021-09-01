@@ -10,7 +10,7 @@
         </div>
     </div>
     <!--    Class name    -->
-    <div class="issue-details-column">
+    <div *ngIf="issueMessage.issueDetails.className" class="issue-details-column">
         <div class="title">
             <span>Class name</span>
         </div>
@@ -19,7 +19,7 @@
         </div>
     </div>
     <!--    Message    -->
-    <div class="issue-details-column">
+    <div *ngIf="issueMessage.issueDetails.errorMessage" class="issue-details-column">
         <div class="title">
             <span>Message</span>
         </div>
@@ -27,19 +27,17 @@
             <span>{{issueMessage.issueDetails.errorMessage}}</span>
         </div>
     </div>
-    <!--    Url    -->
-    <ng-template [ngIf]="issueMessage.issueDetails.url && issueMessage.issueDetails.url !== ''">
-        <div class="issue-details-column">
-            <div class="title">
-                <span>Url</span>
-            </div>
-            <div class="value">
-                <span>{{issueMessage.issueDetails.url}}</span>
-            </div>
-        </div>
-    </ng-template>
-    <!--    Issue Id    -->
+    <!--    Project name    -->
     <div class="issue-details-column">
+        <div class="title">
+            <span>Project</span>
+        </div>
+        <div class="value">
+            <span>{{issue.project.name}}</span>
+        </div>
+    </div>
+    <!--    Issue Id    -->
+    <div *ngIf="issueMessage.id" class="issue-details-column">
         <div class="title">
             <span>Id</span>
         </div>
@@ -57,12 +55,11 @@
         <div *ngFor="let st of issueMessage.issueDetails.stackTrace" class="stacktrace-row">
             <div class="stacktrace-row-info">
                 <span>
-                    at <span class="method-name">{{st.methodName}}</span>
-                    <ng-template [ngIf]="st.arguments?.length">arguments: {{st.arguments}}</ng-template>
+                    <span class="class-name">{{st.className}}.</span>
+                    <span class="method-name">{{st.methodName}}</span>
+                    <span *ngIf="st.file"> in <span class="file-name">{{st.file}}</span></span>:
                     line <span class="line-number">{{st.lineNumber}}</span>,
-                    column <span class="column">{{st.column}}</span>
-                     (<span class="file">{{st.file}}<span class="colon">:<span
-                    class="line-number">{{st.lineNumber}}</span></span></span>)
+                    column <span class="column-number">{{st.column}}</span>
                 </span>
             </div>
         </div>

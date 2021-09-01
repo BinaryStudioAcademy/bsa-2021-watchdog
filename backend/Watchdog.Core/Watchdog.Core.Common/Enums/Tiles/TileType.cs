@@ -4,5 +4,6 @@
     {
         TopActiveIssues = 0,
         IssuePerTime = 1,
+        IssuesCount = 2,
     }
 }
