@@ -1,6 +1,6 @@
 using AutoMapper;
 using Watchdog.Collector.Common.DTO.Issue;
-using Watchdog.Collector.Common.Models;
+using Watchdog.Models.Shared.Issues;
 
 namespace Watchdog.Collector.BLL.MappingProfiles
 {

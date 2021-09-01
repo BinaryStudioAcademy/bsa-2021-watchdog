@@ -1,5 +1,5 @@
 using System;
-using Watchdog.Collector.Common.Models;
+using Watchdog.Models.Shared.Issues;
 
 namespace Watchdog.Collector.Common.DTO.Issue
 {

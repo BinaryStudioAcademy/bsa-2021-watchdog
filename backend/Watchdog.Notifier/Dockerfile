@@ -9,6 +9,7 @@ COPY ["Watchdog.Notifier/Watchdog.Notifier.API/Watchdog.Notifier.API.csproj", "W
 COPY ["Watchdog.Notifier/Watchdog.Notifier.BLL/Watchdog.Notifier.BLL.csproj", "Watchdog.Notifier/Watchdog.Notifier.BLL/"]
 COPY ["Watchdog.Notifier/Watchdog.Notifier.Common/Watchdog.Notifier.Common.csproj", "Watchdog.Notifier/Watchdog.Notifier.Common/"]
 COPY ["Watchdog.RabbitMQ.Shared/Watchdog.RabbitMQ.Shared.csproj", "Watchdog.RabbitMQ.Shared/"]
+COPY ["Watchdog.Models.Shared/Watchdog.Models.Shared.csproj", "Watchdog.Models.Shared/"]
 
 RUN dotnet restore "Watchdog.Notifier/Watchdog.Notifier.API/Watchdog.Notifier.API.csproj"
 COPY . .

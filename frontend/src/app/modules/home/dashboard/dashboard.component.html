@@ -37,18 +37,16 @@
                     *ngIf="showTileMenu && draggableTile?.tileOrder!==(i+1) && draggableTile?.tileOrder !== i"
                     pDroppable="dd">
                 </div>
-                <app-top-active-issues-tile
-                    (isDeleting)="deleteTile($event)"
-                    *ngSwitchCase="tileTypes.TopActiveIssues"
-                    [isShownEditTileMenu]="showTileMenu"
-                    [tile]="tile"
-                    [userProjects]="projects">
+                <app-top-active-issues-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.TopActiveIssues"
+                    [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects" class="top-active-issue">
                 </app-top-active-issues-tile>
-                <app-issues-per-time-tile
-                    (isDeleting)="deleteTile($event)"
-                    *ngSwitchCase="tileTypes.IssuesPerTime"
-                    [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects">
+                <app-issues-per-time-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.IssuesPerTime"
+                    [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects" class="issues-per-time">
                 </app-issues-per-time-tile>
+                <app-issues-count-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.IssuesCount"
+                    [isShownEditTileMenu]="showTileMenu" [tile]="tile"
+                    [userProjects]="projects" class="issues-count">
+                </app-issues-count-tile>
                 <div class="drop-line drop-line-right" (onDrop)="drop(i+1)" *ngIf="showTileMenu && draggableTile?.tileOrder!==i+2 && draggableTile?.tileOrder!==i+1" pDroppable="dd"></div>
             </div>
     </ng-container>

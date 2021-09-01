@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
-using Watchdog.Core.Common.Models.Issue;
+using Watchdog.Models.Shared.Issues;
 using Watchdog.RabbitMQ.Shared.Interfaces;
 using Watchdog.RabbitMQ.Shared.Models;
 

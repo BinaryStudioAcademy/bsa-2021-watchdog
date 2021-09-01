@@ -79,6 +79,10 @@ export class TileMenuComponent implements OnInit {
                 this.selectedItem = item;
                 this.tileDialogService.showIssuesPerTimeCreateDialog(this.userProjects, this.dashboardId, this.tiles);
                 break;
+            case TileType.IssuesCount:
+                this.selectedItem = item;
+                this.tileDialogService.showIssuesCountCreateDialog(this.userProjects, this.dashboardId, this.tiles);
+                break;
             default:
                 this.selectedItem = undefined;
                 break;
@@ -102,6 +106,12 @@ export class TileMenuComponent implements OnInit {
                 id: TileType.IssuesPerTime.toString(),
                 label: 'Issues Per Time',
                 icon: 'pi pi-chart-bar',
+                command: event => this.chartItemSelected(event.item)
+            },
+            {
+                id: TileType.IssuesCount.toString(),
+                label: 'Issues Count',
+                icon: 'pi pi-th-large',
                 command: event => this.chartItemSelected(event.item)
             },
         ];
