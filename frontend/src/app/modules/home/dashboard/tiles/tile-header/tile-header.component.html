@@ -7,6 +7,7 @@
                 icon="pi pi-pencil" pButton></button>
         <!--    Title When Edit    -->
         <ng-container *ngIf="isEditName && isShownTileMenu" [formGroup]="formGroup">
+
             <input [tooltipDisabled]="!formGroup.controls.name.errors"
                    autofocus class="input-text" formControlName="name"
                    pInputText pTooltip="At least 3 characters but no more than 50. May contain lowercase
@@ -23,6 +24,7 @@
     </div>
     <!--    Title Right Buttons    -->
     <div *ngIf="isShownTileMenu" class="header-right-buttons">
+
         <div class="button-delete">
             <button (click)="deleteTile()" class="p-button-raised p-button-text p-button-plain" icon="pi pi-trash"
                     pButton></button>

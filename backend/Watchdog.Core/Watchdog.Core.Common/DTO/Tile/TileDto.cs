@@ -12,6 +12,7 @@ namespace Watchdog.Core.Common.DTO.Tile
         public int DashboardId { get; set; }
         public string Settings { get; set; }
         public int CreatedBy { get; set; }
+        public int TileOrder { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

@@ -31,6 +31,12 @@ namespace Watchdog.Core.BLL.Services
             var tile = _mapper.Map<Tile>(newTileDto, opts =>
                 opts.AfterMap((_, dst) => { dst.CreatedAt = DateTime.UtcNow; }));
 
+            tile.TileOrder = 1;
+            if (await _context.Tiles.AnyAsync(t => t.DashboardId == tile.DashboardId))
+            {
+                tile.TileOrder = (await _context.Tiles.Where(t => t.DashboardId == tile.DashboardId).MaxAsync(t => t.TileOrder)) + 1;
+            }
+
             await _context.AddAsync(tile);
             await _context.SaveChangesAsync();
             return _mapper.Map<TileDto>(tile);
@@ -60,6 +66,7 @@ namespace Watchdog.Core.BLL.Services
             var tiles = await _context.Tiles
                 .AsNoTracking()
                 .Where(tile => tile.DashboardId == dashboardId)
+                .OrderBy(tile => tile.TileOrder)
                 .ToListAsync();
 
             return _mapper.Map<ICollection<TileDto>>(tiles);

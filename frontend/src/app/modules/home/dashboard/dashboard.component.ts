@@ -29,7 +29,6 @@ import { Member } from '@shared/models/member/member';
     styleUrls: ['./dashboard.component.sass']
 })
 export class DashboardComponent extends BaseComponent implements OnInit, OnDestroy {
-    isEditing: boolean;
     showTileMenu: boolean;
     dashboard: Dashboard;
     updateSubscription$: Subscription;
@@ -206,5 +205,45 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
             }, error => {
                 this.toastNotificationService.error(error);
             });
+    }
+
+    draggableTile: Tile;
+
+    drag(tile: Tile) {
+        this.draggableTile = tile;
+        console.log(this.draggableTile);
+        this.canDrag = false;
+    }
+
+    drop(num: number) {
+        console.log('Dropped to', this.draggableTile, num);
+        this.tiles = this.tiles.sort((t1, t2) => (t1.tileOrder > t2.tileOrder ? 1 : -1));
+        const removeIndex = this.tiles.indexOf(this.draggableTile);
+        this.tiles = this.tiles.filter(i => i.id !== this.draggableTile.id);
+
+        if (removeIndex < num) this.tiles.splice(num-1, 0, this.draggableTile);
+        else this.tiles.splice(num, 0, this.draggableTile);
+
+        this.tiles = this.tiles.map((t, i) => {
+            if (t.tileOrder !== i + 1) {
+                return { ...t, tileOrder: i + 1 };
+            }
+
+            return t;
+        });
+
+        this.draggableTile = null;
+        this.canDrag = false;
+    }
+
+    canDrag: boolean = false;
+
+    dragOn() {
+        this.canDrag = true;
+    }
+
+    dragOff() {
+        this.canDrag = false;
+        this.draggableTile = null;
     }
 }

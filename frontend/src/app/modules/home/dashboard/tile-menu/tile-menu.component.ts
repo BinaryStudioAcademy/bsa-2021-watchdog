@@ -23,6 +23,8 @@ export class TileMenuComponent implements OnInit {
     closeMenu: EventEmitter<boolean> = new EventEmitter();
     @Output()
     clearTiles: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output()
+    applyTilesOrder: EventEmitter<void> = new EventEmitter<void>();
 
     @Input() userProjects: Project[] = [];
     @Input() tiles: Tile[] = [];
@@ -53,6 +55,10 @@ export class TileMenuComponent implements OnInit {
 
     close() {
         this.closeMenu.emit(true);
+    }
+
+    applyOrder() {
+        this.applyTilesOrder.emit();
     }
 
     listItemSelected(item?: MenuItem): void {

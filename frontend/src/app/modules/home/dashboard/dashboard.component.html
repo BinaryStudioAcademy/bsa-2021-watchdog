@@ -24,15 +24,33 @@
         <app-no-content-placeholder title="Looks like here are no tiles"></app-no-content-placeholder>
     </div>
     <div *ngIf="tiles.length" class="tiles-container">
-        <ng-container *ngFor="let tile of tiles" [ngSwitch]="tile.type">
-            <app-top-active-issues-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.TopActiveIssues"
-                [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects"
-                [style.flex-basis.px]="getTileSize(tile)" class="top-active-issue">
-            </app-top-active-issues-tile>
-            <app-issues-per-time-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.IssuesPerTime"
-                [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects"
-                [style.flex-basis.px]="getTileSize(tile)" class="issues-per-time">
-            </app-issues-per-time-tile>
-        </ng-container>
+        <ng-container  *ngFor="let tile of tiles; let i = index" [ngSwitch]="tile.type">
+            <div class="tile" (onDragEnd)="dragOff()" (onDragStart)="drag(tile)" [style.flex-basis.px]="getTileSize(tile)" [pDraggableDisabled]="!canDrag" [pDraggable]="canDrag? 'dd' : null ">
+                <div class="button-settings">
+                <button (mousedown)="dragOn()" (mouseup)="dragOff()" *ngIf="showTileMenu"
+                    class="p-button-raised p-button-text p-button-plain" icon="pi pi-th-large" pButton>
+                </button>
+                </div>
+                <div
+                    (onDrop)="drop(i)"
+                    class="drop-line drop-line-left"
+                    *ngIf="showTileMenu && draggableTile?.tileOrder!==(i+1) && draggableTile?.tileOrder !== i"
+                    pDroppable="dd">
+                </div>
+                <app-top-active-issues-tile
+                    (isDeleting)="deleteTile($event)"
+                    *ngSwitchCase="tileTypes.TopActiveIssues"
+                    [isShownEditTileMenu]="showTileMenu"
+                    [tile]="tile"
+                    [userProjects]="projects">
+                </app-top-active-issues-tile>
+                <app-issues-per-time-tile
+                    (isDeleting)="deleteTile($event)"
+                    *ngSwitchCase="tileTypes.IssuesPerTime"
+                    [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects">
+                </app-issues-per-time-tile>
+                <div class="drop-line drop-line-right" (onDrop)="drop(i+1)" *ngIf="showTileMenu && draggableTile?.tileOrder!==i+2 && draggableTile?.tileOrder!==i+1" pDroppable="dd"></div>
+            </div>
+    </ng-container>
     </div>
 </ng-template>

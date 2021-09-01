@@ -203,7 +203,7 @@ export class AddEditIssuesPerTimeTileComponent implements OnInit {
                 granularity: values.granularity,
                 issueStatuses: values.issueStatuses,
                 sourceProjects: values.sourceProjects,
-            })
+            }),
         };
         this.close(newTile);
     }

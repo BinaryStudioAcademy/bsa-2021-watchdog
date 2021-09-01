@@ -7,6 +7,7 @@ namespace Watchdog.Core.Common.DTO.Tile
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int TileOrder { get; set; }
         public string Settings { get; set; }
     }
 }
