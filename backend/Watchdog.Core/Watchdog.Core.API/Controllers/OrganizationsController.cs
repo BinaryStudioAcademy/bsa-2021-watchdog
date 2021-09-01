@@ -55,7 +55,6 @@ namespace Watchdog.Core.API.Controllers
             return Ok(organizations);
         }
         
-        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<OrganizationDto>> CreateOrganizationAsync(NewOrganizationDto organizationDto)
         {
