@@ -15,6 +15,7 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { ChartsComponent } from './components/charts/charts.component';
 import { NoContentPlaceholderComponent } from './components/no-content-placeholder/no-content-placeholder';
 import { TeamNameAvatarPipe } from './pipes/team-name-avatar.pipe';
+import { GoogleChartsModule } from 'angular-google-charts';
 
 @NgModule({
     imports: [
@@ -24,7 +25,8 @@ import { TeamNameAvatarPipe } from './pipes/team-name-avatar.pipe';
         ReactiveFormsModule,
         PrimeComponentsModule,
         NgxJsonViewerModule,
-        NgxChartsModule
+        NgxChartsModule,
+        GoogleChartsModule
     ],
     declarations: [
         LoadingSpinnerComponent,
@@ -53,7 +55,8 @@ import { TeamNameAvatarPipe } from './pipes/team-name-avatar.pipe';
         TooltipWithFullNameDirective,
         NgxJsonViewerModule,
         ChartsComponent,
-        NoContentPlaceholderComponent
+        NoContentPlaceholderComponent,
+        GoogleChartsModule
     ]
 })
 export class SharedModule { }

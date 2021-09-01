@@ -1,1 +1,15 @@
-<p>project-analytics works!</p>
+<div class="geo-chart-wrp">
+    <div class="geo-chart-wrp--header">
+        <span>Geo Chart</span>
+    </div>
+    <div class="geo-chart-wrp--content">
+        <google-chart
+            #geoChart
+            class="geo-chart-wrp--chart"
+            [type]="geoChartOptions.type"
+            [title]="geoChartOptions.title"
+            [data]="geoChartOptions.geoData"
+            [dynamicResize]="true">
+        </google-chart>
+    </div>
+</div>
