@@ -12,6 +12,7 @@ import { HighlightModule } from 'ngx-highlightjs';
 import { AngularComponent } from './edit/configure/configurations/angular/angular.component';
 import { ReactComponent } from './edit/configure/configurations/react/react.component';
 import { JavascriptComponent } from './edit/configure/configurations/javascript/javascript.component';
+import { CodeComponent } from './edit/configure/code/code.component';
 
 @NgModule({
     declarations: [
@@ -25,6 +26,7 @@ import { JavascriptComponent } from './edit/configure/configurations/javascript/
         AngularComponent,
         ReactComponent,
         JavascriptComponent,
+        CodeComponent,
     ],
     imports: [
         SharedModule,

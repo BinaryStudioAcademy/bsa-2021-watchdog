@@ -8,11 +8,13 @@ import { BaseConfigurationComponent } from '../base-configuration.component';
     styleUrls: ['../../configure-styles.sass']
 })
 export class AngularComponent extends BaseConfigurationComponent implements OnInit {
+    install: string;
     main: string;
     errorHandler: string;
     appModule: string;
 
     ngOnInit(): void {
+        this.install = 'npm install --save @watchdog-bsa/watchdog-js';
         this.main = main(this.apiKey);
         this.errorHandler = errorHandler;
         this.appModule = appModule;
