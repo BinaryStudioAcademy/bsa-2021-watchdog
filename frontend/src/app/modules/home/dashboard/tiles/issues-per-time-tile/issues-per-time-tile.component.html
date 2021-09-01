@@ -1,9 +1,9 @@
 <div class="container">
-    <app-tile-header (isDeleting)="isDeleting.emit(tile)" (isEditing)="editTile()"
+    <app-tile-header (isDeleting)="isDeleting.emit(tile)" (isEditing)="editTile()" (isExporting)="initCanva()"
                      [isShownEditTileMenu]="isShownEditTileMenu" [tile]="tile"></app-tile-header>
 
 
-    <app-charts *ngIf="multi?.length === requiredProjects?.length" [chartOptions]="chartOptions" [tileType]="tile.type"
+    <app-charts id="chart" *ngIf="multi?.length === requiredProjects?.length" [chartOptions]="chartOptions" [tileType]="tile.type"
                 [chartType]="ChartType.Line" [multi]="multi">
     </app-charts>
 </div>

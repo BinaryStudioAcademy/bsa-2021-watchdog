@@ -23,6 +23,10 @@
     </div>
     <!--    Title Right Buttons    -->
     <div *ngIf="isShownTileMenu" class="header-right-buttons">
+        <div class="button-export">
+            <button (click)="exportTile()" class="p-button-raised p-button-text p-button-plain" icon="pi pi-download"
+                    pButton></button>
+        </div>
         <div class="button-delete">
             <button (click)="deleteTile()" class="p-button-raised p-button-text p-button-plain" icon="pi pi-trash"
                     pButton></button>

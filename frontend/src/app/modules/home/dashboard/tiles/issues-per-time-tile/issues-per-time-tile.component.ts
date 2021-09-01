@@ -24,6 +24,8 @@ import {
     convertTileSettingsToJson,
 } from '@core/utils/tile.utils';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
+import html2canvas from 'html2canvas';
+declare var pdfMake: any;
 
 @Component({
     selector: 'app-issues-per-time-tile[tile][isShownEditTileMenu][userProjects]',
@@ -45,6 +47,8 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
     dateRangeMsOffset: number;
     dateMsPast: number;
 
+    docDefinition: any;
+
     constructor(
         private tileService: TileService,
         private toastNotificationService: ToastNotificationService,
@@ -56,6 +60,7 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
     }
 
     ngOnInit() {
+        //this.initCanva();
         this.initChartSettings();
         this.applySettings();
     }
@@ -63,6 +68,59 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
     editTile() {
         this.tileDialogService.showIssuesPerTimeEditDialog(this.userProjects, this.tile,
             () => this.applySettings());
+    }
+
+    exportTile() {
+        if (this.docDefinition) {
+            pdfMake.createPdf(this.docDefinition).download('chartToPdf' + '.pdf');
+        } else {
+            this.toastNotificationService.error('Error export');
+        }
+    }
+
+    initCanva() {
+        setTimeout(() => {
+            const chart = document.getElementById('chart');
+            html2canvas(chart, {
+                height: 500,
+                width: 700,
+                scale: 3,
+                backgroundColor: null,
+                logging: false,
+                onclone: (document) => {
+                    document.getElementById('chart').style.visibility = 'visible';
+                }
+            }).then((canvas) => {
+                const chartData = canvas.toDataURL();
+                const docDefinition = { content: [],
+                    styles: {
+                        subheader: {
+                            fontSize: 16,
+                            bold: true,
+                            margin: [0, 10, 0, 5],
+                            alignment: 'left'
+                        },
+                        subsubheader: {
+                            fontSize: 12,
+                            italics: true,
+                            margin: [0, 10, 0, 25],
+                            alignment: 'left'
+                        }
+                    },
+                    defaultStyle: {
+                        // alignment: 'justify'
+                    }
+                };
+
+                const title = {text: 'Export', style: 'subheader'};
+                const description = {text: 'description', style: 'subsubheader'};
+                docDefinition.content.push(title);
+                docDefinition.content.push(description);
+                docDefinition.content.push({ image: chartData, width: 500 });
+                this.docDefinition = docDefinition;
+            });
+            }, 1100);
+        pdfMake.createPdf(this.docDefinition).download('chartToPdf' + '.pdf');
     }
 
     private applySettings() {
