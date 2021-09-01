@@ -74,8 +74,8 @@ export class ChartsComponent extends BaseComponent implements OnInit, AfterViewI
                 domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
             },
             colorSchemeHeatMap: chartOptions?.colorScheme ?? {
-                domain: ['#146738',' #2C9653', '#6CBA67',' #A9D770',
-                    '#DBED91', '#FDDE90', '#FAAD67','#EF6D49', '#D3342D', '#A10A28']
+                domain: ['#146738', ' #2C9653', '#6CBA67', ' #A9D770',
+                    '#DBED91', '#FDDE90', '#FAAD67', '#EF6D49', '#D3342D', '#A10A28']
             },
             view: chartOptions?.view,
             cardColor: chartOptions?.cardColor ?? '#ebebeb'

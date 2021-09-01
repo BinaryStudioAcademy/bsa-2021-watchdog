@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '@core/services/authentication.service';
-import { TileService } from '@core/services/tile.service';
 import { convertJsonToTileSettings, convertTileSettingsToJson } from '@core/utils/tile.utils';
 import { regexs } from '@shared/constants/regexs';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
@@ -21,10 +20,10 @@ import { GranularityDropdown } from '../../models/granularity-dropdown';
 import { IssueStatusCheckbox } from '../../models/issue-status-checkbox';
 
 @Component({
-  selector: 'app-add-edit-heat-map-tile',
-  templateUrl: './add-edit-heat-map-tile.component.html',
-  styleUrls: ['../../add-edit-modal-styles.sass'],
-  providers: [TilesModalData],
+    selector: 'app-add-edit-heat-map-tile',
+    templateUrl: './add-edit-heat-map-tile.component.html',
+    styleUrls: ['../../add-edit-modal-styles.sass'],
+    providers: [TilesModalData],
 })
 export class AddEditHeatMapTileComponent implements OnInit {
     userProjects: Project[];
@@ -42,7 +41,6 @@ export class AddEditHeatMapTileComponent implements OnInit {
 
     constructor(
         private ref: DynamicDialogRef,
-        private tileService: TileService,
         private tileModalData: TilesModalData,
         private dialogConfig: DynamicDialogConfig,
         private authenticationService: AuthenticationService,
@@ -219,5 +217,4 @@ export class AddEditHeatMapTileComponent implements OnInit {
         };
         this.close(updatedTile);
     }
-
 }

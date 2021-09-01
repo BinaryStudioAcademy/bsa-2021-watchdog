@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Tile } from '@shared/models/tile/tile';
 import { Project } from '@shared/models/projects/project';
-import { TileService } from '@core/services/tile.service';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { convertJsonToTileSettings, convertTileSettingsToJson } from '@core/utils/tile.utils';

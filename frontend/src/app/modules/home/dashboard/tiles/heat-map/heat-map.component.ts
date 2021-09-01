@@ -22,9 +22,9 @@ import { HeatMapSettings } from '@shared/models/tile/settings/heat-map.settings'
 import { ChartType } from '@shared/models/charts/chart-type';
 
 @Component({
-  selector: 'app-heat-map[tile][isShownEditTileMenu][userProjects]',
-  templateUrl: './heat-map.component.html',
-  styleUrls: ['./heat-map.component.sass']
+    selector: 'app-heat-map[tile][isShownEditTileMenu][userProjects]',
+    templateUrl: './heat-map.component.html',
+    styleUrls: ['./heat-map.component.sass']
 })
 export class HeatMapComponent extends BaseComponent implements OnInit {
     @Input() tile: Tile;
@@ -46,7 +46,7 @@ export class HeatMapComponent extends BaseComponent implements OnInit {
         private issueService: IssueService,
     ) {
         super();
-     }
+    }
 
     ngOnInit() {
         this.initChartSettings();
@@ -87,7 +87,7 @@ export class HeatMapComponent extends BaseComponent implements OnInit {
     }
 
     private getMultiChartSeries(
-        dateNow: Date | number, dateRangeMsOffset: number, granularityType:TileGranularityType, eventsInfo: IssueMessageInfo[]
+        dateNow: Date | number, dateRangeMsOffset: number, granularityType: TileGranularityType, eventsInfo: IssueMessageInfo[]
     ) {
         const issuesPerTime: { [time: number]: number } = { };
         const dateMsNow = convertDateToTileGranularityTimeStamp(granularityType, dateNow);
