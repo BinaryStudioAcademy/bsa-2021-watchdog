@@ -31,7 +31,7 @@
             </p-dropdown>
         </div>
         <!--    Granularity Dropdown    -->
-        <div class="granularity">
+        <div class="granularity" [hidden]="true">
             <div class="granularity-title">Granularity</div>
             <p-dropdown [options]="granularityDropdown" appendTo="body" formControlName="granularity" optionLabel="name"
                         optionValue="type" styleClass="granularity-dropdown">

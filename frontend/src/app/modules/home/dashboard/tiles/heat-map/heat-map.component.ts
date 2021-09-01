@@ -15,12 +15,14 @@ import { TileGranularityType } from '@shared/models/tile/enums/tile-granularity-
 import {
     convertDateToTileGranularityTimeStamp,
     convertJsonToTileSettings,
-    convertTileDateRangeTypeToMs,
     convertTileGranularityTypeToMs,
+    convertTileSettingsToJson,
     convertTilHeatMapDateRangeTypeToMs,
 } from '@core/utils/tile.utils';
 import { HeatMapSettings } from '@shared/models/tile/settings/heat-map.settings';
 import { ChartType } from '@shared/models/charts/chart-type';
+import { IssueStatus } from '@shared/models/issue/enums/issue-status';
+import { TileService } from '@core/services/tile.service';
 
 @Component({
     selector: 'app-heat-map[tile][isShownEditTileMenu][userProjects]',
@@ -40,11 +42,16 @@ export class HeatMapComponent extends BaseComponent implements OnInit {
     dateMsNow: number;
     dateRangeMsOffset: number;
     dateMsPast: number;
+    colorScheme = {
+        domain: ['#146738', ' #2C9653', '#6CBA67', ' #A9D770',
+            '#DBED91', '#FDDE90', '#FAAD67', '#EF6D49', '#D3342D', '#A10A28']
+    };
 
     constructor(
         private toastNotificationService: ToastNotificationService,
         private tileDialogService: TileDialogService,
         private issueService: IssueService,
+        private tileService: TileService
     ) {
         super();
     }
@@ -94,17 +101,13 @@ export class HeatMapComponent extends BaseComponent implements OnInit {
         const dateMsNow = convertDateToTileGranularityTimeStamp(granularityType, dateNow);
         const dateMsPast = convertDateToTileGranularityTimeStamp(granularityType, dateMsNow - dateRangeMsOffset);
         const granularityOffset = convertTileGranularityTypeToMs(granularityType);
-        const month = 12;
-        const week = 7;
 
         if (granularityType === TileGranularityType.OneWeek) {
             for (let i = dateMsNow, temp = 0; i > dateMsPast; i -= granularityOffset) {
-                debugger;
                 issuesPerTime[i] = 0;
                 temp = i;
                 eventsInfo.forEach((info) => {
                     const timeStamp = convertDateToTileGranularityTimeStamp(granularityType, info.occurredOn);
-                    debugger;
                     if (temp >= timeStamp) {
                         issuesPerTime[i] += 1;
                     }
@@ -113,7 +116,6 @@ export class HeatMapComponent extends BaseComponent implements OnInit {
         }
         if (granularityType === TileGranularityType.OneMonth) {
             for (let i = dateMsNow, temp = 0; i > dateMsPast; i -= granularityOffset) {
-                debugger;
                 issuesPerTime[i] = 0;
                 temp = i;
                 eventsInfo.forEach((info) => {
@@ -144,10 +146,32 @@ export class HeatMapComponent extends BaseComponent implements OnInit {
     }
 
     private getEventMessages(project: Project): void {
-        this.issueService.getEventMessagesInfoByProjectId(project.id)
+        const statuses = this.tileSettings.issueStatuses.filter(value => Object.values(IssueStatus).includes(value));
+        if (this.tileSettings.issueStatuses.length !== statuses.length) {
+            this.fixTileIssueStatus(statuses);
+        } else {
+            this.issueService
+                .getEventMessagesInfoByProjectIdFilteredByStatuses(project.id, { issueStatuses: this.tileSettings.issueStatuses })
+                .pipe(this.untilThis)
+                .subscribe(messagesInfo => {
+                    this.applyIssuesSettings(messagesInfo, project);
+                }, error => {
+                    this.toastNotificationService.error(error);
+                });
+        }
+    }
+
+    fixTileIssueStatus(statuses: IssueStatus[]) {
+        this.tileSettings.issueStatuses = statuses.length
+            ? statuses
+            : [IssueStatus.Active, IssueStatus.Resolved, IssueStatus.Ignored] as IssueStatus[];
+        this.tile.settings = convertTileSettingsToJson(this.tileSettings);
+        this.tileService
+            .updateTile(this.tile)
             .pipe(this.untilThis)
-            .subscribe(messagesInfo => {
-                this.applyIssuesSettings(messagesInfo, project);
+            .subscribe(response => {
+                this.tile = response;
+                this.applySettings();
             }, error => {
                 this.toastNotificationService.error(error);
             });
@@ -161,7 +185,8 @@ export class HeatMapComponent extends BaseComponent implements OnInit {
             showXAxis: true,
             showYAxis: true,
             showYAxisLabel: false,
-            showXAxisLabel: false
+            showXAxisLabel: false,
+            colorScheme: this.colorScheme
         };
     }
 }

@@ -17,6 +17,5 @@ export interface ChartOptions {
     autoScale?: boolean;
     showLabels?: boolean;
     colorScheme?: ColorScheme;
-    colorSchemeHeatMap?: ColorScheme;
     cardColor?: string;
 }

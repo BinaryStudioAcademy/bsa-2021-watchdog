@@ -59,7 +59,7 @@
         </ngx-charts-number-card>
     </div>
     <div *ngSwitchCase="ChartType.HeatMap" [ngClass]="{'heat-map': tileType === TileType.HeatMap}" class="chart-container">
-        <ngx-charts-heat-map #chart [scheme]="options.colorSchemeHeatMap" [view]="options.view"
+        <ngx-charts-heat-map #chart [scheme]="options.colorScheme" [view]="options.view"
             [legend]="options.showLegend" [showXAxisLabel]="options.showXAxisLabel"
             [showYAxisLabel]="options.showYAxisLabel" [xAxis]="options.showXAxis"
             [yAxis]="options.showYAxis" [xAxisLabel]="options.xAxisLabel"
