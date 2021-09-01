@@ -10,7 +10,6 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
 import { CroppedEvent } from 'ngx-photo-editor';
 import { AvatarDto } from '@shared/models/avatar/avatarDto';
 import { FileUpload } from 'primeng/fileupload';
-import { AuthenticationService } from '@core/services/authentication.service';
 
 @Component({
     selector: 'app-general-settings',
@@ -27,7 +26,6 @@ export class GeneralSettingsComponent extends BaseComponent implements OnInit {
     imageChangedEvent: { target: { files: File[] } };
     constructor(
         private organizationService: OrganizationService,
-        private authService: AuthenticationService,
         private toastNotificationService: ToastNotificationService
     ) { super(); }
 

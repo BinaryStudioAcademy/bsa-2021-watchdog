@@ -92,3 +92,11 @@ p-dropdown
         font-size: 0.7em
         margin-top: 0.2em
         color: $text-color-secondary
+
+:host ::ng-deep
+    .p-fileupload-choose:not(.p-disabled)
+        &:hover,
+        &:active
+            background: $editor-button-hover
+            border-color: $primary-color
+            color: $primary-color
