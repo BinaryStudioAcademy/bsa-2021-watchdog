@@ -105,6 +105,9 @@ export class IssuesCountTileComponent extends BaseComponent implements OnInit {
             timeline: false,
             showXAxisLabel: false,
             showYAxisLabel: false,
+            colorScheme: {
+                domain: ['#1c80cf']
+            }
         };
     }
 
