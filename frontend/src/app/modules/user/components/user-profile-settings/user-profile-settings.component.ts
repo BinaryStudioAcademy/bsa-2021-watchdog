@@ -9,7 +9,7 @@ import { changeEmailValidator } from '@shared/validators/change-email-validator.
 import { regexs } from '@shared/constants/regexs';
 import { FileUpload } from 'primeng/fileupload';
 import { CroppedEvent } from 'ngx-photo-editor';
-import { AvatarDto } from '@shared/models/user/avatarDto';
+import { AvatarDto } from '@shared/models/avatar/avatarDto';
 
 @Component({
     selector: 'app-user-profile-settings',
@@ -20,8 +20,6 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
     @Input() user: User;
     @Input() editForm: FormGroup;
     @ViewChild(FileUpload) fileUpload: FileUpload;
-    file: File;
-    filePath: string;
     imageChangedEvent: { target: { files: File[] } };
     constructor(
         private authService: AuthenticationService,
@@ -76,10 +74,10 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
     }
 
     imageCropped(event: CroppedEvent) {
-        const avatar: AvatarDto = { userId: this.authService.getUserId(), base64: event.base64 }
+        const avatar: AvatarDto = { id: this.authService.getUserId(), base64: event.base64 };
         this.user.avatarUrl = event.base64;
         const user = this.authService.getUser();
-        this.authService.setUser({ ...user, avatarUrl: event.base64 }) // DELETE this line after fixing local storage
+        this.authService.setUser({ ...user, avatarUrl: event.base64 }); // DELETE this line after fixing local storage
         this.userService.updateAvatar(avatar)
             .subscribe(() => { },
                 error => {

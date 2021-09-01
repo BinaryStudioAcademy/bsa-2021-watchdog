@@ -6,7 +6,7 @@ import { CoreHttpService } from './core-http.service';
 import { clear } from './registration.utils';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AvatarDto } from '@shared/models/user/avatarDto';
+import { AvatarDto } from '@shared/models/avatar/avatarDto';
 
 @Injectable({
     providedIn: 'root'

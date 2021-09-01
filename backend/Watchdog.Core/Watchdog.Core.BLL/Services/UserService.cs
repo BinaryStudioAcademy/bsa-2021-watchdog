@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
+using Watchdog.Core.Common.DTO.Avatar;
 using Watchdog.Core.Common.DTO.User;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
@@ -99,7 +100,7 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task UpdateUserAvatarAsync(AvatarDto data)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == data.UserId) ?? throw new KeyNotFoundException("User is not found!");
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == data.Id) ?? throw new KeyNotFoundException("User is not found!");
             user.AvatarUrl = data.Base64;
             await _context.SaveChangesAsync();
         }

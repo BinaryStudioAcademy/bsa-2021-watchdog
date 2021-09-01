@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.User;
+using Watchdog.Core.Common.DTO.Avatar;
 
 namespace Watchdog.Core.API.Controllers
 {

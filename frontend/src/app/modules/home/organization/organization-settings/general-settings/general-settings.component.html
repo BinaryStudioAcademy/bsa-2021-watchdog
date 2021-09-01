@@ -40,4 +40,35 @@
             </div>
         </div>
     </form>
+    <div class="photo-uploader">
+        <div class="uploader">
+            <label class="item-definition">
+                <div>Organization icon</div>
+                <div class="item-sub-text">Change the organization photo</div>
+            </label>
+            <p-fileUpload
+                mode="basic" 
+                name="avatar" 
+                accept="image/*"
+                label="Upload"
+                [fileLimit]="1"
+                [customUpload]="true"
+                (uploadHandler)="upload($event)"
+                (onError)="onError($event)"
+                [auto]="true"
+                chooseLabel="Upload">
+            </p-fileUpload>
+        </div>
+        <ngx-photo-editor
+            class="editor"
+            [imageChanedEvent]="imageChangedEvent"
+            (imageCropped)="imageCropped($event)"
+            [aspectRatio]="1/1"
+            [viewMode]="0"
+            [roundCropper]="true"
+            [resizeToWidth]="300"
+            appendTo="body"
+            [darkTheme]="false">
+        </ngx-photo-editor>
+    </div>
 </p-panel>

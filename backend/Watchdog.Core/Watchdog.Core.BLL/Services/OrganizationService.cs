@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
+using Watchdog.Core.Common.DTO.Avatar;
 using Watchdog.Core.Common.DTO.Organization;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
@@ -120,6 +121,14 @@ namespace Watchdog.Core.BLL.Services
             }
 
             return !(await _context.Organizations.ToListAsync()).Any(o => o.OrganizationSlug == organizationSlug);
+        }
+
+        public async Task<OrganizationDto> UpdateOrganizationAvatarAsync(AvatarDto data)
+        {
+            var organization = await _context.Organizations.FirstOrDefaultAsync(o => o.Id == data.Id) ?? throw new KeyNotFoundException("Organization is not found!");
+            organization.AvatarUrl = data.Base64;
+            await _context.SaveChangesAsync();
+            return _mapper.Map<OrganizationDto>(organization);
         }
     }
 }

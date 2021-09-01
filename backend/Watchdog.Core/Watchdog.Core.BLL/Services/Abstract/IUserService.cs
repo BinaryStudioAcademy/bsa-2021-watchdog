@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Watchdog.Core.Common.DTO.Avatar;
 using Watchdog.Core.Common.DTO.User;
 
 namespace Watchdog.Core.BLL.Services.Abstract

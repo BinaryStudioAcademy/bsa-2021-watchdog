@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 import { Organization } from '@shared/models/organization/organization';
 import { map, share, tap } from 'rxjs/operators';
 import { ShareDataService } from './share-data.service';
+import { AvatarDto } from '@shared/models/avatar/avatarDto';
 
 @Injectable({
     providedIn: 'root',
@@ -93,5 +94,13 @@ export class OrganizationService {
 
     isSlugUnique(slug: string): Observable<boolean> {
         return this.httpService.getRequest<boolean>(`${this.apiPrefix}/slug/${slug}`);
+    }
+
+    updateAvatar(data: AvatarDto): Observable<Organization> {
+        return this.httpService.patchRequest<Organization>(`${this.apiPrefix}/updateAvatar`, data)
+            .pipe(map(organization => {
+                this.dataService.changeMessage(organization);
+                return organization;
+            }));
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Watchdog.Core.BLL.Services.Abstract;
+using Watchdog.Core.Common.DTO.Avatar;
 using Watchdog.Core.Common.DTO.Organization;
 
 namespace Watchdog.Core.API.Controllers
@@ -85,6 +86,11 @@ namespace Watchdog.Core.API.Controllers
         {
             await _organizationService.DeleteOrganizationAsync(organizationId);
             return NoContent();
+        }
+        [HttpPatch("updateAvatar")]
+        public async Task<ActionResult<OrganizationDto>> UpdateOrganizationAvatar(AvatarDto data)
+        {
+            return Ok(await _organizationService.UpdateOrganizationAvatarAsync(data));
         }
 
     }

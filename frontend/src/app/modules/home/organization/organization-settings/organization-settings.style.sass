@@ -20,7 +20,6 @@ $fieldPercentageWidth: 90%
     display: flex
     gap: .2em
 
-
 .item
     display: flex
     padding-bottom: $half-indent
@@ -75,9 +74,21 @@ input[readonly]
     &:focus
         box-shadow: none
 p-dropdown
-    width: 100%
-
+        width: 100%
 
 ::ng-deep
     .item-form-field.p-dropdown
         width: 100%
+
+.uploader
+    display: flex
+    flex-direction: row
+
+.label-upload
+    width: 40%
+    margin-right: 1rem
+    font-size: 1.2em
+    &-sub-text
+        font-size: 0.7em
+        margin-top: 0.2em
+        color: $text-color-secondary
