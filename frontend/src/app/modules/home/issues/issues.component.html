@@ -17,14 +17,16 @@
                     type="text">
             </div>
             <div class="action-block">
-                <span (click)="exportExcel()" class="p-inputgroup-addon search-button" pTooltip="Export to Excel" tooltipPosition="top">
+                <span (click)="exportExcel()" class="p-inputgroup-addon search-button"
+                      pTooltip="{{selectedIssues.length ? 'Export selected issues to Excel' : 'Export issues to Excel'}}"
+                      tooltipPosition="top" tooltipStyleClass="tooltip-text">
                     <i class="pi pi-file-excel"></i>
                 </span>
-                <span (click)="exportPdf()" class="p-inputgroup-addon search-button" pTooltip="Export to PDF" tooltipPosition="top">
+                <span (click)="exportPdf()" class="p-inputgroup-addon search-button"
+                      pTooltip="{{selectedIssues.length ? 'Export selected issues to PDF' : 'Export issues to PDF'}}"
+                      tooltipPosition="top" tooltipStyleClass="tooltip-text">
                     <i class="pi pi-file-pdf"></i>
                 </span>
-                <span class="p-inputgroup-addon search-button"><i class="pi pi-ellipsis-v"></i></span>
-                <span class="p-inputgroup-addon search-button"><i class="pi pi-times"></i></span>
             </div>
         </div>
 
@@ -97,10 +99,11 @@
                                                    value="ignored"></p-tag>
                                         </ng-container>
                                         <div class="tooltip">
-                                            <span><i class="pi pi-clock time-icon"></i>{{issue.newest.occurredOn |
-                                                timeAgo}}</span>
-                                            <span
-                                                class="tooltip-text">{{issue.newest.occurredOn | date:'MMMM d, y h:mma'}}</span>
+                                            <span pTooltip="{{issue.newest.occurredOn | date:'MMMM d, y h:mma'}}"
+                                                  tooltipPosition="right" tooltipStyleClass="tooltip-text">
+                                                <i class="pi pi-clock time-icon"></i>
+                                                {{issue.newest.occurredOn | timeAgo}}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>

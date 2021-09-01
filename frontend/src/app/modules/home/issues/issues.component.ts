@@ -165,6 +165,10 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         return toUsers(assignee.memberIds.slice(0, this.viewedAssignee), this.sharedOptions.members);
     }
 
+    getAllUsers(assignee: Assignee) {
+        return toUsers(assignee.memberIds, this.sharedOptions.members);
+    }
+
     getTeamsLabels(assignee: Assignee) {
         const diff = this.viewedAssignee - assignee.memberIds.length;
         if (diff <= 0) {
@@ -186,7 +190,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     exportPdf(): void {
         this.spinner.show(true);
-        this.tableExportService.exportExcel(
+        this.tableExportService.exportPdf(
             this.issuesToPdfExportIssues(this.selectedIssues.length ? this.selectedIssues : this.issues),
             'Issues'
         );
@@ -203,7 +207,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                 Events: issue.eventsCount,
                 OccurredOn: new Date(issue.newest.occurredOn).toLocaleString(),
                 Project: issue.project.name,
-                Assignee: this.getUsers(issue.assignee).map(value => `${value.firstName} ${value.lastName}`).join(', ')
+                Assignee: this.getAllUsers(issue.assignee).map(value => `${value.firstName} ${value.lastName}`).join(', ')
             }
         ));
     }
@@ -217,7 +221,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                 Events: issue.eventsCount,
                 OccurredOn: new Date(issue.newest.occurredOn).toLocaleString(),
                 Project: issue.project.name,
-                Assignee: this.getUsers(issue.assignee).map(value => `${value.firstName} ${value.lastName}`).join(', ')
+                Assignee: this.getAllUsers(issue.assignee).map(value => `${value.firstName} ${value.lastName}`).join(', ')
             }
         ));
     }
