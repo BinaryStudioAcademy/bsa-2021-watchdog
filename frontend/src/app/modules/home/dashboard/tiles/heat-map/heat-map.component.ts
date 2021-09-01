@@ -17,6 +17,7 @@ import {
     convertJsonToTileSettings,
     convertTileDateRangeTypeToMs,
     convertTileGranularityTypeToMs,
+    convertTilHeatMapDateRangeTypeToMs,
 } from '@core/utils/tile.utils';
 import { HeatMapSettings } from '@shared/models/tile/settings/heat-map.settings';
 import { ChartType } from '@shared/models/charts/chart-type';
@@ -67,7 +68,7 @@ export class HeatMapComponent extends BaseComponent implements OnInit {
     private getTileSettings() {
         this.tileSettings = convertJsonToTileSettings(this.tile.settings, TileType.HeatMap) as HeatMapSettings;
         this.dateMsNow = new Date().getTime();
-        this.dateRangeMsOffset = convertTileDateRangeTypeToMs(this.tileSettings.dateRange);
+        this.dateRangeMsOffset = convertTilHeatMapDateRangeTypeToMs(this.tileSettings.dateRange);
         this.dateMsPast = this.dateMsNow - this.dateRangeMsOffset;
     }
 
@@ -93,19 +94,48 @@ export class HeatMapComponent extends BaseComponent implements OnInit {
         const dateMsNow = convertDateToTileGranularityTimeStamp(granularityType, dateNow);
         const dateMsPast = convertDateToTileGranularityTimeStamp(granularityType, dateMsNow - dateRangeMsOffset);
         const granularityOffset = convertTileGranularityTypeToMs(granularityType);
+        const month = 12;
+        const week = 7;
 
-        for (let i = dateMsPast; i < dateMsNow; i += granularityOffset) {
-            issuesPerTime[i] = 0;
-        }
-
-        eventsInfo.forEach((info) => {
-            const timeStamp = convertDateToTileGranularityTimeStamp(granularityType, info.occurredOn);
-            if (issuesPerTime[timeStamp]) {
-                issuesPerTime[timeStamp] += 1;
-            } else {
-                issuesPerTime[timeStamp] = 1;
+        if (granularityType === TileGranularityType.OneWeek) {
+            for (let i = dateMsNow, temp = 0; i > dateMsPast; i -= granularityOffset) {
+                debugger;
+                issuesPerTime[i] = 0;
+                temp = i;
+                eventsInfo.forEach((info) => {
+                    const timeStamp = convertDateToTileGranularityTimeStamp(granularityType, info.occurredOn);
+                    debugger;
+                    if (temp >= timeStamp) {
+                        issuesPerTime[i] += 1;
+                    }
+                });
             }
-        });
+        }
+        if (granularityType === TileGranularityType.OneMonth) {
+            for (let i = dateMsNow, temp = 0; i > dateMsPast; i -= granularityOffset) {
+                debugger;
+                issuesPerTime[i] = 0;
+                temp = i;
+                eventsInfo.forEach((info) => {
+                    const timeStamp = convertDateToTileGranularityTimeStamp(granularityType, info.occurredOn);
+                    if (temp >= timeStamp) {
+                        issuesPerTime[i] += 1;
+                    }
+                });
+            }
+        }
+        if (granularityType === TileGranularityType.OneDay) {
+            for (let i = dateMsNow, temp = 0; i > dateMsPast; i -= granularityOffset) {
+                issuesPerTime[i] = 0;
+                temp = i;
+                eventsInfo.forEach((info) => {
+                    const timeStamp = convertDateToTileGranularityTimeStamp(granularityType, info.occurredOn);
+                    if (temp >= timeStamp) {
+                        issuesPerTime[i] += 1;
+                    }
+                });
+            }
+        }
 
         return Object.entries(issuesPerTime).map<SingleChart>(([key, val]) => ({
             name: new Date(+key),

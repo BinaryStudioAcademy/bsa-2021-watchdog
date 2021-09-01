@@ -59,6 +59,21 @@ export const convertTileDateRangeTypeToMs = (type: TileDateRangeType): number | 
     }
 };
 
+export const convertTilHeatMapDateRangeTypeToMs = (type: TileDateRangeType): number | undefined => {
+    switch (type) {
+        case TileDateRangeType.ThePastDay:
+            return daysToMs(1);
+        case TileDateRangeType.ThePastWeek:
+            return daysToMs(7);
+        case TileDateRangeType.ThePast30Days:
+            return daysToMs(28);
+        case TileDateRangeType.ThePastYear:
+            return daysToMs(334);
+        default:
+            return undefined;
+    }
+};
+
 export const convertTileGranularityTypeToMs = (type: TileGranularityType): number | undefined => {
     switch (type) {
         case TileGranularityType.OneMinute:
@@ -72,7 +87,7 @@ export const convertTileGranularityTypeToMs = (type: TileGranularityType): numbe
         case TileGranularityType.OneWeek:
             return daysToMs(7);
         case TileGranularityType.OneMonth:
-            return daysToMs(30);
+            return daysToMs(28);
         default:
             return undefined;
     }
@@ -97,7 +112,7 @@ export const convertDateToTileGranularityTimeStamp = (type: TileGranularityType,
             date.setHours(Math.round(date.getHours() / 24) * 7, 0, 0, 0);
             break;
         case TileGranularityType.OneMonth:
-            date.setHours(Math.round(date.getHours() / 24) * 30, 0, 0, 0);
+            date.setHours(Math.round(date.getHours() / 24) * 28, 0, 0, 0);
             break;
         default:
             return undefined;
