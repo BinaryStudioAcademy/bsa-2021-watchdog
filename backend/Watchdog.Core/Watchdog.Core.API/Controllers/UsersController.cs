@@ -57,5 +57,12 @@ namespace Watchdog.Core.API.Controllers
         {
             return Ok(await _userService.IsUserEmailValid(userEmail));
         }
+
+        [HttpPatch("updateAvatar")]
+        public async Task<ActionResult> UpdateAvatarAsync(AvatarDto data)
+        {
+            await _userService.UpdateUserAvatarAsync(data);
+            return Ok();
+        }
     }
 }

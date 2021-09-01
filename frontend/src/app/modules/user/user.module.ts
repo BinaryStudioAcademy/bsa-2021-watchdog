@@ -5,17 +5,17 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { UserRoutingModule } from './user-routing.module';
 import { UserProfileSettingsComponent } from './components/user-profile-settings/user-profile-settings.component';
 import { UserPasswordSettingsComponent } from './components/user-password-settings/user-password-settings.component';
-
 @NgModule({
     declarations: [
         UserProfileComponent,
         UserProfileSettingsComponent,
-        UserPasswordSettingsComponent
+        UserPasswordSettingsComponent,
+
     ],
     imports: [
         SharedModule,
         UserRoutingModule,
-        FormsModule
+        FormsModule,
     ],
 })
 export class UserModule { }

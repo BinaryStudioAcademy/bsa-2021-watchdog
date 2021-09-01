@@ -1,5 +1,5 @@
 import { AuthenticationService } from '@core/services/authentication.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@core/components/base/base.component';
 import { User } from '@shared/models/user/user';
@@ -7,6 +7,9 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
 import { UserService } from '@core/services/user.service';
 import { changeEmailValidator } from '@shared/validators/change-email-validator.validator';
 import { regexs } from '@shared/constants/regexs';
+import { FileUpload } from 'primeng/fileupload';
+import { CroppedEvent } from 'ngx-photo-editor';
+import { AvatarDto } from '@shared/models/user/avatarDto';
 
 @Component({
     selector: 'app-user-profile-settings',
@@ -16,7 +19,10 @@ import { regexs } from '@shared/constants/regexs';
 export class UserProfileSettingsComponent extends BaseComponent implements OnInit {
     @Input() user: User;
     @Input() editForm: FormGroup;
-
+    @ViewChild(FileUpload) fileUpload: FileUpload;
+    file: File;
+    filePath: string;
+    imageChangedEvent: { target: { files: File[] } };
     constructor(
         private authService: AuthenticationService,
         private userService: UserService,
@@ -58,4 +64,26 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
     get email() { return this.editForm.controls.email; }
 
     get avatarUrl() { return this.editForm.controls.avatarUrl; }
+
+    onError(e) {
+        this.toastNotificationService.error(e.error);
+        this.fileUpload.clear();
+    }
+
+    upload(e: { files: File[] }) {
+        this.imageChangedEvent = { target: { files: e.files } };
+        this.fileUpload.clear();
+    }
+
+    imageCropped(event: CroppedEvent) {
+        const avatar: AvatarDto = { userId: this.authService.getUserId(), base64: event.base64 }
+        this.user.avatarUrl = event.base64;
+        const user = this.authService.getUser();
+        this.authService.setUser({ ...user, avatarUrl: event.base64 }) // DELETE this line after fixing local storage
+        this.userService.updateAvatar(avatar)
+            .subscribe(() => { },
+                error => {
+                    this.toastNotificationService.error(error);
+                });
+    }
 }

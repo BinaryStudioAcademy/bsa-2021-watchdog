@@ -77,27 +77,11 @@ input[readonly]
     &:focus
         box-shadow: none
 p-dropdown
-    width: 100%
+        width: 100%
 
 ::ng-deep
     .item-form-field.p-dropdown
         width: 100%
-
-.user-info
-    display: flex
-    margin-left: auto
-    margin-right: auto
-    width: 6em
-    margin-bottom: 30px
-    color: $shadow-color
-
-.user-avatar
-    @include disable-select
-    margin-top: 0.8em
-    height: 200px
-    margin-right: 1em
-    background-color: $shadow-color
-    border-radius: 100px
 
 .user-info-body li
     padding-top: 7px
@@ -141,7 +125,8 @@ p-dropdown
     display: inline-block
     margin-right: 10px
 
-h1, .navigation-item-link
+h1,
+.navigation-item-link
     white-space: nowrap
 
 .navigation-item-link
@@ -158,7 +143,7 @@ h1, .navigation-item-link
 #profile-settings
     background: white
     color: $primary-color
-    border-bottom: 2px solid  $primary-color
+    border-bottom: 2px solid $primary-color
 
 .pi
     display: inline-block
@@ -167,3 +152,48 @@ h1, .navigation-item-link
 .content-container
     padding: 24px
     padding-top: 30px
+
+.user-info
+    position: relative
+    border-radius: 50%
+    overflow: hidden
+    width: 12rem
+    height: 12rem
+    margin: 0 auto 2rem auto
+.user-avatar
+    @include disable-select
+    width: 100%
+    height: 100%
+    display: block
+
+.uploader
+    position: absolute
+    top: 0
+    right: 0
+    width: 100%
+    height: 100%
+    opacity: 0
+    transition: opacity .2s ease-in-out
+    cursor: pointer
+    &:hover
+        opacity: 0.5
+
+    .photo
+        position: absolute
+        bottom: 0
+        left: 0
+        height: 30%
+        width: 100%
+        background: black
+        display: flex
+        justify-content: center
+        align-items: center
+    .pi-camera
+        font-size: 2rem
+        color: white
+:host ::ng-deep
+    .p-fileupload,
+    .p-fileupload-choose
+        width: 100%
+        height: 100%
+        opacity: 0

@@ -1,9 +1,35 @@
+<ngx-photo-editor
+    class="editor"
+    [imageChanedEvent]="imageChangedEvent"
+    (imageCropped)="imageCropped($event)"
+    [aspectRatio]="1/1"
+    [viewMode]="0"
+    [roundCropper]="true"
+    [resizeToWidth]="300"
+    appendTo="body"
+    [darkTheme]="false">
+    <div>sadasd</div>
+</ngx-photo-editor>
 <div class="user-info">
-    <img class="user-avatar" [src]="user.avatarUrl ?? 'assets\\avatar.png'" alt="avatar">
+    <img class="user-avatar" [src]="user.avatarUrl ?? 'assets\\avatar.png' | save" alt="avatar">
+        <div class="uploader" >
+            <div class="photo">
+                <i class="pi pi-camera"></i>
+            </div>
+            <p-fileUpload 
+                mode="basic" 
+                name="avatar" 
+                accept="image/*"
+                [fileLimit]="1"
+                [customUpload]="true"
+                (uploadHandler)="upload($event)"
+                (onError)="onError($event)"
+                [auto]="true">
+            </p-fileUpload>
+        </div>
+        <div></div>
 </div>
-<form class="item" [formGroup]="editForm">
-    <input hidden="true" pInputText formControlName="avatarUrl" class="item-form-field">
-</form>
+
 <form class="item" [formGroup]="editForm">
     <label class="item-definition">
         <div>Email</div>
