@@ -28,7 +28,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
     organizationStep = false;
 
     stepRegistration = RegistrationSteps;
-    step = this.stepRegistration.First;
+    step = this.stepRegistration.PersonalData;
 
     organizationSlugJoins: string;
     tabRegistration = RegistrationTabs;
@@ -161,7 +161,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
     };
 
     next() {
-        if (this.step === this.stepRegistration.First) {
+        if (this.step === this.stepRegistration.PersonalData) {
             this.personalStep = true;
             if (this.personalDetail.invalid) { return; }
             this.step += 1;
@@ -170,16 +170,16 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
 
     previous() {
         this.step -= 1;
-        if (this.step === this.stepRegistration.First) {
+        if (this.step === this.stepRegistration.PersonalData) {
             this.personalStep = false;
         }
-        if (this.step === this.stepRegistration.Second) {
+        if (this.step === this.stepRegistration.OrganizationData) {
             this.organizationStep = false;
         }
     }
 
     submit() {
-        if (this.step === this.stepRegistration.Second) {
+        if (this.step === this.stepRegistration.OrganizationData) {
             this.organizationStep = true;
             if (this.indexOfSelectedTab === this.tabRegistration.CreateOrganization) {
                 this.onSubmit();

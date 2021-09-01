@@ -1,4 +1,4 @@
 export enum RegistrationSteps {
-    First = 1,
-    Second = 2
+    PersonalData = 1,
+    OrganizationData = 2
 }
