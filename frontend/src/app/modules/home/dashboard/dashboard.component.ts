@@ -59,10 +59,6 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         super();
     }
 
-    get viewTiles() {
-        return this.tiles;
-    }
-
     ngOnInit(): void {
         this.authService.getMember().pipe(this.untilThis)
             .subscribe(member => {
@@ -183,8 +179,9 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
 
     toggleTileMenu(): void {
         if (this.showTileMenu) {
-            this.tiles.sort((t1, t2) => (t1.tileOrder > t2.tileOrder ? 1 : -1));
+            this.revertTilesOrder();
         }
+
         this.showTileMenu = !this.showTileMenu;
     }
 
@@ -219,11 +216,9 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     }
 
     saveTilesOrder() {
-        if (!this.isOrderChanged) return;
         this.spinnerService.show(true);
 
-        const remappedTiles = this.tiles.map((t, i) => ({ ...t, tileOrder: i + 1 }));
-        this.tiles = remappedTiles;
+        this.tiles = this.tiles.map((t, i) => ({ ...t, tileOrder: i + 1 }));
         const orderingOfTiles = this.tiles.map(t => ({ id: t.id, tileOrder: t.tileOrder }));
 
         this.tileService.setDashboardOrderForTiles(this.dashboard.id, orderingOfTiles)
@@ -232,12 +227,14 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                 this.spinnerService.hide();
                 this.toastNotificationService.success('The Tiles order was successfully changed!');
                 this.isOrderChanged = false;
+            }, err => {
+                this.spinnerService.hide();
+                this.toastNotificationService.error(err);
             });
     }
 
     drag(tile: Tile) {
         this.draggableTile = tile;
-        console.log(this.draggableTile);
         this.canDrag = false;
     }
 
@@ -251,12 +248,17 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         this.dragOff();
     }
 
-    setDrag(status: boolean) {
+    setDragByButton(status: boolean) {
         this.canDrag = status;
     }
 
     dragOff() {
         this.canDrag = false;
         this.draggableTile = null;
+    }
+
+    private revertTilesOrder() {
+        this.tiles.sort((t1, t2) => (t1.tileOrder > t2.tileOrder ? 1 : -1));
+        this.isOrderChanged = false;
     }
 }
