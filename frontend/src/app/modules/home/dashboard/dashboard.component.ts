@@ -29,10 +29,14 @@ import { Member } from '@shared/models/member/member';
     styleUrls: ['./dashboard.component.sass']
 })
 export class DashboardComponent extends BaseComponent implements OnInit, OnDestroy {
-    showTileMenu: boolean;
+    showTileMenu: boolean = false;
+    canDrag: boolean = false;
+    isOrderChanged: boolean = false;
+    draggableTile: Tile;
     dashboard: Dashboard;
     updateSubscription$: Subscription;
     tiles: Tile[] = [];
+    tilesWithOrderBuffered: Tile[];
     tileTypes = TileType;
     projects: Project[] = [];
     updateDashboardDialog: DynamicDialogRef;
@@ -53,6 +57,10 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         private dialogService: DialogService
     ) {
         super();
+    }
+
+    get viewTiles() {
+        return this.tiles;
     }
 
     ngOnInit(): void {
@@ -174,6 +182,9 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     }
 
     toggleTileMenu(): void {
+        if (this.showTileMenu) {
+            this.tiles.sort((t1, t2) => (t1.tileOrder > t2.tileOrder ? 1 : -1));
+        }
         this.showTileMenu = !this.showTileMenu;
     }
 
@@ -207,7 +218,22 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
             });
     }
 
-    draggableTile: Tile;
+    saveTilesOrder() {
+        if (!this.isOrderChanged) return;
+        this.spinnerService.show(true);
+
+        const remappedTiles = this.tiles.map((t, i) => ({ ...t, tileOrder: i + 1 }));
+        this.tiles = remappedTiles;
+        const orderingOfTiles = this.tiles.map(t => ({ id: t.id, tileOrder: t.tileOrder }));
+
+        this.tileService.setDashboardOrderForTiles(this.dashboard.id, orderingOfTiles)
+            .pipe(this.untilThis)
+            .subscribe(() => {
+                this.spinnerService.hide();
+                this.toastNotificationService.success('The Tiles order was successfully changed!');
+                this.isOrderChanged = false;
+            });
+    }
 
     drag(tile: Tile) {
         this.draggableTile = tile;
@@ -216,30 +242,17 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     }
 
     drop(num: number) {
-        console.log('Dropped to', this.draggableTile, num);
-        this.tiles = this.tiles.sort((t1, t2) => (t1.tileOrder > t2.tileOrder ? 1 : -1));
         const removeIndex = this.tiles.indexOf(this.draggableTile);
         this.tiles = this.tiles.filter(i => i.id !== this.draggableTile.id);
 
-        if (removeIndex < num) this.tiles.splice(num-1, 0, this.draggableTile);
+        if (removeIndex < num) this.tiles.splice(num - 1, 0, this.draggableTile);
         else this.tiles.splice(num, 0, this.draggableTile);
-
-        this.tiles = this.tiles.map((t, i) => {
-            if (t.tileOrder !== i + 1) {
-                return { ...t, tileOrder: i + 1 };
-            }
-
-            return t;
-        });
-
-        this.draggableTile = null;
-        this.canDrag = false;
+        this.isOrderChanged = true;
+        this.dragOff();
     }
 
-    canDrag: boolean = false;
-
-    dragOn() {
-        this.canDrag = true;
+    setDrag(status: boolean) {
+        this.canDrag = status;
     }
 
     dragOff() {

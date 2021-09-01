@@ -1,7 +1,13 @@
 <div class="header">
     <div class="header-title">
         <!--    Default title    -->
+        <div class="button-replace">
+        <button *ngIf="!isEditName && isShownTileMenu" (mousedown)="dragOn()" (mouseup)="dragOff()"
+            class="p-button-raised p-button-text p-button-plain" icon="pi pi-th-large" pButton>
+        </button>
+        </div>
         <span *ngIf="!isEditName || !isShownTileMenu">{{tile.name}}</span>
+
         <button (click)="toggleNameEditor()" *ngIf="!isEditName && isShownTileMenu"
                 class="p-button-raised p-button-text p-button-plain"
                 icon="pi pi-pencil" pButton></button>

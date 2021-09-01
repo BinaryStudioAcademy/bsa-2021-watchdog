@@ -1,3 +1,4 @@
+import { TileWithOrder } from '@shared/models/tile/tile-with-order';
 import { Injectable } from '@angular/core';
 import { CoreHttpService } from './core-http.service';
 import { Observable } from 'rxjs';
@@ -7,32 +8,36 @@ import { UpdateTile } from '@shared/models/tile/update-tile';
 
 @Injectable({ providedIn: 'root' })
 export class TileService {
-    public readonly routePrefix = '/tiles';
+    readonly routePrefix = '/tiles';
 
     constructor(private httpService: CoreHttpService) {
     }
 
-    public get(id: number): Observable<Tile> {
+    get(id: number): Observable<Tile> {
         return this.httpService.getRequest<Tile>(`${this.routePrefix}/${id}`);
     }
 
-    public addTile(newTile: NewTile): Observable<Tile> {
+    addTile(newTile: NewTile): Observable<Tile> {
         return this.httpService.postRequest<Tile>(`${this.routePrefix}`, newTile);
     }
 
-    public deleteTile(tileId: number) {
+    deleteTile(tileId: number) {
         return this.httpService.deleteRequest<number>(`${this.routePrefix}/${tileId}`);
     }
 
-    public updateTile(updateTile: UpdateTile): Observable<Tile> {
+    updateTile(updateTile: UpdateTile): Observable<Tile> {
         return this.httpService.putRequest<Tile>(`${this.routePrefix}`, updateTile);
     }
 
-    public deleteAllTilesByDashboardId(dashboardId: number) {
+    deleteAllTilesByDashboardId(dashboardId: number) {
         return this.httpService.deleteRequest<number>(`${this.routePrefix}/dashboard/${dashboardId}`);
     }
 
-    public getAllTilesByDashboardId(dashboardId: number): Observable<Tile[]> {
+    getAllTilesByDashboardId(dashboardId: number): Observable<Tile[]> {
         return this.httpService.getRequest<Tile[]>(`${this.routePrefix}/dashboard/${dashboardId}`);
+    }
+
+    setDashboardOrderForTiles(dashboardId: number, tiles: TileWithOrder[]): Observable<Tile[]> {
+        return this.httpService.postRequest<Tile[]>(`${this.routePrefix}/dashboard/${dashboardId}/setOrder/`, tiles);
     }
 }

@@ -81,5 +81,24 @@ namespace Watchdog.Core.BLL.Services
             _context.RemoveRange(tilesEntities);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<ICollection<TileDto>> SetOrderForTilesAsync(int dashboardId, ICollection<TileOrderDto> tiles)
+        {
+            var dashboard = await _context.Dashboards.Include(d => d.Tiles).FirstOrDefaultAsync(d => d.Id == dashboardId)
+                ?? throw new KeyNotFoundException("No dashboard with this id!");
+
+            dashboard.Tiles = dashboard.Tiles
+                .Select(dt =>
+                {
+                    dt.TileOrder = tiles.First(t => t.Id == dt.Id).TileOrder;
+                    return dt;
+                })
+                .OrderBy(t => t.TileOrder)
+                .ToList();
+
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<ICollection<TileDto>>(dashboard.Tiles);
+        }
     }
 }

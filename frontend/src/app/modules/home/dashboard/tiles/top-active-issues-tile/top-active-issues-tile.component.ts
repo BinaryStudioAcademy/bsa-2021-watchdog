@@ -23,7 +23,7 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
     @Input() isShownEditTileMenu: boolean = false;
     @Input() userProjects: Project[] = [];
     @Output() isDeleting: EventEmitter<Tile> = new EventEmitter<Tile>();
-
+    @Output() dragTile: EventEmitter<boolean> = new EventEmitter<boolean>();
     paginatorRows: number = 5;
     tileSettings: TopActiveIssuesSettings;
     requiredProjects: Project[] = [];
@@ -45,6 +45,10 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
     editTile() {
         this.tileDialogService.showTopActiveIssuesEditDialog(this.userProjects, this.tile,
             () => this.applySettings());
+    }
+
+    setTileDragStatus(status: boolean) {
+        this.dragTile.emit(status);
     }
 
     private applySettings() {
