@@ -11,6 +11,14 @@
     <p-tabPanel>
         <ng-template pTemplate="header">
             <div class="header">
+                <span>Analytics</span>
+            </div>
+        </ng-template>
+        <app-project-analytics *ngIf="project" [project]="project"></app-project-analytics>
+    </p-tabPanel>
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <div class="header">
                 <span>General settings</span>
             </div>
         </ng-template>
