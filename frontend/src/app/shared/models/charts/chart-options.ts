@@ -15,6 +15,8 @@ export interface ChartOptions {
     timeline?: boolean;
     roundDomains?: boolean;
     autoScale?: boolean;
+    showLabels?: boolean;
     colorScheme?: ColorScheme;
+    colorSchemeHeatMap?: ColorScheme;
     cardColor?: string;
 }

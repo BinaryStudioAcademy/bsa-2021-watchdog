@@ -77,6 +77,10 @@ export class TileMenuComponent implements OnInit {
                 this.selectedItem = item;
                 this.tileDialogService.showIssuesCountCreateDialog(this.userProjects, this.dashboardId, this.tiles);
                 break;
+            case TileType.HeatMap:
+                this.selectedItem = item;
+                this.tileDialogService.showHeatMapCreateDialog(this.userProjects, this.dashboardId, this.tiles);
+                break;
             default:
                 this.selectedItem = undefined;
                 break;
@@ -106,6 +110,12 @@ export class TileMenuComponent implements OnInit {
                 id: TileType.IssuesCount.toString(),
                 label: 'Issues Count',
                 icon: 'pi pi-th-large',
+                command: event => this.chartItemSelected(event.item)
+            },
+            {
+                id: TileType.HeatMap.toString(),
+                label: 'Heat map',
+                icon: 'pi pi-heart',
                 command: event => this.chartItemSelected(event.item)
             },
         ];
