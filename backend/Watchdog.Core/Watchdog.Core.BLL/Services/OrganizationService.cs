@@ -120,7 +120,7 @@ namespace Watchdog.Core.BLL.Services
                 return false;
             }
 
-            return !(await _context.Organizations.ToListAsync()).Any(o => o.OrganizationSlug == organizationSlug);
+            return !(await _context.Organizations.AnyAsync(o => o.OrganizationSlug == organizationSlug));
         }
 
     }
