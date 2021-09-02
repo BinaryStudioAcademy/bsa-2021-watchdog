@@ -10,7 +10,7 @@ using Watchdog.Core.DAL.Context;
 namespace Watchdog.Core.DAL.Migrations
 {
     [DbContext(typeof(WatchdogCoreContext))]
-    [Migration("20210901131820_UpdateAvatarUrl")]
+    [Migration("20210902145058_UpdateAvatarUrl")]
     partial class UpdateAvatarUrl
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -730,6 +730,9 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<bool>("IsAccepted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
                     b.Property<int>("OrganizationId")
                         .HasColumnType("int");
 
@@ -758,6 +761,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 3, 8, 20, 29, 56, 733, DateTimeKind.Unspecified).AddTicks(99),
                             CreatedBy = 3,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 5,
                             RoleId = 2,
                             UserId = 0
@@ -768,6 +772,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2019, 11, 16, 1, 22, 22, 917, DateTimeKind.Unspecified).AddTicks(2673),
                             CreatedBy = 20,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 4,
                             RoleId = 1,
                             UserId = 0
@@ -778,6 +783,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 1, 3, 8, 25, 34, 990, DateTimeKind.Unspecified).AddTicks(521),
                             CreatedBy = 3,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 1,
                             RoleId = 1,
                             UserId = 0
@@ -788,6 +794,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 4, 25, 10, 18, 40, 933, DateTimeKind.Unspecified).AddTicks(8555),
                             CreatedBy = 10,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 4,
                             RoleId = 1,
                             UserId = 0
@@ -798,6 +805,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2019, 9, 16, 10, 2, 15, 309, DateTimeKind.Unspecified).AddTicks(5491),
                             CreatedBy = 3,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 3,
                             RoleId = 3,
                             UserId = 0
@@ -808,6 +816,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2021, 6, 15, 20, 0, 11, 725, DateTimeKind.Unspecified).AddTicks(3505),
                             CreatedBy = 3,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 5,
                             RoleId = 1,
                             UserId = 0
@@ -818,6 +827,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 1, 21, 6, 5, 21, 218, DateTimeKind.Unspecified).AddTicks(6260),
                             CreatedBy = 4,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 1,
                             RoleId = 3,
                             UserId = 0
@@ -828,6 +838,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2019, 12, 23, 10, 22, 47, 210, DateTimeKind.Unspecified).AddTicks(1299),
                             CreatedBy = 11,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 1,
                             RoleId = 1,
                             UserId = 0
@@ -838,6 +849,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 7, 6, 4, 7, 57, 503, DateTimeKind.Unspecified).AddTicks(5793),
                             CreatedBy = 10,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 1,
                             RoleId = 3,
                             UserId = 0
@@ -848,6 +860,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 1, 29, 1, 2, 39, 606, DateTimeKind.Unspecified).AddTicks(1635),
                             CreatedBy = 1,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 1,
                             RoleId = 3,
                             UserId = 0
@@ -858,6 +871,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 5, 19, 20, 41, 5, 50, DateTimeKind.Unspecified).AddTicks(7290),
                             CreatedBy = 16,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 2,
                             RoleId = 1,
                             UserId = 0
@@ -868,6 +882,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2021, 5, 21, 12, 57, 44, 740, DateTimeKind.Unspecified).AddTicks(9150),
                             CreatedBy = 2,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 3,
                             RoleId = 1,
                             UserId = 0
@@ -878,6 +893,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 1, 13, 19, 47, 33, 819, DateTimeKind.Unspecified).AddTicks(6240),
                             CreatedBy = 3,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 5,
                             RoleId = 1,
                             UserId = 0
@@ -888,6 +904,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 5, 5, 6, 58, 55, 90, DateTimeKind.Unspecified).AddTicks(7547),
                             CreatedBy = 10,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 4,
                             RoleId = 1,
                             UserId = 0
@@ -898,6 +915,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2021, 7, 5, 3, 30, 54, 448, DateTimeKind.Unspecified).AddTicks(9294),
                             CreatedBy = 15,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 1,
                             RoleId = 3,
                             UserId = 0
@@ -908,6 +926,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2021, 6, 14, 18, 35, 8, 962, DateTimeKind.Unspecified).AddTicks(783),
                             CreatedBy = 12,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 2,
                             RoleId = 2,
                             UserId = 0
@@ -918,6 +937,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2019, 11, 27, 0, 59, 19, 851, DateTimeKind.Unspecified).AddTicks(207),
                             CreatedBy = 2,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 2,
                             RoleId = 2,
                             UserId = 0
@@ -928,6 +948,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 2, 24, 22, 7, 24, 896, DateTimeKind.Unspecified).AddTicks(9869),
                             CreatedBy = 14,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 5,
                             RoleId = 1,
                             UserId = 0
@@ -938,6 +959,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2021, 6, 29, 4, 27, 33, 463, DateTimeKind.Unspecified).AddTicks(2445),
                             CreatedBy = 16,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 2,
                             RoleId = 2,
                             UserId = 0
@@ -948,6 +970,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 8, 31, 3, 14, 25, 440, DateTimeKind.Unspecified).AddTicks(6945),
                             CreatedBy = 20,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 3,
                             RoleId = 1,
                             UserId = 0
@@ -958,6 +981,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 10, 19, 4, 23, 25, 774, DateTimeKind.Unspecified).AddTicks(1835),
                             CreatedBy = 14,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 1,
                             RoleId = 1,
                             UserId = 0
@@ -968,6 +992,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2021, 7, 15, 16, 39, 54, 102, DateTimeKind.Unspecified).AddTicks(9813),
                             CreatedBy = 12,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 4,
                             RoleId = 3,
                             UserId = 0
@@ -978,6 +1003,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2019, 11, 13, 12, 40, 5, 13, DateTimeKind.Unspecified).AddTicks(878),
                             CreatedBy = 15,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 5,
                             RoleId = 3,
                             UserId = 0
@@ -988,6 +1014,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2019, 9, 1, 23, 36, 12, 841, DateTimeKind.Unspecified).AddTicks(6973),
                             CreatedBy = 5,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 5,
                             RoleId = 2,
                             UserId = 0
@@ -998,6 +1025,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 2, 9, 19, 23, 50, 460, DateTimeKind.Unspecified).AddTicks(534),
                             CreatedBy = 20,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 4,
                             RoleId = 3,
                             UserId = 0
@@ -1008,6 +1036,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2021, 4, 23, 7, 4, 13, 49, DateTimeKind.Unspecified).AddTicks(4808),
                             CreatedBy = 16,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 2,
                             RoleId = 2,
                             UserId = 0
@@ -1018,6 +1047,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2019, 11, 23, 18, 4, 52, 732, DateTimeKind.Unspecified).AddTicks(9426),
                             CreatedBy = 6,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 3,
                             RoleId = 1,
                             UserId = 0
@@ -1028,6 +1058,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2021, 1, 17, 9, 54, 56, 29, DateTimeKind.Unspecified).AddTicks(2520),
                             CreatedBy = 11,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 3,
                             RoleId = 3,
                             UserId = 0
@@ -1038,6 +1069,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 9, 4, 5, 54, 15, 840, DateTimeKind.Unspecified).AddTicks(7823),
                             CreatedBy = 20,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 2,
                             RoleId = 1,
                             UserId = 0
@@ -1048,6 +1080,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2019, 11, 5, 17, 30, 28, 659, DateTimeKind.Unspecified).AddTicks(2449),
                             CreatedBy = 1,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 1,
                             RoleId = 2,
                             UserId = 0
@@ -1619,6 +1652,11 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<string>("Settings")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TileOrder")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
@@ -1640,6 +1678,7 @@ namespace Watchdog.Core.DAL.Migrations
                             DashboardId = 15,
                             Name = "Ergonomic Fresh Chicken",
                             Settings = "{\"sourceProjects\": [4],\"dateRange\": 4,\"issuesCount\": 489}",
+                            TileOrder = 0,
                             Type = 0
                         },
                         new
@@ -1651,6 +1690,7 @@ namespace Watchdog.Core.DAL.Migrations
                             DashboardId = 15,
                             Name = "Tasty Frozen Tuna",
                             Settings = "{\"sourceProjects\": [8],\"dateRange\": 2,\"issuesCount\": 977}",
+                            TileOrder = 0,
                             Type = 0
                         },
                         new
@@ -1662,7 +1702,8 @@ namespace Watchdog.Core.DAL.Migrations
                             DashboardId = 10,
                             Name = "Gorgeous Fresh Towels",
                             Settings = "{\"sourceProjects\": [14],\"dateRange\": 4,\"issuesCount\": 361}",
-                            Type = 2
+                            TileOrder = 0,
+                            Type = 3
                         },
                         new
                         {
@@ -1673,6 +1714,7 @@ namespace Watchdog.Core.DAL.Migrations
                             DashboardId = 14,
                             Name = "Ergonomic Granite Gloves",
                             Settings = "{\"sourceProjects\": [15],\"dateRange\": 1,\"issuesCount\": 751}",
+                            TileOrder = 0,
                             Type = 0
                         },
                         new
@@ -1684,161 +1726,176 @@ namespace Watchdog.Core.DAL.Migrations
                             DashboardId = 2,
                             Name = "Handmade Wooden Table",
                             Settings = "{\"sourceProjects\": [2],\"dateRange\": 1,\"issuesCount\": 992}",
+                            TileOrder = 0,
                             Type = 2
                         },
                         new
                         {
                             Id = 6,
-                            Category = 1,
-                            CreatedAt = new DateTime(2021, 4, 15, 19, 36, 58, 134, DateTimeKind.Unspecified).AddTicks(8802),
-                            CreatedBy = 1,
+                            Category = 0,
+                            CreatedAt = new DateTime(2021, 4, 17, 15, 59, 57, 251, DateTimeKind.Unspecified).AddTicks(3258),
+                            CreatedBy = 3,
                             DashboardId = 4,
                             Name = "Unbranded Steel Salad",
-                            Settings = "{\"sourceProjects\": [2],\"dateRange\": 1,\"issuesCount\": 915}",
-                            Type = 0
+                            Settings = "{\"sourceProjects\": [6],\"dateRange\": 4,\"issuesCount\": 305}",
+                            TileOrder = 0,
+                            Type = 1
                         },
                         new
                         {
                             Id = 7,
-                            Category = 1,
-                            CreatedAt = new DateTime(2021, 7, 6, 5, 56, 57, 809, DateTimeKind.Unspecified).AddTicks(7691),
-                            CreatedBy = 2,
-                            DashboardId = 14,
-                            Name = "Incredible Frozen Keyboard",
-                            Settings = "{\"sourceProjects\": [4],\"dateRange\": 4,\"issuesCount\": 539}",
+                            Category = 0,
+                            CreatedAt = new DateTime(2021, 2, 22, 19, 16, 4, 416, DateTimeKind.Unspecified).AddTicks(1115),
+                            CreatedBy = 1,
+                            DashboardId = 8,
+                            Name = "Unbranded Wooden Sausages",
+                            Settings = "{\"sourceProjects\": [15],\"dateRange\": 2,\"issuesCount\": 235}",
+                            TileOrder = 0,
                             Type = 1
                         },
                         new
                         {
                             Id = 8,
-                            Category = 1,
-                            CreatedAt = new DateTime(2021, 5, 1, 12, 45, 22, 202, DateTimeKind.Unspecified).AddTicks(5966),
-                            CreatedBy = 12,
-                            DashboardId = 11,
-                            Name = "Intelligent Concrete Hat",
-                            Settings = "{\"sourceProjects\": [10],\"dateRange\": 1,\"issuesCount\": 761}",
-                            Type = 0
+                            Category = 0,
+                            CreatedAt = new DateTime(2020, 11, 25, 15, 41, 47, 336, DateTimeKind.Unspecified).AddTicks(1749),
+                            CreatedBy = 13,
+                            DashboardId = 3,
+                            Name = "Intelligent Granite Fish",
+                            Settings = "{\"sourceProjects\": [12],\"dateRange\": 4,\"issuesCount\": 570}",
+                            TileOrder = 0,
+                            Type = 2
                         },
                         new
                         {
                             Id = 9,
-                            Category = 1,
-                            CreatedAt = new DateTime(2019, 11, 12, 16, 5, 38, 894, DateTimeKind.Unspecified).AddTicks(8561),
-                            CreatedBy = 14,
-                            DashboardId = 3,
-                            Name = "Refined Rubber Pants",
-                            Settings = "{\"sourceProjects\": [8],\"dateRange\": 4,\"issuesCount\": 848}",
-                            Type = 1
+                            Category = 3,
+                            CreatedAt = new DateTime(2019, 10, 3, 4, 33, 43, 293, DateTimeKind.Unspecified).AddTicks(230),
+                            CreatedBy = 10,
+                            DashboardId = 6,
+                            Name = "Fantastic Wooden Shirt",
+                            Settings = "{\"sourceProjects\": [13],\"dateRange\": 4,\"issuesCount\": 836}",
+                            TileOrder = 0,
+                            Type = 2
                         },
                         new
                         {
                             Id = 10,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 2, 3, 13, 9, 18, 256, DateTimeKind.Unspecified).AddTicks(6869),
-                            CreatedBy = 4,
-                            DashboardId = 4,
-                            Name = "Refined Fresh Shirt",
-                            Settings = "{\"sourceProjects\": [2],\"dateRange\": 2,\"issuesCount\": 549}",
+                            CreatedAt = new DateTime(2020, 5, 23, 14, 14, 5, 360, DateTimeKind.Unspecified).AddTicks(6501),
+                            CreatedBy = 3,
+                            DashboardId = 3,
+                            Name = "Fantastic Concrete Gloves",
+                            Settings = "{\"sourceProjects\": [9],\"dateRange\": 4,\"issuesCount\": 388}",
+                            TileOrder = 0,
                             Type = 0
                         },
                         new
                         {
                             Id = 11,
-                            Category = 1,
-                            CreatedAt = new DateTime(2021, 4, 22, 12, 42, 25, 714, DateTimeKind.Unspecified).AddTicks(9197),
-                            CreatedBy = 11,
-                            DashboardId = 11,
-                            Name = "Refined Cotton Table",
-                            Settings = "{\"sourceProjects\": [7],\"dateRange\": 0,\"issuesCount\": 487}",
+                            Category = 0,
+                            CreatedAt = new DateTime(2021, 7, 4, 6, 51, 35, 932, DateTimeKind.Unspecified).AddTicks(2836),
+                            CreatedBy = 9,
+                            DashboardId = 6,
+                            Name = "Practical Metal Bacon",
+                            Settings = "{\"sourceProjects\": [8],\"dateRange\": 0,\"issuesCount\": 155}",
+                            TileOrder = 0,
                             Type = 2
                         },
                         new
                         {
                             Id = 12,
-                            Category = 3,
-                            CreatedAt = new DateTime(2019, 8, 15, 5, 1, 52, 281, DateTimeKind.Unspecified).AddTicks(6096),
-                            CreatedBy = 2,
-                            DashboardId = 6,
-                            Name = "Small Wooden Table",
-                            Settings = "{\"sourceProjects\": [6],\"dateRange\": 0,\"issuesCount\": 731}",
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = 13,
                             Category = 1,
-                            CreatedAt = new DateTime(2019, 11, 24, 6, 26, 2, 408, DateTimeKind.Unspecified).AddTicks(3940),
-                            CreatedBy = 10,
-                            DashboardId = 6,
-                            Name = "Ergonomic Metal Pants",
-                            Settings = "{\"sourceProjects\": [7],\"dateRange\": 4,\"issuesCount\": 518}",
+                            CreatedAt = new DateTime(2020, 10, 10, 14, 46, 9, 101, DateTimeKind.Unspecified).AddTicks(8963),
+                            CreatedBy = 20,
+                            DashboardId = 12,
+                            Name = "Practical Plastic Cheese",
+                            Settings = "{\"sourceProjects\": [3],\"dateRange\": 3,\"issuesCount\": 65}",
+                            TileOrder = 0,
                             Type = 0
                         },
                         new
                         {
+                            Id = 13,
+                            Category = 3,
+                            CreatedAt = new DateTime(2019, 10, 14, 23, 36, 3, 945, DateTimeKind.Unspecified).AddTicks(9097),
+                            CreatedBy = 9,
+                            DashboardId = 2,
+                            Name = "Handcrafted Plastic Shirt",
+                            Settings = "{\"sourceProjects\": [8],\"dateRange\": 3,\"issuesCount\": 213}",
+                            TileOrder = 0,
+                            Type = 1
+                        },
+                        new
+                        {
                             Id = 14,
-                            Category = 1,
-                            CreatedAt = new DateTime(2021, 7, 11, 13, 57, 50, 473, DateTimeKind.Unspecified).AddTicks(6824),
-                            CreatedBy = 12,
-                            DashboardId = 3,
-                            Name = "Handmade Concrete Chips",
-                            Settings = "{\"sourceProjects\": [3],\"dateRange\": 3,\"issuesCount\": 25}",
+                            Category = 0,
+                            CreatedAt = new DateTime(2020, 2, 9, 3, 23, 13, 179, DateTimeKind.Unspecified).AddTicks(9364),
+                            CreatedBy = 4,
+                            DashboardId = 7,
+                            Name = "Tasty Concrete Salad",
+                            Settings = "{\"sourceProjects\": [1],\"dateRange\": 4,\"issuesCount\": 361}",
+                            TileOrder = 0,
                             Type = 2
                         },
                         new
                         {
                             Id = 15,
-                            Category = 3,
-                            CreatedAt = new DateTime(2020, 10, 15, 11, 5, 13, 423, DateTimeKind.Unspecified).AddTicks(7192),
-                            CreatedBy = 12,
-                            DashboardId = 11,
-                            Name = "Refined Plastic Bacon",
-                            Settings = "{\"sourceProjects\": [3],\"dateRange\": 0,\"issuesCount\": 192}",
+                            Category = 1,
+                            CreatedAt = new DateTime(2021, 3, 25, 8, 41, 59, 831, DateTimeKind.Unspecified).AddTicks(3010),
+                            CreatedBy = 4,
+                            DashboardId = 14,
+                            Name = "Refined Metal Sausages",
+                            Settings = "{\"sourceProjects\": [3],\"dateRange\": 1,\"issuesCount\": 143}",
+                            TileOrder = 0,
                             Type = 2
                         },
                         new
                         {
                             Id = 16,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 1, 23, 4, 18, 44, 192, DateTimeKind.Unspecified).AddTicks(5282),
-                            CreatedBy = 9,
-                            DashboardId = 12,
-                            Name = "Fantastic Wooden Gloves",
-                            Settings = "{\"sourceProjects\": [1],\"dateRange\": 1,\"issuesCount\": 19}",
+                            CreatedAt = new DateTime(2020, 12, 16, 6, 16, 23, 306, DateTimeKind.Unspecified).AddTicks(5257),
+                            CreatedBy = 1,
+                            DashboardId = 7,
+                            Name = "Incredible Soft Gloves",
+                            Settings = "{\"sourceProjects\": [1],\"dateRange\": 0,\"issuesCount\": 970}",
+                            TileOrder = 0,
                             Type = 0
                         },
                         new
                         {
                             Id = 17,
-                            Category = 0,
-                            CreatedAt = new DateTime(2020, 12, 4, 13, 19, 1, 987, DateTimeKind.Unspecified).AddTicks(6992),
-                            CreatedBy = 17,
-                            DashboardId = 15,
-                            Name = "Rustic Frozen Gloves",
-                            Settings = "{\"sourceProjects\": [8],\"dateRange\": 4,\"issuesCount\": 214}",
-                            Type = 1
+                            Category = 1,
+                            CreatedAt = new DateTime(2019, 8, 23, 15, 4, 1, 807, DateTimeKind.Unspecified).AddTicks(9271),
+                            CreatedBy = 10,
+                            DashboardId = 3,
+                            Name = "Incredible Frozen Shoes",
+                            Settings = "{\"sourceProjects\": [4],\"dateRange\": 2,\"issuesCount\": 706}",
+                            TileOrder = 0,
+                            Type = 3
                         },
                         new
                         {
                             Id = 18,
-                            Category = 2,
-                            CreatedAt = new DateTime(2020, 5, 5, 11, 5, 51, 737, DateTimeKind.Unspecified).AddTicks(7741),
-                            CreatedBy = 4,
-                            DashboardId = 5,
-                            Name = "Practical Metal Mouse",
-                            Settings = "{\"sourceProjects\": [5],\"dateRange\": 0,\"issuesCount\": 729}",
-                            Type = 1
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 12, 31, 10, 4, 59, 830, DateTimeKind.Unspecified).AddTicks(6),
+                            CreatedBy = 13,
+                            DashboardId = 11,
+                            Name = "Intelligent Plastic Hat",
+                            Settings = "{\"sourceProjects\": [1],\"dateRange\": 3,\"issuesCount\": 358}",
+                            TileOrder = 0,
+                            Type = 0
                         },
                         new
                         {
                             Id = 19,
-                            Category = 0,
+                            Category = 1,
                             CreatedAt = new DateTime(2021, 4, 12, 0, 15, 19, 181, DateTimeKind.Unspecified).AddTicks(4159),
                             CreatedBy = 3,
                             DashboardId = 13,
-                            Name = "Fantastic Rubber Pizza",
+                            Name = "Awesome Fresh Bacon",
                             Settings = "{\"sourceProjects\": [12],\"dateRange\": 0,\"issuesCount\": 426}",
-                            Type = 2
+                            TileOrder = 0,
+                            Type = 0
                         },
                         new
                         {
@@ -1849,6 +1906,7 @@ namespace Watchdog.Core.DAL.Migrations
                             DashboardId = 9,
                             Name = "Small Soft Shirt",
                             Settings = "{\"sourceProjects\": [2],\"dateRange\": 3,\"issuesCount\": 207}",
+                            TileOrder = 0,
                             Type = 2
                         },
                         new
@@ -1860,6 +1918,7 @@ namespace Watchdog.Core.DAL.Migrations
                             DashboardId = 3,
                             Name = "Tasty Frozen Table",
                             Settings = "{\"sourceProjects\": [7],\"dateRange\": 0,\"issuesCount\": 970}",
+                            TileOrder = 0,
                             Type = 1
                         },
                         new
@@ -1871,7 +1930,8 @@ namespace Watchdog.Core.DAL.Migrations
                             DashboardId = 2,
                             Name = "Practical Rubber Fish",
                             Settings = "{\"sourceProjects\": [6],\"dateRange\": 0,\"issuesCount\": 66}",
-                            Type = 1
+                            TileOrder = 0,
+                            Type = 2
                         },
                         new
                         {
@@ -1882,7 +1942,8 @@ namespace Watchdog.Core.DAL.Migrations
                             DashboardId = 15,
                             Name = "Small Metal Table",
                             Settings = "{\"sourceProjects\": [9],\"dateRange\": 4,\"issuesCount\": 75}",
-                            Type = 2
+                            TileOrder = 0,
+                            Type = 3
                         },
                         new
                         {
@@ -1893,6 +1954,7 @@ namespace Watchdog.Core.DAL.Migrations
                             DashboardId = 6,
                             Name = "Rustic Rubber Sausages",
                             Settings = "{\"sourceProjects\": [11],\"dateRange\": 3,\"issuesCount\": 405}",
+                            TileOrder = 0,
                             Type = 2
                         },
                         new
@@ -1904,7 +1966,8 @@ namespace Watchdog.Core.DAL.Migrations
                             DashboardId = 12,
                             Name = "Small Plastic Cheese",
                             Settings = "{\"sourceProjects\": [14],\"dateRange\": 1,\"issuesCount\": 23}",
-                            Type = 1
+                            TileOrder = 0,
+                            Type = 2
                         },
                         new
                         {
@@ -1915,95 +1978,104 @@ namespace Watchdog.Core.DAL.Migrations
                             DashboardId = 11,
                             Name = "Unbranded Fresh Fish",
                             Settings = "{\"sourceProjects\": [8],\"dateRange\": 2,\"issuesCount\": 989}",
+                            TileOrder = 0,
                             Type = 1
                         },
                         new
                         {
                             Id = 27,
-                            Category = 1,
-                            CreatedAt = new DateTime(2019, 8, 13, 2, 20, 12, 290, DateTimeKind.Unspecified).AddTicks(8065),
-                            CreatedBy = 12,
+                            Category = 2,
+                            CreatedAt = new DateTime(2019, 11, 20, 19, 50, 22, 837, DateTimeKind.Unspecified).AddTicks(4963),
+                            CreatedBy = 20,
                             DashboardId = 3,
                             Name = "Incredible Granite Mouse",
-                            Settings = "{\"sourceProjects\": [13],\"dateRange\": 4,\"issuesCount\": 476}",
-                            Type = 0
+                            Settings = "{\"sourceProjects\": [15],\"dateRange\": 2,\"issuesCount\": 341}",
+                            TileOrder = 0,
+                            Type = 1
                         },
                         new
                         {
                             Id = 28,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 11, 20, 23, 30, 36, 158, DateTimeKind.Unspecified).AddTicks(7919),
-                            CreatedBy = 5,
-                            DashboardId = 2,
-                            Name = "Incredible Rubber Tuna",
-                            Settings = "{\"sourceProjects\": [14],\"dateRange\": 2,\"issuesCount\": 552}",
+                            CreatedAt = new DateTime(2019, 9, 30, 9, 34, 14, 657, DateTimeKind.Unspecified).AddTicks(4291),
+                            CreatedBy = 7,
+                            DashboardId = 3,
+                            Name = "Generic Metal Keyboard",
+                            Settings = "{\"sourceProjects\": [8],\"dateRange\": 2,\"issuesCount\": 84}",
+                            TileOrder = 0,
                             Type = 0
                         },
                         new
                         {
                             Id = 29,
-                            Category = 1,
-                            CreatedAt = new DateTime(2021, 6, 17, 18, 33, 20, 161, DateTimeKind.Unspecified).AddTicks(7027),
-                            CreatedBy = 14,
-                            DashboardId = 10,
-                            Name = "Ergonomic Soft Keyboard",
-                            Settings = "{\"sourceProjects\": [4],\"dateRange\": 2,\"issuesCount\": 639}",
-                            Type = 0
+                            Category = 0,
+                            CreatedAt = new DateTime(2020, 6, 24, 5, 49, 13, 976, DateTimeKind.Unspecified).AddTicks(9196),
+                            CreatedBy = 5,
+                            DashboardId = 1,
+                            Name = "Licensed Wooden Tuna",
+                            Settings = "{\"sourceProjects\": [10],\"dateRange\": 1,\"issuesCount\": 202}",
+                            TileOrder = 0,
+                            Type = 2
                         },
                         new
                         {
                             Id = 30,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 8, 14, 9, 51, 2, 711, DateTimeKind.Unspecified).AddTicks(8693),
-                            CreatedBy = 13,
-                            DashboardId = 1,
-                            Name = "Fantastic Concrete Sausages",
-                            Settings = "{\"sourceProjects\": [9],\"dateRange\": 3,\"issuesCount\": 50}",
+                            CreatedAt = new DateTime(2019, 12, 14, 18, 56, 10, 249, DateTimeKind.Unspecified).AddTicks(1422),
+                            CreatedBy = 12,
+                            DashboardId = 5,
+                            Name = "Tasty Steel Chips",
+                            Settings = "{\"sourceProjects\": [1],\"dateRange\": 0,\"issuesCount\": 331}",
+                            TileOrder = 0,
                             Type = 2
                         },
                         new
                         {
                             Id = 31,
                             Category = 1,
-                            CreatedAt = new DateTime(2020, 6, 12, 12, 1, 19, 384, DateTimeKind.Unspecified).AddTicks(8239),
-                            CreatedBy = 2,
-                            DashboardId = 9,
-                            Name = "Ergonomic Plastic Towels",
-                            Settings = "{\"sourceProjects\": [5],\"dateRange\": 3,\"issuesCount\": 435}",
-                            Type = 0
+                            CreatedAt = new DateTime(2020, 9, 5, 12, 35, 14, 356, DateTimeKind.Unspecified).AddTicks(2051),
+                            CreatedBy = 13,
+                            DashboardId = 2,
+                            Name = "Awesome Rubber Ball",
+                            Settings = "{\"sourceProjects\": [7],\"dateRange\": 0,\"issuesCount\": 903}",
+                            TileOrder = 0,
+                            Type = 2
                         },
                         new
                         {
                             Id = 32,
                             Category = 1,
-                            CreatedAt = new DateTime(2021, 4, 14, 9, 17, 38, 452, DateTimeKind.Unspecified).AddTicks(9347),
-                            CreatedBy = 11,
-                            DashboardId = 14,
-                            Name = "Practical Steel Salad",
-                            Settings = "{\"sourceProjects\": [9],\"dateRange\": 2,\"issuesCount\": 735}",
-                            Type = 1
+                            CreatedAt = new DateTime(2020, 6, 15, 20, 44, 8, 588, DateTimeKind.Unspecified).AddTicks(3777),
+                            CreatedBy = 12,
+                            DashboardId = 8,
+                            Name = "Unbranded Rubber Gloves",
+                            Settings = "{\"sourceProjects\": [12],\"dateRange\": 1,\"issuesCount\": 322}",
+                            TileOrder = 0,
+                            Type = 0
                         },
                         new
                         {
                             Id = 33,
-                            Category = 2,
-                            CreatedAt = new DateTime(2019, 11, 13, 10, 57, 57, 851, DateTimeKind.Unspecified).AddTicks(6700),
-                            CreatedBy = 3,
-                            DashboardId = 3,
-                            Name = "Incredible Plastic Computer",
-                            Settings = "{\"sourceProjects\": [9],\"dateRange\": 4,\"issuesCount\": 337}",
-                            Type = 2
+                            Category = 1,
+                            CreatedAt = new DateTime(2020, 5, 19, 10, 22, 39, 627, DateTimeKind.Unspecified).AddTicks(2702),
+                            CreatedBy = 17,
+                            DashboardId = 10,
+                            Name = "Ergonomic Wooden Chicken",
+                            Settings = "{\"sourceProjects\": [13],\"dateRange\": 1,\"issuesCount\": 714}",
+                            TileOrder = 0,
+                            Type = 0
                         },
                         new
                         {
                             Id = 34,
-                            Category = 0,
+                            Category = 1,
                             CreatedAt = new DateTime(2020, 5, 17, 2, 10, 20, 689, DateTimeKind.Unspecified).AddTicks(3480),
                             CreatedBy = 16,
-                            DashboardId = 7,
-                            Name = "Handmade Granite Chair",
+                            DashboardId = 9,
+                            Name = "Sleek Steel Table",
                             Settings = "{\"sourceProjects\": [8],\"dateRange\": 4,\"issuesCount\": 932}",
-                            Type = 1
+                            TileOrder = 0,
+                            Type = 0
                         },
                         new
                         {
@@ -2014,6 +2086,7 @@ namespace Watchdog.Core.DAL.Migrations
                             DashboardId = 1,
                             Name = "Intelligent Frozen Mouse",
                             Settings = "{\"sourceProjects\": [2],\"dateRange\": 1,\"issuesCount\": 973}",
+                            TileOrder = 0,
                             Type = 0
                         });
                 });

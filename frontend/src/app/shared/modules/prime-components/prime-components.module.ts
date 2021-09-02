@@ -42,6 +42,7 @@ import { TreeModule } from 'primeng/tree';
 import { TimelineModule } from 'primeng/timeline';
 import { CardModule } from 'primeng/card';
 import { AvatarGroupModule } from 'primeng/avatargroup';
+import { DragDropModule } from 'primeng/dragdrop';
 import { FileUploadModule } from 'primeng/fileupload';
 
 // import and export here all required modules from primeng
@@ -88,6 +89,7 @@ import { FileUploadModule } from 'primeng/fileupload';
         TimelineModule,
         CardModule,
         AvatarGroupModule,
+        DragDropModule,
         FileUploadModule
     ],
     exports: [
@@ -131,6 +133,7 @@ import { FileUploadModule } from 'primeng/fileupload';
         TimelineModule,
         CardModule,
         AvatarGroupModule,
+        DragDropModule,
         FileUploadModule
     ],
     declarations: [],

@@ -14,7 +14,11 @@
     </div>
 </div>
 
-<app-tile-menu (clearTiles)="deleteAllTiles(dashboard.id)" (closeMenu)="this.showTileMenu = false;"
+<app-tile-menu
+    [orderChanged]="isOrderChanged"
+    (saveTilesOrder)="saveTilesOrder()"
+    (clearTiles)="deleteAllTiles(dashboard.id)"
+    (closeMenu)="this.showTileMenu = false;"
     *ngIf="showTileMenu && dashboard" [dashboardId]="dashboard.id" [tiles]="tiles" [userProjects]="projects">
 </app-tile-menu>
 
@@ -24,23 +28,41 @@
         <app-no-content-placeholder title="Looks like here are no tiles"></app-no-content-placeholder>
     </div>
     <div *ngIf="tiles.length" class="tiles-container">
-        <ng-container *ngFor="let tile of tiles" [ngSwitch]="tile.type">
-            <app-top-active-issues-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.TopActiveIssues"
-                [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects"
-                [style.flex-basis.px]="getTileSize(tile)" class="top-active-issue">
-            </app-top-active-issues-tile>
-            <app-issues-per-time-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.IssuesPerTime"
-                [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects"
-                [style.flex-basis.px]="getTileSize(tile)" class="issues-per-time">
-            </app-issues-per-time-tile>
-            <app-issues-count-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.IssuesCount"
-                [isShownEditTileMenu]="showTileMenu" [tile]="tile"
-                [userProjects]="projects" [style.flex-basis.px]="getTileSize(tile)" class="issues-count">
-            </app-issues-count-tile>
-            <app-heat-map (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.HeatMap"
-                [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects"
-                [style.flex-basis.px]="getTileSize(tile)" class="heat-map">
-            </app-heat-map>
+        <ng-container *ngFor="let tile of tiles; let i = index" [ngSwitch]="tile.type">
+            <div
+                class="tile"
+                (onDragEnd)="dragOff()"
+                (onDragStart)="drag(tile)"
+                [style.flex-basis.px]="getTileSize(tile)"
+                [pDraggableDisabled]="!canDrag"
+                [pDraggable]="canDrag ? 'dd' : null ">
+                <div
+                    (onDrop)="drop(i)"
+                    class="drop-line drop-line-left"
+                    *ngIf="getDropSpaceState(i)"
+                    pDroppable="dd">
+                </div>
+                <app-top-active-issues-tile (dragTile)="setDragByButton($event)" (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.TopActiveIssues"
+                    [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects">
+                </app-top-active-issues-tile>
+                <app-issues-per-time-tile (dragTile)="setDragByButton($event)" (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.IssuesPerTime"
+                    [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects">
+                </app-issues-per-time-tile>
+                <app-issues-count-tile (dragTile)="setDragByButton($event)" (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.IssuesCount"
+                    [isShownEditTileMenu]="showTileMenu" [tile]="tile"
+                    [userProjects]="projects">
+                </app-issues-count-tile>
+                <app-heat-map (dragTile)="setDragByButton($event)" (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.HeatMap"
+                    [isShownEditTileMenu]="showTileMenu" [tile]="tile"
+                    [userProjects]="projects">
+                </app-heat-map>
+                <div
+                    class="drop-line drop-line-right"
+                    (onDrop)="drop(i+1)"
+                    *ngIf="getDropSpaceState(i+1)"
+                    pDroppable="dd">
+                </div>
+            </div>
         </ng-container>
     </div>
 </ng-template>

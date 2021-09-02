@@ -131,5 +131,6 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
             return _mapper.Map<OrganizationDto>(organization);
         }
+
     }
 }

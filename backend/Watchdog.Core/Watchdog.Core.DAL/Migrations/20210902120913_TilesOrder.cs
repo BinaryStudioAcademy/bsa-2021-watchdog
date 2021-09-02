@@ -3,36 +3,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Watchdog.Core.DAL.Migrations
 {
-    public partial class UpdateAvatarUrl : Migration
+    public partial class TilesOrder : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "AvatarUrl",
-                table: "Users",
-                type: "nvarchar(max)",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(256)",
-                oldMaxLength: 256,
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "AvatarUrl",
-                table: "Organizations",
-                type: "nvarchar(max)",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(256)",
-                oldMaxLength: 256,
-                oldNullable: true);
+            migrationBuilder.AddColumn<int>(
+                name: "TileOrder",
+                table: "Tiles",
+                type: "int",
+                nullable: false,
+                defaultValue: 1);
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "Type",
-                value: 2);
+                value: 3);
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
@@ -44,93 +31,100 @@ namespace Watchdog.Core.DAL.Migrations
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
+                keyValue: 6,
+                columns: new[] { "Category", "CreatedAt", "CreatedBy", "Settings", "Type" },
+                values: new object[] { 0, new DateTime(2021, 4, 17, 15, 59, 57, 251, DateTimeKind.Unspecified).AddTicks(3258), 3, "{\"sourceProjects\": [6],\"dateRange\": 4,\"issuesCount\": 305}", 1 });
+
+            migrationBuilder.UpdateData(
+                table: "Tiles",
+                keyColumn: "Id",
                 keyValue: 7,
-                columns: new[] { "CreatedAt", "CreatedBy", "Settings", "Type" },
-                values: new object[] { new DateTime(2021, 7, 6, 5, 56, 57, 809, DateTimeKind.Unspecified).AddTicks(7691), 2, "{\"sourceProjects\": [4],\"dateRange\": 4,\"issuesCount\": 539}", 1 });
+                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { 0, new DateTime(2021, 2, 22, 19, 16, 4, 416, DateTimeKind.Unspecified).AddTicks(1115), 1, 8, "Unbranded Wooden Sausages", "{\"sourceProjects\": [15],\"dateRange\": 2,\"issuesCount\": 235}", 1 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 8,
-                columns: new[] { "Category", "DashboardId", "Name", "Type" },
-                values: new object[] { 1, 11, "Intelligent Concrete Hat", 0 });
+                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { new DateTime(2020, 11, 25, 15, 41, 47, 336, DateTimeKind.Unspecified).AddTicks(1749), 13, 3, "Intelligent Granite Fish", "{\"sourceProjects\": [12],\"dateRange\": 4,\"issuesCount\": 570}", 2 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 9,
-                columns: new[] { "CreatedAt", "CreatedBy", "Settings", "Type" },
-                values: new object[] { new DateTime(2019, 11, 12, 16, 5, 38, 894, DateTimeKind.Unspecified).AddTicks(8561), 14, "{\"sourceProjects\": [8],\"dateRange\": 4,\"issuesCount\": 848}", 1 });
+                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { 3, new DateTime(2019, 10, 3, 4, 33, 43, 293, DateTimeKind.Unspecified).AddTicks(230), 10, 6, "Fantastic Wooden Shirt", "{\"sourceProjects\": [13],\"dateRange\": 4,\"issuesCount\": 836}", 2 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 10,
                 columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings" },
-                values: new object[] { new DateTime(2021, 2, 3, 13, 9, 18, 256, DateTimeKind.Unspecified).AddTicks(6869), 4, 4, "Refined Fresh Shirt", "{\"sourceProjects\": [2],\"dateRange\": 2,\"issuesCount\": 549}" });
+                values: new object[] { new DateTime(2020, 5, 23, 14, 14, 5, 360, DateTimeKind.Unspecified).AddTicks(6501), 3, 3, "Fantastic Concrete Gloves", "{\"sourceProjects\": [9],\"dateRange\": 4,\"issuesCount\": 388}" });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 11,
                 columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
-                values: new object[] { 1, new DateTime(2021, 4, 22, 12, 42, 25, 714, DateTimeKind.Unspecified).AddTicks(9197), 11, 11, "Refined Cotton Table", "{\"sourceProjects\": [7],\"dateRange\": 0,\"issuesCount\": 487}", 2 });
+                values: new object[] { 0, new DateTime(2021, 7, 4, 6, 51, 35, 932, DateTimeKind.Unspecified).AddTicks(2836), 9, 6, "Practical Metal Bacon", "{\"sourceProjects\": [8],\"dateRange\": 0,\"issuesCount\": 155}", 2 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 12,
-                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
-                values: new object[] { 3, new DateTime(2019, 8, 15, 5, 1, 52, 281, DateTimeKind.Unspecified).AddTicks(6096), 2, 6, "Small Wooden Table", "{\"sourceProjects\": [6],\"dateRange\": 0,\"issuesCount\": 731}", 2 });
+                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings" },
+                values: new object[] { new DateTime(2020, 10, 10, 14, 46, 9, 101, DateTimeKind.Unspecified).AddTicks(8963), 20, 12, "Practical Plastic Cheese", "{\"sourceProjects\": [3],\"dateRange\": 3,\"issuesCount\": 65}" });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 13,
-                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings" },
-                values: new object[] { new DateTime(2019, 11, 24, 6, 26, 2, 408, DateTimeKind.Unspecified).AddTicks(3940), 10, 6, "Ergonomic Metal Pants", "{\"sourceProjects\": [7],\"dateRange\": 4,\"issuesCount\": 518}" });
+                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { 3, new DateTime(2019, 10, 14, 23, 36, 3, 945, DateTimeKind.Unspecified).AddTicks(9097), 9, 2, "Handcrafted Plastic Shirt", "{\"sourceProjects\": [8],\"dateRange\": 3,\"issuesCount\": 213}", 1 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 14,
-                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
-                values: new object[] { 1, new DateTime(2021, 7, 11, 13, 57, 50, 473, DateTimeKind.Unspecified).AddTicks(6824), 12, 3, "Handmade Concrete Chips", "{\"sourceProjects\": [3],\"dateRange\": 3,\"issuesCount\": 25}", 2 });
+                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { new DateTime(2020, 2, 9, 3, 23, 13, 179, DateTimeKind.Unspecified).AddTicks(9364), 4, 7, "Tasty Concrete Salad", "{\"sourceProjects\": [1],\"dateRange\": 4,\"issuesCount\": 361}", 2 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 15,
                 columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
-                values: new object[] { 3, new DateTime(2020, 10, 15, 11, 5, 13, 423, DateTimeKind.Unspecified).AddTicks(7192), 12, 11, "Refined Plastic Bacon", "{\"sourceProjects\": [3],\"dateRange\": 0,\"issuesCount\": 192}", 2 });
+                values: new object[] { 1, new DateTime(2021, 3, 25, 8, 41, 59, 831, DateTimeKind.Unspecified).AddTicks(3010), 4, 14, "Refined Metal Sausages", "{\"sourceProjects\": [3],\"dateRange\": 1,\"issuesCount\": 143}", 2 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 16,
                 columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings" },
-                values: new object[] { new DateTime(2021, 1, 23, 4, 18, 44, 192, DateTimeKind.Unspecified).AddTicks(5282), 9, 12, "Fantastic Wooden Gloves", "{\"sourceProjects\": [1],\"dateRange\": 1,\"issuesCount\": 19}" });
+                values: new object[] { new DateTime(2020, 12, 16, 6, 16, 23, 306, DateTimeKind.Unspecified).AddTicks(5257), 1, 7, "Incredible Soft Gloves", "{\"sourceProjects\": [1],\"dateRange\": 0,\"issuesCount\": 970}" });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 17,
-                columns: new[] { "Category", "CreatedAt", "CreatedBy", "Name", "Settings", "Type" },
-                values: new object[] { 0, new DateTime(2020, 12, 4, 13, 19, 1, 987, DateTimeKind.Unspecified).AddTicks(6992), 17, "Rustic Frozen Gloves", "{\"sourceProjects\": [8],\"dateRange\": 4,\"issuesCount\": 214}", 1 });
+                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { new DateTime(2019, 8, 23, 15, 4, 1, 807, DateTimeKind.Unspecified).AddTicks(9271), 10, 3, "Incredible Frozen Shoes", "{\"sourceProjects\": [4],\"dateRange\": 2,\"issuesCount\": 706}", 3 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 18,
-                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings" },
-                values: new object[] { 2, new DateTime(2020, 5, 5, 11, 5, 51, 737, DateTimeKind.Unspecified).AddTicks(7741), 4, 5, "Practical Metal Mouse", "{\"sourceProjects\": [5],\"dateRange\": 0,\"issuesCount\": 729}" });
+                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { 1, new DateTime(2020, 12, 31, 10, 4, 59, 830, DateTimeKind.Unspecified).AddTicks(6), 13, 11, "Intelligent Plastic Hat", "{\"sourceProjects\": [1],\"dateRange\": 3,\"issuesCount\": 358}", 0 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 19,
                 columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
-                values: new object[] { 0, new DateTime(2021, 4, 12, 0, 15, 19, 181, DateTimeKind.Unspecified).AddTicks(4159), 3, 13, "Fantastic Rubber Pizza", "{\"sourceProjects\": [12],\"dateRange\": 0,\"issuesCount\": 426}", 2 });
+                values: new object[] { 1, new DateTime(2021, 4, 12, 0, 15, 19, 181, DateTimeKind.Unspecified).AddTicks(4159), 3, 13, "Awesome Fresh Bacon", "{\"sourceProjects\": [12],\"dateRange\": 0,\"issuesCount\": 426}", 0 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
@@ -150,15 +144,15 @@ namespace Watchdog.Core.DAL.Migrations
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 22,
-                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings" },
-                values: new object[] { 1, new DateTime(2021, 3, 16, 16, 2, 36, 334, DateTimeKind.Unspecified).AddTicks(3898), 14, 2, "Practical Rubber Fish", "{\"sourceProjects\": [6],\"dateRange\": 0,\"issuesCount\": 66}" });
+                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { 1, new DateTime(2021, 3, 16, 16, 2, 36, 334, DateTimeKind.Unspecified).AddTicks(3898), 14, 2, "Practical Rubber Fish", "{\"sourceProjects\": [6],\"dateRange\": 0,\"issuesCount\": 66}", 2 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 23,
                 columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
-                values: new object[] { 3, new DateTime(2019, 10, 1, 7, 27, 50, 470, DateTimeKind.Unspecified).AddTicks(5602), 15, 15, "Small Metal Table", "{\"sourceProjects\": [9],\"dateRange\": 4,\"issuesCount\": 75}", 2 });
+                values: new object[] { 3, new DateTime(2019, 10, 1, 7, 27, 50, 470, DateTimeKind.Unspecified).AddTicks(5602), 15, 15, "Small Metal Table", "{\"sourceProjects\": [9],\"dateRange\": 4,\"issuesCount\": 75}", 3 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
@@ -172,7 +166,7 @@ namespace Watchdog.Core.DAL.Migrations
                 keyColumn: "Id",
                 keyValue: 25,
                 columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
-                values: new object[] { 3, new DateTime(2021, 7, 8, 2, 51, 5, 17, DateTimeKind.Unspecified).AddTicks(3906), 8, 12, "Small Plastic Cheese", "{\"sourceProjects\": [14],\"dateRange\": 1,\"issuesCount\": 23}", 1 });
+                values: new object[] { 3, new DateTime(2021, 7, 8, 2, 51, 5, 17, DateTimeKind.Unspecified).AddTicks(3906), 8, 12, "Small Plastic Cheese", "{\"sourceProjects\": [14],\"dateRange\": 1,\"issuesCount\": 23}", 2 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
@@ -185,57 +179,57 @@ namespace Watchdog.Core.DAL.Migrations
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 27,
-                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings" },
-                values: new object[] { new DateTime(2019, 8, 13, 2, 20, 12, 290, DateTimeKind.Unspecified).AddTicks(8065), 12, 3, "Incredible Granite Mouse", "{\"sourceProjects\": [13],\"dateRange\": 4,\"issuesCount\": 476}" });
+                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { 2, new DateTime(2019, 11, 20, 19, 50, 22, 837, DateTimeKind.Unspecified).AddTicks(4963), 20, 3, "Incredible Granite Mouse", "{\"sourceProjects\": [15],\"dateRange\": 2,\"issuesCount\": 341}", 1 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 28,
                 columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings" },
-                values: new object[] { new DateTime(2020, 11, 20, 23, 30, 36, 158, DateTimeKind.Unspecified).AddTicks(7919), 5, 2, "Incredible Rubber Tuna", "{\"sourceProjects\": [14],\"dateRange\": 2,\"issuesCount\": 552}" });
+                values: new object[] { new DateTime(2019, 9, 30, 9, 34, 14, 657, DateTimeKind.Unspecified).AddTicks(4291), 7, 3, "Generic Metal Keyboard", "{\"sourceProjects\": [8],\"dateRange\": 2,\"issuesCount\": 84}" });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 29,
-                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings" },
-                values: new object[] { new DateTime(2021, 6, 17, 18, 33, 20, 161, DateTimeKind.Unspecified).AddTicks(7027), 14, 10, "Ergonomic Soft Keyboard", "{\"sourceProjects\": [4],\"dateRange\": 2,\"issuesCount\": 639}" });
+                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { 0, new DateTime(2020, 6, 24, 5, 49, 13, 976, DateTimeKind.Unspecified).AddTicks(9196), 5, 1, "Licensed Wooden Tuna", "{\"sourceProjects\": [10],\"dateRange\": 1,\"issuesCount\": 202}", 2 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 30,
                 columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
-                values: new object[] { new DateTime(2020, 8, 14, 9, 51, 2, 711, DateTimeKind.Unspecified).AddTicks(8693), 13, 1, "Fantastic Concrete Sausages", "{\"sourceProjects\": [9],\"dateRange\": 3,\"issuesCount\": 50}", 2 });
+                values: new object[] { new DateTime(2019, 12, 14, 18, 56, 10, 249, DateTimeKind.Unspecified).AddTicks(1422), 12, 5, "Tasty Steel Chips", "{\"sourceProjects\": [1],\"dateRange\": 0,\"issuesCount\": 331}", 2 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 31,
-                columns: new[] { "CreatedAt", "DashboardId", "Name", "Settings" },
-                values: new object[] { new DateTime(2020, 6, 12, 12, 1, 19, 384, DateTimeKind.Unspecified).AddTicks(8239), 9, "Ergonomic Plastic Towels", "{\"sourceProjects\": [5],\"dateRange\": 3,\"issuesCount\": 435}" });
+                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { new DateTime(2020, 9, 5, 12, 35, 14, 356, DateTimeKind.Unspecified).AddTicks(2051), 13, 2, "Awesome Rubber Ball", "{\"sourceProjects\": [7],\"dateRange\": 0,\"issuesCount\": 903}", 2 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 32,
-                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
-                values: new object[] { new DateTime(2021, 4, 14, 9, 17, 38, 452, DateTimeKind.Unspecified).AddTicks(9347), 11, 14, "Practical Steel Salad", "{\"sourceProjects\": [9],\"dateRange\": 2,\"issuesCount\": 735}", 1 });
+                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings" },
+                values: new object[] { new DateTime(2020, 6, 15, 20, 44, 8, 588, DateTimeKind.Unspecified).AddTicks(3777), 12, 8, "Unbranded Rubber Gloves", "{\"sourceProjects\": [12],\"dateRange\": 1,\"issuesCount\": 322}" });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 33,
-                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
-                values: new object[] { new DateTime(2019, 11, 13, 10, 57, 57, 851, DateTimeKind.Unspecified).AddTicks(6700), 3, 3, "Incredible Plastic Computer", "{\"sourceProjects\": [9],\"dateRange\": 4,\"issuesCount\": 337}", 2 });
+                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { 1, new DateTime(2020, 5, 19, 10, 22, 39, 627, DateTimeKind.Unspecified).AddTicks(2702), 17, 10, "Ergonomic Wooden Chicken", "{\"sourceProjects\": [13],\"dateRange\": 1,\"issuesCount\": 714}", 0 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 34,
-                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings" },
-                values: new object[] { 0, new DateTime(2020, 5, 17, 2, 10, 20, 689, DateTimeKind.Unspecified).AddTicks(3480), 16, 7, "Handmade Granite Chair", "{\"sourceProjects\": [8],\"dateRange\": 4,\"issuesCount\": 932}" });
+                columns: new[] { "CreatedAt", "CreatedBy", "Name", "Settings", "Type" },
+                values: new object[] { new DateTime(2020, 5, 17, 2, 10, 20, 689, DateTimeKind.Unspecified).AddTicks(3480), 16, "Sleek Steel Table", "{\"sourceProjects\": [8],\"dateRange\": 4,\"issuesCount\": 932}", 0 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
@@ -243,29 +237,18 @@ namespace Watchdog.Core.DAL.Migrations
                 keyValue: 35,
                 columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
                 values: new object[] { 1, new DateTime(2019, 7, 29, 14, 57, 56, 6, DateTimeKind.Unspecified).AddTicks(4108), 9, 1, "Intelligent Frozen Mouse", "{\"sourceProjects\": [2],\"dateRange\": 1,\"issuesCount\": 973}", 0 });
+
+            migrationBuilder.Sql("DECLARE @counter int Declare @dashId int DECLARE TileCursor Cursor for select Id from Dashboards Open TileCursor " +
+            "Fetch next from TileCursor into @dashId While @@FETCH_STATUS = 0 Begin SET @counter = 0 Update Tiles set @counter = TileOrder = @counter + 1     Where DashboardId = @dashId " +
+            "Fetch next from TileCursor into @dashId End close TileCursor Deallocate TileCursor");
+
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "AvatarUrl",
-                table: "Users",
-                type: "nvarchar(256)",
-                maxLength: 256,
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "AvatarUrl",
-                table: "Organizations",
-                type: "nvarchar(256)",
-                maxLength: 256,
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
+            migrationBuilder.DropColumn(
+                name: "TileOrder",
+                table: "Tiles");
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
@@ -284,23 +267,30 @@ namespace Watchdog.Core.DAL.Migrations
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
+                keyValue: 6,
+                columns: new[] { "Category", "CreatedAt", "CreatedBy", "Settings", "Type" },
+                values: new object[] { 1, new DateTime(2021, 4, 15, 19, 36, 58, 134, DateTimeKind.Unspecified).AddTicks(8802), 1, "{\"sourceProjects\": [2],\"dateRange\": 1,\"issuesCount\": 915}", 0 });
+
+            migrationBuilder.UpdateData(
+                table: "Tiles",
+                keyColumn: "Id",
                 keyValue: 7,
-                columns: new[] { "CreatedAt", "CreatedBy", "Settings", "Type" },
-                values: new object[] { new DateTime(2021, 6, 2, 12, 19, 51, 35, DateTimeKind.Unspecified).AddTicks(1215), 8, "{\"sourceProjects\": [1],\"dateRange\": 1,\"issuesCount\": 962}", 0 });
+                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { 1, new DateTime(2021, 6, 2, 12, 19, 51, 35, DateTimeKind.Unspecified).AddTicks(1215), 8, 14, "Incredible Frozen Keyboard", "{\"sourceProjects\": [1],\"dateRange\": 1,\"issuesCount\": 962}", 0 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 8,
-                columns: new[] { "Category", "DashboardId", "Name", "Type" },
-                values: new object[] { 0, 9, "Awesome Concrete Bike", 1 });
+                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { new DateTime(2021, 5, 1, 12, 45, 22, 202, DateTimeKind.Unspecified).AddTicks(5966), 12, 9, "Awesome Concrete Bike", "{\"sourceProjects\": [10],\"dateRange\": 1,\"issuesCount\": 761}", 1 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 9,
-                columns: new[] { "CreatedAt", "CreatedBy", "Settings", "Type" },
-                values: new object[] { new DateTime(2020, 3, 10, 21, 33, 41, 933, DateTimeKind.Unspecified).AddTicks(2252), 8, "{\"sourceProjects\": [13],\"dateRange\": 2,\"issuesCount\": 898}", 0 });
+                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { 1, new DateTime(2020, 3, 10, 21, 33, 41, 933, DateTimeKind.Unspecified).AddTicks(2252), 8, 3, "Refined Rubber Pants", "{\"sourceProjects\": [13],\"dateRange\": 2,\"issuesCount\": 898}", 0 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
@@ -320,22 +310,22 @@ namespace Watchdog.Core.DAL.Migrations
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 12,
-                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
-                values: new object[] { 1, new DateTime(2019, 12, 30, 21, 8, 59, 766, DateTimeKind.Unspecified).AddTicks(5706), 16, 7, "Sleek Steel Keyboard", "{\"sourceProjects\": [2],\"dateRange\": 4,\"issuesCount\": 387}", 0 });
+                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings" },
+                values: new object[] { new DateTime(2019, 12, 30, 21, 8, 59, 766, DateTimeKind.Unspecified).AddTicks(5706), 16, 7, "Sleek Steel Keyboard", "{\"sourceProjects\": [2],\"dateRange\": 4,\"issuesCount\": 387}" });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 13,
-                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings" },
-                values: new object[] { new DateTime(2021, 4, 14, 18, 14, 18, 70, DateTimeKind.Unspecified).AddTicks(9748), 8, 11, "Intelligent Soft Car", "{\"sourceProjects\": [8],\"dateRange\": 4,\"issuesCount\": 429}" });
+                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { 1, new DateTime(2021, 4, 14, 18, 14, 18, 70, DateTimeKind.Unspecified).AddTicks(9748), 8, 11, "Intelligent Soft Car", "{\"sourceProjects\": [8],\"dateRange\": 4,\"issuesCount\": 429}", 0 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 14,
-                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
-                values: new object[] { 0, new DateTime(2020, 8, 14, 7, 49, 57, 778, DateTimeKind.Unspecified).AddTicks(8714), 19, 4, "Refined Granite Fish", "{\"sourceProjects\": [9],\"dateRange\": 0,\"issuesCount\": 174}", 1 });
+                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { new DateTime(2020, 8, 14, 7, 49, 57, 778, DateTimeKind.Unspecified).AddTicks(8714), 19, 4, "Refined Granite Fish", "{\"sourceProjects\": [9],\"dateRange\": 0,\"issuesCount\": 174}", 1 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
@@ -355,15 +345,15 @@ namespace Watchdog.Core.DAL.Migrations
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 17,
-                columns: new[] { "Category", "CreatedAt", "CreatedBy", "Name", "Settings", "Type" },
-                values: new object[] { 1, new DateTime(2020, 8, 1, 23, 56, 22, 709, DateTimeKind.Unspecified).AddTicks(4062), 19, "Incredible Steel Keyboard", "{\"sourceProjects\": [3],\"dateRange\": 4,\"issuesCount\": 312}", 0 });
+                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { new DateTime(2020, 8, 1, 23, 56, 22, 709, DateTimeKind.Unspecified).AddTicks(4062), 19, 15, "Incredible Steel Keyboard", "{\"sourceProjects\": [3],\"dateRange\": 4,\"issuesCount\": 312}", 0 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 18,
-                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings" },
-                values: new object[] { 0, new DateTime(2020, 6, 30, 9, 29, 19, 969, DateTimeKind.Unspecified).AddTicks(1461), 7, 7, "Sleek Frozen Bike", "{\"sourceProjects\": [11],\"dateRange\": 0,\"issuesCount\": 603}" });
+                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { 0, new DateTime(2020, 6, 30, 9, 29, 19, 969, DateTimeKind.Unspecified).AddTicks(1461), 7, 7, "Sleek Frozen Bike", "{\"sourceProjects\": [11],\"dateRange\": 0,\"issuesCount\": 603}", 1 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
@@ -390,8 +380,8 @@ namespace Watchdog.Core.DAL.Migrations
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 22,
-                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings" },
-                values: new object[] { 2, new DateTime(2020, 4, 1, 18, 7, 6, 622, DateTimeKind.Unspecified).AddTicks(7415), 3, 7, "Practical Steel Chips", "{\"sourceProjects\": [5],\"dateRange\": 3,\"issuesCount\": 172}" });
+                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { 2, new DateTime(2020, 4, 1, 18, 7, 6, 622, DateTimeKind.Unspecified).AddTicks(7415), 3, 7, "Practical Steel Chips", "{\"sourceProjects\": [5],\"dateRange\": 3,\"issuesCount\": 172}", 1 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
@@ -425,8 +415,8 @@ namespace Watchdog.Core.DAL.Migrations
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 27,
-                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings" },
-                values: new object[] { new DateTime(2021, 3, 18, 9, 0, 51, 247, DateTimeKind.Unspecified).AddTicks(113), 10, 15, "Incredible Granite Table", "{\"sourceProjects\": [3],\"dateRange\": 1,\"issuesCount\": 591}" });
+                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { 1, new DateTime(2021, 3, 18, 9, 0, 51, 247, DateTimeKind.Unspecified).AddTicks(113), 10, 15, "Incredible Granite Table", "{\"sourceProjects\": [3],\"dateRange\": 1,\"issuesCount\": 591}", 0 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
@@ -439,8 +429,8 @@ namespace Watchdog.Core.DAL.Migrations
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 29,
-                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings" },
-                values: new object[] { new DateTime(2021, 4, 17, 5, 10, 7, 178, DateTimeKind.Unspecified).AddTicks(6237), 16, 9, "Incredible Fresh Hat", "{\"sourceProjects\": [10],\"dateRange\": 0,\"issuesCount\": 660}" });
+                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { 1, new DateTime(2021, 4, 17, 5, 10, 7, 178, DateTimeKind.Unspecified).AddTicks(6237), 16, 9, "Incredible Fresh Hat", "{\"sourceProjects\": [10],\"dateRange\": 0,\"issuesCount\": 660}", 0 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
@@ -453,29 +443,29 @@ namespace Watchdog.Core.DAL.Migrations
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 31,
-                columns: new[] { "CreatedAt", "DashboardId", "Name", "Settings" },
-                values: new object[] { new DateTime(2020, 11, 20, 11, 13, 28, 472, DateTimeKind.Unspecified).AddTicks(2916), 12, "Generic Granite Towels", "{\"sourceProjects\": [9],\"dateRange\": 2,\"issuesCount\": 259}" });
+                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { new DateTime(2020, 11, 20, 11, 13, 28, 472, DateTimeKind.Unspecified).AddTicks(2916), 2, 12, "Generic Granite Towels", "{\"sourceProjects\": [9],\"dateRange\": 2,\"issuesCount\": 259}", 0 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 32,
-                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
-                values: new object[] { new DateTime(2021, 7, 11, 16, 54, 8, 255, DateTimeKind.Unspecified).AddTicks(4198), 9, 10, "Ergonomic Rubber Gloves", "{\"sourceProjects\": [14],\"dateRange\": 4,\"issuesCount\": 554}", 0 });
+                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings" },
+                values: new object[] { new DateTime(2021, 7, 11, 16, 54, 8, 255, DateTimeKind.Unspecified).AddTicks(4198), 9, 10, "Ergonomic Rubber Gloves", "{\"sourceProjects\": [14],\"dateRange\": 4,\"issuesCount\": 554}" });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 33,
-                columns: new[] { "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
-                values: new object[] { new DateTime(2020, 11, 26, 18, 11, 33, 480, DateTimeKind.Unspecified).AddTicks(9602), 6, 9, "Incredible Granite Keyboard", "{\"sourceProjects\": [2],\"dateRange\": 0,\"issuesCount\": 675}", 1 });
+                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
+                values: new object[] { 2, new DateTime(2020, 11, 26, 18, 11, 33, 480, DateTimeKind.Unspecified).AddTicks(9602), 6, 9, "Incredible Granite Keyboard", "{\"sourceProjects\": [2],\"dateRange\": 0,\"issuesCount\": 675}", 1 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
                 keyColumn: "Id",
                 keyValue: 34,
-                columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings" },
-                values: new object[] { 1, new DateTime(2020, 7, 18, 0, 34, 38, 543, DateTimeKind.Unspecified).AddTicks(620), 15, 9, "Generic Wooden Pizza", "{\"sourceProjects\": [1],\"dateRange\": 2,\"issuesCount\": 581}" });
+                columns: new[] { "CreatedAt", "CreatedBy", "Name", "Settings", "Type" },
+                values: new object[] { new DateTime(2020, 7, 18, 0, 34, 38, 543, DateTimeKind.Unspecified).AddTicks(620), 15, "Generic Wooden Pizza", "{\"sourceProjects\": [1],\"dateRange\": 2,\"issuesCount\": 581}", 1 });
 
             migrationBuilder.UpdateData(
                 table: "Tiles",
@@ -483,6 +473,7 @@ namespace Watchdog.Core.DAL.Migrations
                 keyValue: 35,
                 columns: new[] { "Category", "CreatedAt", "CreatedBy", "DashboardId", "Name", "Settings", "Type" },
                 values: new object[] { 3, new DateTime(2019, 9, 10, 11, 8, 14, 739, DateTimeKind.Unspecified).AddTicks(4528), 5, 8, "Ergonomic Soft Soap", "{\"sourceProjects\": [3],\"dateRange\": 0,\"issuesCount\": 144}", 1 });
+
         }
     }
 }
