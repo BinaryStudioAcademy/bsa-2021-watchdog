@@ -11,6 +11,7 @@ import { AuthenticationService } from '@core/services/authentication.service';
 import { MenuItem } from 'primeng/api/menuitem';
 import { Organization } from '@shared/models/organization/organization';
 import { Router } from '@angular/router';
+import { SpinnerService } from '@core/services/spinner.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AddDashboardComponent } from '../modals/dashboard/add-dashboard.component';
 
@@ -22,6 +23,7 @@ import { AddDashboardComponent } from '../modals/dashboard/add-dashboard.compone
 export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     dashboards: Dashboard[];
     userItems: MenuItem[];
+    display: boolean = false;
     dashboardsShown: boolean = false;
     displayModal: boolean = false;
     collapsed: boolean = false;
@@ -37,7 +39,8 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
         private authService: AuthenticationService,
         private dialogService: DialogService,
         private toastNotificationService: ToastNotificationService,
-        private router: Router
+        private router: Router,
+        private spinner: SpinnerService
     ) {
         super();
         this.user = authService.getUser();
@@ -49,13 +52,15 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
 
     async ngOnInit() {
         this.user = this.authService.getUser();
-
         this.authService.getOrganization()
             .subscribe(async organization => {
                 this.organization = organization;
                 this.getAllDashboards();
-                await this.runHubs();
+            }, () => {
+                this.spinner.hide();
+                this.display = true;
             });
+        await this.runHubs();
     }
 
     async runHubs() {
@@ -118,6 +123,11 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
                         this.toastNotificationService.error(error);
                     });
             });
+    }
+
+    async changeOrganization(organization: Organization) {
+        this.authService.setOrganization(organization);
+        await this.router.navigateByUrl('home/organization/settings');
     }
 
     ngOnDestroy() {

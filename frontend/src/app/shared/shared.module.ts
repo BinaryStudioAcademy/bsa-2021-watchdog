@@ -16,6 +16,7 @@ import { ChartsComponent } from './components/charts/charts.component';
 import { NoContentPlaceholderComponent } from './components/no-content-placeholder/no-content-placeholder';
 import { TeamNameAvatarPipe } from './pipes/team-name-avatar.pipe';
 import { GoogleChartsModule } from 'angular-google-charts';
+import { NgxPhotoEditorModule } from 'ngx-photo-editor';
 
 @NgModule({
     imports: [
@@ -27,6 +28,7 @@ import { GoogleChartsModule } from 'angular-google-charts';
         NgxJsonViewerModule,
         NgxChartsModule,
         GoogleChartsModule
+        NgxPhotoEditorModule,
     ],
     declarations: [
         LoadingSpinnerComponent,
@@ -57,6 +59,7 @@ import { GoogleChartsModule } from 'angular-google-charts';
         ChartsComponent,
         NoContentPlaceholderComponent,
         GoogleChartsModule
+        NgxPhotoEditorModule,
     ]
 })
 export class SharedModule { }

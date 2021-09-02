@@ -13,6 +13,7 @@ import { AngularComponent } from './edit/configure/configurations/angular/angula
 import { ReactComponent } from './edit/configure/configurations/react/react.component';
 import { JavascriptComponent } from './edit/configure/configurations/javascript/javascript.component';
 import { ProjectAnalyticsComponent } from './project-analytics/project-analytics.component';
+import { CodeComponent } from './edit/configure/code/code.component';
 
 @NgModule({
     declarations: [
@@ -27,6 +28,7 @@ import { ProjectAnalyticsComponent } from './project-analytics/project-analytics
         ReactComponent,
         JavascriptComponent,
         ProjectAnalyticsComponent,
+        CodeComponent,
     ],
     imports: [
         SharedModule,

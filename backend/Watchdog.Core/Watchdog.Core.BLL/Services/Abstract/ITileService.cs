@@ -11,8 +11,9 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<TileDto> CreateTileAsync(NewTileDto newTileDto);
         Task<TileDto> UpdateTileAsync(UpdateTileDto updateTileDto);
         Task DeleteTileAsync(int tileId);
-        
+
         Task<ICollection<TileDto>> GetAllTilesByDashboardIdAsync(int dashboardId);
         Task DeleteAllTilesByDashboardIdAsync(int dashboardId);
+        Task<ICollection<TileDto>> SetOrderForTilesAsync(int dashboardId, ICollection<TileOrderDto> tiles);
     }
 }
