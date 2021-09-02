@@ -14,6 +14,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<OrganizationDto> UpdateSettingsAsync(int organizationId, SettingsOrganizationDto settingsDto);
         Task DeleteOrganizationAsync(int organizationId);
         Task<ICollection<OrganizationDto>> GetUserOrganizationsAsync(int userId);
-        Task<bool> IsOrganizationSlugValid(string organizationSlug);
+        Task<bool> IsOrganizationSlugValidAsync(string organizationSlug);
     }
 }
