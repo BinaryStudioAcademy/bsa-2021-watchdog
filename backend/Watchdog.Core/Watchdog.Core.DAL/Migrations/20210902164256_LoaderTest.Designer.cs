@@ -10,7 +10,7 @@ using Watchdog.Core.DAL.Context;
 namespace Watchdog.Core.DAL.Migrations
 {
     [DbContext(typeof(WatchdogCoreContext))]
-    [Migration("20210902160816_LoaderTest")]
+    [Migration("20210902164256_LoaderTest")]
     partial class LoaderTest
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

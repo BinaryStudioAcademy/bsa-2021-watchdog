@@ -77,6 +77,26 @@ namespace Watchdog.Core.DAL.Migrations
                 name: "IX_LoaderTests_OrganizationId",
                 table: "LoaderTests",
                 column: "OrganizationId");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "AvatarUrl",
+                table: "Users",
+                type: "nvarchar(max)",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(256)",
+                oldMaxLength: 256,
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "AvatarUrl",
+                table: "Organizations",
+                type: "nvarchar(max)",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(256)",
+                oldMaxLength: 256,
+                oldNullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -86,6 +106,26 @@ namespace Watchdog.Core.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "LoaderTests");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "AvatarUrl",
+                table: "Users",
+                type: "nvarchar(256)",
+                maxLength: 256,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "AvatarUrl",
+                table: "Organizations",
+                type: "nvarchar(256)",
+                maxLength: 256,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)",
+                oldNullable: true);
         }
     }
 }
