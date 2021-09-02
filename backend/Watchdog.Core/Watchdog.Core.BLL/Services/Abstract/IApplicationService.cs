@@ -21,5 +21,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<bool> IsProjectNameValidAsync(string projectName, int organizationId);
         Task<bool> IsApiKeyUniqueAsync(string apiKey);
         Task<ICollection<ApplicationDto>> GetAppsByMemberIdAsync(int memberId);
+        Task<bool> CheckProjectListeningAsync(string apiKey);
     }
 }
