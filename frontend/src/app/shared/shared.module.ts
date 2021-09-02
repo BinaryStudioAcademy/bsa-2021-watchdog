@@ -27,7 +27,7 @@ import { NgxPhotoEditorModule } from 'ngx-photo-editor';
         PrimeComponentsModule,
         NgxJsonViewerModule,
         NgxChartsModule,
-        GoogleChartsModule
+        GoogleChartsModule,
         NgxPhotoEditorModule,
     ],
     declarations: [
@@ -58,7 +58,7 @@ import { NgxPhotoEditorModule } from 'ngx-photo-editor';
         NgxJsonViewerModule,
         ChartsComponent,
         NoContentPlaceholderComponent,
-        GoogleChartsModule
+        GoogleChartsModule,
         NgxPhotoEditorModule,
     ]
 })
