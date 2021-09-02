@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Nest;
 using System.Collections.Generic;
@@ -306,5 +307,23 @@ namespace Watchdog.Core.BLL.Services
             return (result, totalRecord);
         }
 
+        public async Task<int> GetFilteredIssueCountByStatusesAndDateRangeByApplicationIdAsync(int applicationId, IssueStatusesByDateRangeFilter filter)
+        {
+            if (!await _context.Applications.AnyAsync(application => application.Id == applicationId))
+            {
+                throw new KeyNotFoundException("Application not found");
+            }
+
+            var messagesCount = _context.EventMessages
+                .AsNoTracking()
+                .Include(message => message.Issue)
+                .Where(message =>
+                    message.Issue.ApplicationId == applicationId
+                    && filter.IssueStatuses.Contains(message.Issue.Status)
+                    && message.OccurredOn  >= filter.DateRange)
+                .Count();
+
+            return messagesCount;
+        }
     }
 }

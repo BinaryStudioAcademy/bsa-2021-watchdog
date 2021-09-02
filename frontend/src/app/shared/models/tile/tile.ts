@@ -9,5 +9,6 @@ export interface Tile {
     dashboardId: number,
     createdBy: number,
     createdAt: Date,
+    tileOrder: number,
     settings: string
 }

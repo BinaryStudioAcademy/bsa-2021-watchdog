@@ -10,7 +10,7 @@
             <button class="p-button-outlined sign-in-button" label="Sign in" pButton pRipple type="button"></button>
         </div>
         <div *ngIf="user" class="user-info">
-            <img [src]="user.avatarUrl ?? 'assets\\avatar.png'" alt="Avatar" class="user-avatar">
+            <img [src]="user.avatarUrl ?? 'assets\\avatar.png' | save" alt="Avatar" class="user-avatar">
             <div (click)="menu.toggle($event)" class="user-name">{{user.firstName}} {{user.lastName}}</div>
             <p-menu #menu [model]="userItems" [popup]="true"></p-menu>
         </div>
@@ -125,3 +125,5 @@
         </div>
     </div>
 </div>
+
+<app-create-organization [(display)]="display" (organizationCreate)="changeOrganization($event)"></app-create-organization>

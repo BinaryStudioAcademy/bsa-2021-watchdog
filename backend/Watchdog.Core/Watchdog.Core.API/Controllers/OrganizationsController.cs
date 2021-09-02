@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Watchdog.Core.BLL.Services.Abstract;
+using Watchdog.Core.Common.DTO.Avatar;
 using Watchdog.Core.Common.DTO.Organization;
 
 namespace Watchdog.Core.API.Controllers
@@ -36,9 +37,16 @@ namespace Watchdog.Core.API.Controllers
         
         [AllowAnonymous]
         [HttpGet("slug/{organizationSlug}")]
-        public async Task<ActionResult<bool>> IsSlugValid(string organizationSlug)
+        public async Task<ActionResult<bool>> IsSlugValidAsync(string organizationSlug)
         {
-            return Ok(await _organizationService.IsOrganizationSlugValid(organizationSlug));
+            return Ok(await _organizationService.IsOrganizationSlugValidAsync(organizationSlug));
+        }
+
+        [AllowAnonymous]
+        [HttpGet("exists/{organizationSlug}")]
+        public async Task<ActionResult<bool>> IsOrganizationExistAsync(string organizationSlug)
+        {
+            return Ok(!(await _organizationService.IsOrganizationSlugValidAsync(organizationSlug)));
         }
 
         [HttpGet("{organizationId:int}")]
@@ -55,7 +63,6 @@ namespace Watchdog.Core.API.Controllers
             return Ok(organizations);
         }
         
-        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<OrganizationDto>> CreateOrganizationAsync(NewOrganizationDto organizationDto)
         {
@@ -74,6 +81,7 @@ namespace Watchdog.Core.API.Controllers
             var organization = await _organizationService.UpdateOrganizationAsync(organizationId, organizationDto);
             return Ok(organization);
         }
+        
         [HttpPut("settings/{organizationId:int}")]
         public async Task<ActionResult<OrganizationDto>> UpdateSettings(int organizationId, SettingsOrganizationDto settings)
         {
@@ -86,6 +94,11 @@ namespace Watchdog.Core.API.Controllers
         {
             await _organizationService.DeleteOrganizationAsync(organizationId);
             return NoContent();
+        }
+        [HttpPatch("updateAvatar")]
+        public async Task<ActionResult<OrganizationDto>> UpdateOrganizationAvatar(AvatarDto data)
+        {
+            return Ok(await _organizationService.UpdateOrganizationAvatarAsync(data));
         }
 
     }

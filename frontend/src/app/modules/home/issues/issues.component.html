@@ -16,6 +16,18 @@
                     placeholder="Search"
                     type="text">
             </div>
+            <div class="action-block">
+                <span (click)="exportExcel()" class="p-inputgroup-addon search-button"
+                      pTooltip="{{selectedIssues.length ? 'Export selected to Excel' : 'Export to Excel'}}"
+                      tooltipPosition="top" tooltipStyleClass="tooltip-text">
+                    <i class="pi pi-file-excel"></i>
+                </span>
+                <span (click)="exportPdf()" class="p-inputgroup-addon search-button"
+                      pTooltip="{{selectedIssues.length ? 'Export selected to PDF' : 'Export to PDF'}}"
+                      tooltipPosition="top" tooltipStyleClass="tooltip-text">
+                    <i class="pi pi-file-pdf"></i>
+                </span>
+            </div>
         </div>
 
         <p-tabPanel>
@@ -78,7 +90,8 @@
                                     <span appTooltipFullName class="description">{{issue.errorMessage}}</span>
                                     <div class="additional-info">
                                         <ng-container [ngSwitch]="issue.status">
-                                            <p-tag *ngSwitchCase="IssueStatus.Active" [rounded]="true" styleClass="active-tag"
+                                            <p-tag *ngSwitchCase="IssueStatus.Active" [rounded]="true"
+                                                   styleClass="active-tag"
                                                    value="active"></p-tag>
                                             <p-tag *ngSwitchCase="IssueStatus.Resolved" [rounded]="true"
                                                    severity="success" value="resolved"></p-tag>
@@ -86,10 +99,11 @@
                                                    value="ignored"></p-tag>
                                         </ng-container>
                                         <div class="tooltip">
-                                            <span><i class="pi pi-clock time-icon"></i>{{issue.newest.occurredOn |
-                                                timeAgo}}</span>
-                                            <span
-                                                class="tooltip-text">{{issue.newest.occurredOn | date:'MMMM d, y h:mma'}}</span>
+                                            <span pTooltip="{{issue.newest.occurredOn | date:'MMMM d, y h:mma'}}"
+                                                  tooltipPosition="right" tooltipStyleClass="tooltip-text">
+                                                <i class="pi pi-clock time-icon"></i>
+                                                {{issue.newest.occurredOn | timeAgo}}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>

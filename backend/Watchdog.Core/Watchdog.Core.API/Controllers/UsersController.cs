@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.User;
+using Watchdog.Core.Common.DTO.Avatar;
 
 namespace Watchdog.Core.API.Controllers
 {
@@ -62,6 +63,13 @@ namespace Watchdog.Core.API.Controllers
         public async Task<ActionResult<bool>> IsEmailValid(string userEmail)
         {
             return Ok(await _userService.IsUserEmailValid(userEmail));
+        }
+
+        [HttpPatch("updateAvatar")]
+        public async Task<ActionResult> UpdateAvatarAsync(AvatarDto data)
+        {
+            await _userService.UpdateUserAvatarAsync(data);
+            return Ok();
         }
     }
 }

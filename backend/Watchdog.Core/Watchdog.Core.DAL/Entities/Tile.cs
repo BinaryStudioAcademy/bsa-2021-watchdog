@@ -11,6 +11,7 @@ namespace Watchdog.Core.DAL.Entities
         public User User { get; set; }
         public int DashboardId { get; set; }
         public Dashboard Dashboard { get; set; }
+        public int TileOrder { get; set; }
         public string Settings { get; set; }
     }
 }

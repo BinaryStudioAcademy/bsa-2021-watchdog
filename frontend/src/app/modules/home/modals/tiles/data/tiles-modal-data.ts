@@ -10,6 +10,7 @@ import { TileSizeType } from '@shared/models/tile/enums/tile-size-type';
 
 export class TilesModalData {
     dateRangeGranularityMap: DateRangeGranularityMap<GranularityDropdown[]> = {};
+    dateRangeHeatMapGranularityMap: DateRangeGranularityMap<GranularityDropdown[]> = {};
 
     dateRangeDropdownItems: DateRangeDropdown[] = [
         {
@@ -31,6 +32,48 @@ export class TilesModalData {
         {
             type: TileDateRangeType.ThePast2Weeks,
             name: 'The past 2 weeks'
+        }
+    ];
+
+    dateRangeIssuesCountDropdownItems: DateRangeDropdown[] = [
+        {
+            type: TileDateRangeType.All,
+            name: 'All'
+        },
+        {
+            type: TileDateRangeType.ThePastHour,
+            name: 'The past hour'
+        },
+        {
+            type: TileDateRangeType.ThePastDay,
+            name: 'The past day'
+        },
+        {
+            type: TileDateRangeType.ThePastWeek,
+            name: 'The past week'
+        },
+        {
+            type: TileDateRangeType.ThePast30Days,
+            name: 'The past month'
+        },
+        {
+            type: TileDateRangeType.ThePastYear,
+            name: 'The past year'
+        }
+    ];
+
+    dateRangeHeatMapDropdownItems: DateRangeDropdown[] = [
+        {
+            type: TileDateRangeType.ThePastWeek,
+            name: 'The past week'
+        },
+        {
+            type: TileDateRangeType.ThePast30Days,
+            name: 'The past month'
+        },
+        {
+            type: TileDateRangeType.ThePastYear,
+            name: 'The past year'
         }
     ];
 
@@ -84,6 +127,16 @@ export class TilesModalData {
         name: 'One day'
     };
 
+    private granularityDropdownOneWeek: GranularityDropdown = {
+        type: TileGranularityType.OneWeek,
+        name: 'One week'
+    };
+
+    private granularityDropdownOneMonth: GranularityDropdown = {
+        type: TileGranularityType.OneMonth,
+        name: 'One month'
+    };
+
     constructor() {
         this.dateRangeGranularityMap[TileDateRangeType.ThePastHour] = [
             this.granularityDropdownOneMinute, this.granularityDropdownTenMinute];
@@ -95,5 +148,12 @@ export class TilesModalData {
             this.granularityDropdownOneHour, this.granularityDropdownOneDay];
         this.dateRangeGranularityMap[TileDateRangeType.ThePast2Weeks] = [
             this.granularityDropdownOneHour, this.granularityDropdownOneDay];
+
+        this.dateRangeHeatMapGranularityMap[TileDateRangeType.ThePastWeek] = [
+            this.granularityDropdownOneDay];
+        this.dateRangeHeatMapGranularityMap[TileDateRangeType.ThePast30Days] = [
+            this.granularityDropdownOneWeek];
+        this.dateRangeHeatMapGranularityMap[TileDateRangeType.ThePastYear] = [
+            this.granularityDropdownOneMonth];
     }
 }

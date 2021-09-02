@@ -16,6 +16,8 @@ import { User } from '@shared/models/user/user';
 import { LazyLoadEvent, TreeNode } from 'primeng/api';
 import { debounceTime, tap } from 'rxjs/operators';
 import { MembersRoles } from '@shared/constants/membersRoles';
+import { TableExportService } from '@core/services/table-export.service';
+import { MemberExport } from '@shared/models/export/MemberExport';
 
 @Component({
     selector: 'app-members-page',
@@ -36,6 +38,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
     totalRecords: number;
     globalFilterFields = ['member.user.firstName', 'member.user.email', 'member.role.name'];
     lastEvent: LazyLoadEvent;
+
     constructor(
         private memberService: MemberService,
         private roleService: RoleService,
@@ -43,7 +46,8 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
         private authService: AuthenticationService,
         private confirmWindowService: ConfirmWindowService,
         private updateDataService: ShareDataService<Member>,
-        private spinner: SpinnerService
+        private spinner: SpinnerService,
+        private tableExportService: TableExportService,
     ) {
         super();
     }
@@ -89,20 +93,15 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis,
                 debounceTime(1000))
             .subscribe(response => {
-                this.memberItems = response.collection.map(member => ({ member, treeTeams: this.fromTeams(member.teams) }));
+                this.memberItems = response.collection.map(member => ({
+                    member,
+                    treeTeams: this.fromTeams(member.teams)
+                }));
                 this.totalRecords = response.totalRecord;
                 this.spinner.hide();
             }, error => {
                 this.toastNotifications.error(error);
                 this.spinner.hide();
-            });
-    }
-
-    private setUpSharedDate() {
-        this.updateDataService.currentMessage
-            .pipe(this.untilThis)
-            .subscribe(() => {
-                this.loadMembers(this.lastEvent);
             });
     }
 
@@ -174,6 +173,16 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
             });
     }
 
+    approve(member: Member) {
+        this.memberService.approveMember(member.id)
+            .pipe(this.untilThis)
+            .subscribe(() => {
+                this.toastNotifications.success('Member approved');
+            }, error => {
+                this.toastNotifications.error(error);
+            });
+    }
+
     reinvite(member: Member) {
         this.memberService.reinviteMember(member.id)
             .pipe(this.untilThis)
@@ -182,5 +191,37 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
             }, error => {
                 this.toastNotifications.error(error);
             });
+    }
+
+    exportExcel(): void {
+        this.spinner.show(true);
+        this.tableExportService.exportExcel(this.membersToExportMembers(this.memberItems), 'Members');
+        this.spinner.hide();
+    }
+
+    exportPdf(): void {
+        this.spinner.show(true);
+        this.tableExportService.exportPdf(this.membersToExportMembers(this.memberItems), 'Members');
+        this.spinner.hide();
+    }
+
+    private setUpSharedDate() {
+        this.updateDataService.currentMessage
+            .pipe(this.untilThis)
+            .subscribe(() => {
+                this.loadMembers(this.lastEvent);
+            });
+    }
+
+    private membersToExportMembers(membersToExport: MemberItem[]): MemberExport[] {
+        return membersToExport.map<MemberExport>(item => (
+            {
+                FullName: `${item.member.user.firstName} ${item.member.user.lastName}`,
+                Email: item.member.user.email,
+                Role: item.member.role.name,
+                Accepted: item.member.isAccepted ? 'Yes' : 'No',
+                Teams: item.treeTeams.map(node => node.children.map(team => team.label).join(' \r'))[0],
+            }
+        ));
     }
 }

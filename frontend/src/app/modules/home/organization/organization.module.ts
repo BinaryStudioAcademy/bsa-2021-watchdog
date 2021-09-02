@@ -15,6 +15,7 @@ import { CreateOrganizationComponent } from './create-organization/create-organi
     exports: [
         OrganizationMenuComponent,
         OrganizationSettingsComponent,
+        CreateOrganizationComponent,
     ],
     declarations: [
         OrganizationMenuComponent,

@@ -69,13 +69,20 @@ namespace Watchdog.Core.API.Controllers
             var tiles = await _tileService.GetAllTilesByDashboardIdAsync(dashboardId);
             return Ok(tiles);
         }
-        
+
         [HttpDelete("dashboard/{dashboardId:int}")]
         public async Task<ActionResult<ICollection<DashboardDto>>> DeleteAllByDashboardId(int dashboardId)
         {
             await _tileService.DeleteAllTilesByDashboardIdAsync(dashboardId);
             _logger.LogInformation($"All tiles from Dashboard: ID = {dashboardId} has been removed.");
             return NoContent();
+        }
+
+        [HttpPost("dashboard/{dashboardId:int}/setOrder")]
+        public async Task<ActionResult<ICollection<TileDto>>> SetOrderForTiles(int dashboardId, ICollection<TileOrderDto> tiles)
+        {
+            var orderedTiles = await _tileService.SetOrderForTilesAsync(dashboardId, tiles);
+            return Ok(orderedTiles);
         }
     }
 }

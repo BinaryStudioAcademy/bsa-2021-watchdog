@@ -17,19 +17,20 @@ import { TilesModalData } from '@modules/home/modals/tiles/data/tiles-modal-data
 import { DateRangeDropdown } from '@modules/home/modals/tiles/models/date-range-dropdown';
 import { TileSizeType } from '@shared/models/tile/enums/tile-size-type';
 import { TileDateRangeType } from '@shared/models/tile/enums/tile-date-range-type';
+import { TileSizeDropdown } from '@shared/models/tile/tile-size-dropdown';
 
 @Component({
     selector: 'app-add-edit-top-active-issues-tile',
     templateUrl: './add-edit-top-active-issues-tile.component.html',
-    styleUrls: ['./add-edit-top-active-issues-tile.component.sass'],
+    styleUrls: ['../../add-edit-modal-styles.sass'],
     providers: [TilesModalData]
 })
 export class AddEditTopActiveIssuesTileComponent implements OnInit {
-    public formGroup: FormGroup;
-    public dateRangeDropdown: DateRangeDropdown[];
-    public tileSizeDropdown: TileSizeDropdown[];
-    public headerTitle: string;
-    public submitButtonText: string;
+    formGroup: FormGroup;
+    dateRangeDropdown: DateRangeDropdown[];
+    tileSizeDropdown: TileSizeDropdown[];
+    headerTitle: string;
+    submitButtonText: string;
     currentDashboardId: number;
     tileToEdit: Tile;
     isAddMode: boolean;
@@ -205,9 +206,4 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
         };
         this.close(updatedTile);
     }
-}
-
-interface TileSizeDropdown {
-    name: string,
-    type: TileSizeType
 }

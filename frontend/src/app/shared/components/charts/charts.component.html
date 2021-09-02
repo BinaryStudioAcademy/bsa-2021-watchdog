@@ -1,66 +1,69 @@
 <div [ngSwitch]="chartType" class="container">
     <div *ngSwitchCase="ChartType.Bars" class="chart-container">
-        <ngx-charts-bar-vertical #chart [gradient]="options.gradient" [legend]="options.showLegend"
-                                 [results]="single" [roundDomains]="options.roundDomains"
-                                 [scheme]="options.colorScheme"
-                                 [showXAxisLabel]="options.showXAxisLabel" [showYAxisLabel]="options.showYAxisLabel"
-                                 [xAxis]="options.showXAxis" [yAxis]="options.showYAxis">
+        <ngx-charts-bar-vertical #chart [gradient]="options.gradient" [legend]="options.showLegend" [results]="single"
+            [roundDomains]="options.roundDomains" [scheme]="options.colorScheme"
+            [showXAxisLabel]="options.showXAxisLabel" [showYAxisLabel]="options.showYAxisLabel"
+            [xAxis]="options.showXAxis" [yAxis]="options.showYAxis">
         </ngx-charts-bar-vertical>
     </div>
     <div *ngSwitchCase="ChartType.Pie" class="chart-container">
         <ngx-charts-advanced-pie-chart #chart [gradient]="options.gradient" [results]="single"
-                                       [scheme]="options.colorScheme" [view]="options.view">
+            [scheme]="options.colorScheme" [view]="options.view">
         </ngx-charts-advanced-pie-chart>
     </div>
     <div *ngSwitchCase="ChartType.Gauge" class="chart-container">
         <ngx-charts-gauge #chart [legend]="options.showLegend" [results]="single" [scheme]="options.colorScheme"
-                          [view]="options.view">
+            [view]="options.view">
         </ngx-charts-gauge>
     </div>
     <div *ngSwitchCase="ChartType.Tree" class="chart-container">
-        <ngx-charts-tree-map #chart [animations]="options.animations" [gradient]="options.gradient"
-                             [results]="single"
-                             [scheme]="options.colorScheme" [view]="options.view">
+        <ngx-charts-tree-map #chart [animations]="options.animations" [gradient]="options.gradient" [results]="single"
+            [scheme]="options.colorScheme" [view]="options.view">
         </ngx-charts-tree-map>
     </div>
     <div *ngSwitchCase="ChartType.Line" [ngClass]="{'issues-per-time': tileType === TileType.IssuesPerTime}"
-         class="chart-container">
-        <ngx-charts-line-chart #chart [autoScale]="options.autoScale"
-                               [legend]="options.showLegend" [results]="multi"
-                               [roundDomains]="options.roundDomains" [scheme]="options.colorScheme"
-                               [showXAxisLabel]="options.showXAxisLabel" [showYAxisLabel]="options.showYAxisLabel"
-                               [timeline]="options.timeline" [view]="options.view"
-                               [xAxisLabel]="options.xAxisLabel" [xAxis]="options.showXAxis"
-                               [yAxisLabel]="options.yAxisLabel" [yAxis]="options.showYAxis">
+        class="chart-container">
+        <ngx-charts-line-chart #chart [autoScale]="options.autoScale" [legend]="options.showLegend" [results]="multi"
+            [roundDomains]="options.roundDomains" [scheme]="options.colorScheme"
+            [showXAxisLabel]="options.showXAxisLabel" [showYAxisLabel]="options.showYAxisLabel"
+            [timeline]="options.timeline" [view]="options.view" [xAxisLabel]="options.xAxisLabel"
+            [xAxis]="options.showXAxis" [yAxisLabel]="options.yAxisLabel" [yAxis]="options.showYAxis">
         </ngx-charts-line-chart>
     </div>
     <div *ngSwitchCase="ChartType.Polar" class="chart-container">
-        <ngx-charts-polar-chart #chart [autoScale]="options.autoScale" [legend]="options.showLegend"
-                                [results]="multi" [roundDomains]="options.roundDomains"
-                                [scheme]="options.colorScheme" [showXAxisLabel]="options.showXAxisLabel"
-                                [showYAxisLabel]="options.showYAxisLabel" [view]="options.view"
-                                [xAxisLabel]="options.xAxisLabel" [xAxis]="options.showXAxis"
-                                [yAxisLabel]="options.yAxisLabel" [yAxis]="options.showYAxis">
+        <ngx-charts-polar-chart #chart [autoScale]="options.autoScale" [legend]="options.showLegend" [results]="multi"
+            [roundDomains]="options.roundDomains" [scheme]="options.colorScheme"
+            [showXAxisLabel]="options.showXAxisLabel" [showYAxisLabel]="options.showYAxisLabel" [view]="options.view"
+            [xAxisLabel]="options.xAxisLabel" [xAxis]="options.showXAxis" [yAxisLabel]="options.yAxisLabel"
+            [yAxis]="options.showYAxis">
         </ngx-charts-polar-chart>
     </div>
     <div *ngSwitchCase="ChartType.Area" class="chart-container">
-        <ngx-charts-area-chart #chart [autoScale]="options.autoScale" [legend]="options.showLegend"
-                               [results]="multi" [roundDomains]="options.roundDomains"
-                               [scheme]="options.colorScheme"
-                               [showXAxisLabel]="options.showXAxisLabel" [showYAxisLabel]="options.showYAxisLabel"
-                               [timeline]="options.timeline" [view]="options.view"
-                               [xAxisLabel]="options.xAxisLabel" [xAxis]="options.showXAxis"
-                               [yAxisLabel]="options.yAxisLabel" [yAxis]="options.showYAxis">
+        <ngx-charts-area-chart #chart [autoScale]="options.autoScale" [legend]="options.showLegend" [results]="multi"
+            [roundDomains]="options.roundDomains" [scheme]="options.colorScheme"
+            [showXAxisLabel]="options.showXAxisLabel" [showYAxisLabel]="options.showYAxisLabel"
+            [timeline]="options.timeline" [view]="options.view" [xAxisLabel]="options.xAxisLabel"
+            [xAxis]="options.showXAxis" [yAxisLabel]="options.yAxisLabel" [yAxis]="options.showYAxis">
         </ngx-charts-area-chart>
     </div>
     <div *ngSwitchCase="ChartType.Grouped" class="chart-container">
         <ngx-charts-bar-vertical-2d #chart [legend]="options.showLegend" [results]="multi"
-                                    [roundDomains]="options.roundDomains" [scheme]="options.colorScheme"
-                                    [showXAxisLabel]="options.showXAxisLabel"
-                                    [showYAxisLabel]="options.showYAxisLabel"
-                                    [view]="options.view" [xAxisLabel]="options.xAxisLabel"
-                                    [xAxis]="options.showXAxis" [yAxisLabel]="options.yAxisLabel"
-                                    [yAxis]="options.showYAxis">
+            [roundDomains]="options.roundDomains" [scheme]="options.colorScheme"
+            [showXAxisLabel]="options.showXAxisLabel" [showYAxisLabel]="options.showYAxisLabel" [view]="options.view"
+            [xAxisLabel]="options.xAxisLabel" [xAxis]="options.showXAxis" [yAxisLabel]="options.yAxisLabel"
+            [yAxis]="options.showYAxis">
         </ngx-charts-bar-vertical-2d>
+    </div>
+    <div *ngSwitchCase="ChartType.NumberCard" [ngClass]="{'issues-count': tileType === TileType.IssuesCount}" class="chart-container">
+        <ngx-charts-number-card #chart [view]="options.view" [scheme]="options.colorScheme" [results]="single" [cardColor]="options.cardColor">
+        </ngx-charts-number-card>
+    </div>
+    <div *ngSwitchCase="ChartType.HeatMap" [ngClass]="{'heat-map': tileType === TileType.HeatMap}" class="chart-container">
+        <ngx-charts-heat-map #chart [scheme]="options.colorScheme" [view]="options.view"
+            [legend]="options.showLegend" [showXAxisLabel]="options.showXAxisLabel"
+            [showYAxisLabel]="options.showYAxisLabel" [xAxis]="options.showXAxis"
+            [yAxis]="options.showYAxis" [xAxisLabel]="options.xAxisLabel"
+            [yAxisLabel]="options.yAxisLabel" [results]="multi">
+        </ngx-charts-heat-map>
     </div>
 </div>

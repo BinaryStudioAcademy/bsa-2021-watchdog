@@ -43,6 +43,8 @@ import { TimelineModule } from 'primeng/timeline';
 import { CardModule } from 'primeng/card';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { InputMaskModule } from 'primeng/inputmask';
+import { DragDropModule } from 'primeng/dragdrop';
+import { FileUploadModule } from 'primeng/fileupload';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -89,6 +91,8 @@ import { InputMaskModule } from 'primeng/inputmask';
         CardModule,
         AvatarGroupModule,
         InputMaskModule,
+        DragDropModule,
+        FileUploadModule
     ],
     exports: [
         ButtonModule,
@@ -132,6 +136,8 @@ import { InputMaskModule } from 'primeng/inputmask';
         CardModule,
         AvatarGroupModule,
         InputMaskModule,
+        DragDropModule,
+        FileUploadModule
     ],
     declarations: [],
     providers: [

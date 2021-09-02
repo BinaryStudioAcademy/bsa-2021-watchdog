@@ -13,6 +13,9 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
                    .HasMaxLength(50)
                    .IsRequired();
 
+            builder.Property(t => t.TileOrder)
+                .HasDefaultValue(1)
+                .IsRequired();
 
             builder.Property(a => a.CreatedAt)
                 .HasConversion(

@@ -52,10 +52,7 @@ namespace Watchdog.Notifier.API
 
             services.AddRabbitMQIssueConsumer(Configuration);
 
-            services.AddWatchdog(Configuration, new WatchdogMiddlewareSettings()
-            {
-                ClientProvider = new DefaultWatchdogAspNetCoreClientProvider()
-            });
+            services.AddWatchdog(Configuration);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
@@ -89,8 +86,6 @@ namespace Watchdog.Notifier.API
         public void Configure(IApplicationBuilder app)
         {
             app.UseDeveloperExceptionPage();
-
-            app.UseWatchdog();
 
             app.UseSerilogRequestLogging();
 

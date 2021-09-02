@@ -18,6 +18,11 @@ import { TileHeaderComponent } from './dashboard/tiles/tile-header/tile-header.c
 import { IssuesPerTimeTileComponent } from './dashboard/tiles/issues-per-time-tile/issues-per-time-tile.component';
 import { AddEditIssuesPerTimeTileComponent }
     from './modals/tiles/issues-per-time/add-edit-issues-per-time-tile/add-edit-issues-per-time-tile.component';
+import { IssuesCountTileComponent } from './dashboard/tiles/issues-count-tile/issues-count-tile.component';
+import { AddEditCountIssuesTileComponent }
+    from './modals/tiles/count-issues/add-edit-count-issues-tile/add-edit-count-issues-tile.component';
+import { AddEditHeatMapTileComponent } from './modals/tiles/heat-map/add-edit-heat-map-tile/add-edit-heat-map-tile.component';
+import { HeatMapComponent } from './dashboard/tiles/heat-map/heat-map.component';
 
 @NgModule({
     declarations: [
@@ -31,6 +36,11 @@ import { AddEditIssuesPerTimeTileComponent }
         TileHeaderComponent,
         IssuesPerTimeTileComponent,
         AddEditIssuesPerTimeTileComponent,
+        IssuesCountTileComponent,
+        AddEditCountIssuesTileComponent,
+        AddEditHeatMapTileComponent,
+        HeatMapComponent,
+
     ],
     imports: [
         SharedModule,
