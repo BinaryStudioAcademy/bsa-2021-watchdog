@@ -3,12 +3,11 @@
         <span>Geo Chart</span>
     </div>
     <div class="geo-chart-wrp--content">
-        <google-chart
-            #geoChart
+        <google-chart *ngIf="geoData"
             class="geo-chart-wrp--chart"
             [type]="geoChartOptions.type"
             [title]="geoChartOptions.title"
-            [data]="geoChartOptions.geoData"
+            [data]="geoData"
             [dynamicResize]="true">
         </google-chart>
     </div>

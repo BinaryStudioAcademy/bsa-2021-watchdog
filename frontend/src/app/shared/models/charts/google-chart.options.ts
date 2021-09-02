@@ -4,7 +4,6 @@ export interface GoogleChartOptions {
     title?: string;
     width?: number,
     height?: number,
-    type?: ChartType,
-    geoData?: (string | number)[][]
+    type: ChartType,
     options?: Object
 }

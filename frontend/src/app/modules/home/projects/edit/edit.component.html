@@ -7,8 +7,8 @@
     </div>
 </div>
 </div>
-<p-tabView [(activeIndex)]="activeIndex">
-    <p-tabPanel>
+<p-tabView *ngIf="project" [(activeIndex)]="activeIndex">
+    <p-tabPanel *ngIf="isBrowser">
         <ng-template pTemplate="header">
             <div class="header">
                 <span>Analytics</span>
