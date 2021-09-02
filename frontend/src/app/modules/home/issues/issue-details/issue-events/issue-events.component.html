@@ -1,31 +1,35 @@
 <div class="table">
     <p-table
+        (onLazyLoad)="getEventMessages($event)"
         [autoLayout]="true"
+        [lazy]="true"
         [paginator]="totalRecords > paginatorRows"
         [resizableColumns]="true"
         [rows]="paginatorRows"
+        [sortOrder]="-1"
+        [totalRecords]="totalRecords"
         [value]="issues"
         selectionMode="single"
-        styleClass="table-override"
-        [lazy]="true"
-        (onLazyLoad)="getEventMessages($event)"
-        [totalRecords]="totalRecords"
         sortField="occurredOn"
-        [sortOrder]="-1">
+        styleClass="table-override">
         <!--    Columns Define    -->
         <ng-template pTemplate="header">
             <tr>
-                <th pSortableColumn="occurredOn" field="occurredOn">
+                <th pSortableColumn="occurredOn">
                     ID
                     <p-sortIcon field="occurredOn"></p-sortIcon>
                 </th>
-                <th pSortableColumn="issueDetails.environmentMessage.platform" field="issueDetails.environmentMessage.platform">
-                    Platform
-                    <p-sortIcon field="issueDetails.environmentMessage.platform"></p-sortIcon>
-                </th>
-                <th pSortableColumn="issueDetails.environmentMessage.browser" field="issueDetails.environmentMessage.browser">
-                    Browser
-                    <p-sortIcon field="issueDetails.environmentMessage.browser"></p-sortIcon>
+                <th>Platform</th>
+                <th>
+                    <div class="last-column">
+                        <div>Browser</div>
+                        <div>
+                            <span (click)="exportExcel()" pTooltip="Export to Excel" tooltipPosition="bottom"
+                                  tooltipStyleClass="tooltip-text"><i class="pi pi-file-excel"></i></span>
+                            <span (click)="exportPdf()" pTooltip="Export to PDF" tooltipPosition="bottom"
+                                  tooltipStyleClass="tooltip-text"><i class="pi pi-file-pdf"></i></span>
+                        </div>
+                    </div>
                 </th>
             </tr>
         </ng-template>
@@ -34,12 +38,13 @@
             <tr>
                 <td>
                     <span
+                        [class.current]="issueMessage.id === issue.id"
                         class="issue-time"
-                        [class.current] = "issueMessage.id === issue.id"
                         routerLink="/home/issues/{{issueMessage.issueId}}/{{issue.id}}">
                         {{issue.occurredOn | date:'MMMM d, y h:mma'}}
                     </span>
-                    <p-tag *ngIf="issueMessage.id === issue.id" styleClass="label" severity="info" value="current" [rounded]="true"></p-tag>
+                    <p-tag *ngIf="issueMessage.id === issue.id" [rounded]="true" severity="info" styleClass="label"
+                           value="current"></p-tag>
                     <small class="issue-id">{{issue.id}}</small>
                 </td>
                 <td>{{issue.issueDetails.environmentMessage.platform}}</td>

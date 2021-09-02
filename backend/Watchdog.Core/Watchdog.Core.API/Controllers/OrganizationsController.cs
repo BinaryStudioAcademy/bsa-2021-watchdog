@@ -37,9 +37,16 @@ namespace Watchdog.Core.API.Controllers
         
         [AllowAnonymous]
         [HttpGet("slug/{organizationSlug}")]
-        public async Task<ActionResult<bool>> IsSlugValid(string organizationSlug)
+        public async Task<ActionResult<bool>> IsSlugValidAsync(string organizationSlug)
         {
-            return Ok(await _organizationService.IsOrganizationSlugValid(organizationSlug));
+            return Ok(await _organizationService.IsOrganizationSlugValidAsync(organizationSlug));
+        }
+
+        [AllowAnonymous]
+        [HttpGet("exists/{organizationSlug}")]
+        public async Task<ActionResult<bool>> IsOrganizationExistAsync(string organizationSlug)
+        {
+            return Ok(!(await _organizationService.IsOrganizationSlugValidAsync(organizationSlug)));
         }
 
         [HttpGet("{organizationId:int}")]
@@ -74,6 +81,7 @@ namespace Watchdog.Core.API.Controllers
             var organization = await _organizationService.UpdateOrganizationAsync(organizationId, organizationDto);
             return Ok(organization);
         }
+        
         [HttpPut("settings/{organizationId:int}")]
         public async Task<ActionResult<OrganizationDto>> UpdateSettings(int organizationId, SettingsOrganizationDto settings)
         {

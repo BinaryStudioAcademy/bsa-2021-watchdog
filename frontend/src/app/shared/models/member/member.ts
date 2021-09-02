@@ -10,4 +10,5 @@ export interface Member {
     role: Role,
     organizationId: number,
     isAccepted: boolean,
+    isApproved: boolean
 }

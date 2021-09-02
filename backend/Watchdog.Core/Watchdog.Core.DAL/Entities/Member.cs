@@ -28,7 +28,9 @@ namespace Watchdog.Core.DAL.Entities
 
         public ICollection<AssigneeMember> AssigneeMembers { get; set; }
 
-        public bool IsAccepted { get; set; } 
+        public bool IsAccepted { get; set; }
+
+        public bool IsApproved { get; set; }
 
         public User CreatedByUser { get; set; }
 

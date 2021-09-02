@@ -37,6 +37,10 @@
                 [isShownEditTileMenu]="showTileMenu" [tile]="tile"
                 [userProjects]="projects" [style.flex-basis.px]="getTileSize(tile)" class="issues-count">
             </app-issues-count-tile>
+            <app-heat-map (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.HeatMap"
+                [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects"
+                [style.flex-basis.px]="getTileSize(tile)" class="heat-map">
+            </app-heat-map>
         </ng-container>
     </div>
 </ng-template>
