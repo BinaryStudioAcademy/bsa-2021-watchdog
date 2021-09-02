@@ -219,8 +219,8 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
                 FullName: `${item.member.user.firstName} ${item.member.user.lastName}`,
                 Email: item.member.user.email,
                 Role: item.member.role.name,
-                Teams: item.treeTeams.map(node => node.children.map(team => team.label).join(', '))[0],
                 Accepted: item.member.isAccepted ? 'Yes' : 'No',
+                Teams: item.treeTeams.map(node => node.children.map(team => team.label).join(' \r'))[0],
             }
         ));
     }

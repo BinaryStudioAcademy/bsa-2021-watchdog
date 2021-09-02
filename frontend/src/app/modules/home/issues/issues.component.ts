@@ -182,7 +182,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     exportExcel(): void {
         this.spinner.show(true);
         this.tableExportService.exportExcel(
-            this.issuesToExcelExportIssues(this.selectedIssues.length ? this.selectedIssues : this.issues),
+            this.issuesToExportIssues(this.selectedIssues.length ? this.selectedIssues : this.issues),
             'Issues'
         );
         this.spinner.hide();
@@ -191,28 +191,13 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     exportPdf(): void {
         this.spinner.show(true);
         this.tableExportService.exportPdf(
-            this.issuesToPdfExportIssues(this.selectedIssues.length ? this.selectedIssues : this.issues),
+            this.issuesToExportIssues(this.selectedIssues.length ? this.selectedIssues : this.issues),
             'Issues'
         );
         this.spinner.hide();
     }
 
-    private issuesToExcelExportIssues(issuesToExport: IssueInfo[]): IssueInfoExport[] {
-        return issuesToExport.map<IssueInfoExport>(issue => (
-            {
-                LastErrorUrl: `${window.location.origin}/home/issues/${issue.issueId}/${issue.newest.id}`,
-                ErrorClass: issue.errorClass,
-                ErrorMessage: issue.errorMessage,
-                Status: IssueStatus[issue.status],
-                Events: issue.eventsCount,
-                OccurredOn: new Date(issue.newest.occurredOn).toLocaleString(),
-                Project: issue.project.name,
-                Assignee: this.getAllUsers(issue.assignee).map(value => `${value.firstName} ${value.lastName}`).join(', ')
-            }
-        ));
-    }
-
-    private issuesToPdfExportIssues(issuesToExport: IssueInfo[]): IssueInfoExport[] {
+    private issuesToExportIssues(issuesToExport: IssueInfo[]): IssueInfoExport[] {
         return issuesToExport.map<IssueInfoExport>(issue => (
             {
                 ErrorClass: issue.errorClass,
@@ -221,7 +206,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                 Events: issue.eventsCount,
                 OccurredOn: new Date(issue.newest.occurredOn).toLocaleString(),
                 Project: issue.project.name,
-                Assignee: this.getAllUsers(issue.assignee).map(value => `${value.firstName} ${value.lastName}`).join(', ')
+                Assignee: this.getAllUsers(issue.assignee).map(value => `${value.firstName} ${value.lastName}`).join(' \r')
             }
         ));
     }

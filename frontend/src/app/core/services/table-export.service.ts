@@ -20,10 +20,10 @@ export class TableExportService {
         if (arrayOfItemsToWrite.length) {
             const cols: string[][] = [Object.keys(arrayOfItemsToWrite[0])];
             const rows: string[][] = arrayOfItemsToWrite.map(item => Object.values(item));
-
+            const pxPerSymbol = 9;
             const stylesPerProperty: { [p: string]: Partial<Styles> } = {};
             cols[0].forEach((propName, index) => {
-                stylesPerProperty[index] = { minCellWidth: propName.length * 8 };
+                stylesPerProperty[index] = { minCellWidth: propName.length * pxPerSymbol };
             });
             autoTable(doc, {
                 head: cols,
