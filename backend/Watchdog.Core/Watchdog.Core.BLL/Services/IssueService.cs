@@ -322,14 +322,12 @@ namespace Watchdog.Core.BLL.Services
                 throw new KeyNotFoundException("Application not found");
             }
 
-            var messagesCount = _context.EventMessages
+            var messagesCount = await _context.EventMessages
                 .AsNoTracking()
-                .Include(message =>
-                    message.Issue)
-                .Count(message => message.Issue.ApplicationId == applicationId
+                .Include(message => message.Issue)
+                .CountAsync(message => message.Issue.ApplicationId == applicationId
                                   && filter.IssueStatuses.Contains(message.Issue.Status)
                                   && message.OccurredOn >= filter.DateRange);
-
             return messagesCount;
         }
     }
