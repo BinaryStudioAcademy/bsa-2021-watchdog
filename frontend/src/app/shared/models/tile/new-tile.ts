@@ -6,6 +6,7 @@ export interface NewTile {
     category: TileCategory,
     type: TileType,
     dashboardId: number,
+    tileOrder?: number,
     createdBy: number,
     settings: string
 }
