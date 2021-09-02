@@ -21,7 +21,7 @@
             [scheme]="options.colorScheme" [view]="options.view">
         </ngx-charts-tree-map>
     </div>
-    <div *ngSwitchCase="ChartType.Line" [ngClass]="{'issues-per-time': tileType === TileType.IssuesPerTime}"
+    <div id="chart" *ngSwitchCase="ChartType.Line" [ngClass]="{'issues-per-time': tileType === TileType.IssuesPerTime}"
         class="chart-container">
         <ngx-charts-line-chart #chart [autoScale]="options.autoScale" [legend]="options.showLegend" [results]="multi"
             [roundDomains]="options.roundDomains" [scheme]="options.colorScheme"
