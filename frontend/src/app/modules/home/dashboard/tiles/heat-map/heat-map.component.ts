@@ -102,41 +102,15 @@ export class HeatMapComponent extends BaseComponent implements OnInit {
         const dateMsPast = convertDateToTileGranularityTimeStamp(granularityType, dateMsNow - dateRangeMsOffset);
         const granularityOffset = convertTileGranularityTypeToMs(granularityType);
 
-        if (granularityType === TileGranularityType.OneWeek) {
-            for (let i = dateMsNow, temp = 0; i > dateMsPast; i -= granularityOffset) {
-                issuesPerTime[i] = 0;
-                temp = i;
-                eventsInfo.forEach((info) => {
-                    const timeStamp = convertDateToTileGranularityTimeStamp(granularityType, info.occurredOn);
-                    if (temp >= timeStamp) {
-                        issuesPerTime[i] += 1;
-                    }
-                });
-            }
-        }
-        if (granularityType === TileGranularityType.OneMonth) {
-            for (let i = dateMsNow, temp = 0; i > dateMsPast; i -= granularityOffset) {
-                issuesPerTime[i] = 0;
-                temp = i;
-                eventsInfo.forEach((info) => {
-                    const timeStamp = convertDateToTileGranularityTimeStamp(granularityType, info.occurredOn);
-                    if (temp >= timeStamp) {
-                        issuesPerTime[i] += 1;
-                    }
-                });
-            }
-        }
-        if (granularityType === TileGranularityType.OneDay) {
-            for (let i = dateMsNow, temp = 0; i > dateMsPast; i -= granularityOffset) {
-                issuesPerTime[i] = 0;
-                temp = i;
-                eventsInfo.forEach((info) => {
-                    const timeStamp = convertDateToTileGranularityTimeStamp(granularityType, info.occurredOn);
-                    if (temp >= timeStamp) {
-                        issuesPerTime[i] += 1;
-                    }
-                });
-            }
+        for (let i = dateMsNow, temp = 0; i > dateMsPast; i -= granularityOffset) {
+            issuesPerTime[i] = 0;
+            temp = i;
+            eventsInfo.forEach((info) => {
+                const timeStamp = convertDateToTileGranularityTimeStamp(granularityType, info.occurredOn);
+                if (temp >= timeStamp) {
+                    issuesPerTime[i] += 1;
+                }
+            });
         }
 
         return Object.entries(issuesPerTime).map<SingleChart>(([key, val]) => ({

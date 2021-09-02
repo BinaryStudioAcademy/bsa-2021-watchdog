@@ -148,8 +148,6 @@ export class TilesModalData {
             this.granularityDropdownOneHour, this.granularityDropdownOneDay];
         this.dateRangeGranularityMap[TileDateRangeType.ThePast2Weeks] = [
             this.granularityDropdownOneHour, this.granularityDropdownOneDay];
-        this.dateRangeGranularityMap[TileDateRangeType.ThePast2Weeks] = [
-            this.granularityDropdownOneHour, this.granularityDropdownOneDay];
 
         this.dateRangeHeatMapGranularityMap[TileDateRangeType.ThePastWeek] = [
             this.granularityDropdownOneDay];
