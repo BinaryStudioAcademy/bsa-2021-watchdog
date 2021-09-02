@@ -1,0 +1,76 @@
+@import 'variables'
+.modal-open::after
+    content: ''
+    display: block
+    height: 100vh
+    width: 100vw
+    background: $modal-background
+    position: absolute
+    top: 0
+    left: 0
+.d-block.modal.fade.show
+    .modal-dialog
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+        box-shadow: $edited-box-shadow
+        transition: transform 0s !important
+        background-color: $editor-background
+        z-index: 1
+
+    h5
+        padding: 1rem !important
+        border: 1px solid $p-dialog-header-border-color
+        background: $p-dialog-header-background-color
+        height: 50px
+        margin: 0 !important
+        color: $header-text-color !important
+        font-weight: 600
+
+    .modal-body
+        background-color: $editor-background !important
+        padding: 0
+
+    .ngx-photo-editor-icons-container
+        background: none
+        &>svg
+            fill: $text-color-secondary
+            &:hover
+                fill: $primary-color
+    .ngx-photo-editor-custom-modal-footer
+        background-color: $editor-background !important
+        padding-top: 0
+        display: flex
+        justify-content: flex-end
+
+        .btn
+            font-size: 1rem !important
+            padding: .5rem 1rem !important
+            background-color: transparent
+            line-height: 1 !important
+            border-radius: 3px
+            float: none
+            cursor: pointer
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+            &:hover,
+            &:active
+                background: $editor-button-hover
+
+        .btn-primary
+            border-color: $primary-color
+            color: $primary-color
+            border: 1px solid $primary-color
+            &:hover,
+            &:active
+                border-color: $primary-color
+                color: $primary-color
+
+        .btn-outline-dark
+            border-color: $editor-cancel-button
+            color: $editor-cancel-button
+            border: 1px solid $editor-cancel-button
+            &:hover,
+            &:active
+                border-color: $editor-cancel-button
+                color: $editor-cancel-button
