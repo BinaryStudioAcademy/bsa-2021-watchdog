@@ -39,6 +39,8 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     toAssign: Assignee;
     issueId: number;
     IssueStatus = IssueStatus;
+    selectedTabIssueStatus?: IssueStatus;
+    first: number = 0;
     private saveAssign: Assignee;
     private viewedAssignee = 3;
 
@@ -137,7 +139,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             return;
         }
         this.spinner.show(true);
-        this.issueService.getIssuesInfoLazy(this.member.id, this.lastEvent)
+        this.issueService.getIssuesInfoLazy(this.member.id, this.lastEvent, this.selectedTabIssueStatus)
             .pipe(this.untilThis,
                 debounceTime(1000))
             .subscribe(
@@ -195,6 +197,35 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             'Issues'
         );
         this.spinner.hide();
+    }
+
+    async onSelectedTab(index: number) {
+        this.resetPageNumber();
+        switch (index) {
+            case 0:
+                this.selectedTabIssueStatus = undefined;
+                await this.loadIssuesLazy(this.lastEvent);
+                break;
+            case 1:
+                this.selectedTabIssueStatus = IssueStatus.Active;
+                await this.loadIssuesLazy(this.lastEvent);
+                break;
+            case 2:
+                this.selectedTabIssueStatus = IssueStatus.Resolved;
+                await this.loadIssuesLazy(this.lastEvent);
+                break;
+            case 3:
+                this.selectedTabIssueStatus = IssueStatus.Ignored;
+                await this.loadIssuesLazy(this.lastEvent);
+                break;
+            default:
+                break;
+        }
+    }
+
+    resetPageNumber() {
+        this.first = 0;
+        this.lastEvent.first = 0;
     }
 
     private issuesToExportIssues(issuesToExport: IssueInfo[]): IssueInfoExport[] {
