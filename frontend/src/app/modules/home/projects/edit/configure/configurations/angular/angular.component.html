@@ -1,8 +1,13 @@
-<span>Add the Watchdog as a dependency using <strong><code>npm</code></strong>:</span>
-<pre><code highlight="npm install --save @watchdog-bsa/watchdog-js" ></code></pre>
-<span>You should <strong><code>init</code></strong> the Watchdog browser SDK as soon as possible during your application load up, before initializing Angular:</span>
-<pre><code [highlight]="main" [languages]="['typescript']" ></code></pre>
-<span>Then you need to create error handler: </span>
-<pre><code [highlight]="errorHandler" [languages]="['typescript']" ></code></pre>
-<span>And inject it to <strong><code>app.module.ts</code></strong>:</span>
-<pre><code [highlight]="appModule" [languages]="['typescript']" ></code></pre>
+<div class="container">
+    <span>Add the Watchdog as a dependency using <strong><code>npm</code></strong>:</span>
+    <app-code [code]="install" [languages]=""></app-code>
+   
+    <span>You should <strong><code>init</code></strong> the Watchdog browser SDK as soon as possible during your application load up, before initializing Angular:</span>
+    <app-code [code]="main" [languages]="['typescript']"></app-code>
+   
+    <span>Then you need to create error handler: </span>
+    <app-code [code]="errorHandler" [languages]="['typescript']"></app-code>
+   
+    <span>And inject it to <strong><code>app.module.ts</code></strong>:</span>
+    <app-code [code]="appModule" [languages]="['typescript']"></app-code>
+</div>
