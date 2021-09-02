@@ -311,7 +311,9 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
         const textarea = e.target as HTMLTextAreaElement;
         try {
             textarea.value = JSON.stringify(JSON.parse(textarea.value), null, 2);
-        } catch { }
+        } catch {
+            this.textarea.resize();
+        }
         this.textarea.resize();
     }
 
