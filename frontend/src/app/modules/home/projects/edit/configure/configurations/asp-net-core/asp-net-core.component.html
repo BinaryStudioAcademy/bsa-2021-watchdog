@@ -1,20 +1,24 @@
-<span>Install the <strong>NuGet</strong> package:</span>
-<span>Package Manager:</span>
-<pre><code [highlight]="packageManagerInstallationCommand" [languages]="['bash']"></code></pre>
-<span>Or .NET Core CLI:</span>
-<pre><code [highlight]="dotnetCliInstallationCommand" [languages]="['bash']"></code></pre>
-
-<span>Add Watchdog to <strong><code>Startup.cs</code></strong> as service:</span>
-<pre><code [highlight]="configureServices" [languages]="['csharp']"></code></pre>
-
-<span>Then add to <strong><code>appsettings.json</code></strong> your API key:</span>
-<pre><code [highlight]="appsettings" [languages]="['json']"></code></pre>
-
-<span>Now Watchdog can track all unhandled exceptions 
-    that occur when the client application is running.</span>
-
-<span>To track exceptions in any try-catch statements 
-    or custom exception handlers, you need to create a Watchdog client 
-    using a provider, which is passed to the class constructor with DI container 
-    and then call necessary methods.</span>
-<pre><code [highlight]="sample" [languages]="['csharp']"></code></pre>
+<div class="container">
+    <span>Install the <strong>NuGet</strong> package:</span>
+    <span>Package Manager:</span>
+    <app-code [code]="packageManagerInstallationCommand" [languages]="['powershell']"></app-code>
+    
+    <span>Or .NET Core CLI:</span>
+    <app-code [code]="dotnetCliInstallationCommand" [languages]=""></app-code>
+  
+    <span>Add Watchdog to <strong><code>Startup.cs</code></strong> as service:</span>
+    <app-code [code]="configureServices" [languages]="['csharp']"></app-code>
+   
+    <span>Then add to <strong><code>appsettings.json</code></strong> your API key:</span>
+    <app-code [code]="appsettings" [languages]="['json']"></app-code>
+  
+    <span>Now Watchdog can track all unhandled exceptions
+        that occur when the client application is running.</span>
+    
+    <span>To track exceptions in any try-catch statements
+        or custom exception handlers, you need to create a Watchdog client
+        using a provider, which is passed to the class constructor with DI container
+        and then call necessary methods.</span>
+    <app-code [code]="sample" [languages]="['csharp']"></app-code>
+    
+</div>

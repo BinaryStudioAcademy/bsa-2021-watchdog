@@ -4,6 +4,9 @@
         <button (click)="clearDashboardTiles()" class="p-button-danger p-button-outlined" label="Clear" pButton
                 pRipple pTooltip="Clear dashboard" tooltipPosition="bottom" tooltipStyleClass="tooltip-text">
         </button>
+        <button [disabled]="!orderChanged" (click)="saveOrder()" class="p-button-primary p-button-outlined" label="Save Order" pButton
+                pRipple pTooltip="Save Order" tooltipPosition="bottom" tooltipStyleClass="tooltip-text">
+        </button>
     </div>
     <!--    Center Buttons    -->
     <div class="center-buttons">

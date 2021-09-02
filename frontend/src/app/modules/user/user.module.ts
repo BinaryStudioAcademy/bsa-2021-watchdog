@@ -10,12 +10,13 @@ import { UserPasswordSettingsComponent } from './components/user-password-settin
     declarations: [
         UserProfileComponent,
         UserProfileSettingsComponent,
-        UserPasswordSettingsComponent
+        UserPasswordSettingsComponent,
+
     ],
     imports: [
         SharedModule,
         UserRoutingModule,
-        FormsModule
+        FormsModule,
     ],
 })
 export class UserModule { }

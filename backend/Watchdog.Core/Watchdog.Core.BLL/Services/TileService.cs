@@ -60,6 +60,7 @@ namespace Watchdog.Core.BLL.Services
             var tiles = await _context.Tiles
                 .AsNoTracking()
                 .Where(tile => tile.DashboardId == dashboardId)
+                .OrderBy(tile => tile.TileOrder)
                 .ToListAsync();
 
             return _mapper.Map<ICollection<TileDto>>(tiles);
@@ -73,6 +74,21 @@ namespace Watchdog.Core.BLL.Services
 
             _context.RemoveRange(tilesEntities);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<ICollection<TileDto>> SetOrderForTilesAsync(int dashboardId, ICollection<TileOrderDto> tiles)
+        {
+            var dashboard = await _context.Dashboards.Include(d => d.Tiles).FirstOrDefaultAsync(d => d.Id == dashboardId)
+                ?? throw new KeyNotFoundException("No dashboard with this id!");
+
+            foreach (var tile in dashboard.Tiles)
+            {
+                tile.TileOrder = tiles.FirstOrDefault(t => tile.Id == t.Id)?.TileOrder
+                    ?? throw new KeyNotFoundException("No tile with this id in dashboard!");
+            }
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<ICollection<TileDto>>(dashboard.Tiles.OrderBy(t => t.TileOrder));
         }
     }
 }

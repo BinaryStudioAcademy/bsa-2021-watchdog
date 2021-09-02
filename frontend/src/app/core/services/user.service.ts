@@ -6,6 +6,7 @@ import { CoreHttpService } from './core-http.service';
 import { clear } from './registration.utils';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AvatarDto } from '@shared/models/avatar/avatarDto';
 
 @Injectable({
     providedIn: 'root'
@@ -53,5 +54,9 @@ export class UserService {
 
     isEmailUnique(email: string): Observable<boolean> {
         return this.httpService.getRequest<boolean>(`${this.apiPrefix}/email/${email}`);
+    }
+
+    updateAvatar(data: AvatarDto): Observable<void> {
+        return this.httpService.patchRequest(`${this.apiPrefix}/updateAvatar`, data);
     }
 }

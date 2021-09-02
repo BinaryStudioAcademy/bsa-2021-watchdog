@@ -101,7 +101,7 @@ jobs:
         with:
           tags: vobilyk/watchdog_loader:latest
           context: ./backend
-          file: ./backend/Watchdog.loader/Dockerfile
+          file: ./backend/Watchdog.Loader/Dockerfile
           build-args: PROJECT_PORT=5110
           push: true
           

@@ -16,6 +16,8 @@ import { IssueService } from '@core/services/issue.service';
 import { LazyLoadEvent } from 'primeng/api';
 import { Member } from '@shared/models/member/member';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
+import { TableExportService } from '@core/services/table-export.service';
+import { IssueInfoExport } from '@shared/models/export/IssueInfoExport';
 
 @Component({
     selector: 'app-issues',
@@ -47,7 +49,8 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         private authService: AuthenticationService,
         private memberService: MemberService,
         private teamService: TeamService,
-        private spinner: SpinnerService
+        private spinner: SpinnerService,
+        private tableExportService: TableExportService,
     ) {
         super();
     }
@@ -162,6 +165,10 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         return toUsers(assignee.memberIds.slice(0, this.viewedAssignee), this.sharedOptions.members);
     }
 
+    getAllUsers(assignee: Assignee) {
+        return toUsers(assignee.memberIds, this.sharedOptions.members);
+    }
+
     getTeamsLabels(assignee: Assignee) {
         const diff = this.viewedAssignee - assignee.memberIds.length;
         if (diff <= 0) {
@@ -170,6 +177,38 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         return assignee.teamIds.slice(0, diff)
             .map(id => this.teamService
                 .getLabel(this.sharedOptions.teams.find(t => t.id === id).name));
+    }
+
+    exportExcel(): void {
+        this.spinner.show(true);
+        this.tableExportService.exportExcel(
+            this.issuesToExportIssues(this.selectedIssues.length ? this.selectedIssues : this.issues),
+            'Issues'
+        );
+        this.spinner.hide();
+    }
+
+    exportPdf(): void {
+        this.spinner.show(true);
+        this.tableExportService.exportPdf(
+            this.issuesToExportIssues(this.selectedIssues.length ? this.selectedIssues : this.issues),
+            'Issues'
+        );
+        this.spinner.hide();
+    }
+
+    private issuesToExportIssues(issuesToExport: IssueInfo[]): IssueInfoExport[] {
+        return issuesToExport.map<IssueInfoExport>(issue => (
+            {
+                ErrorClass: issue.errorClass,
+                ErrorMessage: issue.errorMessage,
+                Status: IssueStatus[issue.status],
+                Events: issue.eventsCount,
+                OccurredOn: new Date(issue.newest.occurredOn).toLocaleString(),
+                Project: issue.project.name,
+                Assignee: this.getAllUsers(issue.assignee).map(value => `${value.firstName} ${value.lastName}`).join(' \r')
+            }
+        ));
     }
 
     private compareAssigns() {

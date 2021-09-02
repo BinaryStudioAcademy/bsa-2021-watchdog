@@ -21,6 +21,8 @@ import { AddEditIssuesPerTimeTileComponent }
 import { IssuesCountTileComponent } from './dashboard/tiles/issues-count-tile/issues-count-tile.component';
 import { AddEditCountIssuesTileComponent }
     from './modals/tiles/count-issues/add-edit-count-issues-tile/add-edit-count-issues-tile.component';
+import { AddEditHeatMapTileComponent } from './modals/tiles/heat-map/add-edit-heat-map-tile/add-edit-heat-map-tile.component';
+import { HeatMapComponent } from './dashboard/tiles/heat-map/heat-map.component';
 
 @NgModule({
     declarations: [
@@ -36,6 +38,8 @@ import { AddEditCountIssuesTileComponent }
         AddEditIssuesPerTimeTileComponent,
         IssuesCountTileComponent,
         AddEditCountIssuesTileComponent,
+        AddEditHeatMapTileComponent,
+        HeatMapComponent,
 
     ],
     imports: [
