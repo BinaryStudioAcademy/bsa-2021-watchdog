@@ -5,7 +5,6 @@ import { CoreModule } from '@core/core.module';
 import { HighlightModule, HighlightOptions, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     declarations: [
@@ -16,8 +15,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         AppRoutingModule,
         BrowserAnimationsModule,
         CoreModule,
-        HighlightModule,
-        NgbModule
+        HighlightModule
     ],
     providers: [
         {
