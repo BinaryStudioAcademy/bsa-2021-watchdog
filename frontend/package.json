@@ -26,7 +26,7 @@
     "@microsoft/signalr": "^5.0.8",
     "@swimlane/ngx-charts": "^18.0.1",
     "@types/file-saver": "^2.0.3",
-    "@watchdog-bsa/watchdog-js": "^0.3.1",
+    "@watchdog-bsa/watchdog-js": "^0.3.2",
     "file-saver": "^2.0.5",
     "firebase": "^8.8.1",
     "highlight.js": "^11.2.0",

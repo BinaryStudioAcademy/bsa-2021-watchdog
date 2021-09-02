@@ -50,7 +50,7 @@
                     <small class="issue-id">{{issue.id}}</small>
                 </td>
                 <td>{{issue.issueDetails.environmentMessage.platform}}</td>
-                <td>{{issue.issueDetails.user.identifier}}</td>
+                <td>{{issue.user?.identifier}}</td>
                 <td>{{issue.issueDetails.environmentMessage.browser}}</td>
             </tr>
         </ng-template>

@@ -12,6 +12,5 @@ export interface IssueInfo {
     status: IssueStatus,
     project: Project,
     assignee?: Assignee,
-    affected: number,
     newest: IssueMessageInfo
 }

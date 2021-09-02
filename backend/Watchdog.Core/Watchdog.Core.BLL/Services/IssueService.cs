@@ -80,9 +80,6 @@ namespace Watchdog.Core.BLL.Services
             }
 
             var issuesInfo = await _context.Applications
-                .Include(a => a.ApplicationTeams)
-                    .ThenInclude(at => at.Team)
-                        .ThenInclude(t => t.TeamMembers)
                 .Where(a => a.ApplicationTeams.Any(at => at.Team.TeamMembers.Any(tm => tm.MemberId == memberId)))
                 .SelectMany(a => a.Issues)
                 .Select(i => new IssueInfoDto()
@@ -90,18 +87,20 @@ namespace Watchdog.Core.BLL.Services
                     IssueId = i.Id,
                     ErrorClass = i.ErrorClass,
                     ErrorMessage = i.ErrorMessage,
-                    EventsCount = _context.EventMessages.Count(em => em.IssueId == i.Id),
+                    EventsCount = i.EventMessages.Count(em => em.IssueId == i.Id),
                     Application = _mapper.Map<ApplicationDto>(i.Application),
                     Status = i.Status,
-                    AffectedUsersCount = _context.EventMessages.Select(e => e.AffectedUserIdentifier).Distinct().Count(),
+                    AffectedUsersCount = i.EventMessages
+                        .Select(e => e.AffectedUserIdentifier)
+                        .Where(t => !string.IsNullOrWhiteSpace(t))
+                        .Distinct()
+                        .Count(),
                     Newest = new IssueMessageDto()
                     {
-                        Id = _context.EventMessages
-                            .Where(em => em.IssueId == i.Id)
+                        Id = i.EventMessages
                             .OrderByDescending(em => em.OccurredOn)
                             .FirstOrDefault(em => em.IssueId == i.Id).EventId,
-                        OccurredOn = _context.EventMessages
-                            .Where(em => em.IssueId == i.Id)
+                        OccurredOn = i.EventMessages
                             .OrderByDescending(em => em.OccurredOn)
                             .FirstOrDefault().OccurredOn
                     },
