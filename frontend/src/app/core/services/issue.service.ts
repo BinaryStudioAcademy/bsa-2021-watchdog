@@ -84,6 +84,6 @@ export class IssueService {
     }
 
     public getSolutionLink(issueId: number): Observable<IssueSolution> {
-        return this.httpService.getRequest<IssueSolution>(`${this.routePrefix}/messages/getIssueSolutionLink/issueId/${issueId}`);
+        return this.httpService.getRequest<IssueSolution>(`${this.routePrefix}/getIssueSolution/issueId/${issueId}`);
     }
 }

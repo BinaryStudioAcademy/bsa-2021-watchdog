@@ -9,6 +9,7 @@ namespace Watchdog.Core.BLL.Services
 {
     public static class StackExchangeService
     {
+        private static readonly Uri _baseUri = new Uri("https://api.stackexchange.com/2.3/similar");
         public static async Task<T> GetSolutionFromStackoverflow<T>(string messsage, string[] tags)
         {
             HttpClientHandler handler = new HttpClientHandler()
@@ -18,7 +19,7 @@ namespace Watchdog.Core.BLL.Services
 
             using (HttpClient client = new HttpClient(handler))
             {
-                var uriBuilder = new UriBuilder("https://api.stackexchange.com/2.3/similar");
+                var uriBuilder = new UriBuilder(_baseUri);
 
                 var query = HttpUtility.ParseQueryString(uriBuilder.Query);
                 query["site"] = "stackoverflow";

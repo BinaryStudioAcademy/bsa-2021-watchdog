@@ -8,7 +8,6 @@ using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Issue;
 using Watchdog.Models.Shared.Issues;
 using Watchdog.Core.Common.DTO.IssueSolution;
-using Newtonsoft.Json;
 
 namespace Watchdog.Core.API.Controllers
 {
@@ -88,7 +87,7 @@ namespace Watchdog.Core.API.Controllers
             return Ok(issueMessages);
         }
 
-        [HttpGet("messages/getIssueSolutionLink/issueId/{issueId}")]
+        [HttpGet("getIssueSolution/issueId/{issueId}")]
         public async Task<ActionResult<IssueSolutionDto>> GetIssueSolutionLinkByIssueIdAsync(int issueId)
         {
             var issueSolution = await _issueService.GetIssueSolutionLinkByIssueIdAsync(issueId);
