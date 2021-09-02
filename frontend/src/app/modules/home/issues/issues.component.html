@@ -75,6 +75,11 @@
                                 </p-sortIcon>
                             </span>
                         </th>
+                        <th class="center" pSortableColumn="usersCount">
+                            <span>Users <p-sortIcon field="usersCount">
+                                </p-sortIcon>
+                            </span>
+                        </th>
                         <th class="center"><span>Assignee</span></th>
                     </tr>
                 </ng-template>
@@ -111,6 +116,7 @@
                         </td>
                         <td>{{issue.eventsCount}}</td>
                         <td>{{issue.project.name}}</td>
+                        <td>{{issue.affectedUsersCount}}</td>
                         <td>
                             <div (click)="openAssign(issue)" class="assignee">
                                 <p-avatarGroup styleClass="p-mb-3">

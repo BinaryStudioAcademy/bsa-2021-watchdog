@@ -7,6 +7,7 @@ namespace Watchdog.Collector.Common.DTO.Issue
     {
         public DateTime OccurredOn { get; set; }
         public string ApiKey { get; set; }
+        public AffectedUser User { get; set; }
         public IssueMessageDetails IssueDetails { get; set; }
     }
 }

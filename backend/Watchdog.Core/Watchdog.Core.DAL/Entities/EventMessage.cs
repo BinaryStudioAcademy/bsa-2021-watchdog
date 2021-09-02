@@ -9,5 +9,6 @@ namespace Watchdog.Core.DAL.Entities
         public int IssueId { get; set; }
         public Issue Issue { get; set; }
         public DateTime OccurredOn { get; set; }
+        public string AffectedUserIdentifier { get; set; }
     }
 }

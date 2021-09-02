@@ -2,6 +2,7 @@ import { StackFrame } from '@shared/models/issue/stack-frame';
 import { HttpResponseErrorMessage } from '@shared/models/issue/http-response.message';
 import { IssueEnvironment } from '@shared/models/issue/issue-environment';
 import { BreadcrumbModel } from '@shared/models/issue/breadcrumb';
+import { AffectedUser } from './affected-user';
 
 export interface IssueDetails {
     url: string,
@@ -11,4 +12,5 @@ export interface IssueDetails {
     responseErrorMessage?: HttpResponseErrorMessage,
     environmentMessage: IssueEnvironment,
     breadcrumbs: BreadcrumbModel[],
+    user: AffectedUser,
 }

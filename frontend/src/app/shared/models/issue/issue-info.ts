@@ -8,6 +8,7 @@ export interface IssueInfo {
     errorMessage: string,
     errorClass: string,
     eventsCount: number,
+    affectedUsersCount: number,
     status: IssueStatus,
     project: Project,
     assignee?: Assignee,
