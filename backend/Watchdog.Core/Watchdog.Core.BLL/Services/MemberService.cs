@@ -157,11 +157,21 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task AcceptInviteAsync(int id)
         {
-            var member = await _context.Members.FirstOrDefaultAsync(m => m.Id == id) ?? throw new KeyNotFoundException("Member doesn't exists");
+            var member = await _context.Members.FirstOrDefaultAsync(m => m.Id == id) ?? throw new KeyNotFoundException("Member doesn't exist");
 
             member.IsAccepted = true;
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<MemberDto> ApproveUserAsync(int id)
+        {
+            var member = await _context.Members.FirstOrDefaultAsync(m => m.Id == id) 
+                ?? throw new KeyNotFoundException("Member doesn't exist");
+            member.IsAccepted = true;
+            member.IsApproved = true;
+            await _context.SaveChangesAsync();
+            return _mapper.Map<MemberDto>(member);
         }
 
         public async Task<InvitedMemberDto> AddInvitedMemberAsync(NewMemberDto memberDto)

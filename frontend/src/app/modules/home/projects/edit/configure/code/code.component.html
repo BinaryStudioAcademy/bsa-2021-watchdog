@@ -1,0 +1,10 @@
+<div class="code">
+    <pre><code [highlight]="code" [languages]="languages" ></code></pre>
+    <button
+        pButton
+        type="button"
+        icon="pi pi-copy"
+        class="copy-button p-button-rounded"
+        (click)="helper.copyMessage(code)">
+    </button>
+</div>
