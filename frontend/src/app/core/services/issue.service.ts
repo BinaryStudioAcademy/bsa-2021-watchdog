@@ -12,6 +12,7 @@ import { UpdateIssueStatus } from '@shared/models/issue/update-issue-status';
 import { Issue } from '@shared/models/issue/issue';
 import { IssueStatusesFilter } from '@shared/models/issue/issue-statuses-filter';
 import { IssueStatusesByDateRangeFilter } from '@shared/models/issue/issue-statuses-by-date-range-filter';
+import { IssueSolution } from '@shared/models/issue/issue-solution/issue-solution';
 
 @Injectable({ providedIn: 'root' })
 export class IssueService {
@@ -80,5 +81,9 @@ export class IssueService {
 
     public getIssueById(issueId: number): Observable<Issue> {
         return this.httpService.getRequest<Issue>(`${this.routePrefix}/${issueId}`);
+    }
+
+    public getSolutionLink(issueId: number): Observable<IssueSolution> {
+        return this.httpService.getRequest<IssueSolution>(`${this.routePrefix}/messages/getIssueSolutionLink/issueId/${issueId}`);
     }
 }

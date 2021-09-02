@@ -7,6 +7,8 @@ using Watchdog.Core.BLL.Models;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Issue;
 using Watchdog.Models.Shared.Issues;
+using Watchdog.Core.Common.DTO.IssueSolution;
+using Newtonsoft.Json;
 
 namespace Watchdog.Core.API.Controllers
 {
@@ -40,7 +42,7 @@ namespace Watchdog.Core.API.Controllers
         public async Task<ActionResult> GetIssuesInfoLazyAsync(int memberId, [FromBody] FilterModel filterModel)
         {
             var (issues, totalRecord) = await _issueService.GetIssuesInfoLazyAsync(memberId, filterModel);
-            return Ok(new {Collection = issues, TotalRecords = totalRecord});
+            return Ok(new { Collection = issues, TotalRecords = totalRecord });
         }
 
         [HttpPut]
@@ -68,7 +70,7 @@ namespace Watchdog.Core.API.Controllers
         public async Task<ActionResult> GetEventMessagesByIssueIdLazyAsync(int id, [FromBody] FilterModel filterModel)
         {
             var (issueMessages, totalRecords) = await _issueService.GetEventMessagesByIssueIdLazyAsync(id, filterModel);
-            return Ok(new {Collection = issueMessages, TotalRecords = totalRecords});
+            return Ok(new { Collection = issueMessages, TotalRecords = totalRecords });
         }
 
         [HttpGet("messages")]
@@ -84,6 +86,13 @@ namespace Watchdog.Core.API.Controllers
         {
             var issueMessages = await _issueService.GetAllIssueMessagesByApplicationIdAsync(applicationId);
             return Ok(issueMessages);
+        }
+
+        [HttpGet("messages/getIssueSolutionLink/issueId/{issueId}")]
+        public async Task<ActionResult<IssueSolutionDto>> GetIssueSolutionLinkByIssueIdAsync(int issueId)
+        {
+            var issueSolution = await _issueService.GetIssueSolutionLinkByIssueIdAsync(issueId);
+            return Ok(issueSolution);
         }
 
         [HttpPost("messages/application/{applicationId:int}/filterByStatuses")]

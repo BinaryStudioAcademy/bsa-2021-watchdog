@@ -2,12 +2,10 @@
 <div class="header">
     <div class="left-side">
         <button class="p-button-outlined back-button" icon="pi pi-chevron-left " pButton pRipple
-                pTooltip="Back to Issues"
-                routerLink="../../" tooltipPosition="bottom">
+            pTooltip="Back to Issues" routerLink="../../" tooltipPosition="bottom">
         </button>
         <h2 appTooltipFullName>{{issueMessage?.issueDetails.className}}</h2>
     </div>
-
     <div *ngIf="issue" class="action-buttons">
         <p-dropdown (onChange)="onSelectedIssueStatus()" [(ngModel)]="selected" [disabled]="isLoadingStatus" [ngClass]="{
         'dropdown-active-status': selected === IssueStatus.Active,
@@ -32,14 +30,14 @@
             </p-tabPanel>
             <p-tabPanel header="Environment">
                 <ng-template pTemplate="content">
-                    <app-issue-environment
-                        [issueEnvironment]="issueMessage.issueDetails.environmentMessage"></app-issue-environment>
+                    <app-issue-environment [issueEnvironment]="issueMessage.issueDetails.environmentMessage">
+                    </app-issue-environment>
                 </ng-template>
             </p-tabPanel>
             <p-tabPanel *ngIf="issueMessage.issueDetails.responseErrorMessage" header="HTTP">
                 <ng-template pTemplate="content">
-                    <app-issue-http
-                        [issueHttpResponse]="issueMessage.issueDetails.responseErrorMessage"></app-issue-http>
+                    <app-issue-http [issueHttpResponse]="issueMessage.issueDetails.responseErrorMessage">
+                    </app-issue-http>
                 </ng-template>
             </p-tabPanel>
             <p-tabPanel *ngIf="issueMessage.issueDetails.breadcrumbs?.length" header="Breadcrumbs">
@@ -50,6 +48,32 @@
             <p-tabPanel header="Events">
                 <ng-template pTemplate="content">
                     <app-issue-events [issueMessage]="issueMessage"></app-issue-events>
+                </ng-template>
+            </p-tabPanel>
+            <p-tabPanel [disabled]="!solutionItems?.length" header="Stackoverflow solutions">
+                <ng-template pTemplate="content">
+                    <div class="solution-item">
+                        <p-table [value]="solutionItems">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th class="link-field">Link</th>
+                                    <th>Answer count</th>
+                                    <th>Question rating</th>
+                                    <th>View count</th>
+                                    <th>Status</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template let-solutionItem pTemplate="body">
+                                <tr>
+                                    <td><a appTooltipFullName href="{{solutionItem.link}}" target="_blank">{{solutionItem.link}}</a></td>
+                                    <td class="centered">{{solutionItem.answer_count}}</td>
+                                    <td class="centered">{{solutionItem.score}}</td>
+                                    <td class="centered">{{solutionItem.view_count}}</td>
+                                    <td>{{solutionItem.is_answered ? 'Is answered' : 'No answered'}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
                 </ng-template>
             </p-tabPanel>
         </p-tabView>
