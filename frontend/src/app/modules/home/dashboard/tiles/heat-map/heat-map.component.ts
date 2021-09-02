@@ -107,7 +107,7 @@ export class HeatMapComponent extends BaseComponent implements OnInit {
             temp = i;
             eventsInfo.forEach((info) => {
                 const timeStamp = convertDateToTileGranularityTimeStamp(granularityType, info.occurredOn);
-                if (temp >= timeStamp) {
+                if ((temp >= timeStamp) && (temp - granularityOffset <= timeStamp)) {
                     issuesPerTime[i] += 1;
                 }
             });
