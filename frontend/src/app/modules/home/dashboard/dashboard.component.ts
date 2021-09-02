@@ -164,7 +164,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         this.tileService.getAllTilesByDashboardId(dashboardId)
             .pipe(this.untilThis)
             .subscribe(response => {
-                this.tiles = response;
+                this.tiles = response.sort(r => r.tileOrder);
                 this.spinnerService.hide();
             }, error => {
                 this.toastNotificationService.error(error);
@@ -218,12 +218,12 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     saveTilesOrder() {
         this.spinnerService.show(true);
 
-        this.tiles = this.tiles.map((t, i) => ({ ...t, tileOrder: i + 1 }));
-        const orderingOfTiles = this.tiles.map(t => ({ id: t.id, tileOrder: t.tileOrder }));
+        const orderingOfTiles = this.tiles.map((t, i) => ({ id: t.id, tileOrder: i + 1 }));
 
         this.tileService.setDashboardOrderForTiles(this.dashboard.id, orderingOfTiles)
             .pipe(this.untilThis)
-            .subscribe(() => {
+            .subscribe(response => {
+                this.tiles = response;
                 this.spinnerService.hide();
                 this.toastNotificationService.success('The Tiles order was successfully changed!');
                 this.isOrderChanged = false;
@@ -239,11 +239,18 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     }
 
     drop(num: number) {
+        let insertIndex = num;
         const removeIndex = this.tiles.indexOf(this.draggableTile);
-        this.tiles = this.tiles.filter(i => i.id !== this.draggableTile.id);
 
-        if (removeIndex < num) this.tiles.splice(num - 1, 0, this.draggableTile);
-        else this.tiles.splice(num, 0, this.draggableTile);
+        this.tiles = this.tiles.filter(i => i.id !== this.draggableTile.id);
+        if (removeIndex < insertIndex) insertIndex -= 1;
+
+        this.tiles = [
+            ...this.tiles.slice(0, insertIndex),
+            this.draggableTile,
+            ...this.tiles.slice(insertIndex)
+        ];
+
         this.isOrderChanged = true;
         this.dragOff();
     }
@@ -257,8 +264,18 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         this.draggableTile = null;
     }
 
+    getDropSpaceState(index: number): boolean {
+        if (!this.showTileMenu) return false;
+        if (!this.draggableTile) return true;
+
+        const tileIndex = this.tiles.indexOf(this.draggableTile);
+
+        if (tileIndex !== index && tileIndex !== index - 1) return true;
+        return false;
+    }
+
     private revertTilesOrder() {
-        this.tiles.sort((t1, t2) => (t1.tileOrder > t2.tileOrder ? 1 : -1));
+        this.tiles = this.tiles.sort(t => t.tileOrder);
         this.isOrderChanged = false;
     }
 }

@@ -35,11 +35,11 @@
                 (onDragStart)="drag(tile)"
                 [style.flex-basis.px]="getTileSize(tile)"
                 [pDraggableDisabled]="!canDrag"
-                [pDraggable]="canDrag? 'dd' : null ">
+                [pDraggable]="canDrag ? 'dd' : null ">
                 <div
                     (onDrop)="drop(i)"
                     class="drop-line drop-line-left"
-                    *ngIf="showTileMenu && ((tiles.indexOf(draggableTile) !== i && tiles.indexOf(draggableTile) !== i-1) || !draggableTile)"
+                    *ngIf="getDropSpaceState(i)"
                     pDroppable="dd">
                 </div>
                 <app-top-active-issues-tile (dragTile)="setDragByButton($event)" (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.TopActiveIssues"
@@ -55,7 +55,7 @@
                 <div
                     class="drop-line drop-line-right"
                     (onDrop)="drop(i+1)"
-                    *ngIf="showTileMenu && tiles.indexOf(draggableTile) !== i+1 && tiles.indexOf(draggableTile) !== i"
+                    *ngIf="getDropSpaceState(i+1)"
                     pDroppable="dd">
                 </div>
             </div>

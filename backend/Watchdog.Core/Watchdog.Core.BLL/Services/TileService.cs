@@ -31,12 +31,6 @@ namespace Watchdog.Core.BLL.Services
             var tile = _mapper.Map<Tile>(newTileDto, opts =>
                 opts.AfterMap((_, dst) => { dst.CreatedAt = DateTime.UtcNow; }));
 
-            tile.TileOrder = 1;
-            if (await _context.Tiles.AnyAsync(t => t.DashboardId == tile.DashboardId))
-            {
-                tile.TileOrder = (await _context.Tiles.Where(t => t.DashboardId == tile.DashboardId).MaxAsync(t => t.TileOrder)) + 1;
-            }
-
             await _context.AddAsync(tile);
             await _context.SaveChangesAsync();
             return _mapper.Map<TileDto>(tile);
@@ -87,18 +81,14 @@ namespace Watchdog.Core.BLL.Services
             var dashboard = await _context.Dashboards.Include(d => d.Tiles).FirstOrDefaultAsync(d => d.Id == dashboardId)
                 ?? throw new KeyNotFoundException("No dashboard with this id!");
 
-            dashboard.Tiles = dashboard.Tiles
-                .Select(dt =>
-                {
-                    dt.TileOrder = tiles.First(t => t.Id == dt.Id).TileOrder;
-                    return dt;
-                })
-                .OrderBy(t => t.TileOrder)
-                .ToList();
-
+            foreach (var tile in dashboard.Tiles)
+            {
+                tile.TileOrder = tiles.FirstOrDefault(t => tile.Id == t.Id)?.TileOrder
+                    ?? throw new KeyNotFoundException("No tile with this id in dashboard!");
+            }
             await _context.SaveChangesAsync();
 
-            return _mapper.Map<ICollection<TileDto>>(dashboard.Tiles);
+            return _mapper.Map<ICollection<TileDto>>(dashboard.Tiles.OrderBy(t => t.TileOrder));
         }
     }
 }
