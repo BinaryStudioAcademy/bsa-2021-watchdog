@@ -1,31 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Tile } from '@shared/models/tile/tile';
-import { Project } from '@shared/models/projects/project';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { convertJsonToTileSettings, convertTileSettingsToJson } from '@core/utils/tile.utils';
-import { TileType } from '@shared/models/tile/enums/tile-type';
 import { regexs } from '@shared/constants/regexs';
-import { NewTile } from '@shared/models/tile/new-tile';
+import { IssueStatus } from '@shared/models/issue/enums/issue-status';
+import { Project } from '@shared/models/projects/project';
 import { TileCategory } from '@shared/models/tile/enums/tile-category';
-import { UpdateTile } from '@shared/models/tile/update-tile';
-import { TilesModalData } from '@modules/home/modals/tiles/data/tiles-modal-data';
-import { DateRangeDropdown } from '@modules/home/modals/tiles/models/date-range-dropdown';
-import { IssuesPerTimeSettings } from '@shared/models/tile/settings/issues-per-time-settings';
-import { GranularityDropdown } from '@modules/home/modals/tiles/models/granularity-dropdown';
-import { IssueStatusCheckbox } from '@modules/home/modals/tiles/models/issue-status-checkbox';
 import { TileDateRangeType } from '@shared/models/tile/enums/tile-date-range-type';
 import { TileGranularityType } from '@shared/models/tile/enums/tile-granularity-type';
-import { IssueStatus } from '@shared/models/issue/enums/issue-status';
+import { TileType } from '@shared/models/tile/enums/tile-type';
+import { NewTile } from '@shared/models/tile/new-tile';
+import { HeatMapSettings } from '@shared/models/tile/settings/heat-map.settings';
+import { Tile } from '@shared/models/tile/tile';
+import { UpdateTile } from '@shared/models/tile/update-tile';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { TilesModalData } from '../../data/tiles-modal-data';
+import { DateRangeDropdown } from '../../models/date-range-dropdown';
+import { GranularityDropdown } from '../../models/granularity-dropdown';
+import { IssueStatusCheckbox } from '../../models/issue-status-checkbox';
 
 @Component({
-    selector: 'app-add-edit-issues-per-time-tile',
-    templateUrl: './add-edit-issues-per-time-tile.component.html',
+    selector: 'app-add-edit-heat-map-tile',
+    templateUrl: './add-edit-heat-map-tile.component.html',
     styleUrls: ['../../add-edit-modal-styles.sass'],
     providers: [TilesModalData],
 })
-export class AddEditIssuesPerTimeTileComponent implements OnInit {
+export class AddEditHeatMapTileComponent implements OnInit {
     userProjects: Project[];
     tileToEdit: Tile;
     isAddMode: boolean;
@@ -93,8 +93,7 @@ export class AddEditIssuesPerTimeTileComponent implements OnInit {
         this.tileToEdit = this.dialogConfig.data.tileToUpdate;
         this.headerTitle = `Editing tile ${this.tileToEdit.name}`;
         this.submitButtonText = 'Update';
-
-        const tileSettings = convertJsonToTileSettings(this.tileToEdit.settings, TileType.IssuesPerTime) as IssuesPerTimeSettings;
+        const tileSettings = convertJsonToTileSettings(this.tileToEdit.settings, TileType.HeatMap) as HeatMapSettings;
         this.updateGranularityDropdown(tileSettings.dateRange);
         this.formGroup = new FormGroup({
             name: new FormControl(
@@ -141,7 +140,7 @@ export class AddEditIssuesPerTimeTileComponent implements OnInit {
         this.updateGranularityDropdown(this.dateRangeDropdown[1].type);
         this.formGroup = new FormGroup({
             name: new FormControl(
-                'Issues per time tile',
+                'Heat map tile',
                 [
                     Validators.required,
                     Validators.minLength(3),
@@ -150,13 +149,13 @@ export class AddEditIssuesPerTimeTileComponent implements OnInit {
                 ]
             ),
             dateRange: new FormControl(
-                TileDateRangeType.ThePastDay,
+                TileDateRangeType.ThePastWeek,
                 [
                     Validators.required,
                 ]
             ),
             granularity: new FormControl(
-                TileGranularityType.OneHour,
+                TileGranularityType.OneDay,
                 [
                     Validators.required,
                 ]
@@ -177,11 +176,11 @@ export class AddEditIssuesPerTimeTileComponent implements OnInit {
     }
 
     private initDateRangeDropdown(): void {
-        this.dateRangeDropdown = this.tileModalData.dateRangeDropdownItems;
+        this.dateRangeDropdown = this.tileModalData.dateRangeHeatMapDropdownItems;
     }
 
     private updateGranularityDropdown(type: TileDateRangeType): void {
-        this.granularityDropdown = this.tileModalData.dateRangeGranularityMap[type];
+        this.granularityDropdown = this.tileModalData.dateRangeHeatMapGranularityMap[type];
     }
 
     private initIssueStatusCheckboxes(): void {
@@ -192,10 +191,10 @@ export class AddEditIssuesPerTimeTileComponent implements OnInit {
         const newTile: NewTile = {
             name: values.name,
             category: TileCategory.Chart,
-            type: TileType.IssuesPerTime,
+            type: TileType.HeatMap,
             createdBy: this.authenticationService.getUser().id,
             dashboardId: this.currentDashboardId,
-            settings: convertTileSettingsToJson(<IssuesPerTimeSettings>{
+            settings: convertTileSettingsToJson(<HeatMapSettings>{
                 dateRange: values.dateRange,
                 granularity: values.granularity,
                 issueStatuses: values.issueStatuses,
@@ -209,7 +208,7 @@ export class AddEditIssuesPerTimeTileComponent implements OnInit {
         const updatedTile: UpdateTile = {
             id: this.tileToEdit.id,
             name: values.name,
-            settings: convertTileSettingsToJson(<IssuesPerTimeSettings>{
+            settings: convertTileSettingsToJson(<HeatMapSettings>{
                 dateRange: values.dateRange,
                 granularity: values.granularity,
                 issueStatuses: values.issueStatuses,
