@@ -1,9 +1,24 @@
 @import src/styles/variables
 @import src/styles/mixins
 
+.action-block
+    display: flex
+    align-content: center
+    justify-content: center
+
 .table
     padding-top: 12px
     height: 100%
+
+    .last-column
+        display: flex
+        justify-content: space-between
+        align-content: center
+        align-items: center
+
+        span
+            padding-right: 2px
+            padding-left: 2px
 
     .issue-time
         @include disable-select
@@ -38,8 +53,8 @@
 
                 ::ng-deep p-paginator
                     width: 100%
-        //override paginator dropdown text
-:host ::ng-deep
+
+\:host ::ng-deep
     .p-dropdown-label
         display: flex
         align-items: center
@@ -49,3 +64,6 @@
         @include disable-select
         position: relative
         top: -0.1rem
+
+::ng-deep .tooltip-text
+    font-size: 12px

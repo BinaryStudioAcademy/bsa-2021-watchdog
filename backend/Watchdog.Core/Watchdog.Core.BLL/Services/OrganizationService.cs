@@ -54,7 +54,8 @@ namespace Watchdog.Core.BLL.Services
                 CreatedAt = DateTime.UtcNow,
                 Organization = organization,
                 Role = roles.First(r => r.Name.ToLower() == "owner"),
-                IsAccepted = true
+                IsAccepted = true,
+                IsApproved = true
             };
             await _context.Members.AddAsync(member);
 
@@ -90,7 +91,7 @@ namespace Watchdog.Core.BLL.Services
         public async Task<ICollection<OrganizationDto>> GetUserOrganizationsAsync(int userId)
         {
             var organizaitons = await _context.Organizations
-                .Where(o => o.Members.Any(m => m.User.Id == userId))
+                .Where(o => o.Members.Any(m => (m.User.Id == userId) && m.IsApproved))
                 .ToListAsync();
 
             return _mapper.Map<ICollection<OrganizationDto>>(organizaitons);
@@ -111,7 +112,7 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> IsOrganizationSlugValid(string organizationSlug)
+        public async Task<bool> IsOrganizationSlugValidAsync(string organizationSlug)
         {
             var reg = new Regex(@"^[\w\-]+$");
             if (organizationSlug.Length > 50 || organizationSlug.Length < 3 || !reg.IsMatch(organizationSlug))
@@ -119,7 +120,8 @@ namespace Watchdog.Core.BLL.Services
                 return false;
             }
 
-            return !(await _context.Organizations.ToListAsync()).Any(o => o.OrganizationSlug == organizationSlug);
+            return !(await _context.Organizations.AnyAsync(o => o.OrganizationSlug == organizationSlug));
         }
+
     }
 }

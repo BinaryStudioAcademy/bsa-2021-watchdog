@@ -15,6 +15,8 @@ import { Organization } from '@shared/models/organization/organization';
 import { UserService } from './user.service';
 import { RegistrationService } from './registration.service';
 import { OrganizationService } from './organization.service';
+import { FullRegistrationWithJoinDto } from '@modules/registration/DTO/full-registration-with-join-dto';
+import { PartialRegistratioWithJoinDto } from '@modules/registration/DTO/partial-registration-with-join';
 
 @Injectable({
     providedIn: 'root'
@@ -142,6 +144,17 @@ export class AuthenticationService {
             );
     }
 
+    finishPartialRegistrationWithJoin(regDto: PartialRegistratioWithJoinDto, route: string[]) {
+        return this.registrationService.performPartialRegistrationWithJoin(regDto)
+            .pipe(
+                tap(user => {
+                    localStorage.setItem('isSignByEmailAndPassword', 'false');
+                    this.setUser(user);
+                }),
+                switchMap(() => this.login(route))
+            );
+    }
+
     signOnWithEmailAndPassword(regDto: FullRegistrationDto, password: string, route: string[]) {
         this.logout();
         return from(this.angularFireAuth
@@ -153,6 +166,25 @@ export class AuthenticationService {
                     return dto;
                 }),
                 switchMap(dto => this.registrationService.performFullRegistration(dto)),
+                tap(user => {
+                    localStorage.setItem('isSignByEmailAndPassword', 'true');
+                    this.setUser(user);
+                }),
+                switchMap(() => this.login(route))
+            );
+    }
+
+    singOnWithEmailAndPasswordWithJoin(regDto: FullRegistrationWithJoinDto, password: string, route: string[]) {
+        this.logout();
+        return from(this.angularFireAuth
+            .createUserWithEmailAndPassword(regDto.user.email, password))
+            .pipe(
+                map(userCredential => {
+                    const dto = regDto;
+                    dto.user.uid = userCredential.user.uid;
+                    return dto;
+                }),
+                switchMap(dto => this.registrationService.performFullRegistrationWithJoin(dto)),
                 tap(user => {
                     localStorage.setItem('isSignByEmailAndPassword', 'true');
                     this.setUser(user);

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Tile } from '@shared/models/tile/tile';
 import { Project } from '@shared/models/projects/project';
-import { TileService } from '@core/services/tile.service';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { convertJsonToTileSettings, convertTileSettingsToJson } from '@core/utils/tile.utils';
@@ -42,7 +41,6 @@ export class AddEditIssuesPerTimeTileComponent implements OnInit {
 
     constructor(
         private ref: DynamicDialogRef,
-        private tileService: TileService,
         private tileModalData: TilesModalData,
         private dialogConfig: DynamicDialogConfig,
         private authenticationService: AuthenticationService,
@@ -55,7 +53,6 @@ export class AddEditIssuesPerTimeTileComponent implements OnInit {
 
         this.initDateRangeDropdown();
         this.initIssueStatusCheckboxes();
-
         switch (this.isAddMode) {
             case false:
                 this.editTileInit();
