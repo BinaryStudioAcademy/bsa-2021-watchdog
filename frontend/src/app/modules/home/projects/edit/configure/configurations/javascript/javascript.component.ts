@@ -9,7 +9,9 @@ import { index } from './javascript.constants';
 })
 export class JavascriptComponent extends BaseConfigurationComponent implements OnInit {
     index: string;
+    install: string;
     ngOnInit(): void {
         this.index = index(this.apiKey);
+        this.install = 'npm install --save @watchdog-bsa/watchdog-js';
     }
 }
