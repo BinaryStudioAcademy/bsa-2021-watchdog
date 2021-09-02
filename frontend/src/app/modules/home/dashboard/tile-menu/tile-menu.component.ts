@@ -23,10 +23,13 @@ export class TileMenuComponent implements OnInit {
     closeMenu: EventEmitter<boolean> = new EventEmitter();
     @Output()
     clearTiles: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output()
+    saveTilesOrder: EventEmitter<void> = new EventEmitter<void>();
 
     @Input() userProjects: Project[] = [];
     @Input() tiles: Tile[] = [];
     @Input() dashboardId: number;
+    @Input() orderChanged: boolean;
 
     constructor(
         private toastNotifications: ToastNotificationService,
@@ -53,6 +56,10 @@ export class TileMenuComponent implements OnInit {
 
     close() {
         this.closeMenu.emit(true);
+    }
+
+    saveOrder() {
+        this.saveTilesOrder.emit();
     }
 
     listItemSelected(item?: MenuItem): void {

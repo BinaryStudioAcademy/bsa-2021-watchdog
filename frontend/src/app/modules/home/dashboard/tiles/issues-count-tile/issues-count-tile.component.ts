@@ -28,6 +28,7 @@ export class IssuesCountTileComponent extends BaseComponent implements OnInit {
     @Input() isShownEditTileMenu: boolean = false;
     @Input() userProjects: Project[] = [];
     @Output() isDeleting: EventEmitter<Tile> = new EventEmitter<Tile>();
+    @Output() dragTile: EventEmitter<boolean> = new EventEmitter<boolean>();
     tileSettings: CountIssuesSettings;
     requiredProjects: Project[] = [];
     dateMsNow: number;
@@ -51,6 +52,10 @@ export class IssuesCountTileComponent extends BaseComponent implements OnInit {
     ngOnInit() {
         this.initChartSettings();
         this.applySettings();
+    }
+
+    setTileDragStatus(status: boolean) {
+        this.dragTile.emit(status);
     }
 
     private applySettings() {
