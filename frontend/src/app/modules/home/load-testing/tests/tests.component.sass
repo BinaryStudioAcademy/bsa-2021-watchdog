@@ -1,0 +1,23 @@
+@import src/styles/variables
+@import src/styles/mixins
+
+.header
+    @include background-gray
+    @include title
+    width: 100%
+    min-height: 50px
+    display: flex
+    align-items: center
+    justify-content: space-between
+
+    .header-title
+        white-space: nowrap
+
+    .action-buttons
+        display: flex
+        grid-gap: 5px
+        flex-direction: row-reverse
+        align-items: center
+
+        button
+            white-space: nowrap

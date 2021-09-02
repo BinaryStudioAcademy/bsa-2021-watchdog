@@ -1,0 +1,91 @@
+@import src/styles/variables
+@import src/styles/mixins
+
+.header
+    @include background-gray
+    @include title
+    width: 100%
+    min-height: 50px
+    display: flex
+    align-items: center
+    justify-content: space-between
+    position: sticky
+    z-index: 100
+    top: 0
+
+    .header-title
+        white-space: nowrap
+.buttons
+    display: flex
+    grid-gap: 0.5rem
+.container
+    padding: $half-indent
+
+.title
+    font-size: 19px
+    line-height: 22px
+    font-weight: 400
+    margin-bottom: 10px
+
+.input-block
+    display: flex
+    flex-direction: column
+
+.test-settings
+    display: grid
+    grid-gap: 1rem
+    max-width: 620px
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))
+    margin-bottom: 1rem
+
+.key-value-block
+    display: grid
+    grid-gap: 1rem
+    align-items: center
+    grid-template-columns: 1fr auto
+    margin-bottom: 1.5rem
+
+.kvp-inputs
+    display: grid
+    grid-gap: 1rem
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))
+.title-block
+    margin: 0 0 0.5rem 0.5rem
+
+.small-button
+    box-shadow: none
+    height: 20px
+    width: 20px
+.url
+    font-weight: 600
+    margin: 1rem
+    display: grid
+    align-items: center
+    grid-auto-flow: column
+    justify-content: flex-start
+    grid-gap: 0.5rem
+    overflow-wrap: anywhere
+
+.header-block
+    max-width: 620px
+    border: 1px solid #ced4da
+    padding: 1rem
+    margin: .5rem 0
+    border-radius: 3px
+
+.body
+    display: flex
+    flex-direction: column
+
+.body-input
+    font-family: monospace
+    width: 100%
+    max-width: 620px
+
+:host ::ng-deep
+    .input
+        height: 2.5rem !important
+        width: 100%
+    .p-dropdown-label
+        display: flex
+        align-items: center

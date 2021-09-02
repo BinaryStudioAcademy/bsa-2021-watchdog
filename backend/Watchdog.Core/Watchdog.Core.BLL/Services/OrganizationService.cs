@@ -105,6 +105,7 @@ namespace Watchdog.Core.BLL.Services
                     .ThenInclude(tm => tm.TeamMembers)
                 .Include(m => m.Members)
                     .ThenInclude(tm => tm.TeamMembers)
+                .Include(o => o.LoaderTests)
                 .FirstOrDefaultAsync(o => o.Id == organizationId) ?? throw new KeyNotFoundException("Organization doesn't exist");
 
             _context.Organizations.Remove(organization);

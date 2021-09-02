@@ -40,6 +40,10 @@ const routes: Routes = [{
         loadChildren: () => import('./organization/organization.module')
             .then(m => m.OrganizationModule),
     }, {
+        path: 'tests',
+        loadChildren: () => import('./load-testing/load-testing.module')
+            .then(m => m.LoadTestingModule),
+    }, {
         path: '**',
         component: NotFoundComponent,
         pathMatch: 'full'
