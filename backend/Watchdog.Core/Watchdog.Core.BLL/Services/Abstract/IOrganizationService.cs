@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Watchdog.Core.Common.DTO.Avatar;
 using Watchdog.Core.Common.DTO.Organization;
 
 namespace Watchdog.Core.BLL.Services.Abstract
@@ -14,6 +15,8 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<OrganizationDto> UpdateSettingsAsync(int organizationId, SettingsOrganizationDto settingsDto);
         Task DeleteOrganizationAsync(int organizationId);
         Task<ICollection<OrganizationDto>> GetUserOrganizationsAsync(int userId);
+        Task<OrganizationDto> UpdateOrganizationAvatarAsync(AvatarDto data);
         Task<bool> IsOrganizationSlugValidAsync(string organizationSlug);
+
     }
 }
