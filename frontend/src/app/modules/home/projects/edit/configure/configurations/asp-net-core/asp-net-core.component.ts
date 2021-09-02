@@ -1,6 +1,7 @@
 import * as aspNetCoreConstants from './asp-net-core.constants';
 import { Component, OnInit, Input } from '@angular/core';
 import { BaseConfigurationComponent } from '../base-configuration.component';
+import { CopyHelper } from '@core/helpers/copyHelper';
 
 @Component({
     selector: 'app-asp-net-core',
@@ -15,7 +16,9 @@ export class AspNetCoreComponent extends BaseConfigurationComponent implements O
     configureServices: string;
     appsettings: string;
     sample: string;
-
+    constructor(public helper: CopyHelper) {
+        super();
+    }
     ngOnInit(): void {
         this.packageManagerInstallationCommand = aspNetCoreConstants.packageManagerInstallationCommand;
         this.dotnetCliInstallationCommand = aspNetCoreConstants.dotnetCliInstallationCommand;

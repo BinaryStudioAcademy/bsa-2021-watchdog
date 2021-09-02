@@ -14,6 +14,7 @@ import { AddEditIssuesPerTimeTileComponent }
     from '@modules/home/modals/tiles/issues-per-time/add-edit-issues-per-time-tile/add-edit-issues-per-time-tile.component';
 import { AddEditCountIssuesTileComponent }
     from '@modules/home/modals/tiles/count-issues/add-edit-count-issues-tile/add-edit-count-issues-tile.component';
+import { AddEditHeatMapTileComponent } from '@modules/home/modals/tiles/heat-map/add-edit-heat-map-tile/add-edit-heat-map-tile.component';
 
 @Injectable({
     providedIn: 'root'
@@ -142,6 +143,48 @@ export class TileDialogService extends BaseComponent implements OnDestroy {
 
     showIssuesCountEditDialog(userProjects: Project[], tileToUpdate: Tile, applySettings: () => void) {
         this.ref = this.dialogService.open(AddEditCountIssuesTileComponent, {
+            data: {
+                isAddMode: false,
+                userProjects,
+                tileToUpdate
+            },
+            contentStyle: this.dialogContentStyles,
+            closable: false,
+            showHeader: false,
+            modal: true,
+            closeOnEscape: true,
+        });
+
+        this.ref.onClose.subscribe((updatedTile: UpdateTile) => {
+            if (updatedTile) {
+                this.updateTile(updatedTile, tileToUpdate, applySettings);
+            }
+        });
+    }
+
+    showHeatMapCreateDialog(userProjects: Project[], dashboardId: number, dashboardTiles: Tile[]) {
+        this.ref = this.dialogService.open(AddEditHeatMapTileComponent, {
+            data: {
+                isAddMode: true,
+                userProjects,
+                dashboardId
+            },
+            contentStyle: this.dialogContentStyles,
+            closable: false,
+            showHeader: false,
+            modal: true,
+            closeOnEscape: true,
+        });
+
+        this.ref.onClose.subscribe((newTile: NewTile) => {
+            if (newTile) {
+                this.addTile(newTile, dashboardTiles);
+            }
+        });
+    }
+
+    showHeatMapEditDialog(userProjects: Project[], tileToUpdate: Tile, applySettings: () => void) {
+        this.ref = this.dialogService.open(AddEditHeatMapTileComponent, {
             data: {
                 isAddMode: false,
                 userProjects,

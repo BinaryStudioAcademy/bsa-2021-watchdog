@@ -728,6 +728,9 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<bool>("IsAccepted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
                     b.Property<int>("OrganizationId")
                         .HasColumnType("int");
 
@@ -756,6 +759,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 3, 8, 20, 29, 56, 733, DateTimeKind.Unspecified).AddTicks(99),
                             CreatedBy = 3,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 5,
                             RoleId = 2,
                             UserId = 0
@@ -766,6 +770,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2019, 11, 16, 1, 22, 22, 917, DateTimeKind.Unspecified).AddTicks(2673),
                             CreatedBy = 20,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 4,
                             RoleId = 1,
                             UserId = 0
@@ -776,6 +781,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 1, 3, 8, 25, 34, 990, DateTimeKind.Unspecified).AddTicks(521),
                             CreatedBy = 3,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 1,
                             RoleId = 1,
                             UserId = 0
@@ -786,6 +792,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 4, 25, 10, 18, 40, 933, DateTimeKind.Unspecified).AddTicks(8555),
                             CreatedBy = 10,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 4,
                             RoleId = 1,
                             UserId = 0
@@ -796,6 +803,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2019, 9, 16, 10, 2, 15, 309, DateTimeKind.Unspecified).AddTicks(5491),
                             CreatedBy = 3,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 3,
                             RoleId = 3,
                             UserId = 0
@@ -806,6 +814,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2021, 6, 15, 20, 0, 11, 725, DateTimeKind.Unspecified).AddTicks(3505),
                             CreatedBy = 3,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 5,
                             RoleId = 1,
                             UserId = 0
@@ -816,6 +825,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 1, 21, 6, 5, 21, 218, DateTimeKind.Unspecified).AddTicks(6260),
                             CreatedBy = 4,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 1,
                             RoleId = 3,
                             UserId = 0
@@ -826,6 +836,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2019, 12, 23, 10, 22, 47, 210, DateTimeKind.Unspecified).AddTicks(1299),
                             CreatedBy = 11,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 1,
                             RoleId = 1,
                             UserId = 0
@@ -836,6 +847,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 7, 6, 4, 7, 57, 503, DateTimeKind.Unspecified).AddTicks(5793),
                             CreatedBy = 10,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 1,
                             RoleId = 3,
                             UserId = 0
@@ -846,6 +858,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 1, 29, 1, 2, 39, 606, DateTimeKind.Unspecified).AddTicks(1635),
                             CreatedBy = 1,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 1,
                             RoleId = 3,
                             UserId = 0
@@ -856,6 +869,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 5, 19, 20, 41, 5, 50, DateTimeKind.Unspecified).AddTicks(7290),
                             CreatedBy = 16,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 2,
                             RoleId = 1,
                             UserId = 0
@@ -866,6 +880,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2021, 5, 21, 12, 57, 44, 740, DateTimeKind.Unspecified).AddTicks(9150),
                             CreatedBy = 2,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 3,
                             RoleId = 1,
                             UserId = 0
@@ -876,6 +891,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 1, 13, 19, 47, 33, 819, DateTimeKind.Unspecified).AddTicks(6240),
                             CreatedBy = 3,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 5,
                             RoleId = 1,
                             UserId = 0
@@ -886,6 +902,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 5, 5, 6, 58, 55, 90, DateTimeKind.Unspecified).AddTicks(7547),
                             CreatedBy = 10,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 4,
                             RoleId = 1,
                             UserId = 0
@@ -896,6 +913,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2021, 7, 5, 3, 30, 54, 448, DateTimeKind.Unspecified).AddTicks(9294),
                             CreatedBy = 15,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 1,
                             RoleId = 3,
                             UserId = 0
@@ -906,6 +924,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2021, 6, 14, 18, 35, 8, 962, DateTimeKind.Unspecified).AddTicks(783),
                             CreatedBy = 12,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 2,
                             RoleId = 2,
                             UserId = 0
@@ -916,6 +935,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2019, 11, 27, 0, 59, 19, 851, DateTimeKind.Unspecified).AddTicks(207),
                             CreatedBy = 2,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 2,
                             RoleId = 2,
                             UserId = 0
@@ -926,6 +946,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 2, 24, 22, 7, 24, 896, DateTimeKind.Unspecified).AddTicks(9869),
                             CreatedBy = 14,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 5,
                             RoleId = 1,
                             UserId = 0
@@ -936,6 +957,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2021, 6, 29, 4, 27, 33, 463, DateTimeKind.Unspecified).AddTicks(2445),
                             CreatedBy = 16,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 2,
                             RoleId = 2,
                             UserId = 0
@@ -946,6 +968,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 8, 31, 3, 14, 25, 440, DateTimeKind.Unspecified).AddTicks(6945),
                             CreatedBy = 20,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 3,
                             RoleId = 1,
                             UserId = 0
@@ -956,6 +979,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 10, 19, 4, 23, 25, 774, DateTimeKind.Unspecified).AddTicks(1835),
                             CreatedBy = 14,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 1,
                             RoleId = 1,
                             UserId = 0
@@ -966,6 +990,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2021, 7, 15, 16, 39, 54, 102, DateTimeKind.Unspecified).AddTicks(9813),
                             CreatedBy = 12,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 4,
                             RoleId = 3,
                             UserId = 0
@@ -976,6 +1001,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2019, 11, 13, 12, 40, 5, 13, DateTimeKind.Unspecified).AddTicks(878),
                             CreatedBy = 15,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 5,
                             RoleId = 3,
                             UserId = 0
@@ -986,6 +1012,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2019, 9, 1, 23, 36, 12, 841, DateTimeKind.Unspecified).AddTicks(6973),
                             CreatedBy = 5,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 5,
                             RoleId = 2,
                             UserId = 0
@@ -996,6 +1023,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 2, 9, 19, 23, 50, 460, DateTimeKind.Unspecified).AddTicks(534),
                             CreatedBy = 20,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 4,
                             RoleId = 3,
                             UserId = 0
@@ -1006,6 +1034,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2021, 4, 23, 7, 4, 13, 49, DateTimeKind.Unspecified).AddTicks(4808),
                             CreatedBy = 16,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 2,
                             RoleId = 2,
                             UserId = 0
@@ -1016,6 +1045,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2019, 11, 23, 18, 4, 52, 732, DateTimeKind.Unspecified).AddTicks(9426),
                             CreatedBy = 6,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 3,
                             RoleId = 1,
                             UserId = 0
@@ -1026,6 +1056,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2021, 1, 17, 9, 54, 56, 29, DateTimeKind.Unspecified).AddTicks(2520),
                             CreatedBy = 11,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 3,
                             RoleId = 3,
                             UserId = 0
@@ -1036,6 +1067,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2020, 9, 4, 5, 54, 15, 840, DateTimeKind.Unspecified).AddTicks(7823),
                             CreatedBy = 20,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 2,
                             RoleId = 1,
                             UserId = 0
@@ -1046,6 +1078,7 @@ namespace Watchdog.Core.DAL.Migrations
                             CreatedAt = new DateTime(2019, 11, 5, 17, 30, 28, 659, DateTimeKind.Unspecified).AddTicks(2449),
                             CreatedBy = 1,
                             IsAccepted = false,
+                            IsApproved = false,
                             OrganizationId = 1,
                             RoleId = 2,
                             UserId = 0

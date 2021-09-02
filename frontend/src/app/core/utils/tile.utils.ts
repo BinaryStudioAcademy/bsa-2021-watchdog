@@ -4,6 +4,7 @@ import { TileDateRangeType } from '@shared/models/tile/enums/tile-date-range-typ
 import { IssuesPerTimeSettings } from '@shared/models/tile/settings/issues-per-time-settings';
 import { TileGranularityType } from '@shared/models/tile/enums/tile-granularity-type';
 import { CountIssuesSettings } from '@shared/models/tile/settings/count-issues-settings';
+import { HeatMapSettings } from '@shared/models/tile/settings/heat-map.settings';
 
 export const convertJsonToTileSettings = (json: string, type: TileType) => {
     switch (type) {
@@ -13,6 +14,8 @@ export const convertJsonToTileSettings = (json: string, type: TileType) => {
             return JSON.parse(json) as IssuesPerTimeSettings;
         case TileType.IssuesCount:
             return JSON.parse(json) as CountIssuesSettings;
+        case TileType.HeatMap:
+            return JSON.parse(json) as HeatMapSettings;
         default:
             return undefined;
     }
@@ -56,6 +59,21 @@ export const convertTileDateRangeTypeToMs = (type: TileDateRangeType): number | 
     }
 };
 
+export const convertTilHeatMapDateRangeTypeToMs = (type: TileDateRangeType): number | undefined => {
+    switch (type) {
+        case TileDateRangeType.ThePastDay:
+            return daysToMs(1);
+        case TileDateRangeType.ThePastWeek:
+            return daysToMs(7);
+        case TileDateRangeType.ThePast30Days:
+            return daysToMs(28);
+        case TileDateRangeType.ThePastYear:
+            return daysToMs(334);
+        default:
+            return undefined;
+    }
+};
+
 export const convertTileGranularityTypeToMs = (type: TileGranularityType): number | undefined => {
     switch (type) {
         case TileGranularityType.OneMinute:
@@ -66,6 +84,10 @@ export const convertTileGranularityTypeToMs = (type: TileGranularityType): numbe
             return hoursToMs(1);
         case TileGranularityType.OneDay:
             return daysToMs(1);
+        case TileGranularityType.OneWeek:
+            return daysToMs(7);
+        case TileGranularityType.OneMonth:
+            return daysToMs(28);
         default:
             return undefined;
     }
@@ -85,6 +107,12 @@ export const convertDateToTileGranularityTimeStamp = (type: TileGranularityType,
             break;
         case TileGranularityType.TenMinute:
             date.setMinutes(Math.round(date.getMinutes() / 10) * 10, 0, 0);
+            break;
+        case TileGranularityType.OneWeek:
+            date.setHours(Math.round(date.getHours() / 24) * 7, 0, 0, 0);
+            break;
+        case TileGranularityType.OneMonth:
+            date.setHours(Math.round(date.getHours() / 24) * 28, 0, 0, 0);
             break;
         default:
             return undefined;

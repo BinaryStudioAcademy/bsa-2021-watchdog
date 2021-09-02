@@ -52,6 +52,10 @@
                     [isShownEditTileMenu]="showTileMenu" [tile]="tile"
                     [userProjects]="projects">
                 </app-issues-count-tile>
+                <app-heat-map (dragTile)="setDragByButton($event)" (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.HeatMap"
+                    [isShownEditTileMenu]="showTileMenu" [tile]="tile"
+                    [userProjects]="projects">
+                </app-heat-map>
                 <div
                     class="drop-line drop-line-right"
                     (onDrop)="drop(i+1)"

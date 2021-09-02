@@ -135,9 +135,43 @@
                     <span class="content no-team" *ngIf="memberItem.member.teams.length  === 0">No teams yet</span></td>
                 <td>
                     <div class="content delete-col">
-                        <button pButton pRipple type="button" label="Re-invite" *ngIf="!memberItem.member.isAccepted" class="p-button-outlined p-button-secondary" (click)="reinvite(memberItem.member)"></button>
-                        <button pButton pRipple type="button" label="Accepted" *ngIf="memberItem.member.isAccepted" [disabled]="true" class="p-button-outlined p-button-secondary"></button>
-                        <button *ngIf="isEdit" (click)="deleteMemberModal(memberItem)" class="p-button-raised p-button-text p-button-plain small-button" icon="pi pi-trash" pButton></button>
+                        <button
+                            pButton
+                            pRipple
+                            type="button"
+                            label="Re-invite"
+                            *ngIf="!memberItem.member.isAccepted && memberItem.member.isApproved"
+                            class="p-button-outlined p-button-secondary"
+                            (click)="reinvite(memberItem.member)"></button>
+                        <button
+                            pButton
+                            pRipple
+                            type="button"
+                            label="Accept"
+                            *ngIf="!memberItem.member.isApproved"
+                            class="p-button-outlined p-button-secondary"
+                            (click)="approve(memberItem.member)"></button>
+                        <button
+                            pButton
+                            pRipple
+                            type="button"
+                            label="Declined"
+                            *ngIf="!memberItem.member.isApproved"
+                            class="p-button-outlined p-button-danger"
+                            (click)="deleteMemberModal(memberItem)"></button>
+                        <button
+                            pButton
+                            pRipple
+                            type="button"
+                            label="Accepted"
+                            *ngIf="memberItem.member.isAccepted && memberItem.member.isApproved"
+                            [disabled]="true"
+                            class="p-button-outlined p-button-secondary"></button>
+                        <button
+                            *ngIf="isEdit"
+                            (click)="deleteMemberModal(memberItem)"
+                            class="p-button-raised p-button-text p-button-plain small-button"
+                            icon="pi pi-trash" pButton></button>
                     </div>
                 </td>
             </tr>
