@@ -74,7 +74,7 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
     }
 
     imageCropped(event: CroppedEvent) {
-        const avatar: AvatarDto = { id: this.authService.getUserId(), base64: event.base64 };
+        const avatar: AvatarDto = { id: this.authService.getUserId(), avatarUrl: event.base64 };
         this.user.avatarUrl = event.base64;
         const user = this.authService.getUser();
         this.authService.setUser({ ...user, avatarUrl: event.base64 }); // DELETE this line after fixing local storage

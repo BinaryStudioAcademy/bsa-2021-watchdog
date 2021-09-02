@@ -101,7 +101,7 @@ namespace Watchdog.Core.BLL.Services
         public async Task UpdateUserAvatarAsync(AvatarDto data)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == data.Id) ?? throw new KeyNotFoundException("User is not found!");
-            user.AvatarUrl = data.Base64;
+            user.AvatarUrl = data.AvatarUrl;
             await _context.SaveChangesAsync();
         }
     }

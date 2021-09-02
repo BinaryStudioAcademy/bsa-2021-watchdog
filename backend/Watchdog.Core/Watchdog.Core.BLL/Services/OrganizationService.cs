@@ -126,7 +126,7 @@ namespace Watchdog.Core.BLL.Services
         public async Task<OrganizationDto> UpdateOrganizationAvatarAsync(AvatarDto data)
         {
             var organization = await _context.Organizations.FirstOrDefaultAsync(o => o.Id == data.Id) ?? throw new KeyNotFoundException("Organization is not found!");
-            organization.AvatarUrl = data.Base64;
+            organization.AvatarUrl = data.AvatarUrl;
             await _context.SaveChangesAsync();
             return _mapper.Map<OrganizationDto>(organization);
         }

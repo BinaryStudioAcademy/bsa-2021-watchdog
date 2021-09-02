@@ -71,7 +71,7 @@ export class GeneralSettingsComponent extends BaseComponent implements OnInit {
     }
 
     imageCropped(event: CroppedEvent) {
-        const avatar: AvatarDto = { id: this.organization.id, base64: event.base64 };
+        const avatar: AvatarDto = { id: this.organization.id, avatarUrl: event.base64 };
         this.organization.avatarUrl = event.base64;
         this.organizationService.updateAvatar(avatar)
             .subscribe(() => { },
