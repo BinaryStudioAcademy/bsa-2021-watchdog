@@ -16,7 +16,6 @@
                         <p-avatar
                             *ngIf="organization?.avatarUrl"
                             [image]="organization.avatarUrl"
-                            styleClass="org-avatar-item"
                             shape="circle">
                         </p-avatar>
                         <p-avatar
@@ -38,7 +37,7 @@
             <ng-template let-org pTemplate="item">
                 <div class="org-label-item">
                     <div class="org-avatar">
-                        <p-avatar *ngIf="org?.avatarUrl" shape="circle" [image]="org.avatarUrl" styleClass="org-avatar-item">
+                        <p-avatar *ngIf="org?.avatarUrl" shape="circle" [image]="org.avatarUrl">
                         </p-avatar>
                         <p-avatar *ngIf="!org?.avatarUrl" shape="circle" [label]="org?.name.substr(0,2)" styleClass="org-avatar-item">
                         </p-avatar>

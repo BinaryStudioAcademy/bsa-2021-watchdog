@@ -40,7 +40,9 @@
     "stacktrace-parser": "^0.1.10",
     "tslib": "^2.2.0",
     "xlsx": "^0.17.1",
-    "zone.js": "~0.11.4"
+    "zone.js": "~0.11.4",
+    "ngx-photo-editor": "^0.3.6",
+    "@ng-bootstrap/ng-bootstrap": "^10.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~12.1.3",
