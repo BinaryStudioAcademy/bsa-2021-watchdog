@@ -8,7 +8,7 @@ import { CoreHttpService } from './core-http.service';
 import { UpdateProject } from '@shared/models/projects/update-project';
 import { share, tap } from 'rxjs/operators';
 import { AppSecrets } from '@shared/models/projects/app-secrets';
-import {CountryInfo} from "@shared/models/projects/country-info";
+import { CountryInfo } from '@shared/models/projects/country-info';
 
 @Injectable({
     providedIn: 'root',
