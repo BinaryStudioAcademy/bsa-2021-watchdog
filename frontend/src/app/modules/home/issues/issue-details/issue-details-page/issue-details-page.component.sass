@@ -61,3 +61,20 @@
         .p-tabview-nav
             flex-wrap: nowrap
             white-space: nowrap
+
+.link-field
+    width: 45%
+
+td
+    a
+        @include text-overflow-x-nowrap
+        overflow-x: clip
+        white-space: nowrap
+        text-overflow: ellipsis
+        display: block
+        text-decoration: none
+        color: $text-color
+        cursor: pointer
+        &:hover
+            color: $text-hover-color
+            

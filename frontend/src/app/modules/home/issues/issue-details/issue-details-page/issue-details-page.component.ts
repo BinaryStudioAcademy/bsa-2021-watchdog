@@ -11,6 +11,7 @@ import { Issue } from '@shared/models/issue/issue';
 import { IssueDetailsData } from '@modules/home/issues/issue-details/data/issue-details-data';
 import { IssueStatusDropdown } from '@modules/home/issues/issue-details/data/models/issue-status-dropdown';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
+import { IssueSolutionItem } from '@shared/models/issue/issue-solution/issue-solution-item';
 
 @Component({
     selector: 'app-issue-details-page',
@@ -27,13 +28,14 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
     IssueStatus = IssueStatus;
     selected: IssueStatus;
     isLoadingStatus: boolean = false;
+    solutionItems: IssueSolutionItem[] = [];
 
     constructor(
         private activatedRoute: ActivatedRoute,
         private spinnerService: SpinnerService,
         private issueService: IssueService,
         private toastNotification: ToastNotificationService,
-        private issueDetailsData: IssueDetailsData,
+        private issueDetailsData: IssueDetailsData
     ) {
         super();
         this.spinnerService.show(true);
@@ -55,6 +57,7 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
                     this.isNotFound = true;
                     this.spinnerService.hide();
                 }
+                this.getSolutions(issueId);
             });
         this.initIssueStatusDropdown();
     }
@@ -107,5 +110,11 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
 
     onSelectedIssueStatus() {
         this.updateIssueStatusById(this.issue.id, this.selected);
+    }
+
+    getSolutions(issueId: number): void {
+        this.issueService.getSolutionLink(issueId)
+            .pipe(this.untilThis)
+            .subscribe(solution => { this.solutionItems = solution.items; });
     }
 }

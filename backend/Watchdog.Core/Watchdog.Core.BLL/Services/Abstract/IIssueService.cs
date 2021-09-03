@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Models;
 using Watchdog.Core.Common.DTO.Issue;
+using Watchdog.Core.Common.DTO.IssueSolution;
 using Watchdog.Core.Common.Enums.Issues;
 using Watchdog.Models.Shared.Issues;
 
@@ -23,5 +24,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<int> GetFilteredIssueCountByStatusesAndDateRangeByApplicationIdAsync(int applicationId, IssueStatusesByDateRangeFilter filter);
         Task UpdateIssueStatusAsync(UpdateIssueStatusDto issueStatusDto);
         Task<IssueDto> GetIssueByIdAsync(int issueId);
+        Task<IssueSolutionDto> GetIssueSolutionLinkByIssueIdAsync(int issueId);
     }
 }
