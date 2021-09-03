@@ -16,6 +16,9 @@ namespace Watchdog.Core.DAL.Entities
         public IssueStatus Status { get; set; }
         public Application Application { get; set; }
         public int ApplicationId { get; set; }
+        public int EventsCount { get; set; }
+        public int? NewestId { get; set; }
+        public EventMessage Newest { get; set; }
         public ICollection<EventMessage> EventMessages { get; set; }
     }
 }

@@ -79,7 +79,9 @@
             [rows]="itemsPerPage"
             [totalRecords]="totalRecords"
             [value]="issues"
-            class="issues-table">
+            class="issues-table"
+            sortField="newest.occurredOn"
+            [sortOrder]="-1">
             <ng-template pTemplate="header">
                 <tr>
                     <th class="name" pSortableColumn="newest.occurredOn">

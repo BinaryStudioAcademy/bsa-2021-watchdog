@@ -43,6 +43,8 @@ namespace Watchdog.Core.BLL.Services
                 var createdIssue = await CreateNewIssueAsync(issueMessage);
 
                 createdIssue.EventMessages.Add(newEventMessage);
+                createdIssue.EventsCount = 1;
+                createdIssue.Newest = newEventMessage;
 
                 await _context.SaveChangesAsync();
 
@@ -55,6 +57,8 @@ namespace Watchdog.Core.BLL.Services
             }
 
             newEventMessage.IssueId = issue.Id;
+            issue.Newest = newEventMessage;
+            issue.EventsCount++;
 
             _context.EventMessages.Add(newEventMessage);
             await _context.SaveChangesAsync();
@@ -95,19 +99,13 @@ namespace Watchdog.Core.BLL.Services
                     IssueId = i.Id,
                     ErrorClass = i.ErrorClass,
                     ErrorMessage = i.ErrorMessage,
-                    EventsCount = _context.EventMessages.Count(em => em.IssueId == i.Id),
+                    EventsCount = i.EventsCount,
                     Application = _mapper.Map<ApplicationDto>(i.Application),
                     Status = i.Status,
                     Newest = new IssueMessageDto
                     {
-                        Id = _context.EventMessages
-                            .Where(em => em.IssueId == i.Id)
-                            .OrderByDescending(em => em.OccurredOn)
-                            .FirstOrDefault(em => em.IssueId == i.Id).EventId,
-                        OccurredOn = _context.EventMessages
-                            .Where(em => em.IssueId == i.Id)
-                            .OrderByDescending(em => em.OccurredOn)
-                            .FirstOrDefault().OccurredOn
+                        Id = i.Newest.EventId,
+                        OccurredOn = i.Newest.OccurredOn
                     },
                     Assignee = new AssigneeDto
                     {
@@ -121,7 +119,6 @@ namespace Watchdog.Core.BLL.Services
                             .ToList()
                     }
                 })
-                .OrderByDescending(i => i.Newest.OccurredOn)
                 .ToListAsync();
 
             return issuesInfo;
@@ -170,16 +167,30 @@ namespace Watchdog.Core.BLL.Services
             FilterModel filterModel)
         {
             var issue = await _context.Issues
-                .Include(i => i.EventMessages)
                 .FirstOrDefaultAsync(i => i.Id == issueId);
 
+            var events = _context.EventMessages.Where(e => e.IssueId == issueId);
+
+            if (filterModel.SortOrder == 1)
+            {
+                events = events.OrderBy(x => x.OccurredOn);
+            }
+            else
+            {
+                events = events.OrderByDescending(x => x.OccurredOn);
+            }
+            var values = events.Skip(filterModel.First).Take(filterModel.Rows).Select(i => i.EventId);
             var response = await _client.SearchAsync<IssueMessage>(s => s
-                .Size(issue.EventMessages.Count)
+                .Size(filterModel.Rows)
                 .Query(q => q
                     .Ids(c => c
-                        .Values(issue.EventMessages.Select(i => i.EventId)))));
-            var result = response.Documents.AsEnumerable().Filter(filterModel, out int totalRecord);
-            return (result.ToList(), totalRecord);
+                        .Values(values)))
+                .Sort(q => filterModel.SortOrder == 1 
+                           ? q.Ascending(i => i.OccurredOn)
+                           : q.Descending(i => i.OccurredOn)));
+
+            var totalRecord = _context.EventMessages.Where(e => e.IssueId == issueId).Count();
+            return (response.Documents.ToList(), totalRecord);
         }
 
         public Task UpdateAssigneeAsync(UpdateAssigneeDto assigneeDto)
