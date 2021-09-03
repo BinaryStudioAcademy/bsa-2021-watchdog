@@ -42,6 +42,7 @@ import { TreeModule } from 'primeng/tree';
 import { TimelineModule } from 'primeng/timeline';
 import { CardModule } from 'primeng/card';
 import { AvatarGroupModule } from 'primeng/avatargroup';
+import { InputMaskModule } from 'primeng/inputmask';
 import { DragDropModule } from 'primeng/dragdrop';
 import { FileUploadModule } from 'primeng/fileupload';
 
@@ -89,6 +90,7 @@ import { FileUploadModule } from 'primeng/fileupload';
         TimelineModule,
         CardModule,
         AvatarGroupModule,
+        InputMaskModule,
         DragDropModule,
         FileUploadModule
     ],
@@ -133,6 +135,7 @@ import { FileUploadModule } from 'primeng/fileupload';
         TimelineModule,
         CardModule,
         AvatarGroupModule,
+        InputMaskModule,
         DragDropModule,
         FileUploadModule
     ],
