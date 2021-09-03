@@ -26,6 +26,11 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
                    .WithOne(e => e.Application)
                    .HasForeignKey(e => e.ApplicationId);
 
+            builder.HasMany(a => a.LoaderTests)
+                   .WithOne(t => t.Application)
+                   .HasForeignKey(t => t.ApplicationId)
+                   .OnDelete(DeleteBehavior.SetNull);
+
             builder.Property(a => a.CreatedAt)
                 .HasConversion(
                      v => v,

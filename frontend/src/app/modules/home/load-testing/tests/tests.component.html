@@ -1,0 +1,16 @@
+<!--    Header    -->
+<div class="header">
+    <h1 class="header-title">Tests</h1>
+    <div class="action-buttons">
+        <button
+            routerLink="./new"
+            class="p-button-primary p-button-outlined"
+            icon="pi pi-plus-circle"
+            label="Create Test"
+            pButton
+            pRipple
+            type="button">
+        </button>
+    </div>
+</div>
+<div *ngFor="let test of tests"><a routerLink="./edit/{{test.id}}">Name: {{test.name}}, Id: {{test.id}}, Requests: {{test.requests.length}}</a></div>
