@@ -36,7 +36,6 @@ namespace Watchdog.Core.BLL.Extensions
                             return callContains;
                         })
                     .Aggregate<Expression>((left, right) => Expression.OrElse(left, right));
-                ;
                 var lambda = Expression.Lambda<Func<TEntity, bool>>(expression, parameter);
                 dataSet = dataSet.Where(lambda);
             }

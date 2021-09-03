@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Models;
 using Watchdog.Core.Common.DTO.Issue;

@@ -1,18 +1,18 @@
-﻿using Newtonsoft.Json;
-using RabbitMQ.Client.Events;
-using System.Text;
-using Watchdog.RabbitMQ.Shared.Services;
-using Watchdog.RabbitMQ.Shared.Models;
-using Watchdog.Notifier.Common.DTO;
+﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
-using System.Threading;
-using Watchdog.Notifier.BLL.Hubs;
-using Microsoft.AspNetCore.SignalR;
-using Watchdog.Notifier.BLL.Hubs.Interfaces;
-using RabbitMQ.Client;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Watchdog.Notifier.BLL.Hubs;
+using Watchdog.Notifier.BLL.Hubs.Interfaces;
+using Watchdog.Notifier.Common.DTO;
+using Watchdog.RabbitMQ.Shared.Models;
+using Watchdog.RabbitMQ.Shared.Services;
 
 namespace Watchdog.Notifier.BLL.Services
 {

@@ -36,7 +36,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
 
     isEdit: boolean = false;
     totalRecords: number;
-    globalFilterFields = ['userFirstName', 'userEmail', 'roleName', 'useeLastName'];
+    globalFilterFields = ['userFirstName', 'userEmail', 'roleName', 'userLastName'];
     lastEvent: LazyLoadEvent;
 
     constructor(

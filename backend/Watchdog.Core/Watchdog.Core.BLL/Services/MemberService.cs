@@ -169,7 +169,7 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<MemberDto> ApproveUserAsync(int id)
         {
-            var member = await _context.Members.FirstOrDefaultAsync(m => m.Id == id) 
+            var member = await _context.Members.FirstOrDefaultAsync(m => m.Id == id)
                 ?? throw new KeyNotFoundException("Member doesn't exist");
             member.IsAccepted = true;
             member.IsApproved = true;

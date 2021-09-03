@@ -164,7 +164,7 @@ namespace Watchdog.Core.BLL.Services
 
             events = filterModel.SortOrder == 1 ? events.OrderBy(x => x.OccurredOn) : events.OrderByDescending(x => x.OccurredOn);
             IQueryable<string> temp = events.Skip(filterModel.First).Take(filterModel.Rows).Select(i => i.EventId);
-            var values = temp.ToList(); 
+            var values = temp.ToList();
             var response = await _client.SearchAsync<IssueMessage>(s => s
                 .Size(filterModel.Rows)
                 .Query(q => q
