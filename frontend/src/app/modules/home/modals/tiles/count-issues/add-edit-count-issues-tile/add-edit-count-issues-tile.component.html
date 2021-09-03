@@ -54,7 +54,7 @@
         <!--    App Source Selection    -->
         <div class="sources-selection">
             <div class="sources-selection-title">Add sources</div>
-            <p-multiSelect [options]="userProjects" appendTo="body" defaultLabel="Select application" display="chip"
+            <p-multiSelect [options]="userProjects" appendTo="body" defaultLabel="Select project" display="chip"
                 formControlName="sourceProjects" optionLabel="name" optionValue="id"></p-multiSelect>
             <div *ngIf="sourceProjects.touched && sourceProjects.invalid" class="validation">
                 <small *ngIf="sourceProjects.errors.required">Field is required</small>
