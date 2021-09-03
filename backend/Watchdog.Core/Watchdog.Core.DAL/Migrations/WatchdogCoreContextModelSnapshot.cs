@@ -670,9 +670,6 @@ namespace Watchdog.Core.DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AffectedUserIdentifier")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("EventId")
                         .HasColumnType("nvarchar(max)");
 
