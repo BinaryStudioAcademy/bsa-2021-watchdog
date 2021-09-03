@@ -14,6 +14,7 @@ using Watchdog.Core.Common.Enums.Issues;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
 using Watchdog.Models.Shared.Issues;
+using Watchdog.Core.Common.DTO.IssueSolution;
 
 namespace Watchdog.Core.BLL.Services
 {
@@ -332,6 +333,20 @@ namespace Watchdog.Core.BLL.Services
                                   && filter.IssueStatuses.Contains(message.Issue.Status)
                                   && message.OccurredOn >= filter.DateRange);
             return messagesCount;
+        }
+
+        public async Task<IssueSolutionDto> GetIssueSolutionLinkByIssueIdAsync(int issueId)
+        {
+            var issueEntity = await _context.Issues
+               .AsNoTracking()
+               .Include(issue => issue.Application)
+                   .ThenInclude(application => application.Platform)
+               .FirstOrDefaultAsync(issue => issue.Id == issueId)
+               ?? throw new KeyNotFoundException("Issue not found");
+
+            var issueSolution = await StackExchangeService.GetSolutionFromStackoverflow<IssueSolution>(issueEntity.ErrorMessage, new string[] { issueEntity.Application.Platform.Name });
+
+            return _mapper.Map<IssueSolutionDto>(issueSolution);
         }
     }
 }

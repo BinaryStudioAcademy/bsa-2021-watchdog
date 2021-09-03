@@ -39,7 +39,8 @@ namespace Watchdog.Core.API.Controllers
         }
 
         [HttpGet("team/{teamId:int}/exceptTeam/")]
-        public async Task<ActionResult<ICollection<ApplicationDto>>> GetApplicationsExceptTeam(int teamId, string appName = "")
+        public async Task<ActionResult<ICollection<ApplicationDto>>> GetApplicationsExceptTeam(int teamId,
+            string appName = "")
         {
             return Ok(await _appService.SearchAppsNotInTeamAsync(teamId, appName));
         }
@@ -108,6 +109,12 @@ namespace Watchdog.Core.API.Controllers
         public ActionResult<AppKeys> GetApiKey()
         {
             return Ok(_appService.GenerateApiKeyAsync());
+        }
+
+        [HttpGet("countriesInfo/{appId:int}")]
+        public async Task<ActionResult<CountryInfoDto>> GetCountriesInfoAsync(int appId)
+        {
+            return Ok(await _appService.GetCountriesInfoAsync(appId));
         }
     }
 }

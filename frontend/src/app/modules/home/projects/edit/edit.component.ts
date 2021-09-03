@@ -130,4 +130,6 @@ export class EditComponent extends BaseComponent implements OnInit {
                 this.spinnerService.hide();
             });
     }
+
+    get isBrowser() { return this.project.platform.platformTypes.isBrowser; }
 }

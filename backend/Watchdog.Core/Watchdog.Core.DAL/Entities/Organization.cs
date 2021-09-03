@@ -11,6 +11,7 @@ namespace Watchdog.Core.DAL.Entities
             Teams = new List<Team>();
             Applications = new List<Application>();
             Dashboards = new List<Dashboard>();
+            LoaderTests = new List<LoaderTest>();
         }
         public string OrganizationSlug { get; set; }
 
@@ -31,5 +32,7 @@ namespace Watchdog.Core.DAL.Entities
         public ICollection<Application> Applications { get; set; }
 
         public ICollection<Dashboard> Dashboards { get; set; }
+
+        public ICollection<LoaderTest> LoaderTests { get; set; }
     }
 }
