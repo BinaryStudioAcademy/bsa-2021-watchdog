@@ -25,6 +25,7 @@ import {
 } from '@core/utils/tile.utils';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import html2canvas from 'html2canvas';
+import { jsPDF } from "jspdf";
 declare var pdfMake: any;
 
 @Component({
@@ -60,7 +61,6 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
     }
 
     ngOnInit() {
-        //this.initCanva();
         this.initChartSettings();
         this.applySettings();
     }
@@ -76,6 +76,23 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
         } else {
             this.toastNotificationService.error('Error export');
         }
+    }
+
+    exportTiles() {
+        var data = document.getElementById('chart');
+        html2canvas(data).then(canvas => {
+            var imgWidth = 208;
+            var pageHeight = 295;
+            var imgHeight = canvas.height * imgWidth / canvas.width;
+            var heightLeft = imgHeight;
+
+            const contentDataURL = canvas.toDataURL('image/png')
+            debugger;
+            let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
+            var position = 0;
+            pdf.addImage(contentDataURL, 'PNG', 0, position, imgHeight, imgWidth);
+            pdf.save('MYPdf.pdf'); // Generated PDF
+        })
     }
 
     initCanva() {

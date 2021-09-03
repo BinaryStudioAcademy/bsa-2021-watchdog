@@ -29,7 +29,7 @@
                 [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects"
                 [style.flex-basis.px]="getTileSize(tile)" class="top-active-issue">
             </app-top-active-issues-tile>
-            <app-issues-per-time-tile (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.IssuesPerTime"
+            <app-issues-per-time-tile id="chart" (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.IssuesPerTime"
                 [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects"
                 [style.flex-basis.px]="getTileSize(tile)" class="issues-per-time">
             </app-issues-per-time-tile>
