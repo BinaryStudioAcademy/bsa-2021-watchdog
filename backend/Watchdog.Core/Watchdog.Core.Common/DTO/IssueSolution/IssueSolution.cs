@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Watchdog.Core.Common.DTO.IssueSolution
 {
-    public class IssueSolutionDto
+    public class IssueSolution
     {
-        public IssueItemSolutionDto[] Items { get; set; }
+        public IssueItemSolution[] Items { get; set; }
     }
 }

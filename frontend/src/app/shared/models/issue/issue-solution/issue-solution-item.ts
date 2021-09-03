@@ -1,7 +1,7 @@
 export interface IssueSolutionItem {
-    is_answered: boolean;
-    view_count: number;
-    answer_count: number;
+    isAnswered: boolean;
+    viewCount: number;
+    answerCount: number;
     score: number;
     link: string;
 }

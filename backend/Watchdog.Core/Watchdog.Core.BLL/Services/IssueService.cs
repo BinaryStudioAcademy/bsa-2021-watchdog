@@ -336,9 +336,9 @@ namespace Watchdog.Core.BLL.Services
                .FirstOrDefaultAsync(issue => issue.Id == issueId)
                ?? throw new KeyNotFoundException("Issue not found");
 
-            var issueSolution = await StackExchangeService.GetSolutionFromStackoverflow<IssueSolutionDto>(issueEntity.ErrorMessage, new string[] { issueEntity.Application.Platform.Name });
+            var issueSolution = await StackExchangeService.GetSolutionFromStackoverflow<IssueSolution>(issueEntity.ErrorMessage, new string[] { issueEntity.Application.Platform.Name });
 
-            return issueSolution;
+            return _mapper.Map<IssueSolutionDto>(issueSolution);
         }
     }
 }

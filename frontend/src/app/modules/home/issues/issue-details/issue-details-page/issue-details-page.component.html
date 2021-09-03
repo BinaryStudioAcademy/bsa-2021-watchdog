@@ -57,19 +57,19 @@
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th class="link-field">Link</th>
-                                    <th>Answer count</th>
+                                    <th>Suggestions count</th>
                                     <th>Question rating</th>
-                                    <th>View count</th>
-                                    <th>Status</th>
+                                    <th>Views count</th>
+                                    <th>Has answer</th>
                                 </tr>
                             </ng-template>
                             <ng-template let-solutionItem pTemplate="body">
                                 <tr>
                                     <td><a appTooltipFullName href="{{solutionItem.link}}" target="_blank">{{solutionItem.link}}</a></td>
-                                    <td class="centered">{{solutionItem.answer_count}}</td>
+                                    <td class="centered">{{solutionItem.answerCount}}</td>
                                     <td class="centered">{{solutionItem.score}}</td>
-                                    <td class="centered">{{solutionItem.view_count}}</td>
-                                    <td>{{solutionItem.is_answered ? 'Is answered' : 'No answered'}}</td>
+                                    <td class="centered">{{solutionItem.viewCount}}</td>
+                                    <td>{{solutionItem.isAnswered ? 'Yes' : 'No'}}</td>
                                 </tr>
                             </ng-template>
                         </p-table>
