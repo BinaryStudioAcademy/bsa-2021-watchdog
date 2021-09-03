@@ -58,6 +58,7 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
                    .HasForeignKey(d => d.CreatedBy)
                    .OnDelete(DeleteBehavior.SetNull);
 
+
             builder.Property(u => u.RegisteredAt)
                    .HasConversion(
                         v => v,

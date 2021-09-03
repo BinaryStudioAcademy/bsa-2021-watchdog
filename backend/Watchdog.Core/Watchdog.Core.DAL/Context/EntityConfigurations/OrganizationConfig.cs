@@ -40,7 +40,6 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
                    .WithOne(d => d.Organization)
                    .HasForeignKey(d => d.OrganizationId);
 
-
             builder.Property(a => a.CreatedAt)
                 .HasConversion(
                      v => v,

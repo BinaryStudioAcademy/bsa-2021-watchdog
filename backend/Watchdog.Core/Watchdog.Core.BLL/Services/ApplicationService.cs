@@ -89,7 +89,7 @@ namespace Watchdog.Core.BLL.Services
         public async Task RemoveAppTeam(int appTeamId)
         {
             var appTeam = await _context.ApplicationTeams.FirstOrDefaultAsync(t => t.Id == appTeamId)
-                ?? throw new InvalidOperationException("Application in this team not found!");
+                ?? throw new KeyNotFoundException("Application in this team not found!");
 
             _context.ApplicationTeams.Remove(appTeam);
             await _context.SaveChangesAsync();
@@ -119,7 +119,7 @@ namespace Watchdog.Core.BLL.Services
             var application = await _context.Applications
                 .Include(p => p.Platform)
                 .FirstOrDefaultAsync(a => a.Id == appId) ??
-                throw new InvalidOperationException("No application with this id!");
+                throw new KeyNotFoundException("No application with this id!");
 
             return _mapper.Map<ApplicationDto>(application);
         }
@@ -132,7 +132,7 @@ namespace Watchdog.Core.BLL.Services
             }
 
             var existedApplication = await _context.Applications.FirstOrDefaultAsync(a => a.Id == appId) ??
-                throw new InvalidOperationException("No application with this id!");
+                throw new KeyNotFoundException("No application with this id!");
 
             var mergedApplication = _mapper.Map(updateAppDto, existedApplication);
 
@@ -147,7 +147,7 @@ namespace Watchdog.Core.BLL.Services
             var application = await _context.Applications
                 .Include(t => t.ApplicationTeams)
                 .FirstOrDefaultAsync(a => a.Id == appId) ??
-                throw new InvalidOperationException("No application with this id!");
+                throw new KeyNotFoundException("No application with this id!");
             _context.Remove(application);
 
             await _context.SaveChangesAsync();

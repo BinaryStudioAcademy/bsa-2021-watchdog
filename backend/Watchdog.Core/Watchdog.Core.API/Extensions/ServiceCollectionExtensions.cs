@@ -40,6 +40,7 @@ namespace Watchdog.Core.API.Extensions
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ITileService, TileService>();
             services.AddTransient<IRegistrationService, RegistrationService>();
+            services.AddTransient<ILoaderTestService, LoaderTestService>();
             services.AddEmailSendService(configuration);
             services.AddElasticSearch(configuration);
             services.AddRabbitMQ(configuration);

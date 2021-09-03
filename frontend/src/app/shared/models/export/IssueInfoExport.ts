@@ -5,6 +5,7 @@ export interface IssueInfoExport {
     Status?: string,
     Events?: number,
     OccurredOn?: string,
+    Affected: number,
     Project?: string,
     Assignee?: string
 }

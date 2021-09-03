@@ -670,6 +670,9 @@ namespace Watchdog.Core.DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("AffectedUserIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("EventId")
                         .HasColumnType("nvarchar(max)");
 
@@ -710,6 +713,78 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasIndex("ApplicationId");
 
                     b.ToTable("Issues");
+                });
+
+            modelBuilder.Entity("Watchdog.Core.DAL.Entities.LoaderRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Headers")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Host")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Method")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Parameters")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Protocol")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TestId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TestId");
+
+                    b.ToTable("LoaderRequests");
+                });
+
+            modelBuilder.Entity("Watchdog.Core.DAL.Entities.LoaderTest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ApplicationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Clients")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("Duration")
+                        .HasColumnType("time");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrganizationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationId");
+
+                    b.HasIndex("OrganizationId");
+
+                    b.ToTable("LoaderTests");
                 });
 
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Member", b =>
@@ -2445,6 +2520,35 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Navigation("Application");
                 });
 
+            modelBuilder.Entity("Watchdog.Core.DAL.Entities.LoaderRequest", b =>
+                {
+                    b.HasOne("Watchdog.Core.DAL.Entities.LoaderTest", "Test")
+                        .WithMany("Requests")
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Test");
+                });
+
+            modelBuilder.Entity("Watchdog.Core.DAL.Entities.LoaderTest", b =>
+                {
+                    b.HasOne("Watchdog.Core.DAL.Entities.Application", "Application")
+                        .WithMany("LoaderTests")
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Watchdog.Core.DAL.Entities.Organization", "Organization")
+                        .WithMany("LoaderTests")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.Navigation("Application");
+
+                    b.Navigation("Organization");
+                });
+
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Member", b =>
                 {
                     b.HasOne("Watchdog.Core.DAL.Entities.User", "CreatedByUser")
@@ -2551,6 +2655,8 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Navigation("Environments");
 
                     b.Navigation("Issues");
+
+                    b.Navigation("LoaderTests");
                 });
 
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Dashboard", b =>
@@ -2561,6 +2667,11 @@ namespace Watchdog.Core.DAL.Migrations
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Issue", b =>
                 {
                     b.Navigation("EventMessages");
+                });
+
+            modelBuilder.Entity("Watchdog.Core.DAL.Entities.LoaderTest", b =>
+                {
+                    b.Navigation("Requests");
                 });
 
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Member", b =>
@@ -2575,6 +2686,8 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Navigation("Applications");
 
                     b.Navigation("Dashboards");
+
+                    b.Navigation("LoaderTests");
 
                     b.Navigation("Members");
 

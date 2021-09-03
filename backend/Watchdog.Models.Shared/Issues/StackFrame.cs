@@ -6,7 +6,7 @@ namespace Watchdog.Models.Shared.Issues
         public string MethodName { get; set; }
         public string ClassName { get; set; }
         public string[] Arguments { get; set; }
-        public int LineNumber { get; set; }
-        public int Column { get; set; }
+        public int? LineNumber { get; set; }
+        public int? Column { get; set; }
     }
 }

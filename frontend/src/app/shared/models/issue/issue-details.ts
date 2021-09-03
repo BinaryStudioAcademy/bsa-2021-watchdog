@@ -10,5 +10,5 @@ export interface IssueDetails {
     stackTrace?: StackFrame[],
     responseErrorMessage?: HttpResponseErrorMessage,
     environmentMessage: IssueEnvironment,
-    breadcrumbs: BreadcrumbModel[],
+    breadcrumbs: BreadcrumbModel[]
 }
