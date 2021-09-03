@@ -5,18 +5,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Nest;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Application;
 using Watchdog.Core.Common.DTO.ApplicationTeam;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
+using Watchdog.Models.Shared.Analytics;
 
 namespace Watchdog.Core.BLL.Services
 {
     public class ApplicationService : BaseService, IApplicationService
     {
-        public ApplicationService(WatchdogCoreContext context, IMapper mapper)
-            : base(context, mapper) { }
+        private readonly IElasticClient _elkClient;
+
+        public ApplicationService(WatchdogCoreContext context, IMapper mapper, IElasticClient elkClient)
+            : base(context, mapper)
+        {
+            _elkClient = elkClient;
+        }
 
         public async Task<ApplicationTeamDto> AddAppTeamAsync(NewApplicationTeamDto appTeam)
         {
@@ -184,6 +191,37 @@ namespace Watchdog.Core.BLL.Services
             var apps = member.TeamMembers.SelectMany(tm => tm.Team.ApplicationTeams).Select(at => at.Application).Distinct();
 
             return _mapper.Map<ICollection<ApplicationDto>>(apps);
+        }
+
+        public async Task<ICollection<CountryInfoDto>> GetCountriesInfoAsync(int appId)
+        {
+            var application = await _context.Applications.FirstOrDefaultAsync(app => app.Id == appId);
+            
+            var searchResponse = _elkClient.Search<CountryInfo>(s => s
+                .Query(q => q
+                    .Match(m => m
+                        .Field(f => f.ApiKey)
+                        .Query(application.ApiKey)
+                        .Operator(Operator.And)
+                    )
+                )
+            );
+
+            if (!searchResponse.IsValid)
+            {
+                throw new InvalidOperationException("Can't load countries info from ELK.");
+            }
+
+            var result = searchResponse.Documents
+                .GroupBy(c => c.Country)
+                .Select(grouped => new CountryInfoDto()
+                {
+                    Country = grouped.Key,
+                    Count = grouped.Count()
+                })
+                .ToList();
+
+            return result;
         }
     }
 }

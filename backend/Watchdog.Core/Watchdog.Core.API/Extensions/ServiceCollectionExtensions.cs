@@ -15,6 +15,7 @@ using Watchdog.RabbitMQ.Shared.Models;
 using Watchdog.RabbitMQ.Shared.Services;
 using Watchdog.Core.BLL.Services.Queue;
 using Microsoft.Extensions.Logging;
+using Watchdog.Models.Shared.Analytics;
 using Watchdog.Models.Shared.Issues;
 
 namespace Watchdog.Core.API.Extensions
@@ -51,7 +52,9 @@ namespace Watchdog.Core.API.Extensions
             var connectionString = configuration["ElasticConfiguration:Uri"];
 
             var settings = new ConnectionSettings(new Uri(connectionString))
-                .DefaultMappingFor<IssueMessage>(m => 
+                .DefaultMappingFor<CountryInfo>(m => 
+                        m.IndexName(configuration["ElasticConfiguration:CountriesInfoIndex"]))
+                .DefaultMappingFor<IssueMessage>(m =>
                     m.IndexName(configuration["ElasticConfiguration:EventMessagesIndex"])
                         .IdProperty(em => em.Id).Ignore(em => em.ApiKey));
             

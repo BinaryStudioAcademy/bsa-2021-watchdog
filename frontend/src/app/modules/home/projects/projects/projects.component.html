@@ -10,9 +10,7 @@
     <!--    Projects Grid    -->
     <div class="grid">
         <div *ngFor="let project of projects">
-            <div class="card">
-                <button [routerLink]="'./edit/'+project.id" class="p-button-raised p-button-text p-button-plain small-button"
-                    icon="pi pi-pencil" pButton></button>
+            <div class="card" [routerLink]="'./edit/'+project.id">
                 <div class="card-title">
                     <img alt="{{project.platform.name}}" [src]="project.platform.avatarUrl | save">
                     <span>{{project.platform.name}}</span>

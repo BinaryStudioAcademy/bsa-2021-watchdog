@@ -1,0 +1,14 @@
+<div class="geo-chart-wrp">
+    <div class="geo-chart-wrp--header">
+        <span>Analytics of project users by country</span>
+    </div>
+    <div class="geo-chart-wrp--content">
+        <google-chart *ngIf="geoData"
+            class="geo-chart-wrp--chart"
+            [type]="geoChartOptions.type"
+            [title]="geoChartOptions.title"
+            [data]="geoData"
+            [dynamicResize]="true">
+        </google-chart>
+    </div>
+</div>
