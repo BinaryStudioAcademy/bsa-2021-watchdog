@@ -4,6 +4,7 @@ using System.Web;
 using System.Net;
 using System.Threading.Tasks;
 using System;
+using System.Linq;
 
 namespace Watchdog.Core.BLL.Services
 {
@@ -24,7 +25,7 @@ namespace Watchdog.Core.BLL.Services
                 var query = HttpUtility.ParseQueryString(uriBuilder.Query);
                 query["site"] = "stackoverflow";
                 query["title"] = messsage;
-                query["tagged"] = string.Join(" ", tags);
+                query["tagged"] = string.Join(" ", tags.Select(str => str.Replace(' ', '-')));
                 query["sort"] = "relevance";
                 query["pagesize"] = "10";
                 uriBuilder.Query = query.ToString();

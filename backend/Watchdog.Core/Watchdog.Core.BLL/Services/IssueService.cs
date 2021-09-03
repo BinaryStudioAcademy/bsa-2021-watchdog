@@ -102,7 +102,12 @@ namespace Watchdog.Core.BLL.Services
                     EventsCount = i.EventsCount,
                     Application = _mapper.Map<ApplicationDto>(i.Application),
                     Status = i.Status,
-                    Newest = new IssueMessageDto
+                    AffectedUsersCount = i.EventMessages
+                        .Select(e => e.AffectedUserIdentifier)
+                        .Where(t => !string.IsNullOrWhiteSpace(t))
+                        .Distinct()
+                        .Count(),
+                    Newest = new IssueMessageDto()
                     {
                         Id = i.Newest.EventId,
                         OccurredOn = i.Newest.OccurredOn

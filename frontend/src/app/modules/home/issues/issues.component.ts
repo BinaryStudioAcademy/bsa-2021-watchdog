@@ -236,6 +236,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                 Status: IssueStatus[issue.status],
                 Events: issue.eventsCount,
                 OccurredOn: new Date(issue.newest.occurredOn).toLocaleString(),
+                Affected: issue.affectedUsersCount,
                 Project: issue.project.name,
                 Assignee: this.getAllUsers(issue.assignee).map(value => `${value.firstName} ${value.lastName}`).join(' \r')
             }

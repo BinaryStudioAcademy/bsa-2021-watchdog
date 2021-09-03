@@ -135,7 +135,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     }
 
     initProjects() {
-        return this.projectService.getProjectsByMemberId(this.member.id)
+        return this.projectService.getProjectsByOrganizationId(this.member.organizationId)
             .pipe(map(projects => {
                 this.projects = projects;
             }));

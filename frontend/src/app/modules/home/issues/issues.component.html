@@ -109,10 +109,16 @@
                             <p-sortIcon field="eventsCount"></p-sortIcon>
                         </span>
                     </th>
+
                     <th class="center" pSortableColumn="project.name">
                         <span>
                             Project
                             <p-sortIcon field="project.name"></p-sortIcon>
+                        </span>
+                    </th>
+                    <th class="center" pSortableColumn="affectedUsersCount">
+                        <span>Users <p-sortIcon field="affectedUsersCount">
+                            </p-sortIcon>
                         </span>
                     </th>
                     <th class="center">
@@ -152,6 +158,7 @@
                     </td>
                     <td>{{issue.eventsCount}}</td>
                     <td>{{issue.project.name}}</td>
+                    <td>{{issue.affectedUsersCount}}</td>
                     <td>
                         <div (click)="openAssign(issue)" class="assignee">
                             <p-avatarGroup styleClass="p-mb-3">
