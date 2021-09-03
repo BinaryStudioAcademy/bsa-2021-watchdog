@@ -702,22 +702,12 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<string>("ErrorMessage")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("EventsCount")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("NewestId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationId");
-
-                    b.HasIndex("NewestId")
-                        .IsUnique()
-                        .HasFilter("[NewestId] IS NOT NULL");
 
                     b.ToTable("Issues");
                 });
@@ -2438,7 +2428,7 @@ namespace Watchdog.Core.DAL.Migrations
                     b.HasOne("Watchdog.Core.DAL.Entities.Issue", "Issue")
                         .WithMany("EventMessages")
                         .HasForeignKey("IssueId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Issue");
@@ -2452,14 +2442,7 @@ namespace Watchdog.Core.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Watchdog.Core.DAL.Entities.EventMessage", "Newest")
-                        .WithOne("IssueLast")
-                        .HasForeignKey("Watchdog.Core.DAL.Entities.Issue", "NewestId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.Navigation("Application");
-
-                    b.Navigation("Newest");
                 });
 
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Member", b =>
@@ -2573,11 +2556,6 @@ namespace Watchdog.Core.DAL.Migrations
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Dashboard", b =>
                 {
                     b.Navigation("Tiles");
-                });
-
-            modelBuilder.Entity("Watchdog.Core.DAL.Entities.EventMessage", b =>
-                {
-                    b.Navigation("IssueLast");
                 });
 
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Issue", b =>
