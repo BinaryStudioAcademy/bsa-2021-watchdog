@@ -9,6 +9,9 @@ using Watchdog.Core.BLL.Extensions;
 using Watchdog.Core.BLL.Models;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Members;
+using Watchdog.Core.Common.DTO.Role;
+using Watchdog.Core.Common.DTO.Team;
+using Watchdog.Core.Common.DTO.User;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
 
@@ -197,11 +200,24 @@ namespace Watchdog.Core.BLL.Services
                 .Include(m => m.TeamMembers)
                     .ThenInclude(tm => tm.Team)
                 .Include(m => m.Role)
-                .ToListAsync();
-            var result = _mapper.Map<ICollection<MemberDto>>(members)
+                .Select(m => new MemberDto
+                {
+                    Id = m.Id,
+                    IsAccepted = m.IsAccepted,
+                    IsApproved = m.IsApproved,
+                    OrganizationId = m.OrganizationId,
+                    Role = _mapper.Map<RoleDto>(m.Role),
+                    RoleId = m.RoleId,
+                    RoleName = m.Role.Name,
+                    Teams = _mapper.Map<IEnumerable<TeamOptionDto>>(m.TeamMembers.Select(tm => tm.Team)),
+                    User = _mapper.Map<UserDto>(m.User),
+                    UserEmail = m.User.Email,
+                    UserFirstName = m.User.FirstName,
+                    UserLastName = m.User.LastName
+                })
                 .Filter(filterPayload, out var totalRecord)
-                .ToList();
-            return (result, totalRecord);
+                .ToListAsync();
+            return (members, totalRecord);
         }
 
         public async Task<ICollection<int>> GetMembersIdsByApplicationUid(string applicationUid)

@@ -36,7 +36,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
 
     isEdit: boolean = false;
     totalRecords: number;
-    globalFilterFields = ['member.user.firstName', 'member.user.email', 'member.role.name'];
+    globalFilterFields = ['userFirstName', 'userEmail', 'roleName', 'useeLastName'];
     lastEvent: LazyLoadEvent;
 
     constructor(
@@ -167,7 +167,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis)
             .subscribe(() => {
                 this.toastNotifications.success('Member deleted');
-                this.memberItems = this.memberItems.filter(m => m.member.id !== memberItem.member.id);
+                this.loadMembers(this.lastEvent);
             }, error => {
                 this.toastNotifications.error(error);
             });
