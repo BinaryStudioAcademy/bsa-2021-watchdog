@@ -110,6 +110,7 @@ namespace Watchdog.Core.API.Controllers
             return Ok(_appService.GenerateApiKeyAsync());
         }
 
+        [AllowAnonymous]
         [HttpGet("listening/{apiKey}")]
         public async Task<ActionResult<bool>> IsProjectListening(string apiKey)
         {
