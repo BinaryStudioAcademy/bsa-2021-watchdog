@@ -1,3 +1,4 @@
+import { AffectedUser } from './affected-user';
 import { IssueDetails } from '@shared/models/issue/issue-details';
 import { Project } from '../projects/project';
 
@@ -6,5 +7,6 @@ export interface IssueMessage {
     issueId?: number,
     occurredOn: Date,
     issueDetails: IssueDetails,
-    project: Project
+    project: Project,
+    user: AffectedUser
 }

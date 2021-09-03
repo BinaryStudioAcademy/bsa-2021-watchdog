@@ -1,13 +1,16 @@
 <div class="container">
     <span>Add the Watchdog as a dependency using <strong><code>npm</code></strong>:</span>
     <app-code [code]="install" [languages]=""></app-code>
-   
+
     <span>You should <strong><code>init</code></strong> the Watchdog browser SDK as soon as possible during your application load up, before initializing Angular:</span>
     <app-code [code]="main" [languages]="['typescript']"></app-code>
-   
+
     <span>Then you need to create error handler: </span>
     <app-code [code]="errorHandler" [languages]="['typescript']"></app-code>
-   
+
     <span>And inject it to <strong><code>app.module.ts</code></strong>:</span>
     <app-code [code]="appModule" [languages]="['typescript']"></app-code>
+
+    <span>You can add users monitoring by setting options in <strong><code>setUserInfo</code></strong> function</span>
+    <app-code [code]="setUser" [languages]="['typescript']"></app-code>
 </div>

@@ -95,17 +95,20 @@ namespace Watchdog.Core.BLL.Services
                     IssueId = i.Id,
                     ErrorClass = i.ErrorClass,
                     ErrorMessage = i.ErrorMessage,
-                    EventsCount = _context.EventMessages.Count(em => em.IssueId == i.Id),
+                    EventsCount = i.EventMessages.Count(em => em.IssueId == i.Id),
                     Application = _mapper.Map<ApplicationDto>(i.Application),
                     Status = i.Status,
-                    Newest = new IssueMessageDto
+                    AffectedUsersCount = i.EventMessages
+                        .Select(e => e.AffectedUserIdentifier)
+                        .Where(t => !string.IsNullOrWhiteSpace(t))
+                        .Distinct()
+                        .Count(),
+                    Newest = new IssueMessageDto()
                     {
-                        Id = _context.EventMessages
-                            .Where(em => em.IssueId == i.Id)
+                        Id = i.EventMessages
                             .OrderByDescending(em => em.OccurredOn)
                             .FirstOrDefault(em => em.IssueId == i.Id).EventId,
-                        OccurredOn = _context.EventMessages
-                            .Where(em => em.IssueId == i.Id)
+                        OccurredOn = i.EventMessages
                             .OrderByDescending(em => em.OccurredOn)
                             .FirstOrDefault().OccurredOn
                     },
