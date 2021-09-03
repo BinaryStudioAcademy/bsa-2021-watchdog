@@ -20,7 +20,7 @@ export class TableExportService {
         if (arrayOfItemsToWrite.length) {
             const cols: string[][] = [Object.keys(arrayOfItemsToWrite[0])];
             const rows: string[][] = arrayOfItemsToWrite.map(item => Object.values(item));
-            const pxPerSymbol = 9;
+            const pxPerSymbol = 8;
             const stylesPerProperty: { [p: string]: Partial<Styles> } = {};
             cols[0].forEach((propName, index) => {
                 stylesPerProperty[index] = { minCellWidth: propName.length * pxPerSymbol };

@@ -18,5 +18,6 @@ namespace Watchdog.Core.Common.DTO.Issue
         public ApplicationDto Application { get; set; }
         public string ProjectName => Application?.Name;
         public AssigneeDto Assignee { get; set; }
+        public int AffectedUsersCount { get; set; }
     }
 }

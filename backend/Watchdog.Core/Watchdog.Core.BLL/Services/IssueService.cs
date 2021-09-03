@@ -14,6 +14,7 @@ using Watchdog.Core.Common.Enums.Issues;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
 using Watchdog.Models.Shared.Issues;
+using Watchdog.Core.Common.DTO.IssueSolution;
 
 namespace Watchdog.Core.BLL.Services
 {
@@ -94,17 +95,20 @@ namespace Watchdog.Core.BLL.Services
                     IssueId = i.Id,
                     ErrorClass = i.ErrorClass,
                     ErrorMessage = i.ErrorMessage,
-                    EventsCount = _context.EventMessages.Count(em => em.IssueId == i.Id),
+                    EventsCount = i.EventMessages.Count(em => em.IssueId == i.Id),
                     Application = _mapper.Map<ApplicationDto>(i.Application),
                     Status = i.Status,
-                    Newest = new IssueMessageDto
+                    AffectedUsersCount = i.EventMessages
+                        .Select(e => e.AffectedUserIdentifier)
+                        .Where(t => !string.IsNullOrWhiteSpace(t))
+                        .Distinct()
+                        .Count(),
+                    Newest = new IssueMessageDto()
                     {
-                        Id = _context.EventMessages
-                            .Where(em => em.IssueId == i.Id)
+                        Id = i.EventMessages
                             .OrderByDescending(em => em.OccurredOn)
                             .FirstOrDefault(em => em.IssueId == i.Id).EventId,
-                        OccurredOn = _context.EventMessages
-                            .Where(em => em.IssueId == i.Id)
+                        OccurredOn = i.EventMessages
                             .OrderByDescending(em => em.OccurredOn)
                             .FirstOrDefault().OccurredOn
                     },
@@ -329,6 +333,20 @@ namespace Watchdog.Core.BLL.Services
                                   && filter.IssueStatuses.Contains(message.Issue.Status)
                                   && message.OccurredOn >= filter.DateRange);
             return messagesCount;
+        }
+
+        public async Task<IssueSolutionDto> GetIssueSolutionLinkByIssueIdAsync(int issueId)
+        {
+            var issueEntity = await _context.Issues
+               .AsNoTracking()
+               .Include(issue => issue.Application)
+                   .ThenInclude(application => application.Platform)
+               .FirstOrDefaultAsync(issue => issue.Id == issueId)
+               ?? throw new KeyNotFoundException("Issue not found");
+
+            var issueSolution = await StackExchangeService.GetSolutionFromStackoverflow<IssueSolution>(issueEntity.ErrorMessage, new string[] { issueEntity.Application.Platform.Name });
+
+            return _mapper.Map<IssueSolutionDto>(issueSolution);
         }
     }
 }

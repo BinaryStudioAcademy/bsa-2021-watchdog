@@ -14,5 +14,7 @@ if (environment.production) {
     Watchdog.init(apiKey, false, 'http://localhost:5090/issues/', 'http://localhost:5050');
 }
 
+Watchdog.setUserInfo({ isAnonymous: true });
+
 platformBrowserDynamic().bootstrapModule(AppModule)
     .catch(err => console.error(err));

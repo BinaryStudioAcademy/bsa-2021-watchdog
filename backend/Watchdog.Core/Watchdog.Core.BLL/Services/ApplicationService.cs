@@ -5,18 +5,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Nest;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Application;
 using Watchdog.Core.Common.DTO.ApplicationTeam;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
+using Watchdog.Models.Shared.Analytics;
 
 namespace Watchdog.Core.BLL.Services
 {
     public class ApplicationService : BaseService, IApplicationService
     {
-        public ApplicationService(WatchdogCoreContext context, IMapper mapper)
-            : base(context, mapper) { }
+        private readonly IElasticClient _elkClient;
+
+        public ApplicationService(WatchdogCoreContext context, IMapper mapper, IElasticClient elkClient)
+            : base(context, mapper)
+        {
+            _elkClient = elkClient;
+        }
 
         public async Task<ApplicationTeamDto> AddAppTeamAsync(NewApplicationTeamDto appTeam)
         {
@@ -82,7 +89,7 @@ namespace Watchdog.Core.BLL.Services
         public async Task RemoveAppTeam(int appTeamId)
         {
             var appTeam = await _context.ApplicationTeams.FirstOrDefaultAsync(t => t.Id == appTeamId)
-                ?? throw new InvalidOperationException("Application in this team not found!");
+                ?? throw new KeyNotFoundException("Application in this team not found!");
 
             _context.ApplicationTeams.Remove(appTeam);
             await _context.SaveChangesAsync();
@@ -112,7 +119,7 @@ namespace Watchdog.Core.BLL.Services
             var application = await _context.Applications
                 .Include(p => p.Platform)
                 .FirstOrDefaultAsync(a => a.Id == appId) ??
-                throw new InvalidOperationException("No application with this id!");
+                throw new KeyNotFoundException("No application with this id!");
 
             return _mapper.Map<ApplicationDto>(application);
         }
@@ -125,7 +132,7 @@ namespace Watchdog.Core.BLL.Services
             }
 
             var existedApplication = await _context.Applications.FirstOrDefaultAsync(a => a.Id == appId) ??
-                throw new InvalidOperationException("No application with this id!");
+                throw new KeyNotFoundException("No application with this id!");
 
             var mergedApplication = _mapper.Map(updateAppDto, existedApplication);
 
@@ -140,7 +147,7 @@ namespace Watchdog.Core.BLL.Services
             var application = await _context.Applications
                 .Include(t => t.ApplicationTeams)
                 .FirstOrDefaultAsync(a => a.Id == appId) ??
-                throw new InvalidOperationException("No application with this id!");
+                throw new KeyNotFoundException("No application with this id!");
             _context.Remove(application);
 
             await _context.SaveChangesAsync();
@@ -190,6 +197,37 @@ namespace Watchdog.Core.BLL.Services
         {
             var state = await _context.Applications.AnyAsync(a => a.ApiKey == apiKey);
             return state;
+        }
+
+        public async Task<ICollection<CountryInfoDto>> GetCountriesInfoAsync(int appId)
+        {
+            var application = await _context.Applications.FirstOrDefaultAsync(app => app.Id == appId);
+            
+            var searchResponse = _elkClient.Search<CountryInfo>(s => s
+                .Query(q => q
+                    .Match(m => m
+                        .Field(f => f.ApiKey)
+                        .Query(application.ApiKey)
+                        .Operator(Operator.And)
+                    )
+                )
+            );
+
+            if (!searchResponse.IsValid)
+            {
+                throw new InvalidOperationException("Can't load countries info from ELK.");
+            }
+
+            var result = searchResponse.Documents
+                .GroupBy(c => c.Country)
+                .Select(grouped => new CountryInfoDto()
+                {
+                    Country = grouped.Key,
+                    Count = grouped.Count()
+                })
+                .ToList();
+
+            return result;
         }
     }
 }
