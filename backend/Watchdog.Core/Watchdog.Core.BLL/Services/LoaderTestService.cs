@@ -49,6 +49,8 @@ namespace Watchdog.Core.BLL.Services
             }
             var tests = await _context.LoaderTests
                .Include(t => t.Requests)
+               .Include(t => t.Application)
+               .ThenInclude(a => a.Platform)
                .Where(t => t.OrganizationId == organizationId)
                .ToListAsync();
 

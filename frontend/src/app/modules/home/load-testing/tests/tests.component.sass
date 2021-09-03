@@ -21,3 +21,74 @@
 
         button
             white-space: nowrap
+
+.small-button
+    float: right
+    box-shadow: none
+    height: 20px
+    width: 20px
+
+@media screen and (max-width: 560px)
+    .header
+        justify-content: center
+    .header-title
+        display: none
+
+
+.tests-container
+    padding: $half-indent
+    display: flex
+    flex: 1 1 0
+    flex-direction: column
+
+    .grid
+        display: grid
+        grid-template-columns: minmax(100px, 1fr)
+        gap: $half-indent
+
+        .card
+            box-shadow: $card-box-shadow
+            border-radius: 4px
+            border: 1px solid $border-color
+            height: 100%
+            text-align: center
+            padding: 12px 16px 16px 16px
+            transition: 200ms all ease-in-out
+            &:hover
+                cursor: pointer
+                box-shadow: $card-box-shadow-hover
+
+        .card-title
+            @include text-overflow-x-nowrap
+            display: flex
+            align-items: center
+            margin-bottom: 12px
+
+            span
+                font-size: 14px
+                padding-left: 6px
+                padding-bottom: 2px
+
+            img
+                @include disable-select
+                width: 20px
+                height: 20px
+
+        .card-body
+            .card-body-name
+                font-size: 24px
+                font-weight: 700
+                margin-bottom: 12px
+                @include text-overflow-x-nowrap
+            .card-body-description
+                @include text-overflow-x-nowrap
+
+    @media screen and (min-width: 800px)
+        .grid
+            grid-template-columns: repeat(2, minmax(100px, 1fr))
+
+    @media screen and (min-width: 1440px)
+        .grid
+            grid-template-columns: repeat(3, minmax(100px, 1fr))
+
+
