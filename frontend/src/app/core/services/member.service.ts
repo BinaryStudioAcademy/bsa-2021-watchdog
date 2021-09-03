@@ -24,7 +24,7 @@ export class MemberService {
     }
 
     getMembersByOrganizationIdLazy(organizationId: number, event: LazyLoadEvent):
-        Observable<{ collection: Member[], totalRecord: number }> {
+    Observable<{ collection: Member[], totalRecord: number }> {
         return this.httpService
             .postRequest<{ collection: Member[], totalRecord: number }>(`${this.routePrefix}/organization/${organizationId}`, event);
     }
