@@ -101,7 +101,8 @@ namespace Watchdog.Core.BLL.Services
                             .Select(a => a.TeamId)
                             .ToList()
                     }
-                }).ToListAsync();
+                })
+                .ToListAsync();
         }
 
         private IQueryable<Issue> GetIssuesAsQuerable(int memberId, IssueStatus? status)
@@ -162,8 +163,13 @@ namespace Watchdog.Core.BLL.Services
         {
             var events = _context.EventMessages.AsNoTracking().Where(e => e.IssueId == issueId);
 
-            events = filterModel.SortOrder == 1 ? events.OrderBy(x => x.OccurredOn) : events.OrderByDescending(x => x.OccurredOn);
-            IQueryable<string> temp = events.Skip(filterModel.First).Take(filterModel.Rows).Select(i => i.EventId);
+            events = filterModel.SortOrder == 1
+                ? events.OrderBy(x => x.OccurredOn)
+                : events.OrderByDescending(x => x.OccurredOn);
+            var temp = events
+                .Skip(filterModel.First)
+                .Take(filterModel.Rows)
+                .Select(i => i.EventId);
             var values = temp.ToList();
             var response = await _client.SearchAsync<IssueMessage>(s => s
                 .Size(filterModel.Rows)
@@ -171,10 +177,10 @@ namespace Watchdog.Core.BLL.Services
                     .Ids(c => c
                         .Values(values)))
                 .Sort(q => filterModel.SortOrder == 1
-                           ? q.Ascending(i => i.OccurredOn)
-                           : q.Descending(i => i.OccurredOn)));
+                    ? q.Ascending(i => i.OccurredOn)
+                    : q.Descending(i => i.OccurredOn)));
 
-            var totalRecord = _context.EventMessages.Where(e => e.IssueId == issueId).Count();
+            var totalRecord = _context.EventMessages.Count(e => e.IssueId == issueId);
             return (response.Documents.ToList(), totalRecord);
         }
 
@@ -305,7 +311,7 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<(ICollection<IssueLazyLoadDto>, int)> GetIssuesInfoLazyAsync(
+        public async Task<(ICollection<IssueLazyLoadDto>, int, CountOfIssuesByStatusDTO)> GetIssuesInfoLazyAsync(
             int memberId,
             FilterModel filterModel,
             IssueStatus? status)
@@ -346,9 +352,31 @@ namespace Watchdog.Core.BLL.Services
                 })
                 .Filter(filterModel, out var totalRecord)
                 .ToListAsync();
-            return (result, totalRecord);
+
+            var counts = await GetCountOfIssuesByStatus(memberId);
+
+            return (result, totalRecord, counts);
         }
 
+        private async Task<CountOfIssuesByStatusDTO> GetCountOfIssuesByStatus(int memberId)
+        {
+            var result = await _context.Applications
+                .AsNoTracking()
+                .Where(a => a.ApplicationTeams
+                    .Any(at => at.Team.TeamMembers
+                        .Any(tm => tm.MemberId == memberId)))
+                .SelectMany(a => a.Issues)
+                .GroupBy(issue => issue.Status)
+                .Select(issues => new {Status = issues.Key, Count = issues.Count()})
+                .ToDictionaryAsync(arg => arg.Status, arg => arg.Count);
+
+            return new CountOfIssuesByStatusDTO
+            {
+                ActiveCount = result[IssueStatus.Active],
+                ResolvedCount = result[IssueStatus.Resolved],
+                IgnoredCount = result[IssueStatus.Ignored],
+            };
+        }
 
         public async Task<int> GetFilteredIssueCountByStatusesAndDateRangeByApplicationIdAsync(int applicationId,
             IssueStatusesByDateRangeFilter filter)
