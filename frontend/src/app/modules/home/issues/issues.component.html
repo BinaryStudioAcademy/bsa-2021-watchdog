@@ -63,7 +63,9 @@
             [resizableColumns]="true"
             [rows]="itemsPerPage"
             [totalRecords]="totalRecords"
-            [value]="issues">
+            [sortOrder]="-1"
+            [value]="issues"
+            sortField="newest.occurredOn">
             <ng-template pTemplate="colgroup">
                 <!--    Column width    -->
                 <colgroup>
