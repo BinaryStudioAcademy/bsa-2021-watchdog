@@ -26,7 +26,7 @@ namespace Watchdog.Core.API
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", reloadOnChange: true, optional: true)
                 .AddEnvironmentVariables();
-            
+
             if (env.IsDevelopment())
             {
                 configurationBuilder.AddUserSecrets<Startup>();
