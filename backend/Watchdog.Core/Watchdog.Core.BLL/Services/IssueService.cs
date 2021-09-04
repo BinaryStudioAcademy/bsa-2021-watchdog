@@ -372,9 +372,9 @@ namespace Watchdog.Core.BLL.Services
 
             return new CountOfIssuesByStatusDTO
             {
-                ActiveCount = result[IssueStatus.Active],
-                ResolvedCount = result[IssueStatus.Resolved],
-                IgnoredCount = result[IssueStatus.Ignored],
+                ActiveCount = result.GetValueOrDefault(IssueStatus.Active),
+                ResolvedCount = result.GetValueOrDefault(IssueStatus.Resolved),
+                IgnoredCount = result.GetValueOrDefault(IssueStatus.Ignored),
             };
         }
 
@@ -404,7 +404,7 @@ namespace Watchdog.Core.BLL.Services
                .FirstOrDefaultAsync(issue => issue.Id == issueId)
                ?? throw new KeyNotFoundException("Issue not found");
 
-            var issueSolution = await StackExchangeService.GetSolutionFromStackoverflow<IssueSolution>(issueEntity.ErrorMessage, new string[] { issueEntity.Application.Platform.Name });
+            var issueSolution = await StackExchangeService.GetSolutionFromStackoverflow<IssueSolution>(issueEntity.ErrorMessage, new[] { issueEntity.Application.Platform.Name });
 
             return _mapper.Map<IssueSolutionDto>(issueSolution);
         }
