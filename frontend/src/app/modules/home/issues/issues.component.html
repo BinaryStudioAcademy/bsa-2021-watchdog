@@ -62,10 +62,10 @@
             [paginator]="totalRecords > itemsPerPage"
             [resizableColumns]="true"
             [rows]="itemsPerPage"
-            [totalRecords]="totalRecords"
             [sortOrder]="-1"
+            [totalRecords]="totalRecords"
             [value]="issues"
-            sortField="newest.occurredOn">
+            sortField="occurredOn">
             <ng-template pTemplate="colgroup">
                 <!--    Column width    -->
                 <colgroup>
@@ -79,12 +79,12 @@
             <ng-template pTemplate="header">
                 <!--    Table header    -->
                 <tr class="table-head">
-                    <th pSortableColumn="newest.occurredOn">
+                    <th pSortableColumn="occurredOn">
                         <div class="table-head-issue">
                             <p-checkbox (onChange)="selectAll($event)" name="allIssues"
                                         styleClass="table-head-issue-checkbox"></p-checkbox>
                             <span>Issue</span>
-                            <p-sortIcon field="newest.occurredOn"></p-sortIcon>
+                            <p-sortIcon field="occurredOn"></p-sortIcon>
                             <p-columnFilter
                                 [showAddButton]="false"
                                 [showOperator]="false"
@@ -101,10 +101,10 @@
                             <p-sortIcon field="eventsCount"></p-sortIcon>
                         </div>
                     </th>
-                    <th pSortableColumn="project.name">
+                    <th pSortableColumn="projectName">
                         <div class="table-head-project">
                             <span>Project</span>
-                            <p-sortIcon field="project.name"></p-sortIcon>
+                            <p-sortIcon field="projectName"></p-sortIcon>
                         </div>
                     </th>
                     <th pSortableColumn="affectedUsersCount">
@@ -128,7 +128,7 @@
                             <p-checkbox [(ngModel)]="selectedIssues" [value]="issue" name="selectedIssues"></p-checkbox>
                             <div class="table-content-issue-grid">
                                     <span appTooltipFullName class="error-class"
-                                          routerLink="/home/issues/{{issue.issueId}}/{{issue.newest.id}}">
+                                          routerLink="/home/issues/{{issue.issueId}}/{{issue.newestId}}">
                                         {{issue.errorClass}}
                                     </span>
                                 <span appTooltipFullName class="error-message">{{issue.errorMessage}}</span>
@@ -142,10 +142,10 @@
                                                severity="info" value="ignored"></p-tag>
                                     </ng-container>
                                     <div class="time">
-                                            <span pTooltip="{{issue.newest.occurredOn | date:'MMMM d, y h:mma'}}"
+                                            <span pTooltip="{{issue.occurredOn | date:'MMMM d, y h:mma'}}"
                                                   tooltipPosition="right" tooltipStyleClass="tooltip-text">
                                                 <i class="pi pi-clock time-icon"></i>
-                                                {{issue.newest.occurredOn | timeAgo}}
+                                                {{issue.occurredOn | timeAgo}}
                                             </span>
                                     </div>
                                 </div>
@@ -157,7 +157,7 @@
                     </td>
                     <td>
                         <span appTooltipFullName class="table-content-project"
-                              routerLink="/home/projects/edit/{{issue.project.id}}">{{issue.project.name}}
+                              routerLink="/home/projects/edit/{{issue.projectId}}">{{issue.projectName}}
                         </span>
                     </td>
                     <td>
