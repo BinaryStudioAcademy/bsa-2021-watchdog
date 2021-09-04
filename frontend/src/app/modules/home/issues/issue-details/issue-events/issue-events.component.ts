@@ -63,6 +63,7 @@ export class IssueEventsComponent extends BaseComponent implements OnDestroy {
             {
                 ID: issue.id,
                 OccurredOn: new Date(issue.occurredOn).toLocaleString(),
+                User: issue.user.identifier,
                 Browser: issue.issueDetails.environmentMessage.browser,
                 Platform: issue.issueDetails.environmentMessage.platform,
             }

@@ -17,13 +17,13 @@ import { RegistrationService } from './registration.service';
 import { OrganizationService } from './organization.service';
 import { FullRegistrationWithJoinDto } from '@modules/registration/DTO/full-registration-with-join-dto';
 import { PartialRegistratioWithJoinDto } from '@modules/registration/DTO/partial-registration-with-join';
+import * as Watchdog from '@watchdog-bsa/watchdog-js';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthenticationService {
     private static user: User;
-    private static member: Member;
     private readonly tokenHelper: JwtHelperService;
 
     private token: string | null;
@@ -45,7 +45,14 @@ export class AuthenticationService {
     }
 
     isAuthenticated(): boolean {
-        return Boolean(this.getUser()) && Boolean(this.getUser().registeredAt);
+        const user = this.getUser();
+        const authResult = Boolean(user) && Boolean(user.registeredAt);
+        if (authResult) {
+            Watchdog.setUserInfo({ identifier: user.email, fullName: `${user.firstName} ${user.lastName}` });
+        } else {
+            Watchdog.setUserInfo({ isAnonymous: true });
+        }
+        return authResult;
     }
 
     getUser() {
@@ -329,6 +336,7 @@ export class AuthenticationService {
         this.organizationService.clearOrganization();
         this.memberService.clearMember();
         this.removeIsSignByEmailAndPassword();
+        Watchdog.setUserInfo({ isAnonymous: true });
         this.angularFireAuth.signOut()
             .catch(error => {
                 console.warn(error);

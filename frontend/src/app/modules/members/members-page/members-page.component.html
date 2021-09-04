@@ -49,47 +49,55 @@
         class="members-table">
         <ng-template pTemplate="header">
             <tr>
-                <th pSortableColumn="member.user.firstName">
+                <th pSortableColumn="userFirstName">
                     <div class="table-header-cell" id="name-col">
                         <span>
                             Full Name
-                            <p-sortIcon field="member.user.firstName"></p-sortIcon>
+                            <p-sortIcon field="userFirstName"></p-sortIcon>
                         </span>
                         <p-columnFilter
                             [maxConstraints]="1"
                             [showAddButton]="false"
                             [showOperator]="false"
                             display="menu"
-                            field="member.user.firstName"
+                            field="userFirstName"
                             type="text"></p-columnFilter>
                     </div>
                 </th>
-                <th class="email-col" pSortableColumn="member.user.email">
+                <th class="email-col" pSortableColumn="userEmail">
                     <div class="table-header-cell" id="email-col">
                         <span>
-                            Email <p-sortIcon field="member.user.email"></p-sortIcon>
+                            Email <p-sortIcon field="userEmail"></p-sortIcon>
                         </span>
-                        <p-columnFilter [showAddButton]="false" [showOperator]="false" display="menu"
-                                        field="member.user.email" type="text"></p-columnFilter>
+                        <p-columnFilter
+                            [showAddButton]="false"
+                            [showOperator]="false"
+                            display="menu"
+                            field="userEmail"
+                            type="text"></p-columnFilter>
                     </div>
                 </th>
-                <th pSortableColumn="member.role.name">
+                <th pSortableColumn="roleName">
                     <div class="table-header-cell" id="role-col">
                         <span>
-                            Role <p-sortIcon field="member.role.name"></p-sortIcon>
+                            Role <p-sortIcon field="roleName"></p-sortIcon>
                         </span>
-                        <p-columnFilter [showAddButton]="false"
-                                        [showMatchModes]="false" [showOperator]="false"
-                                        display="menu" field="member.role.name"
-                                        matchMode="in">
+                        <p-columnFilter
+                            [showAddButton]="false"
+                            [showMatchModes]="false"
+                            [showOperator]="false"
+                            display="menu"
+                            field="roleName"
+                            matchMode="in">
                             <ng-template let-filter="filterCallback" let-value pTemplate="filter">
-                                <p-multiSelect (onChange)="filter($event.value)"
-                                               [ngModel]="value"
-                                               [options]="roles"
-                                               [showHeader]="false"
-                                               optionLabel="name"
-                                               optionValue="name"
-                                               placeholder="Select roles">
+                                <p-multiSelect
+                                    (onChange)="filter($event.value)"
+                                    [ngModel]="value"
+                                    [options]="roles"
+                                    [showHeader]="false"
+                                    optionLabel="name"
+                                    optionValue="name"
+                                    placeholder="Select roles">
                                 </p-multiSelect>
                             </ng-template>
                         </p-columnFilter>
@@ -102,10 +110,10 @@
                         </span>
                     </div>
                 </th>
-                <th pSortableColumn="member.isAccepted">
+                <th pSortableColumn="isAccepted">
                     <div class="table-header-cell" id="isAccepted-col">
                         <span>
-                            Is accepted <p-sortIcon field="member.isAccepted"></p-sortIcon>
+                            Is accepted <p-sortIcon field="isAccepted"></p-sortIcon>
                         </span>
                     </div>
                 </th>

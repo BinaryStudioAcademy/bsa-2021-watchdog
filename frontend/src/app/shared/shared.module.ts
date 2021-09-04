@@ -15,6 +15,7 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { ChartsComponent } from './components/charts/charts.component';
 import { NoContentPlaceholderComponent } from './components/no-content-placeholder/no-content-placeholder';
 import { TeamNameAvatarPipe } from './pipes/team-name-avatar.pipe';
+import { GoogleChartsModule } from 'angular-google-charts';
 import { NgxPhotoEditorModule } from 'ngx-photo-editor';
 
 @NgModule({
@@ -26,6 +27,7 @@ import { NgxPhotoEditorModule } from 'ngx-photo-editor';
         PrimeComponentsModule,
         NgxJsonViewerModule,
         NgxChartsModule,
+        GoogleChartsModule,
         NgxPhotoEditorModule,
     ],
     declarations: [
@@ -56,6 +58,7 @@ import { NgxPhotoEditorModule } from 'ngx-photo-editor';
         NgxJsonViewerModule,
         ChartsComponent,
         NoContentPlaceholderComponent,
+        GoogleChartsModule,
         NgxPhotoEditorModule,
     ]
 })

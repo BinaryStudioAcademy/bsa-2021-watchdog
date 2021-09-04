@@ -37,3 +37,11 @@ enableProdMode();
 platformBrowserDynamic()
     .bootstrapModule(AppModule)
     .catch(err => { console.error(err); });`;
+
+export const setUser = `//In authentication services on login or when pages loads
+//with authenticated user
+const user = getCurrentUser();
+Watchdog.setUserInfo({ identifier: user.email, fullName: user.fullName })
+
+//When logout
+Watchdog.setUserInfo({ isAnonymous: false });`;

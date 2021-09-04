@@ -18,6 +18,7 @@ import { Member } from '@shared/models/member/member';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import { TableExportService } from '@core/services/table-export.service';
 import { IssueInfoExport } from '@shared/models/export/IssueInfoExport';
+import { IssueTableItem } from '@shared/models/issue/issue-table-item';
 
 @Component({
     selector: 'app-issues',
@@ -25,12 +26,12 @@ import { IssueInfoExport } from '@shared/models/export/IssueInfoExport';
     styleUrls: ['./issues.component.sass']
 })
 export class IssuesComponent extends BaseComponent implements OnInit {
-    issues: IssueInfo[] = [];
+    issues: IssueTableItem[] = [];
     issuesCount: { [type: string]: number };
-    selectedIssues: IssueInfo[] = [];
+    selectedIssues: IssueTableItem[] = [];
     isAssign: boolean;
     sharedOptions = {} as AssigneeOptions;
-    globalFilterFields = ['errorClass', 'projectName'];
+    globalFilterFields = ['errorClass', 'projectName', 'errorMessage'];
     lastEvent: LazyLoadEvent;
     loading: boolean;
     totalRecords: number;
@@ -39,6 +40,8 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     toAssign: Assignee;
     issueId: number;
     IssueStatus = IssueStatus;
+    selectedTabIssueStatus?: IssueStatus;
+    first: number = 0;
     private saveAssign: Assignee;
     private viewedAssignee = 3;
 
@@ -57,7 +60,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     ngOnInit(): void {
         this.isAssign = false;
-
         this.setTabPanelFields();
 
         this.authService.getMember()
@@ -137,7 +139,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             return;
         }
         this.spinner.show(true);
-        this.issueService.getIssuesInfoLazy(this.member.id, this.lastEvent)
+        this.issueService.getIssuesInfoLazy(this.member.id, this.lastEvent, this.selectedTabIssueStatus)
             .pipe(this.untilThis,
                 debounceTime(1000))
             .subscribe(
@@ -197,15 +199,45 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         this.spinner.hide();
     }
 
-    private issuesToExportIssues(issuesToExport: IssueInfo[]): IssueInfoExport[] {
+    async onSelectedTab(index: number) {
+        this.resetPageNumber();
+        switch (index) {
+            case 0:
+                this.selectedTabIssueStatus = undefined;
+                await this.loadIssuesLazy(this.lastEvent);
+                break;
+            case 1:
+                this.selectedTabIssueStatus = IssueStatus.Active;
+                await this.loadIssuesLazy(this.lastEvent);
+                break;
+            case 2:
+                this.selectedTabIssueStatus = IssueStatus.Resolved;
+                await this.loadIssuesLazy(this.lastEvent);
+                break;
+            case 3:
+                this.selectedTabIssueStatus = IssueStatus.Ignored;
+                await this.loadIssuesLazy(this.lastEvent);
+                break;
+            default:
+                break;
+        }
+    }
+
+    resetPageNumber() {
+        this.first = 0;
+        this.lastEvent.first = 0;
+    }
+
+    private issuesToExportIssues(issuesToExport: IssueTableItem[]): IssueInfoExport[] {
         return issuesToExport.map<IssueInfoExport>(issue => (
             {
                 ErrorClass: issue.errorClass,
                 ErrorMessage: issue.errorMessage,
                 Status: IssueStatus[issue.status],
                 Events: issue.eventsCount,
-                OccurredOn: new Date(issue.newest.occurredOn).toLocaleString(),
-                Project: issue.project.name,
+                OccurredOn: new Date(issue.occurredOn).toLocaleString(),
+                Affected: issue.affectedUsersCount,
+                Project: issue.projectName,
                 Assignee: this.getAllUsers(issue.assignee).map(value => `${value.firstName} ${value.lastName}`).join(' \r')
             }
         ));
@@ -219,12 +251,12 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             return false;
         }
         const before = {
-            memberIds: this.saveAssign.memberIds.concat().sort(),
-            teamIds: this.saveAssign.teamIds.concat().sort()
+            memberIds: this.saveAssign.memberIds.concat().sort((a, b) => a - b),
+            teamIds: this.saveAssign.teamIds.concat().sort((a, b) => a - b)
         };
         const after = {
-            memberIds: this.toAssign.memberIds.concat().sort(),
-            teamIds: this.toAssign.teamIds.concat().sort()
+            memberIds: this.toAssign.memberIds.concat().sort((a, b) => a - b),
+            teamIds: this.toAssign.teamIds.concat().sort((a, b) => a - b)
         };
 
         const equalsMembers = before.memberIds.every((item, index) => item === after.memberIds[index]);

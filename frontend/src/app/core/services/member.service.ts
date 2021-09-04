@@ -6,7 +6,6 @@ import { LazyLoadEvent } from 'primeng/api';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { CoreHttpService } from './core-http.service';
-import { clear } from './members.utils';
 
 @Injectable({
     providedIn: 'root'
@@ -27,7 +26,7 @@ export class MemberService {
     getMembersByOrganizationIdLazy(organizationId: number, event: LazyLoadEvent):
     Observable<{ collection: Member[], totalRecord: number }> {
         return this.httpService
-            .postRequest<{ collection: Member[], totalRecord: number }>(`${this.routePrefix}/organization/${organizationId}`, clear(event));
+            .postRequest<{ collection: Member[], totalRecord: number }>(`${this.routePrefix}/organization/${organizationId}`, event);
     }
 
     private static member: Member;

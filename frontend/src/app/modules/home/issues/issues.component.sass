@@ -6,142 +6,148 @@
     @include background-gray
     margin-bottom: 10px
 
-    .error-buttons
-        margin-left: 30px
-
-        .error-button
-            display: inline-block
-            margin-right: 30px
-
-.issues-table
-    max-width: 100%
-    overflow-x: hidden
-
-.header
-    height: 24px
-    display: flex
-    align-items: center
-    grid-gap: 5px
 
 .functional-bar
     display: flex
     gap: 10px
     margin-bottom: 16px
 
-.action-block
-    display: flex
+    .button-pointer
+        cursor: pointer
 
-    button
-        margin-left: 1px
-        margin-right: 1px
+    .action-block
+        display: flex
 
-.bold
-    font-weight: bold
+        button
+            margin-left: 1px
+            margin-right: 1px
 
-.search-button
-    cursor: pointer
+.table
+    width: 100%
 
+    th, td
+        vertical-align: middle
+
+    &-head
+        height: 65px
+
+        &-issue
+            display: flex
+            align-items: center
+
+            ::ng-deep &-checkbox
+                margin-right: 10px
+
+            .filter-button
+                margin-top: 2px
+
+        &-events
+            display: flex
+            align-items: center
+
+        &-project
+            display: flex
+            align-items: center
+
+        &-users
+            display: flex
+            align-items: center
+
+        &-assignee
+            @include disable-select
+            display: flex
+            align-items: center
+
+    &-content
+        &-issue
+            display: grid
+            grid-template-columns: auto 1fr
+            grid-gap: 10px
+            align-items: flex-start
+
+            &-grid
+                display: grid
+                grid-auto-flow: row
+                grid-gap: 5px
+
+                .error-class
+                    @include text-overflow-x-nowrap
+                    height: 1.2rem
+                    overflow-y: hidden
+                    color: $primary-color
+                    font-weight: bold
+                    cursor: pointer
+
+                .error-class:hover
+                    color: $text-hover-color
+
+                .error-message
+                    @include text-overflow-x-nowrap
+                    height: 1.2rem
+                    overflow-y: hidden
+
+                .additional-info
+                    font-size: 0.8rem
+                    display: flex
+                    flex-direction: row
+                    align-items: center
+                    grid-gap: 4px
+
+                    .time
+                        position: relative
+                        display: inline-block
+                        margin-bottom: 1px
+
+                        .time-icon
+                            font-size: 0.6rem
+                            margin-right: 2px
+
+        &-events
+            @include text-overflow-x-nowrap
+            display: block
+
+        &-project
+            @include text-overflow-x-nowrap
+            display: block
+            cursor: pointer
+
+        &-project:hover
+            color: $text-hover-color
+
+        &-users
+            @include text-overflow-x-nowrap
+            display: block
+
+        &-assignee
+            display: flex
+            align-items: center
+            grid-gap: 5px
+            cursor: pointer
+
+
+// columns sizes
 #issue-col
-    width: 65%
+    width: 40%
 
 #events-col
     width: 10%
+    min-width: 100px
+
+#project-col
+    width: 10%
+    min-width: 100px
 
 #users-col
     width: 10%
+    min-width: 90px
 
 #assignee-col
-    width: 15%
+    width: 11%
+    min-width: 110px
 
-.assignee
-    display: flex
-    align-items: center
-    grid-gap: 5px
-    cursor: pointer
 
-td,
-.center
-    vertical-align: middle
-
-.name
-    display: flex
-    align-items: center
-    justify-content: space-between
-
-    .issue
-        display: flex
-        align-items: center
-        grid-gap: 10px
-
-.issue-block
-    display: grid
-    grid-template-columns: auto 1fr
-    grid-gap: 10px
-    align-items: flex-start
-
-    .description
-        @include text-overflow-x-nowrap
-
-.content
-    display: grid
-    grid-auto-flow: row
-    grid-gap: 10px
-
-    .name
-        color: $primary-color
-        font-weight: bold
-        cursor: pointer
-
-    .name:hover
-        color: $text-hover-color
-
-.additional-info
-    font-size: 0.8rem
-    display: flex
-    flex-direction: row
-    align-items: center
-    grid-gap: 4px
-
-.time-icon
-    font-size: 0.6rem
-    margin-right: 2px
-
-.tooltip
-    position: relative
-    display: inline-block
-    margin-bottom: 1px
-
-    &-text
-        visibility: hidden
-        background-color: $tooltip-background-color
-        color: $tooltip-text-color
-        text-align: center
-        font-weight: 600
-        padding: 7px
-        border-radius: 6px
-        position: absolute
-        z-index: 1
-        top: -7px
-        left: 115%
-
-    &:hover &-text
-        transition-delay: 250ms
-        visibility: visible
-        width: max-content
-
+//host global styles
 \:host ::ng-deep
-    .p-tabview-nav-link
-        &:focus
-            box-shadow: none !important
-
-    .p-dropdown
-        height: 40px
-        width: 220px
-
-    .p-dropdown-label
-        display: flex
-        align-items: center
-
     .p-tag
         @include disable-select
         height: 1.1rem
@@ -150,8 +156,13 @@ td,
         .p-tag-value
             margin-bottom: 2px
 
+
+//style classes
 ::ng-deep .active-tag
     background: $issue-status-active-color
 
 ::ng-deep .tooltip-text
     font-size: 12px
+
+::ng-deep .count-badge
+    margin-top: 2px

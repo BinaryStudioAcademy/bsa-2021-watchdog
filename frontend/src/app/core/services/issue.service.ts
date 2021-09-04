@@ -5,13 +5,14 @@ import { Observable } from 'rxjs';
 import { UpdateAssignee } from '@shared/models/issue/update-assignee';
 import { IssueMessage } from '@shared/models/issue/issue-message';
 import { LazyLoadEvent } from 'primeng/api';
-import { clear } from './members.utils';
-import { clearIssueMessage, clearNest } from './issues.utils';
 import { IssueMessageInfo } from '@shared/models/issue/issue-message-info';
 import { UpdateIssueStatus } from '@shared/models/issue/update-issue-status';
 import { Issue } from '@shared/models/issue/issue';
 import { IssueStatusesFilter } from '@shared/models/issue/issue-statuses-filter';
 import { IssueStatusesByDateRangeFilter } from '@shared/models/issue/issue-statuses-by-date-range-filter';
+import { IssueSolution } from '@shared/models/issue/issue-solution/issue-solution';
+import { IssueStatus } from '@shared/models/issue/enums/issue-status';
+import { IssueTableItem } from '@shared/models/issue/issue-table-item';
 
 @Injectable({ providedIn: 'root' })
 export class IssueService {
@@ -23,14 +24,16 @@ export class IssueService {
         return this.httpService.getRequest<IssueInfo[]>(`${this.routePrefix}/info/${memberId}`);
     }
 
-    public getIssuesInfoLazy(memberId: number, event: LazyLoadEvent): Observable<{ collection: IssueInfo[], totalRecords: number }> {
+    public getIssuesInfoLazy(memberId: number, event: LazyLoadEvent, status?: IssueStatus):
+    Observable<{ collection: IssueTableItem[], totalRecords: number }> {
         return this.httpService
-            .postRequest(`${this.routePrefix}/info/${memberId}`, clear(event, clearNest));
+            .postRequest(`${this.routePrefix}/info/${memberId}`, event, status !== undefined ? { status } : undefined);
     }
 
     public updateAssignee(updateData: UpdateAssignee): Observable<void> {
         return this.httpService.putRequest<void>(`${this.routePrefix}`, updateData);
     }
+
     public getIssueMessage(issueId: number, eventId: string): Observable<IssueMessage> {
         return this.httpService.getRequest<IssueMessage>(`${this.routePrefix}/issueId/${issueId}/eventId/${eventId}`);
     }
@@ -43,7 +46,7 @@ export class IssueService {
     Observable<{ collection: IssueMessage[], totalRecords: number }> {
         return this.httpService.postRequest<{ collection: IssueMessage[], totalRecords: number }>(
             `${this.routePrefix}/messagesbyparent/${issueId}`,
-            clear(event, clearIssueMessage)
+            event
         );
     }
     public getEventMessagesInfo(): Observable<IssueMessageInfo[]> {
@@ -80,5 +83,9 @@ export class IssueService {
 
     public getIssueById(issueId: number): Observable<Issue> {
         return this.httpService.getRequest<Issue>(`${this.routePrefix}/${issueId}`);
+    }
+
+    public getSolutionLink(issueId: number): Observable<IssueSolution> {
+        return this.httpService.getRequest<IssueSolution>(`${this.routePrefix}/getIssueSolution/issueId/${issueId}`);
     }
 }

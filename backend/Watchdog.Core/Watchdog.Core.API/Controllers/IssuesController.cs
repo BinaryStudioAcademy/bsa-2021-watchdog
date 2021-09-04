@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Watchdog.Core.BLL.Models;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Issue;
+using Watchdog.Core.Common.DTO.IssueSolution;
+using Watchdog.Core.Common.Enums.Issues;
 using Watchdog.Models.Shared.Issues;
 
 namespace Watchdog.Core.API.Controllers
@@ -30,17 +31,19 @@ namespace Watchdog.Core.API.Controllers
         }
 
         [HttpGet("info/{memberId:int}")]
-        public async Task<ActionResult<ICollection<IssueInfoDto>>> GetIssuesInfoAsync(int memberId)
+        public async Task<ActionResult<ICollection<IssueInfoDto>>> GetIssuesInfoAsync(int memberId,
+            [FromQuery] IssueStatus? status)
         {
-            var issuesInfo = await _issueService.GetIssuesInfoAsync(memberId);
+            var issuesInfo = await _issueService.GetIssuesInfoAsync(memberId, status);
             return Ok(issuesInfo);
         }
 
         [HttpPost("info/{memberId:int}")]
-        public async Task<ActionResult> GetIssuesInfoLazyAsync(int memberId, [FromBody] FilterModel filterModel)
+        public async Task<ActionResult> GetIssuesInfoLazyAsync(int memberId, [FromBody] FilterModel filterModel,
+            [FromQuery] IssueStatus? status)
         {
-            var (issues, totalRecord) = await _issueService.GetIssuesInfoLazyAsync(memberId, filterModel);
-            return Ok(new {Collection = issues, TotalRecords = totalRecord});
+            var (issues, totalRecord) = await _issueService.GetIssuesInfoLazyAsync(memberId, filterModel, status);
+            return Ok(new { Collection = issues, TotalRecords = totalRecord });
         }
 
         [HttpPut]
@@ -68,7 +71,7 @@ namespace Watchdog.Core.API.Controllers
         public async Task<ActionResult> GetEventMessagesByIssueIdLazyAsync(int id, [FromBody] FilterModel filterModel)
         {
             var (issueMessages, totalRecords) = await _issueService.GetEventMessagesByIssueIdLazyAsync(id, filterModel);
-            return Ok(new {Collection = issueMessages, TotalRecords = totalRecords});
+            return Ok(new { Collection = issueMessages, TotalRecords = totalRecords });
         }
 
         [HttpGet("messages")]
@@ -84,6 +87,13 @@ namespace Watchdog.Core.API.Controllers
         {
             var issueMessages = await _issueService.GetAllIssueMessagesByApplicationIdAsync(applicationId);
             return Ok(issueMessages);
+        }
+
+        [HttpGet("getIssueSolution/issueId/{issueId}")]
+        public async Task<ActionResult<IssueSolutionDto>> GetIssueSolutionLinkByIssueIdAsync(int issueId)
+        {
+            var issueSolution = await _issueService.GetIssueSolutionLinkByIssueIdAsync(issueId);
+            return Ok(issueSolution);
         }
 
         [HttpPost("messages/application/{applicationId:int}/filterByStatuses")]

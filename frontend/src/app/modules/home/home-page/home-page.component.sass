@@ -134,10 +134,6 @@ $collapsed-side-panel-width: 68px
         flex-grow: 1
         overflow: auto
         overflow-x: hidden
-        display: flex
-        flex-direction: row
-        flex-wrap: wrap
-        align-content: flex-start
         @include custom-scroll
         .dashboards-buttons
             display: flex
@@ -225,6 +221,6 @@ $collapsed-side-panel-width: 68px
     position: relative
     min-height: 100%
 
-@media screen and ( max-width:600px )
+@media screen and ( max-width: 600px)
     .user-name
         display: none
