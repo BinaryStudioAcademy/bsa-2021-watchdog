@@ -311,7 +311,7 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<(ICollection<IssueLazyLoadDto>, int, CountOfIssuesByStatusDTO)> GetIssuesInfoLazyAsync(
+        public async Task<(ICollection<IssueLazyLoadDto>, int, CountOfIssuesByStatusDto)> GetIssuesInfoLazyAsync(
             int memberId,
             FilterModel filterModel,
             IssueStatus? status)
@@ -358,7 +358,7 @@ namespace Watchdog.Core.BLL.Services
             return (result, totalRecord, counts);
         }
 
-        private async Task<CountOfIssuesByStatusDTO> GetCountOfIssuesByStatus(int memberId)
+        private async Task<CountOfIssuesByStatusDto> GetCountOfIssuesByStatus(int memberId)
         {
             var result = await _context.Applications
                 .AsNoTracking()
@@ -370,7 +370,7 @@ namespace Watchdog.Core.BLL.Services
                 .Select(issues => new {Status = issues.Key, Count = issues.Count()})
                 .ToDictionaryAsync(arg => arg.Status, arg => arg.Count);
 
-            return new CountOfIssuesByStatusDTO
+            return new CountOfIssuesByStatusDto
             {
                 ActiveCount = result.GetValueOrDefault(IssueStatus.Active),
                 ResolvedCount = result.GetValueOrDefault(IssueStatus.Resolved),
