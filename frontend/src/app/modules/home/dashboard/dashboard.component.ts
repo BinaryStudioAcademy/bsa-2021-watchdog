@@ -164,7 +164,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         this.tileService.getAllTilesByDashboardId(dashboardId)
             .pipe(this.untilThis)
             .subscribe(response => {
-                this.tiles = response.sort(r => r.tileOrder);
+                this.tiles = response;
                 this.spinnerService.hide();
             }, error => {
                 this.toastNotificationService.error(error);
@@ -223,7 +223,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         this.tileService.setDashboardOrderForTiles(this.dashboard.id, orderingOfTiles)
             .pipe(this.untilThis)
             .subscribe(response => {
-                this.tiles = response;
+                this.reorderTiles(response);
                 this.spinnerService.hide();
                 this.toastNotificationService.success('The Tiles order was successfully changed!');
                 this.isOrderChanged = false;
@@ -275,7 +275,16 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     }
 
     private revertTilesOrder() {
-        this.tiles = this.tiles.sort(t => t.tileOrder);
+        this.tiles = this.tiles.sort((t1, t2) => t1.tileOrder - t2.tileOrder);
         this.isOrderChanged = false;
+    }
+
+    private reorderTiles(reorderedTiles: Tile[]) {
+        this.tiles = reorderedTiles.map(tile => {
+            const oldTile = this.tiles.find(t => t.id === tile.id);
+            oldTile.tileOrder = tile.tileOrder;
+            return oldTile;
+        });
+        this.tiles = this.tiles.sort((t1, t2) => t1.tileOrder - t2.tileOrder);
     }
 }
