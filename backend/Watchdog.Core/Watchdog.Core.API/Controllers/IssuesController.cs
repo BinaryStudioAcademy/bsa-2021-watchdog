@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Watchdog.Core.BLL.Models;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Issue;
+using Watchdog.Core.Common.DTO.IssueSolution;
 using Watchdog.Core.Common.Enums.Issues;
 using Watchdog.Models.Shared.Issues;
-using Watchdog.Core.Common.DTO.IssueSolution;
 
 namespace Watchdog.Core.API.Controllers
 {
@@ -44,7 +43,7 @@ namespace Watchdog.Core.API.Controllers
             [FromQuery] IssueStatus? status)
         {
             var (issues, totalRecord) = await _issueService.GetIssuesInfoLazyAsync(memberId, filterModel, status);
-            return Ok(new {Collection = issues, TotalRecords = totalRecord});
+            return Ok(new { Collection = issues, TotalRecords = totalRecord });
         }
 
         [HttpPut]

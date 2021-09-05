@@ -1,139 +1,137 @@
-<!--    Header    -->
+<!--    Title    -->
 <div class="title">
-    <div>
-        Issues
-    </div>
+    <span>Issues</span>
 </div>
-<!--    Content    -->
-<div class="issues-content">
-    <p-tabView (onChange)="onSelectedTab($event.index)" styleClass="tabview-custom">
-        <!--    All Tab    -->
-        <p-tabPanel>
-            <ng-template pTemplate="header">
-                <div class="header">
-                    <span>All</span>
+<!--    Main content    -->
+<p-tabView (onChange)="onSelectedTab($event.index)" styleClass="tabview-custom">
+    <!--    Tabs    -->
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <span>All</span>
+        </ng-template>
+    </p-tabPanel>
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <span>Active</span>
+        </ng-template>
+    </p-tabPanel>
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <span>Resolved</span>
+        </ng-template>
+    </p-tabPanel>
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <span>Ignored</span>
+        </ng-template>
+    </p-tabPanel>
 
-                </div>
-            </ng-template>
-        </p-tabPanel>
-        <!--    Active Tab    -->
-        <p-tabPanel>
-            <ng-template pTemplate="header">
-                <div class="header">
-                    <span>Active</span>
-                </div>
-            </ng-template>
-        </p-tabPanel>
-        <!--    Resolved Tab    -->
-        <p-tabPanel>
-            <ng-template pTemplate="header">
-                <div class="header">
-                    <span>Resolved</span>
-                </div>
-            </ng-template>
-        </p-tabPanel>
-        <!--    Ignored Tab    -->
-        <p-tabPanel>
-            <ng-template pTemplate="header">
-                <div class="header">
-                    <span>Ignored</span>
-                </div>
-            </ng-template>
-        </p-tabPanel>
-
-        <div class="functional-bar">
-            <!--    Search Input     -->
-            <div class="search-block p-inputgroup">
-                <span class="p-inputgroup-addon search-button"><i class="pi pi-search"></i></span>
-                <input
-                    (input)="table.filterGlobal({value: $event.target['value'], fields: globalFilterFields }, 'contains')"
-                    name="search"
-                    pInputText
-                    placeholder="Search"
-                    type="text">
-            </div>
-            <!--    Export Buttons    -->
-            <div class="action-block">
-                <span (click)="exportExcel()" class="p-inputgroup-addon search-button"
+    <!--    Tools    -->
+    <div class="functional-bar">
+        <!--    Search    -->
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon button-pointer">
+                <i class="pi pi-search"></i>
+            </span>
+            <input
+                (input)="table.filterGlobal({value: $event.target['value'], fields: globalFilterFields }, 'contains')"
+                name="search" pInputText placeholder="Search" type="text">
+        </div>
+        <!--    Export    -->
+        <div class="action-block">
+                <span (click)="exportExcel()" class="p-inputgroup-addon button-pointer"
                       pTooltip="{{selectedIssues.length ? 'Export selected to Excel' : 'Export to Excel'}}"
                       tooltipPosition="top" tooltipStyleClass="tooltip-text">
                     <i class="pi pi-file-excel"></i>
                 </span>
-                <span (click)="exportPdf()" class="p-inputgroup-addon search-button"
-                      pTooltip="{{selectedIssues.length ? 'Export selected to PDF' : 'Export to PDF'}}"
-                      tooltipPosition="top" tooltipStyleClass="tooltip-text">
+            <span (click)="exportPdf()" class="p-inputgroup-addon button-pointer"
+                  pTooltip="{{selectedIssues.length ? 'Export selected to PDF' : 'Export to PDF'}}"
+                  tooltipPosition="top" tooltipStyleClass="tooltip-text">
                     <i class="pi pi-file-pdf"></i>
                 </span>
-            </div>
         </div>
+    </div>
 
-        <!--    Table    -->
+    <!--    Table    -->
+    <div class="table">
         <p-table
             #table
             (onLazyLoad)="loadIssuesLazy($event)"
             [(first)]="first"
-            [autoLayout]="true"
             [lazy]="true"
             [paginator]="totalRecords > itemsPerPage"
             [resizableColumns]="true"
             [rows]="itemsPerPage"
+            [sortOrder]="-1"
             [totalRecords]="totalRecords"
             [value]="issues"
-            class="issues-table">
+            sortField="occurredOn">
+            <ng-template pTemplate="colgroup">
+                <!--    Column width    -->
+                <colgroup>
+                    <col id="issue-col">
+                    <col id="events-col">
+                    <col id="project-col">
+                    <col id="users-col">
+                    <col id="assignee-col">
+                </colgroup>
+            </ng-template>
             <ng-template pTemplate="header">
-                <tr>
-                    <th class="name" pSortableColumn="newest.occurredOn">
-                        <div class="issue">
-                            <p-checkbox (onChange)="selectAll($event)" name="allIssues"></p-checkbox>
-                            <span>
-                                Issue
-                                <p-sortIcon field="newest.occurredOn"></p-sortIcon>
-                            </span>
+                <!--    Table header    -->
+                <tr class="table-head">
+                    <th pSortableColumn="occurredOn">
+                        <div class="table-head-issue">
+                            <p-checkbox (onChange)="selectAll($event)" name="allIssues"
+                                        styleClass="table-head-issue-checkbox"></p-checkbox>
+                            <span>Issue</span>
+                            <p-sortIcon field="occurredOn"></p-sortIcon>
                             <p-columnFilter
                                 [showAddButton]="false"
                                 [showOperator]="false"
-                                class="id-column-filter"
+                                class="filter-button"
                                 display="menu"
                                 field="errorClass"
                                 type="text">
                             </p-columnFilter>
-                            <p-badge *ngIf="totalRecords" [value]="totalRecords?.toString()" styleClass="count-badge">
-                            </p-badge>
                         </div>
                     </th>
-                    <th class="center" pSortableColumn="eventsCount">
-                        <span>
-                            Events
+                    <th pSortableColumn="eventsCount">
+                        <div class="table-head-events">
+                            <span>Events</span>
                             <p-sortIcon field="eventsCount"></p-sortIcon>
-                        </span>
+                        </div>
                     </th>
-
-                    <th class="center" pSortableColumn="project.name">
-                        <span>
-                            Project
-                            <p-sortIcon field="project.name"></p-sortIcon>
-                        </span>
+                    <th pSortableColumn="projectName">
+                        <div class="table-head-project">
+                            <span>Project</span>
+                            <p-sortIcon field="projectName"></p-sortIcon>
+                        </div>
                     </th>
-                    <th class="center" pSortableColumn="affectedUsersCount">
-                        <span>Users <p-sortIcon field="affectedUsersCount">
-                            </p-sortIcon>
-                        </span>
+                    <th pSortableColumn="affectedUsersCount">
+                        <div class="table-head-users">
+                            <span>Users</span>
+                            <p-sortIcon field="affectedUsersCount"></p-sortIcon>
+                        </div>
                     </th>
-                    <th class="center">
-                        <span>Assignee</span>
+                    <th>
+                        <div class="table-head-assignee">
+                            <span>Assignee</span>
+                        </div>
                     </th>
                 </tr>
             </ng-template>
             <ng-template let-issue pTemplate="body">
-                <tr>
+                <!--    Table content    -->
+                <tr class="table-content">
                     <td>
-                        <div class="issue-block">
+                        <div class="table-content-issue">
                             <p-checkbox [(ngModel)]="selectedIssues" [value]="issue" name="selectedIssues"></p-checkbox>
-                            <div class="content">
-                                    <span class="name" routerLink="/home/issues/{{issue.issueId}}/{{issue.newest.id}}">
+                            <div class="table-content-issue-grid">
+                                    <span appTooltipFullName class="error-class"
+                                          routerLink="/home/issues/{{issue.issueId}}/{{issue.newestId}}">
                                         {{issue.errorClass}}
                                     </span>
-                                <span appTooltipFullName class="description">{{issue.errorMessage}}</span>
+                                <span appTooltipFullName class="error-message">{{issue.errorMessage}}</span>
                                 <div class="additional-info">
                                     <ng-container [ngSwitch]="issue.status">
                                         <p-tag *ngSwitchCase="IssueStatus.Active" [rounded]="true"
@@ -143,23 +141,31 @@
                                         <p-tag *ngSwitchCase="IssueStatus.Ignored" [rounded]="true"
                                                severity="info" value="ignored"></p-tag>
                                     </ng-container>
-                                    <div class="tooltip">
-                                            <span pTooltip="{{issue.newest.occurredOn | date:'MMMM d, y h:mma'}}"
+                                    <div class="time">
+                                            <span pTooltip="{{issue.occurredOn | date:'MMMM d, y h:mma'}}"
                                                   tooltipPosition="right" tooltipStyleClass="tooltip-text">
                                                 <i class="pi pi-clock time-icon"></i>
-                                                {{issue.newest.occurredOn | timeAgo}}
+                                                {{issue.occurredOn | timeAgo}}
                                             </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </td>
-                    <td>{{issue.eventsCount}}</td>
-                    <td>{{issue.project.name}}</td>
-                    <td>{{issue.affectedUsersCount}}</td>
                     <td>
-                        <div (click)="openAssign(issue)" class="assignee">
-                            <p-avatarGroup styleClass="p-mb-3">
+                        <span appTooltipFullName class="table-content-events">{{issue.eventsCount}}</span>
+                    </td>
+                    <td>
+                        <span appTooltipFullName class="table-content-project"
+                              routerLink="/home/projects/edit/{{issue.projectId}}">{{issue.projectName}}
+                        </span>
+                    </td>
+                    <td>
+                        <span appTooltipFullName class="table-content-users">{{issue.affectedUsersCount}}</span>
+                    </td>
+                    <td>
+                        <div (click)="openAssign(issue)" class="table-content-assignee">
+                            <p-avatarGroup>
                                 <p-avatar *ngIf="!getNumberAssignee(issue?.assignee)" icon="pi pi-user" shape="circle">
                                 </p-avatar>
                                 <p-avatar
@@ -180,8 +186,9 @@
                 </tr>
             </ng-template>
         </p-table>
-    </p-tabView>
-</div>
+    </div>
+</p-tabView>
+
 <app-assignee (closeModal)="closeAssign()" *ngIf="isAssign" [data]="toAssign"
               [members]="sharedOptions.members" [teams]="sharedOptions.teams">
 </app-assignee>

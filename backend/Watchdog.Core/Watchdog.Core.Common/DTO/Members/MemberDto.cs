@@ -10,14 +10,15 @@ namespace Watchdog.Core.Common.DTO.Members
         public int Id { get; set; }
         public int RoleId { get; set; }
         public RoleDto Role { get; set; }
-        public  int OrganizationId { get; set; }
+        public int OrganizationId { get; set; }
         public UserDto User { get; set; }
         public IEnumerable<TeamOptionDto> Teams { get; set; }
         public bool IsAccepted { get; set; }
         public bool IsApproved { get; set; }
         // For sorting and filtering in lazy loading
-        public string UserFirstName => User?.FirstName;
-        public string UserEmail => User?.Email;
-        public string RoleName => Role?.Name;
+        public string UserFirstName { get; set; }
+        public string UserLastName { get; set; }
+        public string UserEmail { get; set; }
+        public string RoleName { get; set; }
     }
 }
