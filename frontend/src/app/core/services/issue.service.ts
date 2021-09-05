@@ -29,11 +29,17 @@ export class IssueService {
     }
 
     public getIssuesInfoLazy(memberId: number, event: LazyLoadEvent, status?: IssueStatus):
-    Observable<{ collection: IssueTableItem[], totalRecords: number, counts: CountOfIssuesByStatus }> {
+    Observable<{ collection: IssueTableItem[], totalRecords: number }> {
         return this.httpService.postRequest(
             `${this.routePrefix}/info/${memberId}`,
             event,
             status !== undefined ? { status } : undefined
+        );
+    }
+
+    public getIssuesInfoCountByStatuses(memberId: number): Observable<CountOfIssuesByStatus> {
+        return this.httpService.getRequest<CountOfIssuesByStatus>(
+            `${this.routePrefix}/info/${memberId}/countByStatuses`
         );
     }
 

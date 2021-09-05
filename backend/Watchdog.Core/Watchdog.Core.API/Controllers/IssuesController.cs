@@ -42,8 +42,8 @@ namespace Watchdog.Core.API.Controllers
         public async Task<ActionResult> GetIssuesInfoLazyAsync(int memberId, [FromBody] FilterModel filterModel,
             [FromQuery] IssueStatus? status)
         {
-            var (issues, totalRecord, counts) = await _issueService.GetIssuesInfoLazyAsync(memberId, filterModel, status);
-            return Ok(new { Collection = issues, TotalRecords = totalRecord, counts });
+            var (issues, totalRecord) = await _issueService.GetIssuesInfoLazyAsync(memberId, filterModel, status);
+            return Ok(new { Collection = issues, TotalRecords = totalRecord});
         }
 
         [HttpPut]
@@ -117,6 +117,13 @@ namespace Watchdog.Core.API.Controllers
         {
             await _issueService.UpdateIssueStatusAsync(issueStatusDto);
             return Ok();
+        }
+        
+        [HttpGet("info/{memberId:int}/countByStatuses")]
+        public async Task<ActionResult<CountOfIssuesByStatusDto>> GetIssuesInfoCountByStatuses(int memberId)
+        {
+            var issuesCount = await _issueService.GetCountOfIssuesByStatuses(memberId);
+            return Ok(issuesCount);
         }
     }
 }

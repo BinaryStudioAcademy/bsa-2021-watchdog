@@ -311,7 +311,7 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<(ICollection<IssueLazyLoadDto>, int, CountOfIssuesByStatusDto)> GetIssuesInfoLazyAsync(
+        public async Task<(ICollection<IssueLazyLoadDto>, int)> GetIssuesInfoLazyAsync(
             int memberId,
             FilterModel filterModel,
             IssueStatus? status)
@@ -352,14 +352,17 @@ namespace Watchdog.Core.BLL.Services
                 })
                 .Filter(filterModel, out var totalRecord)
                 .ToListAsync();
-
-            var counts = await GetCountOfIssuesByStatus(memberId);
-
-            return (result, totalRecord, counts);
+            
+            return (result, totalRecord);
         }
 
-        private async Task<CountOfIssuesByStatusDto> GetCountOfIssuesByStatus(int memberId)
+        public async Task<CountOfIssuesByStatusDto> GetCountOfIssuesByStatuses(int memberId)
         {
+            if (await _context.Members.AllAsync(m => m.Id != memberId))
+            {
+                throw new KeyNotFoundException("There is no member with such ID.");
+            }
+            
             var result = await _context.Applications
                 .AsNoTracking()
                 .Where(a => a.ApplicationTeams

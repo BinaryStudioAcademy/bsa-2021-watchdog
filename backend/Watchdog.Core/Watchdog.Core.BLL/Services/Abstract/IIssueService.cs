@@ -11,7 +11,7 @@ namespace Watchdog.Core.BLL.Services.Abstract
     public interface IIssueService
     {
         Task<int> AddIssueEventAsync(IssueMessage issueMessage);
-        Task<(ICollection<IssueLazyLoadDto>, int, CountOfIssuesByStatusDto)> GetIssuesInfoLazyAsync(int memberId, FilterModel filterModel, IssueStatus? status);
+        Task<(ICollection<IssueLazyLoadDto>, int)> GetIssuesInfoLazyAsync(int memberId, FilterModel filterModel, IssueStatus? status);
         Task<ICollection<IssueInfoDto>> GetIssuesInfoAsync(int memberId, IssueStatus? status);
         Task<ICollection<IssueMessage>> GetEventMessagesByIssueIdAsync(int issueId);
         Task<(ICollection<IssueMessage>, int)> GetEventMessagesByIssueIdLazyAsync(int issueId, FilterModel filterModel);
@@ -24,5 +24,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task UpdateIssueStatusAsync(UpdateIssueStatusDto issueStatusDto);
         Task<IssueDto> GetIssueByIdAsync(int issueId);
         Task<IssueSolutionDto> GetIssueSolutionLinkByIssueIdAsync(int issueId);
+        Task<CountOfIssuesByStatusDto> GetCountOfIssuesByStatuses(int memberId);
     }
 }

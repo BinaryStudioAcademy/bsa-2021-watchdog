@@ -76,6 +76,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                         this.sharedOptions.members = members;
                         this.sharedOptions.teams = teams;
                         this.loadIssuesLazy(this.lastEvent);
+                        this.getIssuesCountByStatuses();
                         this.subscribeToIssuesHub();
                     });
             }, error => {
@@ -146,7 +147,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                 response => {
                     this.issues = response.collection.concat();
                     this.totalRecords = response.totalRecords;
-                    this.setTabPanelFields(response.counts);
                     this.spinner.hide();
                 },
                 error => {
@@ -154,6 +154,17 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                     this.spinner.hide();
                 }
             );
+    }
+
+    getIssuesCountByStatuses(): void {
+        this.issueService.getIssuesInfoCountByStatuses(this.member.id)
+            .pipe(this.untilThis)
+            .subscribe(response => {
+                this.setTabPanelFields(response);
+            },
+            error => {
+                this.toastNotification.error(error);
+            });
     }
 
     getNumberAssignee(assignee: Assignee) {
@@ -270,6 +281,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         this.issuesHub.messages.pipe(this.untilThis)
             .subscribe(() => {
                 this.loadIssuesLazy(this.lastEvent);
+                this.getIssuesCountByStatuses();
             });
     }
 
