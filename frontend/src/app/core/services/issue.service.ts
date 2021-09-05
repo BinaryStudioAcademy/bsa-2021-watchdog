@@ -13,6 +13,8 @@ import { IssueStatusesByDateRangeFilter } from '@shared/models/issue/issue-statu
 import { IssueSolution } from '@shared/models/issue/issue-solution/issue-solution';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import { IssueTableItem } from '@shared/models/issue/issue-table-item';
+import { HttpParams } from '@angular/common/http';
+import { Project } from '@shared/models/projects/project';
 
 @Injectable({ providedIn: 'root' })
 export class IssueService {
@@ -24,10 +26,20 @@ export class IssueService {
         return this.httpService.getRequest<IssueInfo[]>(`${this.routePrefix}/info/${memberId}`);
     }
 
-    public getIssuesInfoLazy(memberId: number, event: LazyLoadEvent, status?: IssueStatus):
+    public getIssuesInfoLazy(memberId: number, event: LazyLoadEvent, status?: IssueStatus, project?: Project):
     Observable<{ collection: IssueTableItem[], totalRecords: number }> {
+        let params = new HttpParams();
+
+        if (status !== undefined) {
+            params = params.set('status', status);
+        }
+
+        if (project) {
+            params = params.set('projectId', project.id);
+        }
+
         return this.httpService
-            .postRequest(`${this.routePrefix}/info/${memberId}`, event, status !== undefined ? { status } : undefined);
+            .postRequest(`${this.routePrefix}/info/${memberId}`, event, params);
     }
 
     public updateAssignee(updateData: UpdateAssignee): Observable<void> {

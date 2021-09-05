@@ -1,5 +1,5 @@
 <!--    Title    -->
-<div class="title">
+<div class="title" *ngIf="!project">
     <span>Issues</span>
 </div>
 <!--    Main content    -->
@@ -71,7 +71,7 @@
                 <colgroup>
                     <col id="issue-col">
                     <col id="events-col">
-                    <col id="project-col">
+                    <col id="project-col" *ngIf="!project">
                     <col id="users-col">
                     <col id="assignee-col">
                 </colgroup>
@@ -101,7 +101,7 @@
                             <p-sortIcon field="eventsCount"></p-sortIcon>
                         </div>
                     </th>
-                    <th pSortableColumn="projectName">
+                    <th pSortableColumn="projectName" *ngIf="!project">
                         <div class="table-head-project">
                             <span>Project</span>
                             <p-sortIcon field="projectName"></p-sortIcon>
@@ -155,7 +155,7 @@
                     <td>
                         <span appTooltipFullName class="table-content-events">{{issue.eventsCount}}</span>
                     </td>
-                    <td>
+                    <td *ngIf="!project">
                         <span appTooltipFullName class="table-content-project"
                               routerLink="/home/projects/edit/{{issue.projectId}}">{{issue.projectName}}
                         </span>

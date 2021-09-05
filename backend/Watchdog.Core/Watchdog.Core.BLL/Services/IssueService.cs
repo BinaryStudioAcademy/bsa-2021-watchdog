@@ -65,13 +65,13 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<IssueDto>(issueEntity);
         }
 
-        public async Task<ICollection<IssueInfoDto>> GetIssuesInfoAsync(int memberId, IssueStatus? status)
+        public async Task<ICollection<IssueInfoDto>> GetIssuesInfoAsync(int memberId, IssueStatus? status, int? appId)
         {
             if (await _context.Members.AllAsync(m => m.Id != memberId))
             {
                 throw new KeyNotFoundException("There is no member with such ID.");
             }
-            return await GetIssuesAsQuerable(memberId, status)
+            return await GetIssuesAsQueryable(memberId, status, appId)
                 .Select(i => new IssueInfoDto
                 {
                     IssueId = i.Id,
@@ -104,13 +104,11 @@ namespace Watchdog.Core.BLL.Services
                 }).ToListAsync();
         }
 
-        private IQueryable<Issue> GetIssuesAsQuerable(int memberId, IssueStatus? status)
+        private IQueryable<Issue> GetIssuesAsQueryable(int memberId, IssueStatus? status, int? projectId = null)
         {
             return _context.Applications
                 .AsNoTracking()
-                .Include(a => a.ApplicationTeams)
-                    .ThenInclude(at => at.Team)
-                        .ThenInclude(t => t.TeamMembers)
+                .Where(a => projectId == null || a.Id == projectId)
                 .Where(a => a.ApplicationTeams
                     .Any(at => at.Team.TeamMembers
                         .Any(tm => tm.MemberId == memberId)))
@@ -162,9 +160,17 @@ namespace Watchdog.Core.BLL.Services
         {
             var events = _context.EventMessages.AsNoTracking().Where(e => e.IssueId == issueId);
 
-            events = filterModel.SortOrder == 1 ? events.OrderBy(x => x.OccurredOn) : events.OrderByDescending(x => x.OccurredOn);
-            IQueryable<string> temp = events.Skip(filterModel.First).Take(filterModel.Rows).Select(i => i.EventId);
+            events = filterModel.SortOrder == 1 ? events
+                .OrderBy(x => x.OccurredOn) : events
+                .OrderByDescending(x => x.OccurredOn);
+            
+            var temp = events
+                .Skip(filterModel.First)
+                .Take(filterModel.Rows)
+                .Select(i => i.EventId);
+            
             var values = temp.ToList();
+            
             var response = await _client.SearchAsync<IssueMessage>(s => s
                 .Size(filterModel.Rows)
                 .Query(q => q
@@ -174,7 +180,7 @@ namespace Watchdog.Core.BLL.Services
                            ? q.Ascending(i => i.OccurredOn)
                            : q.Descending(i => i.OccurredOn)));
 
-            var totalRecord = _context.EventMessages.Where(e => e.IssueId == issueId).Count();
+            var totalRecord = _context.EventMessages.Count(e => e.IssueId == issueId);
             return (response.Documents.ToList(), totalRecord);
         }
 
@@ -305,16 +311,15 @@ namespace Watchdog.Core.BLL.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<(ICollection<IssueLazyLoadDto>, int)> GetIssuesInfoLazyAsync(
-            int memberId,
-            FilterModel filterModel,
-            IssueStatus? status)
+        public async Task<(ICollection<IssueLazyLoadDto>, int)> GetIssuesInfoLazyAsync(int memberId, FilterModel filterModel, IssueStatus? status, int? appId)
         {
             if (await _context.Members.AllAsync(m => m.Id != memberId))
             {
                 throw new KeyNotFoundException("There is no member with such ID.");
             }
-            var issues = GetIssuesAsQuerable(memberId, status);
+            
+            var issues = GetIssuesAsQueryable(memberId, status, appId);
+            
             var result = await issues
                 .Select(i => new IssueLazyLoadDto
                 {
@@ -346,9 +351,9 @@ namespace Watchdog.Core.BLL.Services
                 })
                 .Filter(filterModel, out var totalRecord)
                 .ToListAsync();
+            
             return (result, totalRecord);
         }
-
 
         public async Task<int> GetFilteredIssueCountByStatusesAndDateRangeByApplicationIdAsync(int applicationId,
             IssueStatusesByDateRangeFilter filter)

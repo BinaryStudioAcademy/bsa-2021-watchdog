@@ -8,10 +8,10 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
 import { IssueMessage } from '@shared/models/issue/issue-message';
 import { regexs } from '@shared/constants/regexs';
 import { Issue } from '@shared/models/issue/issue';
-import { IssueDetailsData } from '@modules/home/issues/issue-details/data/issue-details-data';
-import { IssueStatusDropdown } from '@modules/home/issues/issue-details/data/models/issue-status-dropdown';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import { IssueSolutionItem } from '@shared/models/issue/issue-solution/issue-solution-item';
+import { IssueStatusDropdown } from '@shared/modules/issues/issue-details/data/models/issue-status-dropdown';
+import { IssueDetailsData } from '@shared/modules/issues/issue-details/data/issue-details-data';
 
 @Component({
     selector: 'app-issue-details-page',

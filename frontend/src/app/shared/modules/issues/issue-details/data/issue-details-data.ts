@@ -1,5 +1,5 @@
-import { IssueStatusDropdown } from '@modules/home/issues/issue-details/data/models/issue-status-dropdown';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
+import { IssueStatusDropdown } from '@shared/modules/issues/issue-details/data/models/issue-status-dropdown';
 
 export class IssueDetailsData {
     issueStatusDropdownItems: IssueStatusDropdown[] = [

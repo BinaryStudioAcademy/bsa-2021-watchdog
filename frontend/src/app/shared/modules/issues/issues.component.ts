@@ -1,6 +1,6 @@
 import { SpinnerService } from '@core/services/spinner.service';
 import { IssuesHubService } from '@core/hubs/issues-hub.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { AuthenticationService } from '@core/services/authentication.service';
@@ -19,6 +19,7 @@ import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import { TableExportService } from '@core/services/table-export.service';
 import { IssueInfoExport } from '@shared/models/export/IssueInfoExport';
 import { IssueTableItem } from '@shared/models/issue/issue-table-item';
+import { Project } from '@shared/models/projects/project';
 
 @Component({
     selector: 'app-issues',
@@ -26,6 +27,7 @@ import { IssueTableItem } from '@shared/models/issue/issue-table-item';
     styleUrls: ['./issues.component.sass']
 })
 export class IssuesComponent extends BaseComponent implements OnInit {
+    @Input() project: Project;
     issues: IssueTableItem[] = [];
     issuesCount: { [type: string]: number };
     selectedIssues: IssueTableItem[] = [];
@@ -139,7 +141,8 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             return;
         }
         this.spinner.show(true);
-        this.issueService.getIssuesInfoLazy(this.member.id, this.lastEvent, this.selectedTabIssueStatus)
+
+        this.issueService.getIssuesInfoLazy(this.member.id, this.lastEvent, this.selectedTabIssueStatus, this.project)
             .pipe(this.untilThis,
                 debounceTime(1000))
             .subscribe(
