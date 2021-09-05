@@ -11,7 +11,7 @@ if (environment.production) {
     Watchdog.init(apiKey, false);
     enableProdMode();
 } else {
-    Watchdog.init(apiKey, false, 'http://localhost:5090/');
+    Watchdog.init(apiKey, false, 'http://localhost:5090/', 'http://localhost:5050/');
 }
 
 Watchdog.setUserInfo({ isAnonymous: true });
