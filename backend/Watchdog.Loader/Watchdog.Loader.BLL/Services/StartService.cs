@@ -32,7 +32,7 @@ namespace Watchdog.Loader.BLL.Services
             }
         }
 
-        private async Task StartMaintainClientLoad(LoaderMessage message)
+        private static async Task StartMaintainClientLoad(LoaderMessage message)
         {
             var requests = GetRequests(message);
             foreach (var request in requests)
@@ -41,7 +41,7 @@ namespace Watchdog.Loader.BLL.Services
             }
         }
 
-        private async Task StartClientPerSecond(LoaderMessage message)
+        private static async Task StartClientPerSecond(LoaderMessage message)
         {
             var requests = GetRequests(message);
             foreach (var request in requests)
@@ -49,7 +49,7 @@ namespace Watchdog.Loader.BLL.Services
                 await new HttpClient().SendAsync(request);
             }
         }
-        private async Task StartClientPerTest(LoaderMessage message)
+        private static async Task StartClientPerTest(LoaderMessage message)
         {
             var requests = GetRequests(message);
             foreach (var request in requests)
