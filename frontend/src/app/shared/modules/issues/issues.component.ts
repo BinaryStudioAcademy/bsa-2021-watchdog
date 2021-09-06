@@ -20,6 +20,8 @@ import { TableExportService } from '@core/services/table-export.service';
 import { IssueInfoExport } from '@shared/models/export/IssueInfoExport';
 import { IssueTableItem } from '@shared/models/issue/issue-table-item';
 import { Project } from '@shared/models/projects/project';
+import { IssueStatusDropdown } from '@shared/modules/issues/issue-details/data/models/issue-status-dropdown';
+import { IssueDetailsData } from '@shared/modules/issues/issue-details/data/issue-details-data';
 
 @Component({
     selector: 'app-issues',
@@ -43,7 +45,10 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     issueId: number;
     IssueStatus = IssueStatus;
     selectedTabIssueStatus?: IssueStatus;
+    selected: IssueStatus;
+    issueStatusDropdownItems: IssueStatusDropdown[] = [];
     first: number = 0;
+    private issueDetailsData: IssueDetailsData;
     private saveAssign: Assignee;
     private viewedAssignee = 3;
 
@@ -61,6 +66,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        console.log(IssueDetailsData.getIssueStatusDropdownItems());
         this.isAssign = false;
         this.setTabPanelFields();
 
@@ -83,6 +89,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             }, error => {
                 this.toastNotification.error(error);
             });
+        this.initIssueStatusDropdown();
     }
 
     loadMembers() {
@@ -229,6 +236,14 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     resetPageNumber() {
         this.first = 0;
         this.lastEvent.first = 0;
+    }
+
+    onSelectedIssueStatus() {
+
+    }
+
+    private initIssueStatusDropdown() {
+        this.issueStatusDropdownItems = IssueDetailsData.getIssueStatusDropdownItems();
     }
 
     private issuesToExportIssues(issuesToExport: IssueTableItem[]): IssueInfoExport[] {

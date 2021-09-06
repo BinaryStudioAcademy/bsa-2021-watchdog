@@ -105,7 +105,7 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
     }
 
     initIssueStatusDropdown() {
-        this.issueStatusDropdownItems = this.issueDetailsData.issueStatusDropdownItems;
+        this.issueStatusDropdownItems = IssueDetailsData.getIssueStatusDropdownItems();
     }
 
     onSelectedIssueStatus() {

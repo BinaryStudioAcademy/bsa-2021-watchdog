@@ -2,8 +2,9 @@
 <div class="title" *ngIf="!project">
     <span>Issues</span>
 </div>
-<!--    Main content    -->
-<p-tabView (onChange)="onSelectedTab($event.index)" styleClass="tabview-custom">
+
+<!--    Tab View    -->
+<p-tabView *ngIf="!project" (onChange)="onSelectedTab($event.index)" styleClass="tabview-custom">
     <!--    Tabs    -->
     <p-tabPanel>
         <ng-template pTemplate="header">
@@ -25,7 +26,10 @@
             <span>Ignored</span>
         </ng-template>
     </p-tabPanel>
+</p-tabView>
 
+<!--    Main content    -->
+<div class="main-content">
     <!--    Tools    -->
     <div class="functional-bar">
         <!--    Search    -->
@@ -36,6 +40,14 @@
             <input
                 (input)="table.filterGlobal({value: $event.target['value'], fields: globalFilterFields }, 'contains')"
                 name="search" pInputText placeholder="Search" type="text">
+        </div>
+        <div *ngIf="project" class="action-buttons">
+            <p-dropdown (onChange)="onSelectedIssueStatus()" [(ngModel)]="selected" [ngClass]="{
+                'dropdown-active-status': selected === IssueStatus.Active,
+                'dropdown-resolved-status': selected === IssueStatus.Resolved,
+                'dropdown-ignored-status': selected === IssueStatus.Ignored
+                }" [options]="issueStatusDropdownItems" optionLabel="name" optionValue="type" styleClass="dropdown">
+            </p-dropdown>
         </div>
         <!--    Export    -->
         <div class="action-block">
@@ -187,7 +199,7 @@
             </ng-template>
         </p-table>
     </div>
-</p-tabView>
+</div>
 
 <app-assignee (closeModal)="closeAssign()" *ngIf="isAssign" [data]="toAssign"
               [members]="sharedOptions.members" [teams]="sharedOptions.teams">
