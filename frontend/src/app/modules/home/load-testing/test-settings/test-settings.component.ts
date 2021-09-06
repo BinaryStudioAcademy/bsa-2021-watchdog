@@ -207,46 +207,37 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
     }
 
     handle(e: KeyboardEvent) {
+        if (this.contentType === 'application/json') {
+            this.handleJson(e);
+        } else if (this.contentType === 'application/xml') {
+            this.handleXml(e);
+        } else {
+            this.handleCommon(e);
+        }
+        this.textarea.resize();
+    }
+    handleCommon(e: KeyboardEvent) {
         if (e.key === 'Tab') {
-            e.preventDefault();
-            const textarea = e.target as HTMLTextAreaElement;
-            const start = textarea.selectionStart;
-            const end = textarea.selectionEnd;
+            this.editTextArea(e, '  ', 2);
+        }
+    }
+    handleXml(e: KeyboardEvent) {
+        if (e.key === 'Tab') {
+            this.editTextArea(e, '  ', 2);
+        } else if (e.key === '<') {
+            this.editTextArea(e, '<>', 1);
+        }
+    }
 
-            textarea.value = `${textarea.value.substring(0, start)}  ${textarea.value.substring(end)}`;
-
-            textarea.selectionStart = start + 2;
-            textarea.selectionEnd = start + 2;
+    private handleJson(e: KeyboardEvent) {
+        if (e.key === 'Tab') {
+            this.editTextArea(e, '  ', 2);
         } else if (e.key === '"') {
-            e.preventDefault();
-            const textarea = e.target as HTMLTextAreaElement;
-            const start = textarea.selectionStart;
-            const end = textarea.selectionEnd;
-
-            textarea.value = `${textarea.value.substring(0, start)}""${textarea.value.substring(end)}`;
-
-            textarea.selectionStart = start + 1;
-            textarea.selectionEnd = start + 1;
+            this.editTextArea(e, '""', 1);
         } else if (e.key === '{') {
-            e.preventDefault();
-            const textarea = e.target as HTMLTextAreaElement;
-            const start = textarea.selectionStart;
-            const end = textarea.selectionEnd;
-
-            textarea.value = `${textarea.value.substring(0, start)}{}${textarea.value.substring(end)}`;
-
-            textarea.selectionStart = start + 1;
-            textarea.selectionEnd = start + 1;
+            this.editTextArea(e, '{}', 1);
         } else if (e.key === '[') {
-            e.preventDefault();
-            const textarea = e.target as HTMLTextAreaElement;
-            const start = textarea.selectionStart;
-            const end = textarea.selectionEnd;
-
-            textarea.value = `${textarea.value.substring(0, start)}[]${textarea.value.substring(end)}`;
-
-            textarea.selectionStart = start + 1;
-            textarea.selectionEnd = start + 1;
+            this.editTextArea(e, '[]', 1);
         } else if (e.key === 'Enter') {
             e.preventDefault();
             const textarea = e.target as HTMLTextAreaElement;
@@ -263,7 +254,18 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
             textarea.selectionStart = start + whiteSpaces.length + 1;
             textarea.selectionEnd = start + whiteSpaces.length + 1;
         }
-        this.textarea.resize();
+    }
+
+    private editTextArea(e: KeyboardEvent, text: string, selection: number) {
+        e.preventDefault();
+        const textarea = e.target as HTMLTextAreaElement;
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+
+        textarea.value = `${textarea.value.substring(0, start)}${text}${textarea.value.substring(end)}`;
+
+        textarea.selectionStart = start + selection;
+        textarea.selectionEnd = start + selection;
     }
 
     changedMethod(method: TestMethod, form: FormGroup) {
