@@ -26,6 +26,8 @@ import {
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import html2canvas from 'html2canvas';
 import { jsPDF } from "jspdf";
+import * as FileSaver from 'file-saver';
+import "blob";
 
 @Component({
     selector: 'app-issues-per-time-tile[tile][isShownEditTileMenu][userProjects]',
@@ -84,9 +86,13 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
             let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
             let newPdf = new jsPDF()
             var position = 0;
-            pdf.addImage(contentDataURL, 'PNG', 10, 10, canvas.height / 4, 0);
-            pdf.save('MYPdf.pdf'); // Generated PDF
+            canvas.toBlob(function(blob) {
+                FileSaver.saveAs(blob, 'pretty image.jpg');
+            })
+            // pdf.addImage(contentDataURL, 'PNG', 10, 10, canvas.height / 4, 0);
+            // pdf.save('MYPdf.pdf');
         })
+    }
 
     setTileDragStatus(status: boolean) {
         this.dragTile.emit(status);
