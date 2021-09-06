@@ -19,6 +19,7 @@ import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import { TableExportService } from '@core/services/table-export.service';
 import { IssueInfoExport } from '@shared/models/export/IssueInfoExport';
 import { IssueTableItem } from '@shared/models/issue/issue-table-item';
+import { CountOfIssuesByStatus } from '@shared/models/issue/count-of-issues-by-status';
 
 @Component({
     selector: 'app-issues',
@@ -27,7 +28,7 @@ import { IssueTableItem } from '@shared/models/issue/issue-table-item';
 })
 export class IssuesComponent extends BaseComponent implements OnInit {
     issues: IssueTableItem[] = [];
-    issuesCount: { [type: string]: number };
+    issuesCount: { [type: string]: number } = {};
     selectedIssues: IssueTableItem[] = [];
     isAssign: boolean;
     sharedOptions = {} as AssigneeOptions;
@@ -60,7 +61,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     ngOnInit(): void {
         this.isAssign = false;
-        this.setTabPanelFields();
 
         this.authService.getMember()
             .pipe(
@@ -76,6 +76,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                         this.sharedOptions.members = members;
                         this.sharedOptions.teams = teams;
                         this.loadIssuesLazy(this.lastEvent);
+                        this.getIssuesCountByStatuses();
                         this.subscribeToIssuesHub();
                     });
             }, error => {
@@ -155,6 +156,17 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             );
     }
 
+    getIssuesCountByStatuses(): void {
+        this.issueService.getIssuesInfoCountByStatuses(this.member.id)
+            .pipe(this.untilThis)
+            .subscribe(response => {
+                this.setTabPanelFields(response);
+            },
+            error => {
+                this.toastNotification.error(error);
+            });
+    }
+
     getNumberAssignee(assignee: Assignee) {
         return count(assignee);
     }
@@ -203,19 +215,19 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         this.resetPageNumber();
         switch (index) {
             case 0:
-                this.selectedTabIssueStatus = undefined;
-                await this.loadIssuesLazy(this.lastEvent);
-                break;
-            case 1:
                 this.selectedTabIssueStatus = IssueStatus.Active;
                 await this.loadIssuesLazy(this.lastEvent);
                 break;
-            case 2:
+            case 1:
                 this.selectedTabIssueStatus = IssueStatus.Resolved;
                 await this.loadIssuesLazy(this.lastEvent);
                 break;
-            case 3:
+            case 2:
                 this.selectedTabIssueStatus = IssueStatus.Ignored;
+                await this.loadIssuesLazy(this.lastEvent);
+                break;
+            case 3:
+                this.selectedTabIssueStatus = undefined;
                 await this.loadIssuesLazy(this.lastEvent);
                 break;
             default:
@@ -223,7 +235,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         }
     }
 
-    resetPageNumber() {
+    private resetPageNumber() {
         this.first = 0;
         this.lastEvent.first = 0;
     }
@@ -269,15 +281,16 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         this.issuesHub.messages.pipe(this.untilThis)
             .subscribe(() => {
                 this.loadIssuesLazy(this.lastEvent);
+                this.getIssuesCountByStatuses();
             });
     }
 
-    private setTabPanelFields() {
+    private setTabPanelFields(counts: CountOfIssuesByStatus) {
         this.issuesCount = {
-            all: 0,
-            active: 0,
-            resolved: 0,
-            ignored: 0,
+            active: counts.activeCount,
+            resolved: counts.resolvedCount,
+            ignored: counts.ignoredCount,
+            all: counts.activeCount + counts.resolvedCount + counts.ignoredCount,
         };
     }
 }

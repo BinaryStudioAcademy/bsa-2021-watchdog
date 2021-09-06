@@ -24,5 +24,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task UpdateIssueStatusAsync(UpdateIssueStatusDto issueStatusDto);
         Task<IssueDto> GetIssueByIdAsync(int issueId);
         Task<IssueSolutionDto> GetIssueSolutionLinkByIssueIdAsync(int issueId);
+        Task<CountOfIssuesByStatusDto> GetCountOfIssuesByStatuses(int memberId);
     }
 }
