@@ -12,6 +12,7 @@ import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import { IssueSolutionItem } from '@shared/models/issue/issue-solution/issue-solution-item';
 import { IssueStatusDropdown } from '@shared/modules/issues/issue-details/data/models/issue-status-dropdown';
 import { IssueDetailsData } from '@shared/modules/issues/issue-details/data/issue-details-data';
+import { IssueSelectDropdown } from '@shared/modules/issues/issue-details/data/models/issue-select-dropdown';
 
 @Component({
     selector: 'app-issue-details-page',

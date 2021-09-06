@@ -6,7 +6,7 @@
         </button>
         <h2 appTooltipFullName>{{issueMessage?.issueDetails.className}}</h2>
     </div>
-    <div *ngIf="issue && !isNotFound" class="action-buttons">
+    <div *ngIf="issue && !isNotFound">
         <p-dropdown (onChange)="onSelectedIssueStatus()" [(ngModel)]="selected" [disabled]="isLoadingStatus" [ngClass]="{
         'dropdown-active-status': selected === IssueStatus.Active,
         'dropdown-resolved-status': selected === IssueStatus.Resolved,

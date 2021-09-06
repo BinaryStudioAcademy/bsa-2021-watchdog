@@ -20,9 +20,10 @@ import { TableExportService } from '@core/services/table-export.service';
 import { IssueInfoExport } from '@shared/models/export/IssueInfoExport';
 import { IssueTableItem } from '@shared/models/issue/issue-table-item';
 import { Project } from '@shared/models/projects/project';
-import { IssueStatusDropdown } from '@shared/modules/issues/issue-details/data/models/issue-status-dropdown';
 import { IssueDetailsData } from '@shared/modules/issues/issue-details/data/issue-details-data';
 import { CountOfIssuesByStatus } from '@shared/models/issue/count-of-issues-by-status';
+import { IssueSelectDropdown } from '@shared/modules/issues/issue-details/data/models/issue-select-dropdown';
+import { IssueSelect } from '@shared/models/issue/enums/issue-select';
 
 @Component({
     selector: 'app-issues',
@@ -45,9 +46,10 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     toAssign: Assignee;
     issueId: number;
     IssueStatus = IssueStatus;
-    selectedTabIssueStatus?: IssueStatus;
-    selected: IssueStatus;
-    issueStatusDropdownItems: IssueStatusDropdown[] = [];
+    IssueSelect = IssueSelect;
+    selectedTabIssueStatus?: IssueStatus = IssueStatus.Active;
+    selected: IssueSelect = IssueSelect.Active;
+    issueStatusDropdownItems: IssueSelectDropdown[] = [];
     first: number = 0;
     private issueDetailsData: IssueDetailsData;
     private saveAssign: Assignee;
@@ -67,7 +69,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log(IssueDetailsData.getIssueStatusDropdownItems());
         this.isAssign = false;
 
         this.authService.getMember()
@@ -90,7 +91,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             }, error => {
                 this.toastNotification.error(error);
             });
-        this.initIssueStatusDropdown();
+        this.initIssueSelectDropdown();
     }
 
     loadMembers() {
@@ -250,12 +251,12 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         this.lastEvent.first = 0;
     }
 
-    onSelectedIssueStatus() {
-
+    async onSelectedIssues() {
+        await this.onSelectedTab(this.selected);
     }
 
-    private initIssueStatusDropdown() {
-        this.issueStatusDropdownItems = IssueDetailsData.getIssueStatusDropdownItems();
+    private initIssueSelectDropdown() {
+        this.issueStatusDropdownItems = IssueDetailsData.getIssuesSelectDropdownItems();
     }
 
     private issuesToExportIssues(issuesToExport: IssueTableItem[]): IssueInfoExport[] {

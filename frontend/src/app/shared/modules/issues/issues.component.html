@@ -4,7 +4,7 @@
 </div>
 
 <!--    Tab View    -->
-<p-tabView *ngIf="!project" (onChange)="onSelectedTab($event.index)" styleClass="tabview-custom">
+<p-tabView *ngIf="!project" (onChange)="onSelectedTab($event.index)">
     <!--    Tabs    -->
     <p-tabPanel>
         <ng-template pTemplate="header">
@@ -33,7 +33,7 @@
 </p-tabView>
 
 <!--    Main content    -->
-<div class="main-content">
+<div [ngClass]="{'main-content': !project}">
     <!--    Tools    -->
     <div class="functional-bar">
         <!--    Search    -->
@@ -45,11 +45,12 @@
                 (input)="table.filterGlobal({value: $event.target['value'], fields: globalFilterFields }, 'contains')"
                 name="search" pInputText placeholder="Search" type="text">
         </div>
-        <div *ngIf="project" class="action-buttons">
-            <p-dropdown (onChange)="onSelectedIssueStatus()" [(ngModel)]="selected" [ngClass]="{
-                'dropdown-active-status': selected === IssueStatus.Active,
-                'dropdown-resolved-status': selected === IssueStatus.Resolved,
-                'dropdown-ignored-status': selected === IssueStatus.Ignored
+        <div *ngIf="project">
+            <p-dropdown (onChange)="onSelectedIssues()" [(ngModel)]="selected" [ngClass]="{
+                'dropdown-active-status': selected === IssueSelect.Active,
+                'dropdown-resolved-status': selected === IssueSelect.Resolved,
+                'dropdown-ignored-status': selected === IssueSelect.Ignored,
+                'dropdown-all': selected === IssueSelect.All
                 }" [options]="issueStatusDropdownItems" optionLabel="name" optionValue="type" styleClass="dropdown">
             </p-dropdown>
         </div>
