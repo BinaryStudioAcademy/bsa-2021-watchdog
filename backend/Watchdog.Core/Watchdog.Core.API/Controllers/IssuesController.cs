@@ -116,5 +116,12 @@ namespace Watchdog.Core.API.Controllers
             await _issueService.UpdateIssueStatusAsync(issueStatusDto);
             return Ok();
         }
+        
+        [HttpGet("info/{memberId:int}/countByStatuses")]
+        public async Task<ActionResult<CountOfIssuesByStatusDto>> GetIssuesInfoCountByStatuses(int memberId)
+        {
+            var issuesCount = await _issueService.GetCountOfIssuesByStatuses(memberId);
+            return Ok(issuesCount);
+        }
     }
 }

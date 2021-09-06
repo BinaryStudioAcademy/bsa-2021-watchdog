@@ -101,7 +101,8 @@ namespace Watchdog.Core.BLL.Services
                             .Select(a => a.TeamId)
                             .ToList()
                     }
-                }).ToListAsync();
+                })
+                .ToListAsync();
         }
 
         private IQueryable<Issue> GetIssuesAsQueryable(int memberId, IssueStatus? status, int? projectId = null)
@@ -160,15 +161,13 @@ namespace Watchdog.Core.BLL.Services
         {
             var events = _context.EventMessages.AsNoTracking().Where(e => e.IssueId == issueId);
 
-            events = filterModel.SortOrder == 1 ? events
-                .OrderBy(x => x.OccurredOn) : events
-                .OrderByDescending(x => x.OccurredOn);
-            
+            events = filterModel.SortOrder == 1
+                ? events.OrderBy(x => x.OccurredOn)
+                : events.OrderByDescending(x => x.OccurredOn);
             var temp = events
                 .Skip(filterModel.First)
                 .Take(filterModel.Rows)
                 .Select(i => i.EventId);
-            
             var values = temp.ToList();
             
             var response = await _client.SearchAsync<IssueMessage>(s => s
@@ -177,8 +176,8 @@ namespace Watchdog.Core.BLL.Services
                     .Ids(c => c
                         .Values(values)))
                 .Sort(q => filterModel.SortOrder == 1
-                           ? q.Ascending(i => i.OccurredOn)
-                           : q.Descending(i => i.OccurredOn)));
+                    ? q.Ascending(i => i.OccurredOn)
+                    : q.Descending(i => i.OccurredOn)));
 
             var totalRecord = _context.EventMessages.Count(e => e.IssueId == issueId);
             return (response.Documents.ToList(), totalRecord);
@@ -355,6 +354,31 @@ namespace Watchdog.Core.BLL.Services
             return (result, totalRecord);
         }
 
+        public async Task<CountOfIssuesByStatusDto> GetCountOfIssuesByStatuses(int memberId)
+        {
+            if (await _context.Members.AllAsync(m => m.Id != memberId))
+            {
+                throw new KeyNotFoundException("There is no member with such ID.");
+            }
+            
+            var result = await _context.Applications
+                .AsNoTracking()
+                .Where(a => a.ApplicationTeams
+                    .Any(at => at.Team.TeamMembers
+                        .Any(tm => tm.MemberId == memberId)))
+                .SelectMany(a => a.Issues)
+                .GroupBy(issue => issue.Status)
+                .Select(issues => new {Status = issues.Key, Count = issues.Count()})
+                .ToDictionaryAsync(arg => arg.Status, arg => arg.Count);
+
+            return new CountOfIssuesByStatusDto
+            {
+                ActiveCount = result.GetValueOrDefault(IssueStatus.Active),
+                ResolvedCount = result.GetValueOrDefault(IssueStatus.Resolved),
+                IgnoredCount = result.GetValueOrDefault(IssueStatus.Ignored),
+            };
+        }
+
         public async Task<int> GetFilteredIssueCountByStatusesAndDateRangeByApplicationIdAsync(int applicationId,
             IssueStatusesByDateRangeFilter filter)
         {
@@ -381,7 +405,7 @@ namespace Watchdog.Core.BLL.Services
                .FirstOrDefaultAsync(issue => issue.Id == issueId)
                ?? throw new KeyNotFoundException("Issue not found");
 
-            var issueSolution = await StackExchangeService.GetSolutionFromStackoverflow<IssueSolution>(issueEntity.ErrorMessage, new string[] { issueEntity.Application.Platform.Name });
+            var issueSolution = await StackExchangeService.GetSolutionFromStackoverflow<IssueSolution>(issueEntity.ErrorMessage, new[] { issueEntity.Application.Platform.Name });
 
             return _mapper.Map<IssueSolutionDto>(issueSolution);
         }

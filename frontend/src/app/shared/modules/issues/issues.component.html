@@ -8,22 +8,26 @@
     <!--    Tabs    -->
     <p-tabPanel>
         <ng-template pTemplate="header">
-            <span>All</span>
-        </ng-template>
-    </p-tabPanel>
-    <p-tabPanel>
-        <ng-template pTemplate="header">
             <span>Active</span>
+            <p-badge [value]="issuesCount.active?.toString()" styleClass="count-badge active"></p-badge>
         </ng-template>
     </p-tabPanel>
     <p-tabPanel>
         <ng-template pTemplate="header">
             <span>Resolved</span>
+            <p-badge [value]="issuesCount.resolved?.toString()" severity="success" styleClass="count-badge"></p-badge>
         </ng-template>
     </p-tabPanel>
     <p-tabPanel>
         <ng-template pTemplate="header">
             <span>Ignored</span>
+            <p-badge [value]="issuesCount.ignored?.toString()" severity="info" styleClass="count-badge"></p-badge>
+        </ng-template>
+    </p-tabPanel>
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <span>All</span>
+            <p-badge [value]="issuesCount.all?.toString()" severity="warning" styleClass="count-badge"></p-badge>
         </ng-template>
     </p-tabPanel>
 </p-tabView>
@@ -147,7 +151,7 @@
                                 <div class="additional-info">
                                     <ng-container [ngSwitch]="issue.status">
                                         <p-tag *ngSwitchCase="IssueStatus.Active" [rounded]="true"
-                                               styleClass="active-tag" value="active"></p-tag>
+                                               styleClass="active" value="active"></p-tag>
                                         <p-tag *ngSwitchCase="IssueStatus.Resolved" [rounded]="true"
                                                severity="success" value="resolved"></p-tag>
                                         <p-tag *ngSwitchCase="IssueStatus.Ignored" [rounded]="true"
