@@ -13,17 +13,23 @@ using Watchdog.Core.Common.Enums.Issues;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
 using Watchdog.Models.Shared.Issues;
+using Watchdog.Models.Shared.Emailer;
 
 namespace Watchdog.Core.BLL.Services
 {
     public class IssueService : BaseService, IIssueService
     {
         private readonly IElasticClient _client;
+        private readonly IEmailerQueueProducerService _emailer;
 
-        public IssueService(WatchdogCoreContext context, IMapper mapper, IElasticClient client)
+        public IssueService(WatchdogCoreContext context,
+                            IMapper mapper,
+                            IElasticClient client,
+                            IEmailerQueueProducerService emailer)
             : base(context, mapper)
         {
             _client = client;
+            _emailer = emailer;
         }
 
         public async Task<int> AddIssueEventAsync(IssueMessage issueMessage)
@@ -35,6 +41,20 @@ namespace Watchdog.Core.BLL.Services
                   i.Application.ApiKey == issueMessage.ApiKey);
 
             var newEventMessage = _mapper.Map<EventMessage>(issueMessage);
+
+            ICollection<Recipient> recipients = await _context.Applications
+                .Where(a => a.ApiKey == issueMessage.ApiKey)
+                .SelectMany(a => a.Recipients)
+                .Select(x => new Recipient
+                {
+                    EmailAddress = x.Email,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName
+                })
+                .Distinct()
+                .ToArrayAsync();
+
+            _emailer.SendAlert(issueMessage, recipients);
 
             if (issue is null)
             {
