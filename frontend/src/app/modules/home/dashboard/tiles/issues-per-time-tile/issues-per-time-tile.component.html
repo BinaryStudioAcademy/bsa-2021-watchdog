@@ -3,7 +3,7 @@
                      [isShownEditTileMenu]="isShownEditTileMenu" [tile]="tile"></app-tile-header>
 
 
-    <app-charts id="chart" *ngIf="multi?.length === requiredProjects?.length" [chartOptions]="chartOptions" [tileType]="tile.type"
+    <app-charts #data *ngIf="multi?.length === requiredProjects?.length" [chartOptions]="chartOptions" [tileType]="tile.type"
                 [chartType]="ChartType.Line" [multi]="multi" style="visibility: visible">
     </app-charts>
 </div>

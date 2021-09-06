@@ -7,6 +7,8 @@ import { ConfirmWindowService } from '@core/services/confirm-window.service';
 import { regexs } from '@shared/constants/regexs';
 import { UpdateTile } from '@shared/models/tile/update-tile';
 import { BaseComponent } from '@core/components/base/base.component';
+import { MenuItem } from 'primeng/api';
+import { ExportType } from '@shared/models/tile/enums/export-type';
 
 @Component({
     selector: 'app-tile-header[tile][isShownEditTileMenu]',
@@ -19,6 +21,8 @@ export class TileHeaderComponent extends BaseComponent implements OnInit {
     @Output() isEditing: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() isExporting: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() dragTile: EventEmitter<boolean> = new EventEmitter<boolean>();
+    menuTileExportItems: MenuItem[] = [];
+    selectedItem?: MenuItem;
 
     formGroup: FormGroup;
     isShownTileMenu: boolean;
@@ -41,6 +45,7 @@ export class TileHeaderComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.initMenuExportTypesItems();
         this.formGroup = new FormGroup({
             name: new FormControl(
                 this.tile.name,
@@ -90,6 +95,51 @@ export class TileHeaderComponent extends BaseComponent implements OnInit {
         this.isEditName = false;
         this.resetFormGroup();
         this.isEditing.emit(true);
+    }
+
+    tileExportTypeSelected(item?: MenuItem): void {
+        debugger;
+        switch (+item.id) {
+            case ExportType.Jpg:
+                this.selectedItem = item;
+                debugger;
+                this.exportTile();
+                break;
+            case ExportType.Png:
+                this.selectedItem = item;
+                this.exportTile();
+                break;
+            case ExportType.Pdf:
+                this.selectedItem = item;
+                this.exportTile();
+                break;
+            default:
+                //this.selectedItem = undefined;
+                break;
+        }
+    }
+
+    private initMenuExportTypesItems(): void {
+        this.menuTileExportItems = [
+            {
+                id: ExportType.Jpg.toString(),
+                label: 'Export in jpg',
+                icon: 'pi pi-image',
+                command: event => this.tileExportTypeSelected(event.item)
+            },
+            {
+                id: ExportType.Png.toString(),
+                label: 'Export in png',
+                icon: 'pi pi-image',
+                command: event => this.tileExportTypeSelected(event.item)
+            },
+            {
+                id: ExportType.Pdf.toString(),
+                label: 'Export in pdf',
+                icon: 'pi pi-file',
+                command: event => this.tileExportTypeSelected(event.item)
+            },
+        ];
     }
 
     exportTile() {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Tile } from '@shared/models/tile/tile';
 import { Project } from '@shared/models/projects/project';
 import { TileService } from '@core/services/tile.service';
@@ -28,6 +28,8 @@ import html2canvas from 'html2canvas';
 import { jsPDF } from "jspdf";
 import * as FileSaver from 'file-saver';
 import "blob";
+import { MenuItem } from 'primeng/api';
+import { ExportType } from '@shared/models/tile/enums/export-type';
 
 @Component({
     selector: 'app-issues-per-time-tile[tile][isShownEditTileMenu][userProjects]',
@@ -40,6 +42,8 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
     @Input() userProjects: Project[] = [];
     @Output() isDeleting: EventEmitter<Tile> = new EventEmitter<Tile>();
     @Output() dragTile: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Input() menuTileExportItems: MenuItem[] = [];
+    @Input() selectedItem?: MenuItem;
     paginatorRows: number = 5;
     tileSettings: IssuesPerTimeSettings;
     requiredProjects: Project[] = [];
@@ -52,7 +56,7 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
 
     docDefinition: any;
 
-
+    @ViewChild('data') data: any;
 
     constructor(
         private tileService: TileService,
@@ -74,23 +78,30 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
             () => this.applySettings());
     }
 
+
+
     exportTile() {
-        var data = document.getElementById('chart');
+        var data = this.data.host.nativeElement;
+        var datas = this.selectedItem;
+        debugger;
         html2canvas(data).then(canvas => {
-            var imgWidth = 100;
-            var pageHeight = 295;
-            var imgHeight = canvas.height * imgWidth / canvas.width;
-            var heightLeft = imgHeight;
-            const contentDataURL = canvas.toDataURL('image/png', 1.0);
-            debugger;
-            let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
-            let newPdf = new jsPDF()
-            var position = 0;
-            canvas.toBlob(function(blob) {
-                FileSaver.saveAs(blob, `${new Date().toLocaleString().replace(':', '_')}.png`);
-            })
-            // pdf.addImage(contentDataURL, 'PNG', 10, 10, canvas.height / 4, 0);
-            // pdf.save('MYPdf.pdf');
+            if (this.selectedItem === ExportType.Jpg.toString()) {
+                canvas.toBlob(function(blob) {
+                    FileSaver.saveAs(blob, `${new Date().toLocaleString().replace(':', '_')}.jpg`);
+                })
+            }
+            if (this.selectedItem === ExportType.Png) {
+                canvas.toBlob(function(blob) {
+                    FileSaver.saveAs(blob, `${new Date().toLocaleString().replace(':', '_')}.png`);
+                })
+            }
+            if (this.selectedItem === ExportType.Pdf) {
+                const contentDataURL = canvas.toDataURL('image/png', 1.0);
+                let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
+                let newPdf = new jsPDF()
+                pdf.addImage(contentDataURL, 'PNG', 10, 10, canvas.height / 4, 0);
+                pdf.save('MYPdf.pdf');
+            }
         })
     }
 
