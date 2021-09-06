@@ -6,5 +6,7 @@ export enum ChartType {
     Line,
     Polar,
     Area,
-    Grouped
+    Grouped,
+    NumberCard,
+    HeatMap
 }

@@ -1,0 +1,33 @@
+<!--    Header    -->
+<div class="header">
+    <h1 class="header-title">Tests</h1>
+    <div class="action-buttons">
+        <button
+            routerLink="./new"
+            class="p-button-primary p-button-outlined"
+            icon="pi pi-plus-circle"
+            label="Create Test"
+            pButton
+            pRipple
+            type="button">
+        </button>
+    </div>
+</div>
+<div class="tests-container">
+    <div class="grid">
+        <div *ngFor="let test of tests">
+            <div class="card" [routerLink]="'./edit/'+test.id" >
+            <div class="card-title">
+                <div class="card-title">
+                    <img alt="{{test.project.platform.name}}" [src]="test.project.platform.avatarUrl | save">
+                    <span>{{test.project.name}}</span>
+                </div>
+            </div>
+                <div class="card-body">
+                    <div appTooltipFullName class="card-body-name">{{test.name}}</div>
+                    <div appTooltipFullName class="card-body-description">Duration: {{test.duration.slice(3)}}, Clients number: {{test.clients}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

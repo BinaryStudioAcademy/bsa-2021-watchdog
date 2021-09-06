@@ -23,7 +23,7 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
     @Input() isShownEditTileMenu: boolean = false;
     @Input() userProjects: Project[] = [];
     @Output() isDeleting: EventEmitter<Tile> = new EventEmitter<Tile>();
-
+    @Output() dragTile: EventEmitter<boolean> = new EventEmitter<boolean>();
     paginatorRows: number = 5;
     tileSettings: TopActiveIssuesSettings;
     requiredProjects: Project[] = [];
@@ -47,6 +47,10 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
             () => this.applySettings());
     }
 
+    setTileDragStatus(status: boolean) {
+        this.dragTile.emit(status);
+    }
+
     private applySettings() {
         this.getTileSettings();
         this.applyProjectSettings();
@@ -63,17 +67,15 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
 
     private applyIssuesSettings(issuesInfo: IssueInfo[]) {
         this.displayedIssues = issuesInfo
-            .filter(info =>
-                info.status === IssueStatus.Active
-                && this.requiredProjects.some(proj => proj.id === info.project.id
-                && new Date(info.newest.occurredOn).getTime() >= Date.now() - convertTileDateRangeTypeToMs(this.tileSettings.dateRange)))
+            .filter(info => this.requiredProjects.some(proj => proj.id === info.project.id)
+                && new Date(info.newest.occurredOn).getTime() >= Date.now() - convertTileDateRangeTypeToMs(this.tileSettings.dateRange))
             .sort((a, b) => b.eventsCount - a.eventsCount) // top sort
             .slice(0, this.tileSettings.issuesCount); // issues count
     }
 
     private getIssuesInfo() {
         this.authService.getMember()
-            .pipe(this.untilThis, switchMap(member => this.issueService.getIssuesInfo(member.id)))
+            .pipe(this.untilThis, switchMap(member => this.issueService.getIssuesInfo(member.id, IssueStatus.Active)))
             .subscribe(issuesInfo => {
                 this.applyIssuesSettings(issuesInfo);
             }, error => {

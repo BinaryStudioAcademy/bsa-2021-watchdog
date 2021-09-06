@@ -8,6 +8,7 @@ import { CoreHttpService } from './core-http.service';
 import { UpdateProject } from '@shared/models/projects/update-project';
 import { share, tap } from 'rxjs/operators';
 import { AppSecrets } from '@shared/models/projects/app-secrets';
+import { CountryInfo } from '@shared/models/projects/country-info';
 
 @Injectable({
     providedIn: 'root',
@@ -91,5 +92,9 @@ export class ProjectService {
 
     isApiKeyUnique(apiKey: string): Observable<boolean> {
         return this.httpService.getRequest<boolean>(`${this.apiPrefix}/apiKey/${apiKey}`);
+    }
+
+    getCountriesInfo(projectId: number): Observable<CountryInfo[]> {
+        return this.httpService.getRequest<CountryInfo[]>(`${this.apiPrefix}/countriesInfo/${projectId}`);
     }
 }

@@ -6,3 +6,29 @@ span
     font-family: 'DM Sans'
     color: $text-color
     font-size: 1.1rem
+    line-height: 1.5rem
+
+.container
+    display: grid
+    width: min-content
+
+.code
+    position: relative
+
+.hljs
+    padding-right: 40px
+
+.copy-button
+    position: absolute
+    right: .5rem
+    top: .5rem
+    font-size: 1rem
+
+:host ::ng-deep
+    .p-button-rounded
+        background: none
+        color: $copy-button-color
+        border: none
+        &:hover
+            background: none
+            color: $primary-color

@@ -42,6 +42,9 @@ import { TreeModule } from 'primeng/tree';
 import { TimelineModule } from 'primeng/timeline';
 import { CardModule } from 'primeng/card';
 import { AvatarGroupModule } from 'primeng/avatargroup';
+import { InputMaskModule } from 'primeng/inputmask';
+import { DragDropModule } from 'primeng/dragdrop';
+import { FileUploadModule } from 'primeng/fileupload';
 
 // import and export here all required modules from primeng
 @NgModule({
@@ -87,6 +90,9 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
         TimelineModule,
         CardModule,
         AvatarGroupModule,
+        InputMaskModule,
+        DragDropModule,
+        FileUploadModule
     ],
     exports: [
         ButtonModule,
@@ -129,6 +135,9 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
         TimelineModule,
         CardModule,
         AvatarGroupModule,
+        InputMaskModule,
+        DragDropModule,
+        FileUploadModule
     ],
     declarations: [],
     providers: [

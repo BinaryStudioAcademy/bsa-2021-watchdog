@@ -37,9 +37,22 @@
     padding: 15px
     display: flex
     flex-flow: row wrap
+    gap: 15px
+
+    .tile-container
+        display: flex
+
+    .tile
+        box-shadow: $card-box-shadow
+        border: 1px solid $border-color
+        flex: 1 1 auto
+        height: 494px
+        width: 410px
+        position: relative
 
     %card
-        margin: 5px 5px 5px
+        margin: 5px
+        padding: 10px
         box-shadow: $card-box-shadow
         border: 1px solid $border-color
         flex: 1 1 auto
@@ -53,4 +66,29 @@
         @extend %card
         height: 494px
         width: 410px
+    .issues-count
+        @extend %card
+        height: 494px
+        width: 410px
+
+    .heat-map
+        @extend %card
+        height: 494px
+        width: 410px
+
+.drop-line
+    border-radius: 5px
+    height: 100%
+    min-width: 10px
+    position: absolute
+    top: 0px
+    background: radial-gradient($primary-color-lightest 20%, white 90%)
+    opacity: .6
+    &.p-draggable-enter
+        background: radial-gradient($primary-color-light 20%, white 90%)
+    &-left
+        left: -14px
+    &-right
+        right: -14px
+
 
