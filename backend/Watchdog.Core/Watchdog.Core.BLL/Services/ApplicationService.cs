@@ -196,8 +196,11 @@ namespace Watchdog.Core.BLL.Services
         public async Task<ICollection<CountryInfoDto>> GetCountriesInfoAsync(int appId)
         {
             var application = await _context.Applications.FirstOrDefaultAsync(app => app.Id == appId);
-            
+
+            var countResponse = await _elkClient.CountAsync<CountryInfo>();
+
             var searchResponse = _elkClient.Search<CountryInfo>(s => s
+                .Size((int)countResponse.Count)
                 .Query(q => q
                     .Match(m => m
                         .Field(f => f.ApiKey)
