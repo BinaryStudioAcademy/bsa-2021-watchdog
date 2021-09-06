@@ -7,13 +7,17 @@ using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.LoaderTest;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
+using Watchdog.Models.Shared.Loader;
 
 namespace Watchdog.Core.BLL.Services
 {
     public class LoaderTestService : BaseService, ILoaderTestService
     {
-        public LoaderTestService(WatchdogCoreContext context, IMapper mapper) : base(context, mapper)
+        private readonly INotifyLoaderQueueProducerService _notifyLoader;
+
+        public LoaderTestService(WatchdogCoreContext context, IMapper mapper, INotifyLoaderQueueProducerService notifyLoader) : base(context, mapper)
         {
+            _notifyLoader = notifyLoader;
         }
 
         public async Task<LoaderTestDto> AddNewLoaderTestAsync(NewLoaderTestDto dto)
@@ -84,6 +88,7 @@ namespace Watchdog.Core.BLL.Services
                 }
             }
             await _context.SaveChangesAsync();
+            _notifyLoader.SendMessage(_mapper.Map<LoaderMessage>(test));
             return _mapper.Map<LoaderTestDto>(test);
         }
     }
