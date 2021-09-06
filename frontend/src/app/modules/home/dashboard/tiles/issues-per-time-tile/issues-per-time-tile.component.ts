@@ -87,7 +87,7 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
             let newPdf = new jsPDF()
             var position = 0;
             canvas.toBlob(function(blob) {
-                FileSaver.saveAs(blob, 'pretty image.jpg');
+                FileSaver.saveAs(blob, `${new Date().toLocaleString().replace(':', '_')}.png`);
             })
             // pdf.addImage(contentDataURL, 'PNG', 10, 10, canvas.height / 4, 0);
             // pdf.save('MYPdf.pdf');
