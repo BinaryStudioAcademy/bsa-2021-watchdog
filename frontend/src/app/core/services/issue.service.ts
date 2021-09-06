@@ -13,6 +13,7 @@ import { IssueStatusesByDateRangeFilter } from '@shared/models/issue/issue-statu
 import { IssueSolution } from '@shared/models/issue/issue-solution/issue-solution';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import { IssueTableItem } from '@shared/models/issue/issue-table-item';
+import { CountOfIssuesByStatus } from '@shared/models/issue/count-of-issues-by-status';
 
 @Injectable({ providedIn: 'root' })
 export class IssueService {
@@ -20,14 +21,26 @@ export class IssueService {
 
     constructor(private httpService: CoreHttpService) { }
 
-    public getIssuesInfo(memberId: number): Observable<IssueInfo[]> {
-        return this.httpService.getRequest<IssueInfo[]>(`${this.routePrefix}/info/${memberId}`);
+    public getIssuesInfo(memberId: number, status?: IssueStatus): Observable<IssueInfo[]> {
+        return this.httpService.getRequest<IssueInfo[]>(
+            `${this.routePrefix}/info/${memberId}`,
+            status !== undefined ? { status } : undefined
+        );
     }
 
     public getIssuesInfoLazy(memberId: number, event: LazyLoadEvent, status?: IssueStatus):
     Observable<{ collection: IssueTableItem[], totalRecords: number }> {
-        return this.httpService
-            .postRequest(`${this.routePrefix}/info/${memberId}`, event, status !== undefined ? { status } : undefined);
+        return this.httpService.postRequest(
+            `${this.routePrefix}/info/${memberId}`,
+            event,
+            status !== undefined ? { status } : undefined
+        );
+    }
+
+    public getIssuesInfoCountByStatuses(memberId: number): Observable<CountOfIssuesByStatus> {
+        return this.httpService.getRequest<CountOfIssuesByStatus>(
+            `${this.routePrefix}/info/${memberId}/countByStatuses`
+        );
     }
 
     public updateAssignee(updateData: UpdateAssignee): Observable<void> {
@@ -49,6 +62,7 @@ export class IssueService {
             event
         );
     }
+
     public getEventMessagesInfo(): Observable<IssueMessageInfo[]> {
         return this.httpService.getRequest<IssueMessageInfo[]>(`${this.routePrefix}/messages`);
     }

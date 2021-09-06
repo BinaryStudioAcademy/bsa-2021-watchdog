@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as FileSaver from 'file-saver';
 import * as XLSXManager from 'xlsx';
 import jsPDF from 'jspdf';
-import autoTable, { Styles } from 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 
 const JsPDF = jsPDF;
 
@@ -15,23 +15,25 @@ export class TableExportService {
         FileSaver.saveAs(data, `${fileName}.${extension}`);
     }
 
+    private static getFileFullName(fileName: string): string {
+        return `${fileName} ${new Date().toLocaleString().replace(':', '_')}`;
+    }
+
     exportPdf(arrayOfItemsToWrite: any[], fileName: string, orientation: 'landscape' | 'portrait' = 'landscape'): void {
         const doc = new JsPDF({ orientation, unit: 'px', compress: true });
         if (arrayOfItemsToWrite.length) {
             const cols: string[][] = [Object.keys(arrayOfItemsToWrite[0])];
-            const rows: string[][] = arrayOfItemsToWrite.map(item => Object.values(item));
             const pxPerSymbol = 8;
-            const stylesPerProperty: { [p: string]: Partial<Styles> } = {};
-            cols[0].forEach((propName, index) => {
-                stylesPerProperty[index] = { minCellWidth: propName.length * pxPerSymbol };
-            });
+
             autoTable(doc, {
                 head: cols,
-                body: rows,
-                columnStyles: stylesPerProperty,
+                body: arrayOfItemsToWrite.map(item => Object.values(item)),
+                columnStyles: cols[0].reduce((acc, propName, index) => ({
+                    ...acc, [index]: { minCellWidth: propName.length * pxPerSymbol }
+                }), {}),
             });
         }
-        doc.save(`${fileName}.pdf`);
+        doc.save(`${TableExportService.getFileFullName(fileName)}.pdf`);
     }
 
     exportExcel(arrayOfItemsToWrite: any[], fileName: string): void {
@@ -40,6 +42,6 @@ export class TableExportService {
         const worksheet = XLSXManager.utils.json_to_sheet(arrayOfItemsToWrite);
         const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
         const excelBuffer = XLSXManager.write(workbook, { bookType: extension, type: 'array' });
-        TableExportService.saveAsExcelFile([excelBuffer], fileName, fileType, extension);
+        TableExportService.saveAsExcelFile([excelBuffer], TableExportService.getFileFullName(fileName), fileType, extension);
     }
 }
