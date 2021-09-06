@@ -17,7 +17,7 @@ import { AuthenticationService } from '@core/services/authentication.service';
 import { ProjectService } from '@core/services/project.service';
 import { map } from 'rxjs/operators';
 import { SpinnerService } from '@core/services/spinner.service';
-import { convertJsonToTileSettings } from '@core/utils/tile.utils';
+import { convertJsonToTileSettings, sortTilesByTileOrder } from '@core/utils/tile.utils';
 import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UpdateDashboardComponent } from '../modals/dashboard/update-dashboard.component';
@@ -36,7 +36,6 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     dashboard: Dashboard;
     updateSubscription$: Subscription;
     tiles: Tile[] = [];
-    tilesWithOrderBuffered: Tile[];
     tileTypes = TileType;
     projects: Project[] = [];
     updateDashboardDialog: DynamicDialogRef;
@@ -275,7 +274,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     }
 
     private revertTilesOrder() {
-        this.tiles = this.tiles.sort((t1, t2) => t1.tileOrder - t2.tileOrder);
+        this.tiles = sortTilesByTileOrder(this.tiles);
         this.isOrderChanged = false;
     }
 
@@ -285,6 +284,6 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
             oldTile.tileOrder = tile.tileOrder;
             return oldTile;
         });
-        this.tiles = this.tiles.sort((t1, t2) => t1.tileOrder - t2.tileOrder);
+        this.tiles = sortTilesByTileOrder(this.tiles);
     }
 }
