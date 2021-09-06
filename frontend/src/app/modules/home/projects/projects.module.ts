@@ -14,6 +14,7 @@ import { ReactComponent } from './edit/configure/configurations/react/react.comp
 import { JavascriptComponent } from './edit/configure/configurations/javascript/javascript.component';
 import { ProjectAnalyticsComponent } from './project-analytics/project-analytics.component';
 import { CodeComponent } from './edit/configure/code/code.component';
+import { IssuesModule } from '@shared/modules/issues/issues.module';
 
 @NgModule({
     declarations: [
@@ -33,7 +34,8 @@ import { CodeComponent } from './edit/configure/code/code.component';
     imports: [
         SharedModule,
         ProjectsRoutingModule,
-        HighlightModule
+        HighlightModule,
+        IssuesModule
     ]
 })
 export class ProjectsModule {
