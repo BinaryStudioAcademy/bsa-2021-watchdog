@@ -20,15 +20,16 @@ import { TableExportService } from '@core/services/table-export.service';
 import { IssueInfoExport } from '@shared/models/export/IssueInfoExport';
 import { IssueTableItem } from '@shared/models/issue/issue-table-item';
 import { Project } from '@shared/models/projects/project';
-import { IssueDetailsData } from '@shared/modules/issues/issue-details/data/issue-details-data';
 import { CountOfIssuesByStatus } from '@shared/models/issue/count-of-issues-by-status';
-import { IssueSelectDropdown } from '@shared/modules/issues/issue-details/data/models/issue-select-dropdown';
 import { IssueSelect } from '@shared/models/issue/enums/issue-select';
+import { IssueSelectDropdown } from '@shared/modules/issues/data/models/issue-select.dropdown';
+import { IssueDropdownDataService } from '@shared/modules/issues/data/issue-dropdown-data.service';
 
 @Component({
     selector: 'app-issues',
     templateUrl: './issues.component.html',
-    styleUrls: ['./issues.component.sass']
+    styleUrls: ['./issues.component.sass'],
+    providers: [IssueDropdownDataService]
 })
 export class IssuesComponent extends BaseComponent implements OnInit {
     @Input() project: Project;
@@ -51,7 +52,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     selected: IssueSelect = IssueSelect.Active;
     issueStatusDropdownItems: IssueSelectDropdown[] = [];
     first: number = 0;
-    private issueDetailsData: IssueDetailsData;
     private saveAssign: Assignee;
     private viewedAssignee = 3;
 
@@ -64,6 +64,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         private teamService: TeamService,
         private spinner: SpinnerService,
         private tableExportService: TableExportService,
+        private issueDropdownData: IssueDropdownDataService
     ) {
         super();
     }
@@ -256,7 +257,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     }
 
     private initIssueSelectDropdown() {
-        this.issueStatusDropdownItems = IssueDetailsData.getIssuesSelectDropdownItems();
+        this.issueStatusDropdownItems = this.issueDropdownData.getIssuesSelectDropdownItems();
     }
 
     private issuesToExportIssues(issuesToExport: IssueTableItem[]): IssueInfoExport[] {
