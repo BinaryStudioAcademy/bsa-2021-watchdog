@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Tile } from '@shared/models/tile/tile';
 import { Project } from '@shared/models/projects/project';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
@@ -23,6 +23,13 @@ import { HeatMapSettings } from '@shared/models/tile/settings/heat-map.settings'
 import { ChartType } from '@shared/models/charts/chart-type';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import { TileService } from '@core/services/tile.service';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
+import * as FileSaver from 'file-saver';
+import 'blob';
+import { ExportType } from '@shared/models/tile/enums/export-type';
+
+const JsPDF = jsPDF;
 
 @Component({
     selector: 'app-heat-map[tile][isShownEditTileMenu][userProjects]',
@@ -47,6 +54,7 @@ export class HeatMapComponent extends BaseComponent implements OnInit {
         domain: ['#146738', ' #2C9653', '#6CBA67', ' #A9D770',
             '#DBED91', '#FDDE90', '#FAAD67', '#EF6D49', '#D3342D', '#A10A28']
     };
+    @ViewChild('tiles') data: any;
 
     constructor(
         private toastNotificationService: ToastNotificationService,
@@ -65,6 +73,39 @@ export class HeatMapComponent extends BaseComponent implements OnInit {
     editTile() {
         this.tileDialogService.showHeatMapEditDialog(this.userProjects, this.tile,
             () => this.applySettings());
+    }
+
+    exportTile(exportType: ExportType) {
+        const data = this.data.host.nativeElement;
+        const smallPdf = 300;
+        const mediumPdf = 440;
+        const bigPdf = 880;
+        html2canvas(data).then(canvas => {
+            if (exportType === ExportType.Jpg) {
+                canvas.toBlob((blob) => {
+                    FileSaver.saveAs(blob, `${new Date().toLocaleString().replace(':', '_')}.jpg`);
+                });
+            }
+            if (exportType === ExportType.Png) {
+                canvas.toBlob((blob) => {
+                    FileSaver.saveAs(blob, `${new Date().toLocaleString().replace(':', '_')}.png`);
+                });
+            }
+            if (exportType === ExportType.Pdf) {
+                const contentDataURL = canvas.toDataURL('image/png', 1.0);
+                const pdf = new JsPDF('p', 'mm', 'a4');
+                if (data.clientWidth >= smallPdf && data.clientWidth <= mediumPdf) {
+                    pdf.addImage(contentDataURL, 'PNG', 60, 10, canvas.height / 6, 0);
+                }
+                if (data.clientWidth >= mediumPdf && data.clientWidth <= bigPdf) {
+                    pdf.addImage(contentDataURL, 'PNG', 35, 10, canvas.height / 4, 0);
+                }
+                if (data.clientWidth >= bigPdf) {
+                    pdf.addImage(contentDataURL, 'PNG', 0, 10, canvas.height / 2.7, 0);
+                }
+                pdf.save(`${new Date().toLocaleString().replace(':', '_')}.pdf`);
+            }
+        });
     }
 
     setTileDragStatus(status: boolean) {

@@ -1,9 +1,8 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Tile } from '@shared/models/tile/tile';
 import { Project } from '@shared/models/projects/project';
 import { TileService } from '@core/services/tile.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
-import { ConfirmWindowService } from '@core/services/confirm-window.service';
 import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
 import { IssueService } from '@core/services/issue.service';
 
@@ -25,11 +24,12 @@ import {
 } from '@core/utils/tile.utils';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import html2canvas from 'html2canvas';
-import { jsPDF } from "jspdf";
+import { jsPDF } from 'jspdf';
 import * as FileSaver from 'file-saver';
-import "blob";
-import { MenuItem } from 'primeng/api';
+import 'blob';
 import { ExportType } from '@shared/models/tile/enums/export-type';
+
+const JsPDF = jsPDF;
 
 @Component({
     selector: 'app-issues-per-time-tile[tile][isShownEditTileMenu][userProjects]',
@@ -42,8 +42,6 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
     @Input() userProjects: Project[] = [];
     @Output() isDeleting: EventEmitter<Tile> = new EventEmitter<Tile>();
     @Output() dragTile: EventEmitter<boolean> = new EventEmitter<boolean>();
-    @Input() menuTileExportItems: MenuItem[] = [];
-    @Input() selectedItem?: MenuItem;
     paginatorRows: number = 5;
     tileSettings: IssuesPerTimeSettings;
     requiredProjects: Project[] = [];
@@ -56,12 +54,11 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
 
     docDefinition: any;
 
-    @ViewChild('data') data: any;
+    @ViewChild('tiles') data: any;
 
     constructor(
         private tileService: TileService,
         private toastNotificationService: ToastNotificationService,
-        private confirmWindowService: ConfirmWindowService,
         private tileDialogService: TileDialogService,
         private issueService: IssueService,
     ) {
@@ -78,31 +75,37 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
             () => this.applySettings());
     }
 
-
-
-    exportTile() {
-        var data = this.data.host.nativeElement;
-        var datas = this.selectedItem;
-        debugger;
+    exportTile(exportType: ExportType) {
+        const data = this.data.host.nativeElement;
+        const smallPdf = 300;
+        const mediumPdf = 440;
+        const bigPdf = 880;
         html2canvas(data).then(canvas => {
-            if (this.selectedItem === ExportType.Jpg.toString()) {
-                canvas.toBlob(function(blob) {
+            if (exportType === ExportType.Jpg) {
+                canvas.toBlob((blob) => {
                     FileSaver.saveAs(blob, `${new Date().toLocaleString().replace(':', '_')}.jpg`);
-                })
+                });
             }
-            if (this.selectedItem === ExportType.Png) {
-                canvas.toBlob(function(blob) {
+            if (exportType === ExportType.Png) {
+                canvas.toBlob((blob) => {
                     FileSaver.saveAs(blob, `${new Date().toLocaleString().replace(':', '_')}.png`);
-                })
+                });
             }
-            if (this.selectedItem === ExportType.Pdf) {
+            if (exportType === ExportType.Pdf) {
                 const contentDataURL = canvas.toDataURL('image/png', 1.0);
-                let pdf = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
-                let newPdf = new jsPDF()
-                pdf.addImage(contentDataURL, 'PNG', 10, 10, canvas.height / 4, 0);
-                pdf.save('MYPdf.pdf');
+                const pdf = new JsPDF('p', 'mm', 'a4');
+                if (data.clientWidth >= smallPdf && data.clientWidth <= mediumPdf) {
+                    pdf.addImage(contentDataURL, 'PNG', 60, 10, canvas.height / 6, 0);
+                }
+                if (data.clientWidth >= mediumPdf && data.clientWidth <= bigPdf) {
+                    pdf.addImage(contentDataURL, 'PNG', 35, 10, canvas.height / 4, 0);
+                }
+                if (data.clientWidth >= bigPdf) {
+                    pdf.addImage(contentDataURL, 'PNG', 0, 10, canvas.height / 2.7, 0);
+                }
+                pdf.save(`${new Date().toLocaleString().replace(':', '_')}.pdf`);
             }
-        })
+        });
     }
 
     setTileDragStatus(status: boolean) {

@@ -19,7 +19,7 @@ export class TileHeaderComponent extends BaseComponent implements OnInit {
     @Input() tile: Tile;
     @Output() isDeleting: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() isEditing: EventEmitter<boolean> = new EventEmitter<boolean>();
-    @Output() isExporting: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() isExporting: EventEmitter<ExportType> = new EventEmitter<ExportType>();
     @Output() dragTile: EventEmitter<boolean> = new EventEmitter<boolean>();
     menuTileExportItems: MenuItem[] = [];
     selectedItem?: MenuItem;
@@ -98,23 +98,17 @@ export class TileHeaderComponent extends BaseComponent implements OnInit {
     }
 
     tileExportTypeSelected(item?: MenuItem): void {
-        debugger;
         switch (+item.id) {
             case ExportType.Jpg:
-                this.selectedItem = item;
-                debugger;
-                this.exportTile();
+                this.exportTile(+item.id);
                 break;
             case ExportType.Png:
-                this.selectedItem = item;
-                this.exportTile();
+                this.exportTile(+item.id);
                 break;
             case ExportType.Pdf:
-                this.selectedItem = item;
-                this.exportTile();
+                this.exportTile(+item.id);
                 break;
             default:
-                //this.selectedItem = undefined;
                 break;
         }
     }
@@ -142,8 +136,8 @@ export class TileHeaderComponent extends BaseComponent implements OnInit {
         ];
     }
 
-    exportTile() {
-        this.isExporting.emit(true);
+    exportTile(type: ExportType) {
+        this.isExporting.emit(type);
     }
 
     dragOn() {
