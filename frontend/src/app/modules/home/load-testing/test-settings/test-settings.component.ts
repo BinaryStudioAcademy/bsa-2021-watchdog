@@ -37,7 +37,6 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
     isNotFound = false;
     testId: number;
     contentTypes = contentTypes;
-    contentType = 'application/json';
     @ViewChild(InputTextarea) textarea: InputTextarea;
     getUrl = getUrl;
     haveBody = hasBody;
@@ -95,7 +94,8 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
                     x.body,
                     toKeyValuePairs(JSON.parse(x.headers)),
                     toKeyValuePairs(JSON.parse(x.parameters)),
-                    x.id
+                    x.id,
+                    JSON.parse(x.headers).contentType
                 ));
             }, () => {
                 this.isNotFound = true;
@@ -157,7 +157,8 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
         body = '{\n  "some": "body"\n}',
         headers = [{}],
         parameters = [{}],
-        id = undefined
+        id = undefined,
+        contentType = 'application/json'
     ): FormGroup {
         return new FormGroup({
             protocol: new FormControl(protocol, [Validators.required]),
@@ -168,7 +169,8 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
             parameters: new FormControl(parameters),
             body: new FormControl(body, [CustomValidators.json]),
             id: new FormControl(id),
-            collapsed: new FormControl(false)
+            collapsed: new FormControl(false),
+            contentType: new FormControl(contentType)
         });
     }
 
@@ -206,10 +208,10 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
         form.controls.parameters.setValue(parameters.filter(x => x !== kvp));
     }
 
-    handle(e: KeyboardEvent) {
-        if (this.contentType === 'application/json') {
+    handle(e: KeyboardEvent, form: FormGroup) {
+        if (form.controls.contentType.value === 'application/json') {
             this.handleJson(e);
-        } else if (this.contentType === 'application/xml') {
+        } else if (form.controls.contentType.value === 'application/xml') {
             this.handleXml(e);
         } else {
             this.handleCommon(e);
@@ -272,7 +274,7 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
         const { headers } = form.controls;
         if (hasBody(method)) {
             if (!headers.value.find(x => x.key === 'content-type')) {
-                headers.setValue([{ key: 'content-type', value: this.contentType }].concat(headers.value));
+                headers.setValue([{ key: 'content-type', value: form.controls.contentType.value }].concat(headers.value));
             }
         } else {
             headers.setValue(headers.value.filter(x => x.key !== 'content-type'));
@@ -280,17 +282,17 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
     }
 
     contentTypeChanged(value: string, form: FormGroup) {
-        if (this.contentType === 'application/json' && value === 'application/xml') {
-            form.controls.body.setValue(jsonToXml(this.textarea.el.nativeElement.value));
-        } else if (this.contentType === 'application/xml' && value === 'application/json') {
-            form.controls.body.setValue(xmlToJson(this.textarea.el.nativeElement.value));
+        if (form.controls.contentType.value === 'application/json' && value === 'application/xml') {
+            form.controls.body.setValue(jsonToXml(form.controls.body.value));
+        } else if (form.controls.contentType.value === 'application/xml' && value === 'application/json') {
+            form.controls.body.setValue(xmlToJson(form.controls.body.value));
         }
-        this.contentType = value;
-        form.controls.body.setValue(toPretty(this.textarea.el.nativeElement.value, this.contentType));
+        form.controls.contentType.setValue(value);
+        form.controls.body.setValue(toPretty(form.controls.body.value, form.controls.contentType.value));
         this.textarea.resize();
-        if (this.contentType === 'application/json') {
+        if (form.controls.contentType.value === 'application/json') {
             form.controls.body.setValidators([CustomValidators.json]);
-        } else if (this.contentType === 'application/xml') {
+        } else if (form.controls.contentType.value === 'application/xml') {
             form.controls.body.setValidators([CustomValidators.xml]);
         } else {
             form.controls.body.setValidators([]);
@@ -298,9 +300,9 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
         form.controls.body.updateValueAndValidity();
     }
 
-    pretty(e: Event) {
+    pretty(e: Event, form: FormGroup) {
         const textarea = e.target as HTMLTextAreaElement;
-        textarea.value = toPretty(textarea.value, this.contentType);
+        textarea.value = toPretty(textarea.value, form.controls.contentType.value);
         this.textarea.resize();
     }
 
@@ -330,18 +332,27 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
     private getTest() {
         const requests = this.requestGroups
             .map(x => x.value)
-            .map(x => ({
-                host: x.host,
-                path: x.path === '' ? undefined : x.path,
-                method: x.method.value,
-                protocol: x.protocol.value,
-                body: this.haveBody(x.method.value)
-                    ? JSON.stringify(JSON.parse(x.body))
-                    : undefined,
-                headers: JSON.stringify(toObject(x.headers)),
-                parameters: JSON.stringify(toObject(x.parameters)),
-                id: x.id
-            } as TestRequest));
+            .map(x => {
+                let body: string;
+                if (this.haveBody(x.method.value)) {
+                    if (x.contentType.value === 'application/json') {
+                        body = JSON.stringify(JSON.parse(x.body));
+                    } else {
+                        body = x.body;
+                    }
+                }
+
+                return {
+                    host: x.host,
+                    path: x.path === '' ? undefined : x.path,
+                    method: x.method.value,
+                    protocol: x.protocol.value,
+                    body,
+                    headers: JSON.stringify(toObject(x.headers)),
+                    parameters: JSON.stringify(toObject(x.parameters)),
+                    id: x.id
+                } as TestRequest;
+            });
         const test: Test = {
             ...this.settingsGroup.value,
             organizationId: this.member.organizationId,

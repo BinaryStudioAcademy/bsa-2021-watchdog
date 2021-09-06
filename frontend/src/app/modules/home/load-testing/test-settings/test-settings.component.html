@@ -298,9 +298,9 @@
                         pInputTextarea
                         placeholder="body"
                         type="textarea"
-                        (keydown)="handle($event)"
-                        (focusin)="pretty($event)"
-                        (focusout)="pretty($event)">
+                        (keydown)="handle($event, requestGroup)"
+                        (focusin)="pretty($event, requestGroup)"
+                        (focusout)="pretty($event, requestGroup)">
                     </textarea>
                 </form>
                 <div *ngIf="requestGroup.controls.body.invalid && (requestGroup.controls.body.dirty || requestGroup.controls.body.touched)"
