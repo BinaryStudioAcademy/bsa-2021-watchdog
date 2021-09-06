@@ -39,7 +39,7 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
     contentTypes = contentTypes;
     @ViewChild(InputTextarea) textarea: InputTextarea;
     getUrl = getUrl;
-    haveBody = hasBody;
+    hasBody = hasBody;
     constructor(
         private authService: AuthenticationService,
         private activatedRoute: ActivatedRoute,
@@ -334,7 +334,7 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
             .map(x => x.value)
             .map(x => {
                 let body: string;
-                if (this.haveBody(x.method.value)) {
+                if (this.hasBody(x.method.value)) {
                     if (x.contentType.value === 'application/json') {
                         body = JSON.stringify(JSON.parse(x.body));
                     } else {

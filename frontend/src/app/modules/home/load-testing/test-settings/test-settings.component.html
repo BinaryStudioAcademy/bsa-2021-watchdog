@@ -289,7 +289,7 @@
                     </div>
                 </div>
                 <!-- Body -->
-                <form *ngIf="haveBody(requestGroup.controls.method.value.label)" [formGroup]="requestGroup" class="body">
+                <form *ngIf="hasBody(requestGroup.controls.method.value.label)" [formGroup]="requestGroup" class="body">
                     <span class="title-block">Body</span>
                     <textarea
                         class="body-input"
