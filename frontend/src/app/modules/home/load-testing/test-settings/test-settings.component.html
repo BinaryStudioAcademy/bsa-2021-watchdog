@@ -1,7 +1,7 @@
 <!-- Header -->
 <div class="header">
-    <button class="p-button-outlined back-button" icon="pi pi-chevron-left " pButton pRipple
-        pTooltip="Back to Tests" routerLink="../../" tooltipPosition="bottom">
+    <button class="p-button-outlined back-button" icon="pi pi-chevron-left" pButton pRipple
+        pTooltip="Back to Tests" routerLink="/home/tests" tooltipPosition="bottom">
     </button>
     <h1 class="header-title">{{header}}</h1>
     <div class="buttons">
@@ -147,7 +147,8 @@
                             formControlName="method"
                             [options]="testMethodOptions"
                             optionLabel="label"
-                            styleClass="input">
+                            styleClass="input"
+                            (onChange)="changedMethod($event.value.value, requestGroup)">
                         </p-dropdown>
                         <div *ngIf="requestGroup.controls.protocol.invalid && (requestGroup.controls.protocol.dirty || requestGroup.controls.protocol.touched)" class="validation">
                             <small *ngIf="requestGroup.controls.protocol.errors.required">Сan not be empty</small>
@@ -190,84 +191,105 @@
                             class="input">
                     </div>
                 </form>
-                <!-- Headers -->
-                <span class="title-block">Headers</span>
-                <div class="header-block">
-                    <div class="key-value-block" *ngFor="let kvp of requestGroup.controls.headers.value">
-                        <div class="kvp-inputs">
-                            <div class="input-block">
-                                <input
-                                    [(ngModel)]="kvp.key"
-                                    pInputText
-                                    placeholder="header name"
-                                    type="text"
-                                    class="input">
+                <div class="block">
+                    <!-- Headers -->
+                    <div class="sub-block">
+                        <span class="title-block">Headers</span>
+                        <div class="header-block">
+                            <div class="key-value-block" *ngFor="let kvp of requestGroup.controls.headers.value">
+                                <div class="kvp-inputs" *ngIf="kvp.key === 'content-type'">
+                                    <div class="input-block content-type">
+                                        {{kvp.key}}
+                                    </div>
+                                    <div class="input-block">
+                                        <p-dropdown
+                                            [options]="contentTypes"
+                                            [(ngModel)]="kvp.value"
+                                            [editable]="true"
+                                            (onChange)="contentTypeChanged($event.value, requestGroup)"
+                                            styleClass="input">
+                                        </p-dropdown>
+                                    </div>
+                                </div>
+                                <div class="kvp-inputs" *ngIf="kvp.key !== 'content-type'">
+                                    <div class="input-block">
+                                        <input
+                                            [(ngModel)]="kvp.key"
+                                            pInputText
+                                            placeholder="header name"
+                                            type="text"
+                                            class="input">
+                                    </div>
+                                    <div class="input-block">
+                                        <input
+                                            [(ngModel)]="kvp.value"
+                                            pInputText
+                                            placeholder="value"
+                                            type="text"
+                                            class="input">
+                                    </div>
+                                </div>
+                                <button
+                                    [disabled]="kvp.key === 'content-type'"
+                                    class="p-button-raised p-button-text p-button-plain small-button"
+                                    icon="pi pi-trash"
+                                    pButton
+                                    (click)="deleteHeader(requestGroup, kvp)">
+                                </button>
                             </div>
-                            <div class="input-block">
-                                <input
-                                    [(ngModel)]="kvp.value"
-                                    pInputText
-                                    placeholder="value"
-                                    type="text"
-                                    class="input">
-                            </div>
+                            <button
+                                pButton
+                                pRipple
+                                class="p-button-secondary p-button-outlined"
+                                label="Header"
+                                icon="pi pi-plus"
+                                (click)="addHeader(requestGroup)">
+                            </button>
                         </div>
-                        <button
-                            class="p-button-raised p-button-text p-button-plain small-button"
-                            icon="pi pi-trash"
-                            pButton
-                            (click)="deleteHeader(requestGroup, kvp)">
-                        </button>
                     </div>
-                    <button
-                        pButton
-                        pRipple
-                        class="p-button-secondary p-button-outlined"
-                        label="Header"
-                        icon="pi pi-plus"
-                        (click)="addHeader(requestGroup)">
-                    </button>
-                </div>
-                <!-- Parameters -->
-                <span class="title-block">Parameters</span>
-                <div class="header-block">
-                    <div class="key-value-block" *ngFor="let kvp of requestGroup.controls.parameters.value">
-                        <div class="kvp-inputs">
-                            <div class="input-block">
-                                <input
-                                    [(ngModel)]="kvp.key"
-                                    pInputText
-                                    placeholder="param name"
-                                    type="text"
-                                    class="input">
+                    <!-- Parameters -->
+                    <div class="sub-block">
+                        <span class="title-block">Parameters</span>
+                        <div class="header-block">
+                            <div class="key-value-block" *ngFor="let kvp of requestGroup.controls.parameters.value">
+                                <div class="kvp-inputs">
+                                    <div class="input-block">
+                                        <input
+                                            [(ngModel)]="kvp.key"
+                                            pInputText
+                                            placeholder="param name"
+                                            type="text"
+                                            class="input">
+                                    </div>
+                                    <div class="input-block">
+                                        <input
+                                            [(ngModel)]="kvp.value"
+                                            pInputText
+                                            placeholder="value"
+                                            type="text"
+                                            class="input">
+                                    </div>
+                                </div>
+                                <button
+                                    class="p-button-raised p-button-text p-button-plain small-button"
+                                    icon="pi pi-trash"
+                                    pButton
+                                    (click)="deleteParameter(requestGroup, kvp)">
+                                </button>
                             </div>
-                            <div class="input-block">
-                                <input
-                                    [(ngModel)]="kvp.value"
-                                    pInputText
-                                    placeholder="value"
-                                    type="text"
-                                    class="input">
-                            </div>
+                            <button
+                                pButton
+                                pRipple
+                                class="p-button-secondary p-button-outlined"
+                                label="Parameter"
+                                icon="pi pi-plus"
+                                (click)="addParameter(requestGroup)">
+                            </button>
                         </div>
-                        <button
-                            class="p-button-raised p-button-text p-button-plain small-button"
-                            icon="pi pi-trash"
-                            pButton
-                            (click)="deleteParameter(requestGroup, kvp)">
-                        </button>
                     </div>
-                    <button
-                        pButton
-                        pRipple
-                        class="p-button-secondary p-button-outlined"
-                        label="Parameter"
-                        icon="pi pi-plus"
-                        (click)="addParameter(requestGroup)">
-                    </button>
                 </div>
                 <!-- Body -->
-                <form *ngIf="requestGroup.controls.method.value.label !== 'GET' && requestGroup.controls.method.value.label !== 'DELETE'" [formGroup]="requestGroup" class="body">
+                <form *ngIf="haveBody(requestGroup.controls.method.value.label)" [formGroup]="requestGroup" class="body">
                     <span class="title-block">Body</span>
                     <textarea
                         class="body-input"
@@ -283,8 +305,8 @@
                 </form>
                 <div *ngIf="requestGroup.controls.body.invalid && (requestGroup.controls.body.dirty || requestGroup.controls.body.touched)"
                     class="validation">
-                    <small *ngIf="requestGroup.controls.body.errors.invalidJson" class="p-error">
-                        {{requestGroup.controls.body.errors.invalidJson}}
+                    <small *ngIf="requestGroup.controls.body.errors.invalidFormat" class="p-error">
+                        {{requestGroup.controls.body.errors.invalidFormat}}
                     </small>
                 </div>
             </ng-container>

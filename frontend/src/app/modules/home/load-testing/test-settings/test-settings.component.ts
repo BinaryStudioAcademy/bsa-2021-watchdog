@@ -5,18 +5,20 @@ import { Member } from '@shared/models/member/member';
 import { ProjectService } from '@core/services/project.service';
 import { Project } from '@shared/models/projects/project';
 import { regexs } from '@shared/constants/regexs';
-import { FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { protocolOptions, typeOptions, methodOptions } from './test-settings.constant';
+import { protocolOptions, typeOptions, methodOptions, contentTypes } from './test-settings.constant';
 import { InputTextarea } from 'primeng/inputtextarea';
 import { TestRequest } from '@shared/models/test/test-request';
 import { KeyValuePair } from '@shared/models/key-value-pair';
 import { toKeyValuePairs, toObject } from '@core/utils/kvp.utils';
 import { TestService } from '@core/services/test.service';
+import * as CustomValidators from './test-settings.validators';
+import { getUrl, hasBody, toPretty, jsonToXml, xmlToJson } from './test-settings.utils';
 
 @Component({
     selector: 'app-test-settings',
@@ -34,7 +36,11 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
     projects: Project[];
     isNotFound = false;
     testId: number;
+    contentTypes = contentTypes;
+    contentType = 'application/json';
     @ViewChild(InputTextarea) textarea: InputTextarea;
+    getUrl = getUrl;
+    haveBody = hasBody;
     constructor(
         private authService: AuthenticationService,
         private activatedRoute: ActivatedRoute,
@@ -125,7 +131,7 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
                 '00:20',
                 [
                     Validators.required,
-                    this.validateTime
+                    CustomValidators.time
                 ]
             ),
             projectId: new FormControl(
@@ -135,60 +141,6 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
 
         this.requestGroups = [this.generateRequestGroup()];
     }
-    generateRequestGroup(
-        protocol = protocolOptions[0],
-        host = '',
-        path = '',
-        method = methodOptions[0],
-        body = '{\n  "json": "body"\n}',
-        headers = [{}],
-        parameters = [{}],
-        id = undefined
-    ): FormGroup {
-        return new FormGroup({
-            protocol: new FormControl(
-                protocol,
-                [
-                    Validators.required,
-                ]
-            ),
-            host: new FormControl(
-                host,
-                [
-                    Validators.required,
-                ]
-            ),
-            path: new FormControl(path),
-            method: new FormControl(
-                method,
-                [
-                    Validators.required,
-                ]
-            ),
-            headers: new FormControl(headers),
-            parameters: new FormControl(parameters),
-            body: new FormControl(
-                body,
-                [
-                    this.validateJson
-                ]
-            ),
-            id: new FormControl(id),
-            collapsed: new FormControl(false)
-        });
-    }
-
-    validateJson = (control: AbstractControl) => {
-        if (control.value === '') {
-            return null;
-        }
-        try {
-            JSON.parse(control.value);
-        } catch (error) {
-            return { invalidJson: error.message };
-        }
-        return null;
-    };
 
     initProjects() {
         return this.projectService.getProjectsByOrganizationId(this.member.organizationId)
@@ -197,23 +149,39 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
             }));
     }
 
+    generateRequestGroup(
+        protocol = protocolOptions[0],
+        host = '',
+        path = '',
+        method = methodOptions[0],
+        body = '{\n  "some": "body"\n}',
+        headers = [{}],
+        parameters = [{}],
+        id = undefined
+    ): FormGroup {
+        return new FormGroup({
+            protocol: new FormControl(protocol, [Validators.required]),
+            host: new FormControl(host, [Validators.required]),
+            path: new FormControl(path),
+            method: new FormControl(method, [Validators.required]),
+            headers: new FormControl(headers),
+            parameters: new FormControl(parameters),
+            body: new FormControl(body, [CustomValidators.json]),
+            id: new FormControl(id),
+            collapsed: new FormControl(false)
+        });
+    }
+
     get name() { return this.settingsGroup.controls.name; }
     get type() { return this.settingsGroup.controls.type; }
     get clients() { return this.settingsGroup.controls.clients; }
     get duration() { return this.settingsGroup.controls.duration; }
 
-    validateTime = (control: AbstractControl) => {
-        const radix = 10;
-        const [minutes, seconds] = (control.value as string).split(':').map(x => parseInt(x, radix));
-        if (minutes > 59 || seconds > 59) {
-            return { invalidTime: true };
-        }
-        return null;
-    };
-
     addRequest() {
+        this.requestGroups.forEach(g => g.controls.collapsed.setValue(true));
         this.requestGroups = this.requestGroups.concat(this.generateRequestGroup());
     }
+
     deleteRequest(form: FormGroup) {
         this.requestGroups = this.requestGroups.filter(x => x !== form);
     }
@@ -236,15 +204,6 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
     deleteParameter(form: FormGroup, kvp: KeyValuePair) {
         const parameters = form.controls.parameters.value;
         form.controls.parameters.setValue(parameters.filter(x => x !== kvp));
-    }
-
-    getUrl(form: FormGroup) {
-        const protocol = form.controls.protocol.value.label;
-        const host = form.controls.host.value;
-        const path = !form.controls.path.value ? '' : `/${form.controls.path.value}`;
-        const params = form.controls.parameters.value as KeyValuePair[];
-        const paramsString = params[0]?.key ? `?${params.filter(x => x.key).map(x => `${x.key}=${x.value ?? ''}`).join('&')}` : '';
-        return `${protocol}://${host === '' ? 'example.com' : host}${path}${paramsString}`;
     }
 
     handle(e: KeyboardEvent) {
@@ -307,13 +266,39 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
         this.textarea.resize();
     }
 
+    changedMethod(method: TestMethod, form: FormGroup) {
+        const { headers } = form.controls;
+        if (hasBody(method)) {
+            if (!headers.value.find(x => x.key === 'content-type')) {
+                headers.setValue([{ key: 'content-type', value: this.contentType }].concat(headers.value));
+            }
+        } else {
+            headers.setValue(headers.value.filter(x => x.key !== 'content-type'));
+        }
+    }
+
+    contentTypeChanged(value: string, form: FormGroup) {
+        if (this.contentType === 'application/json' && value === 'application/xml') {
+            form.controls.body.setValue(jsonToXml(this.textarea.el.nativeElement.value));
+        } else if (this.contentType === 'application/xml' && value === 'application/json') {
+            form.controls.body.setValue(xmlToJson(this.textarea.el.nativeElement.value));
+        }
+        this.contentType = value;
+        form.controls.body.setValue(toPretty(this.textarea.el.nativeElement.value, this.contentType));
+        this.textarea.resize();
+        if (this.contentType === 'application/json') {
+            form.controls.body.setValidators([CustomValidators.json]);
+        } else if (this.contentType === 'application/xml') {
+            form.controls.body.setValidators([CustomValidators.xml]);
+        } else {
+            form.controls.body.setValidators([]);
+        }
+        form.controls.body.updateValueAndValidity();
+    }
+
     pretty(e: Event) {
         const textarea = e.target as HTMLTextAreaElement;
-        try {
-            textarea.value = JSON.stringify(JSON.parse(textarea.value), null, 2);
-        } catch {
-            this.textarea.resize();
-        }
+        textarea.value = toPretty(textarea.value, this.contentType);
         this.textarea.resize();
     }
 
@@ -348,7 +333,7 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
                 path: x.path === '' ? undefined : x.path,
                 method: x.method.value,
                 protocol: x.protocol.value,
-                body: x.method.value !== TestMethod.Get && x.method.value !== TestMethod.Delete
+                body: this.haveBody(x.method.value)
                     ? JSON.stringify(JSON.parse(x.body))
                     : undefined,
                 headers: JSON.stringify(toObject(x.headers)),
