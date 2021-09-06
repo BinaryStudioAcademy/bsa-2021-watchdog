@@ -31,6 +31,9 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
                      v => v,
                      v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
                      );
+
+            builder.HasMany(a => a.Recipients)
+                   .WithMany("AlertSubscriptions");
         }
     }
 }
