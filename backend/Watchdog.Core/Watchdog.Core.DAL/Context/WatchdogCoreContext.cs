@@ -37,6 +37,10 @@ namespace Watchdog.Core.DAL.Context
 
         public DbSet<AssigneeTeam> AssigneeTeams { get; private set; }
 
+        public DbSet<LoaderTest> LoaderTests { get; private set; }
+
+        public DbSet<LoaderRequest> LoaderRequests { get; private set; }
+
         public WatchdogCoreContext(DbContextOptions<WatchdogCoreContext> options) : base(options)
         {
         }

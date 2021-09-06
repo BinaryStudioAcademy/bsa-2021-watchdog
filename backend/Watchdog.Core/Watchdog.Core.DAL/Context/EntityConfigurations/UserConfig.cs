@@ -23,9 +23,6 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
                    .HasMaxLength(128)
                    .IsRequired();
 
-            builder.Property(u => u.AvatarUrl)
-                   .HasMaxLength(256);
-
             builder.HasMany(u => u.CreatedMembers)
                    .WithOne(m => m.CreatedByUser)
                    .HasForeignKey(m => m.CreatedBy)
@@ -60,6 +57,7 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
                    .WithOne(t => t.User)
                    .HasForeignKey(d => d.CreatedBy)
                    .OnDelete(DeleteBehavior.SetNull);
+
 
             builder.Property(u => u.RegisteredAt)
                    .HasConversion(

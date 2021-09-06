@@ -18,6 +18,7 @@ export class TileHeaderComponent extends BaseComponent implements OnInit {
     @Output() isDeleting: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() isEditing: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() isExporting: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() dragTile: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     formGroup: FormGroup;
     isShownTileMenu: boolean;
@@ -93,6 +94,14 @@ export class TileHeaderComponent extends BaseComponent implements OnInit {
 
     exportTile() {
         this.isExporting.emit(true);
+    }
+
+    dragOn() {
+        this.dragTile.emit(true);
+    }
+
+    dragOff() {
+        this.dragTile.emit(false);
     }
 
     private resetFormGroup() {

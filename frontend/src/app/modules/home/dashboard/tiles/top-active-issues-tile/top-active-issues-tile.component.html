@@ -1,5 +1,5 @@
 <div class="container">
-    <app-tile-header (isDeleting)="isDeleting.emit(tile)" (isEditing)="editTile()"
+    <app-tile-header (dragTile)="setTileDragStatus($event)" (isDeleting)="isDeleting.emit(tile)" (isEditing)="editTile()"
                      [isShownEditTileMenu]="isShownEditTileMenu" [tile]="tile"></app-tile-header>
     <!--    Issues Table    -->
     <div class="table">

@@ -1,153 +1,198 @@
+<!--    Title    -->
 <div class="title">
-    <div>
-        Issues
-    </div>
+    <span>Issues</span>
 </div>
-<div class="issues-content">
-    <p-tabView styleClass="tabview-custom">
+<!--    Main content    -->
+<p-tabView (onChange)="onSelectedTab($event.index)" styleClass="tabview-custom">
+    <!--    Tabs    -->
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <span>Active</span>
+            <p-badge [value]="issuesCount.active?.toString()" styleClass="count-badge active"></p-badge>
+        </ng-template>
+    </p-tabPanel>
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <span>Resolved</span>
+            <p-badge [value]="issuesCount.resolved?.toString()" severity="success" styleClass="count-badge"></p-badge>
+        </ng-template>
+    </p-tabPanel>
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <span>Ignored</span>
+            <p-badge [value]="issuesCount.ignored?.toString()" severity="info" styleClass="count-badge"></p-badge>
+        </ng-template>
+    </p-tabPanel>
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <span>All</span>
+            <p-badge [value]="issuesCount.all?.toString()" severity="warning" styleClass="count-badge"></p-badge>
+        </ng-template>
+    </p-tabPanel>
 
-        <div class="functional-bar">
-            <div class="search-block p-inputgroup">
-                <span class="p-inputgroup-addon search-button"><i class="pi pi-search"></i></span>
-                <input
-                    (input)="table.filterGlobal({value: $event.target.value, fields: globalFilterFields }, 'contains')"
-                    name="search"
-                    pInputText
-                    placeholder="Search"
-                    type="text">
-            </div>
+    <!--    Tools    -->
+    <div class="functional-bar">
+        <!--    Search    -->
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon button-pointer">
+                <i class="pi pi-search"></i>
+            </span>
+            <input
+                (input)="table.filterGlobal({value: $event.target['value'], fields: globalFilterFields }, 'contains')"
+                name="search" pInputText placeholder="Search" type="text">
         </div>
+        <!--    Export    -->
+        <div class="action-block">
+                <span (click)="exportExcel()" class="p-inputgroup-addon button-pointer"
+                      pTooltip="{{selectedIssues.length ? 'Export selected to Excel' : 'Export to Excel'}}"
+                      tooltipPosition="top" tooltipStyleClass="tooltip-text">
+                    <i class="pi pi-file-excel"></i>
+                </span>
+            <span (click)="exportPdf()" class="p-inputgroup-addon button-pointer"
+                  pTooltip="{{selectedIssues.length ? 'Export selected to PDF' : 'Export to PDF'}}"
+                  tooltipPosition="top" tooltipStyleClass="tooltip-text">
+                    <i class="pi pi-file-pdf"></i>
+                </span>
+        </div>
+    </div>
 
-        <p-tabPanel>
-            <ng-template pTemplate="header">
-                <div class="header">
-                    <span>All</span>
-                    <p-badge *ngIf="totalRecords" [value]="totalRecords?.toString()"></p-badge>
-                </div>
+    <!--    Table    -->
+    <div class="table">
+        <p-table
+            #table
+            (onLazyLoad)="loadIssuesLazy($event)"
+            [(first)]="first"
+            [lazy]="true"
+            [paginator]="totalRecords > itemsPerPage"
+            [resizableColumns]="true"
+            [rows]="itemsPerPage"
+            [sortOrder]="-1"
+            [totalRecords]="totalRecords"
+            [value]="issues"
+            sortField="occurredOn">
+            <ng-template pTemplate="colgroup">
+                <!--    Column width    -->
+                <colgroup>
+                    <col id="issue-col">
+                    <col id="events-col">
+                    <col id="project-col">
+                    <col id="users-col">
+                    <col id="assignee-col">
+                </colgroup>
             </ng-template>
-
-            <p-table
-                #table
-                (onLazyLoad)="loadIssuesLazy($event)"
-                [autoLayout]="true"
-                [lazy]="true"
-                [paginator]="totalRecords > itemsPerPage"
-                [resizableColumns]="true"
-                [rows]="itemsPerPage"
-                [totalRecords]="totalRecords"
-                [value]="issues"
-                class="issues-table">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th class="name" pSortableColumn="newest.occurredOn">
-                            <div class="issue">
-                                <p-checkbox (onChange)="selectAll($event)" name="allIssues"></p-checkbox>
-                                <span>Issue <p-sortIcon field="newest.occurredOn"></p-sortIcon>
-                                </span>
-                                <p-columnFilter
-                                    [showAddButton]="false"
-                                    [showOperator]="false"
-                                    display="menu"
-                                    field="errorClass"
-                                    type="text">
-                                </p-columnFilter>
-                            </div>
-                        </th>
-                        <th class="center" pSortableColumn="eventsCount">
-                            <span>Events <p-sortIcon field="eventsCount">
-                                </p-sortIcon>
-                            </span>
-                        </th>
-                        <th class="center" pSortableColumn="project.name">
-                            <span>Project <p-sortIcon field="project.name">
-                                </p-sortIcon>
-                            </span>
-                        </th>
-                        <th class="center"><span>Assignee</span></th>
-                    </tr>
-                </ng-template>
-                <ng-template let-issue pTemplate="body">
-                    <tr>
-                        <td>
-                            <div class="issue-block">
-                                <p-checkbox [(ngModel)]="selectedIssues" [value]="issue" name="selectedIssues">
-                                </p-checkbox>
-                                <div class="content">
-                                    <span class="name"
-                                          routerLink="/home/issues/{{issue.issueId}}/{{issue.newest.id}}">{{issue.errorClass}}</span>
-                                    <span appTooltipFullName class="description">{{issue.errorMessage}}</span>
-                                    <div class="additional-info">
-                                        <ng-container [ngSwitch]="issue.status">
-                                            <p-tag *ngSwitchCase="IssueStatus.Active" [rounded]="true" styleClass="active-tag"
-                                                   value="active"></p-tag>
-                                            <p-tag *ngSwitchCase="IssueStatus.Resolved" [rounded]="true"
-                                                   severity="success" value="resolved"></p-tag>
-                                            <p-tag *ngSwitchCase="IssueStatus.Ignored" [rounded]="true" severity="info"
-                                                   value="ignored"></p-tag>
-                                        </ng-container>
-                                        <div class="tooltip">
-                                            <span><i class="pi pi-clock time-icon"></i>{{issue.newest.occurredOn |
-                                                timeAgo}}</span>
-                                            <span
-                                                class="tooltip-text">{{issue.newest.occurredOn | date:'MMMM d, y h:mma'}}</span>
-                                        </div>
+            <ng-template pTemplate="header">
+                <!--    Table header    -->
+                <tr class="table-head">
+                    <th pSortableColumn="occurredOn">
+                        <div class="table-head-issue">
+                            <p-checkbox (onChange)="selectAll($event)" name="allIssues"
+                                        styleClass="table-head-issue-checkbox"></p-checkbox>
+                            <span>Issue</span>
+                            <p-sortIcon field="occurredOn"></p-sortIcon>
+                            <p-columnFilter
+                                [showAddButton]="false"
+                                [showOperator]="false"
+                                class="filter-button"
+                                display="menu"
+                                field="errorClass"
+                                type="text">
+                            </p-columnFilter>
+                        </div>
+                    </th>
+                    <th pSortableColumn="eventsCount">
+                        <div class="table-head-events">
+                            <span>Events</span>
+                            <p-sortIcon field="eventsCount"></p-sortIcon>
+                        </div>
+                    </th>
+                    <th pSortableColumn="projectName">
+                        <div class="table-head-project">
+                            <span>Project</span>
+                            <p-sortIcon field="projectName"></p-sortIcon>
+                        </div>
+                    </th>
+                    <th pSortableColumn="affectedUsersCount">
+                        <div class="table-head-users">
+                            <span>Users</span>
+                            <p-sortIcon field="affectedUsersCount"></p-sortIcon>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="table-head-assignee">
+                            <span>Assignee</span>
+                        </div>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template let-issue pTemplate="body">
+                <!--    Table content    -->
+                <tr class="table-content">
+                    <td>
+                        <div class="table-content-issue">
+                            <p-checkbox [(ngModel)]="selectedIssues" [value]="issue" name="selectedIssues"></p-checkbox>
+                            <div class="table-content-issue-grid">
+                                    <span appTooltipFullName class="error-class"
+                                          routerLink="/home/issues/{{issue.issueId}}/{{issue.newestId}}">
+                                        {{issue.errorClass}}
+                                    </span>
+                                <span appTooltipFullName class="error-message">{{issue.errorMessage}}</span>
+                                <div class="additional-info">
+                                    <ng-container [ngSwitch]="issue.status">
+                                        <p-tag *ngSwitchCase="IssueStatus.Active" [rounded]="true"
+                                               styleClass="active" value="active"></p-tag>
+                                        <p-tag *ngSwitchCase="IssueStatus.Resolved" [rounded]="true"
+                                               severity="success" value="resolved"></p-tag>
+                                        <p-tag *ngSwitchCase="IssueStatus.Ignored" [rounded]="true"
+                                               severity="info" value="ignored"></p-tag>
+                                    </ng-container>
+                                    <div class="time">
+                                            <span pTooltip="{{issue.occurredOn | date:'MMMM d, y h:mma'}}"
+                                                  tooltipPosition="right" tooltipStyleClass="tooltip-text">
+                                                <i class="pi pi-clock time-icon"></i>
+                                                {{issue.occurredOn | timeAgo}}
+                                            </span>
                                     </div>
                                 </div>
                             </div>
-                        </td>
-                        <td>{{issue.eventsCount}}</td>
-                        <td>{{issue.project.name}}</td>
-                        <td>
-                            <div (click)="openAssign(issue)" class="assignee">
-                                <p-avatarGroup styleClass="p-mb-3">
-                                    <p-avatar *ngIf="getNumberAssignee(issue?.assignee) === 0" icon="pi pi-user"
-                                              shape="circle"></p-avatar>
-                                    <p-avatar
-                                        *ngFor="let user of getUsers(issue?.assignee)"
-                                        [image]="user.avatarUrl"
-                                        [label]="user.avatarUrl ? '' : user | userInitials"
-                                        shape="circle">
-                                    </p-avatar>
-                                    <p-avatar *ngFor="let label of getTeamsLabels(issue?.assignee)" [label]="label"
-                                              shape="circle"></p-avatar>
-                                    <p-avatar *ngIf="getNumberAssignee(issue?.assignee) > 3"
-                                              [label]="getNumberExtraAssignee(issue?.assignee)"
-                                              shape="circle"></p-avatar>
-                                </p-avatarGroup>
-                                <i class="pi pi-chevron-down"></i>
-                            </div>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
+                        </div>
+                    </td>
+                    <td>
+                        <span appTooltipFullName class="table-content-events">{{issue.eventsCount}}</span>
+                    </td>
+                    <td>
+                        <span appTooltipFullName class="table-content-project"
+                              routerLink="/home/projects/edit/{{issue.projectId}}">{{issue.projectName}}
+                        </span>
+                    </td>
+                    <td>
+                        <span appTooltipFullName class="table-content-users">{{issue.affectedUsersCount}}</span>
+                    </td>
+                    <td>
+                        <div (click)="openAssign(issue)" class="table-content-assignee">
+                            <p-avatarGroup>
+                                <p-avatar *ngIf="!getNumberAssignee(issue?.assignee)" icon="pi pi-user" shape="circle">
+                                </p-avatar>
+                                <p-avatar
+                                    *ngFor="let user of getUsers(issue?.assignee)"
+                                    [image]="user.avatarUrl"
+                                    [label]="user.avatarUrl ? '' : user | userInitials"
+                                    shape="circle">
+                                </p-avatar>
+                                <p-avatar *ngFor="let label of getTeamsLabels(issue?.assignee)" [label]="label"
+                                          shape="circle"></p-avatar>
+                                <p-avatar *ngIf="getNumberAssignee(issue?.assignee) > 3"
+                                          [label]="getNumberExtraAssignee(issue?.assignee)"
+                                          shape="circle"></p-avatar>
+                            </p-avatarGroup>
+                            <i class="pi pi-chevron-down"></i>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</p-tabView>
 
-        </p-tabPanel>
-        <p-tabPanel [cache]="false" [disabled]="true">
-            <ng-template pTemplate="header">
-                <div class="header">
-                    <span>Active</span>
-                    <p-badge *ngIf="issuesCount.active" [value]="issuesCount.active.toString()"></p-badge>
-                </div>
-            </ng-template>
-        </p-tabPanel>
-        <p-tabPanel [disabled]="true">
-            <ng-template pTemplate="header">
-                <div class="header">
-                    <span>Resolved</span>
-                    <p-badge *ngIf="issuesCount.resolved" [value]="issuesCount.resolved.toString()"></p-badge>
-                </div>
-            </ng-template>
-        </p-tabPanel>
-        <p-tabPanel [disabled]="true">
-            <ng-template pTemplate="header">
-                <div class="header">
-                    <span>Ignored</span>
-                    <p-badge *ngIf="issuesCount.ignored" [value]="issuesCount.ignored.toString()"></p-badge>
-                </div>
-            </ng-template>
-        </p-tabPanel>
-    </p-tabView>
-</div>
 <app-assignee (closeModal)="closeAssign()" *ngIf="isAssign" [data]="toAssign"
               [members]="sharedOptions.members" [teams]="sharedOptions.teams">
 </app-assignee>

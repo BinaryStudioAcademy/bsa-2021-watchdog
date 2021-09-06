@@ -1,12 +1,19 @@
 <div class="header">
     <div class="header-title">
         <!--    Default title    -->
+        <div class="button-replace">
+        <button *ngIf="!isEditName && isShownTileMenu" (mousedown)="dragOn()" (mouseup)="dragOff()"
+            class="p-button-raised p-button-text p-button-plain" icon="pi pi-th-large" pButton>
+        </button>
+        </div>
         <span *ngIf="!isEditName || !isShownTileMenu">{{tile.name}}</span>
+
         <button (click)="toggleNameEditor()" *ngIf="!isEditName && isShownTileMenu"
                 class="p-button-raised p-button-text p-button-plain"
                 icon="pi pi-pencil" pButton></button>
         <!--    Title When Edit    -->
         <ng-container *ngIf="isEditName && isShownTileMenu" [formGroup]="formGroup">
+
             <input [tooltipDisabled]="!formGroup.controls.name.errors"
                    autofocus class="input-text" formControlName="name"
                    pInputText pTooltip="At least 3 characters but no more than 50. May contain lowercase

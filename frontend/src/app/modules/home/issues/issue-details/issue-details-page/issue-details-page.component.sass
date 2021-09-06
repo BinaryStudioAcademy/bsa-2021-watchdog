@@ -8,19 +8,22 @@
     align-items: center
     justify-content: space-between
     white-space: nowrap
+    position: relative
 
     .left-side
         display: flex
         align-items: center
+        width: calc(100% - 150px)
 
         .back-button
             margin-right: .2em
             border: none
             border-radius: 100%
+            min-width: 32px
 
         h2
             @include text-overflow-x-nowrap
-            max-width: 450px
+            max-width: 100%
             cursor: default
 
 
@@ -61,3 +64,20 @@
         .p-tabview-nav
             flex-wrap: nowrap
             white-space: nowrap
+
+.link-field
+    width: 45%
+
+td
+    a
+        @include text-overflow-x-nowrap
+        overflow-x: clip
+        white-space: nowrap
+        text-overflow: ellipsis
+        display: block
+        text-decoration: none
+        color: $text-color
+        cursor: pointer
+        &:hover
+            color: $text-hover-color
+            

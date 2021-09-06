@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Watchdog.Core.Common.DTO.Avatar;
 using Watchdog.Core.Common.DTO.User;
 
 namespace Watchdog.Core.BLL.Services.Abstract
@@ -18,6 +19,10 @@ namespace Watchdog.Core.BLL.Services.Abstract
 
         Task<bool> IsUserEmailValid(string userEmail);
 
+
+        Task UpdateUserAvatarAsync(AvatarDto data);
+
         Task<ICollection<string>> GetUserUidsByApplicationUidAsync(string applicationUid);
+
     }
 }

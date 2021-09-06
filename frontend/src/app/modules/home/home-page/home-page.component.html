@@ -10,7 +10,7 @@
             <button class="p-button-outlined sign-in-button" label="Sign in" pButton pRipple type="button"></button>
         </div>
         <div *ngIf="user" class="user-info">
-            <img [src]="user.avatarUrl ?? 'assets\\avatar.png'" alt="Avatar" class="user-avatar">
+            <img [src]="user.avatarUrl ?? 'assets\\avatar.png' | save" alt="Avatar" class="user-avatar">
             <div (click)="menu.toggle($event)" class="user-name">{{user.firstName}} {{user.lastName}}</div>
             <p-menu #menu [model]="userItems" [popup]="true"></p-menu>
         </div>
@@ -20,37 +20,21 @@
         <app-organization-menu [collapsed]="collapsed" class="sidebar-avatar"></app-organization-menu>
         <!--    Sidebar buttons    -->
         <div class="sidebar-top">
-            <!--    Members button    -->
-            <div>
-                <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Members' : undefined}}"
-                    routerLink="members">
-                    <i class="pi pi-user"></i>
-                    <span *ngIf="!collapsed">Members</span>
-                </button>
-            </div>
-            <!--    Teams button    -->
-            <div>
-                <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Teams' : undefined}}"
-                    routerLink="teams">
-                    <i class="pi pi-users"></i>
-                    <span *ngIf="!collapsed">Teams</span>
-                </button>
-            </div>
-            <!--    Projects button    -->
-            <div>
-                <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Projects' : undefined}}"
-                    routerLink="projects">
-                    <i class="pi pi-file"></i>
-                    <span *ngIf="!collapsed">Projects</span>
-                </button>
-            </div>
-
             <!--    Issues button    -->
             <div>
                 <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Issues' : undefined}}"
                     routerLink="issues">
                     <i class="pi pi-exclamation-circle"></i>
                     <span *ngIf="!collapsed">Issues</span>
+                </button>
+            </div>
+
+            <!--    Tests button    -->
+            <div>
+                <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Tests' : undefined}}"
+                    routerLink="tests">
+                    <i class="pi pi-sitemap"></i>
+                    <span *ngIf="!collapsed">Tests</span>
                 </button>
             </div>
             <!--    Dashboards button    -->
@@ -87,6 +71,30 @@
                     <span *ngIf="!collapsed">Add</span>
                 </button>
             </div>
+             <!--    Members button    -->
+             <div>
+                <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Members' : undefined}}"
+                    routerLink="members">
+                    <i class="pi pi-user"></i>
+                    <span *ngIf="!collapsed">Members</span>
+                </button>
+            </div>
+            <!--    Teams button    -->
+            <div>
+                <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Teams' : undefined}}"
+                    routerLink="teams">
+                    <i class="pi pi-users"></i>
+                    <span *ngIf="!collapsed">Teams</span>
+                </button>
+            </div>
+            <!--    Projects button    -->
+            <div>
+                <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Projects' : undefined}}"
+                    routerLink="projects">
+                    <i class="pi pi-file"></i>
+                    <span *ngIf="!collapsed">Projects</span>
+                </button>
+            </div>
             <!--    Setting button    -->
             <div>
                 <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Settings' : undefined}}"
@@ -117,3 +125,5 @@
         </div>
     </div>
 </div>
+
+<app-create-organization [(display)]="display" (organizationCreate)="changeOrganization($event)"></app-create-organization>

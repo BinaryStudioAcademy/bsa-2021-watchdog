@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
+using Watchdog.Core.Common.DTO.Avatar;
 using Watchdog.Core.Common.DTO.Organization;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
@@ -54,7 +55,8 @@ namespace Watchdog.Core.BLL.Services
                 CreatedAt = DateTime.UtcNow,
                 Organization = organization,
                 Role = roles.First(r => r.Name.ToLower() == "owner"),
-                IsAccepted = true
+                IsAccepted = true,
+                IsApproved = true
             };
             await _context.Members.AddAsync(member);
 
@@ -90,7 +92,7 @@ namespace Watchdog.Core.BLL.Services
         public async Task<ICollection<OrganizationDto>> GetUserOrganizationsAsync(int userId)
         {
             var organizaitons = await _context.Organizations
-                .Where(o => o.Members.Any(m => m.User.Id == userId))
+                .Where(o => o.Members.Any(m => (m.User.Id == userId) && m.IsApproved))
                 .ToListAsync();
 
             return _mapper.Map<ICollection<OrganizationDto>>(organizaitons);
@@ -105,13 +107,14 @@ namespace Watchdog.Core.BLL.Services
                     .ThenInclude(tm => tm.TeamMembers)
                 .Include(m => m.Members)
                     .ThenInclude(tm => tm.TeamMembers)
+                .Include(o => o.LoaderTests)
                 .FirstOrDefaultAsync(o => o.Id == organizationId) ?? throw new KeyNotFoundException("Organization doesn't exist");
 
             _context.Organizations.Remove(organization);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> IsOrganizationSlugValid(string organizationSlug)
+        public async Task<bool> IsOrganizationSlugValidAsync(string organizationSlug)
         {
             var reg = new Regex(@"^[\w\-]+$");
             if (organizationSlug.Length > 50 || organizationSlug.Length < 3 || !reg.IsMatch(organizationSlug))
@@ -119,7 +122,16 @@ namespace Watchdog.Core.BLL.Services
                 return false;
             }
 
-            return !(await _context.Organizations.ToListAsync()).Any(o => o.OrganizationSlug == organizationSlug);
+            return !(await _context.Organizations.AnyAsync(o => o.OrganizationSlug == organizationSlug));
         }
+
+        public async Task<OrganizationDto> UpdateOrganizationAvatarAsync(AvatarDto data)
+        {
+            var organization = await _context.Organizations.FirstOrDefaultAsync(o => o.Id == data.Id) ?? throw new KeyNotFoundException("Organization is not found!");
+            organization.AvatarUrl = data.AvatarUrl;
+            await _context.SaveChangesAsync();
+            return _mapper.Map<OrganizationDto>(organization);
+        }
+
     }
 }

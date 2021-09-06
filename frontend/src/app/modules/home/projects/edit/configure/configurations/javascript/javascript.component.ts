@@ -1,3 +1,4 @@
+import { setUser } from '../npm-constants';
 import { Component, OnInit } from '@angular/core';
 import { BaseConfigurationComponent } from '../base-configuration.component';
 import { index } from './javascript.constants';
@@ -9,7 +10,12 @@ import { index } from './javascript.constants';
 })
 export class JavascriptComponent extends BaseConfigurationComponent implements OnInit {
     index: string;
+    install: string;
+    setUser: string;
+
     ngOnInit(): void {
         this.index = index(this.apiKey);
+        this.install = 'npm install --save @watchdog-bsa/watchdog-js';
+        this.setUser = setUser;
     }
 }

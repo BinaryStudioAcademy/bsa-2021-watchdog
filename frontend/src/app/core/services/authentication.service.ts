@@ -15,13 +15,15 @@ import { Organization } from '@shared/models/organization/organization';
 import { UserService } from './user.service';
 import { RegistrationService } from './registration.service';
 import { OrganizationService } from './organization.service';
+import { FullRegistrationWithJoinDto } from '@modules/registration/DTO/full-registration-with-join-dto';
+import { PartialRegistratioWithJoinDto } from '@modules/registration/DTO/partial-registration-with-join';
+import * as Watchdog from '@watchdog-bsa/watchdog-js';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthenticationService {
     private static user: User;
-    private static member: Member;
     private readonly tokenHelper: JwtHelperService;
 
     private token: string | null;
@@ -43,7 +45,14 @@ export class AuthenticationService {
     }
 
     isAuthenticated(): boolean {
-        return Boolean(this.getUser()) && Boolean(this.getUser().registeredAt);
+        const user = this.getUser();
+        const authResult = Boolean(user) && Boolean(user.registeredAt);
+        if (authResult) {
+            Watchdog.setUserInfo({ identifier: user.email, fullName: `${user.firstName} ${user.lastName}` });
+        } else {
+            Watchdog.setUserInfo({ isAnonymous: true });
+        }
+        return authResult;
     }
 
     getUser() {
@@ -142,6 +151,17 @@ export class AuthenticationService {
             );
     }
 
+    finishPartialRegistrationWithJoin(regDto: PartialRegistratioWithJoinDto, route: string[]) {
+        return this.registrationService.performPartialRegistrationWithJoin(regDto)
+            .pipe(
+                tap(user => {
+                    localStorage.setItem('isSignByEmailAndPassword', 'false');
+                    this.setUser(user);
+                }),
+                switchMap(() => this.login(route))
+            );
+    }
+
     signOnWithEmailAndPassword(regDto: FullRegistrationDto, password: string, route: string[]) {
         this.logout();
         return from(this.angularFireAuth
@@ -153,6 +173,25 @@ export class AuthenticationService {
                     return dto;
                 }),
                 switchMap(dto => this.registrationService.performFullRegistration(dto)),
+                tap(user => {
+                    localStorage.setItem('isSignByEmailAndPassword', 'true');
+                    this.setUser(user);
+                }),
+                switchMap(() => this.login(route))
+            );
+    }
+
+    singOnWithEmailAndPasswordWithJoin(regDto: FullRegistrationWithJoinDto, password: string, route: string[]) {
+        this.logout();
+        return from(this.angularFireAuth
+            .createUserWithEmailAndPassword(regDto.user.email, password))
+            .pipe(
+                map(userCredential => {
+                    const dto = regDto;
+                    dto.user.uid = userCredential.user.uid;
+                    return dto;
+                }),
+                switchMap(dto => this.registrationService.performFullRegistrationWithJoin(dto)),
                 tap(user => {
                     localStorage.setItem('isSignByEmailAndPassword', 'true');
                     this.setUser(user);
@@ -297,6 +336,7 @@ export class AuthenticationService {
         this.organizationService.clearOrganization();
         this.memberService.clearMember();
         this.removeIsSignByEmailAndPassword();
+        Watchdog.setUserInfo({ isAnonymous: true });
         this.angularFireAuth.signOut()
             .catch(error => {
                 console.warn(error);

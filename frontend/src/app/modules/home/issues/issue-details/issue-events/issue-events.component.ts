@@ -5,6 +5,8 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
 import { BaseComponent } from '@core/components/base/base.component';
 import { LazyLoadEvent } from 'primeng/api';
 import { SpinnerService } from '@core/services/spinner.service';
+import { TableExportService } from '@core/services/table-export.service';
+import { IssueMessageExport } from '@shared/models/export/IssueMessageExport';
 
 @Component({
     selector: 'app-issue-events[issueMessage]',
@@ -15,13 +17,13 @@ export class IssueEventsComponent extends BaseComponent implements OnDestroy {
     @Input() issueMessage: IssueMessage;
     issues: IssueMessage[] = [];
     paginatorRows: number = 9;
-    lastEvent: LazyLoadEvent;
     totalRecords: number;
 
     constructor(
         private issueService: IssueService,
         private toastNotificationService: ToastNotificationService,
-        private spinner: SpinnerService
+        private spinner: SpinnerService,
+        private tableExportService: TableExportService
     ) {
         super();
     }
@@ -40,7 +42,31 @@ export class IssueEventsComponent extends BaseComponent implements OnDestroy {
             });
     }
 
+    exportExcel(): void {
+        this.spinner.show(true);
+        this.tableExportService.exportExcel(this.issuesToExportIssues(this.issues), 'Issue Events');
+        this.spinner.hide();
+    }
+
+    exportPdf(): void {
+        this.spinner.show(true);
+        this.tableExportService.exportPdf(this.issuesToExportIssues(this.issues), 'Issue Events');
+        this.spinner.hide();
+    }
+
     ngOnDestroy() {
         super.ngOnDestroy();
+    }
+
+    private issuesToExportIssues(issuesToExport: IssueMessage[]): IssueMessageExport[] {
+        return issuesToExport.map<IssueMessageExport>(issue => (
+            {
+                ID: issue.id,
+                OccurredOn: new Date(issue.occurredOn).toLocaleString(),
+                User: issue.user.identifier,
+                Browser: issue.issueDetails.environmentMessage.browser,
+                Platform: issue.issueDetails.environmentMessage.platform,
+            }
+        ));
     }
 }

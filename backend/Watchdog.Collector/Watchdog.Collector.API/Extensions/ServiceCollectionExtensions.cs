@@ -1,15 +1,16 @@
-using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nest;
 using RabbitMQ.Client;
+using System;
 using System.Reflection;
 using Watchdog.Collector.BLL.MappingProfiles;
 using Watchdog.Collector.BLL.Services;
 using Watchdog.Collector.BLL.Services.Abstract;
+using Watchdog.Models.Shared.Analytics;
+using Watchdog.Models.Shared.Issues;
 using Watchdog.RabbitMQ.Shared.Models;
 using Watchdog.RabbitMQ.Shared.Services;
-using Watchdog.Models.Shared.Issues;
 
 namespace Watchdog.Collector.API.Extensions
 {
@@ -28,7 +29,9 @@ namespace Watchdog.Collector.API.Extensions
                 .DefaultIndex(configuration["ElasticConfiguration:DefaultIndex"])
                 .DefaultMappingFor<IssueMessage>(m =>
                     m.IndexName(configuration["ElasticConfiguration:EventMessagesIndex"])
-                        .IdProperty(em => em.Id).Ignore(em => em.ApiKey));
+                        .IdProperty(em => em.Id).Ignore(em => em.ApiKey))
+                .DefaultMappingFor<CountryInfo>(m =>
+                    m.IndexName(configuration["ElasticConfiguration:CountriesInfoIndex"]));
 
             services.AddSingleton<IElasticClient>(new ElasticClient(settings));
         }
