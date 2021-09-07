@@ -3,6 +3,7 @@
 Watchdog - is an analog of Sentry, Raygun, and Loader.io. The main goal of the project is to monitor project issues affecting end users in real time. The platform provides issue details including stack trace, breadcrumbs, method\class name, OS, device, browser, location, host, and more. It can be used for both kinds of projects, for servers and client-oriented projects. Users can identify problems more quickly, enjoying visual timeline views, charts, tables and receive email reports if a new issue occurred. Also, clients can perform load testing without typing code to verify how their servers will respond to high load. They can flexibly setup tests in the portal and run them as many times as they need to.
 
 **Technologies:**
+
 Backend:
 - Platform: .NET 5
 - Network: REST, SignalR, RabbitMQ
