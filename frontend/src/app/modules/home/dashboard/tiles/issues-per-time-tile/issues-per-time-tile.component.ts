@@ -23,15 +23,9 @@ import {
     convertTileSettingsToJson,
 } from '@core/utils/tile.utils';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
-import html2canvas from 'html2canvas';
-import { jsPDF } from 'jspdf';
-import * as FileSaver from 'file-saver';
-import 'blob';
 import { ExportType } from '@shared/models/tile/enums/export-type';
 import { ExportTileService } from '@core/services/export-tile.service';
 import { SpinnerService } from '@core/services/spinner.service';
-
-const JsPDF = jsPDF;
 
 @Component({
     selector: 'app-issues-per-time-tile[tile][isShownEditTileMenu][userProjects]',

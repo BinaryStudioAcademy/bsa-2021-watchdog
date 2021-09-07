@@ -18,14 +18,8 @@ import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import { IssueStatusesByDateRangeFilter } from '@shared/models/issue/issue-statuses-by-date-range-filter';
 import { dateRangeTypeLabels } from '@shared/models/tile/enums/tile-date-range-type';
 import { ExportType } from '@shared/models/tile/enums/export-type';
-import html2canvas from 'html2canvas';
-import { jsPDF } from 'jspdf';
-import * as FileSaver from 'file-saver';
-import 'blob';
 import { ExportTileService } from '@core/services/export-tile.service';
 import { SpinnerService } from '@core/services/spinner.service';
-
-const JsPDF = jsPDF;
 
 @Component({
     selector: 'app-issues-count-tile[tile][isShownEditTileMenu][userProjects]',
