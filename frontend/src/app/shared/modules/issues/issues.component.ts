@@ -1,6 +1,6 @@
 import { SpinnerService } from '@core/services/spinner.service';
 import { IssuesHubService } from '@core/hubs/issues-hub.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { AuthenticationService } from '@core/services/authentication.service';
@@ -19,14 +19,20 @@ import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import { TableExportService } from '@core/services/table-export.service';
 import { IssueInfoExport } from '@shared/models/export/IssueInfoExport';
 import { IssueTableItem } from '@shared/models/issue/issue-table-item';
+import { Project } from '@shared/models/projects/project';
 import { CountOfIssuesByStatus } from '@shared/models/issue/count-of-issues-by-status';
+import { IssueSelect } from '@shared/models/issue/enums/issue-select';
+import { IssueSelectDropdown } from '@shared/modules/issues/data/models/issue-select.dropdown';
+import { IssueDropdownDataService } from '@shared/modules/issues/data/issue-dropdown-data.service';
 
 @Component({
     selector: 'app-issues',
     templateUrl: './issues.component.html',
-    styleUrls: ['./issues.component.sass']
+    styleUrls: ['./issues.component.sass'],
+    providers: [IssueDropdownDataService]
 })
 export class IssuesComponent extends BaseComponent implements OnInit {
+    @Input() project: Project;
     issues: IssueTableItem[] = [];
     issuesCount: { [type: string]: number } = {};
     selectedIssues: IssueTableItem[] = [];
@@ -41,7 +47,10 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     toAssign: Assignee;
     issueId: number;
     IssueStatus = IssueStatus;
-    selectedTabIssueStatus?: IssueStatus;
+    IssueSelect = IssueSelect;
+    selectedTabIssueStatus?: IssueStatus = IssueStatus.Active;
+    selected: IssueSelect = IssueSelect.Active;
+    issueStatusDropdownItems: IssueSelectDropdown[] = [];
     first: number = 0;
     private saveAssign: Assignee;
     private viewedAssignee = 3;
@@ -55,6 +64,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         private teamService: TeamService,
         private spinner: SpinnerService,
         private tableExportService: TableExportService,
+        private issueDropdownData: IssueDropdownDataService
     ) {
         super();
     }
@@ -82,6 +92,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             }, error => {
                 this.toastNotification.error(error);
             });
+        this.initIssueSelectDropdown();
     }
 
     loadMembers() {
@@ -140,7 +151,8 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             return;
         }
         this.spinner.show(true);
-        this.issueService.getIssuesInfoLazy(this.member.id, this.lastEvent, this.selectedTabIssueStatus)
+
+        this.issueService.getIssuesInfoLazy(this.member.id, this.lastEvent, this.selectedTabIssueStatus, this.project)
             .pipe(this.untilThis,
                 debounceTime(1000))
             .subscribe(
@@ -238,6 +250,14 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     private resetPageNumber() {
         this.first = 0;
         this.lastEvent.first = 0;
+    }
+
+    async onSelectedIssues() {
+        await this.onSelectedTab(this.selected);
+    }
+
+    private initIssueSelectDropdown() {
+        this.issueStatusDropdownItems = this.issueDropdownData.getIssuesSelectDropdownItems();
     }
 
     private issuesToExportIssues(issuesToExport: IssueTableItem[]): IssueInfoExport[] {

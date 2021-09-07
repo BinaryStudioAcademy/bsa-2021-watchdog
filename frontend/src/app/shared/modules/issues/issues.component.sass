@@ -6,6 +6,38 @@
     @include background-gray
     margin-bottom: 10px
 
+.main-content
+    padding: 1rem
+
+::ng-deep .dropdown
+    height: $input-height
+    display: flex
+    align-items: center
+    min-width: 150px
+    border-color: $border-color
+
+    .p-dropdown-label
+        color: $primary-color-text
+        font-weight: 500
+
+    .p-dropdown-trigger
+        color: $primary-color-text
+
+::ng-deep .dropdown-active-status
+    .p-dropdown
+        background: $issue-status-active-color
+
+::ng-deep .dropdown-resolved-status
+    .p-dropdown
+        background: $issue-status-resolved-color
+
+::ng-deep .dropdown-ignored-status
+    .p-dropdown
+        background: $issue-status-ignored-color
+
+::ng-deep .dropdown-all
+    .p-dropdown
+        background: $issue-select-all-color
 
 .functional-bar
     display: flex
@@ -148,6 +180,9 @@
 
 //host global styles
 \:host ::ng-deep
+    .p-tabview .p-tabview-panels
+        display: none
+
     .p-tag
         @include disable-select
         height: 1.1rem

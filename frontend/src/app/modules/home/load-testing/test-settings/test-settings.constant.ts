@@ -50,3 +50,5 @@ export const methodOptions = [
         label: 'DELETE',
     },
 ];
+
+export const contentTypes = ['application/json', 'application/xml', 'text/html'];
