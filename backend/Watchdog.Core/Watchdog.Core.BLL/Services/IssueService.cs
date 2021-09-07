@@ -10,6 +10,7 @@ using Watchdog.Core.BLL.Models;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Application;
 using Watchdog.Core.Common.DTO.Issue;
+using Watchdog.Core.Common.DTO.IssueAnswer;
 using Watchdog.Core.Common.DTO.IssueSolution;
 using Watchdog.Core.Common.Enums.Issues;
 using Watchdog.Core.DAL.Context;
@@ -408,6 +409,13 @@ namespace Watchdog.Core.BLL.Services
             var issueSolution = await StackExchangeService.GetSolutionFromStackoverflow<IssueSolution>(issueEntity.ErrorMessage, new[] { issueEntity.Application.Platform.Name });
 
             return _mapper.Map<IssueSolutionDto>(issueSolution);
+        }
+
+        public async Task<IssueAnswerDto> GetIssueAnswerByAnswerIdAsync(int answerId)
+        {
+            var issueSolution = await StackExchangeService.GetAnswerFromStackoverflow<IssueSolution>(answerId);
+
+            return _mapper.Map<IssueAnswerDto>(issueSolution);
         }
     }
 }
