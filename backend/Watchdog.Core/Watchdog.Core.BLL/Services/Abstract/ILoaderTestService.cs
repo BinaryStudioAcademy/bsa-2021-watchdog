@@ -7,9 +7,10 @@ namespace Watchdog.Core.BLL.Services.Abstract
 {
     public interface ILoaderTestService
     {
-        Task<LoaderTestDto> AddNewLoaderTestAsync(NewLoaderTestDto dto);
+        Task<LoaderTestDto> AddNewLoaderTestAsync(NewLoaderTestDto dto, bool start);
         Task<ICollection<LoaderTestDto>> GetLoaderTestsByOrganizationIdAsync(int organizationId);
         Task<LoaderTestDto> GetLoaderTestById(int id);
-        Task<LoaderTestDto> UpdateLoaderTestAsync(UpdateLoaderTestDto dto);
+        Task<LoaderTestDto> UpdateLoaderTestAsync(UpdateLoaderTestDto dto, bool start);
+        Task StartTestAsync(int testId);
     }
 }

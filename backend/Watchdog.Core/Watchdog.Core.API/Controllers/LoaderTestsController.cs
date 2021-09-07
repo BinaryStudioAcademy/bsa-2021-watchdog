@@ -20,9 +20,9 @@ namespace Watchdog.Core.API.Controllers
             _loaderTestService = loaderTestService;
         }
         [HttpPost]
-        public async Task<ActionResult<LoaderTestDto>> AddNewLoaderTest(NewLoaderTestDto dto)
+        public async Task<ActionResult<LoaderTestDto>> AddNewLoaderTest([FromQuery] bool start, [FromBody] NewLoaderTestDto dto)
         {
-            var test = await _loaderTestService.AddNewLoaderTestAsync(dto);
+            var test = await _loaderTestService.AddNewLoaderTestAsync(dto, start);
             return Ok(test);
         }
         [HttpGet("{id}")]
@@ -38,9 +38,9 @@ namespace Watchdog.Core.API.Controllers
             return Ok(tests);
         }
         [HttpPut]
-        public async Task<ActionResult<LoaderTestDto>> UpdateLoaderTest(UpdateLoaderTestDto dto)
+        public async Task<ActionResult<LoaderTestDto>> UpdateLoaderTest([FromQuery] bool start, [FromBody] UpdateLoaderTestDto dto)
         {
-            var test = await _loaderTestService.UpdateLoaderTestAsync(dto);
+            var test = await _loaderTestService.UpdateLoaderTestAsync(dto, start);
             return Ok(test);
         }
     }
