@@ -40,7 +40,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     sharedOptions = {} as AssigneeOptions;
     globalFilterFields = ['errorClass', 'projectName', 'errorMessage'];
     lastEvent: LazyLoadEvent;
-    loading: boolean;
+    loading: boolean = true;
     lazyLoading: boolean = true;
     totalRecords: number;
     member: Member;

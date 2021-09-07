@@ -31,7 +31,7 @@ export class IssueService {
     }
 
     public getIssuesInfoLazy(memberId: number, event: LazyLoadEvent, status?: IssueStatus, project?: Project):
-    Observable<{ collection: IssueTableItem[], totalRecords: number }> {
+        Observable<{ collection: IssueTableItem[], totalRecords: number }> {
         let params = new HttpParams();
 
         if (status !== undefined) {
@@ -65,7 +65,7 @@ export class IssueService {
     }
 
     public getEventMessagesByIssueIdLazy(issueId: number | string, event: LazyLoadEvent):
-    Observable<{ collection: IssueMessage[], totalRecords: number }> {
+        Observable<{ collection: IssueMessage[], totalRecords: number }> {
         return this.httpService.postRequest<{ collection: IssueMessage[], totalRecords: number }>(
             `${this.routePrefix}/messagesbyparent/${issueId}`,
             event
