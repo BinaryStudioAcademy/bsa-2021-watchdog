@@ -68,6 +68,10 @@ export class TileMenuComponent implements OnInit {
                 this.selectedItem = item;
                 this.tileDialogService.showTopActiveIssuesCreateDialog(this.userProjects, this.dashboardId, this.tiles);
                 break;
+            case TileType.MostCommonCountries:
+                this.selectedItem = item;
+                this.tileDialogService.showMostCommonCountriesCreateDialog(this.userProjects, this.dashboardId, this.tiles);
+                break;
             default:
                 this.selectedItem = undefined;
                 break;
@@ -102,6 +106,12 @@ export class TileMenuComponent implements OnInit {
                 icon: 'pi pi-ban',
                 command: event => this.listItemSelected(event.item)
             },
+            {
+                id: TileType.MostCommonCountries.toString(),
+                label: 'Most Common Countries',
+                icon: 'pi pi-flag',
+                command: event => this.listItemSelected(event.item)
+            }
         ];
     }
 

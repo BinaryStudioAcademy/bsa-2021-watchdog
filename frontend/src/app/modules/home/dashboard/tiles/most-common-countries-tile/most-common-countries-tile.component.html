@@ -1,0 +1,29 @@
+<div class="container">
+    <app-tile-header (dragTile)="setTileDragStatus($event)" (isDeleting)="isDeleting.emit(tile)"
+        (isEditing)="editTile()" [isShownEditTileMenu]="isShownEditTileMenu" [tile]="tile"></app-tile-header>
+    <div class="table">
+        <p-table [alwaysShowPaginator]="countryInfos?.length > paginatorRows" [pageLinks]="1" [paginator]="true"
+            [rows]="paginatorRows" [showJumpToPageDropdown]="true" [showPageLinks]="false" [value]="countryInfos"
+            selectionMode="single" sortField="count" [sortOrder]="-1">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="country">Country
+                        <p-sortIcon field="country"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="count">Count
+                        <p-sortIcon field="count"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template let-countryInfo pTemplate="body">
+                <tr>
+                    <td>
+                        <span class="flag-icon flag-icon-{{countryInfo.country.toLowerCase()}}"></span>
+                        <span class="country">{{countryInfo.country}}</span>
+                    </td>
+                    <td>{{countryInfo.count}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
