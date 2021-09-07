@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Pipe } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@core/components/base/base.component';
@@ -16,6 +16,7 @@ import { UpdateProject } from '@shared/models/projects/update-project';
 import { User } from '@shared/models/user/user';
 import { PrimeIcons } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
+import { zip } from 'rxjs';
 import { Data } from '../data';
 
 @Component({
@@ -33,7 +34,8 @@ export class EditComponent extends BaseComponent implements OnInit {
     project: Project;
     id: string;
     dropPlatform: Platform[];
-
+    notFound: boolean;
+    loading: boolean;
     activeIndex: number = 0;
 
     constructor(
@@ -42,7 +44,7 @@ export class EditComponent extends BaseComponent implements OnInit {
         private projectService: ProjectService,
         public alertData: Data,
         private router: Router,
-        private spinnerService: SpinnerService,
+        private spinner: SpinnerService,
         private activatedRoute: ActivatedRoute,
         private confirmService: ConfirmWindowService
     ) {
@@ -50,19 +52,29 @@ export class EditComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.loading = true;
+        this.spinner.show(true);
         this.id = this.activatedRoute.snapshot.params.id;
         this.activatedRoute.paramMap
             .pipe(this.untilThis)
             .subscribe(params => {
                 this.id = params.get('id');
                 this.user = this.authService.getUser();
-                this.authService.getOrganization()
-                    .subscribe(organization => {
-                        this.organization = organization;
-                    });
-                this.projectService.getProjectById(this.id).pipe(this.untilThis)
-                    .subscribe(project => {
-                        this.project = project;
+                zip(this.authService.getOrganization(), this.projectService.getProjectById(this.id))
+                    .pipe(this.untilThis)
+                    .subscribe(([organization, project]) => {
+                        if (project?.organizationId !== organization.id) {
+                            this.notFound = true;
+                        } else {
+                            this.organization = organization;
+                            this.project = project;
+                        }
+                        this.loading = false;
+                        this.spinner.hide();
+                    }, () => {
+                        this.notFound = true;
+                        this.loading = false;
+                        this.spinner.hide();
                     });
             });
         this.activatedRoute.queryParamMap
@@ -87,16 +99,13 @@ export class EditComponent extends BaseComponent implements OnInit {
         this.alertFormatting();
         const project: UpdateProject = { ...this.editForm.value, alertSettings: this.alertSetting };
         if (this.editForm.valid) {
-            this.spinnerService.show(true);
             this.projectService.updateProject(this.id, project)
                 .pipe(this.untilThis)
                 .subscribe((updatedProject) => {
                     this.project = updatedProject;
-                    this.spinnerService.hide();
                     this.toastNotifications.success('Project has been updated!');
                 }, error => {
                     this.toastNotifications.error(error);
-                    this.spinnerService.hide();
                 });
         } else {
             this.toastNotifications.error('Form is not valid', 'Error');
@@ -117,17 +126,14 @@ export class EditComponent extends BaseComponent implements OnInit {
     }
 
     deleteProject() {
-        this.spinnerService.show(true);
         this.projectService.removeProject(this.project.id)
             .pipe(this.untilThis)
             .subscribe(() => {
-                this.spinnerService.hide();
                 this.router.navigate(['home', 'projects']).then(() => {
                     this.toastNotifications.success('Project has been deleted');
                 });
             }, error => {
                 this.toastNotifications.error(error);
-                this.spinnerService.hide();
             });
     }
 

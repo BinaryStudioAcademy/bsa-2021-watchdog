@@ -3,7 +3,6 @@ import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardService } from '@core/services/dashboard.service';
 import { ShareDataService } from '@core/services/share-data.service';
-import { Subscription } from 'rxjs';
 import { BaseComponent } from '@core/components/base/base.component';
 import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
@@ -28,18 +27,18 @@ import { Member } from '@shared/models/member/member';
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.sass']
 })
-export class DashboardComponent extends BaseComponent implements OnInit, OnDestroy {
+export class DashboardComponent extends BaseComponent implements OnInit {
     showTileMenu: boolean = false;
     canDrag: boolean = false;
     isOrderChanged: boolean = false;
     draggableTile: Tile;
     dashboard: Dashboard;
-    updateSubscription$: Subscription;
     tiles: Tile[] = [];
     tileTypes = TileType;
     projects: Project[] = [];
     updateDashboardDialog: DynamicDialogRef;
     member: Member;
+    notFound: boolean = false;
 
     constructor(
         private route: ActivatedRoute,
@@ -145,13 +144,19 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         this.dashboardService.get(dashboardId)
             .pipe(this.untilThis)
             .subscribe(dashboardById => {
-                this.dashboard = dashboardById;
-                this.updateSubscription$ = this.updateDataService.currentMessage
-                    .subscribe((dashboard) => {
-                        this.dashboard = dashboard;
-                    }, error => {
-                        this.toastNotificationService.error(error);
-                    });
+                if (dashboardById?.organizationId !== this.member.organizationId) {
+                    this.notFound = true;
+                } else {
+                    this.notFound = false;
+                    this.dashboard = dashboardById;
+                    this.updateDataService.currentMessage
+                        .pipe(this.untilThis)
+                        .subscribe((dashboard) => {
+                            this.dashboard = dashboard;
+                        }, error => {
+                            this.toastNotificationService.error(error);
+                        });
+                }
                 this.spinnerService.hide();
             }, error => {
                 this.toastNotificationService.error(error);
@@ -182,11 +187,6 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         }
 
         this.showTileMenu = !this.showTileMenu;
-    }
-
-    ngOnDestroy(): void {
-        this.updateSubscription$.unsubscribe();
-        super.ngOnDestroy();
     }
 
     deleteTile(tile: Tile) {

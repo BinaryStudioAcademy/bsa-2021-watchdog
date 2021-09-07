@@ -1,3 +1,5 @@
+import { AuthenticationService } from '@core/services/authentication.service';
+import { combineLatest, forkJoin, zip } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { ConfirmWindowService } from '@core/services/confirm-window.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
@@ -9,6 +11,7 @@ import { Team } from '@shared/models/teams/team';
 import { PrimeIcons } from 'primeng/api';
 import { UpdateTeam } from '@shared/models/teams/update-team';
 import { SpinnerService } from '@core/services/spinner.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-team-info',
@@ -18,7 +21,8 @@ import { SpinnerService } from '@core/services/spinner.service';
 export class TeamInfoComponent extends BaseComponent implements OnInit {
     team: Team;
     isSettings: boolean = false;
-
+    loading: boolean;
+    notFound: boolean;
     parentForm: FormGroup = new FormGroup({});
 
     @ViewChild('saveBut') saveButton: ElementRef<HTMLButtonElement>;
@@ -29,21 +33,32 @@ export class TeamInfoComponent extends BaseComponent implements OnInit {
         private router: Router,
         private toastService: ToastNotificationService,
         private confirmService: ConfirmWindowService,
-        private spinnerService: SpinnerService
+        private spinnerService: SpinnerService,
+        private authService: AuthenticationService
     ) { super(); }
 
     ngOnInit() {
         this.spinnerService.show(true);
+        this.loading = true;
         this.activatedRoute.paramMap
             .pipe(this.untilThis)
             .subscribe(param => {
-                this.teamService.getTeam(+param.get('id'))
+                console.warn('here1');
+                zip(this.teamService.getTeam(param.get('id')), this.authService.getOrganization())
                     .pipe(this.untilThis)
-                    .subscribe(team => {
-                        this.team = team;
+                    .subscribe(([team, organization]) => {
+                        console.warn('here');
+                        if (team.organizationId !== organization.id) {
+                            this.notFound = true;
+                        } else {
+                            this.team = team;
+                        }
+                        this.loading = false;
                         this.spinnerService.hide();
                     }, error => {
                         this.toastService.error(error);
+                        this.notFound = true;
+                        this.loading = false;
                         this.spinnerService.hide();
                     });
             });
