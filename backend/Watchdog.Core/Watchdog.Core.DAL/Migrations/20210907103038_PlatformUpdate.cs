@@ -6,24 +6,28 @@ namespace Watchdog.Core.DAL.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("UPDATE Applications SET PlatformId = 1 WHERE PlatformId = 1");
-            migrationBuilder.Sql("UPDATE Applications SET PlatformId = 1 WHERE PlatformId = 2");
-            migrationBuilder.Sql("UPDATE Applications SET PlatformId = 1 WHERE PlatformId = 3");
-            migrationBuilder.Sql("UPDATE Applications SET PlatformId = 2 WHERE PlatformId = 4");
-            migrationBuilder.Sql("UPDATE Applications SET PlatformId = 1 WHERE PlatformId = 5");
-            migrationBuilder.Sql("UPDATE Applications SET PlatformId = 1 WHERE PlatformId = 6");
-            migrationBuilder.Sql("UPDATE Applications SET PlatformId = 1 WHERE PlatformId = 7");
-            migrationBuilder.Sql("UPDATE Applications SET PlatformId = 1 WHERE PlatformId = 8");
-            migrationBuilder.Sql("UPDATE Applications SET PlatformId = 3 WHERE PlatformId = 9");
-            migrationBuilder.Sql("UPDATE Applications SET PlatformId = 4 WHERE PlatformId = 10");
-            migrationBuilder.Sql("UPDATE Applications SET PlatformId = 5 WHERE PlatformId = 11");
-            migrationBuilder.Sql("UPDATE Applications SET PlatformId = 6 WHERE PlatformId = 12");
-            migrationBuilder.Sql("UPDATE Applications SET PlatformId = 1 WHERE PlatformId = 13");
-            migrationBuilder.Sql("UPDATE Applications SET PlatformId = 1 WHERE PlatformId = 14");
-            migrationBuilder.Sql("UPDATE Applications SET PlatformId = 1 WHERE PlatformId = 15");
-            migrationBuilder.Sql("UPDATE Applications SET PlatformId = 1 WHERE PlatformId = 16");
-            migrationBuilder.Sql("UPDATE Applications SET PlatformId = 1 WHERE PlatformId = 17");
-            migrationBuilder.Sql("UPDATE Applications SET PlatformId = 7 WHERE PlatformId = 18");
+            migrationBuilder.Sql(
+                            @"UPDATE Applications SET PlatformId = CASE PlatformId
+                                    WHEN 1 THEN 1
+                                    WHEN 2 THEN 1
+                                    WHEN 3 THEN 1
+                                    WHEN 4 THEN 2
+                                    WHEN 5 THEN 1
+                                    WHEN 6 THEN 1
+                                    WHEN 7 THEN 1
+                                    WHEN 8 THEN 1
+                                    WHEN 9 THEN 3
+                                    WHEN 10 THEN 4
+                                    WHEN 11 THEN 5
+                                    WHEN 12 THEN 6
+                                    WHEN 13 THEN 1
+                                    WHEN 14 THEN 1
+                                    WHEN 15 THEN 1
+                                    WHEN 16 THEN 1
+                                    WHEN 17 THEN 1
+                                    WHEN 18 THEN 7
+                                    ELSE PlatformId END
+                                  WHERE PlatformId IN (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18)");
 
             migrationBuilder.DeleteData(
                 table: "Platforms",
