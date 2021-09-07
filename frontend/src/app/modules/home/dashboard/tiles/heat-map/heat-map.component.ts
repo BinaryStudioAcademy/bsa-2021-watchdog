@@ -28,6 +28,8 @@ import { jsPDF } from 'jspdf';
 import * as FileSaver from 'file-saver';
 import 'blob';
 import { ExportType } from '@shared/models/tile/enums/export-type';
+import { ExportTileService } from '@core/services/export-tile.service';
+import { SpinnerService } from '@core/services/spinner.service';
 
 const JsPDF = jsPDF;
 
@@ -60,7 +62,9 @@ export class HeatMapComponent extends BaseComponent implements OnInit {
         private toastNotificationService: ToastNotificationService,
         private tileDialogService: TileDialogService,
         private issueService: IssueService,
-        private tileService: TileService
+        private tileService: TileService,
+        private exportTileService: ExportTileService,
+        private spinner: SpinnerService
     ) {
         super();
     }
@@ -76,36 +80,9 @@ export class HeatMapComponent extends BaseComponent implements OnInit {
     }
 
     exportTile(exportType: ExportType) {
-        const data = this.data.host.nativeElement;
-        const smallPdf = 300;
-        const mediumPdf = 440;
-        const bigPdf = 880;
-        html2canvas(data).then(canvas => {
-            if (exportType === ExportType.Jpg) {
-                canvas.toBlob((blob) => {
-                    FileSaver.saveAs(blob, `${new Date().toLocaleString().replace(':', '_')}.jpg`);
-                });
-            }
-            if (exportType === ExportType.Png) {
-                canvas.toBlob((blob) => {
-                    FileSaver.saveAs(blob, `${new Date().toLocaleString().replace(':', '_')}.png`);
-                });
-            }
-            if (exportType === ExportType.Pdf) {
-                const contentDataURL = canvas.toDataURL('image/png', 1.0);
-                const pdf = new JsPDF('p', 'mm', 'a4');
-                if (data.clientWidth >= smallPdf && data.clientWidth <= mediumPdf) {
-                    pdf.addImage(contentDataURL, 'PNG', 60, 10, canvas.height / 6, 0);
-                }
-                if (data.clientWidth >= mediumPdf && data.clientWidth <= bigPdf) {
-                    pdf.addImage(contentDataURL, 'PNG', 35, 10, canvas.height / 4, 0);
-                }
-                if (data.clientWidth >= bigPdf) {
-                    pdf.addImage(contentDataURL, 'PNG', 0, 10, canvas.height / 2.7, 0);
-                }
-                pdf.save(`${new Date().toLocaleString().replace(':', '_')}.pdf`);
-            }
-        });
+        this.spinner.show(true);
+        this.exportTileService.exportTile(exportType, this.data.host.nativeElement);
+        this.spinner.hide();
     }
 
     setTileDragStatus(status: boolean) {
