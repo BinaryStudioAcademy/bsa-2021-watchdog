@@ -6,7 +6,28 @@ namespace Watchdog.Core.DAL.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("Update Applications Set PlatformId = 1;");
+            migrationBuilder.Sql("UPDATE Applications" +
+                                 "SET PlatformId = CASE " +
+                                    "WHEN PlatformId = 1 THEN 1" +
+                                    "WHEN PlatformId = 2 THEN 1" +
+                                    "WHEN PlatformId = 3 THEN 1" +
+                                    "WHEN PlatformId = 4 THEN 2" +
+                                    "WHEN PlatformId = 5 THEN 1" +
+                                    "WHEN PlatformId = 6 THEN 1" +
+                                    "WHEN PlatformId = 7 THEN 1" +
+                                    "WHEN PlatformId = 8 THEN 1" +
+                                    "WHEN PlatformId = 9 THEN 3" +
+                                    "WHEN PlatformId = 10 THEN 4" +
+                                    "WHEN PlatformId = 11 THEN 5" +
+                                    "WHEN PlatformId = 12 THEN 6" +
+                                    "WHEN PlatformId = 13 THEN 1" +
+                                    "WHEN PlatformId = 14 THEN 1" +
+                                    "WHEN PlatformId = 15 THEN 1" +
+                                    "WHEN PlatformId = 16 THEN 1" +
+                                    "WHEN PlatformId = 17 THEN 1" +
+                                    "WHEN PlatformId = 18 THEN 7" +
+                                  "END" +
+                                  "WHERE PlatformId IN (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18)");
 
             migrationBuilder.DeleteData(
                 table: "Platforms",
