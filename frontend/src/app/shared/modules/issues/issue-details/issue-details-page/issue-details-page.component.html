@@ -52,28 +52,7 @@
             </p-tabPanel>
             <p-tabPanel [disabled]="!solutionItems?.length" header="Stackoverflow solutions">
                 <ng-template pTemplate="content">
-                    <div class="solution-item">
-                        <p-table [value]="solutionItems">
-                            <ng-template pTemplate="header">
-                                <tr>
-                                    <th class="link-field">Link</th>
-                                    <th>Suggestions count</th>
-                                    <th>Question rating</th>
-                                    <th>Views count</th>
-                                    <th>Has answer</th>
-                                </tr>
-                            </ng-template>
-                            <ng-template let-solutionItem pTemplate="body">
-                                <tr>
-                                    <td><a appTooltipFullName href="{{solutionItem.link}}" target="_blank">{{solutionItem.link}}</a></td>
-                                    <td class="centered">{{solutionItem.answerCount}}</td>
-                                    <td class="centered">{{solutionItem.score}}</td>
-                                    <td class="centered">{{solutionItem.viewCount}}</td>
-                                    <td>{{solutionItem.isAnswered ? 'Yes' : 'No'}}</td>
-                                </tr>
-                            </ng-template>
-                        </p-table>
-                    </div>
+                    <app-solution [solutionItems]="solutionItems"></app-solution>
                 </ng-template>
             </p-tabPanel>
         </p-tabView>

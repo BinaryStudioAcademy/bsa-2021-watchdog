@@ -1,0 +1,4 @@
+<div class="solution-item" *ngFor="let solutionItem of solutionItems">
+    <a appTooltipFullName href="{{solutionItem.link}}" target="_blank">{{solutionItem.link}}</a>
+    <div class="solution-container" [innerHTML]="solutionItem.body"></div>
+</div>

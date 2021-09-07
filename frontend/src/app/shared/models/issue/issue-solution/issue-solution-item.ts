@@ -4,4 +4,5 @@ export interface IssueSolutionItem {
     answerCount: number;
     score: number;
     link: string;
+    body: string;
 }
