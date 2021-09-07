@@ -18,7 +18,7 @@ const routes: Routes = [{
             .then(m => m.ProjectsModule),
     }, {
         path: 'issues',
-        loadChildren: () => import('./issues/issues.module')
+        loadChildren: () => import('@shared/modules/issues/issues.module')
             .then(m => m.IssuesModule),
     }, {
         path: 'users',

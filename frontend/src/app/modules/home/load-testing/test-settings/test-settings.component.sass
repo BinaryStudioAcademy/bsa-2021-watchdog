@@ -1,6 +1,7 @@
 @import src/styles/variables
 @import src/styles/mixins
 
+$max-width: 1240px
 .header
     @include background-gray
     @include title
@@ -36,10 +37,16 @@
     display: flex
     flex-direction: column
 
+.content-type
+    padding: 0.5rem
+    justify-content: center
+    border: 1px solid #ced4da
+    border-radius: 3px
+
 .test-settings
     display: grid
     grid-gap: 1rem
-    max-width: 620px
+    max-width: $max-width
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))
     margin-bottom: 1rem
 
@@ -72,12 +79,20 @@
     overflow-wrap: anywhere
 
 .header-block
-    max-width: 620px
     border: 1px solid #ced4da
     padding: 1rem
-    margin: .5rem 0
     border-radius: 3px
 
+.block
+    display: grid
+    grid-gap: 1rem
+    max-width: $max-width
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr))
+    margin-bottom: 1rem
+
+.sub-block
+    display: grid
+    grid-template-rows: auto 1fr
 .body
     display: flex
     flex-direction: column
@@ -85,7 +100,7 @@
 .body-input
     font-family: monospace
     width: 100%
-    max-width: 620px
+    max-width: $max-width
 
 :host ::ng-deep
     .input

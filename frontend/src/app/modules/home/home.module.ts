@@ -13,7 +13,7 @@ import { TileMenuComponent } from './dashboard/tile-menu/tile-menu.component';
 import { TopActiveIssuesTileComponent } from './dashboard/tiles/top-active-issues-tile/top-active-issues-tile.component';
 import { AddEditTopActiveIssuesTileComponent }
     from './modals/tiles/top-active-issues/add-edit-top-active-issues-tile/add-edit-top-active-issues-tile.component';
-import { IssuesModule } from '@modules/home/issues/issues.module';
+import { IssuesModule } from '@shared/modules/issues/issues.module';
 import { TileHeaderComponent } from './dashboard/tiles/tile-header/tile-header.component';
 import { IssuesPerTimeTileComponent } from './dashboard/tiles/issues-per-time-tile/issues-per-time-tile.component';
 import { AddEditIssuesPerTimeTileComponent }

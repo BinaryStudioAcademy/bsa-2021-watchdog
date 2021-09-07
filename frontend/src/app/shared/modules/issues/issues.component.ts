@@ -1,6 +1,6 @@
 import { SpinnerService } from '@core/services/spinner.service';
 import { IssuesHubService } from '@core/hubs/issues-hub.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { AuthenticationService } from '@core/services/authentication.service';
@@ -19,15 +19,22 @@ import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import { TableExportService } from '@core/services/table-export.service';
 import { IssueInfoExport } from '@shared/models/export/IssueInfoExport';
 import { IssueTableItem } from '@shared/models/issue/issue-table-item';
+import { Project } from '@shared/models/projects/project';
+import { CountOfIssuesByStatus } from '@shared/models/issue/count-of-issues-by-status';
+import { IssueSelect } from '@shared/models/issue/enums/issue-select';
+import { IssueSelectDropdown } from '@shared/modules/issues/data/models/issue-select.dropdown';
+import { IssueDropdownDataService } from '@shared/modules/issues/data/issue-dropdown-data.service';
 
 @Component({
     selector: 'app-issues',
     templateUrl: './issues.component.html',
-    styleUrls: ['./issues.component.sass']
+    styleUrls: ['./issues.component.sass'],
+    providers: [IssueDropdownDataService]
 })
 export class IssuesComponent extends BaseComponent implements OnInit {
+    @Input() project: Project;
     issues: IssueTableItem[] = [];
-    issuesCount: { [type: string]: number };
+    issuesCount: { [type: string]: number } = {};
     selectedIssues: IssueTableItem[] = [];
     isAssign: boolean;
     sharedOptions = {} as AssigneeOptions;
@@ -40,7 +47,10 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     toAssign: Assignee;
     issueId: number;
     IssueStatus = IssueStatus;
-    selectedTabIssueStatus?: IssueStatus;
+    IssueSelect = IssueSelect;
+    selectedTabIssueStatus?: IssueStatus = IssueStatus.Active;
+    selected: IssueSelect = IssueSelect.Active;
+    issueStatusDropdownItems: IssueSelectDropdown[] = [];
     first: number = 0;
     private saveAssign: Assignee;
     private viewedAssignee = 3;
@@ -54,13 +64,13 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         private teamService: TeamService,
         private spinner: SpinnerService,
         private tableExportService: TableExportService,
+        private issueDropdownData: IssueDropdownDataService
     ) {
         super();
     }
 
     ngOnInit(): void {
         this.isAssign = false;
-        this.setTabPanelFields();
 
         this.authService.getMember()
             .pipe(
@@ -76,11 +86,13 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                         this.sharedOptions.members = members;
                         this.sharedOptions.teams = teams;
                         this.loadIssuesLazy(this.lastEvent);
+                        this.getIssuesCountByStatuses();
                         this.subscribeToIssuesHub();
                     });
             }, error => {
                 this.toastNotification.error(error);
             });
+        this.initIssueSelectDropdown();
     }
 
     loadMembers() {
@@ -139,7 +151,8 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             return;
         }
         this.spinner.show(true);
-        this.issueService.getIssuesInfoLazy(this.member.id, this.lastEvent, this.selectedTabIssueStatus)
+
+        this.issueService.getIssuesInfoLazy(this.member.id, this.lastEvent, this.selectedTabIssueStatus, this.project)
             .pipe(this.untilThis,
                 debounceTime(1000))
             .subscribe(
@@ -153,6 +166,17 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                     this.spinner.hide();
                 }
             );
+    }
+
+    getIssuesCountByStatuses(): void {
+        this.issueService.getIssuesInfoCountByStatuses(this.member.id)
+            .pipe(this.untilThis)
+            .subscribe(response => {
+                this.setTabPanelFields(response);
+            },
+            error => {
+                this.toastNotification.error(error);
+            });
     }
 
     getNumberAssignee(assignee: Assignee) {
@@ -203,19 +227,19 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         this.resetPageNumber();
         switch (index) {
             case 0:
-                this.selectedTabIssueStatus = undefined;
-                await this.loadIssuesLazy(this.lastEvent);
-                break;
-            case 1:
                 this.selectedTabIssueStatus = IssueStatus.Active;
                 await this.loadIssuesLazy(this.lastEvent);
                 break;
-            case 2:
+            case 1:
                 this.selectedTabIssueStatus = IssueStatus.Resolved;
                 await this.loadIssuesLazy(this.lastEvent);
                 break;
-            case 3:
+            case 2:
                 this.selectedTabIssueStatus = IssueStatus.Ignored;
+                await this.loadIssuesLazy(this.lastEvent);
+                break;
+            case 3:
+                this.selectedTabIssueStatus = undefined;
                 await this.loadIssuesLazy(this.lastEvent);
                 break;
             default:
@@ -223,9 +247,17 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         }
     }
 
-    resetPageNumber() {
+    private resetPageNumber() {
         this.first = 0;
         this.lastEvent.first = 0;
+    }
+
+    async onSelectedIssues() {
+        await this.onSelectedTab(this.selected);
+    }
+
+    private initIssueSelectDropdown() {
+        this.issueStatusDropdownItems = this.issueDropdownData.getIssuesSelectDropdownItems();
     }
 
     private issuesToExportIssues(issuesToExport: IssueTableItem[]): IssueInfoExport[] {
@@ -269,15 +301,16 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         this.issuesHub.messages.pipe(this.untilThis)
             .subscribe(() => {
                 this.loadIssuesLazy(this.lastEvent);
+                this.getIssuesCountByStatuses();
             });
     }
 
-    private setTabPanelFields() {
+    private setTabPanelFields(counts: CountOfIssuesByStatus) {
         this.issuesCount = {
-            all: 0,
-            active: 0,
-            resolved: 0,
-            ignored: 0,
+            active: counts.activeCount,
+            resolved: counts.resolvedCount,
+            ignored: counts.ignoredCount,
+            all: counts.activeCount + counts.resolvedCount + counts.ignoredCount,
         };
     }
 }

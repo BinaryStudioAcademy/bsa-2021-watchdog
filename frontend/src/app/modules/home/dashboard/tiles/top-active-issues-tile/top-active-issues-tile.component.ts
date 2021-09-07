@@ -80,18 +80,15 @@ export class TopActiveIssuesTileComponent extends BaseTileComponent implements O
 
     private applyIssuesSettings(issuesInfo: IssueInfo[]) {
         this.displayedIssues = issuesInfo
-            .filter(info =>
-                info.status === IssueStatus.Active
-                && this.requiredProjects.some(proj => proj.id === info.project.id
-                    && new Date(info.newest.occurredOn)
-                        .getTime() >= Date.now() - convertTileDateRangeTypeToMs(this.tileSettings.dateRange)))
+            .filter(info => this.requiredProjects.some(proj => proj.id === info.project.id)
+                && new Date(info.newest.occurredOn).getTime() >= Date.now() - convertTileDateRangeTypeToMs(this.tileSettings.dateRange))
             .sort((a, b) => b.eventsCount - a.eventsCount) // top sort
             .slice(0, this.tileSettings.issuesCount); // issues count
     }
 
     private getIssuesInfo() {
         this.authService.getMember()
-            .pipe(this.untilThis, switchMap(member => this.issueService.getIssuesInfo(member.id)))
+            .pipe(this.untilThis, switchMap(member => this.issueService.getIssuesInfo(member.id, IssueStatus.Active)))
             .subscribe(issuesInfo => {
                 this.applyIssuesSettings(issuesInfo);
             }, error => {
