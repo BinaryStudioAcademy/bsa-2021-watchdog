@@ -21,7 +21,6 @@
     (closeMenu)="toggleTileMenu()"
     *ngIf="showTileMenu && dashboard" [dashboardId]="dashboard.id" [tiles]="tiles" [userProjects]="projects">
 </app-tile-menu>
-<!-- <app-most-common-countries-tile></app-most-common-countries-tile> -->
 <!--    Tiles Content    -->
 <ng-template [ngIf]="dashboard">
     <div *ngIf="!tiles.length" class="tiles-not-found">
