@@ -16,12 +16,14 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
             builder.Property(t => t.TileOrder)
                 .HasDefaultValue(1)
                 .IsRequired();
-
+            
             builder.Property(a => a.CreatedAt)
                 .HasConversion(
                      v => v,
                      v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
                      );
+
+            builder.HasMany(t => t.Applications).WithMany(a => a.Tiles);
         }
     }
 }

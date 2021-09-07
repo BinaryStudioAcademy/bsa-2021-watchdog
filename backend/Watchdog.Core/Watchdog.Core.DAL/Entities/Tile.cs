@@ -1,4 +1,5 @@
-﻿using Watchdog.Core.Common.Enums.Tiles;
+﻿using System.Collections.Generic;
+using Watchdog.Core.Common.Enums.Tiles;
 using Watchdog.Core.DAL.Entities.Common;
 
 namespace Watchdog.Core.DAL.Entities
@@ -12,6 +13,7 @@ namespace Watchdog.Core.DAL.Entities
         public int DashboardId { get; set; }
         public Dashboard Dashboard { get; set; }
         public int TileOrder { get; set; }
+        public ICollection<Application> Applications { get; set; }
         public string Settings { get; set; }
     }
 }
