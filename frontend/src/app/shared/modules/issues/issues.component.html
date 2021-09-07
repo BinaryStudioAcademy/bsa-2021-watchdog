@@ -1,31 +1,39 @@
 <!--    Title    -->
-<div class="title">
+<div class="title" *ngIf="!project">
     <span>Issues</span>
 </div>
-<!--    Main content    -->
-<p-tabView (onChange)="onSelectedTab($event.index)" styleClass="tabview-custom">
+
+<!--    Tab View    -->
+<p-tabView *ngIf="!project && !loading" (onChange)="onSelectedTab($event.index)">
     <!--    Tabs    -->
     <p-tabPanel>
         <ng-template pTemplate="header">
-            <span>All</span>
-        </ng-template>
-    </p-tabPanel>
-    <p-tabPanel>
-        <ng-template pTemplate="header">
             <span>Active</span>
+            <p-badge [value]="issuesCount.active?.toString()" styleClass="count-badge active"></p-badge>
         </ng-template>
     </p-tabPanel>
     <p-tabPanel>
         <ng-template pTemplate="header">
             <span>Resolved</span>
+            <p-badge [value]="issuesCount.resolved?.toString()" severity="success" styleClass="count-badge"></p-badge>
         </ng-template>
     </p-tabPanel>
     <p-tabPanel>
         <ng-template pTemplate="header">
             <span>Ignored</span>
+            <p-badge [value]="issuesCount.ignored?.toString()" severity="info" styleClass="count-badge"></p-badge>
         </ng-template>
     </p-tabPanel>
+    <p-tabPanel>
+        <ng-template pTemplate="header">
+            <span>All</span>
+            <p-badge [value]="issuesCount.all?.toString()" severity="warning" styleClass="count-badge"></p-badge>
+        </ng-template>
+    </p-tabPanel>
+</p-tabView>
 
+<!--    Main content    -->
+<div *ngIf="!loading" [ngClass]="{'main-content': !project}">
     <!--    Tools    -->
     <div class="functional-bar">
         <!--    Search    -->
@@ -36,6 +44,15 @@
             <input
                 (input)="table.filterGlobal({value: $event.target['value'], fields: globalFilterFields }, 'contains')"
                 name="search" pInputText placeholder="Search" type="text">
+        </div>
+        <div *ngIf="project">
+            <p-dropdown (onChange)="onSelectedIssues()" [(ngModel)]="selected" [ngClass]="{
+                'dropdown-active-status': selected === IssueSelect.Active,
+                'dropdown-resolved-status': selected === IssueSelect.Resolved,
+                'dropdown-ignored-status': selected === IssueSelect.Ignored,
+                'dropdown-all': selected === IssueSelect.All
+                }" [options]="issueStatusDropdownItems" optionLabel="name" optionValue="type" styleClass="dropdown">
+            </p-dropdown>
         </div>
         <!--    Export    -->
         <div class="action-block">
@@ -71,7 +88,7 @@
                 <colgroup>
                     <col id="issue-col">
                     <col id="events-col">
-                    <col id="project-col">
+                    <col id="project-col" *ngIf="!project">
                     <col id="users-col">
                     <col id="assignee-col">
                 </colgroup>
@@ -101,7 +118,7 @@
                             <p-sortIcon field="eventsCount"></p-sortIcon>
                         </div>
                     </th>
-                    <th pSortableColumn="projectName">
+                    <th pSortableColumn="projectName" *ngIf="!project">
                         <div class="table-head-project">
                             <span>Project</span>
                             <p-sortIcon field="projectName"></p-sortIcon>
@@ -135,7 +152,7 @@
                                 <div class="additional-info">
                                     <ng-container [ngSwitch]="issue.status">
                                         <p-tag *ngSwitchCase="IssueStatus.Active" [rounded]="true"
-                                               styleClass="active-tag" value="active"></p-tag>
+                                               styleClass="active" value="active"></p-tag>
                                         <p-tag *ngSwitchCase="IssueStatus.Resolved" [rounded]="true"
                                                severity="success" value="resolved"></p-tag>
                                         <p-tag *ngSwitchCase="IssueStatus.Ignored" [rounded]="true"
@@ -155,7 +172,7 @@
                     <td>
                         <span appTooltipFullName class="table-content-events">{{issue.eventsCount}}</span>
                     </td>
-                    <td>
+                    <td *ngIf="!project">
                         <span appTooltipFullName class="table-content-project"
                               routerLink="/home/projects/edit/{{issue.projectId}}">{{issue.projectName}}
                         </span>
@@ -187,7 +204,7 @@
             </ng-template>
         </p-table>
     </div>
-</p-tabView>
+</div>
 
 <app-assignee (closeModal)="closeAssign()" *ngIf="isAssign" [data]="toAssign"
               [members]="sharedOptions.members" [teams]="sharedOptions.teams">

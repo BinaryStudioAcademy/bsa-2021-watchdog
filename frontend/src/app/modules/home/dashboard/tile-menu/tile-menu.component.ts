@@ -35,9 +35,7 @@ export class TileMenuComponent implements OnInit {
         private toastNotifications: ToastNotificationService,
         private tileDialogService: TileDialogService,
         private confirmWindowService: ConfirmWindowService
-    ) {
-
-    }
+    ) { }
 
     ngOnInit(): void {
         this.initMenuListItems();

@@ -13,12 +13,12 @@ export class TestService {
         private httpService: CoreHttpService
     ) { }
 
-    createTest(test: Test): Observable<Test> {
-        return this.httpService.postRequest(`${this.apiPrefix}`, test);
+    createTest(test: Test, start: boolean): Observable<Test> {
+        return this.httpService.postRequest(`${this.apiPrefix}`, test, { start });
     }
 
-    updateTest(test: Test): Observable<Test> {
-        return this.httpService.putRequest(`${this.apiPrefix}`, test);
+    updateTest(test: Test, start: boolean): Observable<Test> {
+        return this.httpService.putRequest(`${this.apiPrefix}`, test, { start });
     }
 
     getTestsByOrganizationId(organizationId: number): Observable<Test[]> {

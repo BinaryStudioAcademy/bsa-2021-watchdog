@@ -18,7 +18,7 @@
     [orderChanged]="isOrderChanged"
     (saveTilesOrder)="saveTilesOrder()"
     (clearTiles)="deleteAllTiles(dashboard.id)"
-    (closeMenu)="this.showTileMenu = false;"
+    (closeMenu)="toggleTileMenu()"
     *ngIf="showTileMenu && dashboard" [dashboardId]="dashboard.id" [tiles]="tiles" [userProjects]="projects">
 </app-tile-menu>
 <!-- <app-most-common-countries-tile></app-most-common-countries-tile> -->
