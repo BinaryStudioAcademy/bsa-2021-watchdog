@@ -1,9 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Tile } from '@shared/models/tile/tile';
 import { Project } from '@shared/models/projects/project';
 import { TileService } from '@core/services/tile.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
-import { ConfirmWindowService } from '@core/services/confirm-window.service';
 import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
 import { IssueService } from '@core/services/issue.service';
 
@@ -24,6 +23,9 @@ import {
     convertTileSettingsToJson,
 } from '@core/utils/tile.utils';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
+import { ExportType } from '@shared/models/tile/enums/export-type';
+import { ExportTileService } from '@core/services/export-tile.service';
+import { SpinnerService } from '@core/services/spinner.service';
 
 @Component({
     selector: 'app-issues-per-time-tile[tile][isShownEditTileMenu][userProjects]',
@@ -46,12 +48,17 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
     dateRangeMsOffset: number;
     dateMsPast: number;
 
+    docDefinition: any;
+
+    @ViewChild('tiles') data: any;
+
     constructor(
         private tileService: TileService,
         private toastNotificationService: ToastNotificationService,
-        private confirmWindowService: ConfirmWindowService,
         private tileDialogService: TileDialogService,
         private issueService: IssueService,
+        private exportTileService: ExportTileService,
+        private spinner: SpinnerService
     ) {
         super();
     }
@@ -64,6 +71,12 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
     editTile() {
         this.tileDialogService.showIssuesPerTimeEditDialog(this.userProjects, this.tile,
             () => this.applySettings());
+    }
+
+    exportTile(exportType: ExportType) {
+        this.spinner.show(true);
+        this.exportTileService.exportTile(exportType, this.data.host.nativeElement);
+        this.spinner.hide();
     }
 
     setTileDragStatus(status: boolean) {

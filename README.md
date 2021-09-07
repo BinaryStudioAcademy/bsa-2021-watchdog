@@ -2,24 +2,27 @@
 
 Watchdog - is an analog of Sentry, Raygun, and Loader.io. The main goal of the project is to monitor project issues affecting end users in real time. The platform provides issue details including stack trace, breadcrumbs, method\class name, OS, device, browser, location, host, and more. It can be used for both kinds of projects, for servers and client-oriented projects. Users can identify problems more quickly, enjoying visual timeline views, charts, tables and receive email reports if a new issue occurred. Also, clients can perform load testing without typing code to verify how their servers will respond to high load. They can flexibly setup tests in the portal and run them as many times as they need to.
 
-𝗧𝗲𝗰𝗵𝗻𝗼𝗹𝗼𝗴𝗶𝗲𝘀:
+**Technologies:**
+
 Backend:
-● 𝗣𝗹𝗮𝘁𝗳𝗼𝗿𝗺: .NET 5
-● 𝗡𝗲𝘁𝘄𝗼𝗿𝗸: REST, SignalR, RabbitMQ
-● 𝗗𝗮𝘁𝗮𝗯𝗮𝘀𝗲: MS SQL Server, Entity Framework Core
-● 𝗖𝗹𝗼𝘂𝗱: Azure
-● 𝗢𝘁𝗵𝗲𝗿: JWT, Firebase, Elasticsearch, Kibana, Docker, SendGrid, StackOverflow API
+- Platform: .NET 5
+- Network: REST, SignalR, RabbitMQ
+- Database: MS SQL Server, Entity Framework Core
+- Cloud: Azure
+- Other: JWT, Firebase, Elasticsearch, Kibana, Docker, SendGrid, StackOverflow API
 
 Frontend:
-● Angular
-● Prime NG
-● HTML5/CSS3/SASS
+- Angular
+- Prime NG
+- HTML5/CSS3/SASS
 
 ## Links:
 - [Website](https://bsa-watchdog.westeurope.cloudapp.azure.com)
 - [Trello Board](https://trello.com/b/2bsvclRE/watchdog)
 - [Sonar Cloud](https://sonarcloud.io/dashboard?id=BinaryStudioAcademy_bsa-2021-watchdog)
 - [Docker Images](https://hub.docker.com/repositories/vobilyk)
+- [Nuget Package](https://github.com/WatchDogBSA/watchdog-dotnet)
+- [NPM Package](https://github.com/WatchDogBSA/watchdog-js)
 
 ## Building sources
 By default, apps run on the following ports:

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Tile } from '@shared/models/tile/tile';
 import { Project } from '@shared/models/projects/project';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
@@ -23,6 +23,9 @@ import { HeatMapSettings } from '@shared/models/tile/settings/heat-map.settings'
 import { ChartType } from '@shared/models/charts/chart-type';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import { TileService } from '@core/services/tile.service';
+import { ExportType } from '@shared/models/tile/enums/export-type';
+import { ExportTileService } from '@core/services/export-tile.service';
+import { SpinnerService } from '@core/services/spinner.service';
 
 @Component({
     selector: 'app-heat-map[tile][isShownEditTileMenu][userProjects]',
@@ -47,12 +50,15 @@ export class HeatMapComponent extends BaseComponent implements OnInit {
         domain: ['#146738', ' #2C9653', '#6CBA67', ' #A9D770',
             '#DBED91', '#FDDE90', '#FAAD67', '#EF6D49', '#D3342D', '#A10A28']
     };
+    @ViewChild('tiles') data: any;
 
     constructor(
         private toastNotificationService: ToastNotificationService,
         private tileDialogService: TileDialogService,
         private issueService: IssueService,
-        private tileService: TileService
+        private tileService: TileService,
+        private exportTileService: ExportTileService,
+        private spinner: SpinnerService
     ) {
         super();
     }
@@ -65,6 +71,12 @@ export class HeatMapComponent extends BaseComponent implements OnInit {
     editTile() {
         this.tileDialogService.showHeatMapEditDialog(this.userProjects, this.tile,
             () => this.applySettings());
+    }
+
+    exportTile(exportType: ExportType) {
+        this.spinner.show(true);
+        this.exportTileService.exportTile(exportType, this.data.host.nativeElement);
+        this.spinner.hide();
     }
 
     setTileDragStatus(status: boolean) {

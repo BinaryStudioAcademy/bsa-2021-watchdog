@@ -1,8 +1,8 @@
 <div class="container">
     <app-tile-header (dragTile)="setTileDragStatus($event)" (isDeleting)="isDeleting.emit(tile)" (isEditing)="editTile()"
-                     [isShownEditTileMenu]="isShownEditTileMenu" [tile]="tile"></app-tile-header>
+                     [isShownEditTileMenu]="isShownEditTileMenu" [tile]="tile" (isExporting)="exportTile($event)"></app-tile-header>
     <!--    Issues Table    -->
-    <div class="table">
+    <div class="table" #tiles>
         <p-table [alwaysShowPaginator]="displayedIssues.length > paginatorRows" [pageLinks]="1" [paginator]="true"
                  [rows]="paginatorRows" [showJumpToPageDropdown]="true" [showPageLinks]="false"
                  [value]="displayedIssues"
