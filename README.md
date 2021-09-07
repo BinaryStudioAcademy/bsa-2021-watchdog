@@ -21,6 +21,8 @@ Frontend:
 - [Trello Board](https://trello.com/b/2bsvclRE/watchdog)
 - [Sonar Cloud](https://sonarcloud.io/dashboard?id=BinaryStudioAcademy_bsa-2021-watchdog)
 - [Docker Images](https://hub.docker.com/repositories/vobilyk)
+- [Nuget Package](https://github.com/WatchDogBSA/watchdog-dotnet)
+- [NPM Package](https://github.com/WatchDogBSA/watchdog-js)
 
 ## Building sources
 By default, apps run on the following ports:
