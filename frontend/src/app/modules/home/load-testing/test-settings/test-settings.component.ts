@@ -310,17 +310,17 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
         return this.settingsGroup.valid && this.requestGroups.every(x => x.valid);
     }
 
-    save() {
+    save(start: boolean) {
         const test: Test = this.getTest();
         if (this.testId) {
             test.id = this.testId;
-            this.testService.updateTest(test).subscribe(() => {
+            this.testService.updateTest(test, start).subscribe(() => {
                 this.toastNotifications.success('Test updated');
             }, error => {
                 this.toastNotifications.error(error);
             });
         } else {
-            this.testService.createTest(test).subscribe(t => {
+            this.testService.createTest(test, start).subscribe(t => {
                 this.toastNotifications.success('Test created');
                 this.router.navigateByUrl(`home/tests/edit/${t.id}`);
             }, error => {

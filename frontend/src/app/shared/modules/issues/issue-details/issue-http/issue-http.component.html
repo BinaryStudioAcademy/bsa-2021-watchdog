@@ -64,7 +64,7 @@
         </div>
     </div>
     <!--    Headers    -->
-    <div *ngIf="(issueHttpResponse.headers | json) !== '{}'" class="issue-details-http-column">
+    <div *ngIf="issueHttpResponse.headers && (issueHttpResponse.headers | json) !== '{}'" class="issue-details-http-column">
         <div class="title">
             <span>Headers</span>
         </div>
@@ -77,7 +77,7 @@
         </div>
     </div>
     <!--    Query String    -->
-    <div *ngIf="(issueHttpResponse.queryString | json) !== '{}'" class="issue-details-http-column">
+    <div *ngIf="issueHttpResponse.queryString && (issueHttpResponse.queryString | json) !== '{}'" class="issue-details-http-column">
         <div class="title">
             <span>Query String</span>
         </div>

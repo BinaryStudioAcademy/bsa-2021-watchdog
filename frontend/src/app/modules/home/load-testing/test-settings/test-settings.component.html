@@ -11,7 +11,7 @@
             pRipple
             class="p-button-primary p-button-outlined"
             label="Save"
-            (click)="save()"
+            (click)="save(false)"
             [disabled]="!formValid()"></button>
         </div>
         <div class="header-buttons">
@@ -20,6 +20,7 @@
             pRipple
             class="p-button-primary p-button-outlined"
             label="Save and run"
+            (click)="save(true)"
             [disabled]="!formValid()"></button>
         </div>
     </div>

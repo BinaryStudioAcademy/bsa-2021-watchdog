@@ -193,6 +193,12 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<ICollection<ApplicationDto>>(apps);
         }
 
+        public async Task<bool> CheckProjectListeningAsync(string apiKey)
+        {
+            var state = await _context.Applications.AnyAsync(a => a.ApiKey == apiKey);
+            return state;
+        }
+
         public async Task<ICollection<CountryInfoDto>> GetCountriesInfoAsync(int appId)
         {
             var application = await _context.Applications.FirstOrDefaultAsync(app => app.Id == appId);
