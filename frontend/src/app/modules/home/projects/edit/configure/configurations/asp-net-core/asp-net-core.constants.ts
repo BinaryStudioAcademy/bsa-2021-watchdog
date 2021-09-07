@@ -1,4 +1,4 @@
-export const packageVersion = '1.0.2';
+export const packageVersion = '1.0.3';
 export const packageName = 'Watchdog.AspNetCore';
 
 export const packageManagerInstallationCommand = `Install-Package ${packageName} -version ${packageVersion}`;
