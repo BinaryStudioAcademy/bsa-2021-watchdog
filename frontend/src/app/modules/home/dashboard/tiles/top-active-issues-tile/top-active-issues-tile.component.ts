@@ -65,7 +65,7 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
 
     exportTile(exportType: ExportType) {
         this.spinner.show(true);
-        this.exportTileService.exportTile(exportType, this.data.host.nativeElement);
+        this.exportTileService.exportTile(exportType, this.data.nativeElement);
         this.spinner.hide();
     }
 
