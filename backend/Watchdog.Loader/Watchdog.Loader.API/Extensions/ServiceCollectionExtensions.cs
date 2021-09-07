@@ -1,9 +1,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Nest;
 using RabbitMQ.Client;
 using System;
 using Watchdog.Loader.BLL.Services;
+using Watchdog.Loader.BLL.Services.Abstract;
 using Watchdog.Models.Shared.Loader;
 using Watchdog.RabbitMQ.Shared.Models;
 using Watchdog.RabbitMQ.Shared.Services;
@@ -14,6 +16,8 @@ namespace Watchdog.Loader.API.Extensions
     {
         public static void RegisterCustomServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddTransient<IStartService, StartService>();
+            services.AddScoped<IElasticService, ElasticService>();
             services.AddElasticSearch(configuration);
             services.AddRabbitMQ(configuration);
         }
@@ -55,7 +59,8 @@ namespace Watchdog.Loader.API.Extensions
                     provider,
                     new Consumer(
                         provider.GetRequiredService<IConnection>()),
-                        consumerSettings));
+                        consumerSettings,
+                    provider.GetRequiredService<ILogger<LoaderConsumerService>>()));
 
         }
     }

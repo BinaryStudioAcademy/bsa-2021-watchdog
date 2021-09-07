@@ -1,9 +1,10 @@
 <!--    Title    -->
-<div class="title">
+<div class="title" *ngIf="!project">
     <span>Issues</span>
 </div>
-<!--    Main content    -->
-<p-tabView (onChange)="onSelectedTab($event.index)" styleClass="tabview-custom">
+
+<!--    Tab View    -->
+<p-tabView *ngIf="!project && !loading" (onChange)="onSelectedTab($event.index)">
     <!--    Tabs    -->
     <p-tabPanel>
         <ng-template pTemplate="header">
@@ -29,7 +30,10 @@
             <p-badge [value]="issuesCount.all?.toString()" severity="warning" styleClass="count-badge"></p-badge>
         </ng-template>
     </p-tabPanel>
+</p-tabView>
 
+<!--    Main content    -->
+<div *ngIf="!loading" [ngClass]="{'main-content': !project}">
     <!--    Tools    -->
     <div class="functional-bar">
         <!--    Search    -->
@@ -40,6 +44,15 @@
             <input
                 (input)="table.filterGlobal({value: $event.target['value'], fields: globalFilterFields }, 'contains')"
                 name="search" pInputText placeholder="Search" type="text">
+        </div>
+        <div *ngIf="project">
+            <p-dropdown (onChange)="onSelectedIssues()" [(ngModel)]="selected" [ngClass]="{
+                'dropdown-active-status': selected === IssueSelect.Active,
+                'dropdown-resolved-status': selected === IssueSelect.Resolved,
+                'dropdown-ignored-status': selected === IssueSelect.Ignored,
+                'dropdown-all': selected === IssueSelect.All
+                }" [options]="issueStatusDropdownItems" optionLabel="name" optionValue="type" styleClass="dropdown">
+            </p-dropdown>
         </div>
         <!--    Export    -->
         <div class="action-block">
@@ -75,7 +88,7 @@
                 <colgroup>
                     <col id="issue-col">
                     <col id="events-col">
-                    <col id="project-col">
+                    <col id="project-col" *ngIf="!project">
                     <col id="users-col">
                     <col id="assignee-col">
                 </colgroup>
@@ -105,7 +118,7 @@
                             <p-sortIcon field="eventsCount"></p-sortIcon>
                         </div>
                     </th>
-                    <th pSortableColumn="projectName">
+                    <th pSortableColumn="projectName" *ngIf="!project">
                         <div class="table-head-project">
                             <span>Project</span>
                             <p-sortIcon field="projectName"></p-sortIcon>
@@ -159,7 +172,7 @@
                     <td>
                         <span appTooltipFullName class="table-content-events">{{issue.eventsCount}}</span>
                     </td>
-                    <td>
+                    <td *ngIf="!project">
                         <span appTooltipFullName class="table-content-project"
                               routerLink="/home/projects/edit/{{issue.projectId}}">{{issue.projectName}}
                         </span>
@@ -191,7 +204,7 @@
             </ng-template>
         </p-table>
     </div>
-</p-tabView>
+</div>
 
 <app-assignee (closeModal)="closeAssign()" *ngIf="isAssign" [data]="toAssign"
               [members]="sharedOptions.members" [teams]="sharedOptions.teams">

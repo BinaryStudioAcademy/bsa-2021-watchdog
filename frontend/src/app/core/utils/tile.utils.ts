@@ -5,6 +5,7 @@ import { IssuesPerTimeSettings } from '@shared/models/tile/settings/issues-per-t
 import { TileGranularityType } from '@shared/models/tile/enums/tile-granularity-type';
 import { CountIssuesSettings } from '@shared/models/tile/settings/count-issues-settings';
 import { HeatMapSettings } from '@shared/models/tile/settings/heat-map.settings';
+import { Tile } from '@shared/models/tile/tile';
 
 export const convertJsonToTileSettings = (json: string, type: TileType) => {
     switch (type) {
@@ -119,3 +120,5 @@ export const convertDateToTileGranularityTimeStamp = (type: TileGranularityType,
     }
     return date.getTime();
 };
+
+export const sortTilesByTileOrder = (tiles: Tile[]) => tiles.sort((t1, t2) => t1.tileOrder - t2.tileOrder);

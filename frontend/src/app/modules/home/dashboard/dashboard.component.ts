@@ -17,7 +17,7 @@ import { AuthenticationService } from '@core/services/authentication.service';
 import { ProjectService } from '@core/services/project.service';
 import { map } from 'rxjs/operators';
 import { SpinnerService } from '@core/services/spinner.service';
-import { convertJsonToTileSettings } from '@core/utils/tile.utils';
+import { convertJsonToTileSettings, sortTilesByTileOrder } from '@core/utils/tile.utils';
 import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UpdateDashboardComponent } from '../modals/dashboard/update-dashboard.component';
@@ -36,7 +36,6 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     dashboard: Dashboard;
     updateSubscription$: Subscription;
     tiles: Tile[] = [];
-    tilesWithOrderBuffered: Tile[];
     tileTypes = TileType;
     projects: Project[] = [];
     updateDashboardDialog: DynamicDialogRef;
@@ -164,7 +163,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         this.tileService.getAllTilesByDashboardId(dashboardId)
             .pipe(this.untilThis)
             .subscribe(response => {
-                this.tiles = response.sort(r => r.tileOrder);
+                this.tiles = response;
                 this.spinnerService.hide();
             }, error => {
                 this.toastNotificationService.error(error);
@@ -223,7 +222,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         this.tileService.setDashboardOrderForTiles(this.dashboard.id, orderingOfTiles)
             .pipe(this.untilThis)
             .subscribe(response => {
-                this.tiles = response;
+                this.reorderTiles(response);
                 this.spinnerService.hide();
                 this.toastNotificationService.success('The Tiles order was successfully changed!');
                 this.isOrderChanged = false;
@@ -275,7 +274,16 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     }
 
     private revertTilesOrder() {
-        this.tiles = this.tiles.sort(t => t.tileOrder);
+        this.tiles = sortTilesByTileOrder(this.tiles);
         this.isOrderChanged = false;
+    }
+
+    private reorderTiles(reorderedTiles: Tile[]) {
+        this.tiles = reorderedTiles.map(tile => {
+            const oldTile = this.tiles.find(t => t.id === tile.id);
+            oldTile.tileOrder = tile.tileOrder;
+            return oldTile;
+        });
+        this.tiles = sortTilesByTileOrder(this.tiles);
     }
 }

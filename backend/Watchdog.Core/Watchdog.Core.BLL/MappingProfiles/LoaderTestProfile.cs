@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using Watchdog.Core.Common.DTO.Application;
-using Watchdog.Core.Common.DTO.Application.AlertSettings;
-using Watchdog.Core.DAL.Entities;
-using Watchdog.Core.DAL.Entities.AlertSettings;
-using Watchdog.Core.Common.DTO.ApplicationTeam;
 using Watchdog.Core.Common.DTO.LoaderTest;
+using Watchdog.Core.DAL.Entities;
+using Watchdog.Models.Shared.Loader;
 
 namespace Watchdog.Core.BLL.MappingProfiles
 {
@@ -19,6 +16,9 @@ namespace Watchdog.Core.BLL.MappingProfiles
             CreateMap<LoaderRequest, LoaderRequestDto>();
 
             CreateMap<UpdateLoaderRequestDto, LoaderRequest>();
+
+            CreateMap<LoaderTest, LoaderMessage>();
+            CreateMap<LoaderRequest, Request>();
         }
     }
 }
