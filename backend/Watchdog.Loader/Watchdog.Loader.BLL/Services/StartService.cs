@@ -42,7 +42,6 @@ namespace Watchdog.Loader.BLL.Services
                 default:
                     throw new ArgumentException(nameof(message.Type));
             }
-            //await Task.Delay(message.Duration);
         }
 
         private void StartMaintainClientLoad(LoaderMessage message)
