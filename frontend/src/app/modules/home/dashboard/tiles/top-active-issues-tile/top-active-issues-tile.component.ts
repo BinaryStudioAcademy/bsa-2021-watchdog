@@ -1,6 +1,6 @@
 import { AuthenticationService } from '@core/services/authentication.service';
 import { switchMap } from 'rxjs/operators';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Project } from '@shared/models/projects/project';
 import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
 import { TileType } from '@shared/models/tile/enums/tile-type';
@@ -12,6 +12,9 @@ import { IssueInfo } from '@shared/models/issue/issue-info';
 import { IssueService } from '@core/services/issue.service';
 import { convertJsonToTileSettings, convertTileDateRangeTypeToMs } from '@core/utils/tile.utils';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
+import { ExportType } from '@shared/models/tile/enums/export-type';
+import { ExportTileService } from '@core/services/export-tile.service';
+import { SpinnerService } from '@core/services/spinner.service';
 
 @Component({
     selector: 'app-top-active-issues-tile[tile][isShownEditTileMenu][userProjects]',
@@ -28,12 +31,15 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
     tileSettings: TopActiveIssuesSettings;
     requiredProjects: Project[] = [];
     displayedIssues: IssueInfo[] = [];
+    @ViewChild('tiles') data: any;
 
     constructor(
         private toastNotificationService: ToastNotificationService,
         private tileDialogService: TileDialogService,
         private issueService: IssueService,
         private authService: AuthenticationService,
+        private exportTileService: ExportTileService,
+        private spinner: SpinnerService
     ) {
         super();
     }
@@ -55,6 +61,12 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
         this.getTileSettings();
         this.applyProjectSettings();
         this.getIssuesInfo();
+    }
+
+    exportTile(exportType: ExportType) {
+        this.spinner.show(true);
+        this.exportTileService.exportTile(exportType, this.data.host.nativeElement);
+        this.spinner.hide();
     }
 
     private getTileSettings() {
