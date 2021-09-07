@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Tile } from '@shared/models/tile/tile';
 import { Project } from '@shared/models/projects/project';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
@@ -17,6 +17,9 @@ import { CountIssuesSettings } from '@shared/models/tile/settings/count-issues-s
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import { IssueStatusesByDateRangeFilter } from '@shared/models/issue/issue-statuses-by-date-range-filter';
 import { dateRangeTypeLabels } from '@shared/models/tile/enums/tile-date-range-type';
+import { ExportType } from '@shared/models/tile/enums/export-type';
+import { ExportTileService } from '@core/services/export-tile.service';
+import { SpinnerService } from '@core/services/spinner.service';
 
 @Component({
     selector: 'app-issues-count-tile[tile][isShownEditTileMenu][userProjects]',
@@ -40,11 +43,14 @@ export class IssuesCountTileComponent extends BaseComponent implements OnInit {
     dateMsPast: number;
     single: SingleChart[];
     chartOptions: ChartOptions;
+    @ViewChild('tiles') data: any;
 
     constructor(
         private toastNotificationService: ToastNotificationService,
         private tileDialogService: TileDialogService,
         private issueService: IssueService,
+        private exportTileService: ExportTileService,
+        private spinner: SpinnerService
     ) {
         super();
     }
@@ -63,6 +69,12 @@ export class IssuesCountTileComponent extends BaseComponent implements OnInit {
         this.expectedIssueStatuses = [];
         this.getTileSettings();
         this.applyProjectSettings();
+    }
+
+    exportTile(exportType: ExportType) {
+        this.spinner.show(true);
+        this.exportTileService.exportTile(exportType, this.data.host.nativeElement);
+        this.spinner.hide();
     }
 
     private getTileSettings() {
