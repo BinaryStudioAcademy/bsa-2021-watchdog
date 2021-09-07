@@ -1,5 +1,5 @@
 import { AuthenticationService } from '@core/services/authentication.service';
-import { combineLatest, forkJoin, zip } from 'rxjs';
+import { zip } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { ConfirmWindowService } from '@core/services/confirm-window.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
@@ -11,7 +11,6 @@ import { Team } from '@shared/models/teams/team';
 import { PrimeIcons } from 'primeng/api';
 import { UpdateTeam } from '@shared/models/teams/update-team';
 import { SpinnerService } from '@core/services/spinner.service';
-import { tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-team-info',

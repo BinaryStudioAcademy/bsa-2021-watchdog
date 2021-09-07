@@ -1,4 +1,4 @@
-import { SpinnerService } from './../../../../core/services/spinner.service';
+import { SpinnerService } from '../../../../core/services/spinner.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { TestService } from '@core/services/test.service';
