@@ -30,8 +30,8 @@ export class HttpInternalService {
         return this.http.post<T>(this.buildUrl(url), payload, { headers: this.getHeaders(), params: httpParams });
     }
 
-    public putRequest<T>(url: string, payload: object): Observable<T> {
-        return this.http.put<T>(this.buildUrl(url), payload, { headers: this.getHeaders() });
+    public putRequest<T>(url: string, payload: object, httpParams?: any): Observable<T> {
+        return this.http.put<T>(this.buildUrl(url), payload, { headers: this.getHeaders(), params: httpParams });
     }
 
     public patchRequest<T>(url: string, payload: object) {
