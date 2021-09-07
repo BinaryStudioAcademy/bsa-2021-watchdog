@@ -56,6 +56,9 @@
                     [isShownEditTileMenu]="showTileMenu" [tile]="tile"
                     [userProjects]="projects">
                 </app-heat-map>
+                <app-top-responses-time-tile (dragTile)="setDragByButton($event)" (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.TopResponsesTime"
+                                             [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects">
+                </app-top-responses-time-tile>
                 <div
                     class="drop-line drop-line-right"
                     (onDrop)="drop(i+1)"

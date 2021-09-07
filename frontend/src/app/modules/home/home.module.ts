@@ -23,6 +23,8 @@ import { AddEditCountIssuesTileComponent }
     from './modals/tiles/count-issues/add-edit-count-issues-tile/add-edit-count-issues-tile.component';
 import { AddEditHeatMapTileComponent } from './modals/tiles/heat-map/add-edit-heat-map-tile/add-edit-heat-map-tile.component';
 import { HeatMapComponent } from './dashboard/tiles/heat-map/heat-map.component';
+import { AddEditTopResponsesTimeComponent } from '@modules/home/modals/tiles/top-responses-time/add-edit-top-responses-time-tile/add-edit-top-responses-time-tile.component';
+import { TopResponsesTimeTileComponent } from './dashboard/tiles/top-responses-time-tile/top-responses-time-tile.component';
 
 @NgModule({
     declarations: [
@@ -36,10 +38,12 @@ import { HeatMapComponent } from './dashboard/tiles/heat-map/heat-map.component'
         TileHeaderComponent,
         IssuesPerTimeTileComponent,
         AddEditIssuesPerTimeTileComponent,
+        AddEditTopResponsesTimeComponent,
         IssuesCountTileComponent,
         AddEditCountIssuesTileComponent,
         AddEditHeatMapTileComponent,
         HeatMapComponent,
+        TopResponsesTimeTileComponent,
 
     ],
     imports: [

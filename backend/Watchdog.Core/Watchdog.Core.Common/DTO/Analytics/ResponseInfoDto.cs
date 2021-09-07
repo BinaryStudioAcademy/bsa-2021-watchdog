@@ -1,8 +1,9 @@
 using System;
+using Watchdog.Core.Common.DTO.Application;
 
-namespace Watchdog.Models.Shared.Analytics
+namespace Watchdog.Core.Common.DTO.Analytics
 {
-    public class ResponseInfo
+    public class ResponseInfoDto
     {
         public DateTime Date { get; set; }
         public int Time { get; set; }
@@ -10,6 +11,7 @@ namespace Watchdog.Models.Shared.Analytics
         public int Status { get; set; }
         public string StatusText { get; set; }
         public double Size { get; set;  }
+        public ApplicationDto Project { get; set; }
         public string ProjectKey { get; set; }
     }
 }

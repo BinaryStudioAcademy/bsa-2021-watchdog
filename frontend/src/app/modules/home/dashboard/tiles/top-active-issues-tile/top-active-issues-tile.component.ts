@@ -43,7 +43,7 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
     }
 
     editTile() {
-        this.tileDialogService.showTopActiveIssuesEditDialog(this.userProjects, this.tile,
+        this.tileDialogService.showTopResponsesTimeEditDialog(this.userProjects, this.tile,
             () => this.applySettings());
     }
 

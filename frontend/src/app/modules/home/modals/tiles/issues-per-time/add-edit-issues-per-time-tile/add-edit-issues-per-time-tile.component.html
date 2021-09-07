@@ -39,7 +39,7 @@
         </div>
         <!--    Issue Statuses Checkboxes    -->
         <div class="issue-statuses">
-            <div class="issue-statuses-title">Statuses to include</div>
+            <div class="items-count-title">Statuses to include</div>
             <div *ngFor="let status of issueStatusCheckboxes" class="issue-statuses-checkboxes">
                 <p-checkbox [formControl]="$any(formGroup).controls['issueStatuses']" [value]="status.type"
                             inputId="{{status.type}}">

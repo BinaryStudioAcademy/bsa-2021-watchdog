@@ -6,6 +6,7 @@ import { TileGranularityType } from '@shared/models/tile/enums/tile-granularity-
 import { CountIssuesSettings } from '@shared/models/tile/settings/count-issues-settings';
 import { HeatMapSettings } from '@shared/models/tile/settings/heat-map.settings';
 import { Tile } from '@shared/models/tile/tile';
+import { TopResponsesTimeSettings } from '@shared/models/tile/settings/top-responses-time.settings';
 
 export const convertJsonToTileSettings = (json: string, type: TileType) => {
     switch (type) {
@@ -17,6 +18,8 @@ export const convertJsonToTileSettings = (json: string, type: TileType) => {
             return JSON.parse(json) as CountIssuesSettings;
         case TileType.HeatMap:
             return JSON.parse(json) as HeatMapSettings;
+        case TileType.TopResponsesTime:
+            return JSON.parse(json) as TopResponsesTimeSettings;
         default:
             return undefined;
     }

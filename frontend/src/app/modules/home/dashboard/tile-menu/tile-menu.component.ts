@@ -66,6 +66,10 @@ export class TileMenuComponent implements OnInit {
                 this.selectedItem = item;
                 this.tileDialogService.showTopActiveIssuesCreateDialog(this.userProjects, this.dashboardId, this.tiles);
                 break;
+            case TileType.TopResponsesTime:
+                this.selectedItem = item;
+                this.tileDialogService.showTopResponsesTimeCreateDialog(this.userProjects, this.dashboardId, this.tiles);
+                break;
             default:
                 this.selectedItem = undefined;
                 break;
@@ -98,6 +102,12 @@ export class TileMenuComponent implements OnInit {
                 id: TileType.TopActiveIssues.toString(),
                 label: 'Top Active Issues',
                 icon: 'pi pi-ban',
+                command: event => this.listItemSelected(event.item)
+            },
+            {
+                id: TileType.TopResponsesTime.toString(),
+                label: 'Top Responses Time',
+                icon: 'pi pi-eject',
                 command: event => this.listItemSelected(event.item)
             },
         ];
