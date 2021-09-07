@@ -90,8 +90,6 @@ namespace Watchdog.Loader.API
 
             app.UseDeveloperExceptionPage();
 
-            app.UseWatchdog();
-
             app.UseSerilogRequestLogging();
 
             app.UseCors("AnyOrigin");

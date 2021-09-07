@@ -56,11 +56,11 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
             .subscribe(async organization => {
                 this.organization = organization;
                 this.getAllDashboards();
+                await this.runHubs();
             }, () => {
                 this.spinner.hide();
                 this.display = true;
             });
-        await this.runHubs();
     }
 
     async runHubs() {
