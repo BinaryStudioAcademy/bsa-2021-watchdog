@@ -1,32 +1,32 @@
-<div class="container">
-    <app-tile-header (dragTile)="setTileDragStatus($event)" (isDeleting)="isDeleting.emit(tile)" (isEditing)="editTile()"
-                     [isShownEditTileMenu]="isShownEditTileMenu" [tile]="tile"></app-tile-header>
-    <!--    Issues Table    -->
-    <div class="table">
-        <p-table *ngIf="displayedResponses" [alwaysShowPaginator]="displayedResponses.length > paginatorRows" [pageLinks]="1" [paginator]="true"
-                 [rows]="paginatorRows" [showJumpToPageDropdown]="true" [showPageLinks]="false"
-                 [value]="displayedResponses"
-                 selectionMode="single">
-            <!--    Columns Define    -->
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>Responses</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                </tr>
-            </ng-template>
-            <!--    Rows Data   -->
-            <ng-template let-response pTemplate="body">
-                <tr>
-                    <td>
-                        <small appTooltipFullName class="issue-name">{{response.url}}</small>
-                        <small appTooltipFullName class="issue-message">Size: {{response.size}}KB Status: {{response.status}} {{response.statusText}}</small>
-                    </td>
-                    <td>{{response.date | timeAgo}}</td>
-                    <td>{{response.time}} ms</td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
+<!--    Responses Table    -->
+<div class="table">
+    <p-table *ngIf="displayedResponses"
+             [alwaysShowPaginator]="displayedResponses.length > paginatorRows()"
+             [pageLinks]="1"
+             [paginator]="true"
+             [rows]="paginatorRows()"
+             [showJumpToPageDropdown]="true"
+             [showPageLinks]="false"
+             [value]="displayedResponses"
+             selectionMode="single">
+        <!--    Columns Define    -->
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Responses</th>
+                <th>Date</th>
+                <th>Time</th>
+            </tr>
+        </ng-template>
+        <!--    Rows Data   -->
+        <ng-template let-response pTemplate="body">
+            <tr>
+                <td>
+                    <small appTooltipFullName class="issue-name">{{response.url}}</small>
+                    <small appTooltipFullName class="issue-message">Size: {{response.size}}KB Status: {{response.status}} {{response.statusText}}</small>
+                </td>
+                <td>{{response.date | timeAgo}}</td>
+                <td>{{response.time}} ms</td>
+            </tr>
+        </ng-template>
+    </p-table>
 </div>
-

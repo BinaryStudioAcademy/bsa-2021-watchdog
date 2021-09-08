@@ -47,7 +47,7 @@ export class AddEditTopActiveIssuesTileComponent extends CommomEditTileComponent
             tileSettings.dateRange,
             [Validators.required]
         ));
-        this.formGroup.addControl('issuesCount', new FormControl(
+        this.formGroup.addControl('itemsCount', new FormControl(
             tileSettings.itemsCount,
             [
                 Validators.required,
@@ -64,7 +64,7 @@ export class AddEditTopActiveIssuesTileComponent extends CommomEditTileComponent
             TileDateRangeType.ThePastDay,
             [Validators.required]
         ));
-        this.formGroup.addControl('issuesCount', new FormControl(
+        this.formGroup.addControl('itemsCount', new FormControl(
             5,
             [
                 Validators.required,
