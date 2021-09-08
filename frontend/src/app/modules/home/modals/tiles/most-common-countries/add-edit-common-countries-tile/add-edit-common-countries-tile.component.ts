@@ -30,10 +30,6 @@ export class AddEditMostCommonCountriesTileComponent extends CommomEditTileCompo
         super.ngOnInit();
     }
 
-    editTileInit() {
-        super.editTileInit();
-    }
-
     addTileInit() {
         super.addTileInit();
         this.formGroup.controls.name.setValue('Most common countries');
