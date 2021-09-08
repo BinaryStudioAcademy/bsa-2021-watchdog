@@ -203,9 +203,11 @@
                 </tr>
             </ng-template>
         </p-table>
+        <div *ngIf="!lazyLoading && !issues.length" class="empty">
+            There is no issues
+        </div>
     </div>
 </div>
-
 <app-assignee (closeModal)="closeAssign()" *ngIf="isAssign" [data]="toAssign"
               [members]="sharedOptions.members" [teams]="sharedOptions.teams">
 </app-assignee>

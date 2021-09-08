@@ -1,13 +1,16 @@
 <div class="title"><button routerLink="../../" tooltipPosition="bottom" pTooltip="Back to Projects" pButton pRipple
-    icon="pi pi-chevron-left " class="p-button-outlined back-button"></button>{{project?.name}}
-<div class="header-buttons" >
-    <div class="buttons-container">
-        <button #saveBut pButton pRipple class="p-button-primary p-button-outlined" label="Save" (click)="updateProjectFunction()"></button>
-        <button pButton pRipple class="p-button-danger p-button-outlined" label="Remove" (click)="deleteProjectModal()"></button>
+    icon="pi pi-chevron-left " class="p-button-outlined back-button"></button>
+    <span *ngIf="!notFound && !loading">{{project?.name}}</span>
+    <span *ngIf="notFound || loading">Project</span>
+    <div class="header-buttons" *ngIf="!notFound && !loading">
+        <div class="buttons-container">
+            <button #saveBut pButton pRipple class="p-button-primary p-button-outlined" label="Save" (click)="updateProjectFunction()"></button>
+            <button pButton pRipple class="p-button-danger p-button-outlined" label="Remove" (click)="deleteProjectModal()"></button>
+        </div>
     </div>
 </div>
-</div>
-<p-tabView *ngIf="project" [(activeIndex)]="activeIndex">
+<app-not-found *ngIf="notFound"></app-not-found>
+<p-tabView *ngIf="!notFound && !loading" [(activeIndex)]="activeIndex">
     <p-tabPanel *ngIf="isBrowser">
         <ng-template pTemplate="header">
             <div class="header">

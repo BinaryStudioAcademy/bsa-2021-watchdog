@@ -104,5 +104,5 @@ namespace Watchdog.Core.BLL.Services
             user.AvatarUrl = data.AvatarUrl;
             await _context.SaveChangesAsync();
         }
-    }
+        }
 }

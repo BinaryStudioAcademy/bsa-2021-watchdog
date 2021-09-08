@@ -41,6 +41,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     globalFilterFields = ['errorClass', 'projectName', 'errorMessage'];
     lastEvent: LazyLoadEvent;
     loading: boolean = true;
+    lazyLoading: boolean = true;
     totalRecords: number;
     member: Member;
     itemsPerPage = 10;
@@ -71,7 +72,6 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     ngOnInit(): void {
         this.isAssign = false;
-        this.spinner.show(true);
         this.authService.getMember()
             .pipe(
                 this.untilThis,
@@ -163,7 +163,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         this.lastEvent = event;
 
         this.spinner.show(true);
-
+        this.lazyLoading = true;
         this.issueService.getIssuesInfoLazy(this.member.id, this.lastEvent, this.selectedTabIssueStatus, this.project)
             .pipe(this.untilThis,
                 debounceTime(1000))
@@ -171,10 +171,12 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                 response => {
                     this.issues = response.collection.concat();
                     this.totalRecords = response.totalRecords;
+                    this.lazyLoading = false;
                     this.spinner.hide();
                 },
                 error => {
                     this.toastNotification.error(error);
+                    this.lazyLoading = false;
                     this.spinner.hide();
                 }
             );

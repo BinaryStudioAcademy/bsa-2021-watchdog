@@ -10,5 +10,6 @@ export interface Tile {
     createdBy: number,
     createdAt: Date,
     tileOrder: number,
-    settings: string
+    settings: string,
+    isEditing: boolean
 }
