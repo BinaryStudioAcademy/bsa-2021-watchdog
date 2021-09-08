@@ -9,6 +9,7 @@ import { UpdateProject } from '@shared/models/projects/update-project';
 import { share, tap } from 'rxjs/operators';
 import { AppSecrets } from '@shared/models/projects/app-secrets';
 import { CountryInfo } from '@shared/models/projects/country-info';
+import { RecipientTeam } from '@shared/models/projects/recipient-team';
 
 @Injectable({
     providedIn: 'root',
@@ -96,5 +97,9 @@ export class ProjectService {
 
     getCountriesInfo(projectId: number): Observable<CountryInfo[]> {
         return this.httpService.getRequest<CountryInfo[]>(`${this.apiPrefix}/countriesInfo/${projectId}`);
+    }
+
+    getRecipientTeams(projectId: number): Observable<RecipientTeam[]> {
+        return this.httpService.getRequest<RecipientTeam[]>(`${this.apiPrefix}/${projectId}/recipients`);
     }
 }

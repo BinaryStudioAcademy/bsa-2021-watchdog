@@ -33,6 +33,7 @@ By default, apps run on the following ports:
 | Watchdog.**Notifier** | 5070 |
 | Watchdog.**Collector** | 5090 |
 | Watchdog.**Loader** | 5110 |
+| Watchdog.**Emailer** | 5130 |
 | Watchdog.**Frontend** | 80 or 4200 |
 | RabbitMQ | 5672 |
 | Elasticsearch | 9200 |
@@ -69,9 +70,11 @@ Some extra extensions which can significantly help to work with Angular:
 ## Environment variables
 This is a list of the required environment variables:
 
-#### RabbitMQ:
-**RABBIT_MQ_USERNAME** - for username,
-**RABBIT_MQ_PASSWORD** - for user password
 
-#### SendGrid:
-**SENDGRID_API_KEY** - api key for sendgrid
+**RABBIT_MQ_USERNAME** - RabbitMQ username
+
+**RABBIT_MQ_PASSWORD** - RabbitMQ user password
+
+**SA_PASSWORD** - MSSQL Server "SA" user password
+
+**SendGrid__ApiKey** - api key for sendgrid
