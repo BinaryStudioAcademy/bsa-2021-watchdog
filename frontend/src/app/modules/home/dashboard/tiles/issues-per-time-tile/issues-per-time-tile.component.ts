@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Tile } from '@shared/models/tile/tile';
+import { Component, OnInit } from '@angular/core';
 import { Project } from '@shared/models/projects/project';
 import { TileService } from '@core/services/tile.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
@@ -7,7 +6,6 @@ import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
 import { IssueService } from '@core/services/issue.service';
 
 import { TileType } from '@shared/models/tile/enums/tile-type';
-import { BaseComponent } from '@core/components/base/base.component';
 import { IssueMessageInfo } from '@shared/models/issue/issue-message-info';
 import { MultiChart } from '@shared/models/charts/multi-chart';
 import { ChartOptions } from '@shared/models/charts/chart-options';
@@ -23,21 +21,13 @@ import {
     convertTileSettingsToJson,
 } from '@core/utils/tile.utils';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
-import { ExportType } from '@shared/models/tile/enums/export-type';
-import { ExportTileService } from '@core/services/export-tile.service';
-import { SpinnerService } from '@core/services/spinner.service';
+import { BaseTileComponent } from '../base-tile/base-tile.component';
 
 @Component({
-    selector: 'app-issues-per-time-tile[tile][isShownEditTileMenu][userProjects]',
-    templateUrl: './issues-per-time-tile.component.html',
-    styleUrls: ['./issues-per-time-tile.component.sass']
+    selector: 'app-issues-per-time-tile[tile][userProjects]',
+    templateUrl: './issues-per-time-tile.component.html'
 })
-export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit {
-    @Input() tile: Tile;
-    @Input() isShownEditTileMenu: boolean = false;
-    @Input() userProjects: Project[] = [];
-    @Output() isDeleting: EventEmitter<Tile> = new EventEmitter<Tile>();
-    @Output() dragTile: EventEmitter<boolean> = new EventEmitter<boolean>();
+export class IssuesPerTimeTileComponent extends BaseTileComponent implements OnInit {
     paginatorRows: number = 5;
     tileSettings: IssuesPerTimeSettings;
     requiredProjects: Project[] = [];
@@ -48,22 +38,17 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
     dateRangeMsOffset: number;
     dateMsPast: number;
 
-    docDefinition: any;
-
-    @ViewChild('tiles') data: any;
-
     constructor(
         private tileService: TileService,
         private toastNotificationService: ToastNotificationService,
         private tileDialogService: TileDialogService,
         private issueService: IssueService,
-        private exportTileService: ExportTileService,
-        private spinner: SpinnerService
     ) {
         super();
     }
 
     ngOnInit() {
+        super.ngOnInit();
         this.initChartSettings();
         this.applySettings();
     }
@@ -73,20 +58,11 @@ export class IssuesPerTimeTileComponent extends BaseComponent implements OnInit 
             () => this.applySettings());
     }
 
-    exportTile(exportType: ExportType) {
-        this.spinner.show(true);
-        this.exportTileService.exportTile(exportType, this.data.host.nativeElement);
-        this.spinner.hide();
-    }
-
-    setTileDragStatus(status: boolean) {
-        this.dragTile.emit(status);
-    }
-
     private applySettings() {
         this.multi = [];
         this.getTileSettings();
         this.applyProjectSettings();
+        this.changeTile.emit();
     }
 
     private getTileSettings() {

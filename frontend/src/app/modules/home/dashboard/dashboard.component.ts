@@ -3,6 +3,7 @@ import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardService } from '@core/services/dashboard.service';
 import { ShareDataService } from '@core/services/share-data.service';
+import { Observable, Subject } from 'rxjs';
 import { BaseComponent } from '@core/components/base/base.component';
 import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
@@ -14,7 +15,7 @@ import { Project } from '@shared/models/projects/project';
 import { TileService } from '@core/services/tile.service';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { ProjectService } from '@core/services/project.service';
-import { map } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
 import { SpinnerService } from '@core/services/spinner.service';
 import { convertJsonToTileSettings, sortTilesByTileOrder } from '@core/utils/tile.utils';
 import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
@@ -38,6 +39,8 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     projects: Project[] = [];
     updateDashboardDialog: DynamicDialogRef;
     member: Member;
+    resize: Subject<void> = new Subject<void>();
+    resize$: Observable<void> = this.resize.asObservable().pipe(delay(100));
     notFound: boolean = false;
 
     constructor(
@@ -176,9 +179,14 @@ export class DashboardComponent extends BaseComponent implements OnInit {
             });
     }
 
-    getTileSize(tile: Tile) {
+    getTileWidth(tile: Tile) {
         const settings = convertJsonToTileSettings(tile.settings, TileType.TopActiveIssues) as TopActiveIssuesSettings;
         return settings.tileSize * 150 + 350;
+    }
+
+    getTileHeight(tile: Tile) {
+        const settings = convertJsonToTileSettings(tile.settings, TileType.TopActiveIssues) as TopActiveIssuesSettings;
+        return settings.tileSize * 64 + 366;
     }
 
     toggleTileMenu(): void {
@@ -197,6 +205,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
                 this.spinnerService.hide();
                 this.tiles.splice(this.tiles.findIndex(value => value.id === tile.id), 1);
                 this.toastNotificationService.success('Tile Deleted');
+                this.resize.next();
             }, error => {
                 this.spinnerService.hide();
                 this.toastNotificationService.error(error);
@@ -261,6 +270,11 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     dragOff() {
         this.canDrag = false;
         this.draggableTile = null;
+        this.resize.next();
+    }
+
+    async onChange() {
+        this.resize.next();
     }
 
     getDropSpaceState(index: number): boolean {

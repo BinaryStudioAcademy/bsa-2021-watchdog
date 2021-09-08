@@ -71,7 +71,7 @@ namespace Watchdog.Core.API.Controllers
         }
 
         [HttpDelete("dashboard/{dashboardId:int}")]
-        public async Task<ActionResult<ICollection<DashboardDto>>> DeleteAllByDashboardId(int dashboardId)
+        public async Task<ActionResult<ICollection<DashboardDto>>> DeleteAllByDashboardId (int dashboardId)
         {
             await _tileService.DeleteAllTilesByDashboardIdAsync(dashboardId);
             _logger.LogInformation($"All tiles from Dashboard: ID = {dashboardId} has been removed.");
