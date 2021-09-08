@@ -1,4 +1,5 @@
 import { AlertSettings } from '../alert-settings/alert-settings';
+import { RecipientTeam } from './recipient-team';
 
 export interface UpdateProject {
     name: string,
@@ -6,4 +7,5 @@ export interface UpdateProject {
     description: string,
     platformId: number,
     alertSettings?: AlertSettings,
+    recipientTeams: RecipientTeam[]
 }
