@@ -23,5 +23,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<ICollection<ApplicationDto>> GetAppsByMemberIdAsync(int memberId);
         Task<bool> CheckProjectListeningAsync(string apiKey);
         Task<ICollection<CountryInfoDto>> GetCountriesInfoAsync(int appId);
+        Task<ICollection<ApplicationRecipientsDto>> GetRecipientTeams(int applicationId);
     }
 }

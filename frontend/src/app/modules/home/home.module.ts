@@ -25,6 +25,8 @@ import { AddEditHeatMapTileComponent } from './modals/tiles/heat-map/add-edit-he
 import { HeatMapComponent } from './dashboard/tiles/heat-map/heat-map.component';
 import { AddEditTopResponsesTimeComponent } from '@modules/home/modals/tiles/top-responses-time/add-edit-top-responses-time-tile/add-edit-top-responses-time-tile.component';
 import { TopResponsesTimeTileComponent } from './dashboard/tiles/top-responses-time-tile/top-responses-time-tile.component';
+import { CommonTileComponent } from './dashboard/tiles/common-tile/common-tile.component';
+import { CommomEditTileComponent } from './modals/tiles/commom-edit-tile/commom-edit-tile.component';
 
 @NgModule({
     declarations: [
@@ -44,7 +46,8 @@ import { TopResponsesTimeTileComponent } from './dashboard/tiles/top-responses-t
         AddEditHeatMapTileComponent,
         HeatMapComponent,
         TopResponsesTimeTileComponent,
-
+        CommonTileComponent,
+        CommomEditTileComponent,
     ],
     imports: [
         SharedModule,

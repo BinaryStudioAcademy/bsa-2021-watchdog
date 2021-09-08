@@ -6,7 +6,8 @@
                 icon="pi pi-plus-circle" label="Create Project" pButton type="button"></button>
     </div>
 </div>
-<div class="projects-container">
+<app-no-content-placeholder *ngIf="projects && !projects.length" title="Looks like here are no projects"></app-no-content-placeholder>
+<div class="projects-container" *ngIf="projects && projects.length">
     <!--    Projects Grid    -->
     <div class="grid">
         <div *ngFor="let project of projects">

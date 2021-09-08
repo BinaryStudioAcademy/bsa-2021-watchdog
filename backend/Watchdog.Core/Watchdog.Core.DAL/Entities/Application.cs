@@ -11,6 +11,7 @@ namespace Watchdog.Core.DAL.Entities
         {
             Environments = new List<Environment>();
             ApplicationTeams = new List<ApplicationTeam>();
+            Recipients = new List<User>();
             Issues = new List<Issue>();
             LoaderTests = new List<LoaderTest>();
             ApiKey = Guid.NewGuid().ToString();
@@ -33,6 +34,8 @@ namespace Watchdog.Core.DAL.Entities
         public Platform Platform { get; set; }
 
         public AlertSetting AlertSettings { get; set; }
+        
+        public ICollection<User> Recipients { get; set; }
 
         public ICollection<Environment> Environments { get; set; }
 
