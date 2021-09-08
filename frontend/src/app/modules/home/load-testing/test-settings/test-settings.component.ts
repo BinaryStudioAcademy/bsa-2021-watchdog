@@ -1,3 +1,4 @@
+import { hasAccess } from '@core/utils/access.utils';
 import { SpinnerService } from '@core/services/spinner.service';
 import { Test } from '@shared/models/test/test';
 import { TestMethod } from '@shared/models/test/enums/test-method';
@@ -39,6 +40,7 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
     testId: number;
     contentTypes = contentTypes;
     loading: boolean;
+
     @ViewChild(InputTextarea) textarea: InputTextarea;
     getUrl = getUrl;
     hasBody = hasBody;
@@ -57,31 +59,34 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
         this.spinner.show(true);
         this.initFormGroups();
         this.authService.getMember()
-            .pipe(
-                this.untilThis,
-                tap(member => {
+            .pipe(this.untilThis)
+            .subscribe(member => {
+                if (hasAccess(member)) {
                     this.member = member;
-                })
-            )
-            .subscribe(() => {
-                this.initProjects().subscribe(() => {
-                    this.activatedRoute.params
-                        .pipe(this.untilThis)
-                        .subscribe(params => {
-                            if (params.id) {
-                                this.header = 'Edit test';
-                                this.initEditMode(+params.id);
-                            } else {
-                                this.header = 'Add a new test';
-                                this.spinner.hide();
+                    this.initProjects().subscribe(() => {
+                        this.activatedRoute.params
+                            .pipe(this.untilThis)
+                            .subscribe(params => {
+                                if (params.id) {
+                                    this.header = 'Edit test';
+                                    this.initEditMode(+params.id);
+                                } else {
+                                    this.header = 'Add a new test';
+                                    this.spinner.hide();
+                                    this.loading = false;
+                                }
+                            }, error => {
                                 this.loading = false;
-                            }
-                        }, error => {
-                            this.loading = false;
-                            this.spinner.hide();
-                            this.toastNotifications.error(error);
-                        });
-                });
+                                this.spinner.hide();
+                                this.toastNotifications.error(error);
+                            });
+                    });
+                } else {
+                    this.header = 'Tests';
+                    this.spinner.hide();
+                    this.loading = false;
+                    this.isNotFound = true;
+                }
             }, error => {
                 this.toastNotifications.error(error);
             });

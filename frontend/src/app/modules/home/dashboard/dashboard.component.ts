@@ -1,3 +1,4 @@
+import { hasAccess } from '@core/utils/access.utils';
 import { Component, OnInit } from '@angular/core';
 import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -42,6 +43,8 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     resize: Subject<void> = new Subject<void>();
     resize$: Observable<void> = this.resize.asObservable().pipe(delay(100));
     notFound: boolean = false;
+
+    hasAccess = () => hasAccess(this.member);
 
     constructor(
         private route: ActivatedRoute,
