@@ -1,7 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MenuItem } from 'primeng/api';
-import { ToastNotificationService } from '@core/services/toast-notification.service';
-import { TileType } from '@shared/models/tile/enums/tile-type';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Tile } from '@shared/models/tile/tile';
 import { Project } from '@shared/models/projects/project';
 import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
@@ -12,8 +9,7 @@ import { ConfirmWindowService } from '@core/services/confirm-window.service';
     templateUrl: './tile-menu.component.html',
     styleUrls: ['./tile-menu.component.sass']
 })
-export class TileMenuComponent implements OnInit {
-
+export class TileMenuComponent {
     @Output()
     closeMenu: EventEmitter<boolean> = new EventEmitter();
     @Output()
@@ -30,10 +26,6 @@ export class TileMenuComponent implements OnInit {
         private tileDialogService: TileDialogService,
         private confirmWindowService: ConfirmWindowService
     ) { }
-
-    ngOnInit(): void {
-
-    }
 
     clearDashboardTiles() {
         this.confirmWindowService.confirm({
