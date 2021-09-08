@@ -21,17 +21,14 @@ namespace Watchdog.Core.BLL.Services
 
     public class MemberService : BaseService, IMemberService
     {
-        private readonly IEmailSendService _emailSendService;
         private readonly IEmailerQueueProducerService _emailer;
 
         public MemberService(IMapper mapper,
-                             IEmailSendService emailSendService,
                              IEmailerQueueProducerService emailer,
                              WatchdogCoreContext context)
             : base(context, mapper)
         {
-            _emailSendService = emailSendService;
-            this._emailer = emailer;
+            _emailer = emailer;
         }
 
         public async Task InviteMemberAsync(int id)
