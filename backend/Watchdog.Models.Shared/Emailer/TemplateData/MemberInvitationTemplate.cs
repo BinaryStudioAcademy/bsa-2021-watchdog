@@ -33,4 +33,13 @@ namespace Watchdog.Models.Shared.Emailer.TemplateData
         [JsonProperty("location")]
         public Location Location { get; set; }
     }
+
+    public class Location
+    {
+        [JsonProperty("city")]
+        public string City { get; set; }
+
+        [JsonProperty("country")]
+        public string Country { get; set; }
+    }
 }
