@@ -17,8 +17,8 @@ export class AnalyticsService {
             .set('count', count)
             .set('dateRangeType', dateRangeType);
 
-        console.log(params);
+        const keys = projects.map(p => p.apiKey);
 
-        return this.httpService.postRequest<ResponseInfo[]>(`${this.routePrefix}/requestsInfo`, projects, params);
+        return this.httpService.postRequest<ResponseInfo[]>(`${this.routePrefix}/requestsInfo`, keys, params);
     }
 }

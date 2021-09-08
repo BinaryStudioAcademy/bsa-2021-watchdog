@@ -21,8 +21,8 @@
         <ng-template let-response pTemplate="body">
             <tr>
                 <td>
-                    <small appTooltipFullName class="issue-name">{{response.url}}</small>
-                    <small appTooltipFullName class="issue-message">Size: {{response.size}}KB Status: {{response.status}} {{response.statusText}}</small>
+                    <small appTooltipFullName class="response-name">{{response.url}}</small>
+                    <small appTooltipFullName class="response-message">Size: {{response.size}}KB Status: {{response.status}} {{response.statusText}}</small>
                 </td>
                 <td>{{response.date | timeAgo}}</td>
                 <td>{{response.time}} ms</td>

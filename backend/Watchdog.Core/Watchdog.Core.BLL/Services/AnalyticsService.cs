@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Nest;
 using Watchdog.Core.BLL.Services.Abstract;
-using Watchdog.Core.Common.DTO.Application;
 using Watchdog.Core.Common.Enums.Tiles;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Models.Shared.Analytics;
@@ -22,7 +21,7 @@ namespace Watchdog.Core.BLL.Services
             _client = client;
         }
 
-        public async Task<ICollection<ResponseInfo>> GetResponsesInfo(ApplicationDto[] applications, TileDateRangeType dateRangeTypeType, int count)
+        public async Task<ICollection<ResponseInfo>> GetResponsesInfo(string[] appKeys, TileDateRangeType dateRangeTypeType, int count)
         {
             var date = GetDateRangeTime(dateRangeTypeType);
             
@@ -37,8 +36,6 @@ namespace Watchdog.Core.BLL.Services
                     .Descending(response => response.Time))
                 .Size(count)
             );
-
-            var appKeys = applications.Select(a => a.ApiKey);
 
             return searchResponse.Documents
                 .Where(resp => appKeys.Contains(resp.ProjectKey))
