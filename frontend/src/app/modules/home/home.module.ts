@@ -26,8 +26,11 @@ import { HeatMapComponent } from './dashboard/tiles/heat-map/heat-map.component'
 import { AddEditTopResponsesTimeComponent }
     from '@modules/home/modals/tiles/top-responses-time/add-edit-top-responses-time-tile/add-edit-top-responses-time-tile.component';
 import { TopResponsesTimeTileComponent } from './dashboard/tiles/top-responses-time-tile/top-responses-time-tile.component';
+import { MostCommonCountriesTileComponent } from './dashboard/tiles/most-common-countries-tile/most-common-countries-tile.component';
 import { CommonTileComponent } from './dashboard/tiles/common-tile/common-tile.component';
 import { CommomEditTileComponent } from './modals/tiles/commom-edit-tile/commom-edit-tile.component';
+import { AddEditMostCommonCountriesTileComponent }
+    from './modals/tiles/most-common-countries/add-edit-common-countries-tile/add-edit-common-countries-tile.component';
 
 @NgModule({
     declarations: [
@@ -47,6 +50,8 @@ import { CommomEditTileComponent } from './modals/tiles/commom-edit-tile/commom-
         AddEditHeatMapTileComponent,
         HeatMapComponent,
         TopResponsesTimeTileComponent,
+        MostCommonCountriesTileComponent,
+        AddEditMostCommonCountriesTileComponent,
         CommonTileComponent,
         CommomEditTileComponent,
     ],

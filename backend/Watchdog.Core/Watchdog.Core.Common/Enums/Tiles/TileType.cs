@@ -7,5 +7,6 @@
         IssuesCount = 2,
         HeatMap = 3,
         TopResponsesTime = 4
+        MostCommonCountries = 5,
     }
 }
