@@ -1,7 +1,8 @@
 <div class="title"><button routerLink="../" tooltipPosition="bottom" pTooltip="Back to Teams" pButton pRipple
         icon="pi pi-chevron-left " class="p-button-outlined back-button"></button>
-    <div appTooltipFullName class="team-name">#{{team?.name}}</div>
-    <div class="header-buttons" [hidden]="!isSettings">
+    <div appTooltipFullName class="team-name" *ngIf="!notFound && !loading">#{{team?.name}}</div>
+    <div appTooltipFullName class="team-name" *ngIf="notFound || loading">#team</div>
+    <div class="header-buttons" *ngIf="isSettings">
         <div class="buttons-container">
             <button #saveBut disabled pButton pRipple class="p-button-primary p-button-outlined" label="Save"
                 (click)="saveTeam()"></button>
@@ -12,7 +13,8 @@
         </div>
     </div>
 </div>
-<p-tabView (onChange)="resetButtonsState($event)">
+<app-not-found *ngIf="notFound"></app-not-found>
+<p-tabView (onChange)="resetButtonsState($event)" *ngIf="!notFound && !loading">
     <p-tabPanel>
         <ng-template pTemplate="header">
             <div class="header">
