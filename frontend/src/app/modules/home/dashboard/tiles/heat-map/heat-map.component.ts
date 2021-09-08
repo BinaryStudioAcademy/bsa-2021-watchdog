@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Project } from '@shared/models/projects/project';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
@@ -51,19 +51,14 @@ export class HeatMapComponent extends BaseTileComponent implements OnInit {
     }
 
     ngOnInit() {
+        super.ngOnInit();
         this.initChartSettings();
         this.applySettings();
-        this.events.pipe(this.untilThis)
-            .subscribe(() => this.editTile());
     }
 
     editTile() {
         this.tileDialogService.showHeatMapEditDialog(this.userProjects, this.tile,
             () => this.applySettings());
-    }
-
-    setTileDragStatus(status: boolean) {
-        this.dragTile.emit(status);
     }
 
     private applySettings() {

@@ -38,7 +38,6 @@ export class ChartsComponent extends BaseComponent implements OnInit, AfterViewI
         this.resize?.pipe(this.untilThis)
             .subscribe(() => {
                 this.zone.run(() => {
-
                     // update chart size on parent resize
                     this.chart.update();
                 });

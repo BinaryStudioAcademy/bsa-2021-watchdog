@@ -23,7 +23,6 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
                      v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
                      );
 
-            builder.HasMany(t => t.Applications).WithMany(a => a.Tiles);
         }
     }
 }

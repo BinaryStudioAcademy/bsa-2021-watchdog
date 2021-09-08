@@ -5,28 +5,29 @@ import { Tile } from '@shared/models/tile/tile';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-base-tile',
-  template: ''
+    selector: 'app-base-tile',
+    template: ''
 })
-export class BaseTileComponent extends BaseComponent implements OnInit {
+export abstract class BaseTileComponent extends BaseComponent implements OnInit {
+    @Input() tile: Tile;
+    @Input() isShownEditTileMenu: boolean = false;
+    @Input() userProjects: Project[] = [];
+    @Input() resize: Observable<void>;
+    @Input() events: Observable<void>;
+    @Output() isDeleting: EventEmitter<Tile> = new EventEmitter<Tile>();
+    @Output() isEditing: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() dragTile: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() changeTile: EventEmitter<void> = new EventEmitter<void>();
 
-  @Input() tile: Tile;
-  @Input() isShownEditTileMenu: boolean = false;
-  @Input() userProjects: Project[] = [];
-  @Input() resize: Observable<void>;
-  @Input() events: Observable<void>;
-  @Output() isDeleting: EventEmitter<Tile> = new EventEmitter<Tile>();
-  @Output() isEditing: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() dragTile: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() changeTile: EventEmitter<void> = new EventEmitter<void>();
-  constructor() {
-    super();
-  }
+    ngOnInit(): void {
+        this.events
+            .pipe(this.untilThis)
+            .subscribe(() => this.editTile());
+    }
 
-  ngOnInit(): void {
-  }
+    setTileDragStatus(status: boolean) {
+        this.dragTile.emit(status);
+    }
 
-  setTileDragStatus(status: boolean) {
-    this.dragTile.emit(status);
-  }
+    abstract editTile(): void;
 }

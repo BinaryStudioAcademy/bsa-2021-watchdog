@@ -1,6 +1,6 @@
 import { AuthenticationService } from '@core/services/authentication.service';
 import { switchMap } from 'rxjs/operators';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Project } from '@shared/models/projects/project';
 import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
 import { TileType } from '@shared/models/tile/enums/tile-type';
@@ -19,7 +19,6 @@ import { BaseTileComponent } from '../base-tile/base-tile.component';
     styleUrls: ['./top-active-issues-tile.component.sass']
 })
 export class TopActiveIssuesTileComponent extends BaseTileComponent implements OnInit {
-
     tileSettings: TopActiveIssuesSettings;
     requiredProjects: Project[] = [];
     displayedIssues: IssueInfo[] = [];
@@ -34,9 +33,8 @@ export class TopActiveIssuesTileComponent extends BaseTileComponent implements O
     }
 
     ngOnInit() {
+        super.ngOnInit();
         this.applySettings();
-        this.events.pipe(this.untilThis)
-            .subscribe(() => this.editTile());
     }
 
     paginatorRows() {
@@ -49,18 +47,13 @@ export class TopActiveIssuesTileComponent extends BaseTileComponent implements O
                 return 5;
 
             default:
-                return 3
+                return 3;
         }
-
     }
 
     editTile() {
         this.tileDialogService.showTopActiveIssuesEditDialog(this.userProjects, this.tile,
             () => this.applySettings());
-    }
-
-    setTileDragStatus(status: boolean) {
-        this.dragTile.emit(status);
     }
 
     private applySettings() {

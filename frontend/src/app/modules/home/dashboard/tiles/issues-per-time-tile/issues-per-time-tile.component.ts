@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Project } from '@shared/models/projects/project';
 import { TileService } from '@core/services/tile.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
@@ -48,19 +48,14 @@ export class IssuesPerTimeTileComponent extends BaseTileComponent implements OnI
     }
 
     ngOnInit() {
+        super.ngOnInit();
         this.initChartSettings();
         this.applySettings();
-        this.events.pipe(this.untilThis)
-            .subscribe(() => this.editTile());
     }
 
     editTile() {
         this.tileDialogService.showIssuesPerTimeEditDialog(this.userProjects, this.tile,
             () => this.applySettings());
-    }
-
-    setTileDragStatus(status: boolean) {
-        this.dragTile.emit(status);
     }
 
     private applySettings() {

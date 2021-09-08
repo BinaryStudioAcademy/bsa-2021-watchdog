@@ -25,7 +25,6 @@ import { AddEditHeatMapTileComponent } from './modals/tiles/heat-map/add-edit-he
 import { HeatMapComponent } from './dashboard/tiles/heat-map/heat-map.component';
 import { CommonTileComponent } from './dashboard/tiles/common-tile/common-tile.component';
 import { CommomEditTileComponent } from './modals/tiles/commom-edit-tile/commom-edit-tile.component';
-import { BaseTileComponent } from './dashboard/tiles/base-tile/base-tile.component';
 
 @NgModule({
     declarations: [
@@ -45,8 +44,6 @@ import { BaseTileComponent } from './dashboard/tiles/base-tile/base-tile.compone
         HeatMapComponent,
         CommonTileComponent,
         CommomEditTileComponent,
-        BaseTileComponent,
-
     ],
     imports: [
         SharedModule,

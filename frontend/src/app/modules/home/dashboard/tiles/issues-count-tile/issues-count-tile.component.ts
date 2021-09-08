@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Project } from '@shared/models/projects/project';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
@@ -43,14 +43,14 @@ export class IssuesCountTileComponent extends BaseTileComponent implements OnIni
     }
 
     ngOnInit() {
+        super.ngOnInit();
         this.initChartSettings();
         this.applySettings();
-        this.events.pipe(this.untilThis)
-            .subscribe(() => this.editTile());
     }
 
-    setTileDragStatus(status: boolean) {
-        this.dragTile.emit(status);
+    editTile() {
+        this.tileDialogService.showIssuesCountEditDialog(this.userProjects, this.tile,
+            () => this.applySettings());
     }
 
     private applySettings() {
@@ -110,10 +110,5 @@ export class IssuesCountTileComponent extends BaseTileComponent implements OnIni
                 domain: ['#1c80cf']
             }
         };
-    }
-
-    editTile() {
-        this.tileDialogService.showIssuesCountEditDialog(this.userProjects, this.tile,
-            () => this.applySettings());
     }
 }

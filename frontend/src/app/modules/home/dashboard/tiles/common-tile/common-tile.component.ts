@@ -22,7 +22,6 @@ export class CommonTileComponent {
     tileTypes = TileType;
     edit: Subject<void> = new Subject<void>();
 
-
     emitEventToChild() {
         this.edit.next();
     }

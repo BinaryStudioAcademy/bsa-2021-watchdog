@@ -33,7 +33,6 @@ namespace Watchdog.Core.DAL.Entities
         public Platform Platform { get; set; }
 
         public AlertSetting AlertSettings { get; set; }
-        public ICollection<Tile> Tiles { get; set; }
 
         public ICollection<Environment> Environments { get; set; }
 

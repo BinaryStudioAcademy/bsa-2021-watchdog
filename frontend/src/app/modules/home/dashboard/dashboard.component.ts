@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardService } from '@core/services/dashboard.service';
@@ -92,7 +92,6 @@ export class DashboardComponent extends BaseComponent implements OnInit {
                         }, error => {
                             this.toastNotificationService.error(error);
                         });
-
                 }
             });
     }
