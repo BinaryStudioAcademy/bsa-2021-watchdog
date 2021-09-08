@@ -17,11 +17,11 @@ namespace Watchdog.Core.BLL.Services.Queue
             _producer = producer;
         }
 
-        public void SendAlert(IssueTemplate template, ICollection<Recipient> recipients)
+        public void SendAlert(IssueTemplate issueTemplate, ICollection<Recipient> recipients)
         {
             var email = new Alert
             {
-                TemplateData = new AlertTemplate(template),
+                TemplateData = new AlertTemplate(issueTemplate),
                 Recipients = recipients,
                 Settings = new EmailSettings()
             };
@@ -32,11 +32,11 @@ namespace Watchdog.Core.BLL.Services.Queue
             _producer.Send(message, null);
         }
 
-        public void SendMemberInvitation(MemberTemplate template, ICollection<Recipient> recipients)
+        public void SendMemberInvitation(MemberTemplate memberTemplate, ICollection<Recipient> recipients)
         {
             var email = new MemberInvitation
             {
-                TemplateData = new MemberInvitationTemplate(template),
+                TemplateData = new MemberInvitationTemplate(memberTemplate),
                 Recipients = recipients,
                 Settings = new EmailSettings()
             };
