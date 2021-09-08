@@ -10,7 +10,6 @@ using Watchdog.Core.BLL.Models;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Application;
 using Watchdog.Core.Common.DTO.Issue;
-using Watchdog.Core.Common.DTO.IssueAnswer;
 using Watchdog.Core.Common.DTO.IssueSolution;
 using Watchdog.Core.Common.Enums.Issues;
 using Watchdog.Core.DAL.Context;
@@ -397,7 +396,7 @@ namespace Watchdog.Core.BLL.Services
             return messagesCount;
         }
 
-        public async Task<IssueSolutionDto> GetIssueSolutionLinkByIssueIdAsync(int issueId)
+        public async Task<IssueItemSolutionDto> GetIssueSolutionByIssueIdAsync(int issueId)
         {
             var issueEntity = await _context.Issues
                .AsNoTracking()
@@ -406,16 +405,15 @@ namespace Watchdog.Core.BLL.Services
                .FirstOrDefaultAsync(issue => issue.Id == issueId)
                ?? throw new KeyNotFoundException("Issue not found");
 
-            var issueSolution = await StackExchangeService.GetSolutionFromStackoverflow<IssueSolution>(issueEntity.ErrorMessage, new[] { issueEntity.Application.Platform.Name });
+            var issueSolutionItems = await StackExchangeService.GetSolutionFromStackoverflow<IssueSolution>(issueEntity.ErrorMessage, new[] { issueEntity.Application.Platform.Name });
 
-            return _mapper.Map<IssueSolutionDto>(issueSolution);
-        }
+            var filteredIssueSolutionItem = issueSolutionItems.Items
+                .Where(s => s.Score >=1 && s.IsAnswered)
+                .OrderBy(s => s.Score)
+                .ThenByDescending(s => s.ViewCount)
+                .FirstOrDefault();
 
-        public async Task<IssueAnswerDto> GetIssueAnswerByAnswerIdAsync(int answerId)
-        {
-            var issueSolution = await StackExchangeService.GetAnswerFromStackoverflow<IssueSolution>(answerId);
-
-            return _mapper.Map<IssueAnswerDto>(issueSolution);
+            return _mapper.Map<IssueItemSolutionDto>(filteredIssueSolutionItem);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace Watchdog.Core.Common.DTO.IssueSolution
 {
@@ -8,12 +9,9 @@ namespace Watchdog.Core.Common.DTO.IssueSolution
         public bool IsAnswered { get; set; }
         [JsonProperty("view_count")]
         public int ViewCount { get; set; }
-        [JsonProperty("answer_count")]
-        public int AnswerCount { get; set; }
         public int Score { get; set; }
-        public string Link { get; set; }
-        [JsonProperty("body")]
         public string Body { get; set; }
+        public ICollection<IssueAnswer> Answers { get; set; }
     }
 }
 

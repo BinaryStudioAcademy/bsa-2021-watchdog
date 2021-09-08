@@ -8,5 +8,5 @@ import { IssueSolutionItem } from '@shared/models/issue/issue-solution/issue-sol
     encapsulation: ViewEncapsulation.None
 })
 export class SolutionComponent {
-    @Input() solutionItems: IssueSolutionItem[];
+    @Input() solutionItem: IssueSolutionItem;
 }

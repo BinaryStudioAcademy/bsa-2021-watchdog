@@ -10,12 +10,12 @@ import { UpdateIssueStatus } from '@shared/models/issue/update-issue-status';
 import { Issue } from '@shared/models/issue/issue';
 import { IssueStatusesFilter } from '@shared/models/issue/issue-statuses-filter';
 import { IssueStatusesByDateRangeFilter } from '@shared/models/issue/issue-statuses-by-date-range-filter';
-import { IssueSolution } from '@shared/models/issue/issue-solution/issue-solution';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import { IssueTableItem } from '@shared/models/issue/issue-table-item';
 import { HttpParams } from '@angular/common/http';
 import { Project } from '@shared/models/projects/project';
 import { CountOfIssuesByStatus } from '@shared/models/issue/count-of-issues-by-status';
+import { IssueSolutionItem } from '@shared/models/issue/issue-solution/issue-solution-item';
 
 @Injectable({ providedIn: 'root' })
 export class IssueService {
@@ -108,7 +108,7 @@ export class IssueService {
         return this.httpService.getRequest<Issue>(`${this.routePrefix}/${issueId}`);
     }
 
-    public getSolutionLink(issueId: number): Observable<IssueSolution> {
-        return this.httpService.getRequest<IssueSolution>(`${this.routePrefix}/getIssueSolution/issueId/${issueId}`);
+    public getSolutionLink(issueId: number): Observable<IssueSolutionItem> {
+        return this.httpService.getRequest<IssueSolutionItem>(`${this.routePrefix}/getIssueSolution/issueId/${issueId}`);
     }
 }

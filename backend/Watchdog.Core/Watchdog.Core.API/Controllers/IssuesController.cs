@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Watchdog.Core.BLL.Models;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Issue;
-using Watchdog.Core.Common.DTO.IssueAnswer;
 using Watchdog.Core.Common.DTO.IssueSolution;
 using Watchdog.Core.Common.Enums.Issues;
 using Watchdog.Models.Shared.Issues;
@@ -90,18 +89,10 @@ namespace Watchdog.Core.API.Controllers
 
         [AllowAnonymous]
         [HttpGet("getIssueSolution/issueId/{issueId}")]
-        public async Task<ActionResult<IssueSolutionDto>> GetIssueSolutionLinkByIssueIdAsync(int issueId)
+        public async Task<ActionResult<IssueItemSolutionDto>> GetIssueSolutionLinkByIssueIdAsync(int issueId)
         {
-            var issueSolution = await _issueService.GetIssueSolutionLinkByIssueIdAsync(issueId);
+            var issueSolution = await _issueService.GetIssueSolutionByIssueIdAsync(issueId);
             return Ok(issueSolution);
-        }
-
-        [AllowAnonymous]
-        [HttpGet("getIssueSolution/answerId/{answerId}")]
-        public async Task<ActionResult<IssueAnswerDto>> GetIssueAnswerAsync(int answerId)
-        {
-            var issueAnswer = await _issueService.GetIssueAnswerByAnswerIdAsync(answerId);
-            return Ok(issueAnswer);
         }
 
         [HttpPost("messages/application/{applicationId:int}/filterByStatuses")]

@@ -1,27 +1,66 @@
 @import src/styles/index.sass
 
-.solution-container
+@mixin custom-scroll-horizontal
+    &::-webkit-scrollbar-thumb
+        border-radius: 5px
+        background-color: #bebebe
+
+    &::-webkit-scrollbar
+        height: 7px
+
+.container
     position: relative
-    width: 50%
-    border: 3px solid hsl(27deg 90% 55%)
-    padding: 10px
-    p
-        line-height: 150%
-        text-align: justify
-        white-space: pre-wrap
-        overflow: hidden
-        color: #746d6d
-    pre
-        font-family: MyFancyCustomFont, monospace
-        font-size: inherit
+    width: 100%
+    display: grid
+    grid-template-columns: repeat(auto-fit, minmax(200px, 50%))
+    .outlined
+        border: 1px solid $border-color
+        padding: 15px
+        margin: 5px
+    .answer-container
+        border: 1.5px solid #5aa348
+        height: min-content
+        background-color: #73e65623
+        .answer-item
+            padding-bottom: 20px
+            .score
+                border-radius: 10px
+                background-color: $border-color
+                padding: 5px
+            .info
+                padding: 10px 10px 10px 0
+                font-size: 1.3rem
+
+    .solution-container
+        border: 1.5px solid hsl(27deg 90% 55%)
+
+    .solution-container, .answer-container
+        box-shadow: 10px 5px 5px $shadow-color
+        padding: 10px
         margin: 10px
-        padding: 5px
-        code
-            display: block
-            background: none
-            white-space: pre
-            -webkit-overflow-scrolling: touch
-            overflow-x: scroll
-            max-width: 100%
-            min-width: 100px
+        position: relative
+        .title
+            font-size: 1.8rem
+            padding-bottom: 20px
+            margin: 5px
+        p
+            line-height: 150%
+            text-align: justify
+            white-space: pre-wrap
+            overflow: hidden
+            color: $text-color-secondary
+            padding-bottom: 20px
+        pre
+            font-family: MyFancyCustomFont, monospace
+            font-size: inherit
+            margin: 10px
             padding: 5px
+            code
+                display: block
+                background: none
+                white-space: pre
+                overflow-x: auto
+                @include custom-scroll-horizontal
+                max-width: 100%
+                min-width: 100px
+                padding: 5px

@@ -50,9 +50,9 @@
                     <app-issue-events [issueMessage]="issueMessage"></app-issue-events>
                 </ng-template>
             </p-tabPanel>
-            <p-tabPanel [disabled]="!solutionItems?.length" header="Stackoverflow solutions">
+            <p-tabPanel [disabled]="!solutionItem" header="Solution">
                 <ng-template pTemplate="content">
-                    <app-solution [solutionItems]="solutionItems"></app-solution>
+                    <app-solution [solutionItem]="solutionItem"></app-solution>
                 </ng-template>
             </p-tabPanel>
         </p-tabView>
