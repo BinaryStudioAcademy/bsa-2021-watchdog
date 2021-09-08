@@ -50,9 +50,9 @@
             [tile]="tile"
             [events] = "edit.asObservable()"
             [userProjects]="userProjects"
+            [resize]="resize"
             (changeTile)="changeTileFunc()">
         </app-top-responses-time-tile>
-
         <app-most-common-countries-tile
             #tiles
             *ngSwitchCase="tileTypes.MostCommonCountries"

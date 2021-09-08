@@ -45,6 +45,10 @@ export class TileMenuComponent {
         this.saveTilesOrder.emit();
     }
 
+    createTopResponsesTime() {
+        this.tileDialogService.showTopResponsesTimeCreateDialog(this.userProjects, this.dashboardId, this.tiles);
+    }
+
     createActiveIssues() {
         this.tileDialogService.showTopActiveIssuesCreateDialog(this.userProjects, this.dashboardId, this.tiles);
     }

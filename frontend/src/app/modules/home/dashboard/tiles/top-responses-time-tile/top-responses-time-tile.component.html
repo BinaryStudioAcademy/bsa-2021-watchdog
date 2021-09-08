@@ -1,5 +1,5 @@
 <!--    Responses Table    -->
-<div class="table">
+<div class="table" #toExport>
     <p-table *ngIf="displayedResponses"
              [alwaysShowPaginator]="displayedResponses.length > paginatorRows()"
              [pageLinks]="1"
