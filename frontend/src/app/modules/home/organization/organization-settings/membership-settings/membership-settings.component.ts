@@ -45,15 +45,23 @@ export class MembershipSettingsComponent extends BaseComponent implements OnInit
         this.parentForm.addControl('defaultRoleId', new FormControl(this.organization.defaultRoleId, Validators.required));
         this.parentForm.addControl('trelloIntegration', new FormControl(this.organization.trelloIntegration, Validators.required));
         this.parentForm.addControl('trelloBoard', new FormControl(this.organization.trelloBoard, Validators.required));
-        // this.parentForm.addControl('trelloToken', new FormControl(this.organization.trelloToken, Validators.required));
+        this.parentForm.addControl('trelloToken', new FormControl(this.organization.trelloToken));
 
         this.trelloIntegration.valueChanges.pipe(this.untilThis).subscribe(() => {
+            console.log(this.parentForm);
             if (this.trelloIntegration.value) {
-                this.trelloService.getBoardsByCurrentIntegration().subscribe(boards => {
-                    this.boards = boards;
-                });
+                this.trelloService.authorizeTrello(() => this.trelloService.getBoardsByCurrentIntegration()
+                    .pipe(this.untilThis)
+                    .subscribe(boards => {
+                        this.boards = boards;
+                        this.trelloService.getToken()
+                            .pipe(this.untilThis)
+                            .subscribe(t => this.trelloToken.setValue(t));
+                    }), () => this.trelloIntegration.setValue(false));
             } else {
                 this.trelloService.clearToken();
+                this.trelloBoard.setValue({});
+                this.trelloToken.setValue('');
                 this.boards = [];
             }
         });

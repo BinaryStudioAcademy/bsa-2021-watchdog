@@ -96,19 +96,6 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<ICollection<MemberDto>> GetMembersForAssigneeByOrganizationIdAsync(int id)
         {
-            var organization = await _context.Organizations.FirstOrDefaultAsync(o => o.Id == id) 
-                ?? throw new KeyNotFoundException("No organization with this id!");
-
-            if (organization.TrelloIntegration && !string.IsNullOrWhiteSpace(organization.TrelloToken))
-            {
-                var members = await _context.Members
-                    .Include(m => m.User)
-                    .Where(m => m.OrganizationId == id && !string.IsNullOrWhiteSpace(m.User.TrelloUserId))
-                    .ToListAsync();
-
-                return _mapper.Map<ICollection<MemberDto>>(members);
-            }
-
             return await GetMembersByOrganizationIdAsync(id);
         }
 

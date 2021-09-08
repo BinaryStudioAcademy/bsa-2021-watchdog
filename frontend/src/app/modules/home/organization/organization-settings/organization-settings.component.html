@@ -8,9 +8,9 @@
     </div>
 </h1>
 
-<div class="settings-container">
-    <app-general-settings [parentForm]="parentForm" *ngIf="organization" [organization]="organization">
+<div *ngIf="organization" class="settings-container">
+    <app-general-settings [parentForm]="parentForm" [organization]="organization">
     </app-general-settings>
-    <app-membership-settings [parentForm]="parentForm" *ngIf="organization" [organization]="organization" [user]="user">
+    <app-membership-settings [parentForm]="parentForm" [organization]="organization" [user]="user">
     </app-membership-settings>
 </div>
