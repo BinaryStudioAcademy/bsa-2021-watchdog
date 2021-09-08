@@ -16,6 +16,7 @@ using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
 using Watchdog.Models.Shared.Issues;
 using Watchdog.Models.Shared.Emailer;
+using Watchdog.Models.Shared.Emailer.TemplateData;
 
 namespace Watchdog.Core.BLL.Services
 {
@@ -54,8 +55,8 @@ namespace Watchdog.Core.BLL.Services
                 })
                 .Distinct()
                 .ToArrayAsync();
-
-            _emailer.SendAlert(issueMessage, recipients);
+            var template = _mapper.Map<IssueTemplate>(issueMessage);
+            _emailer.SendAlert(template, recipients);
 
             if (issue.Status is IssueStatus.Resolved)
             {

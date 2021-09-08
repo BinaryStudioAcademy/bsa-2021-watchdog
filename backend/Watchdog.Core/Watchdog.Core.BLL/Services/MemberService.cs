@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using SendGrid;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +13,8 @@ using Watchdog.Core.Common.DTO.Team;
 using Watchdog.Core.Common.DTO.User;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
+using Watchdog.Models.Shared.Emailer;
+using Watchdog.Models.Shared.Emailer.TemplateData;
 
 namespace Watchdog.Core.BLL.Services
 {
@@ -21,29 +22,36 @@ namespace Watchdog.Core.BLL.Services
     public class MemberService : BaseService, IMemberService
     {
         private readonly IEmailSendService _emailSendService;
+        private readonly IEmailerQueueProducerService _emailer;
 
-        public MemberService(WatchdogCoreContext context, IMapper mapper, IEmailSendService emailSendService) : base(context, mapper)
+        public MemberService(IMapper mapper,
+                             IEmailSendService emailSendService,
+                             IEmailerQueueProducerService emailer,
+                             WatchdogCoreContext context)
+            : base(context, mapper)
         {
             _emailSendService = emailSendService;
+            this._emailer = emailer;
         }
 
-        public async Task<Response> InviteMemberAsync(int id)
+        public async Task InviteMemberAsync(int id)
         {
             var member = await _context.Members
                 .Include(m => m.User)
                 .FirstOrDefaultAsync(m => m.Id == id) ?? throw new KeyNotFoundException("Member doesn't exist");
 
-            return await InviteMemberAsync(_mapper.Map<MemberDto>(member));
+            await InviteMemberAsync(_mapper.Map<MemberDto>(member));
         }
 
-        public Task<Response> InviteMemberAsync(MemberDto memberDto)
+        public Task InviteMemberAsync(MemberDto memberDto)
         {
-            ExampleTemplateData data = new()
+            var template = _mapper.Map<MemberTemplate>(memberDto);
+            var recipients = new Recipient[]
             {
-                Name = memberDto.User.FirstName,
-                Subject = "Invitation letter"
+                _mapper.Map<Recipient>(memberDto)
             };
-            return _emailSendService.SendAsync(memberDto.User.Email, data);
+            _emailer.SendMemberInvitation(template, recipients);
+            return Task.CompletedTask;
         }
 
         public async Task<MemberDto> AddMemberAsync(NewMemberDto memberDto)
@@ -180,8 +188,8 @@ namespace Watchdog.Core.BLL.Services
         public async Task<InvitedMemberDto> AddInvitedMemberAsync(NewMemberDto memberDto)
         {
             var member = await AddMemberAsync(memberDto);
-            var response = await InviteMemberAsync(member);
-            return new InvitedMemberDto { Member = member, StatusCode = response.StatusCode };
+            await InviteMemberAsync(member);
+            return new InvitedMemberDto { Member = member };
         }
 
         public async Task<bool> IsMemberOwnerAsync(int memberId)

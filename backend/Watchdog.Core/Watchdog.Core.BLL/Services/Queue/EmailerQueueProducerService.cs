@@ -4,7 +4,6 @@ using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Models.Shared.Emailer;
 using Watchdog.Models.Shared.Emailer.Emails;
 using Watchdog.Models.Shared.Emailer.TemplateData;
-using Watchdog.Models.Shared.Issues;
 using Watchdog.RabbitMQ.Shared.Services;
 
 namespace Watchdog.Core.BLL.Services.Queue
@@ -18,11 +17,11 @@ namespace Watchdog.Core.BLL.Services.Queue
             _producer = producer;
         }
 
-        public void SendAlert(IssueMessage issueMessage, ICollection<Recipient> recipients)
+        public void SendAlert(IssueTemplate template, ICollection<Recipient> recipients)
         {
             var email = new Alert
             {
-                TemplateData = new AlertTemplate(issueMessage),
+                TemplateData = new AlertTemplate(template),
                 Recipients = recipients,
                 Settings = new EmailSettings()
             };
@@ -33,11 +32,11 @@ namespace Watchdog.Core.BLL.Services.Queue
             _producer.Send(message, null);
         }
 
-        public void SendMemberInvitation(IssueMessage issueMessage, ICollection<Recipient> recipients)
+        public void SendMemberInvitation(MemberTemplate template, ICollection<Recipient> recipients)
         {
             var email = new MemberInvitation
             {
-                TemplateData = new MemberInvitationTemplate(issueMessage),
+                TemplateData = new MemberInvitationTemplate(template),
                 Recipients = recipients,
                 Settings = new EmailSettings()
             };

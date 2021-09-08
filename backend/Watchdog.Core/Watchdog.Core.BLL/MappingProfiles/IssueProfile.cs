@@ -2,6 +2,7 @@ using AutoMapper;
 using Watchdog.Core.Common.DTO.Issue;
 using Watchdog.Core.Common.DTO.IssueSolution;
 using Watchdog.Core.DAL.Entities;
+using Watchdog.Models.Shared.Emailer.TemplateData;
 using Watchdog.Models.Shared.Issues;
 
 namespace Watchdog.Core.BLL.MappingProfiles
@@ -31,6 +32,12 @@ namespace Watchdog.Core.BLL.MappingProfiles
 
             CreateMap<IssueSolution, IssueSolutionDto>();
             CreateMap<IssueItemSolution, IssueItemSolutionDto>();
+
+            CreateMap<IssueMessage, IssueTemplate>();
+            CreateMap<IssueMessageDetails, IssueDetailsTemplate>();
+            CreateMap<StackFrame, StackFrameTemplate>();
+            CreateMap<IssueEnvironment, IssueEnvironmentTemplate>();
+            CreateMap<HttpResponseErrorMessage, ResponseErrorMessageTemplate>();
         }
     }
 }
