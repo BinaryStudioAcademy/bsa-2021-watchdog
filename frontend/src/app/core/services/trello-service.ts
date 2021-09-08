@@ -73,7 +73,7 @@ export class TrelloService {
     }
 
     getMemberByToken(token: string) {
-        return this.httpClient.get<TrelloMember>(`${this.apiUrl}/tokens/${token}/member`, {params: this.getParams()});
+        return this.httpClient.get<TrelloMember>(`${this.apiUrl}/tokens/${token}/member`, { params: this.getParams() });
     }
 
     async addIssueToBoardWithAssignee(issue: IssueTableItem, users: User[] = [], teams: Team[] = []) {

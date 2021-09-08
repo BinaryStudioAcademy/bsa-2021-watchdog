@@ -1,4 +1,4 @@
-import { TrelloService } from "@core/services/trello-service";
+import { TrelloService } from '@core/services/trello-service';
 import { OrganizationService } from '@core/services/organization.service';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { OrganizationSettings } from '@shared/models/organization/organization-settings';

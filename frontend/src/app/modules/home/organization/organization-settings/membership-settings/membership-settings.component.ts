@@ -2,7 +2,7 @@ import { TrelloBoard } from '@shared/models/trello/trello-board';
 import { BaseComponent } from '@core/components/base/base.component';
 import { RoleService } from '@core/services/role.service';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormControl, AbstractControl } from "@angular/forms";
+import { FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { Organization } from '@shared/models/organization/organization';
 import { Role } from '@shared/models/role/role';
 import { TrelloService } from '@core/services/trello-service';

@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { MemberService } from '@core/services/member.service';
 import { Member } from '@shared/models/member/member';
 import { Injectable } from '@angular/core';

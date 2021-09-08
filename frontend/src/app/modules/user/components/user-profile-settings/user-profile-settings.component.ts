@@ -1,4 +1,4 @@
-import { TrelloService } from "@core/services/trello-service";
+import { TrelloService } from '@core/services/trello-service';
 import { Organization } from '@shared/models/organization/organization';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
