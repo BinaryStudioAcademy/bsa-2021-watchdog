@@ -37,9 +37,14 @@ namespace Watchdog.Core.BLL.Services
                 HttpResponseMessage response = await client.GetAsync(url);
                 var responseContent = await response.Content.ReadAsStringAsync();
 
-                var solution = JsonConvert.DeserializeObject<T>(responseContent);
-
-                return solution;
+                try
+                {
+                    return JsonConvert.DeserializeObject<T>(responseContent);
+                }
+                catch (JsonReaderException)
+                {
+                    return default;
+                }
             }
         }
     }

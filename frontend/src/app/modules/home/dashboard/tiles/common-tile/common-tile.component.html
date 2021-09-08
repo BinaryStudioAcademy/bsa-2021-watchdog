@@ -44,7 +44,15 @@
             [resize]="resize"
             (changeTile)="changeTileFunc()">
         </app-heat-map>
-
+        <app-most-common-countries-tile
+            #tiles
+            *ngSwitchCase="tileTypes.MostCommonCountries"
+            [tile]="tile"
+            [events]="edit.asObservable()"
+            [userProjects]="userProjects"
+            [resize]="resize"
+            (changeTile)="changeTileFunc()">
+        </app-most-common-countries-tile>
     </ng-container>
 
 </div>

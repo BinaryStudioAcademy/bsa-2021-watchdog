@@ -15,6 +15,8 @@ import { AddEditIssuesPerTimeTileComponent }
 import { AddEditCountIssuesTileComponent }
     from '@modules/home/modals/tiles/count-issues/add-edit-count-issues-tile/add-edit-count-issues-tile.component';
 import { AddEditHeatMapTileComponent } from '@modules/home/modals/tiles/heat-map/add-edit-heat-map-tile/add-edit-heat-map-tile.component';
+import { AddEditMostCommonCountriesTileComponent }
+    from '@modules/home/modals/tiles/most-common-countries/add-edit-common-countries-tile/add-edit-common-countries-tile.component';
 
 @Injectable({
     providedIn: 'root'
@@ -185,6 +187,48 @@ export class TileDialogService extends BaseComponent implements OnDestroy {
 
     showHeatMapEditDialog(userProjects: Project[], tileToUpdate: Tile, applySettings: () => void) {
         this.ref = this.dialogService.open(AddEditHeatMapTileComponent, {
+            data: {
+                isAddMode: false,
+                userProjects,
+                tileToUpdate
+            },
+            contentStyle: this.dialogContentStyles,
+            closable: false,
+            showHeader: false,
+            modal: true,
+            closeOnEscape: true,
+        });
+
+        this.ref.onClose.subscribe((updatedTile: UpdateTile) => {
+            if (updatedTile) {
+                this.updateTile(updatedTile, tileToUpdate, applySettings);
+            }
+        });
+    }
+
+    showMostCommonCountriesCreateDialog(userProjects: Project[], dashboardId: number, dashboardTiles: Tile[]) {
+        this.ref = this.dialogService.open(AddEditMostCommonCountriesTileComponent, {
+            data: {
+                isAddMode: true,
+                userProjects,
+                dashboardId
+            },
+            contentStyle: this.dialogContentStyles,
+            closable: false,
+            showHeader: false,
+            modal: true,
+            closeOnEscape: true,
+        });
+
+        this.ref.onClose.subscribe((newTile: NewTile) => {
+            if (newTile) {
+                this.addTile(newTile, dashboardTiles);
+            }
+        });
+    }
+
+    showMostCommonCountriesEditDialog(userProjects: Project[], tileToUpdate: Tile, applySettings: () => void) {
+        this.ref = this.dialogService.open(AddEditMostCommonCountriesTileComponent, {
             data: {
                 isAddMode: false,
                 userProjects,

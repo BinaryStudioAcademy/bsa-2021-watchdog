@@ -5,6 +5,7 @@
         TopActiveIssues = 0,
         IssuePerTime = 1,
         IssuesCount = 2,
-        HeatMap = 3
+        HeatMap = 3,
+        MostCommonCountries = 4,
     }
 }
