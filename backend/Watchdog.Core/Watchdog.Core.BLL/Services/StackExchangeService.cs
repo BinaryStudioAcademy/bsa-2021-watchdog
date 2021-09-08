@@ -27,7 +27,8 @@ namespace Watchdog.Core.BLL.Services
                 query["title"] = messsage;
                 query["tagged"] = string.Join(" ", tags.Select(str => str.Replace(' ', '-')));
                 query["sort"] = "relevance";
-                query["pagesize"] = "10";
+                query["pagesize"] = "15";
+                query["filter"] = "!T*hPNRA69ofM1izkPP";
                 uriBuilder.Query = query.ToString();
                 var url = uriBuilder.ToString();
 

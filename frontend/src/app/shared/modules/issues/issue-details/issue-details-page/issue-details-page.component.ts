@@ -31,7 +31,7 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
     IssueStatus = IssueStatus;
     selected: IssueStatus;
     isLoadingStatus: boolean = false;
-    solutionItems: IssueSolutionItem[] = [];
+    solutionItem: IssueSolutionItem;
     member: Member;
 
     hasAccess = () => hasAccess(this.member);
@@ -133,6 +133,6 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
     getSolutions(issueId: number): void {
         this.issueService.getSolutionLink(issueId)
             .pipe(this.untilThis)
-            .subscribe(solution => { this.solutionItems = solution?.items; });
+            .subscribe(solution => { this.solutionItem = solution; });
     }
 }
