@@ -123,5 +123,11 @@ namespace Watchdog.Core.API.Controllers
         {
             return Ok(await _appService.GetCountriesInfoAsync(appId));
         }
+
+        [HttpGet("{appId:int}/recipients")]
+        public async Task<ActionResult<CountryInfoDto>> GetCountriesInfGetRecipientTeamsoAsync(int appId)
+        {
+            return Ok(await _appService.GetRecipientTeams(appId));
+        }
     }
 }

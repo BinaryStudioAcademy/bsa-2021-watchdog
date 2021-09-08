@@ -11,6 +11,24 @@
             </div>
         </div>
     </form>
+    <form [formGroup]="editFormAlert" class="item" *ngIf="this.editFormAlert.controls.alertCategory.value !== 1">
+        <label class="item-definition">
+            <div>Recipients</div>
+            <div class="item-sub-text">Teams whose members will receive emails</div>
+        </label>
+        <div (click)="showAssignmentComponent()" class="table-content-assignee">
+            <p-avatarGroup>
+                <p-avatar *ngIf="!assignment.teamIds.length" icon="pi pi-users" shape="circle">
+                </p-avatar>
+                <p-avatar *ngFor="let label of getTeamsLabels()" [label]="label"
+                            shape="circle"></p-avatar>
+                <p-avatar *ngIf="assignment.teamIds.length > maxNumberOfDisplayedAvatars"
+                            [label]="'+' + getNumberOfHiddenAvatars()"
+                            shape="circle"></p-avatar>
+            </p-avatarGroup>
+            <i class="pi pi-chevron-down"></i>
+        </div>
+    </form>
     <form [formGroup]="editFormAlert" *ngIf="this.editFormAlert.controls.alertCategory.value=== specialTypes"
          class="item">
         <label class="item-definition-special">
@@ -57,3 +75,7 @@
         </div>
     </form>
 </p-panel>
+
+<app-assignment-of-teams (closeModal)="hideAssignmentComponent()" *ngIf="isAssignmentComponentDisplayed"
+    [assignment]="assignment" [teams]="teams">
+</app-assignment-of-teams>
