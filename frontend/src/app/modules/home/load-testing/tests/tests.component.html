@@ -13,7 +13,8 @@
         </button>
     </div>
 </div>
-<div class="tests-container">
+<app-no-content-placeholder *ngIf="tests && !tests.length" title="Looks like here are no tests"></app-no-content-placeholder>
+<div *ngIf="tests && tests.length" class="tests-container">
     <div class="grid">
         <div *ngFor="let test of tests">
             <div class="card" [routerLink]="'./edit/'+test.id" >

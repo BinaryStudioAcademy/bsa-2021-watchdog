@@ -1,3 +1,4 @@
+import { SpinnerService } from '../../../../core/services/spinner.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { TestService } from '@core/services/test.service';
@@ -15,19 +16,24 @@ export class TestsComponent extends BaseComponent implements OnInit {
     constructor(
         private testService: TestService,
         private authService: AuthenticationService,
-        private toastNotification: ToastNotificationService
+        private toastNotification: ToastNotificationService,
+        private spinner: SpinnerService,
     ) { super(); }
 
     ngOnInit(): void {
+        this.spinner.show(true);
         this.authService.getOrganization()
             .subscribe(organization => {
                 this.testService.getTestsByOrganizationId(organization.id)
                     .subscribe(tests => {
                         this.tests = tests;
+                        this.spinner.hide();
                     }, error => {
+                        this.spinner.hide();
                         this.toastNotification.error(error);
                     });
             }, error => {
+                this.spinner.hide();
                 this.toastNotification.error(error);
             });
     }

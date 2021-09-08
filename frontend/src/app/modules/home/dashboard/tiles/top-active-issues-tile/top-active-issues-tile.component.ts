@@ -1,30 +1,24 @@
 import { AuthenticationService } from '@core/services/authentication.service';
 import { switchMap } from 'rxjs/operators';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Project } from '@shared/models/projects/project';
 import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
 import { TileType } from '@shared/models/tile/enums/tile-type';
-import { Tile } from '@shared/models/tile/tile';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
-import { BaseComponent } from '@core/components/base/base.component';
 import { IssueInfo } from '@shared/models/issue/issue-info';
 import { IssueService } from '@core/services/issue.service';
 import { convertJsonToTileSettings, convertTileDateRangeTypeToMs } from '@core/utils/tile.utils';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
+import { TileSizeType } from '@shared/models/tile/enums/tile-size-type';
+import { BaseTileComponent } from '../base-tile/base-tile.component';
 
 @Component({
-    selector: 'app-top-active-issues-tile[tile][isShownEditTileMenu][userProjects]',
+    selector: 'app-top-active-issues-tile[tile][userProjects]',
     templateUrl: './top-active-issues-tile.component.html',
     styleUrls: ['./top-active-issues-tile.component.sass']
 })
-export class TopActiveIssuesTileComponent extends BaseComponent implements OnInit {
-    @Input() tile: Tile;
-    @Input() isShownEditTileMenu: boolean = false;
-    @Input() userProjects: Project[] = [];
-    @Output() isDeleting: EventEmitter<Tile> = new EventEmitter<Tile>();
-    @Output() dragTile: EventEmitter<boolean> = new EventEmitter<boolean>();
-    paginatorRows: number = 5;
+export class TopActiveIssuesTileComponent extends BaseTileComponent implements OnInit {
     tileSettings: TopActiveIssuesSettings;
     requiredProjects: Project[] = [];
     displayedIssues: IssueInfo[] = [];
@@ -39,7 +33,22 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
     }
 
     ngOnInit() {
+        super.ngOnInit();
         this.applySettings();
+    }
+
+    paginatorRows() {
+        switch (this.tileSettings.tileSize) {
+            case TileSizeType.Small:
+                return 3;
+            case TileSizeType.Medium:
+                return 4;
+            case TileSizeType.Large:
+                return 5;
+
+            default:
+                return 3;
+        }
     }
 
     editTile() {
@@ -47,14 +56,11 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
             () => this.applySettings());
     }
 
-    setTileDragStatus(status: boolean) {
-        this.dragTile.emit(status);
-    }
-
     private applySettings() {
         this.getTileSettings();
         this.applyProjectSettings();
         this.getIssuesInfo();
+        this.changeTile.emit();
     }
 
     private getTileSettings() {

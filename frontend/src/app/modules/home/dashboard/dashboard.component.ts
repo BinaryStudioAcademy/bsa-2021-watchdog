@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardService } from '@core/services/dashboard.service';
 import { ShareDataService } from '@core/services/share-data.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { BaseComponent } from '@core/components/base/base.component';
 import { UpdateDashboard } from '@shared/models/dashboard/update-dashboard';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
@@ -15,7 +15,7 @@ import { Project } from '@shared/models/projects/project';
 import { TileService } from '@core/services/tile.service';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { ProjectService } from '@core/services/project.service';
-import { map } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
 import { SpinnerService } from '@core/services/spinner.service';
 import { convertJsonToTileSettings, sortTilesByTileOrder } from '@core/utils/tile.utils';
 import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
@@ -28,18 +28,20 @@ import { Member } from '@shared/models/member/member';
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.sass']
 })
-export class DashboardComponent extends BaseComponent implements OnInit, OnDestroy {
+export class DashboardComponent extends BaseComponent implements OnInit {
     showTileMenu: boolean = false;
     canDrag: boolean = false;
     isOrderChanged: boolean = false;
     draggableTile: Tile;
     dashboard: Dashboard;
-    updateSubscription$: Subscription;
     tiles: Tile[] = [];
     tileTypes = TileType;
     projects: Project[] = [];
     updateDashboardDialog: DynamicDialogRef;
     member: Member;
+    resize: Subject<void> = new Subject<void>();
+    resize$: Observable<void> = this.resize.asObservable().pipe(delay(100));
+    notFound: boolean = false;
 
     constructor(
         private route: ActivatedRoute,
@@ -145,13 +147,19 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         this.dashboardService.get(dashboardId)
             .pipe(this.untilThis)
             .subscribe(dashboardById => {
-                this.dashboard = dashboardById;
-                this.updateSubscription$ = this.updateDataService.currentMessage
-                    .subscribe((dashboard) => {
-                        this.dashboard = dashboard;
-                    }, error => {
-                        this.toastNotificationService.error(error);
-                    });
+                if (dashboardById?.organizationId !== this.member.organizationId) {
+                    this.notFound = true;
+                } else {
+                    this.notFound = false;
+                    this.dashboard = dashboardById;
+                    this.updateDataService.currentMessage
+                        .pipe(this.untilThis)
+                        .subscribe((dashboard) => {
+                            this.dashboard = dashboard;
+                        }, error => {
+                            this.toastNotificationService.error(error);
+                        });
+                }
                 this.spinnerService.hide();
             }, error => {
                 this.toastNotificationService.error(error);
@@ -171,9 +179,14 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
             });
     }
 
-    getTileSize(tile: Tile) {
+    getTileWidth(tile: Tile) {
         const settings = convertJsonToTileSettings(tile.settings, TileType.TopActiveIssues) as TopActiveIssuesSettings;
         return settings.tileSize * 150 + 350;
+    }
+
+    getTileHeight(tile: Tile) {
+        const settings = convertJsonToTileSettings(tile.settings, TileType.TopActiveIssues) as TopActiveIssuesSettings;
+        return settings.tileSize * 64 + 366;
     }
 
     toggleTileMenu(): void {
@@ -184,11 +197,6 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         this.showTileMenu = !this.showTileMenu;
     }
 
-    ngOnDestroy(): void {
-        this.updateSubscription$.unsubscribe();
-        super.ngOnDestroy();
-    }
-
     deleteTile(tile: Tile) {
         this.spinnerService.show(true);
         this.tileService.deleteTile(tile.id)
@@ -197,6 +205,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                 this.spinnerService.hide();
                 this.tiles.splice(this.tiles.findIndex(value => value.id === tile.id), 1);
                 this.toastNotificationService.success('Tile Deleted');
+                this.resize.next();
             }, error => {
                 this.spinnerService.hide();
                 this.toastNotificationService.error(error);
@@ -261,6 +270,11 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     dragOff() {
         this.canDrag = false;
         this.draggableTile = null;
+        this.resize.next();
+    }
+
+    async onChange() {
+        this.resize.next();
     }
 
     getDropSpaceState(index: number): boolean {

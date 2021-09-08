@@ -9,4 +9,5 @@ export interface Project {
     securityToken: string,
     platform: Platform,
     alertSettings?: AlertSettings,
+    organizationId: number
 }
