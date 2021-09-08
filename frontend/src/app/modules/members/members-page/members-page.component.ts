@@ -15,7 +15,7 @@ import { TeamOption } from '@shared/models/teams/team-option';
 import { User } from '@shared/models/user/user';
 import { LazyLoadEvent, TreeNode } from 'primeng/api';
 import { debounceTime, tap } from 'rxjs/operators';
-import { MembersRoles } from '@shared/constants/membersRoles';
+import { MembersRoles } from '@shared/constants/member-roles';
 import { TableExportService } from '@core/services/table-export.service';
 import { MemberExport } from '@shared/models/export/MemberExport';
 

@@ -16,7 +16,7 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
 import { TeamService } from '@core/services/team.service';
 import { UserService } from '@core/services/user.service';
 import { ShareDataService } from '@core/services/share-data.service';
-import { MembersRoles } from '@shared/constants/membersRoles';
+import { MembersRoles } from '@shared/constants/member-roles';
 import { Invition } from '@shared/models/member/invition';
 import { SpinnerService } from '@core/services/spinner.service';
 
@@ -149,10 +149,10 @@ export class InviteComponent extends BaseComponent implements OnInit {
                 this.updateDataService.changeMessage(invatedMember.member);
                 this.spinnerService.hide();
             },
-            error => {
-                this.toastNotifications.error(error);
-                this.spinnerService.hide();
-            });
+                error => {
+                    this.toastNotifications.error(error);
+                    this.spinnerService.hide();
+                });
     }
 
     addNew() {

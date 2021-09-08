@@ -1,3 +1,5 @@
+import { hasAccess } from './../../../core/utils/access.utils';
+import { Member } from './../../../shared/models/member/member';
 import { IssuesHubService } from '@core/hubs/issues-hub.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Dashboard } from '@shared/models/dashboard/dashboard';
@@ -14,6 +16,7 @@ import { Router } from '@angular/router';
 import { SpinnerService } from '@core/services/spinner.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AddDashboardComponent } from '../modals/dashboard/add-dashboard.component';
+import { zip } from 'rxjs';
 
 @Component({
     selector: 'app-home',
@@ -29,8 +32,10 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
     collapsed: boolean = false;
     user: User;
     organization: Organization;
+    member: Member;
     createDashboardDialog: DynamicDialogRef;
 
+    hasAccess = () => hasAccess(this.member);
     constructor(
         private issuesHub: IssuesHubService,
         public dashboardService: DashboardService,
@@ -52,9 +57,11 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
 
     async ngOnInit() {
         this.user = this.authService.getUser();
-        this.authService.getOrganization()
-            .subscribe(async organization => {
+        zip(this.authService.getOrganization(), this.authService.getMember())
+            .pipe(this.untilThis)
+            .subscribe(async ([organization, member]) => {
                 this.organization = organization;
+                this.member = member;
                 this.getAllDashboards();
                 await this.runHubs();
             }, () => {

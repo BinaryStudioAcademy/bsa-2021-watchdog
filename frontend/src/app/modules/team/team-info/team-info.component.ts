@@ -1,3 +1,5 @@
+import { hasAccess } from '@core/utils/access.utils';
+import { Member } from '@shared/models/member/member';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { zip } from 'rxjs';
 import { FormGroup } from '@angular/forms';
@@ -23,6 +25,9 @@ export class TeamInfoComponent extends BaseComponent implements OnInit {
     loading: boolean;
     notFound: boolean;
     parentForm: FormGroup = new FormGroup({});
+    member: Member;
+
+    hasAccess = () => hasAccess(this.member);
 
     @ViewChild('saveBut') saveButton: ElementRef<HTMLButtonElement>;
 
@@ -42,14 +47,14 @@ export class TeamInfoComponent extends BaseComponent implements OnInit {
         this.activatedRoute.paramMap
             .pipe(this.untilThis)
             .subscribe(param => {
-                console.warn('here1');
-                zip(this.teamService.getTeam(param.get('id')), this.authService.getOrganization())
+                zip(this.teamService.getTeam(param.get('id')), this.authService.getMember())
                     .pipe(this.untilThis)
-                    .subscribe(([team, organization]) => {
-                        console.warn('here');
-                        if (team.organizationId !== organization.id) {
+                    .subscribe(([team, member]) => {
+                        if ((team.organizationId !== member.organizationId)
+                            || !(hasAccess(member) || team.members.find(x => x.id === member.id))) {
                             this.notFound = true;
                         } else {
+                            this.member = member;
                             this.team = team;
                         }
                         this.loading = false;
