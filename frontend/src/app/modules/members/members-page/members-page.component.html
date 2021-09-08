@@ -130,7 +130,7 @@
                 </td>
                 <td class="edit-cell">
                     <span *ngIf="!memberItem.isEdit" class="content">{{memberItem.member.role.name}}
-                        <button (click)="startEdit(memberItem)" *ngIf="isEdit && memberItem.member.roleId !== 1"
+                        <button (click)="startEdit(memberItem)" *ngIf="isEdit && memberItem.member.roleId !== membersRoleIds.owner"
                                 class="p-button-raised p-button-text p-button-plain small-button"
                                 icon="pi pi-pencil" pButton></button>
                     </span>
@@ -200,7 +200,7 @@
                             [disabled]="true"
                             class="p-button-outlined p-button-secondary"></button>
                         <button
-                            *ngIf="isEdit && memberItem.member.roleId !== 1"
+                            *ngIf="isEdit && memberItem.member.roleId !== membersRoleIds.owner"
                             (click)="deleteMemberModal(memberItem)"
                             class="p-button-raised p-button-text p-button-plain small-button"
                             icon="pi pi-trash" pButton></button>
