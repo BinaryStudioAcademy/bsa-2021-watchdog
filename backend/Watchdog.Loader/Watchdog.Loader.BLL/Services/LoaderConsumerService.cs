@@ -45,8 +45,7 @@ namespace Watchdog.Loader.BLL.Services
 
             var messageString = Encoding.UTF8.GetString(args.Body.Span);
             var message = JsonConvert.DeserializeObject<LoaderMessage>(messageString);
-
-            _logger.LogInformation($"Start test: {message.Name}");
+            _logger.LogInformation($"Start test \"{message.Name}\" with id = {message.Id}");
 
             using var scope = _provider.CreateScope();
             var startService = scope.ServiceProvider.GetRequiredService<IStartService>();

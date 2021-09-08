@@ -17,6 +17,7 @@ namespace Watchdog.Loader.API.Extensions
         public static void RegisterCustomServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<IStartService, StartService>();
+            services.AddScoped<IElasticService, ElasticService>();
             services.AddElasticSearch(configuration);
             services.AddRabbitMQ(configuration);
         }

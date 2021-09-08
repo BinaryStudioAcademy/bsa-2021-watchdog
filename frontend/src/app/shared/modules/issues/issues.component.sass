@@ -156,7 +156,14 @@
             grid-gap: 5px
             cursor: pointer
 
-
+.empty
+    display: flex
+    justify-content: center
+    align-items: center
+    padding: 1rem
+    font-weight: 300
+    color: $placeholder-text-color
+    opacity: .8
 // columns sizes
 #issue-col
     width: 40%
@@ -177,7 +184,6 @@
     width: 11%
     min-width: 110px
 
-
 //host global styles
 \:host ::ng-deep
     .p-tabview .p-tabview-panels
@@ -190,7 +196,6 @@
 
         .p-tag-value
             margin-bottom: 2px
-
 
 //style classes
 ::ng-deep .active

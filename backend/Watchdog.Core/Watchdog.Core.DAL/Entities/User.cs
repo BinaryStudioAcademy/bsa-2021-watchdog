@@ -44,5 +44,7 @@ namespace Watchdog.Core.DAL.Entities
         public ICollection<Dashboard> Dashboards { get; set; }
 
         public ICollection<Tile> Tiles { get; set; }
+
+        public ICollection<Application> AlertSubscriptions { get; set; }
     }
 }

@@ -87,10 +87,11 @@ namespace Watchdog.Core.API.Controllers
             return Ok(issueMessages);
         }
 
+        [AllowAnonymous]
         [HttpGet("getIssueSolution/issueId/{issueId}")]
-        public async Task<ActionResult<IssueSolutionDto>> GetIssueSolutionLinkByIssueIdAsync(int issueId)
+        public async Task<ActionResult<IssueItemSolutionDto>> GetIssueSolutionLinkByIssueIdAsync(int issueId)
         {
-            var issueSolution = await _issueService.GetIssueSolutionLinkByIssueIdAsync(issueId);
+            var issueSolution = await _issueService.GetIssueSolutionByIssueIdAsync(issueId);
             return Ok(issueSolution);
         }
 

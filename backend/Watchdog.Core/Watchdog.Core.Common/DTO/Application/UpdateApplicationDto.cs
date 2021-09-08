@@ -1,4 +1,5 @@
 ﻿using Watchdog.Core.Common.DTO.Application.AlertSettings;
+using Watchdog.Core.Common.DTO.ApplicationTeam;
 
 namespace Watchdog.Core.Common.DTO.Application
 {
@@ -13,5 +14,7 @@ namespace Watchdog.Core.Common.DTO.Application
         public int PlatformId { get; set; }
 
         public AlertSettingsDto AlertSettings { get; set; }
+
+        public ApplicationRecipientsDto[] RecipientTeams { get; set; }
     }
 }

@@ -12,5 +12,7 @@ namespace Watchdog.Collector.BLL.Services.Abstract
         Task AddIssueAsync(WatchdogMessage message);
 
         Task AddProjectCountryInfoAsync(CountryInfo countryInfo);
+
+        Task LogResponse(ResponseInfo response);
     }
 }

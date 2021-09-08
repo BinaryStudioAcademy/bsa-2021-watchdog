@@ -29,6 +29,11 @@ namespace Watchdog.Core.BLL.MappingProfiles
 
             CreateMap<Application, UpdateApplicationDto>();
             CreateMap<UpdateApplicationDto, Application>();
+
+            CreateMap<ApplicationTeam, ApplicationRecipientsDto>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(scr => scr.Team.Id))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(scr => scr.Team.Name));
+            CreateMap<ApplicationRecipientsDto, ApplicationTeam>();
         }
     }
 }

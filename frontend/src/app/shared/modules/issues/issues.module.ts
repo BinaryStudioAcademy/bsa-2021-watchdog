@@ -9,6 +9,7 @@ import { IssueEnvironmentComponent } from '@shared/modules/issues/issue-details/
 import { IssueDetailsComponent } from '@shared/modules/issues/issue-details/issue-details/issue-details.component';
 import { AssigneeComponent } from '@shared/modules/issues/assignee/assignee.component';
 import { IssueHttpComponent } from '@shared/modules/issues/issue-details/issue-http/issue-http.component';
+import { SolutionComponent } from './issue-details/issue-details-page/solution/solution.component';
 
 @NgModule({
     imports: [
@@ -26,7 +27,8 @@ import { IssueHttpComponent } from '@shared/modules/issues/issue-details/issue-h
         IssueHttpComponent,
         IssueEnvironmentComponent,
         AssigneeComponent,
-        BreadcrumbsComponent
+        BreadcrumbsComponent,
+        SolutionComponent
     ]
 })
 export class IssuesModule {

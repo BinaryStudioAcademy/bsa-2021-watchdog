@@ -10,11 +10,7 @@ export const typeOptions = [
     {
         value: TestType.ClientsPerTest,
         label: 'Clients per test',
-    },
-    {
-        value: TestType.MaintainClientLoad,
-        label: 'Maintain client load',
-    },
+    }
 ];
 
 export const protocolOptions = [

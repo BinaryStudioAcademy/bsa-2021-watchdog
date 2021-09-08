@@ -41,6 +41,7 @@ namespace Watchdog.Core.API.Extensions
             services.AddTransient<ITileService, TileService>();
             services.AddTransient<IRegistrationService, RegistrationService>();
             services.AddTransient<ILoaderTestService, LoaderTestService>();
+            services.AddTransient<IAnalyticsService, AnalyticsService>();
             services.AddEmailSendService(configuration);
             services.AddElasticSearch(configuration);
             services.AddRabbitMQ(configuration);
@@ -52,6 +53,8 @@ namespace Watchdog.Core.API.Extensions
             var connectionString = configuration["ElasticConfiguration:Uri"];
 
             var settings = new ConnectionSettings(new Uri(connectionString))
+                .DefaultMappingFor<ResponseInfo>(m =>
+                    m.IndexName(configuration["ElasticConfiguration:ResponsesIndex"]))
                 .DefaultMappingFor<CountryInfo>(m => 
                         m.IndexName(configuration["ElasticConfiguration:CountriesInfoIndex"]))
                 .DefaultMappingFor<IssueMessage>(m =>
@@ -88,10 +91,10 @@ namespace Watchdog.Core.API.Extensions
         {
             services.AddTransient<IEmailSendService, EmailSendService>(provider => new EmailSendService(new BLL.Services.Options.EmailSendOptions
             {
-                ApiKey = configuration["SENDGRID_API_KEY"], // you need to add SENDGRID_API_KEY to yours environment variables
-                SenderEmail = configuration["SendGridConfiguration:SenderEmail"],
-                SenderName = configuration["SendGridConfiguration:SenderName"],
-                TemplateId = configuration["SendGridConfiguration:TemplateId"],  // templates you can create on sendgrid site
+                ApiKey = configuration["SendGrid:ApiKey"], // you need to add SENDGRID_API_KEY to yours environment variables
+                SenderEmail = configuration["SendGrid:SenderEmail"],
+                SenderName = configuration["SendGrid:SenderName"],
+                TemplateId = configuration["SendGrid:TemplateId"],  // templates you can create on sendgrid site
                                                                                  // for this template automatically sended in the promotions.
             }));
         }
@@ -107,6 +110,7 @@ namespace Watchdog.Core.API.Extensions
 
             services.AddRabbitMQIssueQueues(configuration);
             services.AddRabbitMQLoaderQueues(configuration);
+            services.AddRabbitMQEmailerQueues(configuration);
         }
 
         private static void AddRabbitMQIssueQueues(this IServiceCollection services, IConfiguration configuration)
@@ -150,6 +154,19 @@ namespace Watchdog.Core.API.Extensions
                         provider.GetRequiredService<IConnection>(),
                         producerSettings)));
 
+        }
+
+        private static void AddRabbitMQEmailerQueues(this IServiceCollection services, IConfiguration configuration)
+        {
+            var producerSettings = configuration
+                .GetSection("RabbitMQConfiguration:Queues:EmailerQueueProducer")
+                .Get<ProducerSettings>();
+
+            services.AddSingleton<IEmailerQueueProducerService>(provider =>
+                new EmailerQueueProducerService(
+                    new Producer(
+                        provider.GetRequiredService<IConnection>(),
+                        producerSettings)));
         }
     }
 }

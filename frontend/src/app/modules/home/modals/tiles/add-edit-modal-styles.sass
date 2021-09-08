@@ -32,109 +32,109 @@
                 height: 30px
                 width: 30px
 
-    .content
-        padding: 16px
+.content
+    padding: 16px
+    width: 100%
+
+.tile-name
+    .input-title
+        padding-bottom: 10px
+
+    .input-text
         width: 100%
 
-        .tile-name
-            .input-title
-                padding-bottom: 10px
+.date-range
+    padding-top: 8px
 
-            .input-text
-                width: 100%
+    &-title
+        padding-bottom: 10px
 
-        .date-range
-            padding-top: 16px
+    ::ng-deep &-dropdown
+        width: 100%
+        height: 39px
 
-            &-title
-                padding-bottom: 10px
+        .p-dropdown-label
+            align-self: center
 
-            ::ng-deep &-dropdown
-                width: 100%
-                height: 39px
+.granularity
+    padding-top: 8px
 
-                .p-dropdown-label
-                    align-self: center
+    &-title
+        padding-bottom: 10px
 
-        .granularity
-            padding-top: 16px
+    ::ng-deep &-dropdown
+        width: 100%
+        height: 39px
 
-            &-title
-                padding-bottom: 10px
+        .p-dropdown-label
+            align-self: center
 
-            ::ng-deep &-dropdown
-                width: 100%
-                height: 39px
+.issue-statuses
+    padding-top: 8px
 
-                .p-dropdown-label
-                    align-self: center
+    &-title
+        padding-bottom: 10px
 
-        .issue-statuses
-            padding-top: 16px
-
-            &-title
-                padding-bottom: 10px
-
-            &-checkboxes
-                display: flex
-                align-items: center
-                padding-bottom: 4px
-        
-        .issues-count
-            padding-top: 16px
-
-            &-title
-                padding-bottom: 10px
-
-            ::ng-deep .p-inputnumber
-                width: 100%
-
-        .tile-size
-            padding-top: 16px
-
-            .tile-size-title
-                padding-bottom: 10px
-
-            ::ng-deep &-dropdown
-                width: 100%
-                height: 39px
-
-                ::ng-deep &-dropdown-label
-                    align-self: center
-
-        .sources-selection
-            padding-top: 4px
-
-            &-title
-                padding-bottom: 10px
-
-            ::ng-deep .p-multiselect
-                width: 100%
-                height: 39px
-
-                ::ng-deep .p-multiselect-label-container
-                    align-self: center
-
-    .footer
+    &-checkboxes
         display: flex
-        flex-direction: column
-        justify-content: center
+        align-items: center
+        padding-bottom: 4px
+
+.items-count
+    padding-top: 8px
+
+    &-title
+        padding-bottom: 10px
+
+    ::ng-deep .p-inputnumber
+        width: 100%
+
+.tile-size
+    padding-top: 8px
+
+    .tile-size-title
+        padding-bottom: 10px
+
+    ::ng-deep &-dropdown
+        width: 100%
+        height: 39px
+
+        ::ng-deep &-dropdown-label
+            align-self: center
+
+.sources-selection
+    padding-top: 8px
+
+    &-title
+        padding-bottom: 10px
+
+    ::ng-deep .p-multiselect
+        width: 100%
+        height: 39px
+
+        ::ng-deep .p-multiselect-label-container
+            align-self: center
+
+.footer
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    width: 100%
+    padding: 0
+
+    &-content
+        display: flex
+        flex-direction: row
+        justify-content: flex-end
         align-items: center
         width: 100%
-        padding: 0
+        border-top: 1px solid $border-color
+        padding: 16px
+        background-color: $background-color
 
-        &-content
-            display: flex
-            flex-direction: row
-            justify-content: flex-end
-            align-items: center
-            width: 100%
-            border-top: 1px solid $border-color
-            padding: 16px
-            background-color: $background-color
+        button
+            margin: 0
 
-            button
-                margin: 0
-
-            .cancel-button
-                margin-right: 10px
+        .cancel-button
+            margin-right: 10px

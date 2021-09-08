@@ -15,17 +15,23 @@ using Watchdog.Core.Common.Enums.Issues;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
 using Watchdog.Models.Shared.Issues;
+using Watchdog.Models.Shared.Emailer;
 
 namespace Watchdog.Core.BLL.Services
 {
     public class IssueService : BaseService, IIssueService
     {
         private readonly IElasticClient _client;
+        private readonly IEmailerQueueProducerService _emailer;
 
-        public IssueService(WatchdogCoreContext context, IMapper mapper, IElasticClient client)
+        public IssueService(WatchdogCoreContext context,
+                            IMapper mapper,
+                            IElasticClient client,
+                            IEmailerQueueProducerService emailer)
             : base(context, mapper)
         {
             _client = client;
+            _emailer = emailer;
         }
 
         public async Task<int> AddIssueEventAsync(IssueMessage issueMessage)
@@ -36,6 +42,20 @@ namespace Watchdog.Core.BLL.Services
                   i.ErrorClass == issueMessage.IssueDetails.ClassName &&
                   i.Application.ApiKey == issueMessage.ApiKey)
                 ?? await CreateNewIssueAsync(issueMessage);
+
+            ICollection<Recipient> recipients = await _context.Applications
+                .Where(a => a.ApiKey == issueMessage.ApiKey)
+                .SelectMany(a => a.Recipients)
+                .Select(x => new Recipient
+                {
+                    EmailAddress = x.Email,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName
+                })
+                .Distinct()
+                .ToArrayAsync();
+
+            _emailer.SendAlert(issueMessage, recipients);
 
             if (issue.Status is IssueStatus.Resolved)
             {
@@ -396,7 +416,7 @@ namespace Watchdog.Core.BLL.Services
             return messagesCount;
         }
 
-        public async Task<IssueSolutionDto> GetIssueSolutionLinkByIssueIdAsync(int issueId)
+        public async Task<IssueItemSolutionDto> GetIssueSolutionByIssueIdAsync(int issueId)
         {
             var issueEntity = await _context.Issues
                .AsNoTracking()
@@ -405,9 +425,15 @@ namespace Watchdog.Core.BLL.Services
                .FirstOrDefaultAsync(issue => issue.Id == issueId)
                ?? throw new KeyNotFoundException("Issue not found");
 
-            var issueSolution = await StackExchangeService.GetSolutionFromStackoverflow<IssueSolution>(issueEntity.ErrorMessage, new[] { issueEntity.Application.Platform.Name });
+            var issueSolutionItems = await StackExchangeService.GetSolutionFromStackoverflow<IssueSolution>(issueEntity.ErrorMessage, new[] { issueEntity.Application.Platform.Name });
 
-            return _mapper.Map<IssueSolutionDto>(issueSolution);
+            var filteredIssueSolutionItem = issueSolutionItems.Items
+                .Where(s => s.Score >=1 && s.IsAnswered)
+                .OrderBy(s => s.Score)
+                .ThenByDescending(s => s.ViewCount)
+                .FirstOrDefault();
+
+            return _mapper.Map<IssueItemSolutionDto>(filteredIssueSolutionItem);
         }
     }
 }

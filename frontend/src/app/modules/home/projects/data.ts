@@ -4,9 +4,9 @@ import { SpecialAlertType } from '@shared/models/alert-settings/special-alert-ty
 
 export class Data {
     alertCategories = [
-        { value: AlertCategory.None, label: 'I\'ll create my own alerts later' },
-        { value: AlertCategory.EveryNew, label: 'Alert me on every new issue' },
-        { value: AlertCategory.Special, label: 'When there are more than' }
+        { value: AlertCategory.None, label: 'None' },
+        { value: AlertCategory.EveryNew, label: 'Permanent' },
+        { value: AlertCategory.Special, label: 'Custom' }
     ];
 
     alertTypes = [

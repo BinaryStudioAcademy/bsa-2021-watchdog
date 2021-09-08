@@ -5,31 +5,32 @@
     </button>
     <h1 class="header-title">{{header}}</h1>
     <div class="buttons">
-        <div class="header-buttons">
+        <div class="header-buttons" *ngIf="!isNotFound && !loading">
             <button
             pButton
             pRipple
             class="p-button-primary p-button-outlined"
             label="Save"
-            (click)="save()"
-            [disabled]="!formValid()"></button>
+            (click)="save(false)"
+            [disabled]="!formValid()">
+        </button>
         </div>
-        <div class="header-buttons">
+        <div class="header-buttons" *ngIf="!isNotFound && !loading">
             <button
             pButton
             pRipple
             class="p-button-primary p-button-outlined"
             label="Save and run"
+            (click)="save(true)"
             [disabled]="!formValid()"></button>
         </div>
     </div>
 </div>
 <!-- NotFound -->
-<div *ngIf="isNotFound">
-    <app-not-found></app-not-found>
-</div>
+<app-not-found *ngIf="isNotFound"></app-not-found>
+
 <!-- Content -->
-<div *ngIf="!isNotFound" class="container">
+<div *ngIf="!isNotFound && !loading" class="container">
     <!-- Test settings -->
     <div class="test-settings-container">
         <h2 class="title">Test settings</h2>

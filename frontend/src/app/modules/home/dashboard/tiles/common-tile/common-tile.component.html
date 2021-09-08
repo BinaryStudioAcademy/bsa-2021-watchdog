@@ -1,0 +1,67 @@
+<div class="container">
+    <app-tile-header
+        (dragTile)="setTileDragStatus($event)"
+        (isDeleting)="isDeleting.emit(tile)"
+        (isEditing)="emitEventToChild()"
+        [isShownEditTileMenu]="isShownEditTileMenu"
+        [tile]="tile"
+        (isExporting)="exportTile($event)">
+    </app-tile-header>
+
+    <ng-container [ngSwitch]="tile.type">
+        <app-top-active-issues-tile
+            #tiles
+            *ngSwitchCase="tileTypes.TopActiveIssues"
+            [tile]="tile"
+            [events] = "edit.asObservable()"
+            [userProjects]="userProjects"
+            (changeTile)="changeTileFunc()">
+        </app-top-active-issues-tile>
+        <app-issues-per-time-tile
+            #tiles
+            *ngSwitchCase="tileTypes.IssuesPerTime"
+            [tile]="tile"
+            [events] = "edit.asObservable()"
+            [userProjects]="userProjects"
+            [resize]="resize"
+            (changeTile)="changeTileFunc()">
+        </app-issues-per-time-tile>
+        <app-issues-count-tile
+            #tiles
+            *ngSwitchCase="tileTypes.IssuesCount"
+            [tile]="tile"
+            [events]="edit.asObservable()"
+            [userProjects]="userProjects"
+            [resize]="resize"
+            (changeTile)="changeTileFunc()">
+        </app-issues-count-tile>
+        <app-heat-map
+            #tiles
+            *ngSwitchCase="tileTypes.HeatMap"
+            [tile]="tile"
+            [events]="edit.asObservable()"
+            [userProjects]="userProjects"
+            [resize]="resize"
+            (changeTile)="changeTileFunc()">
+        </app-heat-map>
+        <app-top-responses-time-tile
+            #tiles
+            *ngSwitchCase="tileTypes.TopResponsesTime"
+            [tile]="tile"
+            [events] = "edit.asObservable()"
+            [userProjects]="userProjects"
+            [resize]="resize"
+            (changeTile)="changeTileFunc()">
+        </app-top-responses-time-tile>
+        <app-most-common-countries-tile
+            #tiles
+            *ngSwitchCase="tileTypes.MostCommonCountries"
+            [tile]="tile"
+            [events]="edit.asObservable()"
+            [userProjects]="userProjects"
+            [resize]="resize"
+            (changeTile)="changeTileFunc()">
+        </app-most-common-countries-tile>
+    </ng-container>
+
+</div>

@@ -47,7 +47,7 @@ export class OrganizationMenuComponent extends BaseComponent implements OnInit {
     async changeOrganization(organization: Organization) {
         this.authService.setOrganization(organization);
         const { url } = this.router;
-        await this.router.navigateByUrl('/', { skipLocationChange: true });
+        await this.router.navigateByUrl('/home', { skipLocationChange: true });
         await this.router.navigateByUrl(url);
     }
 

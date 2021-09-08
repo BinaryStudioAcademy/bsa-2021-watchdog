@@ -111,10 +111,23 @@ namespace Watchdog.Core.API.Controllers
             return Ok(_appService.GenerateApiKeyAsync());
         }
 
+        [AllowAnonymous]
+        [HttpGet("listening/{apiKey}")]
+        public async Task<ActionResult<bool>> IsProjectListening(string apiKey)
+        {
+            return Ok(await _appService.CheckProjectListeningAsync(apiKey));
+        }
+        
         [HttpGet("countriesInfo/{appId:int}")]
         public async Task<ActionResult<CountryInfoDto>> GetCountriesInfoAsync(int appId)
         {
             return Ok(await _appService.GetCountriesInfoAsync(appId));
+        }
+
+        [HttpGet("{appId:int}/recipients")]
+        public async Task<ActionResult<CountryInfoDto>> GetCountriesInfGetRecipientTeamsoAsync(int appId)
+        {
+            return Ok(await _appService.GetRecipientTeams(appId));
         }
     }
 }

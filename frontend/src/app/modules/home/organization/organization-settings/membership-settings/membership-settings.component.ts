@@ -5,9 +5,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Organization } from '@shared/models/organization/organization';
 import { Role } from '@shared/models/role/role';
-import { MembersRoles } from '@shared/constants/membersRoles';
 import { TrelloService } from '@core/services/trello-service';
 import { User } from '@shared/models/user/user';
+import { MembersRoles } from '@shared/constants/member-roles';
 
 @Component({
     selector: 'app-membership-settings',

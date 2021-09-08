@@ -14,7 +14,12 @@ import { AddEditIssuesPerTimeTileComponent }
     from '@modules/home/modals/tiles/issues-per-time/add-edit-issues-per-time-tile/add-edit-issues-per-time-tile.component';
 import { AddEditCountIssuesTileComponent }
     from '@modules/home/modals/tiles/count-issues/add-edit-count-issues-tile/add-edit-count-issues-tile.component';
-import { AddEditHeatMapTileComponent } from '@modules/home/modals/tiles/heat-map/add-edit-heat-map-tile/add-edit-heat-map-tile.component';
+import { AddEditHeatMapTileComponent }
+    from '@modules/home/modals/tiles/heat-map/add-edit-heat-map-tile/add-edit-heat-map-tile.component';
+import { AddEditTopResponsesTimeComponent }
+    from '@modules/home/modals/tiles/top-responses-time/add-edit-top-responses-time-tile/add-edit-top-responses-time-tile.component';
+import { AddEditMostCommonCountriesTileComponent }
+    from '@modules/home/modals/tiles/most-common-countries/add-edit-common-countries-tile/add-edit-common-countries-tile.component';
 
 @Injectable({
     providedIn: 'root'
@@ -57,8 +62,50 @@ export class TileDialogService extends BaseComponent implements OnDestroy {
         });
     }
 
+    showTopResponsesTimeCreateDialog(userProjects: Project[], dashboardId: number, dashboardTiles: Tile[]) {
+        this.ref = this.dialogService.open(AddEditTopResponsesTimeComponent, {
+            data: {
+                isAddMode: true,
+                userProjects,
+                dashboardId
+            },
+            contentStyle: this.dialogContentStyles,
+            closable: false,
+            showHeader: false,
+            modal: true,
+            closeOnEscape: true,
+        });
+
+        this.ref.onClose.subscribe((newTile: NewTile) => {
+            if (newTile) {
+                this.addTile(newTile, dashboardTiles);
+            }
+        });
+    }
+
     showTopActiveIssuesEditDialog(userProjects: Project[], tileToUpdate: Tile, applySettings: () => void) {
         this.ref = this.dialogService.open(AddEditTopActiveIssuesTileComponent, {
+            data: {
+                isAddMode: false,
+                userProjects,
+                tileToUpdate
+            },
+            contentStyle: this.dialogContentStyles,
+            closable: false,
+            showHeader: false,
+            modal: true,
+            closeOnEscape: true,
+        });
+
+        this.ref.onClose.subscribe((updatedTile: UpdateTile) => {
+            if (updatedTile) {
+                this.updateTile(updatedTile, tileToUpdate, applySettings);
+            }
+        });
+    }
+
+    showTopResponsesTimeEditDialog(userProjects: Project[], tileToUpdate: Tile, applySettings: () => void) {
+        this.ref = this.dialogService.open(AddEditTopResponsesTimeComponent, {
             data: {
                 isAddMode: false,
                 userProjects,
@@ -204,6 +251,48 @@ export class TileDialogService extends BaseComponent implements OnDestroy {
         });
     }
 
+    showMostCommonCountriesCreateDialog(userProjects: Project[], dashboardId: number, dashboardTiles: Tile[]) {
+        this.ref = this.dialogService.open(AddEditMostCommonCountriesTileComponent, {
+            data: {
+                isAddMode: true,
+                userProjects,
+                dashboardId
+            },
+            contentStyle: this.dialogContentStyles,
+            closable: false,
+            showHeader: false,
+            modal: true,
+            closeOnEscape: true,
+        });
+
+        this.ref.onClose.subscribe((newTile: NewTile) => {
+            if (newTile) {
+                this.addTile(newTile, dashboardTiles);
+            }
+        });
+    }
+
+    showMostCommonCountriesEditDialog(userProjects: Project[], tileToUpdate: Tile, applySettings: () => void) {
+        this.ref = this.dialogService.open(AddEditMostCommonCountriesTileComponent, {
+            data: {
+                isAddMode: false,
+                userProjects,
+                tileToUpdate
+            },
+            contentStyle: this.dialogContentStyles,
+            closable: false,
+            showHeader: false,
+            modal: true,
+            closeOnEscape: true,
+        });
+
+        this.ref.onClose.subscribe((updatedTile: UpdateTile) => {
+            if (updatedTile) {
+                this.updateTile(updatedTile, tileToUpdate, applySettings);
+            }
+        });
+    }
+
     ngOnDestroy() {
         if (this.ref) {
             this.ref.close();
@@ -212,9 +301,10 @@ export class TileDialogService extends BaseComponent implements OnDestroy {
 
     private addTile(newTile: NewTile, dashboardTiles: Tile[]) {
         this.spinnerService.show(true);
+        const newTileOrder = dashboardTiles.length ? dashboardTiles[dashboardTiles.length - 1].tileOrder + 1 : 1;
         const newOrderedTile = {
             ...newTile,
-            tileOrder: dashboardTiles[dashboardTiles.length - 1].tileOrder + 1
+            tileOrder: newTileOrder
         };
 
         this.tileService.addTile(newOrderedTile)

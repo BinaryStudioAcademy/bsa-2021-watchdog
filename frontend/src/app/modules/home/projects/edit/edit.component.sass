@@ -109,7 +109,15 @@
         height: 1rem
         margin-right: 0.5rem
 
-\:host ::ng-deep
+.table
+    &-content
+        &-assignee
+            display: flex
+            align-items: center
+            grid-gap: 5px
+            cursor: pointer
+
+:host ::ng-deep
     .p-dropdown
         width: 100%
 

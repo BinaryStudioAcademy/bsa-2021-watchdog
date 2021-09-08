@@ -131,11 +131,28 @@ namespace Watchdog.Core.BLL.Services
                 throw new InvalidOperationException("There are already exists application with such id.");
             }
 
-            var existedApplication = await _context.Applications.FirstOrDefaultAsync(a => a.Id == appId) ??
+            var existedApplication = await _context.Applications
+                .Include(x => x.ApplicationTeams)
+                .Include(x => x.Recipients)
+                .FirstOrDefaultAsync(a => a.Id == appId) ??
                 throw new KeyNotFoundException("No application with this id!");
 
             var mergedApplication = _mapper.Map(updateAppDto, existedApplication);
 
+            var teamIds = updateAppDto.RecipientTeams.Select(x => x.Id);
+            existedApplication.ApplicationTeams.ToList().ForEach(x => x.IsRecipient = teamIds.Contains(x.TeamId));
+
+            var recipients = await _context.TeamMembers
+                .Include(x => x.Member)
+                .ThenInclude(x => x.User)
+                .Where(x => teamIds.Contains(x.TeamId))
+                .Select(x => x.Member.User)
+                .Distinct()
+                .ToListAsync();
+
+            mergedApplication.Recipients.Clear();
+            recipients.ForEach(x => mergedApplication.Recipients.Add(x));
+            
             var updateApplication = _context.Update(mergedApplication);
             await _context.SaveChangesAsync();
 
@@ -193,6 +210,12 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<ICollection<ApplicationDto>>(apps);
         }
 
+        public async Task<bool> CheckProjectListeningAsync(string apiKey)
+        {
+            var state = await _context.Applications.AnyAsync(a => a.ApiKey == apiKey);
+            return state;
+        }
+
         public async Task<ICollection<CountryInfoDto>> GetCountriesInfoAsync(int appId)
         {
             var application = await _context.Applications.FirstOrDefaultAsync(app => app.Id == appId);
@@ -225,6 +248,16 @@ namespace Watchdog.Core.BLL.Services
                 .ToList();
 
             return result;
+        }
+
+        public async Task<ICollection<ApplicationRecipientsDto>> GetRecipientTeams(int applicationId)
+        {
+            var applicationTeams = await _context.ApplicationTeams
+                .Include(x => x.Team)
+                .Where(x => x.ApplicationId == applicationId)
+                .ToArrayAsync();
+
+            return _mapper.Map<ICollection<ApplicationRecipientsDto>>(applicationTeams);
         }
     }
 }

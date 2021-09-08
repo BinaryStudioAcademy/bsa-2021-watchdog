@@ -14,7 +14,9 @@ import { ReactComponent } from './edit/configure/configurations/react/react.comp
 import { JavascriptComponent } from './edit/configure/configurations/javascript/javascript.component';
 import { ProjectAnalyticsComponent } from './project-analytics/project-analytics.component';
 import { CodeComponent } from './edit/configure/code/code.component';
+import { AssignmentOfTeamsComponent } from './edit/project-alert/assignment/assignment-of-teams/assignment-of-teams.component';
 import { IssuesModule } from '@shared/modules/issues/issues.module';
+import { DotNetComponent } from './edit/configure/configurations/dot-net/dot-net.component';
 
 @NgModule({
     declarations: [
@@ -30,6 +32,8 @@ import { IssuesModule } from '@shared/modules/issues/issues.module';
         JavascriptComponent,
         ProjectAnalyticsComponent,
         CodeComponent,
+        AssignmentOfTeamsComponent,
+        DotNetComponent,
     ],
     imports: [
         SharedModule,

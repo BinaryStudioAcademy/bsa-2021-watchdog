@@ -42,7 +42,8 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     sharedOptions = {} as AssigneeOptions;
     globalFilterFields = ['errorClass', 'projectName', 'errorMessage'];
     lastEvent: LazyLoadEvent;
-    loading: boolean;
+    loading: boolean = true;
+    lazyLoading: boolean = true;
     totalRecords: number;
     member: Member;
     organization: Organization;
@@ -83,14 +84,14 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                 }), tap(member => {
                     this.member = member;
                 })).subscribe(() => {
-                forkJoin([this.loadMembers(), this.loadTeams()])
+                forkJoin([this.loadMembers(), this.loadTeams(), this.loadIssuesCountByStatuses()])
                     .pipe(this.untilThis)
-                    .subscribe(([members, teams]) => {
+                    .subscribe(([members, teams, issueCount]) => {
                         this.sharedOptions.members = members;
                         this.sharedOptions.teams = teams;
-                        this.loadIssuesLazy(this.lastEvent);
-                        this.getIssuesCountByStatuses();
+                        this.setTabPanelFields(issueCount);
                         this.subscribeToIssuesHub();
+                        this.loading = false;
                     });
             }, error => {
                 this.toastNotification.error(error);
@@ -106,6 +107,20 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     loadTeams() {
         return this.teamService.getAssigneeTeams(this.member.organizationId)
             .pipe(this.untilThis);
+    }
+
+    loadIssuesCountByStatuses() {
+        return this.issueService.getIssuesInfoCountByStatuses(this.member.id)
+            .pipe(this.untilThis);
+    }
+
+    getIssuesCountByStatuses() {
+        this.loadIssuesCountByStatuses()
+            .subscribe(issueCount => {
+                this.setTabPanelFields(issueCount);
+            }, error => {
+                this.toastNotification.error(error);
+            });
     }
 
     selectAll(event: { checked: boolean, originalEvent: Event }) {
@@ -160,11 +175,9 @@ export class IssuesComponent extends BaseComponent implements OnInit {
             return;
         }
         this.lastEvent = event;
-        if (!this.member) {
-            return;
-        }
-        this.spinner.show(true);
 
+        this.spinner.show(true);
+        this.lazyLoading = true;
         this.issueService.getIssuesInfoLazy(this.member.id, this.lastEvent, this.selectedTabIssueStatus, this.project)
             .pipe(this.untilThis,
                 debounceTime(1000))
@@ -172,24 +185,15 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                 response => {
                     this.issues = response.collection.concat();
                     this.totalRecords = response.totalRecords;
+                    this.lazyLoading = false;
                     this.spinner.hide();
                 },
                 error => {
                     this.toastNotification.error(error);
+                    this.lazyLoading = false;
                     this.spinner.hide();
                 }
             );
-    }
-
-    getIssuesCountByStatuses(): void {
-        this.issueService.getIssuesInfoCountByStatuses(this.member.id)
-            .pipe(this.untilThis)
-            .subscribe(response => {
-                this.setTabPanelFields(response);
-            },
-            error => {
-                this.toastNotification.error(error);
-            });
     }
 
     getNumberAssignee(assignee: Assignee) {

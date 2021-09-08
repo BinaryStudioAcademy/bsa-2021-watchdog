@@ -1,6 +1,10 @@
 <p-panel class="panel-custom" styleClass="team-panel" header="Members">
     <ng-template pTemplate="header">
-        <app-team-add-member class="header-button" (addedMember)="addMember($event)" [team]="team">
+        <app-team-add-member
+            class="header-button"
+            (addedMember)="addMember($event)"
+            [team]="team"
+            *ngIf="hasAccess()">
         </app-team-add-member>
     </ng-template>
     <div class="panel-list">
@@ -16,9 +20,17 @@
                     "+member?.user.lastName}}</div>
                 <div>{{member?.user.email}}</div>
             </div>
-            <button pButton pRipple type="button" label="Remove" class="p-button-outlined p-button-danger"
-                icon="pi pi-minus-circle" (click)="removeMember(member.id)"></button>
+            <button
+                pButton
+                pRipple
+                type="button"
+                label="Remove"
+                class="p-button-outlined p-button-danger"
+                icon="pi pi-minus-circle"
+                (click)="removeMember(member.id)"
+                *ngIf="hasAccess()">
+            </button>
         </div>
-        <div class="panel-list-item placeholder-empty" *ngIf="team.members.length===0">No members yet...</div>
+        <div class="panel-list-item placeholder-empty" *ngIf="!team.members.length">No members yet...</div>
     </div>
 </p-panel>
