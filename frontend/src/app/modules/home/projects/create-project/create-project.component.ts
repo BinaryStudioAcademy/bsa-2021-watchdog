@@ -117,7 +117,6 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
             { label: 'All', command: (event) => this.onTabChange(event?.item.label) },
             { label: 'Browser', command: (event) => this.onTabChange(event?.item.label) },
             { label: 'Server', command: (event) => this.onTabChange(event?.item.label) },
-            { label: 'Mobile', command: (event) => this.onTabChange(event?.item.label) },
             { label: 'Desktop', command: (event) => this.onTabChange(event?.item.label) }
         ];
         this.platforms.activePlatformTabItem = Object.assign(this.platforms.platformTabItems[0]);
@@ -171,10 +170,6 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                 }
                 case 'Server': {
                     this.platforms.viewPlatformCards = this.platforms.platformCards.filter(value => value.platformTypes.isServer);
-                    break;
-                }
-                case 'Mobile': {
-                    this.platforms.viewPlatformCards = this.platforms.platformCards.filter(value => value.platformTypes.isMobile);
                     break;
                 }
                 case 'Desktop': {

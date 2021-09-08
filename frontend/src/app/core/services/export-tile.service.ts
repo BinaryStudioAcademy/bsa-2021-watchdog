@@ -12,7 +12,7 @@ const JsPDF = jsPDF;
 })
 export class ExportTileService {
     exportTile(exportType: ExportType, data: any) {
-        const smallPdf = 300;
+        const smallPdf = 200;
         const mediumPdf = 440;
         const bigPdf = 880;
         html2canvas(data).then(canvas => {
@@ -29,14 +29,14 @@ export class ExportTileService {
             if (exportType === ExportType.Pdf) {
                 const contentDataURL = canvas.toDataURL('image/png', 1.0);
                 const pdf = new JsPDF('p', 'mm', 'a4');
-                if (data.clientWidth >= smallPdf && data.clientWidth <= mediumPdf) {
+                if (canvas.width >= smallPdf && canvas.width <= mediumPdf) {
                     pdf.addImage(contentDataURL, 'PNG', 60, 10, canvas.height / 6, 0);
                 }
-                if (data.clientWidth >= mediumPdf && data.clientWidth <= bigPdf) {
+                if (canvas.width >= mediumPdf && canvas.width <= bigPdf) {
                     pdf.addImage(contentDataURL, 'PNG', 35, 10, canvas.height / 4, 0);
                 }
-                if (data.clientWidth >= bigPdf) {
-                    pdf.addImage(contentDataURL, 'PNG', 0, 10, canvas.height / 2.7, 0);
+                if (canvas.width >= bigPdf) {
+                    pdf.addImage(contentDataURL, 'PNG', 25, 10, canvas.height / 2.7, 0);
                 }
                 pdf.save(`${new Date().toLocaleString().replace(':', '_')}.pdf`);
             }
