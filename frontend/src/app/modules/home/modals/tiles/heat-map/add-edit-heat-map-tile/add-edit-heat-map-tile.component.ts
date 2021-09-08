@@ -46,10 +46,10 @@ export class AddEditHeatMapTileComponent extends CommomEditTileComponent impleme
     }
 
     ngOnInit() {
-        super.ngOnInit();
         this.setTypeAndCategory(TileType.HeatMap, TileCategory.Chart);
         this.initDateRangeDropdown();
         this.initIssueStatusCheckboxes();
+        super.ngOnInit();
     }
 
     onSelectedDateRange(value: any) {

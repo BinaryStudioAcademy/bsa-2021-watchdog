@@ -4,7 +4,7 @@
 </div>
 
 <!--    Tab View    -->
-<p-tabView *ngIf="!project" (onChange)="onSelectedTab($event.index)">
+<p-tabView *ngIf="!project && !loading" (onChange)="onSelectedTab($event.index)">
     <!--    Tabs    -->
     <p-tabPanel>
         <ng-template pTemplate="header">
@@ -33,7 +33,7 @@
 </p-tabView>
 
 <!--    Main content    -->
-<div [ngClass]="{'main-content': !project}">
+<div *ngIf="!loading" [ngClass]="{'main-content': !project}">
     <!--    Tools    -->
     <div class="functional-bar">
         <!--    Search    -->
@@ -203,9 +203,11 @@
                 </tr>
             </ng-template>
         </p-table>
+        <div *ngIf="!lazyLoading && !issues.length" class="empty">
+            There is no issues
+        </div>
     </div>
 </div>
-
 <app-assignee (closeModal)="closeAssign()" *ngIf="isAssign" [data]="toAssign"
               [members]="sharedOptions.members" [teams]="sharedOptions.teams">
 </app-assignee>

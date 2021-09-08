@@ -212,9 +212,10 @@ export class TileDialogService extends BaseComponent implements OnDestroy {
 
     private addTile(newTile: NewTile, dashboardTiles: Tile[]) {
         this.spinnerService.show(true);
+        const newTileOrder = dashboardTiles.length ? dashboardTiles[dashboardTiles.length - 1].tileOrder + 1 : 1;
         const newOrderedTile = {
             ...newTile,
-            tileOrder: dashboardTiles[dashboardTiles.length - 1].tileOrder + 1
+            tileOrder: newTileOrder
         };
 
         this.tileService.addTile(newOrderedTile)

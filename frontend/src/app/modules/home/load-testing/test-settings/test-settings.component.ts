@@ -1,3 +1,4 @@
+import { SpinnerService } from '@core/services/spinner.service';
 import { Test } from '@shared/models/test/test';
 import { TestMethod } from '@shared/models/test/enums/test-method';
 import { tap } from 'rxjs/operators';
@@ -37,6 +38,7 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
     isNotFound = false;
     testId: number;
     contentTypes = contentTypes;
+    loading: boolean;
     @ViewChild(InputTextarea) textarea: InputTextarea;
     getUrl = getUrl;
     hasBody = hasBody;
@@ -46,10 +48,13 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
         private toastNotifications: ToastNotificationService,
         private projectService: ProjectService,
         private testService: TestService,
-        private router: Router
+        private router: Router,
+        private spinner: SpinnerService
     ) { super(); }
 
     async ngOnInit(): Promise<void> {
+        this.loading = true;
+        this.spinner.show(true);
         this.initFormGroups();
         this.authService.getMember()
             .pipe(
@@ -59,20 +64,24 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
                 })
             )
             .subscribe(() => {
-                this.initProjects().subscribe();
-            }, error => {
-                this.toastNotifications.error(error);
-            });
-
-        this.activatedRoute.params
-            .pipe(this.untilThis)
-            .subscribe(params => {
-                if (params.id) {
-                    this.header = 'Edit test';
-                    this.initEditMode(+params.id);
-                } else {
-                    this.header = 'Add a new test';
-                }
+                this.initProjects().subscribe(() => {
+                    this.activatedRoute.params
+                        .pipe(this.untilThis)
+                        .subscribe(params => {
+                            if (params.id) {
+                                this.header = 'Edit test';
+                                this.initEditMode(+params.id);
+                            } else {
+                                this.header = 'Add a new test';
+                                this.spinner.hide();
+                                this.loading = false;
+                            }
+                        }, error => {
+                            this.loading = false;
+                            this.spinner.hide();
+                            this.toastNotifications.error(error);
+                        });
+                });
             }, error => {
                 this.toastNotifications.error(error);
             });
@@ -81,24 +90,34 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
         this.testId = id;
         this.testService.getTestById(id)
             .subscribe(test => {
-                this.settingsGroup.controls.name.setValue(test.name);
-                this.settingsGroup.controls.type.setValue(test.type);
-                this.settingsGroup.controls.clients.setValue(test.clients);
-                this.settingsGroup.controls.duration.setValue(test.duration.substring(3));
-                this.settingsGroup.controls.projectId.setValue(test.projectId);
-                this.requestGroups = test.requests.map(x => this.generateRequestGroup(
-                    protocolOptions.find(p => p.value === x.protocol),
-                    x.host,
-                    x.path,
-                    methodOptions.find(m => m.value === x.method),
-                    x.body,
-                    toKeyValuePairs(JSON.parse(x.headers)),
-                    toKeyValuePairs(JSON.parse(x.parameters)),
-                    x.id,
-                    JSON.parse(x.headers).contentType
-                ));
+                if (test.organizationId !== this.member.organizationId) {
+                    this.isNotFound = true;
+                    this.loading = false;
+                    this.spinner.hide();
+                } else {
+                    this.settingsGroup.controls.name.setValue(test.name);
+                    this.settingsGroup.controls.type.setValue(test.type);
+                    this.settingsGroup.controls.clients.setValue(test.clients);
+                    this.settingsGroup.controls.duration.setValue(test.duration.substring(3));
+                    this.settingsGroup.controls.projectId.setValue(test.projectId);
+                    this.requestGroups = test.requests.map(x => this.generateRequestGroup(
+                        protocolOptions.find(p => p.value === x.protocol),
+                        x.host,
+                        x.path,
+                        methodOptions.find(m => m.value === x.method),
+                        x.body,
+                        toKeyValuePairs(JSON.parse(x.headers)),
+                        toKeyValuePairs(JSON.parse(x.parameters)),
+                        x.id,
+                        JSON.parse(x.headers).contentType
+                    ));
+                    this.loading = false;
+                    this.spinner.hide();
+                }
             }, () => {
                 this.isNotFound = true;
+                this.loading = false;
+                this.spinner.hide();
             });
     }
 
@@ -310,17 +329,17 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
         return this.settingsGroup.valid && this.requestGroups.every(x => x.valid);
     }
 
-    save() {
+    save(start: boolean) {
         const test: Test = this.getTest();
         if (this.testId) {
             test.id = this.testId;
-            this.testService.updateTest(test).subscribe(() => {
+            this.testService.updateTest(test, start).subscribe(() => {
                 this.toastNotifications.success('Test updated');
             }, error => {
                 this.toastNotifications.error(error);
             });
         } else {
-            this.testService.createTest(test).subscribe(t => {
+            this.testService.createTest(test, start).subscribe(t => {
                 this.toastNotifications.success('Test created');
                 this.router.navigateByUrl(`home/tests/edit/${t.id}`);
             }, error => {

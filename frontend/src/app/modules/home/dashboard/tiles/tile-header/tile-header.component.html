@@ -28,9 +28,18 @@
             </button>
         </ng-container>
     </div>
+    <div *ngIf="!isShownTileMenu" class="header-right-buttons">
+        <div class="button-export">
+            <button (click)="exportTileMenu.toggle($event)"
+                class="p-button-raised p-button-text p-button-plain"
+                icon="pi pi-download" pButton pTooltip="Export" tooltipPosition="bottom"
+                tooltipStyleClass="tooltip-text" type="button"></button>
+            <p-tieredMenu #exportTileMenu [model]="menuTileExportItems" [popup]="true" appendTo="body" styleClass="tiered-menu">
+            </p-tieredMenu>
+        </div>
+    </div>
     <!--    Title Right Buttons    -->
     <div *ngIf="isShownTileMenu" class="header-right-buttons">
-
         <div class="button-delete">
             <button (click)="deleteTile()" class="p-button-raised p-button-text p-button-plain" icon="pi pi-trash"
                     pButton></button>

@@ -1,3 +1,9 @@
-<app-charts *ngIf="multi?.length === requiredProjects?.length" [chartOptions]="chartOptions" [tileType]="tile.type"
-            [chartType]="ChartType.Line" [multi]="multi" [resize]="resize">
+<app-charts
+    #toExport
+    *ngIf="multi?.length === requiredProjects?.length"
+    [chartOptions]="chartOptions"
+    [tileType]="tile.type"
+    [chartType]="ChartType.Line"
+    [multi]="multi"
+    [resize]="resize">
 </app-charts>

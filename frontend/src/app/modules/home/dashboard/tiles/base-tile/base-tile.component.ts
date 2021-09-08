@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { BaseComponent } from '@core/components/base/base.component';
 import { Project } from '@shared/models/projects/project';
 import { Tile } from '@shared/models/tile/tile';
@@ -19,6 +19,7 @@ export abstract class BaseTileComponent extends BaseComponent implements OnInit 
     @Output() dragTile: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() changeTile: EventEmitter<void> = new EventEmitter<void>();
 
+    @ViewChild('toExport') toExport: ElementRef;
     ngOnInit(): void {
         this.events
             .pipe(this.untilThis)

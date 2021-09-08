@@ -34,7 +34,6 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     isOrderChanged: boolean = false;
     draggableTile: Tile;
     dashboard: Dashboard;
-    updateSubscription$: Subscription;
     tiles: Tile[] = [];
     tileTypes = TileType;
     projects: Project[] = [];
@@ -42,6 +41,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     member: Member;
     resize: Subject<void> = new Subject<void>();
     resize$: Observable<void> = this.resize.asObservable().pipe(delay(100));
+    notFound: boolean = false;
 
     constructor(
         private route: ActivatedRoute,
@@ -147,14 +147,19 @@ export class DashboardComponent extends BaseComponent implements OnInit {
         this.dashboardService.get(dashboardId)
             .pipe(this.untilThis)
             .subscribe(dashboardById => {
-                this.dashboard = dashboardById;
-                this.updateDataService.currentMessage
-                    .pipe(this.untilThis)
-                    .subscribe((dashboard) => {
-                        this.dashboard = dashboard;
-                    }, error => {
-                        this.toastNotificationService.error(error);
-                    });
+                if (dashboardById?.organizationId !== this.member.organizationId) {
+                    this.notFound = true;
+                } else {
+                    this.notFound = false;
+                    this.dashboard = dashboardById;
+                    this.updateDataService.currentMessage
+                        .pipe(this.untilThis)
+                        .subscribe((dashboard) => {
+                            this.dashboard = dashboard;
+                        }, error => {
+                            this.toastNotificationService.error(error);
+                        });
+                }
                 this.spinnerService.hide();
             }, error => {
                 this.toastNotificationService.error(error);
