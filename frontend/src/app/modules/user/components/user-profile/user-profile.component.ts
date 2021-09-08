@@ -44,7 +44,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
     updateUser() {
         const user = {
             ...this.editForm.value,
-            trelloUserId: this.editForm.controls.trelloMember.value.id
+            trelloUserId: this.editForm.controls.trelloUserId.value
         };
         if (user.firstName === this.user.firstName
             && user.lastName === this.user.lastName
@@ -57,6 +57,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
                 .subscribe(resp => {
                     this.toastNotificationService.success('Profile has been updated');
                     Object.assign(this.user, resp);
+                    this.authService.setUser(this.user);
                 }, error => {
                     this.toastNotificationService.error(error);
                 });
@@ -104,11 +105,11 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
                 this.toastNotificationService.warning('Fill in all three fields to change your password');
             }
             if (checkUserFields.email === this.user.email && checkUserFields.firstName === this.user.firstName
-                && checkUserFields.lastName === this.user.lastName && checkUserFields.trelloMember.id === this.user.trelloUserId) {
+                && checkUserFields.lastName === this.user.lastName && checkUserFields.trelloUserId === this.user.trelloUserId) {
                 this.updatePassword();
             }
             if (checkUserFields.email !== this.user.email || checkUserFields.firstName !== this.user.firstName
-                || checkUserFields.lastName !== this.user.lastName || checkUserFields.trelloMember.id !== this.user.trelloUserId) {
+                || checkUserFields.lastName !== this.user.lastName || checkUserFields.trelloUserId !== this.user.trelloUserId) {
                 this.updateUser();
                 this.updatePassword();
             }

@@ -88,22 +88,12 @@
 </form>
 <form *ngIf="organization?.trelloIntegration" class="item" [formGroup]="editForm">
     <label class="item-definition">
-        <div>Trello username</div>
+        <div>Trello assignee</div>
     </label>
     <div class="item-field">
-        <div class="item-form-input p-input-icon-right">
-            <div class="p-field p-col-12 p-md-4">
-                <p-autoComplete appendTo = "body"
-                    field="username" formControlName="trelloMember" [forceSelection]="true"
-                    [suggestions]="trelloMembers" (completeMethod)="search($event)"
-                    dropdownMode="current"
-                    [completeOnFocus]="true"
-                    placeholder="Enter trello username">
-                    <ng-template let-member pTemplate="item">
-                        <span> {{member.username}} </span>
-                    </ng-template>
-                </p-autoComplete>
-            </div>
-        </div>
+        <div class="item-form-input">
+            <span *ngIf="currentTrelloMember" class="username">{{currentTrelloMember.username}}</span>
+            <button pButton pRipple class="p-button-outlined" (click)="trelloAuthorize()" label="Authorize"></button>
+    </div>
     </div>
 </form>

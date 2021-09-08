@@ -72,6 +72,10 @@ export class TrelloService {
         return this.httpClient.get<TrelloMember>(`${this.apiUrl}/members/${id}`);
     }
 
+    getMemberByToken(token: string) {
+        return this.httpClient.get<TrelloMember>(`${this.apiUrl}/tokens/${token}/member`, {params: this.getParams()});
+    }
+
     async addIssueToBoardWithAssignee(issue: IssueTableItem, users: User[] = [], teams: Team[] = []) {
         await this.getToken().pipe(first()).toPromise();
         const usersArray = users || [];
@@ -200,12 +204,18 @@ export class TrelloService {
         this.trelloToken = token;
     }
 
-    authorizeTrello(afterAuthorize?: Function, notCompleteAuthorization?: Function) {
+    authorizeTrello(afterAuthorize?: Function, badAuthorize?: Function) {
         authorizeIntegration(this.apiKey, token => {
             this.trelloTokenFromAuthorize.next(token);
 
             if (token !== null) afterAuthorize();
-            else notCompleteAuthorization();
+            else badAuthorize();
+        });
+    }
+
+    authorizeTrelloUser(afterAuthorize?: (token: string) => void) {
+        authorizeIntegration(this.apiKey, token => {
+            if (token !== null) afterAuthorize(token);
         });
     }
 

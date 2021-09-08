@@ -13,8 +13,6 @@ import { FileUpload } from 'primeng/fileupload';
 import { CroppedEvent } from 'ngx-photo-editor';
 import { AvatarDto } from '@shared/models/avatar/avatarDto';
 import { TrelloMember } from '@shared/models/trello/trello-member';
-import { Subject } from 'rxjs';
-import { debounceTime, switchMap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-user-profile-settings',
@@ -26,9 +24,7 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
     @Input() editForm: FormGroup;
     @Input() organization: Organization;
     @ViewChild(FileUpload) fileUpload: FileUpload;
-    trelloMembers: TrelloMember[];
     currentTrelloMember: TrelloMember;
-    searchTerm: Subject<string> = new Subject<string>();
     imageChangedEvent: { target: { files: File[] } };
 
     constructor(
@@ -45,7 +41,6 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
             .pipe(this.untilThis)
             .subscribe(member => {
                 this.currentTrelloMember = member;
-                this.trelloMember.setValue(member);
             });
         this.editForm.addControl('firstName', new FormControl(this.user.firstName, [
             Validators.required,
@@ -70,17 +65,7 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
             ]
         }));
         this.editForm.addControl('avatarUrl', new FormControl(this.user.avatarUrl));
-        this.editForm.addControl('trelloMember', new FormControl(''));
-
-        this.searchTerm.pipe(
-            this.untilThis,
-            debounceTime(300),
-            switchMap((term: string) => this.trelloService
-                .searchMembers(term)
-                .pipe(this.untilThis))
-        ).subscribe(members => {
-            this.trelloMembers = members;
-        });
+        this.editForm.addControl('trelloUserId', new FormControl(this.user.trelloUserId));
     }
 
     get firstName() { return this.editForm.controls.firstName; }
@@ -91,7 +76,7 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
 
     get avatarUrl() { return this.editForm.controls.avatarUrl; }
 
-    get trelloMember() { return this.editForm.controls.trelloMember; }
+    get trelloUserId() { return this.editForm.controls.trelloUserId; }
 
     onError(e) {
         this.toastNotificationService.error(e.error);
@@ -115,8 +100,15 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
                 });
     }
 
-    search(event: { query: string }) {
-        const value = event.query;
-        this.searchTerm.next(value);
+    trelloAuthorize() {
+        this.trelloService.authorizeTrelloUser(token => {
+            this.trelloService.getMemberByToken(token)
+                .pipe(this.untilThis)
+                .subscribe(member => {
+                    this.editForm.markAsDirty();
+                    this.trelloUserId.setValue(member.id);
+                    this.currentTrelloMember = member;
+                });
+        });
     }
 }
