@@ -107,6 +107,7 @@ namespace Watchdog.Core.API.Extensions
 
             services.AddRabbitMQIssueQueues(configuration);
             services.AddRabbitMQLoaderQueues(configuration);
+            services.AddRabbitMQEmailerQueues(configuration);
         }
 
         private static void AddRabbitMQIssueQueues(this IServiceCollection services, IConfiguration configuration)
@@ -150,6 +151,19 @@ namespace Watchdog.Core.API.Extensions
                         provider.GetRequiredService<IConnection>(),
                         producerSettings)));
 
+        }
+
+        private static void AddRabbitMQEmailerQueues(this IServiceCollection services, IConfiguration configuration)
+        {
+            var producerSettings = configuration
+                .GetSection("RabbitMQConfiguration:Queues:EmailerQueueProducer")
+                .Get<ProducerSettings>();
+
+            services.AddSingleton<IEmailerQueueProducerService>(provider =>
+                new EmailerQueueProducerService(
+                    new Producer(
+                        provider.GetRequiredService<IConnection>(),
+                        producerSettings)));
         }
     }
 }

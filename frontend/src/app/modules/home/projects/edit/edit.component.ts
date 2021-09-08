@@ -12,6 +12,7 @@ import { AlertSettings } from '@shared/models/alert-settings/alert-settings';
 import { Organization } from '@shared/models/organization/organization';
 import { Platform } from '@shared/models/platforms/platform';
 import { Project } from '@shared/models/projects/project';
+import { RecipientTeam } from '@shared/models/projects/recipient-team';
 import { UpdateProject } from '@shared/models/projects/update-project';
 import { User } from '@shared/models/user/user';
 import { PrimeIcons } from 'primeng/api';
@@ -34,6 +35,8 @@ export class EditComponent extends BaseComponent implements OnInit {
     project: Project;
     id: string;
     dropPlatform: Platform[];
+    recipientTeams: RecipientTeam[];
+
     notFound: boolean;
     loading: boolean;
     activeIndex: number = 0;
@@ -93,11 +96,12 @@ export class EditComponent extends BaseComponent implements OnInit {
             alertCategory: specialAlert.alertCategory,
             specialAlertSetting: specialAlert.alertCategory === AlertCategory.Special ? specialAlert : null
         };
+        this.recipientTeams = specialAlert.alertCategory === AlertCategory.None ? [] : specialAlert.recipientTeams;
     }
 
     updateProjectFunction() {
         this.alertFormatting();
-        const project: UpdateProject = { ...this.editForm.value, alertSettings: this.alertSetting };
+        const project: UpdateProject = { ...this.editForm.value, alertSettings: this.alertSetting, recipientTeams: this.recipientTeams };
         if (this.editForm.valid) {
             this.projectService.updateProject(this.id, project)
                 .pipe(this.untilThis)
