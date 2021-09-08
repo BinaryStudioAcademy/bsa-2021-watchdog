@@ -3,6 +3,8 @@ import { ResponseInfo } from '@shared/models/analytics/response-info';
 import { Observable } from 'rxjs';
 import { Project } from '@shared/models/projects/project';
 import { Injectable } from '@angular/core';
+import { HttpParams } from '@angular/common/http';
+import { TileDateRangeType } from '@shared/models/tile/enums/tile-date-range-type';
 
 @Injectable({ providedIn: 'root' })
 export class AnalyticsService {
@@ -10,7 +12,13 @@ export class AnalyticsService {
 
     constructor(private httpService: CoreHttpService) { }
 
-    public getResponsesInfo(projects: Project[], count: number): Observable<ResponseInfo[]> {
-        return this.httpService.postRequest<ResponseInfo[]>(`${this.routePrefix}/requestsInfo`, projects, { count });
+    public getResponsesInfo(projects: Project[], dateRangeType: TileDateRangeType, count: number): Observable<ResponseInfo[]> {
+        const params = new HttpParams()
+            .set('count', count)
+            .set('dateRangeType', dateRangeType);
+
+        console.log(params);
+
+        return this.httpService.postRequest<ResponseInfo[]>(`${this.routePrefix}/requestsInfo`, projects, params);
     }
 }

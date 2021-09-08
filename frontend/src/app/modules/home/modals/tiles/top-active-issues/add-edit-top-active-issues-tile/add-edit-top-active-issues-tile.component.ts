@@ -6,7 +6,7 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
 import { TileService } from '@core/services/tile.service';
 import { TileCategory } from '@shared/models/tile/enums/tile-category';
 import { TileType } from '@shared/models/tile/enums/tile-type';
-import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
+import { TopActiveTileSettings } from '@shared/models/tile/settings/top-active-tile-settings';
 import { UpdateTile } from '@shared/models/tile/update-tile';
 import { Tile } from '@shared/models/tile/tile';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -84,7 +84,7 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
         this.headerTitle = `Editing tile ${this.tileToEdit.name}`;
         this.submitButtonText = 'Update';
 
-        const tileSettings = convertJsonToTileSettings(this.tileToEdit.settings, TileType.TopActiveIssues) as TopActiveIssuesSettings;
+        const tileSettings = convertJsonToTileSettings(this.tileToEdit.settings, TileType.TopActiveIssues) as TopActiveTileSettings;
         this.formGroup = new FormGroup({
             sourceProjects: new FormControl(
                 tileSettings.sourceProjects,
@@ -108,7 +108,7 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
                 ]
             ),
             issuesCount: new FormControl(
-                tileSettings.issuesCount,
+                tileSettings.itemsCount,
                 [
                     Validators.required,
                     Validators.min(1),
@@ -183,8 +183,8 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
             type: TileType.TopActiveIssues,
             createdBy: this.authenticationService.getUser().id,
             dashboardId: this.currentDashboardId,
-            settings: convertTileSettingsToJson(<TopActiveIssuesSettings>{
-                issuesCount: values.issuesCount,
+            settings: convertTileSettingsToJson(<TopActiveTileSettings>{
+                itemsCount: values.issuesCount,
                 sourceProjects: values.sourceProjects,
                 dateRange: values.dateRange,
                 tileSize: values.tileSize
@@ -197,8 +197,8 @@ export class AddEditTopActiveIssuesTileComponent implements OnInit {
         const updatedTile: UpdateTile = {
             id: this.tileToEdit.id,
             name: values.name,
-            settings: convertTileSettingsToJson(<TopActiveIssuesSettings>{
-                issuesCount: values.issuesCount,
+            settings: convertTileSettingsToJson(<TopActiveTileSettings>{
+                itemsCount: values.issuesCount,
                 sourceProjects: values.sourceProjects,
                 dateRange: values.dateRange,
                 tileSize: values.tileSize

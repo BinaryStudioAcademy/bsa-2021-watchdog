@@ -17,7 +17,7 @@ import { TileSizeType } from '@shared/models/tile/enums/tile-size-type';
 import { NewTile } from '@shared/models/tile/new-tile';
 import { TileCategory } from '@shared/models/tile/enums/tile-category';
 import { UpdateTile } from '@shared/models/tile/update-tile';
-import { TopResponsesTimeSettings } from '@shared/models/tile/settings/top-responses-time.settings';
+import { TopActiveTileSettings } from '@shared/models/tile/settings/top-active-tile-settings';
 
 @Component({
     selector: 'app-add-edit-top-response-time-tile',
@@ -84,7 +84,7 @@ export class AddEditTopResponsesTimeComponent implements OnInit {
         this.headerTitle = `Editing tile ${this.tileToEdit.name}`;
         this.submitButtonText = 'Update';
 
-        const tileSettings = convertJsonToTileSettings(this.tileToEdit.settings, TileType.TopResponsesTime) as TopResponsesTimeSettings;
+        const tileSettings = convertJsonToTileSettings(this.tileToEdit.settings, TileType.TopResponsesTime) as TopActiveTileSettings;
 
         this.formGroup = new FormGroup({
             sourceProjects: new FormControl(
@@ -109,7 +109,7 @@ export class AddEditTopResponsesTimeComponent implements OnInit {
                 ]
             ),
             responsesCount: new FormControl(
-                tileSettings.responsesCount,
+                tileSettings.itemsCount,
                 [
                     Validators.required,
                     Validators.min(1),
@@ -184,8 +184,8 @@ export class AddEditTopResponsesTimeComponent implements OnInit {
             type: TileType.TopResponsesTime,
             createdBy: this.authenticationService.getUser().id,
             dashboardId: this.currentDashboardId,
-            settings: convertTileSettingsToJson(<TopResponsesTimeSettings>{
-                responsesCount: values.responsesCount,
+            settings: convertTileSettingsToJson(<TopActiveTileSettings>{
+                itemsCount: values.responsesCount,
                 sourceProjects: values.sourceProjects,
                 dateRange: values.dateRange,
                 tileSize: values.tileSize
@@ -198,8 +198,8 @@ export class AddEditTopResponsesTimeComponent implements OnInit {
         const updatedTile: UpdateTile = {
             id: this.tileToEdit.id,
             name: values.name,
-            settings: convertTileSettingsToJson(<TopResponsesTimeSettings>{
-                responsesCount: values.responsesCount,
+            settings: convertTileSettingsToJson(<TopActiveTileSettings>{
+                itemsCount: values.responsesCount,
                 sourceProjects: values.sourceProjects,
                 dateRange: values.dateRange,
                 tileSize: values.tileSize

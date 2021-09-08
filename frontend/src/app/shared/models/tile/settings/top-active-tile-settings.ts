@@ -1,9 +1,9 @@
 import { TileDateRangeType } from '@shared/models/tile/enums/tile-date-range-type';
-import { TileSizeType } from '@shared/models/tile/enums/tile-size-type';
+import { TileSizeType } from '../enums/tile-size-type';
 
-export interface TopResponsesTimeSettings {
+export interface TopActiveTileSettings {
     sourceProjects: number[],
     dateRange: TileDateRangeType,
-    responsesCount: number,
+    itemsCount: number,
     tileSize: TileSizeType
 }

@@ -6,9 +6,9 @@ import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { convertJsonToTileSettings } from '@core/utils/tile.utils';
 import { TileType } from '@shared/models/tile/enums/tile-type';
-import { TopResponsesTimeSettings } from '@shared/models/tile/settings/top-responses-time.settings';
 import { AnalyticsService } from '@core/services/analytics.service';
 import { ResponseInfo } from '@shared/models/analytics/response-info';
+import { TopActiveTileSettings } from '@shared/models/tile/settings/top-active-tile-settings';
 
 @Component({
     selector: 'app-top-responses-time-tile',
@@ -22,7 +22,7 @@ export class TopResponsesTimeTileComponent extends BaseComponent implements OnIn
     @Output() isDeleting: EventEmitter<Tile> = new EventEmitter<Tile>();
     @Output() dragTile: EventEmitter<boolean> = new EventEmitter<boolean>();
     paginatorRows: number = 5;
-    tileSettings: TopResponsesTimeSettings;
+    tileSettings: TopActiveTileSettings;
     requiredProjects: Project[] = [];
     displayedResponses: ResponseInfo[];
 
@@ -54,7 +54,7 @@ export class TopResponsesTimeTileComponent extends BaseComponent implements OnIn
     }
 
     private getTileSettings() {
-        this.tileSettings = convertJsonToTileSettings(this.tile.settings, TileType.TopResponsesTime) as TopResponsesTimeSettings;
+        this.tileSettings = convertJsonToTileSettings(this.tile.settings, TileType.TopResponsesTime) as TopActiveTileSettings;
         console.log(this.tileSettings);
     }
 
@@ -62,15 +62,12 @@ export class TopResponsesTimeTileComponent extends BaseComponent implements OnIn
         this.requiredProjects = this.userProjects.filter(proj => this.tileSettings.sourceProjects.some(id => id === proj.id));
     }
 
-    private applyResponsesSettings(responsesInfo: ResponseInfo[]) {
-        this.displayedResponses = responsesInfo;
-    }
-
     private getResponsesInfo() {
-        this.analyticsService.getResponsesInfo(this.requiredProjects, this.paginatorRows)
+        console.log(this.tileSettings);
+        this.analyticsService.getResponsesInfo(this.requiredProjects, this.tileSettings.dateRange, this.tileSettings.itemsCount)
             .pipe(this.untilThis)
             .subscribe(responsesInfo => {
-                this.applyResponsesSettings(responsesInfo);
+                this.displayedResponses = responsesInfo;
             }, error => {
                 this.toastNotificationService.error(error);
             });

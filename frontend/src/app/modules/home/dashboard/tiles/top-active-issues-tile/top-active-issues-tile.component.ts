@@ -2,7 +2,7 @@ import { AuthenticationService } from '@core/services/authentication.service';
 import { switchMap } from 'rxjs/operators';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Project } from '@shared/models/projects/project';
-import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
+import { TopActiveTileSettings } from '@shared/models/tile/settings/top-active-tile-settings';
 import { TileType } from '@shared/models/tile/enums/tile-type';
 import { Tile } from '@shared/models/tile/tile';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
@@ -25,7 +25,7 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
     @Output() isDeleting: EventEmitter<Tile> = new EventEmitter<Tile>();
     @Output() dragTile: EventEmitter<boolean> = new EventEmitter<boolean>();
     paginatorRows: number = 5;
-    tileSettings: TopActiveIssuesSettings;
+    tileSettings: TopActiveTileSettings;
     requiredProjects: Project[] = [];
     displayedIssues: IssueInfo[] = [];
 
@@ -58,7 +58,7 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
     }
 
     private getTileSettings() {
-        this.tileSettings = convertJsonToTileSettings(this.tile.settings, TileType.TopActiveIssues) as TopActiveIssuesSettings;
+        this.tileSettings = convertJsonToTileSettings(this.tile.settings, TileType.TopActiveIssues) as TopActiveTileSettings;
     }
 
     private applyProjectSettings() {
@@ -70,7 +70,7 @@ export class TopActiveIssuesTileComponent extends BaseComponent implements OnIni
             .filter(info => this.requiredProjects.some(proj => proj.id === info.project.id)
                 && new Date(info.newest.occurredOn).getTime() >= Date.now() - convertTileDateRangeTypeToMs(this.tileSettings.dateRange))
             .sort((a, b) => b.eventsCount - a.eventsCount) // top sort
-            .slice(0, this.tileSettings.issuesCount); // issues count
+            .slice(0, this.tileSettings.itemsCount); // issues count
     }
 
     private getIssuesInfo() {
