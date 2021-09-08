@@ -18,6 +18,7 @@ import { debounceTime, tap } from 'rxjs/operators';
 import { MembersRoles } from '@shared/constants/membersRoles';
 import { TableExportService } from '@core/services/table-export.service';
 import { MemberExport } from '@shared/models/export/MemberExport';
+import { MembersRoleIds } from '@shared/constants/membersRoleIds';
 
 @Component({
     selector: 'app-members-page',
@@ -38,7 +39,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
     totalRecords: number;
     globalFilterFields = ['userFirstName', 'userEmail', 'roleName', 'userLastName'];
     lastEvent: LazyLoadEvent;
-
+    membersRoleIds = MembersRoleIds;
     constructor(
         private memberService: MemberService,
         private roleService: RoleService,
