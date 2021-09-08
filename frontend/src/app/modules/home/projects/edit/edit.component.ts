@@ -1,3 +1,4 @@
+import { Member } from '@shared/models/member/member';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,9 +8,9 @@ import { ConfirmWindowService } from '@core/services/confirm-window.service';
 import { ProjectService } from '@core/services/project.service';
 import { SpinnerService } from '@core/services/spinner.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
+import { hasAccess } from '@core/utils/access.utils';
 import { AlertCategory } from '@shared/models/alert-settings/alert-category';
 import { AlertSettings } from '@shared/models/alert-settings/alert-settings';
-import { Organization } from '@shared/models/organization/organization';
 import { Platform } from '@shared/models/platforms/platform';
 import { Project } from '@shared/models/projects/project';
 import { RecipientTeam } from '@shared/models/projects/recipient-team';
@@ -28,7 +29,7 @@ import { Data } from '../data';
 })
 export class EditComponent extends BaseComponent implements OnInit {
     user: User;
-    organization: Organization;
+    member: Member;
     alertSetting = {} as AlertSettings;
     editForm: FormGroup = new FormGroup({});
     editFormAlert: FormGroup = new FormGroup({});
@@ -40,6 +41,8 @@ export class EditComponent extends BaseComponent implements OnInit {
     notFound: boolean;
     loading: boolean;
     activeIndex: number = 0;
+
+    hasAccess = () => hasAccess(this.member);
 
     constructor(
         private toastNotifications: ToastNotificationService,
@@ -63,13 +66,13 @@ export class EditComponent extends BaseComponent implements OnInit {
             .subscribe(params => {
                 this.id = params.get('id');
                 this.user = this.authService.getUser();
-                zip(this.authService.getOrganization(), this.projectService.getProjectById(this.id))
+                zip(this.authService.getMember(), this.projectService.getProjectById(this.id))
                     .pipe(this.untilThis)
-                    .subscribe(([organization, project]) => {
-                        if (project?.organizationId !== organization.id) {
+                    .subscribe(([member, project]) => {
+                        if (project?.organizationId !== member.organizationId) {
                             this.notFound = true;
                         } else {
-                            this.organization = organization;
+                            this.member = member;
                             this.project = project;
                         }
                         this.loading = false;

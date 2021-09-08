@@ -3,36 +3,23 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Watchdog.Core.DAL.Context;
 
 namespace Watchdog.Core.DAL.Migrations
 {
     [DbContext(typeof(WatchdogCoreContext))]
-    partial class WatchdogCoreContextModelSnapshot : ModelSnapshot
+    [Migration("20210907103038_PlatformUpdate")]
+    partial class PlatformUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("ApplicationUser", b =>
-                {
-                    b.Property<int>("AlertSubscriptionsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RecipientsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AlertSubscriptionsId", "RecipientsId");
-
-                    b.HasIndex("RecipientsId");
-
-                    b.ToTable("ApplicationUser");
-                });
 
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Application", b =>
                 {
@@ -260,9 +247,6 @@ namespace Watchdog.Core.DAL.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
-                    b.Property<bool>("IsRecipient")
-                        .HasColumnType("bit");
-
                     b.Property<int>("TeamId")
                         .HasColumnType("int");
 
@@ -280,7 +264,6 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 1,
                             ApplicationId = 4,
                             IsFavorite = false,
-                            IsRecipient = false,
                             TeamId = 5
                         },
                         new
@@ -288,7 +271,6 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 2,
                             ApplicationId = 2,
                             IsFavorite = false,
-                            IsRecipient = false,
                             TeamId = 1
                         },
                         new
@@ -296,7 +278,6 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 3,
                             ApplicationId = 8,
                             IsFavorite = false,
-                            IsRecipient = false,
                             TeamId = 1
                         },
                         new
@@ -304,7 +285,6 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 4,
                             ApplicationId = 3,
                             IsFavorite = false,
-                            IsRecipient = false,
                             TeamId = 5
                         },
                         new
@@ -312,7 +292,6 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 5,
                             ApplicationId = 6,
                             IsFavorite = false,
-                            IsRecipient = false,
                             TeamId = 1
                         },
                         new
@@ -320,7 +299,6 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 6,
                             ApplicationId = 7,
                             IsFavorite = false,
-                            IsRecipient = false,
                             TeamId = 3
                         },
                         new
@@ -328,7 +306,6 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 7,
                             ApplicationId = 15,
                             IsFavorite = false,
-                            IsRecipient = false,
                             TeamId = 5
                         },
                         new
@@ -336,7 +313,6 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 8,
                             ApplicationId = 15,
                             IsFavorite = false,
-                            IsRecipient = false,
                             TeamId = 4
                         },
                         new
@@ -344,7 +320,6 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 9,
                             ApplicationId = 7,
                             IsFavorite = false,
-                            IsRecipient = false,
                             TeamId = 3
                         },
                         new
@@ -352,7 +327,6 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 10,
                             ApplicationId = 7,
                             IsFavorite = false,
-                            IsRecipient = false,
                             TeamId = 3
                         },
                         new
@@ -360,7 +334,6 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 11,
                             ApplicationId = 1,
                             IsFavorite = false,
-                            IsRecipient = false,
                             TeamId = 4
                         },
                         new
@@ -368,7 +341,6 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 12,
                             ApplicationId = 7,
                             IsFavorite = false,
-                            IsRecipient = false,
                             TeamId = 1
                         },
                         new
@@ -376,7 +348,6 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 13,
                             ApplicationId = 10,
                             IsFavorite = false,
-                            IsRecipient = false,
                             TeamId = 3
                         },
                         new
@@ -384,7 +355,6 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 14,
                             ApplicationId = 4,
                             IsFavorite = false,
-                            IsRecipient = false,
                             TeamId = 2
                         },
                         new
@@ -392,7 +362,6 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 15,
                             ApplicationId = 1,
                             IsFavorite = false,
-                            IsRecipient = false,
                             TeamId = 3
                         },
                         new
@@ -400,7 +369,6 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 16,
                             ApplicationId = 1,
                             IsFavorite = false,
-                            IsRecipient = false,
                             TeamId = 5
                         },
                         new
@@ -408,7 +376,6 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 17,
                             ApplicationId = 7,
                             IsFavorite = false,
-                            IsRecipient = false,
                             TeamId = 2
                         },
                         new
@@ -416,7 +383,6 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 18,
                             ApplicationId = 13,
                             IsFavorite = false,
-                            IsRecipient = false,
                             TeamId = 4
                         },
                         new
@@ -424,7 +390,6 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 19,
                             ApplicationId = 3,
                             IsFavorite = false,
-                            IsRecipient = false,
                             TeamId = 5
                         },
                         new
@@ -432,7 +397,6 @@ namespace Watchdog.Core.DAL.Migrations
                             Id = 20,
                             ApplicationId = 5,
                             IsFavorite = false,
-                            IsRecipient = false,
                             TeamId = 5
                         });
                 });
@@ -2371,21 +2335,6 @@ namespace Watchdog.Core.DAL.Migrations
                             RegisteredAt = new DateTime(2020, 8, 18, 4, 29, 1, 814, DateTimeKind.Unspecified).AddTicks(3646),
                             Uid = "b872268f35cc36d80a94dcd6577d"
                         });
-                });
-
-            modelBuilder.Entity("ApplicationUser", b =>
-                {
-                    b.HasOne("Watchdog.Core.DAL.Entities.Application", null)
-                        .WithMany()
-                        .HasForeignKey("AlertSubscriptionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Watchdog.Core.DAL.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("RecipientsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Watchdog.Core.DAL.Entities.Application", b =>

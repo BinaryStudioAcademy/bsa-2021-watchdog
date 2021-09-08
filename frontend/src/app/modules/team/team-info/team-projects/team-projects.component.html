@@ -1,18 +1,29 @@
 <p-panel class="panel-custom" styleClass="team-panel" header="Projects">
     <ng-template pTemplate="header">
-        <app-team-add-project class="header-button" (addedProject)="addProject($event)" [team]="team">
+        <app-team-add-project
+            class="header-button"
+            (addedProject)="addProject($event)"
+            [team]="team"
+            *ngIf="hasAccess()">
         </app-team-add-project>
     </ng-template>
     <div class="panel-list">
         <div class="panel-list-item" *ngFor="let projectTeam of projectTeams">
-            <div class="star" (click)="toggleStar(projectTeam.id)" *ngIf="projectTeam.isFavorite"><i
-                    class="pi pi-star"></i>
+            <div class="star" (click)="toggleStar(projectTeam.id)">
+                <i
+                    [class]="projectTeam.isFavorite ? 'pi pi-star' : 'pi pi-star-o'"
+                    [style.cursor]="hasAccess() ? 'pointer' : 'auto'" >
+                </i>
             </div>
-            <div class="star" (click)="toggleStar(projectTeam.id)" *ngIf="!projectTeam.isFavorite"><i
-                    class="pi pi-star-o"></i></div>
             <div>{{projectTeam.project?.name}}</div>
-            <button icon="pi pi-minus-circle" class="p-button-outlined p-button-danger" pButton label="Remove"
-                (click)="removeFromTeam(projectTeam.id)"></button>
+            <button
+                icon="pi pi-minus-circle"
+                class="p-button-outlined p-button-danger"
+                pButton
+                label="Remove"
+                (click)="removeFromTeam(projectTeam.id)"
+                *ngIf="hasAccess()">
+            </button>
         </div>
         <div class="panel-list-item placeholder-empty" *ngIf="!projectTeams?.length">No projects yet...</div>
     </div>

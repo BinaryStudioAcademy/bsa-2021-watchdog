@@ -1,3 +1,6 @@
+import { AuthenticationService } from '@core/services/authentication.service';
+import { hasAccess } from '@core/utils/access.utils';
+import { Member } from '@shared/models/member/member';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '@core/components/base/base.component';
@@ -29,37 +32,47 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
     selected: IssueStatus;
     isLoadingStatus: boolean = false;
     solutionItems: IssueSolutionItem[] = [];
+    member: Member;
+
+    hasAccess = () => hasAccess(this.member);
 
     constructor(
         private activatedRoute: ActivatedRoute,
         private spinnerService: SpinnerService,
         private issueService: IssueService,
         private toastNotification: ToastNotificationService,
-        private issueDropdownData: IssueDropdownDataService
+        private issueDropdownData: IssueDropdownDataService,
+        private authService: AuthenticationService
     ) {
         super();
         this.spinnerService.show(true);
     }
 
     ngOnInit() {
-        this.activatedRoute.paramMap.pipe(this.untilThis)
-            .subscribe(param => {
-                this.activeTabIndex = 0;
-                const eventId: string = param.get('eventId');
-                const issueId: number = +param.get('issueId');
-                if (eventId.match(regexs.issueEventIdGuid)) {
-                    if (this.issue?.id !== issueId) {
-                        this.getIssueWithMessageById(issueId, eventId);
-                    } else {
-                        this.getIssueMessage(issueId, eventId);
-                    }
-                } else {
-                    this.isNotFound = true;
-                    this.spinnerService.hide();
-                }
-                this.getSolutions(issueId);
-            });
         this.initIssueStatusDropdown();
+        this.authService.getMember().pipe(this.untilThis)
+            .subscribe(member => {
+                this.member = member;
+                this.activatedRoute.paramMap.pipe(this.untilThis)
+                    .subscribe(param => {
+                        this.activeTabIndex = 0;
+                        const eventId: string = param.get('eventId');
+                        const issueId: number = +param.get('issueId');
+                        if (eventId.match(regexs.issueEventIdGuid)) {
+                            if (this.issue?.id !== issueId) {
+                                this.getIssueWithMessageById(issueId, eventId);
+                            } else {
+                                this.getIssueMessage(issueId, eventId);
+                            }
+                        } else {
+                            this.isNotFound = true;
+                            this.spinnerService.hide();
+                        }
+                        this.getSolutions(issueId);
+                    });
+            }, error => {
+                this.toastNotification.error(error);
+            });
     }
 
     getIssueMessage(issueId: number, eventId: string) {
@@ -81,12 +94,17 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
         this.issueService.getIssueById(issueId)
             .pipe(this.untilThis)
             .subscribe(response => {
-                this.issue = response;
-                this.selected = response.status;
-                this.getIssueMessage(response.id, eventId);
-            }, errorResponse => {
+                if (response.project.organizationId !== this.member.organizationId) {
+                    this.isNotFound = true;
+                    this.spinnerService.hide();
+                } else {
+                    this.issue = response;
+                    this.selected = response.status;
+                    this.getIssueMessage(response.id, eventId);
+                }
+            }, () => {
                 this.isNotFound = true;
-                this.toastNotification.error(errorResponse);
+                this.spinnerService.hide();
             });
     }
 
