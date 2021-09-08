@@ -210,21 +210,20 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<ICollection<ApplicationDto>>(apps);
         }
 
-        public async Task<ICollection<ApplicationRecipientsDto>> GetRecipientTeams(int applicationId)
+        public async Task<bool> CheckProjectListeningAsync(string apiKey)
         {
-            var applicationTeams = await _context.ApplicationTeams
-                .Include(x => x.Team)
-                .Where(x => x.ApplicationId == applicationId)
-                .ToArrayAsync();
-
-            return _mapper.Map<ICollection<ApplicationRecipientsDto>>(applicationTeams);
+            var state = await _context.Applications.AnyAsync(a => a.ApiKey == apiKey);
+            return state;
         }
 
         public async Task<ICollection<CountryInfoDto>> GetCountriesInfoAsync(int appId)
         {
             var application = await _context.Applications.FirstOrDefaultAsync(app => app.Id == appId);
-            
+
+            var countResponse = await _elkClient.CountAsync<CountryInfo>();
+
             var searchResponse = _elkClient.Search<CountryInfo>(s => s
+                .Size((int)countResponse.Count)
                 .Query(q => q
                     .Match(m => m
                         .Field(f => f.ApiKey)
@@ -249,6 +248,16 @@ namespace Watchdog.Core.BLL.Services
                 .ToList();
 
             return result;
+        }
+
+        public async Task<ICollection<ApplicationRecipientsDto>> GetRecipientTeams(int applicationId)
+        {
+            var applicationTeams = await _context.ApplicationTeams
+                .Include(x => x.Team)
+                .Where(x => x.ApplicationId == applicationId)
+                .ToArrayAsync();
+
+            return _mapper.Map<ICollection<ApplicationRecipientsDto>>(applicationTeams);
         }
     }
 }

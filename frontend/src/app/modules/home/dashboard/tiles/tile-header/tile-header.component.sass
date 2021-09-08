@@ -16,6 +16,8 @@
         display: flex
         align-items: center
 
+        .button-replace button
+            cursor: move
 
         span
             font-weight: 500
@@ -42,6 +44,12 @@
                 @extend %title-button-special
 
         .button-delete
+            margin-right: 8px
+
+            button
+                @extend %title-button-special
+
+        .button-export
             margin-right: 8px
 
             button

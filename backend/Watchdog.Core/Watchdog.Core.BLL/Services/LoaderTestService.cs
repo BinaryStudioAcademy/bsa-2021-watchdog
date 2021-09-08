@@ -7,16 +7,21 @@ using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.LoaderTest;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
+using Watchdog.Models.Shared.Loader;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Watchdog.Core.BLL.Services
 {
     public class LoaderTestService : BaseService, ILoaderTestService
     {
-        public LoaderTestService(WatchdogCoreContext context, IMapper mapper) : base(context, mapper)
+        private readonly INotifyLoaderQueueProducerService _notifyLoader;
+
+        public LoaderTestService(WatchdogCoreContext context, IMapper mapper, INotifyLoaderQueueProducerService notifyLoader) : base(context, mapper)
         {
+            _notifyLoader = notifyLoader;
         }
 
-        public async Task<LoaderTestDto> AddNewLoaderTestAsync(NewLoaderTestDto dto)
+        public async Task<LoaderTestDto> AddNewLoaderTestAsync(NewLoaderTestDto dto, bool start)
         {
             if (dto.ApplicationId.HasValue && await _context.Applications.AllAsync(a => a.Id != dto.ApplicationId))
             {
@@ -29,6 +34,10 @@ namespace Watchdog.Core.BLL.Services
             var test = _mapper.Map<LoaderTest>(dto);
             await _context.LoaderTests.AddAsync(test);
             await _context.SaveChangesAsync();
+            if (start)
+            {
+                SendToLoader(test);
+            }
             return _mapper.Map<LoaderTestDto>(test);
         }
 
@@ -57,7 +66,7 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<ICollection<LoaderTestDto>>(tests);
         }
 
-        public async Task<LoaderTestDto> UpdateLoaderTestAsync(UpdateLoaderTestDto dto)
+        public async Task<LoaderTestDto> UpdateLoaderTestAsync(UpdateLoaderTestDto dto, bool start)
         {
             var test = await _context.LoaderTests
                 .Include(t => t.Requests)
@@ -84,7 +93,24 @@ namespace Watchdog.Core.BLL.Services
                 }
             }
             await _context.SaveChangesAsync();
+            if (start)
+            {
+                SendToLoader(test);
+            }
             return _mapper.Map<LoaderTestDto>(test);
+        }
+        public async Task StartTestAsync(int testId)
+        {
+            var test = await _context.LoaderTests
+                .Include(t => t.Requests)
+                .FirstOrDefaultAsync(t => t.Id == testId)
+                    ?? throw new KeyNotFoundException("No test with this id!");
+            SendToLoader(test);
+        }
+        
+        private void SendToLoader(LoaderTest test)
+        {
+            _notifyLoader.SendMessage(_mapper.Map<LoaderMessage>(test));
         }
     }
 }

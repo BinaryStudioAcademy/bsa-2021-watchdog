@@ -1,0 +1,16 @@
+<div class="container">
+    <span>Install the <strong>NuGet</strong> package:</span>
+    <span>Package Manager:</span>
+    <app-code [code]="packageManagerInstallationCommand" [languages]="['powershell']"></app-code>
+
+    <span>Or .NET CLI:</span>
+    <app-code [code]="dotnetCliInstallationCommand" [languages]=""></app-code>
+
+    <span>Instantiate the client and hook up the unhandled exception delegate:</span>
+    <app-code [code]="sample" [languages]="['csharp']"></app-code>
+
+    <span>Now Watchdog can track all unhandled exceptions
+        that occur when the client application is running.</span>
+    <span>Also you can track exceptions in any try-catch statements:</span>
+    <app-code [code]="tryCatchSample" [languages]="['csharp']"></app-code>
+</div>

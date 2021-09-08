@@ -31,19 +31,17 @@ namespace Watchdog.Core.API.Controllers
         }
 
         [HttpGet("info/{memberId:int}")]
-        public async Task<ActionResult<ICollection<IssueInfoDto>>> GetIssuesInfoAsync(int memberId,
-            [FromQuery] IssueStatus? status)
+        public async Task<ActionResult<ICollection<IssueInfoDto>>> GetIssuesInfoAsync(int memberId, [FromQuery] IssueStatus? status, [FromQuery] int? projectId)
         {
-            var issuesInfo = await _issueService.GetIssuesInfoAsync(memberId, status);
+            var issuesInfo = await _issueService.GetIssuesInfoAsync(memberId, status, projectId);
             return Ok(issuesInfo);
         }
 
         [HttpPost("info/{memberId:int}")]
-        public async Task<ActionResult> GetIssuesInfoLazyAsync(int memberId, [FromBody] FilterModel filterModel,
-            [FromQuery] IssueStatus? status)
+        public async Task<ActionResult> GetIssuesInfoLazyAsync(int memberId, [FromBody] FilterModel filterModel, [FromQuery] IssueStatus? status, [FromQuery] int? projectId)
         {
-            var (issues, totalRecord) = await _issueService.GetIssuesInfoLazyAsync(memberId, filterModel, status);
-            return Ok(new { Collection = issues, TotalRecords = totalRecord});
+            var (issues, totalRecord) = await _issueService.GetIssuesInfoLazyAsync(memberId, filterModel, status, projectId);
+            return Ok(new { Collection = issues, TotalRecords = totalRecord });
         }
 
         [HttpPut]

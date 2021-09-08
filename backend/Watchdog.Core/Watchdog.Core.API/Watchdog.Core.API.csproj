@@ -1,10 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <UserSecretsId>2c57a00d-6b94-45e3-b59f-22d77539c3f8</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<UserSecretsId>2c57a00d-6b94-45e3-b59f-22d77539c3f8</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	</PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
@@ -31,12 +31,12 @@
     <PackageReference Include="Watchdog.AspNetCore" Version="1.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="wwwroot\" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Watchdog.Core.BLL\Watchdog.Core.BLL.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Watchdog.Core.BLL\Watchdog.Core.BLL.csproj" />
+	</ItemGroup>
 
 </Project>

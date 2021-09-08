@@ -8,16 +8,16 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
 import { IssueMessage } from '@shared/models/issue/issue-message';
 import { regexs } from '@shared/constants/regexs';
 import { Issue } from '@shared/models/issue/issue';
-import { IssueDetailsData } from '@modules/home/issues/issue-details/data/issue-details-data';
-import { IssueStatusDropdown } from '@modules/home/issues/issue-details/data/models/issue-status-dropdown';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import { IssueSolutionItem } from '@shared/models/issue/issue-solution/issue-solution-item';
+import { IssueStatusDropdown } from '@shared/modules/issues/data/models/issue-status.dropdown';
+import { IssueDropdownDataService } from '@shared/modules/issues/data/issue-dropdown-data.service';
 
 @Component({
     selector: 'app-issue-details-page',
     templateUrl: './issue-details-page.component.html',
     styleUrls: ['./issue-details-page.component.sass'],
-    providers: [IssueDetailsData]
+    providers: [IssueDropdownDataService]
 })
 export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
     issueMessage: IssueMessage;
@@ -35,7 +35,7 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
         private spinnerService: SpinnerService,
         private issueService: IssueService,
         private toastNotification: ToastNotificationService,
-        private issueDetailsData: IssueDetailsData
+        private issueDropdownData: IssueDropdownDataService
     ) {
         super();
         this.spinnerService.show(true);
@@ -105,7 +105,7 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
     }
 
     initIssueStatusDropdown() {
-        this.issueStatusDropdownItems = this.issueDetailsData.issueStatusDropdownItems;
+        this.issueStatusDropdownItems = this.issueDropdownData.getIssueStatusDropdownItems();
     }
 
     onSelectedIssueStatus() {
