@@ -6,5 +6,6 @@ import { Component, Input } from '@angular/core';
     styleUrls: ['./landing-content-item.component.sass']
 })
 export class LandingContentItemComponent {
-    @Input() public item: { title: string, text: string };
+    @Input() item: { title: string, text: string, img: string };
+    @Input() index: number;
 }

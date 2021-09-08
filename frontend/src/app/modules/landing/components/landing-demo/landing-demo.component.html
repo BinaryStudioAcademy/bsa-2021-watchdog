@@ -1,15 +1,19 @@
 <div class="demo-continer">
     <div class="info">
         <span class="title">Test.<br>Succeed.<br>Iterate.</span>
-        <span class="sub-title">Load-Test-As-Code: the best way to load test your applications, designed for DevOps and CI/CD</span>
-        <button pButton pRipple type="button" label="Try it"  [routerLink]="['/signup']" class="p-button-outlined start-button"></button>
+        <span class="sub-title">It is an application monitoring platform that
+            helps development teams to detect, diagnose, and resolve issues quickly before they affect
+            end users.</span>
+        <button
+            pButton
+            pRipple
+            type="button"
+            label="Try Watchdog for FREE"
+            routerLink="/signup"
+            class="p-button-primary start-button">
+        </button>
     </div>
-    <div class="video">
-        <youtube-player 
-            [videoId]="videoId" 
-            suggestedQuality="highres" 
-            [height]="337" 
-            [width]="600" >
-        </youtube-player>
+    <div class="monitor">
+        <img src="assets/monitor.png" alt="monitor">
     </div>
 </div>

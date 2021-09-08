@@ -1,3 +1,4 @@
+import { LandingEnterpriseComponent } from './components/landing-enterprise/landing-enterprise.component';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
 
@@ -19,7 +20,8 @@ import { LandingHeaderComponent } from './components/landing-header/landing-head
         LandingContentItemComponent,
         LandingPlatformsComponent,
         LandingFooterComponent,
-        LandingHeaderComponent
+        LandingHeaderComponent,
+        LandingEnterpriseComponent
     ],
     imports: [
         SharedModule, LandingRoutingModule, YouTubePlayerModule

@@ -1,14 +1,36 @@
 @import src/styles/mixins
 @import src/styles/variables
 @import ../../common-styles/mixins
+
 .item-block
+    display: flex
+    align-items: center
+
+.image
+    @include disable-select
+    width: 60%
+
+.description
+    width: 40%
     display: grid
     grid-auto-flow: row
     padding: $half-indent
-    @include background-gray
     height: 100%
 
 .title
     font-size: 1.3rem
     font-weight: bold
     padding-bottom: $half-indent
+
+.text
+    color: rgba(27, 33, 44, 0.4)
+
+@media screen and ( max-width: 500px )
+    .item-block
+        flex-flow: column-reverse !important
+
+    .image
+        width: 100%
+
+    .description
+        width: 100%

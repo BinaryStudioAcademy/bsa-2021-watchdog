@@ -1,9 +1,9 @@
 <div class="content-container">
     <div class="title-block">
         <span>{{data.title}}</span>
-        <img src="https://assets-global.website-files.com/5e2701b416b6d176f5007781/5f7f8462eebaf44c245edc7c_laser-blue_large-left-1.svg" alt="line">    
+        <img src="assets/balls.png" alt="line">
     </div>
     <div class="content-block">
-        <app-landing-content-item *ngFor="let item of data.content" [item]="item"></app-landing-content-item>
+        <app-landing-content-item *ngFor="let item of data.content; let i = index" [item]="item" [index]="i"></app-landing-content-item>
     </div>
 </div>
