@@ -6,6 +6,7 @@ import { ChartType } from '@shared/models/charts/chart-type';
 import { AreaChartComponent } from '@swimlane/ngx-charts';
 import { BaseComponent } from '@core/components/base/base.component';
 import { TileType } from '@shared/models/tile/enums/tile-type';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-charts[chartType]',
@@ -18,6 +19,7 @@ export class ChartsComponent extends BaseComponent implements OnInit, AfterViewI
     @Input() chartType: ChartType;
     @Input() chartOptions: ChartOptions;
     @Input() tileType: TileType;
+    @Input() resize: Observable<void>;
     @ViewChild('chart') chart: AreaChartComponent;
     options: ChartOptions;
     ChartType = ChartType;
@@ -33,6 +35,13 @@ export class ChartsComponent extends BaseComponent implements OnInit, AfterViewI
 
     ngOnInit() {
         this.options = this.setOptions(this.chartOptions);
+        this.resize?.pipe(this.untilThis)
+            .subscribe(() => {
+                this.zone.run(() => {
+                    // update chart size on parent resize
+                    this.chart.update();
+                });
+            });
     }
 
     ngAfterViewInit() {

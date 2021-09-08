@@ -1,12 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Tile } from '@shared/models/tile/tile';
+import { Component, OnInit } from '@angular/core';
 import { Project } from '@shared/models/projects/project';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
 import { IssueService } from '@core/services/issue.service';
 
 import { TileType } from '@shared/models/tile/enums/tile-type';
-import { BaseComponent } from '@core/components/base/base.component';
 import { IssueMessageInfo } from '@shared/models/issue/issue-message-info';
 import { MultiChart } from '@shared/models/charts/multi-chart';
 import { ChartOptions } from '@shared/models/charts/chart-options';
@@ -23,18 +21,13 @@ import { HeatMapSettings } from '@shared/models/tile/settings/heat-map.settings'
 import { ChartType } from '@shared/models/charts/chart-type';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import { TileService } from '@core/services/tile.service';
+import { BaseTileComponent } from '../base-tile/base-tile.component';
 
 @Component({
-    selector: 'app-heat-map[tile][isShownEditTileMenu][userProjects]',
-    templateUrl: './heat-map.component.html',
-    styleUrls: ['./heat-map.component.sass']
+    selector: 'app-heat-map[tile][userProjects]',
+    templateUrl: './heat-map.component.html'
 })
-export class HeatMapComponent extends BaseComponent implements OnInit {
-    @Input() tile: Tile;
-    @Input() isShownEditTileMenu: boolean = false;
-    @Input() userProjects: Project[] = [];
-    @Output() isDeleting: EventEmitter<Tile> = new EventEmitter<Tile>();
-    @Output() dragTile: EventEmitter<boolean> = new EventEmitter<boolean>();
+export class HeatMapComponent extends BaseTileComponent implements OnInit {
     tileSettings: HeatMapSettings;
     requiredProjects: Project[] = [];
     multi: MultiChart[] = [];
@@ -58,6 +51,7 @@ export class HeatMapComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
+        super.ngOnInit();
         this.initChartSettings();
         this.applySettings();
     }
@@ -67,14 +61,11 @@ export class HeatMapComponent extends BaseComponent implements OnInit {
             () => this.applySettings());
     }
 
-    setTileDragStatus(status: boolean) {
-        this.dragTile.emit(status);
-    }
-
     private applySettings() {
         this.multi = [];
         this.getTileSettings();
         this.applyProjectSettings();
+        this.changeTile.emit();
     }
 
     private getTileSettings() {
@@ -102,7 +93,7 @@ export class HeatMapComponent extends BaseComponent implements OnInit {
     private getMultiChartSeries(
         dateNow: Date | number, dateRangeMsOffset: number, granularityType: TileGranularityType, eventsInfo: IssueMessageInfo[]
     ) {
-        const issuesPerTime: { [time: number]: number } = { };
+        const issuesPerTime: { [time: number]: number } = {};
         const dateMsNow = convertDateToTileGranularityTimeStamp(granularityType, dateNow);
         const dateMsPast = convertDateToTileGranularityTimeStamp(granularityType, dateMsNow - dateRangeMsOffset);
         const granularityOffset = convertTileGranularityTypeToMs(granularityType);

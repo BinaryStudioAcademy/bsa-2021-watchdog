@@ -26,6 +26,8 @@ import { HeatMapComponent } from './dashboard/tiles/heat-map/heat-map.component'
 import { MostCommonCountriesTileComponent } from './dashboard/tiles/most-common-countries-tile/most-common-countries-tile.component';
 import { AddEditMostCommonCountriesTileComponent }
     from './modals/tiles/most-common-countries/add-edit-common-countries-tile/add-edit-common-countries-tile.component';
+import { CommonTileComponent } from './dashboard/tiles/common-tile/common-tile.component';
+import { CommomEditTileComponent } from './modals/tiles/commom-edit-tile/commom-edit-tile.component';
 
 @NgModule({
     declarations: [
@@ -44,8 +46,9 @@ import { AddEditMostCommonCountriesTileComponent }
         AddEditHeatMapTileComponent,
         HeatMapComponent,
         MostCommonCountriesTileComponent,
-        AddEditMostCommonCountriesTileComponent
-
+        AddEditMostCommonCountriesTileComponent,
+        CommonTileComponent,
+        CommomEditTileComponent,
     ],
     imports: [
         SharedModule,
