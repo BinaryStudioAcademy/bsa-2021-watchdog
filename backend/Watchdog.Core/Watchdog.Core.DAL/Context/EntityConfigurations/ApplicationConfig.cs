@@ -38,7 +38,7 @@ namespace Watchdog.Core.DAL.Context.EntityConfigurations
                      );
 
             builder.HasMany(a => a.Recipients)
-                   .WithMany("AlertSubscriptions");
+                   .WithMany(u => u.AlertSubscriptions);
         }
     }
 }

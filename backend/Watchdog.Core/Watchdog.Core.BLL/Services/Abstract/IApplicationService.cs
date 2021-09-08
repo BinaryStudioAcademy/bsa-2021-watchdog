@@ -22,5 +22,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<bool> IsApiKeyUniqueAsync(string apiKey);
         Task<ICollection<ApplicationDto>> GetAppsByMemberIdAsync(int memberId);
         Task<ICollection<CountryInfoDto>> GetCountriesInfoAsync(int appId);
+        Task<ICollection<ApplicationRecipientsDto>> GetRecipientTeams(int applicationId);
     }
 }

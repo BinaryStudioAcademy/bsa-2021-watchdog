@@ -6,6 +6,13 @@ namespace Watchdog.Core.DAL.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<bool>(
+                name: "IsRecipient",
+                table: "ApplicationTeams",
+                type: "bit",
+                nullable: false,
+                defaultValue: false);
+
             migrationBuilder.CreateTable(
                 name: "ApplicationUser",
                 columns: table => new
@@ -40,6 +47,10 @@ namespace Watchdog.Core.DAL.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ApplicationUser");
+
+            migrationBuilder.DropColumn(
+                name: "IsRecipient",
+                table: "ApplicationTeams");
         }
     }
 }
