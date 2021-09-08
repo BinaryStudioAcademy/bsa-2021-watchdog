@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { TileCategory } from '@shared/models/tile/enums/tile-category';
 import { TileType } from '@shared/models/tile/enums/tile-type';
-import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
+import { TopActiveTileSettings } from '@shared/models/tile/settings/top-active-tile-settings';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { convertJsonToTileSettings } from '@core/utils/tile.utils';
@@ -42,13 +42,13 @@ export class AddEditTopActiveIssuesTileComponent extends CommomEditTileComponent
     editTileInit() {
         super.editTileInit();
 
-        const tileSettings = convertJsonToTileSettings(this.tileToEdit.settings, TileType.TopActiveIssues) as TopActiveIssuesSettings;
+        const tileSettings = convertJsonToTileSettings(this.tileToEdit.settings, TileType.TopActiveIssues) as TopActiveTileSettings;
         this.formGroup.addControl('dateRange', new FormControl(
             tileSettings.dateRange,
             [Validators.required]
         ));
-        this.formGroup.addControl('issuesCount', new FormControl(
-            tileSettings.issuesCount,
+        this.formGroup.addControl('itemsCount', new FormControl(
+            tileSettings.itemsCount,
             [
                 Validators.required,
                 Validators.min(1),
@@ -64,7 +64,7 @@ export class AddEditTopActiveIssuesTileComponent extends CommomEditTileComponent
             TileDateRangeType.ThePastDay,
             [Validators.required]
         ));
-        this.formGroup.addControl('issuesCount', new FormControl(
+        this.formGroup.addControl('itemsCount', new FormControl(
             5,
             [
                 Validators.required,

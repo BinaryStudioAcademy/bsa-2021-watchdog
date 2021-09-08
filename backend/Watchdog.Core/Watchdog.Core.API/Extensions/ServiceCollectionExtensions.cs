@@ -41,6 +41,7 @@ namespace Watchdog.Core.API.Extensions
             services.AddTransient<ITileService, TileService>();
             services.AddTransient<IRegistrationService, RegistrationService>();
             services.AddTransient<ILoaderTestService, LoaderTestService>();
+            services.AddTransient<IAnalyticsService, AnalyticsService>();
             services.AddElasticSearch(configuration);
             services.AddRabbitMQ(configuration);
             
@@ -51,6 +52,8 @@ namespace Watchdog.Core.API.Extensions
             var connectionString = configuration["ElasticConfiguration:Uri"];
 
             var settings = new ConnectionSettings(new Uri(connectionString))
+                .DefaultMappingFor<ResponseInfo>(m =>
+                    m.IndexName(configuration["ElasticConfiguration:ResponsesIndex"]))
                 .DefaultMappingFor<CountryInfo>(m => 
                         m.IndexName(configuration["ElasticConfiguration:CountriesInfoIndex"]))
                 .DefaultMappingFor<IssueMessage>(m =>

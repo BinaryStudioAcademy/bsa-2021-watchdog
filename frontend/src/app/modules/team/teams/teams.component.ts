@@ -1,3 +1,4 @@
+import { hasAccess } from '@core/utils/access.utils';
 import { switchMap } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Team } from '@shared/models/teams/team';
@@ -25,6 +26,8 @@ export class TeamsComponent extends BaseComponent implements OnInit, OnDestroy {
     createTeamDialog: DynamicDialogRef;
     user: User;
     member: Member;
+
+    hasAccess = () => hasAccess(this.member);
 
     constructor(
         private teamService: TeamService,

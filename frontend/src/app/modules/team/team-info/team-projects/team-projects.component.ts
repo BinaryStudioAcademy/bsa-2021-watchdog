@@ -1,3 +1,4 @@
+import { hasAccess } from '@core/utils/access.utils';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { BaseComponent } from '@core/components/base/base.component';
 import { Component, Input, OnInit } from '@angular/core';
@@ -6,6 +7,7 @@ import { Project } from '@shared/models/projects/project';
 import { Team } from '@shared/models/teams/team';
 import { ProjectTeam } from '@shared/models/projects/project-team';
 import { SpinnerService } from '@core/services/spinner.service';
+import { Member } from '@shared/models/member/member';
 
 @Component({
     selector: 'app-team-projects',
@@ -14,6 +16,7 @@ import { SpinnerService } from '@core/services/spinner.service';
 })
 export class TeamProjectsComponent extends BaseComponent implements OnInit {
     @Input() team: Team;
+    @Input() member: Member;
     projectTeams: ProjectTeam[];
     constructor(
         private projectService: ProjectService,
@@ -22,6 +25,8 @@ export class TeamProjectsComponent extends BaseComponent implements OnInit {
     ) {
         super();
     }
+
+    hasAccess = () => hasAccess(this.member);
 
     ngOnInit() {
         this.spinnerService.show(true);
@@ -68,17 +73,17 @@ export class TeamProjectsComponent extends BaseComponent implements OnInit {
     }
 
     toggleStar(projectTeamId: number) {
-        const projectTeam = this.projectTeams.find(project => project.id === projectTeamId);
-        this.spinnerService.show(true);
-        this.projectService.setProjectForTeamAsFavorite(projectTeamId, !projectTeam.isFavorite)
-            .pipe(this.untilThis)
-            .subscribe(state => {
-                projectTeam.isFavorite = state;
-                this.spinnerService.hide();
-            }, error => {
-                this.spinnerService.hide();
-                this.toastService.error(error);
-            });
+        if (this.hasAccess()) {
+            const projectTeam = this.projectTeams.find(project => project.id === projectTeamId);
+            projectTeam.isFavorite = !projectTeam.isFavorite;
+            this.projectService.setProjectForTeamAsFavorite(projectTeamId, projectTeam.isFavorite)
+                .pipe(this.untilThis)
+                .subscribe(() => { },
+                    error => {
+                        projectTeam.isFavorite = !projectTeam.isFavorite;
+                        this.toastService.error(error);
+                    });
+        }
     }
 
     sortProjectTeams: (pt1: ProjectTeam, pt2: ProjectTeam) => number = (pt1, pt2) => {

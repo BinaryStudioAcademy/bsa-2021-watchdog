@@ -3,7 +3,7 @@
     <span *ngIf="!notFound && !loading">{{project?.name}}</span>
     <span *ngIf="notFound || loading">Project</span>
     <div class="header-buttons" *ngIf="!notFound && !loading">
-        <div class="buttons-container">
+        <div class="buttons-container" *ngIf="hasAccess()">
             <button #saveBut pButton pRipple class="p-button-primary p-button-outlined" label="Save" (click)="updateProjectFunction()"></button>
             <button pButton pRipple class="p-button-danger p-button-outlined" label="Remove" (click)="deleteProjectModal()"></button>
         </div>
@@ -27,7 +27,7 @@
         </ng-template>
         <app-issues *ngIf="project" [project]="project"></app-issues>
     </p-tabPanel>
-    <p-tabPanel>
+    <p-tabPanel *ngIf="hasAccess()">
         <ng-template pTemplate="header">
             <div class="header">
                 <span>General settings</span>
@@ -35,7 +35,7 @@
         </ng-template>
         <app-project-general *ngIf="project" [editForm]="editForm" [project]="project"></app-project-general>
     </p-tabPanel>
-    <p-tabPanel>
+    <p-tabPanel *ngIf="hasAccess()">
         <ng-template pTemplate="header">
             <div class="header">
                 <span>Alert</span>

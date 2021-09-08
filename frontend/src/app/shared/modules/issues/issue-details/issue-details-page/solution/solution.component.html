@@ -1,0 +1,13 @@
+<div class="container">
+    <div class="solution-container">
+        <h1 class="title">Question</h1>
+        <div class="outlined" [innerHTML]="solutionItem.body"></div>
+    </div>
+    <div class="answer-container">
+        <h1 class="title">Answer</h1>
+        <div class="answer-item outlined" *ngFor="let answer of solutionItem.answers; index as i">
+            <h2 class="info"><span>Score </span><span class="score" [innerHTML]="answer.score"></span></h2>
+            <div [innerHTML]="answer.body"></div>
+        </div>
+    </div>
+</div>

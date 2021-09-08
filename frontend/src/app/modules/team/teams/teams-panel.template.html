@@ -16,8 +16,15 @@
                 </a>
             </div>
             <div>
-                <button pButton pRipple type="button" [label]="buttonLabel" [class]="buttonClass"
-                    icon="{{icon}}" (click)="sendTeam(team.id)">
+                <button
+                    pButton
+                    pRipple
+                    type="button"
+                    [label]="buttonLabel"
+                    [class]="buttonClass"
+                    icon="{{icon}}"
+                    (click)="sendTeam(team.id)"
+                    *ngIf="hasAccess()">
                 </button>
             </div>
         </div>
