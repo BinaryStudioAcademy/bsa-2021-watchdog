@@ -7,7 +7,7 @@
         [tile]="tile"
         (isExporting)="exportTile($event)">
     </app-tile-header>
-    
+
     <ng-container [ngSwitch]="tile.type">
         <app-top-active-issues-tile
             #tiles
@@ -17,7 +17,7 @@
             [userProjects]="userProjects"
             (changeTile)="changeTileFunc()">
         </app-top-active-issues-tile>
-        <app-issues-per-time-tile 
+        <app-issues-per-time-tile
             #tiles
             *ngSwitchCase="tileTypes.IssuesPerTime"
             [tile]="tile"
@@ -34,7 +34,7 @@
             [userProjects]="userProjects"
             [resize]="resize"
             (changeTile)="changeTileFunc()">
-        </app-issues-count-tile> 
+        </app-issues-count-tile>
         <app-heat-map
             #tiles
             *ngSwitchCase="tileTypes.HeatMap"
@@ -44,6 +44,15 @@
             [resize]="resize"
             (changeTile)="changeTileFunc()">
         </app-heat-map>
+        <app-top-responses-time-tile
+            #tiles
+            *ngSwitchCase="tileTypes.TopResponsesTime"
+            [tile]="tile"
+            [events] = "edit.asObservable()"
+            [userProjects]="userProjects"
+            [resize]="resize"
+            (changeTile)="changeTileFunc()">
+        </app-top-responses-time-tile>
         <app-most-common-countries-tile
             #tiles
             *ngSwitchCase="tileTypes.MostCommonCountries"

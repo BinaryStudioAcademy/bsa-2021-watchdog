@@ -26,7 +26,7 @@
     "@microsoft/signalr": "^5.0.8",
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
     "@swimlane/ngx-charts": "^18.0.1",
-    "@watchdog-bsa/watchdog-js": "^0.4.12",
+    "@watchdog-bsa/watchdog-js": "^0.4.15",
     "angular-google-charts": "^2.2.2",
     "blob": "^0.1.0",
     "blueimp-canvas-to-blob": "^3.28.0",

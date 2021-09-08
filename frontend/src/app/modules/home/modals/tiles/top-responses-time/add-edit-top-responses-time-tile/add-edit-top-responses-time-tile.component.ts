@@ -1,24 +1,24 @@
 import { Component, OnInit } from '@angular/core';
+import { TilesModalData } from '@modules/home/modals/tiles/data/tiles-modal-data';
 import { FormControl, Validators } from '@angular/forms';
-import { TileCategory } from '@shared/models/tile/enums/tile-category';
-import { TileType } from '@shared/models/tile/enums/tile-type';
-import { TopActiveTileSettings } from '@shared/models/tile/settings/top-active-tile-settings';
+import { DateRangeDropdown } from '@modules/home/modals/tiles/models/date-range-dropdown';
+import { TileSizeDropdown } from '@shared/models/tile/tile-size-dropdown';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { convertJsonToTileSettings } from '@core/utils/tile.utils';
-import { TilesModalData } from '@modules/home/modals/tiles/data/tiles-modal-data';
-import { DateRangeDropdown } from '@modules/home/modals/tiles/models/date-range-dropdown';
+import { TileType } from '@shared/models/tile/enums/tile-type';
 import { TileDateRangeType } from '@shared/models/tile/enums/tile-date-range-type';
-import { TileSizeDropdown } from '@shared/models/tile/tile-size-dropdown';
-import { CommomEditTileComponent } from '../../commom-edit-tile/commom-edit-tile.component';
+import { TileCategory } from '@shared/models/tile/enums/tile-category';
+import { TopActiveTileSettings } from '@shared/models/tile/settings/top-active-tile-settings';
+import { CommomEditTileComponent } from '@modules/home/modals/tiles/commom-edit-tile/commom-edit-tile.component';
 
 @Component({
-    selector: 'app-add-edit-top-active-issues-tile',
-    templateUrl: './add-edit-top-active-issues-tile.component.html',
+    selector: 'app-add-edit-top-response-time-tile',
+    templateUrl: './add-edit-top-responses-time-tile.component.html',
     styleUrls: ['../../add-edit-modal-styles.sass'],
     providers: [TilesModalData]
 })
-export class AddEditTopActiveIssuesTileComponent extends CommomEditTileComponent implements OnInit {
+export class AddEditTopResponsesTimeComponent extends CommomEditTileComponent implements OnInit {
     dateRangeDropdown: DateRangeDropdown[];
     tileSizeDropdown: TileSizeDropdown[];
 
@@ -33,16 +33,17 @@ export class AddEditTopActiveIssuesTileComponent extends CommomEditTileComponent
             dialogConfig,
             authenticationService);
     }
+
     ngOnInit() {
         this.initDateRangeDropdown();
-        this.setTypeAndCategory(TileType.TopActiveIssues, TileCategory.List);
+        this.setTypeAndCategory(TileType.TopResponsesTime, TileCategory.List);
         super.ngOnInit();
     }
 
     editTileInit() {
         super.editTileInit();
 
-        const tileSettings = convertJsonToTileSettings(this.tileToEdit.settings, TileType.TopActiveIssues) as TopActiveTileSettings;
+        const tileSettings = convertJsonToTileSettings(this.tileToEdit.settings, TileType.TopResponsesTime) as TopActiveTileSettings;
         this.formGroup.addControl('dateRange', new FormControl(
             tileSettings.dateRange,
             [Validators.required]
@@ -59,7 +60,7 @@ export class AddEditTopActiveIssuesTileComponent extends CommomEditTileComponent
 
     addTileInit() {
         super.addTileInit();
-        this.formGroup.controls.name.setValue('Top active issues tile');
+        this.formGroup.controls.name.setValue('Top responses time tile');
         this.formGroup.addControl('dateRange', new FormControl(
             TileDateRangeType.ThePastDay,
             [Validators.required]

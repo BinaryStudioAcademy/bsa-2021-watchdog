@@ -1,23 +1,23 @@
 <div class="menu">
     <!--    Left Buttons    -->
     <div class="left-buttons">
-        <button 
+        <button
             pButton
-            (click)="clearDashboardTiles()" 
-            class="p-button-danger p-button-outlined" 
-            label="Clear" 
-            pRipple pTooltip="Clear dashboard" 
-            tooltipPosition="bottom" 
+            (click)="clearDashboardTiles()"
+            class="p-button-danger p-button-outlined"
+            label="Clear"
+            pRipple pTooltip="Clear dashboard"
+            tooltipPosition="bottom"
             tooltipStyleClass="tooltip-text">
         </button>
-        <button 
+        <button
             pButton
             [disabled]="!orderChanged"
-            (click)="saveOrder()" 
-            class="p-button-primary p-button-outlined" 
-            label="Save Order" 
-            pRipple pTooltip="Save Order" 
-            tooltipPosition="bottom" 
+            (click)="saveOrder()"
+            class="p-button-primary p-button-outlined"
+            label="Save Order"
+            pRipple pTooltip="Save Order"
+            tooltipPosition="bottom"
             tooltipStyleClass="tooltip-text">
         </button>
     </div>
@@ -25,69 +25,79 @@
     <div class="center-buttons">
         <!--    Text Button    -->
         <button
-            pButton 
+            pButton
             (click)="createHeatMap()"
-            class="dropdown-button p-button-outlined" 
-            icon="pi pi-heart"  
+            class="dropdown-button p-button-outlined"
+            icon="pi pi-heart"
             pTooltip="HeatMap"
-            tooltipPosition="bottom" 
-            tooltipStyleClass="tooltip-text" 
+            tooltipPosition="bottom"
+            tooltipStyleClass="tooltip-text"
             type="button">
         </button>
         <!--    List Button    -->
-        <button 
+        <button
             pButton
             (click)="createActiveIssues()"
-            class="dropdown-button p-button-outlined" 
-            icon="pi pi-list" 
-            pTooltip="Active Issues" 
-            tooltipPosition="bottom" 
-            tooltipStyleClass="tooltip-text" 
+            class="dropdown-button p-button-outlined"
+            icon="pi pi-list"
+            pTooltip="Active Issues"
+            tooltipPosition="bottom"
+            tooltipStyleClass="tooltip-text"
             type="button">
         </button>
         <!--    Number Button    -->
         <div class="number-button">
             <button
                 pButton
-                (click)="createIssueCount()" 
-                class="p-button-outlined" 
+                (click)="createIssueCount()"
+                class="p-button-outlined"
                 icon="pi pi-th-large"
-                pTooltip="Issue count" 
-                tooltipPosition="bottom" 
+                pTooltip="Issue count"
+                tooltipPosition="bottom"
                 tooltipStyleClass="tooltip-text"
                 type="button"></button>
         </div>
         <!--    Chart Button    -->
-        <button 
+        <button
             pButton
             (click)="createIssuePerTime()"
             class="dropdown-button p-button-outlined"
-            icon="pi pi-chart-bar" 
-            pTooltip="Issues per time" 
+            icon="pi pi-chart-bar"
+            pTooltip="Issues per time"
             tooltipPosition="bottom"
-            tooltipStyleClass="tooltip-text" 
+            tooltipStyleClass="tooltip-text"
             type="button"></button>
         <!--    Flag Button    -->
-        <button 
+        <button
             pButton
             (click)="createMostCommonCountries()"
             class="dropdown-button p-button-outlined"
-            icon="pi pi-flag" 
-            pTooltip="Most common countries" 
+            icon="pi pi-flag"
+            pTooltip="Most common countries"
             tooltipPosition="bottom"
-            tooltipStyleClass="tooltip-text" 
+            tooltipStyleClass="tooltip-text"
+            type="button"></button>
+        <!--    Numeric-Up Button    -->
+        <button
+            pButton
+            (click)="createTopResponsesTime()"
+            class="dropdown-button p-button-outlined"
+            icon="pi pi-sort-numeric-up"
+            pTooltip="Top responses time"
+            tooltipPosition="bottom"
+            tooltipStyleClass="tooltip-text"
             type="button"></button>
     </div>
     <!--    Right Buttons    -->
     <div class="right-buttons">
         <!--    Close Button    -->
-        <button 
-            pButton 
-            (click)="close()" 
-            class="p-button-raised p-button-text p-button-plain" 
+        <button
+            pButton
+            (click)="close()"
+            class="p-button-raised p-button-text p-button-plain"
             icon="pi pi-times"
-            pTooltip="Close Menu" 
-            tooltipPosition="bottom" 
+            pTooltip="Close Menu"
+            tooltipPosition="bottom"
             tooltipStyleClass="tooltip-text"
             type="button">
         </button>

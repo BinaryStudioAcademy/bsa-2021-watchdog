@@ -2,7 +2,7 @@ import { AuthenticationService } from '@core/services/authentication.service';
 import { switchMap } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { Project } from '@shared/models/projects/project';
-import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
+import { TopActiveTileSettings } from '@shared/models/tile/settings/top-active-tile-settings';
 import { TileType } from '@shared/models/tile/enums/tile-type';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
@@ -19,7 +19,7 @@ import { BaseTileComponent } from '../base-tile/base-tile.component';
     styleUrls: ['./top-active-issues-tile.component.sass']
 })
 export class TopActiveIssuesTileComponent extends BaseTileComponent implements OnInit {
-    tileSettings: TopActiveIssuesSettings;
+    tileSettings: TopActiveTileSettings;
     requiredProjects: Project[] = [];
     displayedIssues: IssueInfo[] = [];
 
@@ -52,7 +52,7 @@ export class TopActiveIssuesTileComponent extends BaseTileComponent implements O
     }
 
     editTile() {
-        this.tileDialogService.showTopActiveIssuesEditDialog(this.userProjects, this.tile,
+        this.tileDialogService.showTopResponsesTimeEditDialog(this.userProjects, this.tile,
             () => this.applySettings());
     }
 
@@ -64,7 +64,7 @@ export class TopActiveIssuesTileComponent extends BaseTileComponent implements O
     }
 
     private getTileSettings() {
-        this.tileSettings = convertJsonToTileSettings(this.tile.settings, TileType.TopActiveIssues) as TopActiveIssuesSettings;
+        this.tileSettings = convertJsonToTileSettings(this.tile.settings, TileType.TopActiveIssues) as TopActiveTileSettings;
     }
 
     private applyProjectSettings() {
@@ -76,7 +76,7 @@ export class TopActiveIssuesTileComponent extends BaseTileComponent implements O
             .filter(info => this.requiredProjects.some(proj => proj.id === info.project.id)
                 && new Date(info.newest.occurredOn).getTime() >= Date.now() - convertTileDateRangeTypeToMs(this.tileSettings.dateRange))
             .sort((a, b) => b.eventsCount - a.eventsCount) // top sort
-            .slice(0, this.tileSettings.issuesCount); // issues count
+            .slice(0, this.tileSettings.itemsCount); // issues count
     }
 
     private getIssuesInfo() {

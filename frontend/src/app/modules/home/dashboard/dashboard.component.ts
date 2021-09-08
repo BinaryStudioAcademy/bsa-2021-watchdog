@@ -19,7 +19,7 @@ import { ProjectService } from '@core/services/project.service';
 import { delay, map } from 'rxjs/operators';
 import { SpinnerService } from '@core/services/spinner.service';
 import { convertJsonToTileSettings, sortTilesByTileOrder } from '@core/utils/tile.utils';
-import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
+import { TopActiveTileSettings } from '@shared/models/tile/settings/top-active-tile-settings';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UpdateDashboardComponent } from '../modals/dashboard/update-dashboard.component';
 import { Member } from '@shared/models/member/member';
@@ -183,12 +183,12 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     }
 
     getTileWidth(tile: Tile) {
-        const settings = convertJsonToTileSettings(tile.settings, TileType.TopActiveIssues) as TopActiveIssuesSettings;
+        const settings = convertJsonToTileSettings(tile.settings, TileType.TopActiveIssues) as TopActiveTileSettings;
         return settings.tileSize * 150 + 350;
     }
 
     getTileHeight(tile: Tile) {
-        const settings = convertJsonToTileSettings(tile.settings, TileType.TopActiveIssues) as TopActiveIssuesSettings;
+        const settings = convertJsonToTileSettings(tile.settings, TileType.TopActiveIssues) as TopActiveTileSettings;
         return settings.tileSize * 64 + 366;
     }
 

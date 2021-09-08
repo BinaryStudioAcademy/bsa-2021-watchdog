@@ -43,45 +43,45 @@
     [tiles]="tiles"
     [userProjects]="projects">
 </app-tile-menu>
-<!--    Tiles Content    -->
-<ng-template [ngIf]="dashboard">
-    <div *ngIf="!tiles.length" class="tiles-not-found">
-        <app-no-content-placeholder title="Looks like here are no tiles"></app-no-content-placeholder>
-    </div>
-    <div *ngIf="tiles.length" class="tiles-container">
-        <ng-container *ngFor="let tile of tiles; let i = index">
-            <div
-                class="tile"
-                (onDragEnd)="dragOff()"
-                (onDragStart)="drag(tile)"
-                [style.flex-basis.px]="getTileWidth(tile)"
-                [style.height.px]="getTileHeight(tile)"
-                [pDraggableDisabled]="!canDrag"
-                [pDraggable]="canDrag ? 'dd' : null ">
-                <div
-                    (onDrop)="drop(i)"
-                    class="drop-line drop-line-left"
-                    *ngIf="getDropSpaceState(i)"
-                    pDroppable="dd">
-                </div>
-                <app-common-tile
-                    (dragTile)="setDragByButton($event)"
-                    (isDeleting)="deleteTile($event)"
-                    (isEditing)="tile.isEditing = !tile.isEditing"
-                    [isShownEditTileMenu]="showTileMenu"
-                    [userProjects]="projects"
-                    [tile]="tile"
-                    [resize]="resize$"
-                    (changeTile)="onChange()">
-                </app-common-tile>
-                <div
-                    class="drop-line drop-line-right"
-                    (onDrop)="drop(i+1)"
-                    *ngIf="getDropSpaceState(i+1)"
-                    pDroppable="dd">
-                </div>
-            </div>
-        </ng-container>
-    </div>
-</ng-template>
 
+    <!--    Tiles Content    -->
+    <ng-template [ngIf]="dashboard">
+        <div *ngIf="!tiles.length" class="tiles-not-found">
+            <app-no-content-placeholder title="Looks like here are no tiles"></app-no-content-placeholder>
+        </div>
+        <div *ngIf="tiles.length" class="tiles-container">
+            <ng-container *ngFor="let tile of tiles; let i = index">
+                <div
+                    class="tile"
+                    (onDragEnd)="dragOff()"
+                    (onDragStart)="drag(tile)"
+                    [style.flex-basis.px]="getTileWidth(tile)"
+                    [style.height.px]="getTileHeight(tile)"
+                    [pDraggableDisabled]="!canDrag"
+                    [pDraggable]="canDrag ? 'dd' : null ">
+                    <div
+                        (onDrop)="drop(i)"
+                        class="drop-line drop-line-left"
+                        *ngIf="getDropSpaceState(i)"
+                        pDroppable="dd">
+                    </div>
+                    <app-common-tile
+                        (dragTile)="setDragByButton($event)"
+                        (isDeleting)="deleteTile($event)"
+                        (isEditing)="tile.isEditing = !tile.isEditing"
+                        [isShownEditTileMenu]="showTileMenu"
+                        [userProjects]="projects"
+                        [tile]="tile"
+                        [resize]="resize$"
+                        (changeTile)="onChange()">
+                    </app-common-tile>
+                    <div
+                        class="drop-line drop-line-right"
+                        (onDrop)="drop(i+1)"
+                        *ngIf="getDropSpaceState(i+1)"
+                        pDroppable="dd">
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </ng-template>

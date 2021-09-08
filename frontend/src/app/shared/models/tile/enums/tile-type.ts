@@ -3,5 +3,6 @@ export enum TileType {
     IssuesPerTime = 1,
     IssuesCount = 2,
     HeatMap = 3,
-    MostCommonCountries = 4
+    TopResponsesTime = 4,
+    MostCommonCountries = 5
 }

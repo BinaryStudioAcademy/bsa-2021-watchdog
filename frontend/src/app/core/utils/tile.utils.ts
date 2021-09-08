@@ -1,5 +1,5 @@
 import { TileType } from '@shared/models/tile/enums/tile-type';
-import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
+import { TopActiveTileSettings } from '@shared/models/tile/settings/top-active-tile-settings';
 import { TileDateRangeType } from '@shared/models/tile/enums/tile-date-range-type';
 import { IssuesPerTimeSettings } from '@shared/models/tile/settings/issues-per-time-settings';
 import { TileGranularityType } from '@shared/models/tile/enums/tile-granularity-type';
@@ -11,13 +11,15 @@ import { Tile } from '@shared/models/tile/tile';
 export const convertJsonToTileSettings = (json: string, type: TileType) => {
     switch (type) {
         case TileType.TopActiveIssues:
-            return JSON.parse(json) as TopActiveIssuesSettings;
+            return JSON.parse(json) as TopActiveTileSettings;
         case TileType.IssuesPerTime:
             return JSON.parse(json) as IssuesPerTimeSettings;
         case TileType.IssuesCount:
             return JSON.parse(json) as CountIssuesSettings;
         case TileType.HeatMap:
             return JSON.parse(json) as HeatMapSettings;
+        case TileType.TopResponsesTime:
+            return JSON.parse(json) as TopActiveTileSettings;
         case TileType.MostCommonCountries:
             return JSON.parse(json) as MostCommonCountriesSettings;
         default:
