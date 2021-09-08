@@ -1,6 +1,6 @@
 import { AuthenticationService } from '@core/services/authentication.service';
 import { hasAccess } from '@core/utils/access.utils';
-import { Member } from './../../../../models/member/member';
+import { Member } from '@shared/models/member/member';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '@core/components/base/base.component';

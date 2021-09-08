@@ -8,7 +8,6 @@ import { ToastNotificationService } from '@core/services/toast-notification.serv
 import { AuthenticationService } from '@core/services/authentication.service';
 import { SpinnerService } from '@core/services/spinner.service';
 import { hasAccess } from '@core/utils/access.utils';
-import { MembersRoleIds } from '@shared/constants/member-roles';
 
 @Component({
     selector: 'app-projects',

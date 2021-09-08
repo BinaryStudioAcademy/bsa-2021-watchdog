@@ -1,5 +1,5 @@
-import { hasAccess } from './../../../core/utils/access.utils';
-import { Member } from './../../../shared/models/member/member';
+import { hasAccess } from '@core/utils/access.utils';
+import { Member } from '@shared/models/member/member';
 import { IssuesHubService } from '@core/hubs/issues-hub.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Dashboard } from '@shared/models/dashboard/dashboard';
