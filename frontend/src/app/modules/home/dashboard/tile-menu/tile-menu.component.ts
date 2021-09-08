@@ -52,12 +52,16 @@ export class TileMenuComponent {
     createIssuePerTime() {
         this.tileDialogService.showIssuesPerTimeCreateDialog(this.userProjects, this.dashboardId, this.tiles);
     }
-    
+
     createIssueCount() {
         this.tileDialogService.showIssuesCountCreateDialog(this.userProjects, this.dashboardId, this.tiles);
     }
 
     createHeatMap() {
         this.tileDialogService.showHeatMapCreateDialog(this.userProjects, this.dashboardId, this.tiles);
+    }
+
+    createMostCommonCountries() {
+        this.tileDialogService.showMostCommonCountriesCreateDialog(this.userProjects, this.dashboardId, this.tiles);
     }
 }
