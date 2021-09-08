@@ -69,7 +69,11 @@ Some extra extensions which can significantly help to work with Angular:
 ## Environment variables
 This is a list of the required environment variables:
 
+
 **RABBIT_MQ_USERNAME** - RabbitMQ username
+
 **RABBIT_MQ_PASSWORD** - RabbitMQ user password
+
 **SA_PASSWORD** - MSSQL Server "SA" user password
+
 **SendGrid__ApiKey** - api key for sendgrid
