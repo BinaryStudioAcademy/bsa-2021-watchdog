@@ -116,10 +116,10 @@ export class IssueDetailsPageComponent extends BaseComponent implements OnInit {
                 this.isLoadingStatus = false;
                 this.toastNotification.success('Status changed', '', 500);
             },
-                error => {
-                    this.isLoadingStatus = false;
-                    this.toastNotification.error(error);
-                });
+            error => {
+                this.isLoadingStatus = false;
+                this.toastNotification.error(error);
+            });
     }
 
     initIssueStatusDropdown() {
