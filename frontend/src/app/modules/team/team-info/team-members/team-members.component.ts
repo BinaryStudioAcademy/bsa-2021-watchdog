@@ -6,6 +6,7 @@ import { Component, Input } from '@angular/core';
 import { Team } from '@shared/models/teams/team';
 import { Member } from '@shared/models/member/member';
 import { SpinnerService } from '@core/services/spinner.service';
+import { hasAccess } from '@core/utils/access.utils';
 
 @Component({
     selector: 'app-team-members',
@@ -14,6 +15,7 @@ import { SpinnerService } from '@core/services/spinner.service';
 })
 export class TeamMembersComponent extends BaseComponent {
     @Input() team: Team;
+    @Input() member: Member;
 
     constructor(
         private teamService: TeamService,
@@ -22,6 +24,8 @@ export class TeamMembersComponent extends BaseComponent {
     ) {
         super();
     }
+
+    hasAccess = () => hasAccess(this.member);
 
     members: User[];
     filterExpression: string;

@@ -1,3 +1,4 @@
+import { Member } from '@shared/models/member/member';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,15 +8,17 @@ import { ConfirmWindowService } from '@core/services/confirm-window.service';
 import { ProjectService } from '@core/services/project.service';
 import { SpinnerService } from '@core/services/spinner.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
+import { hasAccess } from '@core/utils/access.utils';
 import { AlertCategory } from '@shared/models/alert-settings/alert-category';
 import { AlertSettings } from '@shared/models/alert-settings/alert-settings';
-import { Organization } from '@shared/models/organization/organization';
 import { Platform } from '@shared/models/platforms/platform';
 import { Project } from '@shared/models/projects/project';
+import { RecipientTeam } from '@shared/models/projects/recipient-team';
 import { UpdateProject } from '@shared/models/projects/update-project';
 import { User } from '@shared/models/user/user';
 import { PrimeIcons } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
+import { zip } from 'rxjs';
 import { Data } from '../data';
 
 @Component({
@@ -26,15 +29,20 @@ import { Data } from '../data';
 })
 export class EditComponent extends BaseComponent implements OnInit {
     user: User;
-    organization: Organization;
+    member: Member;
     alertSetting = {} as AlertSettings;
     editForm: FormGroup = new FormGroup({});
     editFormAlert: FormGroup = new FormGroup({});
     project: Project;
     id: string;
     dropPlatform: Platform[];
+    recipientTeams: RecipientTeam[];
 
+    notFound: boolean;
+    loading: boolean;
     activeIndex: number = 0;
+
+    hasAccess = () => hasAccess(this.member);
 
     constructor(
         private toastNotifications: ToastNotificationService,
@@ -42,7 +50,7 @@ export class EditComponent extends BaseComponent implements OnInit {
         private projectService: ProjectService,
         public alertData: Data,
         private router: Router,
-        private spinnerService: SpinnerService,
+        private spinner: SpinnerService,
         private activatedRoute: ActivatedRoute,
         private confirmService: ConfirmWindowService
     ) {
@@ -50,19 +58,29 @@ export class EditComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.loading = true;
+        this.spinner.show(true);
         this.id = this.activatedRoute.snapshot.params.id;
         this.activatedRoute.paramMap
             .pipe(this.untilThis)
             .subscribe(params => {
                 this.id = params.get('id');
                 this.user = this.authService.getUser();
-                this.authService.getOrganization()
-                    .subscribe(organization => {
-                        this.organization = organization;
-                    });
-                this.projectService.getProjectById(this.id).pipe(this.untilThis)
-                    .subscribe(project => {
-                        this.project = project;
+                zip(this.authService.getMember(), this.projectService.getProjectById(this.id))
+                    .pipe(this.untilThis)
+                    .subscribe(([member, project]) => {
+                        if (project?.organizationId !== member.organizationId) {
+                            this.notFound = true;
+                        } else {
+                            this.member = member;
+                            this.project = project;
+                        }
+                        this.loading = false;
+                        this.spinner.hide();
+                    }, () => {
+                        this.notFound = true;
+                        this.loading = false;
+                        this.spinner.hide();
                     });
             });
         this.activatedRoute.queryParamMap
@@ -81,22 +99,20 @@ export class EditComponent extends BaseComponent implements OnInit {
             alertCategory: specialAlert.alertCategory,
             specialAlertSetting: specialAlert.alertCategory === AlertCategory.Special ? specialAlert : null
         };
+        this.recipientTeams = specialAlert.alertCategory === AlertCategory.None ? [] : specialAlert.recipientTeams;
     }
 
     updateProjectFunction() {
         this.alertFormatting();
-        const project: UpdateProject = { ...this.editForm.value, alertSettings: this.alertSetting };
+        const project: UpdateProject = { ...this.editForm.value, alertSettings: this.alertSetting, recipientTeams: this.recipientTeams };
         if (this.editForm.valid) {
-            this.spinnerService.show(true);
             this.projectService.updateProject(this.id, project)
                 .pipe(this.untilThis)
                 .subscribe((updatedProject) => {
                     this.project = updatedProject;
-                    this.spinnerService.hide();
                     this.toastNotifications.success('Project has been updated!');
                 }, error => {
                     this.toastNotifications.error(error);
-                    this.spinnerService.hide();
                 });
         } else {
             this.toastNotifications.error('Form is not valid', 'Error');
@@ -117,17 +133,14 @@ export class EditComponent extends BaseComponent implements OnInit {
     }
 
     deleteProject() {
-        this.spinnerService.show(true);
         this.projectService.removeProject(this.project.id)
             .pipe(this.untilThis)
             .subscribe(() => {
-                this.spinnerService.hide();
                 this.router.navigate(['home', 'projects']).then(() => {
                     this.toastNotifications.success('Project has been deleted');
                 });
             }, error => {
                 this.toastNotifications.error(error);
-                this.spinnerService.hide();
             });
     }
 

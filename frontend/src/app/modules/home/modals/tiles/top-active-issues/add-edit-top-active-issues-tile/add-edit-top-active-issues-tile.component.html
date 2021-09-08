@@ -1,83 +1,16 @@
-<!--    Header    -->
-<div [formGroup]="formGroup" class="dialog">
-    <div class="header">
-        <div class="header-title">
-            <span>{{headerTitle}}</span>
-            <button (click)="close()" class="p-button-raised p-button-text p-button-plain"
-                    icon="pi pi-times" pButton pTooltip="Close window" tooltipPosition="bottom"></button>
-        </div>
+<app-commom-edit-tile [formGroup]="formGroup" (submited)="submit()" [form]="formGroup">
+    <!--    Date Range Dropdown    -->
+    <div class="date-range">
+        <div class="date-range-title">Date range</div>
+        <p-dropdown [options]="dateRangeDropdown" appendTo="body" formControlName="dateRange"
+                    optionLabel="name" optionValue="type" styleClass="date-range-dropdown">
+        </p-dropdown>
     </div>
-
-    <!--    Content    -->
-    <div class="content">
-        <!--    Name Input    -->
-        <div class="tile-name">
-            <div class="input-title">Name</div>
-            <input class="input-text" formControlName="name" pInputText type="text">
-            <div *ngIf="formGroup.controls.name.invalid" class="validation">
-                <small *ngIf="formGroup.controls.name.errors.required">Field is required</small>
-                <small *ngIf="formGroup.controls.name.errors.maxlength">Max name length 50</small>
-                <small *ngIf="formGroup.controls.name.errors.minlength">Min name length 3</small>
-                <small *ngIf="formGroup.controls.name.errors.pattern">May contain lowercase (a-z) and uppercase (A-Z)
-                    letters, numbers (0-9), space, point, dashes and underscores
-                </small>
-            </div>
-        </div>
-        <!--    Date Range Dropdown    -->
-        <div class="date-range">
-            <div class="date-range-title">Date range</div>
-            <p-dropdown [options]="dateRangeDropdown" appendTo="body" formControlName="dateRange"
-                        optionLabel="name" optionValue="type" styleClass="date-range-dropdown">
-            </p-dropdown>
-        </div>
-        <!--    Issues Count Input    -->
-        <div class="issues-count">
-            <div class="issues-count-title">Count of top items</div>
-            <p-inputNumber [max]="1000" [min]="1" [showButtons]="true" [size]="2" [step]="1"
-                           formControlName="issuesCount" mode="decimal">
-            </p-inputNumber>
-        </div>
-        <!--    Tile Size Dropdown    -->
-        <div class="tile-size">
-            <div class="tile-size-title">Tile size</div>
-            <p-dropdown [options]=tileSizeDropdown  appendTo="body" formControlName="tileSize"
-                        optionLabel="name" optionValue="type" styleClass="tile-size-dropdown">
-            </p-dropdown>
-        </div>
-
-        <p-divider></p-divider>
-
-        <!--    App Source Selection    -->
-        <div class="sources-selection">
-            <div class="sources-selection-title">Add sources</div>
-            <p-multiSelect [options]="userProjects" appendTo="body" defaultLabel="Select project"
-                           display="chip" formControlName="sourceProjects" optionLabel="name"
-                           optionValue="id"></p-multiSelect>
-            <div *ngIf="formGroup.controls.sourceProjects.touched && formGroup.controls.sourceProjects.invalid"
-                 class="validation">
-                <small *ngIf="formGroup.controls.sourceProjects.errors.required">Field is required</small>
-            </div>
-        </div>
+    <!--    Issues Count Input    -->
+    <div class="issues-count">
+        <div class="issues-count-title">Count of top items</div>
+        <p-inputNumber [max]="1000" [min]="1" [showButtons]="true" [size]="2" [step]="1"
+                        formControlName="issuesCount" mode="decimal">
+        </p-inputNumber>
     </div>
-
-    <!--    Footer    -->
-    <div class="footer">
-        <div class="footer-content">
-            <!--    Close    -->
-            <button
-                (click)="close()"
-                class="p-button-secondary p-button-outlined cancel-button" label="Cancel" pButton
-                pTooltip="Cancel changes"
-                tooltipPosition="bottom" type="button">
-            </button>
-
-            <!--    Submit    -->
-            <button
-                (click)="submit()" [disabled]="!formGroup.valid"
-                class="p-button-primary p-button-outlined"
-                label="{{submitButtonText}}" pButton pTooltip="{{submitButtonText}} tile" tooltipPosition="bottom"
-                type="submit">
-            </button>
-        </div>
-    </div>
-</div>
+</app-commom-edit-tile>

@@ -6,6 +6,10 @@ import { Project } from '@shared/models/projects/project';
 import { DialogService } from 'primeng/dynamicdialog';
 import { AlertCategory } from '@shared/models/alert-settings/alert-category';
 import { Data } from '../../data';
+import { Assignment } from '@shared/models/issue/assignment';
+import { TeamService } from '@core/services/team.service';
+import { ProjectService } from '@core/services/project.service';
+import { RecipientTeam } from '@shared/models/projects/recipient-team';
 
 @Component({
     selector: 'app-project-alert',
@@ -20,13 +24,55 @@ export class ProjectAlertComponent extends BaseComponent implements OnInit {
 
     specialTypes = AlertCategory.Special;
 
+    isAssignmentComponentDisplayed: boolean;
+    teams: RecipientTeam[];
+    assignment: Assignment;
+    maxNumberOfDisplayedAvatars = 5;
+
     constructor(
-        public alertData: Data
+        public alertData: Data,
+        private teamService: TeamService,
+        private projectService: ProjectService
     ) {
         super();
     }
 
+    showAssignmentComponent() {
+        this.isAssignmentComponentDisplayed = true;
+    }
+
+    hideAssignmentComponent() {
+        this.isAssignmentComponentDisplayed = false;
+        this.markTeamsAsRecipients();
+    }
+
+    getTeamsLabels(): string[] {
+        return this.assignment.teamIds.slice(0, this.maxNumberOfDisplayedAvatars)
+            .map(id => this.teamService.getLabel(this.teams.find(x => x.id === id).name));
+    }
+
+    getNumberOfHiddenAvatars() {
+        return this.assignment.teamIds.length - this.maxNumberOfDisplayedAvatars;
+    }
+
+    markTeamsAsRecipients() {
+        this.teams.forEach(item => {
+            item.isRecipient = this.assignment.teamIds.includes(item.id); // eslint-disable-line no-param-reassign
+        });
+        this.recipientTeams.setValue(this.teams.filter(item => item.isRecipient));
+    }
+
     ngOnInit() {
+        this.isAssignmentComponentDisplayed = false;
+        this.assignment = { teamIds: [] } as Assignment;
+        this.teams = [];
+
+        this.projectService.getRecipientTeams(this.project.id)
+            .subscribe((teams: RecipientTeam[]) => {
+                this.teams = teams;
+                this.assignment.teamIds = teams.filter(x => x.isRecipient).map(x => x.id);
+            });
+
         if (this.project.alertSettings.alertCategory !== this.specialTypes) {
             this.initAlertData();
             this.addValidationWithDefaultData();
@@ -52,6 +98,10 @@ export class ProjectAlertComponent extends BaseComponent implements OnInit {
             this.project.alertSettings.specialAlertSetting.alertTimeInterval,
             Validators.required
         ));
+        this.editFormAlert.addControl('recipientTeams', new FormControl(
+            this.teams,
+            Validators.required
+        ));
     }
 
     addValidationWithDefaultData() {
@@ -69,6 +119,10 @@ export class ProjectAlertComponent extends BaseComponent implements OnInit {
         ));
         this.editFormAlert.addControl('alertTimeInterval', new FormControl(
             this.alertSetting.specialAlertSetting.alertTimeInterval,
+            Validators.required
+        ));
+        this.editFormAlert.addControl('recipientTeams', new FormControl(
+            this.teams,
             Validators.required
         ));
     }
@@ -89,4 +143,6 @@ export class ProjectAlertComponent extends BaseComponent implements OnInit {
     get specialAlertType() { return this.editFormAlert.controls.specialAlertType; }
 
     get alertTimeInterval() { return this.editFormAlert.controls.alertTimeInterval; }
+
+    get recipientTeams() { return this.editFormAlert.controls.recipientTeams; }
 }

@@ -1,25 +1,47 @@
 <!--    Header    -->
-<div *ngIf="dashboard" [ngClass]="{'remove-margin-box-shadow': showTileMenu}" class="dashboard-header">
-    <div class="dashboard-name">
-        <h2 appTooltipFullName>{{dashboard?.name}}</h2>
+<div [ngClass]="{'remove-margin-box-shadow': showTileMenu}" class="dashboard-header">
+    <div>
+        <h2 appTooltipFullName *ngIf="!(notFound || !dashboard)">{{dashboard?.name}}</h2>
+        <h2 appTooltipFullName *ngIf="notFound || !dashboard">Dashboard</h2>
     </div>
     <!--    Right Buttons    -->
-    <div class="action-buttons">
-        <button (click)="confirmDelete()" [disabled]="!dashboard" class="p-button-danger p-button-outlined"
-            label="Delete" pButton pRipple></button>
-        <button (click)="openUpdateDashboardDialog()" [disabled]="!dashboard" class="p-button-primary p-button-outlined" label="Edit"
-            pButton pRipple></button>
-        <button (click)="toggleTileMenu()" [disabled]="!dashboard" class="p-button-secondary p-button-outlined"
-            label="Edit Tiles" pButton pRipple></button>
+    <div class="action-buttons" *ngIf="!(notFound || !dashboard) && hasAccess()">
+        <button
+            (click)="confirmDelete()"
+            [disabled]="!dashboard"
+            class="p-button-danger p-button-outlined"
+            label="Delete"
+            pButton pRipple>
+        </button>
+        <button
+            (click)="openUpdateDashboardDialog()"
+            [disabled]="!dashboard"
+            class="p-button-primary p-button-outlined"
+            label="Edit"
+            pButton
+            pRipple>
+        </button>
+        <button
+            (click)="toggleTileMenu()"
+            [disabled]="!dashboard"
+            class="p-button-secondary p-button-outlined"
+            label="Edit Tiles"
+            pButton
+            pRipple>
+        </button>
     </div>
 </div>
-
+<app-not-found *ngIf="notFound"></app-not-found>
+<ng-container *ngIf="!notFound">
 <app-tile-menu
     [orderChanged]="isOrderChanged"
     (saveTilesOrder)="saveTilesOrder()"
     (clearTiles)="deleteAllTiles(dashboard.id)"
     (closeMenu)="toggleTileMenu()"
-    *ngIf="showTileMenu && dashboard" [dashboardId]="dashboard.id" [tiles]="tiles" [userProjects]="projects">
+    *ngIf="showTileMenu && dashboard"
+    [dashboardId]="dashboard.id"
+    [tiles]="tiles"
+    [userProjects]="projects">
 </app-tile-menu>
 
 <!--    Tiles Content    -->
@@ -28,12 +50,13 @@
         <app-no-content-placeholder title="Looks like here are no tiles"></app-no-content-placeholder>
     </div>
     <div *ngIf="tiles.length" class="tiles-container">
-        <ng-container *ngFor="let tile of tiles; let i = index" [ngSwitch]="tile.type">
+        <ng-container *ngFor="let tile of tiles; let i = index">
             <div
                 class="tile"
                 (onDragEnd)="dragOff()"
                 (onDragStart)="drag(tile)"
-                [style.flex-basis.px]="getTileSize(tile)"
+                [style.flex-basis.px]="getTileWidth(tile)"
+                [style.height.px]="getTileHeight(tile)"
                 [pDraggableDisabled]="!canDrag"
                 [pDraggable]="canDrag ? 'dd' : null ">
                 <div
@@ -42,20 +65,16 @@
                     *ngIf="getDropSpaceState(i)"
                     pDroppable="dd">
                 </div>
-                <app-top-active-issues-tile (dragTile)="setDragByButton($event)" (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.TopActiveIssues"
-                    [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects">
-                </app-top-active-issues-tile>
-                <app-issues-per-time-tile (dragTile)="setDragByButton($event)" (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.IssuesPerTime"
-                    [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects">
-                </app-issues-per-time-tile>
-                <app-issues-count-tile (dragTile)="setDragByButton($event)" (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.IssuesCount"
-                    [isShownEditTileMenu]="showTileMenu" [tile]="tile"
-                    [userProjects]="projects">
-                </app-issues-count-tile>
-                <app-heat-map (dragTile)="setDragByButton($event)" (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.HeatMap"
-                    [isShownEditTileMenu]="showTileMenu" [tile]="tile"
-                    [userProjects]="projects">
-                </app-heat-map>
+                <app-common-tile
+                    (dragTile)="setDragByButton($event)"
+                    (isDeleting)="deleteTile($event)"
+                    (isEditing)="tile.isEditing = !tile.isEditing"
+                    [isShownEditTileMenu]="showTileMenu"
+                    [userProjects]="projects"
+                    [tile]="tile"
+                    [resize]="resize$"
+                    (changeTile)="onChange()">
+                </app-common-tile>
                 <div
                     class="drop-line drop-line-right"
                     (onDrop)="drop(i+1)"
@@ -66,3 +85,4 @@
         </ng-container>
     </div>
 </ng-template>
+

@@ -64,12 +64,26 @@ services:
       environment:
           ASPNETCORE_ENVIRONMENT: 'Development'
 
+  watchdog_emailer:
+      build:
+        context: ./backend
+        dockerfile: ./Watchdog.Emailer/Dockerfile
+      container_name: 'watchdog_emailer'
+      restart: on-failure
+      ports:
+          - "5130:5130"
+      networks:
+          - back
+      environment:
+          ASPNETCORE_ENVIRONMENT: 'Development'
+
   watchdog_client:
     depends_on:
         - watchdog_core
         - watchdog_collector
         - watchdog_notifier
         - watchdog_loader
+        - watchdog_emailer
     build:
         context: ./frontend
         dockerfile: Dockerfile.dev

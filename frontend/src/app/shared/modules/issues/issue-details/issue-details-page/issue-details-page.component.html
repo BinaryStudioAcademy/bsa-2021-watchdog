@@ -4,14 +4,23 @@
         <button class="p-button-outlined back-button" icon="pi pi-chevron-left " pButton pRipple
             pTooltip="Back to Issues" routerLink="../../" tooltipPosition="bottom">
         </button>
-        <h2 appTooltipFullName>{{issueMessage?.issueDetails.className}}</h2>
+        <h2 appTooltipFullName *ngIf="!isNotFound">{{issueMessage?.issueDetails.className}}</h2>
+        <h2 appTooltipFullName *ngIf="isNotFound">Issue</h2>
     </div>
-    <div *ngIf="issue && !isNotFound">
-        <p-dropdown (onChange)="onSelectedIssueStatus()" [(ngModel)]="selected" [disabled]="isLoadingStatus" [ngClass]="{
-        'dropdown-active-status': selected === IssueStatus.Active,
-        'dropdown-resolved-status': selected === IssueStatus.Resolved,
-        'dropdown-ignored-status': selected === IssueStatus.Ignored
-        }" [options]="issueStatusDropdownItems" optionLabel="name" optionValue="type" styleClass="dropdown">
+    <div *ngIf="issue && !isNotFound && hasAccess()">
+        <p-dropdown
+            (onChange)="onSelectedIssueStatus()"
+            [(ngModel)]="selected"
+            [disabled]="isLoadingStatus"
+            [ngClass]="{
+                'dropdown-active-status': selected === IssueStatus.Active,
+                'dropdown-resolved-status': selected === IssueStatus.Resolved,
+                'dropdown-ignored-status': selected === IssueStatus.Ignored
+                }"
+            [options]="issueStatusDropdownItems"
+            optionLabel="name"
+            optionValue="type"
+            styleClass="dropdown">
         </p-dropdown>
     </div>
 </div>

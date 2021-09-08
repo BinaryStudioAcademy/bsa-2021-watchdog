@@ -1,0 +1,24 @@
+<p-dialog [visible]="true"
+          [modal]="true"
+          [closable]="false"
+          [showHeader] ="false">
+    <p-panel
+        header="Assign"
+        class="invite-block">
+        <div class="p-dialog-header">
+            <button class="close-button" (click)="closeModal.emit()"><i class="pi pi-times"></i></button>
+        </div>
+        <form>
+            <div class="assignee-form">
+                <p-multiSelect name="teams" class="select-inp" [options]="teams" appendTo="body" defaultLabel="Select teams assignee"
+                    display="chip" optionLabel="name" optionValue="id"
+                    [(ngModel)]="assignment.teamIds">
+                    <ng-template let-team pTemplate="item">
+                        <p-avatar [label]="getLabel(team.name)" alt="Avatar" shape="circle" class="assignee-team-avatar"></p-avatar>
+                        <span class="member-name">{{team.name}}</span>
+                    </ng-template>
+                </p-multiSelect>
+            </div>
+        </form>
+    </p-panel>
+</p-dialog>

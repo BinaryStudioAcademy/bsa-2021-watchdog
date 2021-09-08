@@ -1,8 +1,10 @@
-<div class="container">
-    <app-tile-header (dragTile)="setTileDragStatus($event)" (isDeleting)="isDeleting.emit(tile)" (isEditing)="editTile()"
-        [isShownEditTileMenu]="isShownEditTileMenu" [tile]="tile">
-    </app-tile-header>
-    <app-charts *ngIf="single?.length === requiredProjects?.length" [chartOptions]="chartOptions" [tileType]="tile.type"
-        [chartType]="ChartType" [single]="single">
-    </app-charts>
-</div>
+<app-charts
+    #toExport
+    *ngIf="single?.length === requiredProjects?.length"
+    [chartOptions]="chartOptions"
+    [tileType]="tile.type"
+    [chartType]="ChartType"
+    [single]="single"
+    [resize]="resize">
+</app-charts>
+

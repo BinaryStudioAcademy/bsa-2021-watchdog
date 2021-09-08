@@ -1,4 +1,5 @@
-﻿using Watchdog.Core.Common.Enums.Tiles;
+﻿using System.Collections.Generic;
+using Watchdog.Core.Common.Enums.Tiles;
 using Watchdog.Core.DAL.Entities.Common;
 
 namespace Watchdog.Core.DAL.Entities

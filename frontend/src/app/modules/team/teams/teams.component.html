@@ -2,18 +2,25 @@
     <h1>Teams</h1>
     <div class="header-actions">
         <div>
-            <button pButton pRipple type="button" label="Create team" class="p-button-primary p-button-outlined"
-                icon="pi pi-plus-circle" (click)="openDialog()">
+            <button
+                pButton
+                pRipple
+                type="button"
+                label="Create team"
+                class="p-button-primary p-button-outlined"
+                icon="pi pi-plus-circle"
+                (click)="openDialog()"
+                *ngIf="hasAccess()">
             </button>
         </div>
     </div>
 </div>
 
 <div class="panel">
-    <app-user-teams *ngIf="member" [teams]="memberInTeams" (leavedTeam)="leaveTeam($event)">
+    <app-user-teams *ngIf="member" [member]="member" [teams]="memberInTeams" (leavedTeam)="leaveTeam($event)">
     </app-user-teams>
 </div>
 <div class="panel">
-    <app-other-teams *ngIf="member" [teams]="notMemberInTeams" (joinedTeam)="joinTeam($event)">
+    <app-other-teams *ngIf="hasAccess()" [member]="member" [teams]="notMemberInTeams" (joinedTeam)="joinTeam($event)">
     </app-other-teams>
 </div>
