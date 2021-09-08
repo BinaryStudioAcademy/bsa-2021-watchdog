@@ -17,10 +17,10 @@ namespace Watchdog.Emailer.Service.HostedServices
 {
     public class EmailService : IHostedService
     {
+        private readonly RabbitMQSettings _rabbitMQSettings;
         private readonly ILogger _logger;
-        private Consumer _consumer;
-        private RabbitMQSettings _rabbitMQSettings;
         private readonly IEmailSender _emailSender;
+        private Consumer _consumer;
 
         public EmailService(IOptions<RabbitMQSettings> rabbitMQSettings,
                             ILogger<EmailService> logger,
@@ -79,7 +79,7 @@ namespace Watchdog.Emailer.Service.HostedServices
             });
         }
 
-        private Email DeserializeEmail(byte[] content)
+        private static Email DeserializeEmail(byte[] content)
         {
             var body = Encoding.UTF8.GetString(content);
 
