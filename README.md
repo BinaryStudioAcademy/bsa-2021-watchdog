@@ -33,6 +33,7 @@ By default, apps run on the following ports:
 | Watchdog.**Notifier** | 5070 |
 | Watchdog.**Collector** | 5090 |
 | Watchdog.**Loader** | 5110 |
+| Watchdog.**Emailer** | 5130 |
 | Watchdog.**Frontend** | 80 or 4200 |
 | RabbitMQ | 5672 |
 | Elasticsearch | 9200 |
