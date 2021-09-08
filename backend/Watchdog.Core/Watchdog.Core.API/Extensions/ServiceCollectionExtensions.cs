@@ -88,10 +88,10 @@ namespace Watchdog.Core.API.Extensions
         {
             services.AddTransient<IEmailSendService, EmailSendService>(provider => new EmailSendService(new BLL.Services.Options.EmailSendOptions
             {
-                ApiKey = configuration["SENDGRID_API_KEY"], // you need to add SENDGRID_API_KEY to yours environment variables
-                SenderEmail = configuration["SendGridConfiguration:SenderEmail"],
-                SenderName = configuration["SendGridConfiguration:SenderName"],
-                TemplateId = configuration["SendGridConfiguration:TemplateId"],  // templates you can create on sendgrid site
+                ApiKey = configuration["SendGrid:ApiKey"], // you need to add SENDGRID_API_KEY to yours environment variables
+                SenderEmail = configuration["SendGrid:SenderEmail"],
+                SenderName = configuration["SendGrid:SenderName"],
+                TemplateId = configuration["SendGrid:TemplateId"],  // templates you can create on sendgrid site
                                                                                  // for this template automatically sended in the promotions.
             }));
         }
