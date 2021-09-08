@@ -1,36 +1,37 @@
-<div class="container">
-    <app-tile-header (dragTile)="setTileDragStatus($event)" (isDeleting)="isDeleting.emit(tile)" (isEditing)="editTile()"
-                     [isShownEditTileMenu]="isShownEditTileMenu" [tile]="tile" (isExporting)="exportTile($event)"></app-tile-header>
-    <!--    Issues Table    -->
-    <div class="table" #tiles>
-        <p-table [alwaysShowPaginator]="displayedIssues.length > paginatorRows" [pageLinks]="1" [paginator]="true"
-                 [rows]="paginatorRows" [showJumpToPageDropdown]="true" [showPageLinks]="false"
-                 [value]="displayedIssues"
-                 selectionMode="single">
-            <!--    Columns Define    -->
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>Issue</th>
-                    <th pSortableColumn="newest.occurredOn">Last seen
-                        <p-sortIcon field="newest.occurredOn"></p-sortIcon>
-                    </th>
-                    <th pSortableColumn="eventsCount">Count
-                        <p-sortIcon field="eventsCount"></p-sortIcon>
-                    </th>
-                </tr>
-            </ng-template>
-            <!--    Rows Data   -->
-            <ng-template let-issue pTemplate="body">
-                <tr>
-                    <td>
-                        <span appTooltipFullName class="issue-name"
-                              routerLink="/home/issues/{{issue.issueId}}/{{issue.newest.id}}">{{issue.errorClass}}</span>
-                        <small appTooltipFullName class="issue-message">{{issue.errorMessage}}</small>
-                    </td>
-                    <td>{{issue.newest.occurredOn | timeAgo}}</td>
-                    <td>{{issue.eventsCount}}</td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
+<!--    Issues Table    -->
+<div class="table" #toExport>
+    <p-table
+        [alwaysShowPaginator]="displayedIssues.length > paginatorRows()"
+        [pageLinks]="1"
+        [paginator]="true"
+        [rows]="paginatorRows()"
+        [showJumpToPageDropdown]="true"
+        [showPageLinks]="false"
+        [value]="displayedIssues"
+        selectionMode="single">
+        <!--    Columns Define    -->
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Issue</th>
+                <th pSortableColumn="newest.occurredOn">Last seen
+                    <p-sortIcon field="newest.occurredOn"></p-sortIcon>
+                </th>
+                <th pSortableColumn="eventsCount">Count
+                    <p-sortIcon field="eventsCount"></p-sortIcon>
+                </th>
+            </tr>
+        </ng-template>
+        <!--    Rows Data   -->
+        <ng-template let-issue pTemplate="body">
+            <tr>
+                <td>
+                    <span appTooltipFullName class="issue-name"
+                            routerLink="/home/issues/{{issue.issueId}}/{{issue.newest.id}}">{{issue.errorClass}}</span>
+                    <small appTooltipFullName class="issue-message">{{issue.errorMessage}}</small>
+                </td>
+                <td>{{issue.newest.occurredOn | timeAgo}}</td>
+                <td>{{issue.eventsCount}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
 </div>

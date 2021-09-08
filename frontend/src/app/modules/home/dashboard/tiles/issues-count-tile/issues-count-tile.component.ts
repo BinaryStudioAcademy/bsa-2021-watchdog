@@ -1,11 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Tile } from '@shared/models/tile/tile';
+import { Component, OnInit } from '@angular/core';
 import { Project } from '@shared/models/projects/project';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
 import { IssueService } from '@core/services/issue.service';
 import { TileType } from '@shared/models/tile/enums/tile-type';
-import { BaseComponent } from '@core/components/base/base.component';
 import { ChartOptions } from '@shared/models/charts/chart-options';
 import { ChartType } from '@shared/models/charts/chart-type';
 import { SingleChart } from '@shared/models/charts/single-chart';
@@ -17,21 +15,13 @@ import { CountIssuesSettings } from '@shared/models/tile/settings/count-issues-s
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import { IssueStatusesByDateRangeFilter } from '@shared/models/issue/issue-statuses-by-date-range-filter';
 import { dateRangeTypeLabels } from '@shared/models/tile/enums/tile-date-range-type';
-import { ExportType } from '@shared/models/tile/enums/export-type';
-import { ExportTileService } from '@core/services/export-tile.service';
-import { SpinnerService } from '@core/services/spinner.service';
+import { BaseTileComponent } from '../base-tile/base-tile.component';
 
 @Component({
-    selector: 'app-issues-count-tile[tile][isShownEditTileMenu][userProjects]',
-    templateUrl: './issues-count-tile.component.html',
-    styleUrls: ['./issues-count-tile.component.sass']
+    selector: 'app-issues-count-tile[tile][userProjects]',
+    templateUrl: './issues-count-tile.component.html'
 })
-export class IssuesCountTileComponent extends BaseComponent implements OnInit {
-    @Input() tile: Tile;
-    @Input() isShownEditTileMenu: boolean = false;
-    @Input() userProjects: Project[] = [];
-    @Output() isDeleting: EventEmitter<Tile> = new EventEmitter<Tile>();
-    @Output() dragTile: EventEmitter<boolean> = new EventEmitter<boolean>();
+export class IssuesCountTileComponent extends BaseTileComponent implements OnInit {
     tileSettings: CountIssuesSettings;
     requiredProjects: Project[] = [];
     dateMsNow: number;
@@ -43,25 +33,24 @@ export class IssuesCountTileComponent extends BaseComponent implements OnInit {
     dateMsPast: number;
     single: SingleChart[];
     chartOptions: ChartOptions;
-    @ViewChild('tiles') data: any;
 
     constructor(
         private toastNotificationService: ToastNotificationService,
         private tileDialogService: TileDialogService,
         private issueService: IssueService,
-        private exportTileService: ExportTileService,
-        private spinner: SpinnerService
     ) {
         super();
     }
 
     ngOnInit() {
+        super.ngOnInit();
         this.initChartSettings();
         this.applySettings();
     }
 
-    setTileDragStatus(status: boolean) {
-        this.dragTile.emit(status);
+    editTile() {
+        this.tileDialogService.showIssuesCountEditDialog(this.userProjects, this.tile,
+            () => this.applySettings());
     }
 
     private applySettings() {
@@ -69,12 +58,7 @@ export class IssuesCountTileComponent extends BaseComponent implements OnInit {
         this.expectedIssueStatuses = [];
         this.getTileSettings();
         this.applyProjectSettings();
-    }
-
-    exportTile(exportType: ExportType) {
-        this.spinner.show(true);
-        this.exportTileService.exportTile(exportType, this.data.host.nativeElement);
-        this.spinner.hide();
+        this.changeTile.emit();
     }
 
     private getTileSettings() {
@@ -126,10 +110,5 @@ export class IssuesCountTileComponent extends BaseComponent implements OnInit {
                 domain: ['#1c80cf']
             }
         };
-    }
-
-    editTile() {
-        this.tileDialogService.showIssuesCountEditDialog(this.userProjects, this.tile,
-            () => this.applySettings());
     }
 }

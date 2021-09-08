@@ -16,56 +16,56 @@
 </div>
 <app-not-found *ngIf="notFound"></app-not-found>
 <ng-container *ngIf="!notFound">
-    <app-tile-menu
-        [orderChanged]="isOrderChanged"
-        (saveTilesOrder)="saveTilesOrder()"
-        (clearTiles)="deleteAllTiles(dashboard.id)"
-        (closeMenu)="toggleTileMenu()"
-        *ngIf="showTileMenu && dashboard" [dashboardId]="dashboard.id" [tiles]="tiles" [userProjects]="projects">
-    </app-tile-menu>
+<app-tile-menu
+    [orderChanged]="isOrderChanged"
+    (saveTilesOrder)="saveTilesOrder()"
+    (clearTiles)="deleteAllTiles(dashboard.id)"
+    (closeMenu)="toggleTileMenu()"
+    *ngIf="showTileMenu && dashboard" 
+    [dashboardId]="dashboard.id" 
+    [tiles]="tiles" 
+    [userProjects]="projects">
+</app-tile-menu>
 
-    <!--    Tiles Content    -->
-    <ng-template [ngIf]="dashboard">
-        <div *ngIf="!tiles.length" class="tiles-not-found">
-            <app-no-content-placeholder title="Looks like here are no tiles"></app-no-content-placeholder>
-        </div>
-        <div *ngIf="tiles.length" class="tiles-container">
-            <ng-container *ngFor="let tile of tiles; let i = index" [ngSwitch]="tile.type">
+<!--    Tiles Content    -->
+<ng-template [ngIf]="dashboard">
+    <div *ngIf="!tiles.length" class="tiles-not-found">
+        <app-no-content-placeholder title="Looks like here are no tiles"></app-no-content-placeholder>
+    </div>
+    <div *ngIf="tiles.length" class="tiles-container">
+        <ng-container *ngFor="let tile of tiles; let i = index">
+            <div
+                class="tile"
+                (onDragEnd)="dragOff()"
+                (onDragStart)="drag(tile)"
+                [style.flex-basis.px]="getTileWidth(tile)"
+                [style.height.px]="getTileHeight(tile)"
+                [pDraggableDisabled]="!canDrag"
+                [pDraggable]="canDrag ? 'dd' : null ">
                 <div
-                    class="tile"
-                    (onDragEnd)="dragOff()"
-                    (onDragStart)="drag(tile)"
-                    [style.flex-basis.px]="getTileSize(tile)"
-                    [pDraggableDisabled]="!canDrag"
-                    [pDraggable]="canDrag ? 'dd' : null ">
-                    <div
-                        (onDrop)="drop(i)"
-                        class="drop-line drop-line-left"
-                        *ngIf="getDropSpaceState(i)"
-                        pDroppable="dd">
-                    </div>
-                    <app-top-active-issues-tile (dragTile)="setDragByButton($event)" (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.TopActiveIssues"
-                        [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects">
-                    </app-top-active-issues-tile>
-                    <app-issues-per-time-tile (dragTile)="setDragByButton($event)" (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.IssuesPerTime"
-                        [isShownEditTileMenu]="showTileMenu" [tile]="tile" [userProjects]="projects">
-                    </app-issues-per-time-tile>
-                    <app-issues-count-tile (dragTile)="setDragByButton($event)" (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.IssuesCount"
-                        [isShownEditTileMenu]="showTileMenu" [tile]="tile"
-                        [userProjects]="projects">
-                    </app-issues-count-tile>
-                    <app-heat-map (dragTile)="setDragByButton($event)" (isDeleting)="deleteTile($event)" *ngSwitchCase="tileTypes.HeatMap"
-                        [isShownEditTileMenu]="showTileMenu" [tile]="tile"
-                        [userProjects]="projects">
-                    </app-heat-map>
-                    <div
-                        class="drop-line drop-line-right"
-                        (onDrop)="drop(i+1)"
-                        *ngIf="getDropSpaceState(i+1)"
-                        pDroppable="dd">
-                    </div>
+                    (onDrop)="drop(i)"
+                    class="drop-line drop-line-left"
+                    *ngIf="getDropSpaceState(i)"
+                    pDroppable="dd">
                 </div>
-            </ng-container>
-        </div>
-    </ng-template>
-</ng-container>
+                <app-common-tile
+                    (dragTile)="setDragByButton($event)"
+                    (isDeleting)="deleteTile($event)"
+                    (isEditing)="tile.isEditing = !tile.isEditing"
+                    [isShownEditTileMenu]="showTileMenu"
+                    [userProjects]="projects"
+                    [tile]="tile"
+                    [resize]="resize$"
+                    (changeTile)="onChange()">
+                </app-common-tile>
+                <div
+                    class="drop-line drop-line-right"
+                    (onDrop)="drop(i+1)"
+                    *ngIf="getDropSpaceState(i+1)"
+                    pDroppable="dd">
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</ng-template>
+
