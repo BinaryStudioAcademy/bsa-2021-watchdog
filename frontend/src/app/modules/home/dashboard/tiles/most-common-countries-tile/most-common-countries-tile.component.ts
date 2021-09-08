@@ -1,28 +1,21 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { BaseComponent } from '@core/components/base/base.component';
+import { Component, OnInit } from '@angular/core';
 import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
 import { ProjectService } from '@core/services/project.service';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { convertJsonToTileSettings } from '@core/utils/tile.utils';
 import { CountryInfo } from '@shared/models/projects/country-info';
 import { Project } from '@shared/models/projects/project';
+import { TileSizeType } from '@shared/models/tile/enums/tile-size-type';
 import { TileType } from '@shared/models/tile/enums/tile-type';
 import { MostCommonCountriesSettings } from '@shared/models/tile/settings/most-common-countries-settings';
-import { Tile } from '@shared/models/tile/tile';
+import { BaseTileComponent } from '../base-tile/base-tile.component';
 
 @Component({
     selector: 'app-most-common-countries-tile',
     templateUrl: './most-common-countries-tile.component.html',
     styleUrls: ['./most-common-countries-tile.component.sass']
 })
-export class MostCommonCountriesTileComponent extends BaseComponent implements OnInit {
-    @Input() project: Project;
-    @Input() tile: Tile;
-    @Input() isShownEditTileMenu: boolean = false;
-    @Input() userProjects: Project[] = [];
-    @Output() isDeleting: EventEmitter<Tile> = new EventEmitter<Tile>();
-    @Output() dragTile: EventEmitter<boolean> = new EventEmitter<boolean>();
-    paginatorRows: number = 5;
+export class MostCommonCountriesTileComponent extends BaseTileComponent implements OnInit {
     tileSettings: MostCommonCountriesSettings;
     countryInfos: CountryInfo[];
     requiredProjects = [];
@@ -35,6 +28,7 @@ export class MostCommonCountriesTileComponent extends BaseComponent implements O
     }
 
     ngOnInit(): void {
+        super.ngOnInit();
         this.applySettings();
     }
 
@@ -42,6 +36,7 @@ export class MostCommonCountriesTileComponent extends BaseComponent implements O
         this.countryInfos = [];
         this.getTileSettings();
         this.applyProjectSettings();
+        this.changeTile.emit();
         this.requiredProjects.forEach(proj => {
             this.initCountryInfos(proj);
         });
@@ -85,5 +80,19 @@ export class MostCommonCountriesTileComponent extends BaseComponent implements O
 
     setTileDragStatus(status: boolean): void {
         this.dragTile.emit(status);
+    }
+
+    paginatorRows() {
+        switch (this.tileSettings.tileSize) {
+            case TileSizeType.Small:
+                return 4;
+            case TileSizeType.Medium:
+                return 5;
+            case TileSizeType.Large:
+                return 7;
+
+            default:
+                return 4;
+        }
     }
 }

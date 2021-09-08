@@ -14,7 +14,8 @@
       "launchBrowser": false,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "SENDGRID_API_KEY": "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"
       }
     },
     "Watchdog.Collector": {
@@ -22,7 +23,8 @@
       "launchBrowser": false,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "SENDGRID_API_KEY": "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"
       },
       "dotnetRunMessages": "true",
       "applicationUrl": "http://localhost:5090"
