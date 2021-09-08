@@ -4,5 +4,6 @@ export interface OrganizationSettings {
     openMembership: boolean,
     defaultRoleId: number,
     trelloIntegration: boolean,
-    trelloBoard: string
+    trelloBoard: string,
+    trelloToken: string,
 }

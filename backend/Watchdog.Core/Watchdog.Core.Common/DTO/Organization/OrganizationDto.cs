@@ -10,6 +10,7 @@ namespace Watchdog.Core.Common.DTO.Organization
         public bool OpenMembership { get; set; }
         public bool TrelloIntegration { get; set; }
         public string TrelloBoard { get; set; }
+        public string TrelloToken { get; set; }
         public int DefaultRoleId { get; set; }
         public string AvatarUrl { get; set; }
         public int CreatedBy { get; set; }

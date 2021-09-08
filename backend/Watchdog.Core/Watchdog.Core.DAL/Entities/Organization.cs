@@ -27,6 +27,7 @@ namespace Watchdog.Core.DAL.Entities
 
         public bool TrelloIntegration { get; set; }
         public string TrelloBoard { get; set; }
+        public string TrelloToken { get; set; }
 
         public ICollection<Member> Members { get; set; }
 

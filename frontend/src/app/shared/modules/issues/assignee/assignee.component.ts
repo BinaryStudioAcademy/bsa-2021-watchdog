@@ -19,7 +19,6 @@ export class AssigneeComponent extends BaseComponent {
     @Input() teams: TeamOption[];
     @Output() closeModal = new EventEmitter<void>();
     constructor(
-        private toastNotification: ToastNotificationService,
         private teamService: TeamService
     ) {
         super();

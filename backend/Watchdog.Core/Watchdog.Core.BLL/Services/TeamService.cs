@@ -138,5 +138,25 @@ namespace Watchdog.Core.BLL.Services
 
             return _mapper.Map<ICollection<TeamOptionDto>>(teams);
         }
+
+        public async Task<ICollection<TeamDto>> GetTeamsForAssigneeByOrganizationIdAsync(int orgId)
+        {
+            var organization = await _context.Organizations.FirstOrDefaultAsync(o => o.Id == orgId)
+                ?? throw new KeyNotFoundException("No organization with this id!");
+
+            if (organization.TrelloIntegration && !string.IsNullOrWhiteSpace(organization.TrelloToken))
+            {
+                var teams = await _context.Teams
+                    .Include(t => t.TeamMembers)
+                    .Where(m => m.OrganizationId == orgId && 
+                        m.TeamMembers.Count > 0 && 
+                        m.TeamMembers.All(tm => !string.IsNullOrWhiteSpace(tm.Member.User.TrelloUserId)))
+                    .ToListAsync();
+
+                return _mapper.Map<ICollection<TeamDto>>(teams);
+            }
+
+            return await GetAllTeamsAsync(orgId);
+        }
     }
 }

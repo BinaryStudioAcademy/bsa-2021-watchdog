@@ -35,11 +35,13 @@
                 </p-inputSwitch>
             </div>
         </div>
-        <label *ngIf="trelloIntegration.value === true" class="item-definition">
+    </form>
+    <form [formGroup]="parentForm" class="item">
+        <label *ngIf="trelloIntegration?.value" class="item-definition">
             <div>Board</div>
             <div class="item-sub-text">Choose board to assign users in.</div>
         </label>
-        <div *ngIf="trelloIntegration.value === true && boards" class="item-field">
+        <div *ngIf="trelloIntegration?.value" class="item-field">
             <div class="item-form-complex">
                  <p-dropdown class="item-form-field" formControlName="trelloBoard" [options]="boards" optionValue="id"
                     optionLabel="name" styleClass="item-form-field" placeholder="Board">

@@ -7,7 +7,9 @@ import { Injectable } from '@angular/core';
 import { TrelloBoard } from '@shared/models/trello/trello-board';
 import { Observable, of, Subject } from 'rxjs';
 import { authorizeIntegration } from './dialogs/auth-trello.dialog';
-import { switchMap } from 'rxjs/operators';
+import { first, switchMap, take } from "rxjs/operators";
+import { User } from '@shared/models/user/user';
+import { timeStamp } from 'console';
 
 @Injectable({
     providedIn: 'root'
@@ -23,40 +25,6 @@ export class TrelloService {
         this.trelloTokenFromAuthorize.subscribe(t => {
             this.setTrelloToken(t);
         });
-    }
-
-    clearToken() {
-        this.trelloToken = '';
-    }
-
-    getBoardsByCurrentIntegration() {
-        return this.getToken().pipe(
-            switchMap(()=> this.httpClient.get<TrelloBoard[]>(
-                `${this.apiUrl}/members/me/boards`, { params: this.getParams() }
-            ))
-        );
-    }
-
-    searchMembers(query: string) {
-        if (!query) return of(null);
-        return this.httpClient.get<TrelloMember[]>(`${this.apiUrl}/search/members/?query=${query}`);
-    }
-
-    addMemberToCurrentBoard(memberId: string) {
-        return this.authService.getOrganization()
-            .pipe(switchMap(org => this.httpClient.put(
-                `${this.apiUrl}/boards/${org.trelloBoard}/members/${memberId}`,
-                { params: this.getParams() }
-            )));
-    }
-
-    addMembersWithIssueToBoardTodo(name: string, desc: string, memberId: string) {
-        return this.addCardIssuesToTodo(name, desc)
-            .pipe(switchMap(card => this.assigneeMemberToCard(memberId, card.id)));
-    }
-
-    getMember(id: string) {
-        return this.httpClient.get<TrelloMember>(`${this.apiUrl}/members/${id}`);
     }
 
     getToken(): Observable<string | null> {
@@ -75,18 +43,48 @@ export class TrelloService {
         return of(this.trelloToken);
     }
 
+    searchMembers(query: string) {
+        if (!query) return of(null);
+        return this.httpClient.get<TrelloMember[]>(`${this.apiUrl}/search/members/?query=${query}`);
+    }
+
+    clearToken() {
+        this.trelloToken = '';
+    }
+
+    getBoardsByCurrentIntegration() {
+        return this.getToken().pipe(
+            switchMap(() => this.httpClient.get<TrelloBoard[]>(
+                `${this.apiUrl}/members/me/boards`, { params: this.getParams() }
+            ))
+        );
+    }
+
+    async addMembersWithIssueToBoard(name: string, desc: string, users: User[]) {
+        const lists = await this.getBoardLists().pipe(first()).toPromise();
+        if (!lists.length) throw Error('Add list to trello!');
+        const firstList = lists[0];
+
+        const cards = await this.getListsCards(firstList.id).pipe(first()).toPromise();
+        const requiredCard = cards.find(c => c.name === name && c.desc === desc);
+        if (!requiredCard) await this.addCardIssues(name, desc, firstList.id).pipe(first()).toPromise();
+        else {
+            users.forEach(async u => {
+                await this.assigneeMemberToCard(u.trelloUserId, requiredCard.id).pipe(take(users.length)).toPromise();
+            });
+        }
+    }
+
+    getMember(id: string) {
+        return this.httpClient.get<TrelloMember>(`${this.apiUrl}/members/${id}`);
+    }
+
     private assigneeMemberToCard(memberId: string, cardId: string) {
         return this.httpClient.post(
             `${this.apiUrl}/cards/${cardId}/idMembers`,
             null,
             { params: this.getParams().set('value', memberId) }
         );
-    }
-
-    private addCardIssuesToTodo(name: string, desc: string) {
-        return this.getBoardLists().pipe(
-            switchMap(lists => of(lists[0].id))
-        ).pipe(switchMap(listId => this.addCardIssues(name, desc, listId)));
     }
 
     private addCardIssues(name: string, desc: string, listId: string): Observable<TrelloCard> {
@@ -99,8 +97,6 @@ export class TrelloService {
             }
         );
     }
-
-
 
     private getBoardLists() {
         return this.authService.getOrganization()
@@ -115,6 +111,22 @@ export class TrelloService {
             `${this.apiUrl}/lists/${listId}/cards`,
             { params: this.getParams() }
         );
+    }
+
+    private updateCard(cardId: string, memberIds: string) {
+        return this.httpClient.put<TrelloCard>(
+            `${this.apiUrl}/cards/${cardId}`,
+            null,
+            { params: this.getParams().set('idMembers', memberIds) }
+        );
+    }
+
+    private addMemberToCurrentBoard(memberId: string) {
+        return this.authService.getOrganization()
+            .pipe(switchMap(org => this.httpClient.put(
+                `${this.apiUrl}/boards/${org.trelloBoard}/members/${memberId}`,
+                { params: this.getParams() }
+            )));
     }
 
     private getParams() {

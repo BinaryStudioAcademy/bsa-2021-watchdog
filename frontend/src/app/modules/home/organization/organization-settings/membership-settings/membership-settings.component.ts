@@ -1,5 +1,4 @@
-import { TrelloBoard } from "./../../../../../shared/models/trello/trello-board";
-import { AuthenticationService } from '@core/services/authentication.service';
+import { TrelloBoard } from '@shared/models/trello/trello-board';
 import { BaseComponent } from '@core/components/base/base.component';
 import { RoleService } from '@core/services/role.service';
 import { Component, Input, OnInit } from '@angular/core';
@@ -8,6 +7,7 @@ import { Organization } from '@shared/models/organization/organization';
 import { Role } from '@shared/models/role/role';
 import { MembersRoles } from '@shared/constants/membersRoles';
 import { TrelloService } from '@core/services/trello-service';
+import { User } from '@shared/models/user/user';
 
 @Component({
     selector: 'app-membership-settings',
@@ -17,7 +17,7 @@ import { TrelloService } from '@core/services/trello-service';
 export class MembershipSettingsComponent extends BaseComponent implements OnInit {
     @Input() organization: Organization;
     @Input() parentForm: FormGroup;
-
+    @Input() user: User;
     roles: Role[];
     boards: TrelloBoard[];
 
@@ -32,26 +32,28 @@ export class MembershipSettingsComponent extends BaseComponent implements OnInit
             .subscribe(r => {
                 this.roles = r.filter(rm => rm.name !== MembersRoles.owner);
             });
-
+        if (this.organization.trelloIntegration) {
+            this.trelloService.getBoardsByCurrentIntegration().pipe(this.untilThis).subscribe(t => {
+                this.boards = t;
+            });
+        }
         this.connectForm();
     }
 
     connectForm(): void {
         this.parentForm.addControl('openMembership', new FormControl(this.organization.openMembership, Validators.required));
         this.parentForm.addControl('defaultRoleId', new FormControl(this.organization.defaultRoleId, Validators.required));
-        this.parentForm.addControl('trelloIntegration', new FormControl(false, Validators.required));
-        this.parentForm.addControl('trelloBoard', new FormControl({}, Validators.required));
+        this.parentForm.addControl('trelloIntegration', new FormControl(this.organization.trelloIntegration, Validators.required));
+        this.parentForm.addControl('trelloBoard', new FormControl(this.organization.trelloBoard, Validators.required));
+        // this.parentForm.addControl('trelloToken', new FormControl(this.organization.trelloToken, Validators.required));
 
         this.trelloIntegration.valueChanges.pipe(this.untilThis).subscribe(() => {
             if (this.trelloIntegration.value) {
-                this.trelloService.getToken().pipe(this.untilThis).subscribe(r => {
-                    this.trelloService.getBoards(r).pipe(this.untilThis).subscribe(t => {
-                        this.boards = t;
-                    });
+                this.trelloService.getBoardsByCurrentIntegration().subscribe(boards => {
+                    this.boards = boards;
                 });
             } else {
-                this.trelloIntegration.setValue(false);
-                this.trelloBoard.setValue({});
+                this.trelloService.clearToken();
                 this.boards = [];
             }
         });
@@ -64,4 +66,6 @@ export class MembershipSettingsComponent extends BaseComponent implements OnInit
     get trelloIntegration() { return this.parentForm.controls.trelloIntegration; }
 
     get trelloBoard() { return this.parentForm.controls.trelloBoard; }
+
+    get trelloToken() { return this.parentForm.controls.trelloToken; }
 }

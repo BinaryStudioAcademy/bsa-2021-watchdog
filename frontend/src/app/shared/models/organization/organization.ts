@@ -4,7 +4,8 @@ export interface Organization {
     organizationSlug: string,
     openMembership: boolean,
     trelloIntegration: boolean,
-    trelloBoard: string
+    trelloBoard: string,
+    trelloToken: string,
     defaultRoleId: number,
     avatarUrl: string,
     createdBy: number,

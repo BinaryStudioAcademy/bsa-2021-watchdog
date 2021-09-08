@@ -1,3 +1,4 @@
+import { TrelloService } from "@core/services/trello-service";
 import { OrganizationService } from '@core/services/organization.service';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { OrganizationSettings } from '@shared/models/organization/organization-settings';
@@ -11,6 +12,8 @@ import { MemberService } from '@core/services/member.service';
 import { ConfirmWindowService } from '@core/services/confirm-window.service';
 import { Router } from '@angular/router';
 import { ShareDataService } from '@core/services/share-data.service';
+import { User } from '@shared/models/user/user';
+import { tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-organization-settings',
@@ -20,6 +23,7 @@ import { ShareDataService } from '@core/services/share-data.service';
 export class OrganizationSettingsComponent extends BaseComponent implements OnInit {
     organization: Organization;
     parentForm: FormGroup = new FormGroup({});
+    user: User;
     memberRoleId: number;
     defaultOrganization: Organization;
     isRemovingAllowed = false;
@@ -34,7 +38,8 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
         private memberService: MemberService,
         private confirmWindowService: ConfirmWindowService,
         private dataService: ShareDataService<Organization>,
-        private router: Router
+        private router: Router,
+        private trelloService: TrelloService,
     ) { super(); }
 
     ngOnInit() {
@@ -52,7 +57,7 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
                     this.spinnerService.hide();
                 }
             );
-
+        this.user = this.authService.getUser();
         this.parentForm.statusChanges.subscribe(() => { this.checkSaveStatus(); });
     }
 
@@ -77,16 +82,16 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
     save() {
         this.spinnerService.show(true);
         const updateOrg: OrganizationSettings = { ...this.parentForm.value };
-        this.organizationService.updateSettings(this.organization.id, updateOrg)
-            .pipe(this.untilThis).subscribe(updatedOrg => {
-                Object.assign(this.organization, updatedOrg);
-                this.spinnerService.hide();
-                this.saveButton.nativeElement.disabled = true;
-                this.toastService.success('Organization was updated!');
-            }, error => {
-                this.spinnerService.hide();
-                this.toastService.error(error);
-            });
+        if (updateOrg.trelloIntegration) {
+            this.trelloService.getToken()
+                .pipe(tap(t => this.updateOrganizationSettings({ ...updateOrg, trelloToken: t })))
+                .subscribe(() => {}, error => {
+                    this.spinnerService.hide();
+                    this.toastService.error(error);
+                });
+            return;
+        }
+        this.updateOrganizationSettings(updateOrg);
     }
 
     setButtonStateDisabled(state: boolean) {
@@ -138,6 +143,19 @@ export class OrganizationSettingsComponent extends BaseComponent implements OnIn
                         this.toastService.error(error);
                     });
             }, error => {
+                this.toastService.error(error);
+            });
+    }
+
+    private updateOrganizationSettings(settings: OrganizationSettings) {
+        this.organizationService.updateSettings(this.organization.id, settings)
+            .pipe(this.untilThis).subscribe(updatedOrg => {
+                Object.assign(this.organization, updatedOrg);
+                this.spinnerService.hide();
+                this.saveButton.nativeElement.disabled = true;
+                this.toastService.success('Organization was updated!');
+            }, error => {
+                this.spinnerService.hide();
                 this.toastService.error(error);
             });
     }

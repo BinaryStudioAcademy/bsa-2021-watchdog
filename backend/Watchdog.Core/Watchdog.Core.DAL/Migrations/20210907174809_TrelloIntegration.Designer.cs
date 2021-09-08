@@ -10,7 +10,7 @@ using Watchdog.Core.DAL.Context;
 namespace Watchdog.Core.DAL.Migrations
 {
     [DbContext(typeof(WatchdogCoreContext))]
-    [Migration("20210907113900_TrelloIntegration")]
+    [Migration("20210907174809_TrelloIntegration")]
     partial class TrelloIntegration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1210,6 +1210,9 @@ namespace Watchdog.Core.DAL.Migrations
                     b.Property<bool>("TrelloIntegration")
                         .HasColumnType("bit");
 
+                    b.Property<string>("TrelloToken")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedBy");
@@ -2212,6 +2215,9 @@ namespace Watchdog.Core.DAL.Migrations
 
                     b.Property<DateTime?>("RegisteredAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("TrelloUserId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Uid")
                         .IsRequired()

@@ -1,3 +1,4 @@
+import { Organization } from '@shared/models/organization/organization';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { BaseComponent } from '@core/components/base/base.component';
@@ -15,6 +16,7 @@ import firebase from 'firebase/app';
 export class UserProfileComponent extends BaseComponent implements OnInit {
     isSignByEmailAndPassword: boolean;
     user: User;
+    organization: Organization;
     editForm: FormGroup = new FormGroup({});
     pass: FormGroup = new FormGroup({});
 
@@ -30,15 +32,24 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
 
     ngOnInit(): void {
         this.user = this.authService.getUser();
+        this.authService.getOrganization()
+            .pipe(this.untilThis)
+            .subscribe(org => {
+                this.organization = org;
+            });
         this.editForm.statusChanges.pipe(this.untilThis);
         this.isSignByEmailAndPassword = this.authService.isUserSignByEmailAndPassword();
     }
 
     updateUser() {
-        const user = { ...this.editForm.value };
+        const user = {
+            ...this.editForm.value,
+            trelloUserId: this.editForm.controls.trelloMember.value.id
+        };
         if (user.firstName === this.user.firstName
             && user.lastName === this.user.lastName
-            && user.email === this.user.email) {
+            && user.email === this.user.email
+            && user.trelloUserId === this.user.trelloUserId) {
             this.toastNotificationService.error("You haven't changed anything to make changes");
         } else {
             this.userService.updateUsersById(this.user.id, user)
@@ -93,11 +104,11 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
                 this.toastNotificationService.warning('Fill in all three fields to change your password');
             }
             if (checkUserFields.email === this.user.email && checkUserFields.firstName === this.user.firstName
-                && checkUserFields.lastName === this.user.lastName) {
+                && checkUserFields.lastName === this.user.lastName && checkUserFields.trelloMember.id === this.user.trelloUserId) {
                 this.updatePassword();
             }
             if (checkUserFields.email !== this.user.email || checkUserFields.firstName !== this.user.firstName
-                || checkUserFields.lastName !== this.user.lastName) {
+                || checkUserFields.lastName !== this.user.lastName || checkUserFields.trelloMember.id !== this.user.trelloUserId) {
                 this.updateUser();
                 this.updatePassword();
             }

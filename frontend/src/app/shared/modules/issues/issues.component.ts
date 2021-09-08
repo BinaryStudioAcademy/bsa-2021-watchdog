@@ -1,3 +1,5 @@
+import { TrelloService } from "./../../../core/services/trello-service";
+import { Organization } from "@shared/models/organization/organization";
 import { SpinnerService } from '@core/services/spinner.service';
 import { IssuesHubService } from '@core/hubs/issues-hub.service';
 import { Component, Input, OnInit } from '@angular/core';
@@ -10,7 +12,7 @@ import { TeamService } from '@core/services/team.service';
 import { Assignee } from '@shared/models/issue/assignee';
 import { count, toUsers } from '@core/services/issues.utils';
 import { IssueInfo } from '@shared/models/issue/issue-info';
-import { debounceTime, tap } from 'rxjs/operators';
+import { debounceTime, tap, switchMap, map } from "rxjs/operators";
 import { AssigneeOptions } from '@shared/models/issue/assignee-options';
 import { IssueService } from '@core/services/issue.service';
 import { LazyLoadEvent } from 'primeng/api';
@@ -43,6 +45,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     loading: boolean;
     totalRecords: number;
     member: Member;
+    organization: Organization;
     itemsPerPage = 10;
     toAssign: Assignee;
     issueId: number;
@@ -64,22 +67,22 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         private teamService: TeamService,
         private spinner: SpinnerService,
         private tableExportService: TableExportService,
-        private issueDropdownData: IssueDropdownDataService
+        private issueDropdownData: IssueDropdownDataService,
+        private trelloService: TrelloService,
     ) {
         super();
     }
 
     ngOnInit(): void {
         this.isAssign = false;
-
-        this.authService.getMember()
-            .pipe(
-                this.untilThis,
-                tap(member => {
+        this.authService.getOrganization()
+            .pipe(this.untilThis,
+                switchMap(org => {
+                    this.organization = org;
+                    return this.authService.getMember();
+                }), tap(member => {
                     this.member = member;
-                })
-            )
-            .subscribe(() => {
+                })).subscribe(() => {
                 forkJoin([this.loadMembers(), this.loadTeams()])
                     .pipe(this.untilThis)
                     .subscribe(([members, teams]) => {
@@ -96,12 +99,12 @@ export class IssuesComponent extends BaseComponent implements OnInit {
     }
 
     loadMembers() {
-        return this.memberService.getMembersByOrganizationId(this.member.organizationId)
+        return this.memberService.getAssigneeMembers(this.member.organizationId)
             .pipe(this.untilThis);
     }
 
     loadTeams() {
-        return this.teamService.getTeamOptionsByOrganizationId(this.member.organizationId)
+        return this.teamService.getAssigneeTeams(this.member.organizationId)
             .pipe(this.untilThis);
     }
 
@@ -135,6 +138,13 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                 .pipe(this.untilThis)
                 .subscribe(() => {
                     this.toastNotification.success('Assignee updated');
+                    if (this.organization.trelloIntegration) {
+                        const issue = this.issues.find(i => i.issueId === this.issueId);
+                        this.trelloService.addMembersWithIssueToBoard(
+                            issue.errorClass, issue.errorMessage,
+                            toUsers(this.toAssign.memberIds, this.sharedOptions.members)
+                        ).then();
+                    }
                 }, errorResponse => {
                     this.toastNotification.error(errorResponse);
                 });

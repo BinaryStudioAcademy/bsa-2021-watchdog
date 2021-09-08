@@ -27,6 +27,8 @@ namespace Watchdog.Core.DAL.Entities
 
         public string AvatarUrl { get; set; }
 
+        public string TrelloUserId { get; set; }
+
         public DateTime? RegisteredAt { get; set; }
 
         public ICollection<Member> Members { get; set; }

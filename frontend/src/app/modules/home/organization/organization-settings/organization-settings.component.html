@@ -11,6 +11,6 @@
 <div class="settings-container">
     <app-general-settings [parentForm]="parentForm" *ngIf="organization" [organization]="organization">
     </app-general-settings>
-    <app-membership-settings [parentForm]="parentForm" *ngIf="organization" [organization]="organization">
+    <app-membership-settings [parentForm]="parentForm" *ngIf="organization" [organization]="organization" [user]="user">
     </app-membership-settings>
 </div>
