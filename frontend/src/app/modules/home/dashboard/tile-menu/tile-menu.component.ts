@@ -45,6 +45,10 @@ export class TileMenuComponent {
         this.saveTilesOrder.emit();
     }
 
+    createTopResponsesTime() {
+        this.tileDialogService.showTopResponsesTimeCreateDialog(this.userProjects, this.dashboardId, this.tiles);
+    }
+
     createActiveIssues() {
         this.tileDialogService.showTopActiveIssuesCreateDialog(this.userProjects, this.dashboardId, this.tiles);
     }
@@ -52,11 +56,16 @@ export class TileMenuComponent {
     createIssuePerTime() {
         this.tileDialogService.showIssuesPerTimeCreateDialog(this.userProjects, this.dashboardId, this.tiles);
     }
+
     createIssueCount() {
         this.tileDialogService.showIssuesCountCreateDialog(this.userProjects, this.dashboardId, this.tiles);
     }
 
     createHeatMap() {
         this.tileDialogService.showHeatMapCreateDialog(this.userProjects, this.dashboardId, this.tiles);
+    }
+
+    createMostCommonCountries() {
+        this.tileDialogService.showMostCommonCountriesCreateDialog(this.userProjects, this.dashboardId, this.tiles);
     }
 }

@@ -4,7 +4,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Organization } from '@shared/models/organization/organization';
 import { Role } from '@shared/models/role/role';
-import { MembersRoles } from '@shared/constants/membersRoles';
+import { MembersRoles } from '@shared/constants/member-roles';
 
 @Component({
     selector: 'app-membership-settings',

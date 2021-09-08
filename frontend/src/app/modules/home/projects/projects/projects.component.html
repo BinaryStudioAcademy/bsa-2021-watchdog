@@ -2,8 +2,13 @@
 <div class="header">
     <h1 class="header-title">Projects</h1>
     <div class="action-buttons">
-        <button [routerLink]="'./create'" class="p-button-primary p-button-outlined"
-                icon="pi pi-plus-circle" label="Create Project" pButton type="button"></button>
+        <button
+            [routerLink]="'./create'"
+            class="p-button-primary p-button-outlined"
+            icon="pi pi-plus-circle"
+            label="Create Project"
+            pButton type="button"
+            *ngIf="hasAccess()"></button>
     </div>
 </div>
 <app-no-content-placeholder *ngIf="projects && !projects.length" title="Looks like here are no projects"></app-no-content-placeholder>

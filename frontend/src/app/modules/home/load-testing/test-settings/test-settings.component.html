@@ -12,7 +12,8 @@
             class="p-button-primary p-button-outlined"
             label="Save"
             (click)="save(false)"
-            [disabled]="!formValid()"></button>
+            [disabled]="!formValid()">
+        </button>
         </div>
         <div class="header-buttons" *ngIf="!isNotFound && !loading">
             <button

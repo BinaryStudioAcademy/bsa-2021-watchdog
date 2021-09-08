@@ -23,7 +23,7 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<int> GetFilteredIssueCountByStatusesAndDateRangeByApplicationIdAsync(int applicationId, IssueStatusesByDateRangeFilter filter);
         Task UpdateIssueStatusAsync(UpdateIssueStatusDto issueStatusDto);
         Task<IssueDto> GetIssueByIdAsync(int issueId);
-        Task<IssueSolutionDto> GetIssueSolutionLinkByIssueIdAsync(int issueId);
+        Task<IssueItemSolutionDto> GetIssueSolutionByIssueIdAsync(int issueId);
         Task<CountOfIssuesByStatusDto> GetCountOfIssuesByStatuses(int memberId);
     }
 }

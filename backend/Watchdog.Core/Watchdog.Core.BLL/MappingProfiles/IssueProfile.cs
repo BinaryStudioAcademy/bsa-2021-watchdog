@@ -29,8 +29,8 @@ namespace Watchdog.Core.BLL.MappingProfiles
             CreateMap<EventMessage, IssueMessageDto>();
             CreateMap<Issue, IssueDto>();
 
-            CreateMap<IssueSolution, IssueSolutionDto>();
             CreateMap<IssueItemSolution, IssueItemSolutionDto>();
+            CreateMap<IssueAnswer, IssueAnswerDto>();
         }
     }
 }

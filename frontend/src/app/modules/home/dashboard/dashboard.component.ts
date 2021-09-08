@@ -1,3 +1,4 @@
+import { hasAccess } from '@core/utils/access.utils';
 import { Component, OnInit } from '@angular/core';
 import { Dashboard } from '@shared/models/dashboard/dashboard';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,7 +19,7 @@ import { ProjectService } from '@core/services/project.service';
 import { delay, map } from 'rxjs/operators';
 import { SpinnerService } from '@core/services/spinner.service';
 import { convertJsonToTileSettings, sortTilesByTileOrder } from '@core/utils/tile.utils';
-import { TopActiveIssuesSettings } from '@shared/models/tile/settings/top-active-issues-settings';
+import { TopActiveTileSettings } from '@shared/models/tile/settings/top-active-tile-settings';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UpdateDashboardComponent } from '../modals/dashboard/update-dashboard.component';
 import { Member } from '@shared/models/member/member';
@@ -42,6 +43,8 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     resize: Subject<void> = new Subject<void>();
     resize$: Observable<void> = this.resize.asObservable().pipe(delay(100));
     notFound: boolean = false;
+
+    hasAccess = () => hasAccess(this.member);
 
     constructor(
         private route: ActivatedRoute,
@@ -180,12 +183,12 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     }
 
     getTileWidth(tile: Tile) {
-        const settings = convertJsonToTileSettings(tile.settings, TileType.TopActiveIssues) as TopActiveIssuesSettings;
+        const settings = convertJsonToTileSettings(tile.settings, TileType.TopActiveIssues) as TopActiveTileSettings;
         return settings.tileSize * 150 + 350;
     }
 
     getTileHeight(tile: Tile) {
-        const settings = convertJsonToTileSettings(tile.settings, TileType.TopActiveIssues) as TopActiveIssuesSettings;
+        const settings = convertJsonToTileSettings(tile.settings, TileType.TopActiveIssues) as TopActiveTileSettings;
         return settings.tileSize * 64 + 366;
     }
 

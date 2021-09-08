@@ -1,4 +1,4 @@
-<div class="layout-wrapper">
+<div class="layout-wrapper" *ngIf="member">
     <!--    Header    -->
     <div class="layout-topbar">
         <!--    Logo    -->
@@ -65,16 +65,23 @@
                     </button>
                 </div>
                 <!--    Add dashboard button    -->
-                <button (click)="openAddDashboarDialog()" class="button dashboard add-button"
-                    pTooltip="{{collapsed ? 'Add dashboard' : undefined}}">
+                <button
+                    (click)="openAddDashboarDialog()"
+                    class="button dashboard add-button"
+                    pTooltip="{{collapsed ? 'Add dashboard' : undefined}}"
+                    *ngIf="hasAccess()">
                     <i class="pi pi-plus"></i>
                     <span *ngIf="!collapsed">Add</span>
                 </button>
             </div>
              <!--    Members button    -->
              <div>
-                <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Members' : undefined}}"
-                    routerLink="members">
+                <button
+                    [routerLinkActive]="['active']"
+                    class="button"
+                    pTooltip="{{collapsed ? 'Members' : undefined}}"
+                    routerLink="members"
+                    *ngIf="hasAccess()">
                     <i class="pi pi-user"></i>
                     <span *ngIf="!collapsed">Members</span>
                 </button>
@@ -97,8 +104,12 @@
             </div>
             <!--    Setting button    -->
             <div>
-                <button [routerLinkActive]="['active']" class="button" pTooltip="{{collapsed ? 'Settings' : undefined}}"
-                    routerLink="organization/settings">
+                <button
+                    [routerLinkActive]="['active']"
+                    class="button"
+                    pTooltip="{{collapsed ? 'Settings' : undefined}}"
+                    routerLink="organization/settings"
+                    *ngIf="hasAccess()">
                     <i class="pi pi-cog"></i>
                     <span *ngIf="!collapsed">Settings</span>
                 </button>

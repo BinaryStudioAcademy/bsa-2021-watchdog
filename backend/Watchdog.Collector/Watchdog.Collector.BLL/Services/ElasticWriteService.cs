@@ -24,6 +24,14 @@ namespace Watchdog.Collector.BLL.Services
             _issueProducer = issueProducer;
         }
 
+        public async Task LogResponse(ResponseInfo response)
+        {
+            if (!string.IsNullOrEmpty(response.Url))
+            {
+                await _client.IndexDocumentAsync<ResponseInfo>(response);
+            }
+        }
+
         public Task AddIssueMessageAsync(IssueMessageDto message)
         {
             var issueMessage = _mapper.Map<IssueMessage>(message);
