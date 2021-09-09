@@ -42,7 +42,6 @@ namespace Watchdog.Core.API.Extensions
             services.AddTransient<IRegistrationService, RegistrationService>();
             services.AddTransient<ILoaderTestService, LoaderTestService>();
             services.AddTransient<IAnalyticsService, AnalyticsService>();
-            services.AddEmailSendService(configuration);
             services.AddElasticSearch(configuration);
             services.AddRabbitMQ(configuration);
             
@@ -84,19 +83,6 @@ namespace Watchdog.Core.API.Extensions
                 options.UseSqlServer(
                     connectionsString,
                     opt => opt.MigrationsAssembly(typeof(WatchdogCoreContext).Assembly.GetName().Name)));
-        }
-
-
-        public static void AddEmailSendService(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddTransient<IEmailSendService, EmailSendService>(provider => new EmailSendService(new BLL.Services.Options.EmailSendOptions
-            {
-                ApiKey = configuration["SendGrid:ApiKey"], // you need to add SENDGRID_API_KEY to yours environment variables
-                SenderEmail = configuration["SendGrid:SenderEmail"],
-                SenderName = configuration["SendGrid:SenderName"],
-                TemplateId = configuration["SendGrid:TemplateId"],  // templates you can create on sendgrid site
-                                                                                 // for this template automatically sended in the promotions.
-            }));
         }
 
         public static void AddRabbitMQ(this IServiceCollection services, IConfiguration configuration)

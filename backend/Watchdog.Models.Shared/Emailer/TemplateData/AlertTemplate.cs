@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using Watchdog.Models.Shared.Issues;
 
 namespace Watchdog.Models.Shared.Emailer.TemplateData
 {
@@ -13,19 +11,10 @@ namespace Watchdog.Models.Shared.Emailer.TemplateData
         {
         }
 
-        public AlertTemplate(IssueMessage issue)
+        public AlertTemplate(IssueTemplate template)
         {
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<IssueMessage, IssueTemplate>();
-                cfg.CreateMap<IssueMessageDetails, IssueDetailsTemplate>();
-                cfg.CreateMap<StackFrame, StackFrameTemplate>();
-                cfg.CreateMap<IssueEnvironment, IssueEnvironmentTemplate>();
-                cfg.CreateMap<HttpResponseErrorMessage, ResponseErrorMessageTemplate>();
-            });
-            var mapper = new Mapper(config);
-            Issue = mapper.Map<IssueTemplate>(issue);
-            Subject = $"Watchdog - {issue.IssueDetails.ClassName} - {issue.IssueDetails.ErrorMessage}";
+            Issue = template;
+            Subject = $"Watchdog - {template.IssueDetails.ClassName} - {template.IssueDetails.ErrorMessage}";
         }
 
         [JsonProperty("subject")]

@@ -73,8 +73,8 @@ namespace Watchdog.Core.API.Controllers
         [HttpPost("reinvite")]
         public async Task<ActionResult<int>> Reinvite(InviteDto dto)
         {
-            var response = await _memberService.InviteMemberAsync(dto.Id);
-            return Ok(response.StatusCode);
+            await _memberService.InviteMemberAsync(dto.Id);
+            return Ok();
         }
 
         [HttpPost("acceptInvite")]
