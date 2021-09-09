@@ -26,7 +26,7 @@ export class TeamProjectsComponent extends BaseComponent implements OnInit {
         super();
     }
 
-    hasAccess = () => hasAccess(this.member);
+    hasAccess = () => hasAccess(this.member) && this.team.members.find(x => x.id === this.member.id);
 
     ngOnInit() {
         this.spinnerService.show(true);
