@@ -11,21 +11,25 @@
 </div>
 <app-not-found *ngIf="notFound"></app-not-found>
 <p-tabView *ngIf="!notFound && !loading" [(activeIndex)]="activeIndex">
-    <p-tabPanel>
+    <p-tabPanel *ngIf="changed">
         <ng-template pTemplate="header">
             <div class="header">
                 <span>Issues</span>
             </div>
         </ng-template>
-        <app-issues *ngIf="project" [project]="project"></app-issues>
+        <ng-template pTemplate="content">
+            <app-issues *ngIf="project" [project]="project"></app-issues>
+        </ng-template>
     </p-tabPanel>
-    <p-tabPanel *ngIf="isBrowser">
+    <p-tabPanel *ngIf="isBrowser && changed">
         <ng-template pTemplate="header">
             <div class="header">
                 <span>Analytics</span>
             </div>
         </ng-template>
-        <app-project-analytics *ngIf="project" [project]="project"></app-project-analytics>
+        <ng-template pTemplate="content">
+            <app-project-analytics *ngIf="project" [project]="project"></app-project-analytics>
+        </ng-template>
     </p-tabPanel>
     <p-tabPanel *ngIf="hasAccess()">
         <ng-template pTemplate="header">
@@ -43,7 +47,7 @@
         </ng-template>
         <app-project-alert *ngIf="project" [editFormAlert]="editFormAlert" [project]="project"></app-project-alert>
     </p-tabPanel>
-    <p-tabPanel>
+    <p-tabPanel #configure>
         <ng-template pTemplate="header">
             <div class="header">
                 <span>Configure platform</span>

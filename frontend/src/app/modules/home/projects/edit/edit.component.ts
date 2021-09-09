@@ -1,5 +1,5 @@
 import { Member } from '@shared/models/member/member';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@core/components/base/base.component';
@@ -20,6 +20,7 @@ import { PrimeIcons } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { zip } from 'rxjs';
 import { Data } from '../data';
+import { TabPanel, TabView } from 'primeng/tabview';
 
 @Component({
     selector: 'app-edit',
@@ -44,6 +45,22 @@ export class EditComponent extends BaseComponent implements OnInit {
 
     hasAccess = () => hasAccess(this.member);
 
+    private tabView: TabView;
+    private tabPanel: TabPanel;
+
+    @ViewChild(TabView) set tabviewChild(value: TabView) {
+        this.tabView = value;
+        if (this.tabPanel) {
+            this.change();
+        }
+    }
+    @ViewChild('configure') set tabPanelChild(value: TabPanel) {
+        this.tabPanel = value;
+        if (this.tabView) {
+            setTimeout(() => this.change(), 0);
+        }
+    }
+
     constructor(
         private toastNotifications: ToastNotificationService,
         private authService: AuthenticationService,
@@ -55,6 +72,16 @@ export class EditComponent extends BaseComponent implements OnInit {
         private confirmService: ConfirmWindowService
     ) {
         super();
+    }
+
+    changed = false;
+
+    change(): void {
+        if (!this.changed) {
+            const index = this.tabView.tabs.findIndex(x => x.id === this.tabPanel.id);
+            this.activeIndex = index;
+            this.changed = true;
+        }
     }
 
     ngOnInit() {
@@ -87,8 +114,8 @@ export class EditComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis)
             .subscribe(params => {
                 const tab = params.get('tab');
-                if (tab) {
-                    this.activeIndex = Number(tab);
+                if (tab !== 'configure') {
+                    this.changed = true;
                 }
             });
     }
