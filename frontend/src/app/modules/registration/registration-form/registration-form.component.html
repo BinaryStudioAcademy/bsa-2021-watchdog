@@ -156,7 +156,8 @@
 </div>
 <div class="submit-block" *ngIf="step === stepRegistration.OrganizationData">
     <span>
-        <button pButton class="submit-button p-button-outlined" label="Previous" (click)="previous()"></button>
+        <button [disabled]="isNotFinishedRegistration" pButton class="submit-button p-button-outlined" label="Previous"
+            (click)="previous()"></button>
     </span>
     <span>
         <button pButton class="submit-button p-button-outlined" label="Submit" (click)="submit()"

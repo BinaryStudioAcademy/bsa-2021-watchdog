@@ -237,7 +237,7 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                 .subscribe(
                     project => {
                         this.toastNotifications.success(`${project.name} created!`);
-                        this.router.navigate(['home', 'projects', 'edit', `${project.id}`], { queryParams: { tab: '2' } });
+                        this.router.navigate(['home', 'projects', 'edit', `${project.id}`], { queryParams: { tab: 'configure' } });
                         this.spinnerService.hide();
                     },
                     error => {
