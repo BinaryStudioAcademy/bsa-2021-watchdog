@@ -146,6 +146,7 @@ export class RegistrationFormComponent extends BaseComponent implements OnInit {
                 }
             ),
         });
+        if (this.isNotFinishedRegistration) this.next();
     }
 
     validateAnother = (another: AbstractControl) => () => {

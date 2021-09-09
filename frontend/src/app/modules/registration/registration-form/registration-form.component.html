@@ -139,13 +139,13 @@
                                 pInputText [(ngModel)]="organizationSlugJoins">
                             <label for="float-input-comp-slug">Organization slug</label>
                         </span>
-                        <div *ngIf="organizationStep && organizationSlug.touched && organizationSlug.invalid"
+                        <div *ngIf="organizationStep && organizationSlugJoin?.touched && organizationSlugJoin?.invalid"
                             class="validation">
-                            <small *ngIf="organizationSlug.errors?.required">Сan not be empty</small>
-                            <small *ngIf="organizationSlug.errors?.minlength">Min length 3</small>
-                            <small *ngIf="organizationSlug.errors?.maxlength">Max length 50</small>
-                            <small *ngIf="organizationSlug.errors?.doesntExist">Doesnt exist organization</small>
-                            <small *ngIf="organizationSlug.errors?.pattern">May contain letters, numbers,
+                            <small *ngIf="organizationSlugJoin.errors?.required">Сan not be empty</small>
+                            <small *ngIf="organizationSlugJoin.errors?.minlength">Min length 3</small>
+                            <small *ngIf="organizationSlugJoin.errors?.maxlength">Max length 50</small>
+                            <small *ngIf="organizationSlugJoin.errors?.doesntExist">Doesnt exist organization</small>
+                            <small *ngIf="organizationSlugJoin.errors?.pattern">May contain letters, numbers,
                                 space, dashes and underscores</small>
                         </div>
                     </div>
@@ -156,7 +156,8 @@
 </div>
 <div class="submit-block" *ngIf="step === stepRegistration.OrganizationData">
     <span>
-        <button pButton class="submit-button p-button-outlined" label="Previous" (click)="previous()"></button>
+        <button [disabled]="isNotFinishedRegistration" pButton class="submit-button p-button-outlined" label="Previous"
+            (click)="previous()"></button>
     </span>
     <span>
         <button pButton class="submit-button p-button-outlined" label="Submit" (click)="submit()"

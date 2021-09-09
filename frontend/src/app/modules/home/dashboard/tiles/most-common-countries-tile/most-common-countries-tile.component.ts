@@ -19,6 +19,8 @@ export class MostCommonCountriesTileComponent extends BaseTileComponent implemen
     tileSettings: MostCommonCountriesSettings;
     countryInfos: CountryInfo[];
     requiredProjects = [];
+    loadingDataInTile: boolean = false;
+
     constructor(
         private projectsService: ProjectService,
         private toastNotification: ToastNotificationService,
@@ -76,6 +78,7 @@ export class MostCommonCountriesTileComponent extends BaseTileComponent implemen
 
     private applyProjectSettings(): void {
         this.requiredProjects = this.userProjects.filter(proj => this.tileSettings.sourceProjects.some(id => id === proj.id));
+        this.loadingDataInTile = true;
     }
 
     setTileDragStatus(status: boolean): void {

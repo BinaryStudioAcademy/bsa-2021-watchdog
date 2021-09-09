@@ -53,7 +53,7 @@ import { AddEditMostCommonCountriesTileComponent }
         MostCommonCountriesTileComponent,
         AddEditMostCommonCountriesTileComponent,
         CommonTileComponent,
-        CommomEditTileComponent,
+        CommomEditTileComponent
     ],
     imports: [
         SharedModule,
