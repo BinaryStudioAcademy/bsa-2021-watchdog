@@ -19,11 +19,12 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task UpdateAssigneeAsync(UpdateAssigneeDto assigneeDto);
         Task<ICollection<IssueMessageDto>> GetAllIssueMessagesAsync();
         Task<ICollection<IssueMessageDto>> GetAllIssueMessagesByApplicationIdAsync(int applicationId);
-        Task<ICollection<IssueMessageDto>> GetAllIssueMessagesByApplicationIdAsync(int applicationId, IssueStatusesFilterDto statusesFilter);
+        Task<ICollection<IssueMessageDto>> GetAllIssueMessagesByApplicationIdAsync(int applicationId, IssueStatusesByDateRangeFilter filter);
         Task<int> GetFilteredIssueCountByStatusesAndDateRangeByApplicationIdAsync(int applicationId, IssueStatusesByDateRangeFilter filter);
         Task UpdateIssueStatusAsync(UpdateIssueStatusDto issueStatusDto);
         Task<IssueDto> GetIssueByIdAsync(int issueId);
         Task<IssueItemSolutionDto> GetIssueSolutionByIssueIdAsync(int issueId);
         Task<CountOfIssuesByStatusDto> GetCountOfIssuesByStatuses(int memberId);
+        Task<ICollection<IssueInfoDto>> GetTopActiveIssuesAsync(TopActiveIssuesFilter filter);
     }
 }

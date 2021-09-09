@@ -242,7 +242,7 @@ namespace Watchdog.Core.BLL.Services
 
         public async Task<ICollection<IssueMessageDto>> GetAllIssueMessagesByApplicationIdAsync(
             int applicationId,
-            IssueStatusesFilterDto statusesFilter)
+            IssueStatusesByDateRangeFilter filter)
         {
             if (!await _context.Applications.AnyAsync(application => application.Id == applicationId))
             {
@@ -254,10 +254,28 @@ namespace Watchdog.Core.BLL.Services
                 .Include(message => message.Issue)
                 .Where(message =>
                     message.Issue.ApplicationId == applicationId
-                    && statusesFilter.IssueStatuses.Contains(message.Issue.Status))
+                    && filter.IssueStatuses.Contains(message.Issue.Status)
+                    && message.OccurredOn >= filter.DateRange)
                 .ToListAsync();
 
             return _mapper.Map<ICollection<IssueMessageDto>>(messages);
+        }
+
+        public async Task<int> GetFilteredIssueCountByStatusesAndDateRangeByApplicationIdAsync(int applicationId,
+            IssueStatusesByDateRangeFilter filter)
+        {
+            if (!await _context.Applications.AnyAsync(application => application.Id == applicationId))
+            {
+                throw new KeyNotFoundException("Application not found");
+            }
+
+            var messagesCount = await _context.EventMessages
+                .AsNoTracking()
+                .Include(message => message.Issue)
+                .CountAsync(message => message.Issue.ApplicationId == applicationId
+                                  && filter.IssueStatuses.Contains(message.Issue.Status)
+                                  && message.OccurredOn >= filter.DateRange);
+            return messagesCount;
         }
 
         public async Task UpdateIssueStatusAsync(UpdateIssueStatusDto issueStatusDto)
@@ -400,23 +418,6 @@ namespace Watchdog.Core.BLL.Services
             };
         }
 
-        public async Task<int> GetFilteredIssueCountByStatusesAndDateRangeByApplicationIdAsync(int applicationId,
-            IssueStatusesByDateRangeFilter filter)
-        {
-            if (!await _context.Applications.AnyAsync(application => application.Id == applicationId))
-            {
-                throw new KeyNotFoundException("Application not found");
-            }
-
-            var messagesCount = await _context.EventMessages
-                .AsNoTracking()
-                .Include(message => message.Issue)
-                .CountAsync(message => message.Issue.ApplicationId == applicationId
-                                  && filter.IssueStatuses.Contains(message.Issue.Status)
-                                  && message.OccurredOn >= filter.DateRange);
-            return messagesCount;
-        }
-
         public async Task<IssueItemSolutionDto> GetIssueSolutionByIssueIdAsync(int issueId)
         {
             var issueEntity = await _context.Issues
@@ -435,6 +436,31 @@ namespace Watchdog.Core.BLL.Services
                 .FirstOrDefault();
 
             return _mapper.Map<IssueItemSolutionDto>(filteredIssueSolutionItem);
+        }
+
+        public async Task<ICollection<IssueInfoDto>> GetTopActiveIssuesAsync(TopActiveIssuesFilter filter)
+        {
+            return await _context.Issues
+                .Include(i => i.Newest)
+                .Where(i => 
+                    filter.ProjectIds.Contains(i.ApplicationId) 
+                    && i.Newest.OccurredOn >= filter.Date
+                    && i.Status == IssueStatus.Active)
+                .Take(filter.Items)
+                .OrderByDescending(x => x.Newest.OccurredOn)
+                .Select(i => new IssueInfoDto
+                {
+                    IssueId = i.Id,
+                    ErrorClass = i.ErrorClass,
+                    ErrorMessage = i.ErrorMessage,
+                    EventsCount = i.EventsCount,
+                    Newest = new IssueMessageDto()
+                    {
+                        Id = i.Newest.EventId,
+                        OccurredOn = i.Newest.OccurredOn
+                    }
+                })
+                .ToListAsync();
         }
     }
 }

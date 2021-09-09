@@ -1,5 +1,4 @@
 import { AuthenticationService } from '@core/services/authentication.service';
-import { switchMap } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { Project } from '@shared/models/projects/project';
 import { TopActiveTileSettings } from '@shared/models/tile/settings/top-active-tile-settings';
@@ -9,7 +8,6 @@ import { TileDialogService } from '@core/services/dialogs/tile-dialog.service';
 import { IssueInfo } from '@shared/models/issue/issue-info';
 import { IssueService } from '@core/services/issue.service';
 import { convertJsonToTileSettings, convertTileDateRangeTypeToMs } from '@core/utils/tile.utils';
-import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import { TileSizeType } from '@shared/models/tile/enums/tile-size-type';
 import { BaseTileComponent } from '../base-tile/base-tile.component';
 
@@ -72,22 +70,19 @@ export class TopActiveIssuesTileComponent extends BaseTileComponent implements O
         this.requiredProjects = this.userProjects.filter(proj => this.tileSettings.sourceProjects.some(id => id === proj.id));
     }
 
-    private applyIssuesSettings(issuesInfo: IssueInfo[]) {
-        this.displayedIssues = issuesInfo
-            .filter(info => this.requiredProjects.some(proj => proj.id === info.project.id)
-                && new Date(info.newest.occurredOn).getTime() >= Date.now() - convertTileDateRangeTypeToMs(this.tileSettings.dateRange))
-            .sort((a, b) => b.eventsCount - a.eventsCount) // top sort
-            .slice(0, this.tileSettings.itemsCount); // issues count
-    }
-
     private getIssuesInfo() {
-        this.authService.getMember()
-            .pipe(this.untilThis, switchMap(member => this.issueService.getIssuesInfo(member.id, IssueStatus.Active)))
+        this.issueService.getTopActiveIssuesInfo({
+            projectIds: this.requiredProjects.map(x => x.id),
+            date: new Date(Date.now() - convertTileDateRangeTypeToMs(this.tileSettings.dateRange)),
+            items: this.tileSettings.itemsCount
+        })
+            .pipe(this.untilThis)
             .subscribe(issuesInfo => {
-                this.applyIssuesSettings(issuesInfo);
+                this.displayedIssues = issuesInfo;
                 this.loadingDataInTile = true;
             }, error => {
                 this.toastNotificationService.error(error);
+                this.loadingDataInTile = true;
             });
     }
 }
