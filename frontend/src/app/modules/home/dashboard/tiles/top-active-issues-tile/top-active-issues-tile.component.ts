@@ -22,6 +22,7 @@ export class TopActiveIssuesTileComponent extends BaseTileComponent implements O
     tileSettings: TopActiveTileSettings;
     requiredProjects: Project[] = [];
     displayedIssues: IssueInfo[] = [];
+    loadingDataInTile: boolean = false;
 
     constructor(
         private toastNotificationService: ToastNotificationService,
@@ -84,6 +85,7 @@ export class TopActiveIssuesTileComponent extends BaseTileComponent implements O
             .pipe(this.untilThis, switchMap(member => this.issueService.getIssuesInfo(member.id, IssueStatus.Active)))
             .subscribe(issuesInfo => {
                 this.applyIssuesSettings(issuesInfo);
+                this.loadingDataInTile = true;
             }, error => {
                 this.toastNotificationService.error(error);
             });

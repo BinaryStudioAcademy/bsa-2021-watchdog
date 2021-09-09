@@ -19,6 +19,7 @@ export class TopResponsesTimeTileComponent extends BaseTileComponent implements 
     tileSettings: TopActiveTileSettings;
     requiredProjects: Project[] = [];
     displayedResponses: ResponseInfo[] = [];
+    loadingDataInTile: boolean = false;
 
     constructor(
         private toastNotificationService: ToastNotificationService,
@@ -71,6 +72,7 @@ export class TopResponsesTimeTileComponent extends BaseTileComponent implements 
             .pipe(this.untilThis)
             .subscribe(responsesInfo => {
                 this.displayedResponses = responsesInfo;
+                this.loadingDataInTile = true;
             }, error => {
                 this.toastNotificationService.error(error);
             });

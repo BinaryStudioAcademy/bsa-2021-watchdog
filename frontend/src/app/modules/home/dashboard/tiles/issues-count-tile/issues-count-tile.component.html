@@ -1,10 +1,10 @@
 <app-charts
     #toExport
-    *ngIf="single?.length === requiredProjects?.length"
+    *ngIf="single?.length === requiredProjects?.length && loadingDataInTile"
     [chartOptions]="chartOptions"
     [tileType]="tile.type"
     [chartType]="ChartType"
     [single]="single"
     [resize]="resize">
 </app-charts>
-
+<p-progressSpinner *ngIf="!loadingDataInTile"></p-progressSpinner>

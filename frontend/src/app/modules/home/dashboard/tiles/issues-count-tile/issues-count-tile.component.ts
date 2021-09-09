@@ -19,7 +19,8 @@ import { BaseTileComponent } from '../base-tile/base-tile.component';
 
 @Component({
     selector: 'app-issues-count-tile[tile][userProjects]',
-    templateUrl: './issues-count-tile.component.html'
+    templateUrl: './issues-count-tile.component.html',
+    styleUrls: ['../common-tile/common-tile.component.sass']
 })
 export class IssuesCountTileComponent extends BaseTileComponent implements OnInit {
     tileSettings: CountIssuesSettings;
@@ -33,6 +34,7 @@ export class IssuesCountTileComponent extends BaseTileComponent implements OnIni
     dateMsPast: number;
     single: SingleChart[];
     chartOptions: ChartOptions;
+    loadingDataInTile: boolean = false;
 
     constructor(
         private toastNotificationService: ToastNotificationService,
@@ -82,6 +84,7 @@ export class IssuesCountTileComponent extends BaseTileComponent implements OnIni
                     name: project.name,
                     value: messagesCount
                 });
+                this.loadingDataInTile = true;
             }, error => {
                 this.toastNotificationService.error(error);
             });

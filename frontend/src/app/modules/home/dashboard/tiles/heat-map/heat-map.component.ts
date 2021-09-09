@@ -25,7 +25,8 @@ import { BaseTileComponent } from '../base-tile/base-tile.component';
 
 @Component({
     selector: 'app-heat-map[tile][userProjects]',
-    templateUrl: './heat-map.component.html'
+    templateUrl: './heat-map.component.html',
+    styleUrls: ['../common-tile/common-tile.component.sass']
 })
 export class HeatMapComponent extends BaseTileComponent implements OnInit {
     tileSettings: HeatMapSettings;
@@ -40,6 +41,7 @@ export class HeatMapComponent extends BaseTileComponent implements OnInit {
         domain: ['#146738', ' #2C9653', '#6CBA67', ' #A9D770',
             '#DBED91', '#FDDE90', '#FAAD67', '#EF6D49', '#D3342D', '#A10A28']
     };
+    loadingDataInTile: boolean = false;
 
     constructor(
         private toastNotificationService: ToastNotificationService,
@@ -125,6 +127,7 @@ export class HeatMapComponent extends BaseTileComponent implements OnInit {
                 .pipe(this.untilThis)
                 .subscribe(messagesInfo => {
                     this.applyIssuesSettings(messagesInfo, project);
+                    this.loadingDataInTile = true;
                 }, error => {
                     this.toastNotificationService.error(error);
                 });
