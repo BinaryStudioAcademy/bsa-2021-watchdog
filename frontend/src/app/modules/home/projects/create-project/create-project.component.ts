@@ -209,7 +209,7 @@ export class CreateProjectComponent extends BaseComponent implements OnInit {
                         .subscribe(team => {
                             this.toastNotifications.success(`Team #${name} created!`);
                             this.teams = this.teams.concat({ name, id: team.id });
-                            this.newProject.teamId = team.id;
+                            this.formGroup.controls.team.setValue(team.id);
                             this.spinnerService.hide();
                         }, error => {
                             this.toastNotifications.error(error);
