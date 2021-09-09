@@ -27,7 +27,7 @@ export class TeamInfoComponent extends BaseComponent implements OnInit {
     parentForm: FormGroup = new FormGroup({});
     member: Member;
 
-    hasAccess = () => hasAccess(this.member);
+    hasAccess = () => hasAccess(this.member) && this.team.members.find(x => x.id === this.member.id);
 
     @ViewChild('saveBut') saveButton: ElementRef<HTMLButtonElement>;
 

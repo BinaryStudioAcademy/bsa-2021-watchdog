@@ -11,23 +11,23 @@
 </div>
 <app-not-found *ngIf="notFound"></app-not-found>
 <p-tabView *ngIf="!notFound && !loading" [(activeIndex)]="activeIndex">
-    <p-tabPanel *ngIf="changed">
+    <p-tabPanel>
         <ng-template pTemplate="header">
             <div class="header">
                 <span>Issues</span>
             </div>
         </ng-template>
-        <ng-template pTemplate="content">
+        <ng-template pTemplate="content" *ngIf="changed">
             <app-issues *ngIf="project" [project]="project"></app-issues>
         </ng-template>
     </p-tabPanel>
-    <p-tabPanel *ngIf="isBrowser && changed">
+    <p-tabPanel *ngIf="isBrowser">
         <ng-template pTemplate="header">
             <div class="header">
                 <span>Analytics</span>
             </div>
         </ng-template>
-        <ng-template pTemplate="content">
+        <ng-template pTemplate="content" *ngIf="changed">
             <app-project-analytics *ngIf="project" [project]="project"></app-project-analytics>
         </ng-template>
     </p-tabPanel>

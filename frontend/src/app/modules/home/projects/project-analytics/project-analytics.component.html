@@ -3,12 +3,14 @@
         <span>Analytics of project users by country</span>
     </div>
     <div class="geo-chart-wrp--content">
-        <google-chart *ngIf="geoData"
+        <google-chart *ngIf="geoData" (window:resize) = "resetWindowSize($event)"
             class="geo-chart-wrp--chart"
             [type]="geoChartOptions.type"
             [title]="geoChartOptions.title"
+            [width]="geoChartOptions.width"
+            [height]="geoChartOptions.height"
             [data]="geoData"
-            [dynamicResize]="true">
+            [dynamicResize]="false">
         </google-chart>
     </div>
 </div>

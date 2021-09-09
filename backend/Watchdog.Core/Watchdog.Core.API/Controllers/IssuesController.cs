@@ -44,6 +44,13 @@ namespace Watchdog.Core.API.Controllers
             return Ok(new { Collection = issues, TotalRecords = totalRecord });
         }
 
+        [HttpPost("topActiveIssues")]
+        public async Task<ActionResult<ICollection<IssueInfoDto>>> GetTopActiveIssues(TopActiveIssuesFilter filter)
+        {
+            var issuesInfo = await _issueService.GetTopActiveIssuesAsync(filter);
+            return Ok(issuesInfo);
+        }
+
         [HttpPut]
         public async Task<ActionResult> UpdateAssignee(UpdateAssigneeDto assigneeDto)
         {
@@ -95,17 +102,18 @@ namespace Watchdog.Core.API.Controllers
             return Ok(issueSolution);
         }
 
-        [HttpPost("messages/application/{applicationId:int}/filterByStatuses")]
+        [HttpPost("messages/application/{applicationId:int}/filterByStatusesAndDate")]
         public async Task<ActionResult<ICollection<IssueMessageDto>>> GetAllIssueMessagesByApplicationIdAsync(
-            int applicationId, [FromBody] IssueStatusesFilterDto issueStatuses)
+            int applicationId, [FromBody] IssueStatusesByDateRangeFilter filter)
         {
             var issueMessages =
-                await _issueService.GetAllIssueMessagesByApplicationIdAsync(applicationId, issueStatuses);
+                await _issueService.GetAllIssueMessagesByApplicationIdAsync(applicationId, filter);
             return Ok(issueMessages);
         }
 
-        [HttpPost("messages/application/{applicationId:int}/filterByStatusesAndDate")]
-        public async Task<ActionResult<int>> GetFilteredIssueCountByStatusesAndDateRangeByApplicationIdAsync(int applicationId, [FromBody] IssueStatusesByDateRangeFilter filter)
+        [HttpPost("messages/application/{applicationId:int}/filterByStatusesAndDateCount")]
+        public async Task<ActionResult<int>> GetFilteredIssueCountByStatusesAndDateRangeByApplicationIdAsync(
+            int applicationId, [FromBody] IssueStatusesByDateRangeFilter filter)
         {
             var issueMessages = await _issueService.GetFilteredIssueCountByStatusesAndDateRangeByApplicationIdAsync(applicationId, filter);
             return Ok(issueMessages);
@@ -117,7 +125,7 @@ namespace Watchdog.Core.API.Controllers
             await _issueService.UpdateIssueStatusAsync(issueStatusDto);
             return Ok();
         }
-        
+
         [HttpGet("info/{memberId:int}/countByStatuses")]
         public async Task<ActionResult<CountOfIssuesByStatusDto>> GetIssuesInfoCountByStatuses(int memberId)
         {

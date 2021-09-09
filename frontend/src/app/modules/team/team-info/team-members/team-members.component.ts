@@ -25,7 +25,7 @@ export class TeamMembersComponent extends BaseComponent {
         super();
     }
 
-    hasAccess = () => hasAccess(this.member);
+    hasAccess = () => hasAccess(this.member) && this.team.members.find(x => x.id === this.member.id);
 
     members: User[];
     filterExpression: string;

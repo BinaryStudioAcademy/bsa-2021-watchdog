@@ -51,7 +51,7 @@ export class EditComponent extends BaseComponent implements OnInit {
     @ViewChild(TabView) set tabviewChild(value: TabView) {
         this.tabView = value;
         if (this.tabPanel) {
-            this.change();
+            setTimeout(() => this.change(), 0);
         }
     }
     @ViewChild('configure') set tabPanelChild(value: TabPanel) {
@@ -74,8 +74,7 @@ export class EditComponent extends BaseComponent implements OnInit {
         super();
     }
 
-    changed = false;
-
+    changed: boolean;
     change(): void {
         if (!this.changed) {
             const index = this.tabView.tabs.findIndex(x => x.id === this.tabPanel.id);
@@ -85,6 +84,7 @@ export class EditComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.changed = false;
         this.loading = true;
         this.spinner.show(true);
         this.id = this.activatedRoute.snapshot.params.id;
