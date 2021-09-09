@@ -80,4 +80,8 @@ export class MemberService {
     isMemberOwner(memberId: number): Observable<boolean> {
         return this.httpService.getRequest<boolean>(`${this.routePrefix}/isowner/${memberId}`);
     }
+
+    getAssigneeMembers(orgId: number): Observable<Member[]> {
+        return this.httpService.getRequest<Member[]>(`${this.routePrefix}/organization/${orgId}/assignee`);
+    }
 }

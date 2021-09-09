@@ -63,7 +63,7 @@ namespace Watchdog.Core.BLL.Services
                 MemberId = member.Id,
                 TeamId = createdTeam.Entity.Id
             });
-            
+
             return _mapper.Map<TeamDto>(createdTeam.Entity);
         }
 
@@ -137,6 +137,11 @@ namespace Watchdog.Core.BLL.Services
                 .ToListAsync();
 
             return _mapper.Map<ICollection<TeamOptionDto>>(teams);
+        }
+
+        public async Task<ICollection<TeamDto>> GetTeamsForAssigneeByOrganizationIdAsync(int orgId)
+        {
+            return await GetAllTeamsAsync(orgId);
         }
     }
 }

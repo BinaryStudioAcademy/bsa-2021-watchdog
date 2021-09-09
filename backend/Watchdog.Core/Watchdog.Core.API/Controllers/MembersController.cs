@@ -73,8 +73,8 @@ namespace Watchdog.Core.API.Controllers
         [HttpPost("reinvite")]
         public async Task<ActionResult<int>> Reinvite(InviteDto dto)
         {
-            var response = await _memberService.InviteMemberAsync(dto.Id);
-            return Ok(response.StatusCode);
+            await _memberService.InviteMemberAsync(dto.Id);
+            return Ok();
         }
 
         [HttpPost("acceptInvite")]
@@ -108,6 +108,12 @@ namespace Watchdog.Core.API.Controllers
         public async Task<ActionResult<bool>> IsMemberOwner(int memberId)
         {
             return Ok(await _memberService.IsMemberOwnerAsync(memberId));
+        }
+
+        [HttpGet("organization/{orgId:int}/assignee")]
+        public async Task<ActionResult<ICollection<MemberDto>>> GetAssigneeByOrganization(int orgId)
+        {
+            return Ok(await _memberService.GetMembersForAssigneeByOrganizationIdAsync(orgId));
         }
     }
 }

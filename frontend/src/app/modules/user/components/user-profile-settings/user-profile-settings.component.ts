@@ -1,3 +1,5 @@
+import { TrelloService } from '@core/services/trello-service';
+import { Organization } from '@shared/models/organization/organization';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -10,6 +12,7 @@ import { regexs } from '@shared/constants/regexs';
 import { FileUpload } from 'primeng/fileupload';
 import { CroppedEvent } from 'ngx-photo-editor';
 import { AvatarDto } from '@shared/models/avatar/avatarDto';
+import { TrelloMember } from '@shared/models/trello/trello-member';
 
 @Component({
     selector: 'app-user-profile-settings',
@@ -19,17 +22,26 @@ import { AvatarDto } from '@shared/models/avatar/avatarDto';
 export class UserProfileSettingsComponent extends BaseComponent implements OnInit {
     @Input() user: User;
     @Input() editForm: FormGroup;
+    @Input() organization: Organization;
     @ViewChild(FileUpload) fileUpload: FileUpload;
+    currentTrelloMember: TrelloMember;
     imageChangedEvent: { target: { files: File[] } };
+
     constructor(
         private authService: AuthenticationService,
         private userService: UserService,
-        private toastNotificationService: ToastNotificationService
+        private toastNotificationService: ToastNotificationService,
+        private trelloService: TrelloService,
     ) {
         super();
     }
 
     ngOnInit(): void {
+        this.trelloService.getMember(this.user.trelloUserId)
+            .pipe(this.untilThis)
+            .subscribe(member => {
+                this.currentTrelloMember = member;
+            });
         this.editForm.addControl('firstName', new FormControl(this.user.firstName, [
             Validators.required,
             Validators.minLength(2),
@@ -53,6 +65,7 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
             ]
         }));
         this.editForm.addControl('avatarUrl', new FormControl(this.user.avatarUrl));
+        this.editForm.addControl('trelloUserId', new FormControl(this.user.trelloUserId));
     }
 
     get firstName() { return this.editForm.controls.firstName; }
@@ -62,6 +75,8 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
     get email() { return this.editForm.controls.email; }
 
     get avatarUrl() { return this.editForm.controls.avatarUrl; }
+
+    get trelloUserId() { return this.editForm.controls.trelloUserId; }
 
     onError(e) {
         this.toastNotificationService.error(e.error);
@@ -83,5 +98,17 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
                 error => {
                     this.toastNotificationService.error(error);
                 });
+    }
+
+    trelloAuthorize() {
+        this.trelloService.authorizeTrelloUser(token => {
+            this.trelloService.getMemberByToken(token)
+                .pipe(this.untilThis)
+                .subscribe(member => {
+                    this.editForm.markAsDirty();
+                    this.trelloUserId.setValue(member.id);
+                    this.currentTrelloMember = member;
+                });
+        });
     }
 }

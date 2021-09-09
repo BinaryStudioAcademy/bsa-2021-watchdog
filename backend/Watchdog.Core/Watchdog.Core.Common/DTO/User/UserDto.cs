@@ -13,9 +13,11 @@ namespace Watchdog.Core.Common.DTO.User
         public string LastName { get; set; }
 
         public string Email { get; set; }
-        
+
+        public string TrelloUserId { get; set; }
+
         public DateTime? RegisteredAt { get; set; }
-        
+
         public string AvatarUrl { get; set; }
     }
 }

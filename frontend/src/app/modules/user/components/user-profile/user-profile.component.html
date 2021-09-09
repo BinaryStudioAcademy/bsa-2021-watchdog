@@ -31,7 +31,7 @@
 </header>
 
 <div class="settings-container">
-    <app-user-profile-settings *ngIf="user" [user]="user" [editForm]="editForm">
+    <app-user-profile-settings *ngIf="user" [user]="user" [editForm]="editForm" [organization]="organization">
     </app-user-profile-settings>
     <app-user-password-settings *ngIf="isSignByEmailAndPassword" [user]="user" [pass]="pass" id="user-password-settings">
     </app-user-password-settings>

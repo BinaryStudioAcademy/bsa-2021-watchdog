@@ -24,4 +24,29 @@
             </div>
         </div>
     </form>
+    <form [formGroup]="parentForm" class="item">
+        <label class="item-definition">
+            <div>Trello Integration</div>
+            <div class="item-sub-text">Assign teams and members to the real issues in Trello dashboard</div>
+        </label>
+        <div class="item-field">
+            <div class="item-form-complex">
+                <p-inputSwitch formControlName="trelloIntegration" class="item-form-field">
+                </p-inputSwitch>
+            </div>
+        </div>
+    </form>
+    <form [formGroup]="parentForm" class="item">
+        <label class="item-definition">
+            <div>Board</div>
+            <div class="item-sub-text">Choose board to assign users in.</div>
+        </label>
+        <div class="item-field">
+            <div class="item-form-complex">
+                 <p-dropdown class="item-form-field" formControlName="trelloBoard" [options]="boards" optionValue="id"
+                    optionLabel="name" styleClass="item-form-field" placeholder="Board">
+                </p-dropdown>
+            </div>
+        </div>
+    </form>
 </p-panel>

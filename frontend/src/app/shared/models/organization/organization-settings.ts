@@ -3,4 +3,7 @@ export interface OrganizationSettings {
     organizationSlug: string,
     openMembership: boolean,
     defaultRoleId: number,
+    trelloIntegration: boolean,
+    trelloBoard: string,
+    trelloToken: string,
 }

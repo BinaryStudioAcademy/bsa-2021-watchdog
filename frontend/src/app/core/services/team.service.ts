@@ -13,52 +13,56 @@ export class TeamService {
 
     constructor(private httpService: CoreHttpService) { }
 
-    public getTeamOptionsByOrganizationId(organizationId: number): Observable<TeamOption[]> {
+    getTeamOptionsByOrganizationId(organizationId: number): Observable<TeamOption[]> {
         return this.httpService.getRequest(`${this.routePrefix}/organization/${organizationId}/options`);
     }
 
-    public getTeam(id: number | string): Observable<Team> {
+    getTeam(id: number | string): Observable<Team> {
         return this.httpService.getRequest<Team>(`${this.routePrefix}/${id}`);
     }
 
-    public getTeams(id: number): Observable<Team[]> {
+    getTeams(id: number): Observable<Team[]> {
         return this.httpService.getRequest<Team[]>(`${this.routePrefix}/organization/${id}`);
     }
 
-    public getMemberTeams(organizationId: number, memberId: number): Observable<Team[]> {
+    getMemberTeams(organizationId: number, memberId: number): Observable<Team[]> {
         return this.httpService.getRequest(`${this.routePrefix}/organization/${organizationId}/member/${memberId}`);
     }
 
-    public getNotMemberTeams(organizationId: number, memberId: number): Observable<Team[]> {
+    getNotMemberTeams(organizationId: number, memberId: number): Observable<Team[]> {
         return this.httpService.getRequest(`${this.routePrefix}/organization/${organizationId}/notMember/${memberId}`);
     }
 
-    public createTeam(newTeam: NewTeam): Observable<Team> {
+    createTeam(newTeam: NewTeam): Observable<Team> {
         return this.httpService.postRequest(`${this.routePrefix}`, newTeam);
     }
 
-    public joinTeam(teamId: number, memberId: number): Observable<Team> {
+    joinTeam(teamId: number, memberId: number): Observable<Team> {
         const teamMember: TeamMember = { teamId, memberId };
         return this.httpService.postRequest(`${this.routePrefix}/joinTeam`, teamMember);
     }
 
-    public leaveTeam(teamId: number, memberId: number): Observable<Team> {
+    leaveTeam(teamId: number, memberId: number): Observable<Team> {
         return this.httpService.deleteRequest(`${this.routePrefix}/leaveTeam/${teamId}/member/${memberId}`);
     }
 
-    public isNameUnique(teamName: string, orgId: number): Observable<boolean> {
+    isNameUnique(teamName: string, orgId: number): Observable<boolean> {
         return this.httpService.getRequest(`${this.routePrefix}/orgId/${orgId}/teamName/${teamName}`);
     }
 
-    public updateTeam(id: number, team: UpdateTeam): Observable<Team> {
+    updateTeam(id: number, team: UpdateTeam): Observable<Team> {
         return this.httpService.putRequest<Team>(`${this.routePrefix}/${id}`, team);
     }
 
-    public removeTeam(id: number) {
+    removeTeam(id: number) {
         return this.httpService.deleteRequest(`${this.routePrefix}/${id}`);
     }
 
-    public getLabel(teamName: string): string {
+    getAssigneeTeams(orgId: number): Observable<Team[]> {
+        return this.httpService.getRequest<Team[]>(`${this.routePrefix}/organization/${orgId}/assignee`);
+    }
+
+    getLabel(teamName: string): string {
         const words = teamName.split(' ');
 
         let label = words[0].charAt(0);

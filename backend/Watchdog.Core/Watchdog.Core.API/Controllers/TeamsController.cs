@@ -96,5 +96,11 @@ namespace Watchdog.Core.API.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("organization/{orgId:int}/assignee/")]
+        public async Task<ActionResult<ICollection<TeamDto>>> GetAssigneeTeamsByOrganization(int orgId)
+        {
+            return Ok(await _teamService.GetTeamsForAssigneeByOrganizationIdAsync(orgId));
+        }
     }
 }

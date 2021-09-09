@@ -1,4 +1,7 @@
-<div class="item-block">
-    <span class="title">{{item.title}}</span>
-    <span class="text">{{item.text}}</span>  
+<div class="item-block" [style.flex-flow]="index % 2 ? 'row-reverse' : 'row'">
+    <img class="image" [src]="item.img" alt="image">
+    <div class="description">
+        <span class="title">{{item.title}}</span>
+        <span class="text">{{item.text}}</span>
+    </div>
 </div>

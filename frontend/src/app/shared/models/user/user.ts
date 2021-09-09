@@ -6,4 +6,5 @@ export interface User {
     email: string;
     avatarUrl: string;
     registeredAt?: string;
+    trelloUserId: string;
 }

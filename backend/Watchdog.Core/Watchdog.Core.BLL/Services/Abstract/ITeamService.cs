@@ -16,5 +16,6 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<TeamDto> LeaveTeamAsync(int teamId, int memberId);
         Task DeleteTeamAsync(int teamId);
         Task<bool> IsTeamNameUniqueAsync(int orgId, string teamName);
+        Task<ICollection<TeamDto>> GetTeamsForAssigneeByOrganizationIdAsync(int orgId);
     }
 }

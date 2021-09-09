@@ -34,7 +34,6 @@
     .header-title
         display: none
 
-
 .tests-container
     padding: $half-indent
     display: flex
@@ -74,6 +73,7 @@
                 width: 20px
                 height: 20px
 
+        .card-body-empty,
         .card-body
             .card-body-name
                 font-size: 24px
@@ -83,6 +83,9 @@
             .card-body-description
                 @include text-overflow-x-nowrap
 
+        .card-body-empty
+            padding-top: 30px
+
     @media screen and (min-width: 800px)
         .grid
             grid-template-columns: repeat(2, minmax(100px, 1fr))
@@ -90,5 +93,3 @@
     @media screen and (min-width: 1440px)
         .grid
             grid-template-columns: repeat(3, minmax(100px, 1fr))
-
-

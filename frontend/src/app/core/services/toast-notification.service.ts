@@ -39,8 +39,7 @@ export class ToastNotificationService {
             summary: ToastNotificationService.isEmpty(title) ? 'Warn' : title,
             detail: message,
             closable: true,
-            life: durationMs,
-            sticky: true
+            life: durationMs
         });
     }
 

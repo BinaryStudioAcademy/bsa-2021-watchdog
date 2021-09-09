@@ -1,10 +1,19 @@
 @import src/styles/variables
 
+.form
+    margin-top: 30px
+
+.hint
+    color: rgba(27, 33, 44, 0.4)
+    width: 100%
+    text-align: center
+    display: block
+    margin: 0.5rem 0
+
 .reg-form
     display: flex
     flex-direction: column
     grid-gap: 30px
-    margin-bottom: 30px
 
 .reg-block
     display: grid
@@ -56,6 +65,8 @@
 
     .p-inputtext
         height: $input-height
+    .p-tabview .p-tabview-panels
+        padding: 1rem 0 !important
 .submit-button
     display: flex
     flex-direction: row
