@@ -15,7 +15,9 @@ export class ExportTileService {
         const smallPdf = 200;
         const mediumPdf = 440;
         const bigPdf = 880;
-        html2canvas(data).then(canvas => {
+        html2canvas(data, {
+            ignoreElements: (element) => element.classList.contains('flag-icon')
+        }).then(canvas => {
             if (exportType === ExportType.Jpg) {
                 canvas.toBlob((blob) => {
                     FileSaver.saveAs(blob, `${new Date().toLocaleString().replace(':', '_')}.jpg`);
