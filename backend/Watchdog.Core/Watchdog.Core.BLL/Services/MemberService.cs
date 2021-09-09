@@ -71,6 +71,8 @@ namespace Watchdog.Core.BLL.Services
                 member.TeamMembers.Add(new TeamMember { TeamId = teamId });
             }
 
+            member.IsApproved = true;
+
             await _context.Members.AddAsync(member);
 
             await _context.SaveChangesAsync();
