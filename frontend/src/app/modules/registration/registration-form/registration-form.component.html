@@ -96,7 +96,7 @@
                                 pInputText [(ngModel)]="organization.name">
                             <label for="float-input-comp-name">Organization name</label>
                         </span>
-                        <div *ngIf="organizationStep && organizationName.touched && organizationName.invalid"
+                        <div *ngIf="organizationStep && organizationName?.touched && organizationName?.invalid"
                             class="validation">
                             <small *ngIf="organizationName.errors?.required">Сan not be empty</small>
                             <small *ngIf="organizationName.errors?.minlength">Min length 3</small>
@@ -111,7 +111,7 @@
                                 pInputText [(ngModel)]="organizationSlugs">
                             <label for="float-input-comp-slug">Organization slug</label>
                         </span>
-                        <div *ngIf="organizationStep && organizationSlug.touched && organizationSlug.invalid"
+                        <div *ngIf="organizationStep && organizationSlug?.touched && organizationSlug?.invalid"
                             class="validation">
                             <small *ngIf="organizationSlug.errors?.required">Сan not be empty</small>
                             <small *ngIf="organizationSlug.errors?.minlength">Min length 3</small>
