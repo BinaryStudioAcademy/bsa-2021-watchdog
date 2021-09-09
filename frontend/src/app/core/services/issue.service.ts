@@ -1,3 +1,4 @@
+import { TopActiveIssueFilter } from '../../shared/models/issue/top-active-issues-filter';
 import { Injectable } from '@angular/core';
 import { CoreHttpService } from './core-http.service';
 import { IssueInfo } from '@shared/models/issue/issue-info';
@@ -8,7 +9,6 @@ import { LazyLoadEvent } from 'primeng/api';
 import { IssueMessageInfo } from '@shared/models/issue/issue-message-info';
 import { UpdateIssueStatus } from '@shared/models/issue/update-issue-status';
 import { Issue } from '@shared/models/issue/issue';
-import { IssueStatusesFilter } from '@shared/models/issue/issue-statuses-filter';
 import { IssueStatusesByDateRangeFilter } from '@shared/models/issue/issue-statuses-by-date-range-filter';
 import { IssueStatus } from '@shared/models/issue/enums/issue-status';
 import { IssueTableItem } from '@shared/models/issue/issue-table-item';
@@ -82,10 +82,10 @@ export class IssueService {
 
     public getEventMessagesInfoByProjectIdFilteredByStatuses(
         projectId: number,
-        issueStatusesFilter: IssueStatusesFilter
+        issueStatusesFilter: IssueStatusesByDateRangeFilter
     ): Observable<IssueMessageInfo[]> {
         return this.httpService.postRequest<IssueMessageInfo[]>(
-            `${this.routePrefix}/messages/application/${projectId}/filterbystatuses`,
+            `${this.routePrefix}/messages/application/${projectId}/filterbystatusesanddate`,
             issueStatusesFilter
         );
     }
@@ -95,7 +95,7 @@ export class IssueService {
         issueFilter: IssueStatusesByDateRangeFilter
     ): Observable<number> {
         return this.httpService.postRequest<number>(
-            `${this.routePrefix}/messages/application/${projectId}/filterbystatusesanddate`,
+            `${this.routePrefix}/messages/application/${projectId}/filterbystatusesanddatecount`,
             issueFilter
         );
     }
@@ -110,5 +110,9 @@ export class IssueService {
 
     public getSolutionLink(issueId: number): Observable<IssueSolutionItem> {
         return this.httpService.getRequest<IssueSolutionItem>(`${this.routePrefix}/getIssueSolution/issueId/${issueId}`);
+    }
+
+    getTopActiveIssuesInfo(filter: TopActiveIssueFilter) {
+        return this.httpService.postRequest<IssueInfo[]>(`${this.routePrefix}/topactiveissues`, filter);
     }
 }
