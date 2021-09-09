@@ -40,15 +40,18 @@ namespace Watchdog.Core.BLL.Services
             await InviteMemberAsync(_mapper.Map<MemberDto>(member));
         }
 
-        public Task InviteMemberAsync(MemberDto memberDto)
+        public async Task InviteMemberAsync(MemberDto memberDto)
         {
+            var organization = await _context.Organizations
+                .SingleOrDefaultAsync(x => x.Id == memberDto.OrganizationId);
+            
             var template = _mapper.Map<MemberTemplate>(memberDto);
+            template.Organization = _mapper.Map<OrganizationTemplate>(organization);
             var recipients = new Recipient[]
             {
                 _mapper.Map<Recipient>(memberDto)
             };
             _emailer.SendMemberInvitation(template, recipients);
-            return Task.CompletedTask;
         }
 
         public async Task<MemberDto> AddMemberAsync(NewMemberDto memberDto)

@@ -1,6 +1,7 @@
 using AutoMapper;
 using Watchdog.Core.Common.DTO.Organization;
 using Watchdog.Core.DAL.Entities;
+using Watchdog.Models.Shared.Emailer.TemplateData;
 
 namespace Watchdog.Core.BLL.MappingProfiles
 {
@@ -17,6 +18,8 @@ namespace Watchdog.Core.BLL.MappingProfiles
             CreateMap<Organization, RegOrganizationDto>();
 
             CreateMap<SettingsOrganizationDto, Organization>();
+
+            CreateMap<Organization, OrganizationTemplate>();
         }
     }
 }
