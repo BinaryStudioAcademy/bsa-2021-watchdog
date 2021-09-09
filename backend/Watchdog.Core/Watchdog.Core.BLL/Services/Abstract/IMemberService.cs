@@ -30,5 +30,7 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task<MemberDto> ApproveUserAsync(int id);
         Task<bool> IsMemberOwnerAsync(int memberId);
         Task<ICollection<int>> GetMembersIdsByApplicationUid(string applicationUid);
+
+        Task<ICollection<MemberDto>> GetMembersForAssigneeByOrganizationIdAsync(int id);
     }
 }

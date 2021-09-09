@@ -1,7 +1,7 @@
 import { Member } from '../member/member';
-import { TeamOption } from '../teams/team-option';
+import { Team } from '../teams/team';
 
 export interface AssigneeOptions {
     members: Member[];
-    teams: TeamOption[];
+    teams: Team[];
 }

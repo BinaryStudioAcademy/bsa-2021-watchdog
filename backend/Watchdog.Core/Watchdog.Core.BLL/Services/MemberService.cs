@@ -99,6 +99,11 @@ namespace Watchdog.Core.BLL.Services
 
         }
 
+        public async Task<ICollection<MemberDto>> GetMembersForAssigneeByOrganizationIdAsync(int id)
+        {
+            return await GetMembersByOrganizationIdAsync(id);
+        }
+
 
         public async Task<MemberDto> GetMemberByIdAsync(int id)
         {

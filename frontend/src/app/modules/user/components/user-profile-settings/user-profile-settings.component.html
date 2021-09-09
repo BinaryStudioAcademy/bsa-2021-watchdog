@@ -15,9 +15,9 @@
             <div class="photo">
                 <i class="pi pi-camera"></i>
             </div>
-            <p-fileUpload 
-                mode="basic" 
-                name="avatar" 
+            <p-fileUpload
+                mode="basic"
+                name="avatar"
                 accept="image/*"
                 [fileLimit]="1"
                 [customUpload]="true"
@@ -84,5 +84,16 @@
                 <small *ngIf="lastName.errors?.pattern">You are using invalid characters</small>
             </div>
         </div>
+    </div>
+</form>
+<form *ngIf="organization?.trelloIntegration" class="item" [formGroup]="editForm">
+    <label class="item-definition">
+        <div>Trello assignee</div>
+    </label>
+    <div class="item-field">
+        <div class="item-form-input">
+            <span *ngIf="currentTrelloMember" class="username">{{currentTrelloMember.username}}</span>
+            <button pButton pRipple class="p-button-outlined" (click)="trelloAuthorize()" label="Authorize"></button>
+    </div>
     </div>
 </form>

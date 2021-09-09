@@ -109,5 +109,11 @@ namespace Watchdog.Core.API.Controllers
         {
             return Ok(await _memberService.IsMemberOwnerAsync(memberId));
         }
+
+        [HttpGet("organization/{orgId:int}/assignee")]
+        public async Task<ActionResult<ICollection<MemberDto>>> GetAssigneeByOrganization(int orgId)
+        {
+            return Ok(await _memberService.GetMembersForAssigneeByOrganizationIdAsync(orgId));
+        }
     }
 }
