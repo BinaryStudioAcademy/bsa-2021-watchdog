@@ -3,53 +3,54 @@
 @import ../../common-styles/mixins
 
 .footer-container
-    @include background-gray
-    padding: $half-indent
+    padding-top: $half-indent
+
+.footer
+    border-top: 2px solid #ADC4D7
+    display: grid
+    grid-template-columns: 1fr auto
+    align-items: center
 
 .logo
     display: flex
     justify-content: center
-
     img
+        @include disable-select
         display: block
-        width: 70%
+        width: 100%
+        max-height: 30px
 
-
-.title
-    display: block
-    @include title
-    text-align: center
-    margin: $half-indent
+.info
+    padding: 0 $half-indent
 
 .links
+    margin: $half-indent
     display: flex
-    justify-content: center
+    justify-content: flex-start
     grid-gap: $half-indent
     flex-wrap: wrap
 
     a
+        transition: color 0.2s
         text-decoration: none
-
-:host ::ng-deep     
-    .facebook:hover
-        .p-chip
+        color: black
+        &.facebook:hover
             color: #3b5998
-    .twitter:hover
-        .p-chip
+        &.twitter:hover
             color: #1DA1F2
-    .slack:hover
-        .p-chip
-            color: #ECB22E
-    .youtube:hover
-        .p-chip
+        &.youtube:hover
             color: #FF0000
-    .github:hover
-        .p-chip
+        &.github:hover
             color: black
+        i
+            margin-right: 5px
 
 .copyright
-    color: gray
-    text-align: center
-    margin: $indent
+    color: rgba(27, 33, 44, 0.4)
+    font-size: 0.9rem
+    margin: $half-indent
 
 @include media-padding(".footer-container")
+@media screen and ( max-width: 500px )
+    .logo
+        display: none

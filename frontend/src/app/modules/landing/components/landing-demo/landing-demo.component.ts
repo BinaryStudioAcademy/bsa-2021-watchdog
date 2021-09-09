@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
     styleUrls: ['./landing-demo.component.sass']
 })
 export class LandingDemoComponent {
-    videoId: string = 'roHLJEoC2H8';
+
 }

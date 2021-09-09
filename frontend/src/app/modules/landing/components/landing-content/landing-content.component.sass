@@ -7,27 +7,37 @@
     display: grid
     grid-auto-flow: row
 
-
 .title-block
-    padding: $indent
+    padding: $half-indent $indent
     grid-gap: $indent
     display: grid
-    grid-template-columns: 1fr 1fr
+    grid-template-columns: 1fr auto
+    align-items: center
+    background: rgba(18, 83, 134, 0.05)
     @include title
-
-
 
     img
         @include disable-select
-        position: absolute
-        left: 50%
-
+        height: 150px
+        margin: 0 75px
 
 .content-block
     display: grid
-    padding: $indent
+    padding: $indent 0
     grid-gap: $indent
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr))
-
 
 @include media-padding(".content-container")
+@media screen and ( max-width: 500px )
+    .title-block
+        text-align: center
+        grid-gap: 0
+        img
+            display: none
+
+@media screen and ( max-width: 700px )
+    .title-block img
+        margin: 0 30px
+
+@media screen and ( max-width: 650px )
+    .title-block img
+        margin: 0

@@ -1,0 +1,24 @@
+@import src/styles/mixins
+@import src/styles/variables
+
+.enterprise-container
+    padding: 2rem
+    background: rgba(18, 83, 134, 0.05)
+    text-align: center
+    display: flex
+    flex-direction: column
+    grid-gap: 1rem
+
+.header
+    font-size: 0.7rem
+    color: #ADC4D7
+    text-transform: uppercase
+
+.title
+    font-weight: 700
+    font-size: 2rem
+
+.description
+    color: rgba(27, 33, 44, 0.4)
+
+@include media-padding(".enterprise-container")
