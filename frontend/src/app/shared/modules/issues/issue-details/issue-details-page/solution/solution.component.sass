@@ -1,4 +1,5 @@
 @import src/styles/index.sass
+@import src/styles/mixins
 
 @mixin custom-scroll-horizontal
     &::-webkit-scrollbar-thumb
@@ -21,6 +22,10 @@
         border: 1.5px solid #5aa348
         height: min-content
         background-color: #73e65623
+        img
+            @include disable-select
+            height: auto
+            max-width: 410px
         .answer-item
             padding-bottom: 20px
             .score
@@ -33,6 +38,10 @@
 
     .solution-container
         border: 1.5px solid hsl(27deg 90% 55%)
+        img
+            @include disable-select
+            height: auto
+            max-width: 410px
 
     .solution-container, .answer-container
         box-shadow: 10px 5px 5px $shadow-color
