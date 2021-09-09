@@ -31,7 +31,7 @@ namespace Watchdog.Emailer.Service
                         new SendGridClient(context.Configuration["SendGrid:ApiKey"]));
                     services.AddSingleton<IEmailSender, SendGridEmailSender>();
                     services.AddOptions()
-                        .Configure<RabbitMQSettings>(context.Configuration.GetSection("RabbitMQ"))
+                        .Configure<RabbitMQSettings>(context.Configuration.GetSection("RabbitMQConfiguration"))
                         .Configure<SendGrigSettings>(context.Configuration.GetSection("SendGrid"));
                 });
         }
