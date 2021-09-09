@@ -43,8 +43,10 @@ namespace Watchdog.Core.BLL.Services
         {
             var roles = await _context.Roles.ToListAsync();
             var organization = _mapper.Map<Organization>(organizationDto);
+
             organization.DefaultRoleId = roles.First(r => r.Name.ToLower() == "viewer").Id;
             organization.OpenMembership = true;
+            organization.TrelloIntegration = false;
 
             await _context.Organizations.AddAsync(organization);
 

@@ -55,12 +55,26 @@ services:
         env_file:
             - /etc/environment
 
+    watchdog_notifier:
+        image: vobilyk/watchdog_emailer:latest
+        container_name: 'watchdog_emailer'
+        restart: on-failure
+        networks:
+            - back
+        ports:
+            - "5130:5130"
+        environment:
+            ASPNETCORE_ENVIRONMENT: 'Production'
+        env_file:
+            - /etc/environment
+
     watchdog_frontend:
         depends_on:
             - watchdog_core
             - watchdog_collector
             - watchdog_notifier
             - watchdog_loader
+            - watchdog_emailer
         image: vobilyk/watchdog_frontend:latest
         container_name: 'watchdog_frontend'
         restart: on-failure

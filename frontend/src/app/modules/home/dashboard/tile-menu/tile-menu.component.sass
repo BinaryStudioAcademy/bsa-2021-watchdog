@@ -2,9 +2,9 @@
 @import src/styles/mixins
 
 .menu
-    display: flex
+    display: grid
+    grid-template-columns: 1fr auto 1fr
     align-items: center
-    justify-content: space-between
     background-color: $background-color
     box-shadow: 0 5px 10px -4px $shadow-color
     border-top: 1px solid #d3d3d3
@@ -12,28 +12,19 @@
     padding: 15px 30px
 
     .left-buttons
-        display: flex
-        justify-content: space-between
-        flex-wrap: nowrap
         white-space: nowrap
 
         button
             margin: 0 4px
 
-
     .center-buttons
-        display: flex
-
-        .dropdown-button, .number-button
-            margin: 0 8px
-
-        .number-button
-            ::ng-deep .p-button
-                padding: 0.5rem 0 !important
-                width: 2.357rem
+        display: grid
+        grid-auto-flow: column
+        grid-gap: 0.5rem
 
     .right-buttons
         display: flex
+        justify-content: flex-end
         flex-wrap: nowrap
         white-space: nowrap
 

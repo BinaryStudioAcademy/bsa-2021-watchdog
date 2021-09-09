@@ -1,52 +1,57 @@
 @import src/styles/mixins
 @import src/styles/variables
 
+$header-height: 70px
+
 .demo-continer
-    background: url(https://kartinkin.com/uploads/posts/2021-04/1617607358_37-p-fon-tekhnicheskii-41.png) no-repeat
     background-size: cover
     padding: 70px
+    padding-right: 0 !important
 
 .info
-    color: white
     font-weight: bolder
     padding: $indent
-
-.video
-    display: flex
-    justify-content: center
-    padding: $indent 0
 
 .title
     display: block
     font-size: 4rem
 
-
-.sub-title  
+.sub-title
     display: block
     margin-top: $half-indent
     line-height: 1.3rem
+    color: rgba(27, 33, 44, 0.4)
 
 .start-button
     font-weight: bold
     margin-top: $half-indent
-    background-color: white !important
 
-    &:hover
-        background-color: $background-color !important
+@media screen and ( min-width: 900px )
+    .monitor
+        height: calc(100vh - #{$header-height} )
+        width: auto
+        display: flex
+        align-items: center
 
-
-@media screen and ( min-width: 1150px )
+        img
+            @include disable-select
+            max-height: min(700px, calc(100vh - #{$header-height}))
     .demo-continer
         display: grid
         grid-template-columns: 1fr auto
         height: 100vh
         align-items: center
 
-@media screen and ( max-width: 1150px )
+@media screen and ( max-width: 900px )
     .demo-continer
         display: grid
+        padding-bottom: 0
         grid-template-rows: 1fr auto
+    .monitor
+        display: none
+
+@media screen and ( max-width: 500px )
+    .info
+        padding: $indent 0
 
 @include media-padding(".demo-continer")
-
-    

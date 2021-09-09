@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Watchdog.Models.Shared.Issues;
 
 namespace Watchdog.Models.Shared.Emailer.TemplateData
 {
@@ -10,36 +9,21 @@ namespace Watchdog.Models.Shared.Emailer.TemplateData
         {
         }
 
-        // For demonstration purposes only.
-        // Models must be implemented based on the SendGrid template.
-
-        public MemberInvitationTemplate(IssueMessage issue)
+        public MemberInvitationTemplate(MemberTemplate template)
         {
-            Subject = $"Watchdog - {issue.IssueDetails.ClassName} - {issue.IssueDetails.ErrorMessage}";
-            Name = $"{issue.IssueDetails.EnvironmentMessage.Platform}";
-            Location = new Location
-            {
-                City = $"{issue.IssueDetails.ResponseErrorMessage.StatusText}",
-                Country = "asdf"
-            };
+            Subject = $"Watchdog invitation for {template.Name}";
+            Member = template;
         }
 
         [JsonProperty("subject")]
         public string Subject { get; set; }
-
-        [JsonProperty("name")]
-        public string Name { get; set; }
-
-        [JsonProperty("location")]
-        public Location Location { get; set; }
+        [JsonProperty("member")]
+        public MemberTemplate Member { get; set; }
     }
 
-    public class Location
+    public class MemberTemplate
     {
-        [JsonProperty("city")]
-        public string City { get; set; }
-
-        [JsonProperty("country")]
-        public string Country { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
     }
 }
