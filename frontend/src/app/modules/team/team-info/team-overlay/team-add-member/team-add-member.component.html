@@ -10,10 +10,6 @@
                 </div>
             </ng-template>
             <div class="content-scroll">
-                <div class="members-invite">
-                    Members
-                    <a [routerLink]="'/home/members'" class="invite-link">Invite Member</a>
-                </div>
                 <div (click)="addMember(member, op)" role="button" class="overlay-item" *ngFor="let member of members">
                     <p-avatar
                         [image]="member.user.avatarUrl"
