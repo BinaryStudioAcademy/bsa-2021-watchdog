@@ -15,6 +15,10 @@ export class ProjectAnalyticsComponent extends BaseComponent implements OnInit {
     @Input() project: Project;
     geoChartOptions: GoogleChartOptions;
     geoData: (string | number)[][];
+    defaultMargin = 345;
+
+    width = document.documentElement.clientWidth - this.defaultMargin;
+    height = document.documentElement.clientHeight - this.defaultMargin;
 
     constructor(
         private projectsService: ProjectService,
@@ -27,9 +31,17 @@ export class ProjectAnalyticsComponent extends BaseComponent implements OnInit {
         this.initChartSettings();
     }
 
+    resetWindowSize(event){
+        this.width = event.target.innerWidth - this.defaultMargin;
+        this.height = event.target.innerHeight - this.defaultMargin;
+        this.initChartSettings();
+    }
+
     private initChartSettings() {
         this.geoChartOptions = {
             type: ChartType.GeoChart,
+            width: this.width,
+            height: this.height
         };
 
         this.projectsService
