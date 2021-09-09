@@ -1,0 +1,33 @@
+<div class="header">
+    <div class="left-side">
+        <button class="p-button-outlined back-button" icon="pi pi-chevron-left " pButton pRipple
+                pTooltip="Back to Tests" routerLink="../" tooltipPosition="bottom">
+        </button>
+        <h2 *ngIf="!isNotFound" appTooltipFullName>{{test?.name}}</h2>
+        <h2 *ngIf="isNotFound" appTooltipFullName>Test Result</h2>
+    </div>
+    <div class="buttons" *ngIf="!isNotFound && hasAccess()">
+        <button
+            (click)="deleteTest(test.id)"
+            class="p-button-danger p-button-outlined"
+            label="Delete"
+            pButton
+            pRipple>
+        </button>
+        <button
+            class="p-button-primary p-button-outlined"
+            label="Edit Test"
+            pButton
+            pRipple
+            routerLink="edit">
+        </button>
+    </div>
+</div>
+<app-no-content-placeholder *ngIf="isNoContent && !isNotFound"
+                            title="Looks like here are no test results.
+                            If you are already started the test, it may take some time.
+                            Try again later">
+</app-no-content-placeholder>
+<div *ngIf="isNotFound">
+    <app-not-found></app-not-found>
+</div>

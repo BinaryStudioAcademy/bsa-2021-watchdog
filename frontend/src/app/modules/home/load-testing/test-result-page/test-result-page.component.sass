@@ -1,0 +1,32 @@
+@import src/styles/variables
+@import src/styles/mixins
+
+.header
+    @include background-gray
+    @include title
+    display: flex
+    align-items: center
+    justify-content: space-between
+    white-space: nowrap
+    position: relative
+
+    .left-side
+        display: flex
+        align-items: center
+        width: calc(100% - 200px)
+
+        .back-button
+            margin-right: .2em
+            border: none
+            border-radius: 100%
+            min-width: 32px
+
+        h2
+            @include text-overflow-x-nowrap
+            max-width: 100%
+            cursor: default
+
+    .buttons
+        display: flex
+        white-space: nowrap
+        grid-gap: 0.5rem

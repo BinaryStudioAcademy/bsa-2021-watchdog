@@ -17,6 +17,7 @@ using Watchdog.Core.BLL.Services.Queue;
 using Microsoft.Extensions.Logging;
 using Watchdog.Models.Shared.Analytics;
 using Watchdog.Models.Shared.Issues;
+using Watchdog.Models.Shared.Loader;
 
 namespace Watchdog.Core.API.Extensions
 {
@@ -59,7 +60,10 @@ namespace Watchdog.Core.API.Extensions
                         m.IndexName(configuration["ElasticConfiguration:CountriesInfoIndex"]))
                 .DefaultMappingFor<IssueMessage>(m =>
                     m.IndexName(configuration["ElasticConfiguration:EventMessagesIndex"])
-                        .IdProperty(em => em.Id).Ignore(em => em.ApiKey));
+                        .IdProperty(em => em.Id).Ignore(em => em.ApiKey))
+                .DefaultMappingFor<TestResult>(m =>
+                    m.IndexName(configuration["ElasticConfiguration:LoaderMessagesIndex"])
+                        .IdProperty(x => x.Id));
             
             services.AddSingleton<IElasticClient>(new ElasticClient(settings));
         }
