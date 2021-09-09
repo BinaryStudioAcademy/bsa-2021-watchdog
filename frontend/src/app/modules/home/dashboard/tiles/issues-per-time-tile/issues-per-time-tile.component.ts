@@ -85,7 +85,7 @@ export class IssuesPerTimeTileComponent extends BaseTileComponent implements OnI
         this.multi.push({
             name: project.name,
             series: this.getMultiChartSeries(this.dateMsNow, this.dateRangeMsOffset, this.tileSettings.granularity,
-                messageInfos.filter(info => new Date(info.occurredOn).getTime() >= this.dateMsPast))
+                messageInfos)
         });
     }
 
@@ -145,7 +145,10 @@ export class IssuesPerTimeTileComponent extends BaseTileComponent implements OnI
             this.fixTileIssueStatus(statuses);
         } else {
             this.issueService
-                .getEventMessagesInfoByProjectIdFilteredByStatuses(project.id, { issueStatuses: this.tileSettings.issueStatuses })
+                .getEventMessagesInfoByProjectIdFilteredByStatuses(project.id, {
+                    issueStatuses: this.tileSettings.issueStatuses,
+                    dateRange: new Date(this.dateMsPast)
+                })
                 .pipe(this.untilThis)
                 .subscribe(messagesInfo => {
                     this.applyIssuesSettings(messagesInfo, project);

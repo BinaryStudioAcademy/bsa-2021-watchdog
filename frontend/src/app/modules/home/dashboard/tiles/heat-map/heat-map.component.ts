@@ -88,7 +88,7 @@ export class HeatMapComponent extends BaseTileComponent implements OnInit {
         this.multi.push({
             name: project.name,
             series: this.getMultiChartSeries(this.dateMsNow, this.dateRangeMsOffset, this.tileSettings.granularity,
-                messageInfos.filter(info => new Date(info.occurredOn).getTime() >= this.dateMsPast))
+                messageInfos)
         });
     }
 
@@ -105,7 +105,7 @@ export class HeatMapComponent extends BaseTileComponent implements OnInit {
             temp = i;
             eventsInfo.forEach((info) => {
                 const timeStamp = convertDateToTileGranularityTimeStamp(granularityType, info.occurredOn);
-                if ((temp >= timeStamp) && (temp - granularityOffset <= timeStamp)) {
+                if ((temp >= timeStamp) && (temp - granularityOffset < timeStamp)) {
                     issuesPerTime[i] += 1;
                 }
             });
@@ -123,7 +123,10 @@ export class HeatMapComponent extends BaseTileComponent implements OnInit {
             this.fixTileIssueStatus(statuses);
         } else {
             this.issueService
-                .getEventMessagesInfoByProjectIdFilteredByStatuses(project.id, { issueStatuses: this.tileSettings.issueStatuses })
+                .getEventMessagesInfoByProjectIdFilteredByStatuses(project.id, {
+                    issueStatuses: this.tileSettings.issueStatuses,
+                    dateRange: new Date(this.dateMsPast)
+                })
                 .pipe(this.untilThis)
                 .subscribe(messagesInfo => {
                     this.applyIssuesSettings(messagesInfo, project);
