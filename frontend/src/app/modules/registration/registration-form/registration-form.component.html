@@ -1,4 +1,5 @@
-<form [formGroup]="personalDetail" action="/signup" method="POST" *ngIf="step === stepRegistration.PersonalData">
+<span class="hint" *ngIf="step === stepRegistration.OrganizationData">To continue create a new organization or join existing</span>
+<form class="form" [formGroup]="personalDetail" action="/signup" method="POST" *ngIf="step === stepRegistration.PersonalData">
     <div class="reg-block">
         <div class="input-block">
             <span class="p-float-label">
@@ -83,7 +84,7 @@
         <p-tabPanel >
             <ng-template pTemplate="header">
                 <div class="header">
-                    <span>Create a new organization</span>
+                    <span>Create</span>
                 </div>
             </ng-template>
             <form [formGroup]="ogranizationDetail" action="/signup" class="reg-form organization-form" method="POST"
@@ -126,7 +127,7 @@
         <p-tabPanel>
             <ng-template pTemplate="header">
                 <div class="header">
-                    <span>Join the existing organization</span>
+                    <span>Join</span>
                 </div>
             </ng-template>
             <form [formGroup]="ogranizationJoin" action="/signup" class="reg-form organization-form" method="POST"
