@@ -76,6 +76,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
     ngOnInit(): void {
         this.isAssign = false;
+        this.spinner.show(true);
         this.authService.getOrganization()
             .pipe(this.untilThis,
                 switchMap(org => {
