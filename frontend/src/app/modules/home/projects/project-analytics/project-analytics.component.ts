@@ -31,7 +31,7 @@ export class ProjectAnalyticsComponent extends BaseComponent implements OnInit {
         this.initChartSettings();
     }
 
-    resetWindowSize(event){
+    resetWindowSize(event) {
         this.width = event.target.innerWidth - this.defaultMargin;
         this.height = event.target.innerHeight - this.defaultMargin;
         this.initChartSettings();
