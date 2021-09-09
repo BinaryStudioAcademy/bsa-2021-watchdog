@@ -1,5 +1,5 @@
 <!--    Issues Table    -->
-<div class="table" #toExport>
+<div class="table" #toExport *ngIf="loadingDataInTile">
     <p-table
         [alwaysShowPaginator]="displayedIssues.length > paginatorRows()"
         [pageLinks]="1"
@@ -35,3 +35,4 @@
         </ng-template>
     </p-table>
 </div>
+<p-progressSpinner *ngIf="!loadingDataInTile"></p-progressSpinner>

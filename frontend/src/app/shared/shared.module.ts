@@ -17,6 +17,7 @@ import { NoContentPlaceholderComponent } from './components/no-content-placehold
 import { TeamNameAvatarPipe } from './pipes/team-name-avatar.pipe';
 import { GoogleChartsModule } from 'angular-google-charts';
 import { NgxPhotoEditorModule } from 'ngx-photo-editor';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
     imports: [
@@ -29,6 +30,7 @@ import { NgxPhotoEditorModule } from 'ngx-photo-editor';
         NgxChartsModule,
         GoogleChartsModule,
         NgxPhotoEditorModule,
+        ProgressSpinnerModule,
     ],
     declarations: [
         LoadingSpinnerComponent,
@@ -60,6 +62,7 @@ import { NgxPhotoEditorModule } from 'ngx-photo-editor';
         NoContentPlaceholderComponent,
         GoogleChartsModule,
         NgxPhotoEditorModule,
+        ProgressSpinnerModule,
     ]
 })
 export class SharedModule { }

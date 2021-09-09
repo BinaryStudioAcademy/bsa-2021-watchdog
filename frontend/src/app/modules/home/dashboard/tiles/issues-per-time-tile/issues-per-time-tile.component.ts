@@ -25,7 +25,8 @@ import { BaseTileComponent } from '../base-tile/base-tile.component';
 
 @Component({
     selector: 'app-issues-per-time-tile[tile][userProjects]',
-    templateUrl: './issues-per-time-tile.component.html'
+    templateUrl: './issues-per-time-tile.component.html',
+    styleUrls: ['../common-tile/common-tile.component.sass']
 })
 export class IssuesPerTimeTileComponent extends BaseTileComponent implements OnInit {
     paginatorRows: number = 5;
@@ -37,6 +38,7 @@ export class IssuesPerTimeTileComponent extends BaseTileComponent implements OnI
     dateMsNow: number;
     dateRangeMsOffset: number;
     dateMsPast: number;
+    loadingDataInTile: boolean = false;
 
     constructor(
         private tileService: TileService,
@@ -147,6 +149,7 @@ export class IssuesPerTimeTileComponent extends BaseTileComponent implements OnI
                 .pipe(this.untilThis)
                 .subscribe(messagesInfo => {
                     this.applyIssuesSettings(messagesInfo, project);
+                    this.loadingDataInTile = true;
                 }, error => {
                     this.toastNotificationService.error(error);
                 });
