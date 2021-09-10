@@ -1,4 +1,4 @@
-<p-dialog [(visible)]="display" appendTo="body" [modal]="true" styleClass="new-org">
+<p-dialog [(visible)]="display" appendTo="body" [modal]="true" styleClass="new-org" [closable]="hasOrganization">
     <ng-template pTemplate="header">
         <span class="header">Create organization</span>
     </ng-template>
@@ -40,6 +40,7 @@
     </form>
     <ng-template pTemplate="footer">
         <button
+            *ngIf="hasOrganization"
             pButton
             type="button"
             label="Cancel"
