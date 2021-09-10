@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Services.Abstract;
+using Watchdog.Core.Common.DTO.Members;
 using Watchdog.Core.Common.DTO.Organization;
 using Watchdog.Core.Common.DTO.Registration;
 using Watchdog.Core.Common.DTO.User;
@@ -60,12 +61,12 @@ namespace Watchdog.Core.BLL.Services
             return await CreateOrganizationAsync(partialRegistrationDto.Organization, user);
         }
 
-        public async Task<UserDto> JoinToOrganization(int userId, string organizationSlug)
+        public async Task<UserDto> JoinToOrganization(JoinToOrganizationDto joinToOrganizationDto)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId)
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == joinToOrganizationDto.Id)
                 ?? throw new InvalidOperationException("User doesn't exist");
 
-            return await JoinOrganizationAsync(organizationSlug, user);
+            return await JoinOrganizationAsync(joinToOrganizationDto.OrganizationSlug, user);
         }
 
         private async Task<UserDto> JoinOrganizationAsync(string organizationSlug, User user)

@@ -11,6 +11,8 @@ import { User } from '@shared/models/user/user';
 import { Organization } from '@shared/models/organization/organization';
 import { existOrganization } from '@shared/validators/exist-organization.validator';
 import { RegistrationTabs } from '@modules/registration/registration-form/registration-tabs';
+import { MemberService } from '@core/services/member.service';
+import { RegistrationService } from '@core/services/registration.service';
 
 @Component({
     selector: 'app-create-organization',
@@ -37,7 +39,8 @@ export class CreateOrganizationComponent extends BaseComponent implements OnInit
     constructor(
         private organizationService: OrganizationService,
         private authService: AuthenticationService,
-        private toastNotification: ToastNotificationService
+        private toastNotification: ToastNotificationService,
+        private registrationService: RegistrationService
     ) {
         super();
     }
@@ -98,12 +101,18 @@ export class CreateOrganizationComponent extends BaseComponent implements OnInit
             this.createOrganization();
         }
         if (this.indexOfSelectedTab === RegistrationTabs.JoinToOrganization) {
-
+            this.joinToOrganization();
         }
     }
 
     joinToOrganization() {
-
+        this.registrationService.joinToOrganization(this.user.id, this.slugForJoin.value)
+            .pipe(this.untilThis)
+            .subscribe(() => {
+                this.toastNotification.success('Successful join to organization');
+            }, error => {
+                this.toastNotification.error(error);
+            });
     }
 
     createOrganization() {

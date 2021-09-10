@@ -35,6 +35,7 @@ export class RegistrationService {
     }
 
     public joinToOrganization(userId: number, organizationSlug: string): Observable<User> {
-        return this.http.postRequest(`/${this.apiPrefix}/joinToOrganization`, { userId, organizationSlug });
+        const userForJoin = { userId, organizationSlug };
+        return this.http.postRequest(`/${this.apiPrefix}/joinToOrganization`, userForJoin);
     }
 }

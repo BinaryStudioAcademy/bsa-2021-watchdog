@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Watchdog.Core.BLL.Services.Abstract;
 using Watchdog.Core.Common.DTO.Registration;
 using Watchdog.Core.Common.DTO.User;
+using Watchdog.Core.Common.DTO.Members;
 
 namespace Watchdog.Core.API.Controllers
 {
@@ -48,9 +49,9 @@ namespace Watchdog.Core.API.Controllers
         }
 
         [HttpPost("joinToOrganization")]
-        public async Task<ActionResult<UserDto>> JoinToOrganizationAsync(int userId, string organizationSlug)
+        public async Task<ActionResult<UserDto>> JoinToOrganizationAsync(JoinToOrganizationDto joinToOrganizationDto)
         {
-            var user = await _registrationService.JoinToOrganization(userId, organizationSlug);
+            var user = await _registrationService.JoinToOrganization(joinToOrganizationDto);
             return Ok(user);
         }
     }
