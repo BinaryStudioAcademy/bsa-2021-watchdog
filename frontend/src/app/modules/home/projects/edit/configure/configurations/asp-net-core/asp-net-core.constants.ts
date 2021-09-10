@@ -36,10 +36,10 @@ namespace WebApplication
             _clientProvider = clientProvider;
         }
 
-        public void HandleException(HttpContext httpContext, Exception exception)
+        public async Task HandleException(HttpContext httpContext, Exception exception)
         {
             // To immediately send an exception with the current request state
-            _clientProvider.GetClient(httpContext).SendAsync(exception);
+            await _clientProvider.GetClient(httpContext).SendAsync(exception);
 
             // To send an exception with the the handled request state
             _clientProvider.GetClient(httpContext).TrackException(exception);
