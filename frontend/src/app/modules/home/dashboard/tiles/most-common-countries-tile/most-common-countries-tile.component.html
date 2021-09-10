@@ -1,7 +1,11 @@
 <div class="table" #toExport *ngIf="loadingDataInTile">
-    <p-table [alwaysShowPaginator]="countryInfos?.length > paginatorRows()" [pageLinks]="1" [paginator]="true"
-        [rows]="paginatorRows()" [showJumpToPageDropdown]="true" [showPageLinks]="false" [value]="countryInfos"
-        selectionMode="single" sortField="count" [sortOrder]="-1">
+    <p-table
+        [alwaysShowPaginator]="countryInfos?.length > paginatorRows()"
+        [paginator]="true"
+        [rows]="paginatorRows()"
+        [value]="countryInfos"
+        sortField="count"
+        [sortOrder]="-1">
         <ng-template pTemplate="header">
             <tr>
                 <th pSortableColumn="country">Country
