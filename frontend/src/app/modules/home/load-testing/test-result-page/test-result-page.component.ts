@@ -75,7 +75,11 @@ export class TestResultPageComponent extends BaseComponent implements OnInit {
     }
 
     filterResultsByUrl(result: TestAnalytics | undefined, panel: OverlayPanel) {
-        result ? this.getTestResultByRequest(result.requestId) : this.shownResults = this.testResult;
+        if (result) {
+            this.getTestResultByRequest(result.requestId);
+        } else {
+            this.shownResults = this.testResult;
+        }
         panel.hide();
     }
 
