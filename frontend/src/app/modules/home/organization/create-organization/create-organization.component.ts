@@ -23,6 +23,7 @@ export class CreateOrganizationComponent extends BaseComponent implements OnInit
     formGroup: FormGroup;
     formGroupJoin: FormGroup;
     user: User;
+    addOrganizationTabs = RegistrationTabs;
     indexOfSelectedTab = RegistrationTabs.CreateOrganization;
     private displayDialog: boolean;
     get display(): boolean {
