@@ -11,7 +11,7 @@ import { User } from '@shared/models/user/user';
 import { Organization } from '@shared/models/organization/organization';
 
 @Component({
-    selector: 'app-create-organization',
+    selector: 'app-create-organization[hasOrganization]',
     templateUrl: './create-organization.component.html',
     styleUrls: ['./create-organization.component.sass']
 })
@@ -27,6 +27,8 @@ export class CreateOrganizationComponent extends BaseComponent implements OnInit
         this.formGroup?.reset();
         this.displayChange.emit(value);
     }
+
+    @Input() hasOrganization: boolean;
     @Output() displayChange = new EventEmitter<boolean>();
     @Output() organizationCreate = new EventEmitter<Organization>();
 
