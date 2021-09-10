@@ -25,6 +25,13 @@ namespace Watchdog.Core.BLL.Services
             return _mapper.Map<OrganizationDto>(organization);
         }
 
+        public async Task<OrganizationDto> GetOrganizationBySlugAsync(string organizationSlug)
+        {
+            var organization = await _context.Organizations.FirstOrDefaultAsync(o => o.OrganizationSlug == organizationSlug)
+                ?? throw new KeyNotFoundException("Organization is not found!");
+            return _mapper.Map<OrganizationDto>(organization);
+        }
+
         public async Task<OrganizationDto> GetDafaultOrganizationByUserIdAsync(int userId)
         {
             var organization = await _context.Organizations

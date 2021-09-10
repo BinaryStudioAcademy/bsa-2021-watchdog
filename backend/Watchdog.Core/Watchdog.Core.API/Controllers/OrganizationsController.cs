@@ -56,6 +56,13 @@ namespace Watchdog.Core.API.Controllers
             return Ok(organization);
         }
 
+        [HttpGet("organizationBySlug/{organizationSlug}")]
+        public async Task<ActionResult<OrganizationDto>> GetOrganizationBySlugAsync(string organizationSlug)
+        {
+            var organization = await _organizationService.GetOrganizationBySlugAsync(organizationSlug);
+            return Ok(organization);
+        }
+
         [HttpGet("user/{userId:int}")]
         public async Task<ActionResult<ICollection<OrganizationDto>>> GetByUserAsync(int userId)
         {
