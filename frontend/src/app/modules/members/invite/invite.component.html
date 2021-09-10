@@ -1,9 +1,10 @@
 <p-dialog [visible]="true"
           [modal]="true"
           [closable]="false"
-          [showHeader] ="false">
-    <p-panel 
-        header="Invite members" 
+          [showHeader] ="false"
+          [resizable]="false">
+    <p-panel
+        header="Invite members"
         class="invite-block">
             <div class="p-dialog-header">
                 <button class="close-button" (click)="closeModal.emit()"><i class="pi pi-times"></i></button>
@@ -11,17 +12,17 @@
                 <!-- email -->
                 <form [formGroup]="invation.groupForm" *ngFor="let invation of invations">
                     <div class="invite-form">
-                        <div class="p-field p-col-12 p-md-4">
-                            <p-autoComplete appendTo = "body" 
-                            field="email" formControlName="name" [forceSelection]="true" 
+                        <div class="p-field p-col-12 p-md-4 email">
+                            <p-autoComplete appendTo = "body"
+                            field="email" formControlName="name" [forceSelection]="true"
                             [suggestions]="notMembers" (completeMethod)="search($event)"
                             dropdownMode="current"
                             [completeOnFocus]="true"
                             placeholder="Enter email">
                                 <ng-template let-user pTemplate="item">
                                     <span> {{user.firstName}} {{user.lastName}}</span>
-                                    <span> {{user.email}} </span> 
-                                </ng-template>                       
+                                    <span> {{user.email}} </span>
+                                </ng-template>
                             </p-autoComplete>
                             <div *ngIf="invation.groupForm.controls.name.touched && invation.groupForm.controls.name.invalid"
                             class="validation" id="name">
@@ -49,5 +50,5 @@
                     </div>
             </form>
             <button pButton pRipple type="button" (click)="addNew()" class="p-button-outlined" icon="pi pi-plus" label="Add more"></button>
-    </p-panel> 
+    </p-panel>
 </p-dialog>
