@@ -1,8 +1,10 @@
 <ng-container [ngSwitch]="project.platform.name.toLowerCase()">
     <app-javascript *ngSwitchCase="'javascript'" [apiKey]="project.apiKey"></app-javascript>
+    <app-angular *ngSwitchCase="'angularjs'" [apiKey]="project.apiKey"></app-angular>
     <app-angular *ngSwitchCase="'angular'" [apiKey]="project.apiKey"></app-angular>
     <app-react *ngSwitchCase="'react'" [apiKey]="project.apiKey"></app-react>
-    <app-asp-net-core *ngSwitchCase="'asp.net core'" [apiKey]="project.apiKey">ASP.NET Core</app-asp-net-core>
-    <app-dot-net *ngSwitchCase="'.net'" [apiKey]="project.apiKey">.NET</app-dot-net>
+    <app-asp-net-core *ngSwitchCase="'asp.net core'" [apiKey]="project.apiKey"></app-asp-net-core>
+    <app-dot-net *ngSwitchCase="'.net'" [apiKey]="project.apiKey"></app-dot-net>
+    <app-dot-net *ngSwitchCase="'windows presentation foundation'" [apiKey]="project.apiKey"></app-dot-net>
     <span *ngSwitchDefault >{{project.platform.name}} is not supported yet.</span>
 </ng-container>
