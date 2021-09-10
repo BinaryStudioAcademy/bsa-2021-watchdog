@@ -9,6 +9,8 @@ import { regexs } from '@shared/constants/regexs';
 import { uniqueSlugValidator } from '@shared/validators/unique-slug.validator';
 import { User } from '@shared/models/user/user';
 import { Organization } from '@shared/models/organization/organization';
+import { existOrganization } from '@shared/validators/exist-organization.validator';
+import { RegistrationTabs } from '@modules/registration/registration-form/registration-tabs';
 
 @Component({
     selector: 'app-create-organization',
@@ -17,7 +19,9 @@ import { Organization } from '@shared/models/organization/organization';
 })
 export class CreateOrganizationComponent extends BaseComponent implements OnInit {
     formGroup: FormGroup;
+    formGroupJoin: FormGroup;
     user: User;
+    indexOfSelectedTab = RegistrationTabs.CreateOrganization;
     private displayDialog: boolean;
     get display(): boolean {
         return this.displayDialog;
@@ -40,6 +44,23 @@ export class CreateOrganizationComponent extends BaseComponent implements OnInit
 
     ngOnInit(): void {
         this.user = this.authService.getUser();
+
+        this.formGroupJoin = new FormGroup({
+            organizationSlugJoin: new FormControl(
+                '',
+                {
+                    validators: [
+                        Validators.required,
+                        Validators.minLength(3),
+                        Validators.maxLength(50),
+                        Validators.pattern(regexs.organizationSlag),
+                    ],
+                    asyncValidators: [
+                        existOrganization(this.organizationService)
+                    ]
+                }
+            ),
+        });
 
         this.formGroup = new FormGroup({
             organizationName: new FormControl(
@@ -69,7 +90,21 @@ export class CreateOrganizationComponent extends BaseComponent implements OnInit
     }
 
     get slug() { return this.formGroup.controls.organizationSlug; }
+    get slugForJoin() { return this.formGroupJoin.controls.organizationSlugJoin; }
     get name() { return this.formGroup.controls.organizationName; }
+
+    submit() {
+        if (this.indexOfSelectedTab === RegistrationTabs.CreateOrganization) {
+            this.createOrganization();
+        }
+        if (this.indexOfSelectedTab === RegistrationTabs.JoinToOrganization) {
+
+        }
+    }
+
+    joinToOrganization() {
+
+    }
 
     createOrganization() {
         const newOrganization: NewOrganization = {
@@ -85,5 +120,10 @@ export class CreateOrganizationComponent extends BaseComponent implements OnInit
             }, error => {
                 this.toastNotification.error(error);
             });
+    }
+
+    handleChange(e) {
+        this.indexOfSelectedTab = e.index;
+        debugger;
     }
 }

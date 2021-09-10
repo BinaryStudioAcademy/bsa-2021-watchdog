@@ -60,6 +60,14 @@ namespace Watchdog.Core.BLL.Services
             return await CreateOrganizationAsync(partialRegistrationDto.Organization, user);
         }
 
+        public async Task<UserDto> JoinToOrganization(int userId, string organizationSlug)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId)
+                ?? throw new InvalidOperationException("User doesn't exist");
+
+            return await JoinOrganizationAsync(organizationSlug, user);
+        }
+
         private async Task<UserDto> JoinOrganizationAsync(string organizationSlug, User user)
         {
             var roles = await _context.Roles.ToListAsync();
