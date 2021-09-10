@@ -18,7 +18,8 @@
     .p-dialog-content
         padding: 0
     .p-panel
-        min-width: 60vw
+        width: 70vw
+        min-width: 600px
     .p-dialog-header
         padding: 0
     .p-inputtext,
@@ -41,9 +42,7 @@
 
 .invite-form
     display: grid
-    grid-auto-flow: column
     align-items: flex-start
-    flex-wrap: wrap
     grid-gap: 10px
     grid-template-columns: auto 15% 30% 15%
     margin-bottom: 20px
@@ -65,3 +64,18 @@
 
 .availiable-members button:hover
     background-color: #dbdbdb
+
+@media screen and ( max-width: 600px)
+    :host ::ng-deep
+        .p-panel
+            width: 100vw
+            min-width: 100%
+
+    .invite-form
+        align-items: flex-start
+        grid-gap: 10px
+        grid-template-columns: 30% 30% auto
+        margin-bottom: 20px
+    .email
+        grid-column-start: 1
+        grid-column-end: 4
