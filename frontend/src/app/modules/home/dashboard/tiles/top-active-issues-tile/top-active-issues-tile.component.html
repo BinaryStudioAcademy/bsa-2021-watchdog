@@ -2,13 +2,9 @@
 <div class="table" #toExport *ngIf="loadingDataInTile">
     <p-table
         [alwaysShowPaginator]="displayedIssues.length > paginatorRows()"
-        [pageLinks]="1"
         [paginator]="true"
         [rows]="paginatorRows()"
-        [showJumpToPageDropdown]="true"
-        [showPageLinks]="false"
-        [value]="displayedIssues"
-        selectionMode="single">
+        [value]="displayedIssues">
         <!--    Columns Define    -->
         <ng-template pTemplate="header">
             <tr>
