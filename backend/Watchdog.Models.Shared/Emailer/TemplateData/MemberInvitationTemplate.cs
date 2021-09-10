@@ -25,5 +25,15 @@ namespace Watchdog.Models.Shared.Emailer.TemplateData
     {
         [JsonProperty("name")]
         public string Name { get; set; }
+        [JsonProperty("organization")]
+        public OrganizationTemplate Organization { get; set; }
+    }
+
+    public class OrganizationTemplate
+    {
+        [JsonProperty("name")]
+        public string Name { get; set; }
+        [JsonProperty("slug")]
+        public string OrganizationSlug { get; set; }
     }
 }
