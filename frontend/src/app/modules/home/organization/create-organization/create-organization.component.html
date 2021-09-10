@@ -90,7 +90,8 @@
             type="submit"
             label="Submit"
             class="p-button-primary p-button-outlined"
-            [disabled]="(indexOfSelectedTab === 0 && !formGroup.valid) || (indexOfSelectedTab === 1 && !formGroupJoin.valid)"
+            [disabled]="(indexOfSelectedTab === addOrganizationTabs.CreateOrganization && !formGroup.valid) ||
+                (indexOfSelectedTab === addOrganizationTabs.JoinToOrganization && !formGroupJoin.valid)"
             (click)="submit()">
         </button>
     </ng-template>
