@@ -15,7 +15,7 @@
                     [style.cursor]="hasAccess() ? 'pointer' : 'auto'" >
                 </i>
             </div>
-            <div>{{projectTeam.project?.name}}</div>
+            <div><a class="link" routerLink="/home/projects/edit/{{projectTeam.project?.id}}">{{projectTeam.project?.name}}</a></div>
             <button
                 icon="pi pi-minus-circle"
                 class="p-button-outlined p-button-danger"
