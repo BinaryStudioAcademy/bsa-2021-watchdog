@@ -9,6 +9,7 @@ import { hasAccess } from '@core/utils/access.utils';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Test } from '@shared/models/test/test';
 import { TestAnalytics } from '@shared/models/test/analytics/test-analytics';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
     selector: 'app-test-result-page',
@@ -19,8 +20,12 @@ export class TestResultPageComponent extends BaseComponent implements OnInit {
     isNotFound: boolean;
     member: Member;
     test: Test;
+
     testResult: TestAnalytics[];
+    shownResults: TestAnalytics[];
+
     isNoContent: boolean = false;
+    isLoading: boolean = false;
     hasAccess = () => hasAccess(this.member);
 
     constructor(
@@ -28,8 +33,9 @@ export class TestResultPageComponent extends BaseComponent implements OnInit {
         private authService: AuthenticationService,
         private toastNotification: ToastNotificationService,
         private spinner: SpinnerService,
+        private toastNotifications: ToastNotificationService,
         private activatedRoute: ActivatedRoute,
-        private router: Router
+        private router: Router,
     ) { super(); }
 
     ngOnInit(): void {
@@ -68,11 +74,18 @@ export class TestResultPageComponent extends BaseComponent implements OnInit {
             });
     }
 
+    filterResultsByUrl(result: TestAnalytics | undefined, panel: OverlayPanel) {
+        result ? this.getTestResultByRequest(result.requestId) : this.shownResults = this.testResult;
+        panel.hide();
+    }
+
     getTestResult(testId: number) {
         this.testService.getTestAnalyticsByTestId(testId)
             .pipe(this.untilThis)
             .subscribe(response => {
+                console.log(response);
                 this.testResult = response;
+                this.shownResults = response;
             }, error => {
                 this.isNoContent = true;
                 this.toastNotification.error(error);
@@ -83,7 +96,7 @@ export class TestResultPageComponent extends BaseComponent implements OnInit {
         this.testService.getTestAnalyticsByRequestId(requestId)
             .pipe(this.untilThis)
             .subscribe(response => {
-                this.testResult = [response];
+                this.shownResults = [response];
             }, error => {
                 this.isNoContent = true;
                 this.toastNotification.error(error);
@@ -100,5 +113,19 @@ export class TestResultPageComponent extends BaseComponent implements OnInit {
             }, error => {
                 this.toastNotification.error(error);
             });
+    }
+
+    runTest() {
+        this.testService.updateTest(this.test, true).subscribe(() => {
+            this.toastNotifications.success('Test run!');
+        }, error => {
+            this.toastNotifications.error(error);
+        });
+    }
+
+    toggle(event: any, panel: OverlayPanel) {
+        if (!panel.willHide) {
+            panel.toggle(event);
+        }
     }
 }

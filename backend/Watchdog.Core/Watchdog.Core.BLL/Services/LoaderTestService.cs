@@ -140,7 +140,16 @@ namespace Watchdog.Core.BLL.Services
                 await Task.WhenAll(test.Requests.Select(async request =>
                     await GetLoaderTestAnalyticsByRequestIdAsync(request.Id, request.TestId)));
 
-            return _mapper.Map<ICollection<LoaderTestAnalyticsDto>>(analytics);
+            var requests = await _context.LoaderRequests.ToListAsync();
+
+            await Task.WhenAll(analytics.Select(async a =>
+            {
+                var request = requests.FirstOrDefault(r => r.Id == a.RequestId);
+                a.RequestUrl = $"{request.Method.ToString().ToUpper()} {request.Protocol.ToString().ToLower()}://{request.Host + request?.Path}";
+                return a;
+            }));
+
+            return analytics;
         }
 
         public async Task<LoaderTestAnalyticsDto> GetLoaderTestResultsAnalyticsByRequestIdAsync(int requestId)
@@ -152,10 +161,12 @@ namespace Watchdog.Core.BLL.Services
 
             var analytics = await GetLoaderTestAnalyticsByRequestIdAsync(request.Id, request.TestId);
 
-            return _mapper.Map<LoaderTestAnalyticsDto>(analytics);
+            analytics.RequestUrl = $"{request.Method.ToString().ToUpper()} {request.Protocol.ToString().ToLower()}://{request.Host + request?.Path}";
+
+            return analytics;
         }
 
-        private async Task<LoaderTestAnalytics> GetLoaderTestAnalyticsByRequestIdAsync(int requestId, int testId)
+        private async Task<LoaderTestAnalyticsDto> GetLoaderTestAnalyticsByRequestIdAsync(int requestId, int testId)
         {
             var searchResponse = await _client.SearchAsync<TestResult>(descriptor =>
                 descriptor.Size(0)
@@ -245,21 +256,21 @@ namespace Watchdog.Core.BLL.Services
                 throw new KeyNotFoundException("Test results not found!");
             }
 
-            return new LoaderTestAnalytics
+            return new LoaderTestAnalyticsDto
             {
                 Bandwidth = new Bandwidth
                 {
                     Received = (ulong) (searchResponse.Aggregations.ValueCount("Bandwidth.Received").Value ?? 0),
                     Sent = (ulong) (searchResponse.Aggregations.ValueCount("Bandwidth.Sent").Value ?? 0)
                 },
-                ResponseTimes = new ResponseTimes
+                ResponseTimes = new ResponseTimesDto
                 {
                     Average = TimeSpan.FromTicks((long) (searchResponse.Aggregations.ValueCount("ResponseTimes.Average")
-                        .Value ?? 0)),
+                        .Value ?? 0)).Milliseconds,
                     Max = TimeSpan.FromTicks((long) (searchResponse.Aggregations.ValueCount("ResponseTimes.Max")
-                        .Value ?? 0)),
+                        .Value ?? 0)).Milliseconds,
                     Min = TimeSpan.FromTicks((long) (searchResponse.Aggregations.ValueCount("ResponseTimes.Min")
-                        .Value ?? 0))
+                        .Value ?? 0)).Milliseconds
                 },
                 ResponseCounts = new ResponseCounts
                 {

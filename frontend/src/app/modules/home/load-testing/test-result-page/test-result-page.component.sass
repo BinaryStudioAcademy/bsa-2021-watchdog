@@ -30,3 +30,100 @@
         display: flex
         white-space: nowrap
         grid-gap: 0.5rem
+
+.main-container
+    margin: 10px
+    .buttons
+        display: flex
+        justify-content: space-between
+    .results-container
+        display: flex
+        flex-flow: row wrap
+        padding: 20px
+        .result-card
+            min-width: 280px
+            margin-right: 20px
+            border-radius: 3px
+            border: 1px solid $border-color
+            padding: 20px
+            &-name
+                font-size: 20px
+                font-weight: 420
+                padding-bottom: 10px
+                border-bottom: 1px solid $border-color
+            &-content
+                padding-top: 15px
+
+.key-value
+    margin-bottom: 5px
+    display: flex
+    flex-direction: row
+    padding-bottom: 15px
+    justify-content: space-between
+    .key
+        margin-right: 5px
+
+.center
+    display: flex
+    min-width: 550px
+    &-content
+        padding-right: 6px
+        margin-right: 6px
+        .key-value
+            .key
+                margin-right: 40px
+
+.filter-button
+    margin: 20px
+
+.run-button
+    margin: 20px
+
+.buttons
+    display: flex
+
+.overlay-item
+    display: flex
+    align-items: center
+    font-weight: 400
+    padding: .3em $half-indent
+    gap: .3em
+    width: 100%
+    font-size: .8rem
+    border-bottom: 1px solid $border-color
+    cursor: pointer
+    height: 45px
+    &:hover
+        background-color: $penging-color
+    &.state
+        padding: 1em
+    &.project
+        padding: 1em
+    .request-url
+        @include text-overflow-x-nowrap
+        height: 1em
+    img
+        @include disable-select
+        width: 20px
+        height: 20px
+        margin: 0 .2em
+
+::ng-deep .filter-overlay-panel
+    .p-overlaypanel-content
+        width: 250px
+        padding: 0
+        & input
+            width: 100%
+    &.p-overlaypanel
+        margin: 0
+        top: 0
+    &::after
+        content: none
+    &::before
+        content: none
+    .panel.p-panel .p-panel-content
+        padding: 0
+
+.content-scroll
+    max-height: 300px
+    overflow-y: auto

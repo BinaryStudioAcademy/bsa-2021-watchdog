@@ -7,5 +7,6 @@ export interface TestAnalytics {
     requestId: number,
     responseTimes: ResponseTimes,
     responseCounts: ResponseCounts,
-    bandwidth: Bandwidth
+    bandwidth: Bandwidth,
+    requestUrl: string
 }
