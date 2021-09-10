@@ -179,6 +179,7 @@ export class MembersPageComponent extends BaseComponent implements OnInit {
             .pipe(this.untilThis)
             .subscribe(() => {
                 this.toastNotifications.success('Member approved');
+                this.loadMembers(this.lastEvent);
             }, error => {
                 this.toastNotifications.error(error);
             });

@@ -46,7 +46,9 @@
         [rows]="itemsPerPage"
         [totalRecords]="totalRecords"
         [value]="memberItems"
-        class="members-table">
+        class="members-table"
+        sortField="isApproved"
+        [sortOrder]="1">
         <ng-template pTemplate="header">
             <tr>
                 <th pSortableColumn="userFirstName">
@@ -110,10 +112,10 @@
                         </span>
                     </div>
                 </th>
-                <th pSortableColumn="isAccepted">
+                <th pSortableColumn="isApproved">
                     <div class="table-header-cell" id="isAccepted-col">
                         <span>
-                            Is accepted <p-sortIcon field="isAccepted"></p-sortIcon>
+                            Is approved <p-sortIcon field="isApproved"></p-sortIcon>
                         </span>
                     </div>
                 </th>
@@ -179,7 +181,7 @@
                             pButton
                             pRipple
                             type="button"
-                            label="Accept"
+                            label="Approve"
                             *ngIf="!memberItem.member.isApproved"
                             class="p-button-outlined p-button-secondary"
                             (click)="approve(memberItem.member)"></button>
