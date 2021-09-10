@@ -7,7 +7,7 @@ import { BaseComponent } from '@core/components/base/base.component';
 import { ToastNotificationService } from '@core/services/toast-notification.service';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { MemberService } from '@core/services/member.service';
-import { forkJoin, zip } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { TeamService } from '@core/services/team.service';
 import { Assignee } from '@shared/models/issue/assignee';
 import { count, toTeams, toUsers } from '@core/services/issues.utils';
