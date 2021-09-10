@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
-import { LoadTestingRoutingModule } from './load-testing-routing.module';
-import { TestSettingsComponent } from './test-settings/test-settings.component';
-import { TestsComponent } from './tests/tests.component';
+import { TestResultPageComponent } from '@modules/home/load-testing/test-result-page/test-result-page.component';
+import { TestSettingsComponent } from '@modules/home/load-testing/test-settings/test-settings.component';
+import { LoadTestingRoutingModule } from '@modules/home/load-testing/load-testing-routing.module';
+import { TestsComponent } from '@modules/home/load-testing/tests/tests.component';
 
 @NgModule({
     declarations: [
         TestSettingsComponent,
-        TestsComponent
+        TestsComponent,
+        TestResultPageComponent
     ],
     imports: [
         SharedModule,

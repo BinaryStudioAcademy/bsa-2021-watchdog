@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using Watchdog.Core.Common.DTO.Application;
+using Newtonsoft.Json;
 using Watchdog.Core.Common.DTO.LoaderTest.LoadTestSetting;
+using Watchdog.Core.Common.DTO.LoaderTest.Request;
 
-namespace Watchdog.Core.Common.DTO.LoaderTest
+namespace Watchdog.Core.Common.DTO.LoaderTest.Test
 {
-    public class LoaderTestDto
+    public class UpdateLoaderTestDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -15,9 +15,7 @@ namespace Watchdog.Core.Common.DTO.LoaderTest
         public TimeSpan Duration { get; set; }
         [JsonProperty("projectId")]
         public int? ApplicationId { get; set; }
-        [JsonProperty("project")]
-        public ApplicationDto Application { get; set; }
         public int OrganizationId { get; set; }
-        public ICollection<LoaderRequestDto> Requests { get; set; }
+        public ICollection<UpdateLoaderRequestDto> Requests { get; set; }
     }
 }

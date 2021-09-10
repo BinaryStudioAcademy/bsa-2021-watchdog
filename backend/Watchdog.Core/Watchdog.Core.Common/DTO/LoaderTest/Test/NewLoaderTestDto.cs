@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Watchdog.Core.Common.DTO.LoaderTest.LoadTestSetting;
+using Watchdog.Core.Common.DTO.LoaderTest.Request;
 
-namespace Watchdog.Core.Common.DTO.LoaderTest
+namespace Watchdog.Core.Common.DTO.LoaderTest.Test
 {
     public class NewLoaderTestDto
     {

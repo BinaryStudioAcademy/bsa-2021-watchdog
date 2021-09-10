@@ -6,6 +6,6 @@ namespace Watchdog.Loader.BLL.Services.Abstract
     public interface IElasticService
     {
         Task AddTestResultAsync(TestResult result);
-        Task ClearAsync(int teastId);
+        Task ClearAsync(int testId);
     }
 }

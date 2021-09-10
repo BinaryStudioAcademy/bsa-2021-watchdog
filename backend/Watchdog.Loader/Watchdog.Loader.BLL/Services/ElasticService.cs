@@ -18,20 +18,17 @@ namespace Watchdog.Loader.BLL.Services
 
         public Task AddTestResultAsync(TestResult result)
         {
-            if (result.Id is null)
-            {
-                result.Id = Guid.NewGuid().ToString();
-            }
+            result.Id ??= Guid.NewGuid().ToString();
             return _client.IndexDocumentAsync(result);
         }
 
-        public Task ClearAsync(int teastId)
+        public Task ClearAsync(int testId)
         {
-            return _client.DeleteByQueryAsync<TestResult>(q => q.
-                Query(rq => rq
+            return _client.DeleteByQueryAsync<TestResult>(q => q
+                .Query(rq => rq
                     .Match(m => m
                         .Field(f => f.TestId)
-                        .Query(teastId.ToString()))));
+                        .Query(testId.ToString()))));
         }
     }
 }

@@ -2,14 +2,14 @@
 <div class="header">
     <h1 class="header-title">Tests</h1>
     <div class="action-buttons">
-        <button 
-            routerLink="./new" 
-            class="p-button-primary p-button-outlined" 
+        <button
+            class="p-button-primary p-button-outlined"
+            label="Create Test"
             icon="pi pi-plus-circle"
-            label="Create Test" 
-            pButton 
-            pRipple 
-            type="button" 
+            pButton
+            pRipple
+            routerLink="./new"
+            type="button"
             *ngIf="hasAccess()">
         </button>
     </div>
@@ -19,7 +19,7 @@
 <div *ngIf="tests && tests.length" class="tests-container">
     <div class="grid">
         <div *ngFor="let test of tests">
-            <div class="card" [routerLink]="'./edit/'+test.id">
+            <div [routerLink]="'./'+test.id" class="card">
                 <div class="card-title">
                     <div class="card-title" *ngIf="test.project">
                         <img alt="{{test.project.platform.name}}" [src]="test.project.platform.avatarUrl | save">

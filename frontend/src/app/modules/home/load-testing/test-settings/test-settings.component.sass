@@ -13,17 +13,21 @@ $max-width: 1240px
     position: sticky
     z-index: 100
     top: 0
+
     .back-button
         margin-right: .2em
         border: none
         border-radius: 100%
+
     .header-title
         white-space: nowrap
         margin-right: auto
 
 .buttons
     display: flex
+    white-space: nowrap
     grid-gap: 0.5rem
+
 .container
     padding: $half-indent
 
@@ -40,7 +44,7 @@ $max-width: 1240px
 .content-type
     padding: 0.5rem
     justify-content: center
-    border: 1px solid #ced4da
+    border: 1px solid $border-color
     border-radius: 3px
 
 .test-settings
@@ -61,6 +65,7 @@ $max-width: 1240px
     display: grid
     grid-gap: 1rem
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))
+
 .title-block
     margin: 0 0 0.5rem 0.5rem
 
@@ -68,6 +73,7 @@ $max-width: 1240px
     box-shadow: none
     height: 20px
     width: 20px
+
 .url
     font-weight: 600
     margin: 1rem
@@ -79,7 +85,7 @@ $max-width: 1240px
     overflow-wrap: anywhere
 
 .header-block
-    border: 1px solid #ced4da
+    border: 1px solid $border-color
     padding: 1rem
     border-radius: 3px
 
@@ -93,6 +99,7 @@ $max-width: 1240px
 .sub-block
     display: grid
     grid-template-rows: auto 1fr
+
 .body
     display: flex
     flex-direction: column
@@ -102,10 +109,11 @@ $max-width: 1240px
     width: 100%
     max-width: $max-width
 
-:host ::ng-deep
+\:host ::ng-deep
     .input
         height: 2.5rem !important
         width: 100%
+
     .p-dropdown-label
         display: flex
         align-items: center

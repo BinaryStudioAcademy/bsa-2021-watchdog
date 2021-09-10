@@ -1,0 +1,194 @@
+<div class="header">
+    <div class="left-side">
+        <button class="p-button-outlined back-button" icon="pi pi-chevron-left " pButton pRipple
+                pTooltip="Back to Tests" routerLink="../" tooltipPosition="bottom">
+        </button>
+        <h2 *ngIf="!isNotFound" appTooltipFullName>{{test?.name}}</h2>
+        <h2 *ngIf="isNotFound" appTooltipFullName>Test Result</h2>
+    </div>
+    <div class="buttons" *ngIf="!isNotFound && hasAccess()">
+        <button
+            (click)="deleteTest(test.id)"
+            class="p-button-danger p-button-outlined"
+            label="Delete"
+            pButton
+            pRipple>
+        </button>
+        <button
+            class="p-button-primary p-button-outlined"
+            label="Edit Test"
+            pButton
+            pRipple
+            routerLink="edit">
+        </button>
+    </div>
+</div>
+
+<div class="main-container">
+    <div class="buttons">
+        <button pButton
+                pRipple
+                label="Filter by request"
+                icon="pi pi-search"
+                class="p-button-outlined filter-button"
+                (click)="toggle($event, op)">
+        </button>
+        <button pButton
+                pRipple
+                label="Run"
+                icon="pi pi-caret-right"
+                class="p-button-outlined run-button"
+                (click)="runTest()">
+        </button>
+    </div>
+
+    <p-overlayPanel #op [appendTo]="'body'" styleClass="filter-overlay-panel">
+        <ng-template class="overlay-container" pTemplate>
+            <p-panel styleClass="panel" class="panel">
+                <div class="content-scroll">
+                    <div (click)="filterResultsByUrl(undefined, op)" class="overlay-item">
+                        <div class="request-url">All</div>
+                    </div>
+                    <div (click)="filterResultsByUrl(result, op)" class="overlay-item" *ngFor="let result of testResult">
+                        <div class="request-url">{{ result.requestUrl }}</div>
+                    </div>
+                </div>
+            </p-panel>
+        </ng-template>
+    </p-overlayPanel>
+
+
+    <div class="results-container" *ngFor="let info of shownResults">
+
+        <div class="result-card">
+
+            <div class="result-card-name">
+                Response Times
+            </div>
+
+            <div class="result-card-content">
+                <div class="key-value">
+                    <div class="key">
+                        Average
+                    </div>
+                    <div class="value">
+                        {{info.responseTimes.average}} ms
+                    </div>
+                </div>
+                <div class="key-value">
+                    <div class="key">
+                        Max / Min
+                    </div>
+                    <div class="value">
+                        {{info.responseTimes.max}} / {{info.responseTimes.min}} ms
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-card">
+
+            <div class="result-card-name">
+                Response Counts
+            </div>
+
+            <div class="result-card-content center">
+
+                <div class="center-content">
+                    <div class="key-value">
+                        <div class="key">
+                            Success
+                        </div>
+                        <div class="value">
+                            {{info.responseCounts.success}}
+                        </div>
+                    </div>
+                    <div class="key-value">
+                        <div class="key">
+                            Request failed
+                        </div>
+                        <div class="value">
+                            {{info.responseCounts.requestFailed}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="center-content">
+                    <div class="key-value">
+                        <div class="key">
+                            ServerError
+                        </div>
+                        <div class="value">
+                            {{info.responseCounts.serverError}}
+                        </div>
+                    </div>
+
+                    <div class="key-value">
+                        <div class="key">
+                            Client error
+                        </div>
+                        <div class="value">
+                            {{info.responseCounts.clientError}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="center-content last">
+                    <div class="key-value">
+                        <div class="key">
+                            Redirection
+                        </div>
+                        <div class="value">
+                            {{info.responseCounts.redirection}}
+                        </div>
+                    </div>
+                    <div class="key-value">
+                        <div class="key">
+                            Information
+                        </div>
+                        <div class="value">
+                            {{info.responseCounts.information}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="result-card">
+
+            <div class="result-card-name">
+                Bandwidth
+            </div>
+
+            <div class="result-card-content">
+                <div class="key-value">
+                    <div class="key">
+                        Received
+                    </div>
+                    <div class="value">
+                        {{info.bandwidth.received}} KB
+                    </div>
+                </div>
+                <div class="key-value">
+                    <div class="key">
+                        Sent
+                    </div>
+                    <div class="value">
+                        {{info.bandwidth.sent}} KB
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<app-no-content-placeholder *ngIf="isNoContent && !isNotFound"
+                            title="Looks like here are no test results.
+                            If you are already started the test, it may take some time.
+                            Try again later">
+</app-no-content-placeholder>
+<div *ngIf="isNotFound">
+    <app-not-found></app-not-found>
+</div>

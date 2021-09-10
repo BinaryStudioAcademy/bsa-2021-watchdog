@@ -1,10 +1,10 @@
 ﻿using Watchdog.Core.Common.DTO.LoaderTest.LoadTestSetting;
 
-namespace Watchdog.Core.Common.DTO.LoaderTest
+namespace Watchdog.Core.Common.DTO.LoaderTest.Request
 {
-    public class UpdateLoaderRequestDto
+    public class LoaderRequestDto
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
         public TestMethod Method { get; set; }
         public TestProtocol Protocol { get; set; }
         public string Host { get; set; }
