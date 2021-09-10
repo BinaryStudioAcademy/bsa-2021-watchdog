@@ -13,6 +13,7 @@ import { existOrganization } from '@shared/validators/exist-organization.validat
 import { RegistrationTabs } from '@modules/registration/registration-form/registration-tabs';
 import { MemberService } from '@core/services/member.service';
 import { RegistrationService } from '@core/services/registration.service';
+import { JoinToOrganization } from '@shared/models/member/join-to-organization';
 
 @Component({
     selector: 'app-create-organization',
@@ -106,13 +107,29 @@ export class CreateOrganizationComponent extends BaseComponent implements OnInit
     }
 
     joinToOrganization() {
-        this.registrationService.joinToOrganization(this.user.id, this.slugForJoin.value)
+        const userForJoin: JoinToOrganization = {
+            id: this.user.id,
+            organizationSlug: this.slugForJoin.value
+        };
+        this.registrationService.joinToOrganization(userForJoin)
             .pipe(this.untilThis)
             .subscribe(() => {
-                this.toastNotification.success('Successful join to organization');
+                this.display = false;
+                this.organizationService.getOrganizationBySlug(this.slugForJoin.value)
+                    .pipe(this.untilThis)
+                    .subscribe(organization => {
+                        if (organization.openMembership) {
+                            this.organizationCreate.emit(organization);
+                            this.toastNotification.success('Successful join');
+                        } else {
+                            this.toastNotification.info('You must be accepted to organization');
+                        }
+
+                    });
             }, error => {
                 this.toastNotification.error(error);
             });
+
     }
 
     createOrganization() {
@@ -133,6 +150,5 @@ export class CreateOrganizationComponent extends BaseComponent implements OnInit
 
     handleChange(e) {
         this.indexOfSelectedTab = e.index;
-        debugger;
     }
 }

@@ -3,6 +3,7 @@ import { FullRegistrationDto } from '@modules/registration/DTO/full-registration
 import { FullRegistrationWithJoinDto } from '@modules/registration/DTO/full-registration-with-join-dto';
 import { PartialRegistrationDto } from '@modules/registration/DTO/partial-registration-dto';
 import { PartialRegistratioWithJoinDto } from '@modules/registration/DTO/partial-registration-with-join';
+import { JoinToOrganization } from '@shared/models/member/join-to-organization';
 import { User } from '@shared/models/user/user';
 import { Observable } from 'rxjs';
 import { CoreHttpService } from './core-http.service';
@@ -34,8 +35,7 @@ export class RegistrationService {
         return this.http.postRequest<User>(`/${this.apiPrefix}/partialWithJoin`, registrationDto);
     }
 
-    public joinToOrganization(userId: number, organizationSlug: string): Observable<User> {
-        const userForJoin = { userId, organizationSlug };
-        return this.http.postRequest(`/${this.apiPrefix}/joinToOrganization`, userForJoin);
+    public joinToOrganization(userForJoin: JoinToOrganization) {
+        return this.http.postRequest<User>(`/${this.apiPrefix}/joinToOrganization`, userForJoin);
     }
 }

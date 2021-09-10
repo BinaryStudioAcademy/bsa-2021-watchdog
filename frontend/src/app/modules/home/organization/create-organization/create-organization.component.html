@@ -89,8 +89,8 @@
             type="submit"
             label="Submit"
             class="p-button-primary p-button-outlined"
-            [disabled]="(indexOfSelectedTab === 0 && !formGroup.valid) || (indexOfSelectedTab === 1 && !formGroupJoin)"
-            (click)="createOrganization()">
+            [disabled]="(indexOfSelectedTab === 0 && !formGroup.valid) || (indexOfSelectedTab === 1 && !formGroupJoin.valid)"
+            (click)="submit()">
         </button>
     </ng-template>
 </p-dialog>
