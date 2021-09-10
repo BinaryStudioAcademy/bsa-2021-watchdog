@@ -66,7 +66,10 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy {
                 await this.runHubs();
             }, () => {
                 this.spinner.hide();
-                this.display = true;
+                this.authService.removeUser();
+                this.router.navigateByUrl('landing').then(() => {
+                    this.toastNotificationService.info('You must be accepted to organization');
+                });
             });
     }
 

@@ -67,6 +67,10 @@ export class OrganizationService {
         return this.httpService.getRequest<Organization>(`${this.apiPrefix}/${id}`);
     }
 
+    getOrganizationBySlug(organizationSlug: string): Observable<Organization> {
+        return this.httpService.getRequest<Organization>(`${this.apiPrefix}/organizationBySlug/${organizationSlug}`);
+    }
+
     getDafaultOrganizationByUserId(userId: number): Observable<Organization> {
         return this.httpService.getRequest<Organization>(`${this.apiPrefix}/default/user/${userId}`);
     }

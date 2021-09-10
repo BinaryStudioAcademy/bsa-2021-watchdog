@@ -9,6 +9,10 @@ import { regexs } from '@shared/constants/regexs';
 import { uniqueSlugValidator } from '@shared/validators/unique-slug.validator';
 import { User } from '@shared/models/user/user';
 import { Organization } from '@shared/models/organization/organization';
+import { existOrganization } from '@shared/validators/exist-organization.validator';
+import { RegistrationTabs } from '@modules/registration/registration-form/registration-tabs';
+import { RegistrationService } from '@core/services/registration.service';
+import { JoinToOrganization } from '@shared/models/member/join-to-organization';
 
 @Component({
     selector: 'app-create-organization[hasOrganization]',
@@ -17,7 +21,9 @@ import { Organization } from '@shared/models/organization/organization';
 })
 export class CreateOrganizationComponent extends BaseComponent implements OnInit {
     formGroup: FormGroup;
+    formGroupJoin: FormGroup;
     user: User;
+    indexOfSelectedTab = RegistrationTabs.CreateOrganization;
     private displayDialog: boolean;
     get display(): boolean {
         return this.displayDialog;
@@ -35,13 +41,31 @@ export class CreateOrganizationComponent extends BaseComponent implements OnInit
     constructor(
         private organizationService: OrganizationService,
         private authService: AuthenticationService,
-        private toastNotification: ToastNotificationService
+        private toastNotification: ToastNotificationService,
+        private registrationService: RegistrationService
     ) {
         super();
     }
 
     ngOnInit(): void {
         this.user = this.authService.getUser();
+
+        this.formGroupJoin = new FormGroup({
+            organizationSlugJoin: new FormControl(
+                '',
+                {
+                    validators: [
+                        Validators.required,
+                        Validators.minLength(3),
+                        Validators.maxLength(50),
+                        Validators.pattern(regexs.organizationSlag),
+                    ],
+                    asyncValidators: [
+                        existOrganization(this.organizationService)
+                    ]
+                }
+            ),
+        });
 
         this.formGroup = new FormGroup({
             organizationName: new FormControl(
@@ -71,7 +95,41 @@ export class CreateOrganizationComponent extends BaseComponent implements OnInit
     }
 
     get slug() { return this.formGroup.controls.organizationSlug; }
+    get slugForJoin() { return this.formGroupJoin.controls.organizationSlugJoin; }
     get name() { return this.formGroup.controls.organizationName; }
+
+    submit() {
+        if (this.indexOfSelectedTab === RegistrationTabs.CreateOrganization) {
+            this.createOrganization();
+        }
+        if (this.indexOfSelectedTab === RegistrationTabs.JoinToOrganization) {
+            this.joinToOrganization();
+        }
+    }
+
+    joinToOrganization() {
+        const userForJoin: JoinToOrganization = {
+            id: this.user.id,
+            organizationSlug: this.slugForJoin.value
+        };
+        this.registrationService.joinToOrganization(userForJoin)
+            .pipe(this.untilThis)
+            .subscribe(() => {
+                this.display = false;
+                this.organizationService.getOrganizationBySlug(this.slugForJoin.value)
+                    .pipe(this.untilThis)
+                    .subscribe(organization => {
+                        if (organization.openMembership) {
+                            this.organizationCreate.emit(organization);
+                            this.toastNotification.success('Successful join');
+                        } else {
+                            this.toastNotification.info('You must be accepted to organization');
+                        }
+                    });
+            }, error => {
+                this.toastNotification.error(error);
+            });
+    }
 
     createOrganization() {
         const newOrganization: NewOrganization = {
@@ -87,5 +145,9 @@ export class CreateOrganizationComponent extends BaseComponent implements OnInit
             }, error => {
                 this.toastNotification.error(error);
             });
+    }
+
+    handleChange(e) {
+        this.indexOfSelectedTab = e.index;
     }
 }
