@@ -44,14 +44,14 @@ export class UserProfileSettingsComponent extends BaseComponent implements OnIni
             });
         this.editForm.addControl('firstName', new FormControl(this.user.firstName, [
             Validators.required,
-            Validators.minLength(2),
-            Validators.maxLength(30),
+            Validators.minLength(3),
+            Validators.maxLength(50),
             Validators.pattern(regexs.firstName),
         ]));
         this.editForm.addControl('lastName', new FormControl(this.user.lastName, [
             Validators.required,
-            Validators.minLength(2),
-            Validators.maxLength(30),
+            Validators.minLength(3),
+            Validators.maxLength(50),
             Validators.pattern(regexs.lastName),
         ]));
         this.editForm.addControl('email', new FormControl(this.user.email, {
