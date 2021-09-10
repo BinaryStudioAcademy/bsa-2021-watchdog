@@ -65,4 +65,4 @@
         </p-dropdown>
     </div>
 </div>
-<app-create-organization [(display)]="display" (organizationCreate)="organizationCreated($event)" [hasOrganization]="organizations.length !== 0"></app-create-organization>
+<app-create-organization [(display)]="display" (organizationCreate)="organizationCreated($event)" [hasOrganization]="!!organizations.length"></app-create-organization>
