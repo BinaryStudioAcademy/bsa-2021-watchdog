@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Test } from '@shared/models/test/test';
 import { Observable } from 'rxjs';
 import { CoreHttpService } from './core-http.service';
+import { TestAnalytics } from '@shared/models/test/analytics/test-analytics';
 
 @Injectable({
     providedIn: 'root'
@@ -27,5 +28,17 @@ export class TestService {
 
     getTestById(id: number): Observable<Test> {
         return this.httpService.getRequest(`${this.apiPrefix}/${id}`);
+    }
+
+    getTestAnalyticsByTestId(testId: number): Observable<TestAnalytics[]> {
+        return this.httpService.getRequest(`${this.apiPrefix}/${testId}/resultsanalytics`);
+    }
+
+    getTestAnalyticsByRequestId(requestId: number): Observable<TestAnalytics> {
+        return this.httpService.getRequest(`${this.apiPrefix}/request/${requestId}/resultanalytics`);
+    }
+
+    removeTestById(testId: number) {
+        return this.httpService.deleteRequest(`${this.apiPrefix}/${testId}`);
     }
 }

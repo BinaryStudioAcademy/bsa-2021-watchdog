@@ -13,14 +13,14 @@ import { BaseComponent } from '@core/components/base/base.component';
 import { AuthenticationService } from '@core/services/authentication.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { protocolOptions, typeOptions, methodOptions, contentTypes } from './test-settings.constant';
+import { contentTypes, methodOptions, protocolOptions, typeOptions } from './test-settings.constant';
 import { InputTextarea } from 'primeng/inputtextarea';
 import { TestRequest } from '@shared/models/test/test-request';
 import { KeyValuePair } from '@shared/models/key-value-pair';
 import { toKeyValuePairs, toObject } from '@core/utils/kvp.utils';
 import { TestService } from '@core/services/test.service';
 import * as CustomValidators from './test-settings.validators';
-import { getUrl, hasBody, toPretty, jsonToXml, xmlToJson } from './test-settings.utils';
+import { getUrl, hasBody, jsonToXml, toPretty, xmlToJson } from './test-settings.utils';
 
 @Component({
     selector: 'app-test-settings',
@@ -44,6 +44,7 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
     @ViewChild(InputTextarea) textarea: InputTextarea;
     getUrl = getUrl;
     hasBody = hasBody;
+
     constructor(
         private authService: AuthenticationService,
         private activatedRoute: ActivatedRoute,
@@ -52,7 +53,25 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
         private testService: TestService,
         private router: Router,
         private spinner: SpinnerService
-    ) { super(); }
+    ) {
+        super();
+    }
+
+    get name() {
+        return this.settingsGroup.controls.name;
+    }
+
+    get type() {
+        return this.settingsGroup.controls.type;
+    }
+
+    get clients() {
+        return this.settingsGroup.controls.clients;
+    }
+
+    get duration() {
+        return this.settingsGroup.controls.duration;
+    }
 
     async ngOnInit(): Promise<void> {
         this.loading = true;
@@ -63,24 +82,25 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
             .subscribe(member => {
                 if (hasAccess(member)) {
                     this.member = member;
-                    this.initProjects().subscribe(() => {
-                        this.activatedRoute.params
-                            .pipe(this.untilThis)
-                            .subscribe(params => {
-                                if (params.id) {
-                                    this.header = 'Edit test';
-                                    this.initEditMode(+params.id);
-                                } else {
-                                    this.header = 'Add a new test';
-                                    this.spinner.hide();
+                    this.initProjects()
+                        .subscribe(() => {
+                            this.activatedRoute.params
+                                .pipe(this.untilThis)
+                                .subscribe(params => {
+                                    if (params.id) {
+                                        this.header = 'Edit test';
+                                        this.initEditMode(+params.id);
+                                    } else {
+                                        this.header = 'Add a new test';
+                                        this.spinner.hide();
+                                        this.loading = false;
+                                    }
+                                }, error => {
                                     this.loading = false;
-                                }
-                            }, error => {
-                                this.loading = false;
-                                this.spinner.hide();
-                                this.toastNotifications.error(error);
-                            });
-                    });
+                                    this.spinner.hide();
+                                    this.toastNotifications.error(error);
+                                });
+                        });
                 } else {
                     this.header = 'Tests';
                     this.spinner.hide();
@@ -91,6 +111,7 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
                 this.toastNotifications.error(error);
             });
     }
+
     initEditMode(id: number) {
         this.testId = id;
         this.testService.getTestById(id)
@@ -198,11 +219,6 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
         });
     }
 
-    get name() { return this.settingsGroup.controls.name; }
-    get type() { return this.settingsGroup.controls.type; }
-    get clients() { return this.settingsGroup.controls.clients; }
-    get duration() { return this.settingsGroup.controls.duration; }
-
     addRequest() {
         this.requestGroups.forEach(g => g.controls.collapsed.setValue(true));
         this.requestGroups = this.requestGroups.concat(this.generateRequestGroup());
@@ -242,56 +258,19 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
         }
         this.textarea.resize();
     }
+
     handleCommon(e: KeyboardEvent) {
         if (e.key === 'Tab') {
             this.editTextArea(e, '  ', 2);
         }
     }
+
     handleXml(e: KeyboardEvent) {
         if (e.key === 'Tab') {
             this.editTextArea(e, '  ', 2);
         } else if (e.key === '<') {
             this.editTextArea(e, '<>', 1);
         }
-    }
-
-    private handleJson(e: KeyboardEvent) {
-        if (e.key === 'Tab') {
-            this.editTextArea(e, '  ', 2);
-        } else if (e.key === '"') {
-            this.editTextArea(e, '""', 1);
-        } else if (e.key === '{') {
-            this.editTextArea(e, '{}', 1);
-        } else if (e.key === '[') {
-            this.editTextArea(e, '[]', 1);
-        } else if (e.key === 'Enter') {
-            e.preventDefault();
-            const textarea = e.target as HTMLTextAreaElement;
-            const start = textarea.selectionStart;
-            const end = textarea.selectionEnd;
-
-            const previous = textarea.value.substring(0, start);
-            const lastEnter = previous.lastIndexOf('\n');
-            const lastLine = lastEnter === -1 ? previous : previous.substring(lastEnter + 1);
-            const firstNonSpace = lastLine.search(/\S/);
-            const whiteSpaces = lastLine.substring(0, firstNonSpace === -1 ? lastLine.length : firstNonSpace);
-            textarea.value = `${textarea.value.substring(0, start)}\n${whiteSpaces}${textarea.value.substring(end)}`;
-
-            textarea.selectionStart = start + whiteSpaces.length + 1;
-            textarea.selectionEnd = start + whiteSpaces.length + 1;
-        }
-    }
-
-    private editTextArea(e: KeyboardEvent, text: string, selection: number) {
-        e.preventDefault();
-        const textarea = e.target as HTMLTextAreaElement;
-        const start = textarea.selectionStart;
-        const end = textarea.selectionEnd;
-
-        textarea.value = `${textarea.value.substring(0, start)}${text}${textarea.value.substring(end)}`;
-
-        textarea.selectionStart = start + selection;
-        textarea.selectionEnd = start + selection;
     }
 
     changedMethod(method: TestMethod, form: FormGroup) {
@@ -346,11 +325,50 @@ export class TestSettingsComponent extends BaseComponent implements OnInit {
         } else {
             this.testService.createTest(test, start).subscribe(t => {
                 this.toastNotifications.success('Test created');
-                this.router.navigateByUrl(`home/tests/edit/${t.id}`);
+                this.router.navigateByUrl(`home/tests/${t.id}/edit`);
             }, error => {
                 this.toastNotifications.error(error);
             });
         }
+    }
+
+    private handleJson(e: KeyboardEvent) {
+        if (e.key === 'Tab') {
+            this.editTextArea(e, '  ', 2);
+        } else if (e.key === '"') {
+            this.editTextArea(e, '""', 1);
+        } else if (e.key === '{') {
+            this.editTextArea(e, '{}', 1);
+        } else if (e.key === '[') {
+            this.editTextArea(e, '[]', 1);
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            const textarea = e.target as HTMLTextAreaElement;
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+
+            const previous = textarea.value.substring(0, start);
+            const lastEnter = previous.lastIndexOf('\n');
+            const lastLine = lastEnter === -1 ? previous : previous.substring(lastEnter + 1);
+            const firstNonSpace = lastLine.search(/\S/);
+            const whiteSpaces = lastLine.substring(0, firstNonSpace === -1 ? lastLine.length : firstNonSpace);
+            textarea.value = `${textarea.value.substring(0, start)}\n${whiteSpaces}${textarea.value.substring(end)}`;
+
+            textarea.selectionStart = start + whiteSpaces.length + 1;
+            textarea.selectionEnd = start + whiteSpaces.length + 1;
+        }
+    }
+
+    private editTextArea(e: KeyboardEvent, text: string, selection: number) {
+        e.preventDefault();
+        const textarea = e.target as HTMLTextAreaElement;
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+
+        textarea.value = `${textarea.value.substring(0, start)}${text}${textarea.value.substring(end)}`;
+
+        textarea.selectionStart = start + selection;
+        textarea.selectionEnd = start + selection;
     }
 
     private getTest() {

@@ -12,7 +12,7 @@ import { TeamService } from '@core/services/team.service';
 import { Assignee } from '@shared/models/issue/assignee';
 import { count, toTeams, toUsers } from '@core/services/issues.utils';
 import { IssueInfo } from '@shared/models/issue/issue-info';
-import { debounceTime, tap, switchMap } from 'rxjs/operators';
+import { debounceTime, tap, switchMap, take } from 'rxjs/operators';
 import { AssigneeOptions } from '@shared/models/issue/assignee-options';
 import { IssueService } from '@core/services/issue.service';
 import { LazyLoadEvent } from 'primeng/api';
@@ -79,12 +79,14 @@ export class IssuesComponent extends BaseComponent implements OnInit {
         this.spinner.show(true);
         this.authService.getOrganization()
             .pipe(this.untilThis,
+                take(1),
                 switchMap(org => {
                     this.organization = org;
-                    return this.authService.getMember();
+                    return this.authService.getMember().pipe(this.untilThis);
                 }), tap(member => {
                     this.member = member;
-                })).subscribe(() => {
+                }))
+            .subscribe(() => {
                 forkJoin([this.loadMembers(), this.loadTeams(), this.loadIssuesCountByStatuses()])
                     .pipe(this.untilThis)
                     .subscribe(([members, teams, issueCount]) => {
@@ -96,6 +98,7 @@ export class IssuesComponent extends BaseComponent implements OnInit {
                     });
             }, error => {
                 this.toastNotification.error(error);
+                this.spinner.hide();
             });
         this.initIssueSelectDropdown();
     }

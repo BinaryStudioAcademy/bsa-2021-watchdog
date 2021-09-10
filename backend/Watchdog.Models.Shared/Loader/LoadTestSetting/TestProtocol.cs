@@ -2,6 +2,7 @@
 {
     public enum TestProtocol
     {
-        Http, Https
+        Http, 
+        Https
     }
 }

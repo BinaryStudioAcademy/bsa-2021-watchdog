@@ -42,7 +42,6 @@ namespace Watchdog.Loader.BLL.Services
 
         private async void Received(object sender, BasicDeliverEventArgs args)
         {
-
             var messageString = Encoding.UTF8.GetString(args.Body.Span);
             var message = JsonConvert.DeserializeObject<LoaderMessage>(messageString);
             _logger.LogInformation($"Start test \"{message.Name}\" with id = {message.Id}");

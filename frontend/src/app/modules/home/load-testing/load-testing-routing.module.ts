@@ -1,7 +1,8 @@
-import { TestsComponent } from './tests/tests.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TestSettingsComponent } from './test-settings/test-settings.component';
+import { TestResultPageComponent } from '@modules/home/load-testing/test-result-page/test-result-page.component';
+import { TestSettingsComponent } from '@modules/home/load-testing/test-settings/test-settings.component';
+import { TestsComponent } from '@modules/home/load-testing/tests/tests.component';
 
 const routes: Routes = [{
     path: '',
@@ -10,8 +11,11 @@ const routes: Routes = [{
     path: 'new',
     component: TestSettingsComponent,
 }, {
-    path: 'edit/:id',
+    path: ':id/edit',
     component: TestSettingsComponent
+}, {
+    path: ':id',
+    component: TestResultPageComponent
 }
 ];
 
