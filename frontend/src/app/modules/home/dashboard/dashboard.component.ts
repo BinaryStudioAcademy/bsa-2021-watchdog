@@ -35,7 +35,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     isOrderChanged: boolean = false;
     draggableTile: Tile;
     dashboard: Dashboard;
-    tiles: Tile[] = [];
+    tiles: Tile[];
     tileTypes = TileType;
     projects: Project[] = [];
     updateDashboardDialog: DynamicDialogRef;

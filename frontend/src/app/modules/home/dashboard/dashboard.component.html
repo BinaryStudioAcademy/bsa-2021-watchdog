@@ -45,7 +45,7 @@
 </app-tile-menu>
 
     <!--    Tiles Content    -->
-    <ng-template [ngIf]="dashboard">
+    <ng-template [ngIf]="dashboard && tiles">
         <div *ngIf="!tiles.length" class="tiles-not-found">
             <app-no-content-placeholder title="Looks like here are no tiles"></app-no-content-placeholder>
         </div>
