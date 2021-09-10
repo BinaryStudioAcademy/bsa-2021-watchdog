@@ -11,7 +11,6 @@ import { User } from '@shared/models/user/user';
 import { Organization } from '@shared/models/organization/organization';
 import { existOrganization } from '@shared/validators/exist-organization.validator';
 import { RegistrationTabs } from '@modules/registration/registration-form/registration-tabs';
-import { MemberService } from '@core/services/member.service';
 import { RegistrationService } from '@core/services/registration.service';
 import { JoinToOrganization } from '@shared/models/member/join-to-organization';
 
@@ -124,12 +123,10 @@ export class CreateOrganizationComponent extends BaseComponent implements OnInit
                         } else {
                             this.toastNotification.info('You must be accepted to organization');
                         }
-
                     });
             }, error => {
                 this.toastNotification.error(error);
             });
-
     }
 
     createOrganization() {

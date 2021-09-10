@@ -5,7 +5,6 @@ import { PartialRegistrationDto } from '@modules/registration/DTO/partial-regist
 import { PartialRegistratioWithJoinDto } from '@modules/registration/DTO/partial-registration-with-join';
 import { JoinToOrganization } from '@shared/models/member/join-to-organization';
 import { User } from '@shared/models/user/user';
-import { Observable } from 'rxjs';
 import { CoreHttpService } from './core-http.service';
 import { clear } from './registration.utils';
 
