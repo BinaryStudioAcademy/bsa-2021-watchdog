@@ -47,6 +47,8 @@
             border-radius: 3px
             border: 1px solid $border-color
             padding: 20px
+            flex-basis: auto
+            flex-grow: 1
             &-name
                 font-size: 20px
                 font-weight: 420
@@ -54,12 +56,9 @@
                 border-bottom: 1px solid $border-color
             &-content
                 padding-top: 15px
-            .first
-                flex: 1
-            .last
-                flex: 1
-            .second
-                flex: 2
+        .second
+            flex-basis: auto
+            flex-grow: 2
 
 .key-value
     margin-bottom: 5px
@@ -72,10 +71,11 @@
 
 .center
     display: flex
-    min-width: 550px
+    min-width: 500px
     &-content
         padding-right: 6px
         margin-right: 6px
+        flex: 1
         .key-value
             .key
                 margin-right: 40px
