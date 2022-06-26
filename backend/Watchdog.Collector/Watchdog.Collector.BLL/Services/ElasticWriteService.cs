@@ -45,15 +45,26 @@ namespace Watchdog.Collector.BLL.Services
         }
 
         public Task AddIssueAsync(WatchdogMessage message)
-        {
+        { 
+            // мапінг моделі, що приходи до внутрішньої моделі
             var issueMessage = _mapper.Map<IssueMessage>(message);
 
             if (string.IsNullOrEmpty(issueMessage.IssueDetails.ErrorMessage))
             {
                 throw new ArgumentException("Error message can't be empty.");
             }
-
+            // виклик допоміжної функції
             return WriteNewEventMessageAsync(issueMessage);
+        }
+
+        private async Task WriteNewEventMessageAsync(IssueMessage issueMessage)
+        {
+            // створюємо новий id
+            issueMessage.Id = Guid.NewGuid().ToString();
+            // записуємо до Elastic Search
+            await _client.IndexDocumentAsync(issueMessage);
+            // додаємо у чергу RabbitMQ
+            _issueProducer.ProduceMessage(issueMessage);
         }
 
         public async Task AddProjectCountryInfoAsync(CountryInfo countryInfo)
@@ -72,15 +83,6 @@ namespace Watchdog.Collector.BLL.Services
             {
                 await _client.IndexDocumentAsync<CountryInfo>(countryInfo);
             }
-        }
-
-        private async Task WriteNewEventMessageAsync(IssueMessage issueMessage)
-        {
-            issueMessage.Id = Guid.NewGuid().ToString();
-
-            await _client.IndexDocumentAsync<IssueMessage>(issueMessage);
-
-            _issueProducer.ProduceMessage(issueMessage);
         }
     }
 }

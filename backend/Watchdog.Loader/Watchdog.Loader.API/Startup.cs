@@ -86,7 +86,7 @@ namespace Watchdog.Loader.API
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            var apiPrefix = env.IsProduction() ? "/loader" : string.Empty;
+            var apiPrefix = "/loader";
 
             app.UseDeveloperExceptionPage();
 
@@ -107,13 +107,10 @@ namespace Watchdog.Loader.API
 
             app.UseSwagger(o =>
             {
-                if (env.IsProduction())
+                o.PreSerializeFilters.Add((swaggerDoc, httpReq) => swaggerDoc.Servers = new List<OpenApiServer>
                 {
-                    o.PreSerializeFilters.Add((swaggerDoc, httpReq) => swaggerDoc.Servers = new List<OpenApiServer>
-                    {
-                        new OpenApiServer { Url = $"https://{httpReq.Host.Value}{apiPrefix}" }
-                    });
-                }
+                    new OpenApiServer { Url = $"http://{httpReq.Host.Value}{apiPrefix}" }
+                });
             });
 
             app.UseSwaggerUI(c => c.SwaggerEndpoint($"{apiPrefix}/swagger/v1/swagger.json", "Watchdog.Loader v1"));

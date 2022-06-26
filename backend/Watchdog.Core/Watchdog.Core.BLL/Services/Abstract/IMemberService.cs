@@ -1,5 +1,4 @@
-﻿using SendGrid;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Watchdog.Core.BLL.Models;
 using Watchdog.Core.Common.DTO.Members;
@@ -10,17 +9,11 @@ namespace Watchdog.Core.BLL.Services.Abstract
     {
         Task<MemberDto> GetMemberByIdAsync(int id);
         Task<ICollection<MemberDto>> GetMembersByOrganizationIdAsync(int id);
-
         Task<(ICollection<MemberDto>, int)> GetMembersByOrganizationIdLazyAsync(int id, FilterModel filterPayload);
-
         Task<ICollection<MemberDto>> SearchMembersNotInTeamAsync(int teamId, int count, string memberEmail);
-
         Task<ICollection<MemberDto>> GetAllMembersAsync();
-
         Task<MemberDto> AddMemberAsync(NewMemberDto memberDto);
-
         Task<InvitedMemberDto> AddInvitedMemberAsync(NewMemberDto memberDto);
-
         Task DeleteMemberAsync(int id);
         Task InviteMemberAsync(MemberDto memberDto);
         Task InviteMemberAsync(int id);
@@ -29,8 +22,7 @@ namespace Watchdog.Core.BLL.Services.Abstract
         Task AcceptInviteAsync(int id);
         Task<MemberDto> ApproveUserAsync(int id);
         Task<bool> IsMemberOwnerAsync(int memberId);
-        Task<ICollection<int>> GetMembersIdsByApplicationUid(string applicationUid);
-
+        Task<ICollection<int>> GetMembersIdsByApplicationUidAsync(string applicationUid);
         Task<ICollection<MemberDto>> GetMembersForAssigneeByOrganizationIdAsync(int id);
     }
 }

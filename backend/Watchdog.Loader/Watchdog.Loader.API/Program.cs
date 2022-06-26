@@ -46,7 +46,7 @@ namespace Watchdog.Loader.API
             return new ElasticsearchSinkOptions(new Uri(configuration["ElasticConfiguration:Uri"]))
             {
                 AutoRegisterTemplate = true,
-                IndexFormat = $"collector.logs"
+                IndexFormat = $"loader.logs"
             };
         }
 

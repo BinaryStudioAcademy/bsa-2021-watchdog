@@ -97,6 +97,7 @@ namespace Watchdog.Notifier.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                // реєструємо endpoint
                 endpoints.MapHub<IssuesHub>("/issuesHub");
                 endpoints.MapHealthChecks("/health");
             });

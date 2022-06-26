@@ -317,11 +317,12 @@ export class IssuesComponent extends BaseComponent implements OnInit {
 
         return equalsMembers && equalsTeams;
     }
-
+    // у компоненті, яка відображає список помилок налаштовуємо оновлення даних
     private subscribeToIssuesHub() {
-        this.issuesHub.messages.pipe(this.untilThis)
-            .subscribe(() => {
+        this.issuesHub.listenMessages(() => {
+                // оновлюємо масив помилок
                 this.loadIssuesLazy(this.lastEvent);
+                // оновлюємо лічильники помилок
                 this.getIssuesCountByStatuses();
             });
     }

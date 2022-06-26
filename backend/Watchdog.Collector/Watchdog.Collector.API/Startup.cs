@@ -89,7 +89,7 @@ namespace Watchdog.Collector.API
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            var apiPrefix = env.IsProduction() ? "/collector" : string.Empty;
+            var apiPrefix = "/collector";
 
             app.UseDeveloperExceptionPage();
 
@@ -110,13 +110,10 @@ namespace Watchdog.Collector.API
 
             app.UseSwagger(o =>
             {
-                if (env.IsProduction())
+                o.PreSerializeFilters.Add((swaggerDoc, httpReq) => swaggerDoc.Servers = new List<OpenApiServer>
                 {
-                    o.PreSerializeFilters.Add((swaggerDoc, httpReq) => swaggerDoc.Servers = new List<OpenApiServer>
-                    {
-                        new OpenApiServer { Url = $"https://{httpReq.Host.Value}{apiPrefix}" }
-                    });
-                }
+                    new OpenApiServer { Url = $"http://{httpReq.Host.Value}{apiPrefix}" }
+                });
             });
 
             app.UseSwaggerUI(c => c.SwaggerEndpoint($"{apiPrefix}/swagger/v1/swagger.json", "Watchdog.Collector v1"));

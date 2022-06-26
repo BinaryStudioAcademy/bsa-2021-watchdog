@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.RabbitMQ.Shared", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.Collector.Common", "Watchdog.Collector\Watchdog.Collector.Common\Watchdog.Collector.Common.csproj", "{A3B916A0-A13A-40C5-9BE0-CEB2206171DE}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watchdog.Models.Shared", "Watchdog.Models.Shared\Watchdog.Models.Shared.csproj", "{2CF1EBAB-A565-4AAF-813F-BD14EDDBC5E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{A3B916A0-A13A-40C5-9BE0-CEB2206171DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3B916A0-A13A-40C5-9BE0-CEB2206171DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3B916A0-A13A-40C5-9BE0-CEB2206171DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CF1EBAB-A565-4AAF-813F-BD14EDDBC5E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CF1EBAB-A565-4AAF-813F-BD14EDDBC5E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CF1EBAB-A565-4AAF-813F-BD14EDDBC5E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CF1EBAB-A565-4AAF-813F-BD14EDDBC5E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

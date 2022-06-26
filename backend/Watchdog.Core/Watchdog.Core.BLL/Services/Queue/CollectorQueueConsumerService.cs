@@ -41,25 +41,31 @@ namespace Watchdog.Core.BLL.Services.Queue
             await Task.CompletedTask;
         }
 
+        // метод, що опрацьовує повідомлення з черги
         private async void Received(object sender, BasicDeliverEventArgs args)
         {
+            // дістаємо повідомлення з агрументів
             var messageString = Encoding.UTF8.GetString(args.Body.Span);
+            // десеріалізуємо об'єкт
             var issueMessageReceived = JsonConvert.DeserializeObject<IssueMessage>(messageString);
 
             _logger.LogInformation("Processing issue from collector: {0}, {1}", issueMessageReceived.IssueDetails.ClassName, issueMessageReceived.IssueDetails.ErrorMessage);
 
             string applicationUid = issueMessageReceived.ApiKey;
-
+            // отримуємо усі необхідні сервіси за допомогою DI
             using var scope = _provider.CreateScope();
             var memberService = scope.ServiceProvider.GetRequiredService<IMemberService>();
-            var membersIds = await memberService.GetMembersIdsByApplicationUid(applicationUid);
-
             var issueService = scope.ServiceProvider.GetRequiredService<IIssueService>();
+            var notifyService = scope.ServiceProvider.GetRequiredService<INotifyQueueProducerService>();
+            // отримуємо id усіх потенційних отримувачів повідомлень
+            var membersIds = await memberService.GetMembersIdsByApplicationUidAsync(applicationUid);
+
             try
             {
+                // обробляємо помилку та додаємо інформацію про те,
+                // що така помилка виникла до SQL бази
                 issueMessageReceived.IssueId = await issueService.AddIssueEventAsync(issueMessageReceived);
-
-                var notifyService = scope.ServiceProvider.GetRequiredService<INotifyQueueProducerService>();
+                // за допомогою Notify Service додаємо 
                 notifyService.NotifyUsers(membersIds, issueMessageReceived);
             }
             catch (KeyNotFoundException ex)
@@ -68,6 +74,7 @@ namespace Watchdog.Core.BLL.Services.Queue
             }
             finally
             {
+                // повідомляємо RabbitMQ про те, що повідомлення опрацьоване
                 _consumer.SetAcknowledge(args.DeliveryTag, true);
             }
         }

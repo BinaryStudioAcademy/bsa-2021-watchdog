@@ -4,9 +4,9 @@
 
 export const environment = {
     production: false,
-    coreUrl: 'http://localhost:5050',
-    notifierUrl: 'http://localhost:5070',
-    collectorUrl: 'http://localhost:5090',
+    coreUrl: '/api',
+    notifierUrl: '/notifier',
+    collectorUrl: '/collector',
     firebaseConfig: {
         apiKey: 'AIzaSyCfovbE5ENEg3DemEyyTLm7lUh6k-As5xM',
         authDomain: 'watchdog-7f034.firebaseapp.com',

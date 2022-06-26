@@ -38,6 +38,7 @@ namespace Watchdog.Notifier.BLL.Services
 
         private async void Received(object sender, BasicDeliverEventArgs arg)
         {
+            // десереалізуємо повідомлення
             var messageString = Encoding.UTF8.GetString(arg.Body.Span);
             var queueMessage = JsonConvert.DeserializeObject<IssueQueueMessageDto>(messageString);
 
@@ -46,8 +47,10 @@ namespace Watchdog.Notifier.BLL.Services
             _logger.LogInformation("Processing issue from core: {0}, {1}",
                 queueMessage.Issue.IssueDetails.ClassName,
                 queueMessage.Issue.IssueDetails.ErrorMessage);
-
-            await _hub.Clients.Groups(queueMessage.MembersIds.Select(i => i.ToString()).ToList()).SendIssue(queueMessage.Issue);
+            // відправляємо повідомлення на хаб вказаним отримувачам
+            await _hub.Clients
+                .Groups(queueMessage.MembersIds.Select(i => i.ToString()).ToList())
+                .SendIssue(queueMessage.Issue);
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)

@@ -63,17 +63,20 @@ namespace Watchdog.Emailer.Service.HostedServices
         {
             Task.Run(async () =>
             {
+                // десереалізуємо email
                 var email = DeserializeEmail(arg.Body.ToArray());
-
+                // нічого не відправляємо, якщо немає отримувачів
                 if (email.Recipients.Count == 0)
                 {
                     _consumer.SetAcknowledge(arg.DeliveryTag, true);
                     return;
                 }
-
+                // відправляєм email за допомогою SendGrid
                 var response = await _emailSender.SendEmail(email);
                 if (response.IsSuccessStatusCode)
                 {
+                    // у разі успішної відправки позначаємо,
+                    // що повідомлення опрацьовано
                     _consumer.SetAcknowledge(arg.DeliveryTag, true);
                 }
             });

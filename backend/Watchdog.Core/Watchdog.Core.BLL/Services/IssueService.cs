@@ -14,9 +14,9 @@ using Watchdog.Core.Common.DTO.IssueSolution;
 using Watchdog.Core.Common.Enums.Issues;
 using Watchdog.Core.DAL.Context;
 using Watchdog.Core.DAL.Entities;
-using Watchdog.Models.Shared.Issues;
 using Watchdog.Models.Shared.Emailer;
 using Watchdog.Models.Shared.Emailer.TemplateData;
+using Watchdog.Models.Shared.Issues;
 
 namespace Watchdog.Core.BLL.Services
 {
@@ -35,16 +35,19 @@ namespace Watchdog.Core.BLL.Services
             _emailer = emailer;
         }
 
+        // метод обробки помилки та синхносизації її з БД
         public async Task<int> AddIssueEventAsync(IssueMessage issueMessage)
         {
+            // беремо з бази запис про поточну групу помилок,
+            // якщо такої помилки ще не було створюємо новий
             var issue = await _context.Issues.Include(i => i.Application)
                 .FirstOrDefaultAsync(i =>
-                  i.ErrorMessage == issueMessage.IssueDetails.ErrorMessage &&
-                  i.ErrorClass == issueMessage.IssueDetails.ClassName &&
-                  i.Application.ApiKey == issueMessage.ApiKey)
+                    i.ErrorMessage == issueMessage.IssueDetails.ErrorMessage &&
+                    i.ErrorClass == issueMessage.IssueDetails.ClassName &&
+                    i.Application.ApiKey == issueMessage.ApiKey)
                 ?? await CreateNewIssueAsync(issueMessage);
-
-            ICollection<Recipient> recipients = await _context.Applications
+            // отримуємо отримувачів email листів
+            var recipients = await _context.Applications
                 .Where(a => a.ApiKey == issueMessage.ApiKey)
                 .SelectMany(a => a.Recipients)
                 .Select(x => new Recipient
@@ -55,19 +58,20 @@ namespace Watchdog.Core.BLL.Services
                 })
                 .Distinct()
                 .ToArrayAsync();
+            // мапінг проблеми у шаблон
             var template = _mapper.Map<IssueTemplate>(issueMessage);
+            // додаємо у чергу на відправлення email
             _emailer.SendAlert(template, recipients);
-
+            // змінюємо статус
             if (issue.Status is IssueStatus.Resolved)
             {
                 issue.Status = IssueStatus.Active;
             }
-
+            // створюємо новий евент
             var newEventMessage = _mapper.Map<EventMessage>(issueMessage);
-
+            // сберігаємо у БД
             newEventMessage.IssueId = issue.Id;
             await _context.EventMessages.AddAsync(newEventMessage);
-
             issue.Newest = newEventMessage;
             issue.EventsCount++;
             await _context.SaveChangesAsync();
@@ -190,7 +194,7 @@ namespace Watchdog.Core.BLL.Services
                 .Take(filterModel.Rows)
                 .Select(i => i.EventId);
             var values = temp.ToList();
-            
+
             var response = await _client.SearchAsync<IssueMessage>(s => s
                 .Size(filterModel.Rows)
                 .Query(q => q
@@ -355,9 +359,9 @@ namespace Watchdog.Core.BLL.Services
             {
                 throw new KeyNotFoundException("There is no member with such ID.");
             }
-            
+
             var issues = GetIssuesAsQueryable(memberId, status, appId);
-            
+
             var result = await issues
                 .Select(i => new IssueLazyLoadDto
                 {
@@ -389,7 +393,7 @@ namespace Watchdog.Core.BLL.Services
                 })
                 .Filter(filterModel, out var totalRecord)
                 .ToListAsync();
-            
+
             return (result, totalRecord);
         }
 
@@ -399,7 +403,7 @@ namespace Watchdog.Core.BLL.Services
             {
                 throw new KeyNotFoundException("There is no member with such ID.");
             }
-            
+
             var result = await _context.Applications
                 .AsNoTracking()
                 .Where(a => a.ApplicationTeams
@@ -407,7 +411,7 @@ namespace Watchdog.Core.BLL.Services
                         .Any(tm => tm.MemberId == memberId)))
                 .SelectMany(a => a.Issues)
                 .GroupBy(issue => issue.Status)
-                .Select(issues => new {Status = issues.Key, Count = issues.Count()})
+                .Select(issues => new { Status = issues.Key, Count = issues.Count() })
                 .ToDictionaryAsync(arg => arg.Status, arg => arg.Count);
 
             return new CountOfIssuesByStatusDto
@@ -430,7 +434,7 @@ namespace Watchdog.Core.BLL.Services
             var issueSolutionItems = await StackExchangeService.GetSolutionFromStackoverflow<IssueSolution>(issueEntity.ErrorMessage, new[] { issueEntity.Application.Platform.Name });
 
             var filteredIssueSolutionItem = issueSolutionItems.Items
-                .Where(s => s.Score >=1 && s.IsAnswered)
+                .Where(s => s.Score >= 1 && s.IsAnswered)
                 .OrderBy(s => s.Score)
                 .ThenByDescending(s => s.ViewCount)
                 .FirstOrDefault();
@@ -442,8 +446,8 @@ namespace Watchdog.Core.BLL.Services
         {
             return await _context.Issues
                 .Include(i => i.Newest)
-                .Where(i => 
-                    filter.ProjectIds.Contains(i.ApplicationId) 
+                .Where(i =>
+                    filter.ProjectIds.Contains(i.ApplicationId)
                     && i.Newest.OccurredOn >= filter.Date
                     && i.Status == IssueStatus.Active)
                 .Take(filter.Items)

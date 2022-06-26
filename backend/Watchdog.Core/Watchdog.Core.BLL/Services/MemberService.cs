@@ -235,7 +235,7 @@ namespace Watchdog.Core.BLL.Services
             return (members, totalRecord);
         }
 
-        public async Task<ICollection<int>> GetMembersIdsByApplicationUid(string applicationUid)
+        public async Task<ICollection<int>> GetMembersIdsByApplicationUidAsync(string applicationUid)
         {
             var memberIds = await _context.TeamMembers
                 .Where(tm => tm.Team.ApplicationTeams.Any(at => at.Application.ApiKey == applicationUid))

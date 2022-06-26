@@ -34,11 +34,12 @@ namespace Watchdog.Core.BLL.Services
                 )
                 .Sort(sortDescriptor => sortDescriptor
                     .Descending(response => response.Time))
-                .Size(count)
+                    .Size(10000)
             );
 
             return searchResponse.Documents
                 .Where(resp => appKeys.Contains(resp.ProjectKey))
+                .Take(count)
                 .ToList();
         }
 

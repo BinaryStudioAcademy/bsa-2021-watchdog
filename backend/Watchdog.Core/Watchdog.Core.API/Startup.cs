@@ -111,7 +111,7 @@ namespace Watchdog.Core.API
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            var apiPrefix = env.IsProduction() ? "/api" : string.Empty;
+            var apiPrefix = "/api";
 
             app.UseMiddleware<GenericExceptionHandlerMiddleware>();
 
@@ -136,11 +136,10 @@ namespace Watchdog.Core.API
 
             app.UseSwagger(o =>
             {
-                if (env.IsProduction())
-                    o.PreSerializeFilters.Add((swaggerDoc, httpReq) => swaggerDoc.Servers = new List<OpenApiServer>
-                    {
-                        new() {Url = $"https://{httpReq.Host.Value}{apiPrefix}"}
-                    });
+                o.PreSerializeFilters.Add((swaggerDoc, httpReq) => swaggerDoc.Servers = new List<OpenApiServer>
+                {
+                    new OpenApiServer { Url = $"http://{httpReq.Host.Value}{apiPrefix}" }
+                });
             });
             app.UseSwaggerUI(c => { c.SwaggerEndpoint($"{apiPrefix}/swagger/v1/swagger.json", "Watchdog.Core v1"); });
 
